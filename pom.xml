@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.cassproject</groupId>
 	<artifactId>cass</artifactId>
 	<packaging>war</packaging>
-	<version>1.2.15</version>
+	<version>1.2.16</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -133,6 +132,11 @@
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ec.ui.framework</artifactId>
+			<version>${ec-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eduworks</groupId>
+			<artifactId>forge</artifactId>
 			<version>${ec-version}</version>
 		</dependency>
 		<dependency>
@@ -315,12 +319,10 @@
 								<es5Strict>OFF</es5Strict>
 							</closureWarningLevels>
 							<cssSourceDir>css</cssSourceDir>
-							<cssSourceFiles>
-							</cssSourceFiles>
+							<cssSourceFiles></cssSourceFiles>
 							<jsSourceDir>.</jsSourceDir>
 							<jsSourceFiles>
 								<jsSourceFile>src/main/webapp/cass-editor/forge/forge.min.js</jsSourceFile>
-								<jsSourceFile>src/main/js/cass/require.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/papaparse.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/FileSaver.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/xml2json.js</jsSourceFile>

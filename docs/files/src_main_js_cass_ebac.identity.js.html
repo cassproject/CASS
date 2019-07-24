@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.15</em>
+            <em>API Docs for: 1.2.16</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1698,320 +1698,6 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
 /**
- *  Created by fray on 5/9/17.
- */
-var OAuth2FileBasedRemoteIdentityManager = /**
- *  Reads the remote OAuth2 endpoint file.
- * 
- *  @param {Callback0} Method to call when initialization is complete.
- *  @memberOf OAuth2FileBasedRemoteIdentityManager
- *  @constructor
- */
-function(initialized) {
-    var me = this;
-    EcRemote.getExpectingObject(&quot;&quot;, &quot;hello.json&quot;, function(o) {
-        try {
-            me.configuration = JSON.parse(JSON.stringify(o));
-            hello.init(o);
-            me.constructor.oauthEnabled = true;
-            initialized();
-        }catch (ex) {
-            me.constructor.oauthEnabled = false;
-        }
-    }, function(s) {
-        me.constructor.oauthEnabled = false;
-    });
-};
-OAuth2FileBasedRemoteIdentityManager = stjs.extend(OAuth2FileBasedRemoteIdentityManager, null, [RemoteIdentityManagerInterface], function(constructor, prototype) {
-    constructor.oauthEnabled = false;
-    prototype.server = null;
-    prototype.configuration = null;
-    prototype.oauthLoginResponse = null;
-    prototype.network = null;
-    prototype.global = null;
-    /**
-     *  Returns true if the identity manager is global. Returns false if the identity manager is local to the server.
-     * 
-     *  @return {Boolean} true if the identity manager is global.
-     *  @memberOf OAuth2FileBasedRemoteIdentityManager
-     *  @method isGlobal
-     */
-    prototype.isGlobal = function() {
-        if (this.global == null) 
-            return true;
-        return this.global;
-    };
-    prototype.configure = function(usernameSalt, usernameIterations, usernameWidth, passwordSalt, passwordIterations, passwordWidth, secretSalt, secretIterations) {};
-    prototype.configureFromServer = function(success, failure) {
-        success(null);
-    };
-    /**
-     *  Wipes login data and logs you out.
-     * 
-     *  @memberOf OAuth2FileBasedRemoteIdentityManager
-     *  @method clear
-     */
-    prototype.clear = function() {
-        OAuth2FileBasedRemoteIdentityManager.oauthEnabled = false;
-        if (this.server != null) 
-            hello.logout(this.server, null);
-    };
-    /**
-     *  Configure compatible remote identity management server.
-     * 
-     *  @param {String} server
-     *                  Name of the remote identity management server.
-     *  @memberOf OAuth2FileBasedRemoteIdentityManager
-     *  @method setDefaultIdentityManagementServer
-     */
-    prototype.setDefaultIdentityManagementServer = function(server) {
-        this.server = server;
-    };
-    prototype.startLogin = function(username, password) {};
-    prototype.changePassword = function(username, oldPassword, newPassword) {
-        return false;
-    };
-    /**
-     *  Fetch credentials from server, invoking events based on login success or
-     *  failure.
-     *  &lt;p&gt;
-     *  Automatically populates EcIdentityManager.
-     *  &lt;p&gt;
-     *  Does not require startLogin().
-     * 
-     *  @param {Callback1&lt;Object&gt;} success
-     *  @param {Callback1&lt;String&gt;} failure
-     *  @memberOf OAuth2FileBasedRemoteIdentityManager
-     *  @method fetch
-     */
-    prototype.fetch = function(success, failure) {
-        var o = new Object();
-        (o)[&quot;scope&quot;] = (this.configuration)[this.server + &quot;Scope&quot;];
-        (o)[&quot;display&quot;] = &quot;page&quot;;
-        var me = this;
-        hello.on(&quot;auth.login&quot;, function(o) {
-            me.oauthLoginResponse = o;
-            me.network = (me.oauthLoginResponse)[&quot;network&quot;];
-            hello.api(me.network + &quot;/me/folders&quot;, &quot;get&quot;, new Object()).then(function(folderResponse) {
-                var folders = (folderResponse)[&quot;data&quot;];
-                var foundIdentities = false;
-                var foundContacts = false;
-                for (var i = 0; i &lt; folders.length; i++) {
-                    var d = folders[i];
-                    var name = (d)[&quot;name&quot;];
-                    var id = (d)[&quot;id&quot;];
-                    if (name == &quot;CASS Identities&quot;) {
-                        foundIdentities = true;
-                        me.hookIdentityManagerIdentities(id);
-                        me.readIdentityFiles(id, success, failure);
-                    }
-                    if (name == &quot;CASS Contacts&quot;) {
-                        foundContacts = true;
-                        me.hookIdentityManagerContacts(id);
-                        me.readContactFiles(id, success, failure);
-                    }
-                }
-                if (!foundIdentities) {
-                    me.createIdentityFolder(success);
-                }
-                if (!foundContacts) {
-                    me.createContactFolder();
-                }
-            }).fail(failure);
-        });
-        hello.login(this.server, o).fail(failure);
-    };
-    prototype.createContactFolder = function() {
-        var me = this;
-        var o = new Object();
-        (o)[&quot;name&quot;] = &quot;CASS Contacts&quot;;
-        hello.api(me.network + &quot;/me/folders&quot;, &quot;post&quot;, o).then(function(r) {
-            me.hookIdentityManagerContacts((r)[&quot;id&quot;]);
-        });
-    };
-    prototype.createIdentityFolder = function(success) {
-        var me = this;
-        var o = new Object();
-        (o)[&quot;name&quot;] = &quot;CASS Identities&quot;;
-        hello.api(me.network + &quot;/me/folders&quot;, &quot;post&quot;, o).then(function(r) {
-            me.hookIdentityManagerIdentities((r)[&quot;id&quot;]);
-            success(r);
-        });
-    };
-    prototype.writeIdentityFiles = function(folderId, success) {
-        var me = this;
-        var helper = new EcAsyncHelper();
-        helper.each(EcIdentityManager.ids, function(identity, callback0) {
-            me.writeIdentityFile(folderId, identity, callback0);
-        }, function(strings) {
-            success(strings);
-        });
-    };
-    prototype.writeIdentityFile = function(folderId, identity, finished) {
-        var file = stringToFile(identity.ppk.toPem(), identity.displayName + &quot;.pem&quot;, &quot;text/plain&quot;);
-        var o = new Object();
-        (o)[&quot;id&quot;] = (identity)[&quot;id&quot;];
-        if ((o)[&quot;id&quot;] == undefined) 
-            (o)[&quot;parent&quot;] = folderId;
-        (o)[&quot;name&quot;] = file.name;
-        var files = new Array();
-        files.push(file);
-        (o)[&quot;file&quot;] = files;
-        hello.api(this.network + &quot;/me/files&quot;, (identity)[&quot;id&quot;] == undefined ? &quot;post&quot; : &quot;put&quot;, o).then(function(r) {
-            (identity)[&quot;id&quot;] = (r)[&quot;id&quot;];
-            if (finished != null) 
-                finished();
-        });
-    };
-    prototype.writeContactFiles = function(folderId) {
-        for (var i = 0; i &lt; EcIdentityManager.contacts.length; i++) {
-            this.writeContactFile(folderId, EcIdentityManager.contacts[i]);
-        }
-    };
-    prototype.writeContactFile = function(folderId, contact) {
-        var file = stringToFile(contact.pk.toPem(), contact.displayName + &quot;.pem&quot;, &quot;text/plain&quot;);
-        var o = new Object();
-        (o)[&quot;id&quot;] = (contact)[&quot;id&quot;];
-        if ((o)[&quot;id&quot;] == undefined) 
-            (o)[&quot;parent&quot;] = folderId;
-        (o)[&quot;name&quot;] = file.name;
-        var files = new Array();
-        files.push(file);
-        (o)[&quot;file&quot;] = files;
-        hello.api(this.network + &quot;/me/files&quot;, (contact)[&quot;id&quot;] == undefined ? &quot;post&quot; : &quot;put&quot;, o).then(function(r) {
-            (contact)[&quot;id&quot;] = (r)[&quot;id&quot;];
-        });
-    };
-    prototype.readIdentityFiles = function(folderId, success, failure) {
-        var me = this;
-        var o = new Object();
-        (o)[&quot;parent&quot;] = folderId;
-        hello.api(this.network + &quot;/me/files&quot;, &quot;get&quot;, o).then(function(folderResponse) {
-            var files = (folderResponse)[&quot;data&quot;];
-            var h = new EcAsyncHelper();
-            h.each(files, function(d, callback0) {
-                var name = ((d)[&quot;name&quot;]).replace(&quot;\\.pem&quot;, &quot;&quot;);
-                var id = (d)[&quot;id&quot;];
-                var directLink = (d)[&quot;downloadUrl&quot;];
-                EcRemote.getExpectingString(&quot;&quot;, directLink + &quot;&amp;access_token=&quot; + (hello.getAuthResponse(me.network))[&quot;access_token&quot;], function(s) {
-                    var identity = new EcIdentity();
-                    identity.displayName = name.replace(&quot;.pem&quot;, &quot;&quot;);
-                    identity.ppk = EcPpk.fromPem(s);
-                    identity.source = &quot;google&quot;;
-                    (identity)[&quot;id&quot;] = id;
-                    EcIdentityManager.addIdentityQuietly(identity);
-                    callback0();
-                }, failure);
-            }, function(strings) {
-                success(null);
-            });
-        });
-    };
-    prototype.readContactFiles = function(folderId, success, failure) {
-        var me = this;
-        var o = new Object();
-        (o)[&quot;parent&quot;] = folderId;
-        hello.api(this.network + &quot;/me/files&quot;, &quot;get&quot;, o).then(function(folderResponse) {
-            var files = (folderResponse)[&quot;data&quot;];
-            var h = new EcAsyncHelper();
-            h.each(files, function(d, callback0) {
-                var name = ((d)[&quot;name&quot;]).replace(&quot;\\.pem&quot;, &quot;&quot;);
-                var id = (d)[&quot;id&quot;];
-                var directLink = (d)[&quot;downloadUrl&quot;];
-                EcRemote.getExpectingString(&quot;&quot;, directLink + &quot;&amp;access_token=&quot; + (hello.getAuthResponse(me.network))[&quot;access_token&quot;], function(s) {
-                    var contact = new EcContact();
-                    contact.displayName = name.replace(&quot;.pem&quot;, &quot;&quot;);
-                    contact.pk = EcPk.fromPem(s);
-                    contact.source = &quot;google&quot;;
-                    (contact)[&quot;id&quot;] = id;
-                    EcIdentityManager.addContactQuietly(contact);
-                    callback0();
-                }, failure);
-            }, function(strings) {
-                success(null);
-            });
-        });
-    };
-    prototype.hookIdentityManagerIdentities = function(folderId) {
-        var me = this;
-        EcIdentityManager.onIdentityChanged = function(identity) {
-            me.writeIdentityFile(folderId, identity, null);
-        };
-    };
-    prototype.hookIdentityManagerContacts = function(folderId) {
-        var me = this;
-        EcIdentityManager.onContactChanged = function(contact) {
-            me.writeContactFile(folderId, contact);
-        };
-    };
-    /**
-     *  Commits credentials in EcIdentityManager to remote server.
-     * 
-     *  @param {Callback1&lt;String&gt;}   success
-     *  @param {Callback1&lt;String&gt;}   failure
-     *  @memberOf OAuth2FileBasedRemoteIdentityManager
-     *  @method commit
-     */
-    prototype.commit = function(success, failure) {
-        var me = this;
-        var apio = new Object();
-        (apio)[&quot;network&quot;] = this.network;
-        if (hello.getAuthResponse(this.server)) 
-            hello.api(me.network + &quot;/me/folders&quot;, &quot;get&quot;, apio).then(function(folderResponse) {
-                var folders = (folderResponse)[&quot;data&quot;];
-                for (var i = 0; i &lt; folders.length; i++) {
-                    var d = folders[i];
-                    var name = (d)[&quot;name&quot;];
-                    var id = (d)[&quot;id&quot;];
-                    if (name == &quot;CASS Identities&quot;) {
-                        me.writeIdentityFiles(id, success);
-                    }
-                    if (name == &quot;CASS Contacts&quot;) {
-                        me.writeContactFiles(id);
-                    }
-                }
-            }).fail(failure);
-         else 
-            failure(&quot;Please login again.&quot;);
-    };
-    prototype.create = function(success, failure) {
-        var o = new Object();
-        (o)[&quot;scope&quot;] = (this.configuration)[this.server + &quot;Scope&quot;];
-        var me = this;
-        hello.on(&quot;auth.login&quot;, function(o) {
-            me.oauthLoginResponse = o;
-            me.network = (me.oauthLoginResponse)[&quot;network&quot;];
-            hello.api(me.network + &quot;/me/folders&quot;, &quot;get&quot;, new Object()).then(function(folderResponse) {
-                var folders = (folderResponse)[&quot;data&quot;];
-                var foundIdentities = false;
-                var foundContacts = false;
-                for (var i = 0; i &lt; folders.length; i++) {
-                    var d = folders[i];
-                    var name = (d)[&quot;name&quot;];
-                    var id = (d)[&quot;id&quot;];
-                    if (name == &quot;CASS Identities&quot;) {
-                        foundIdentities = true;
-                        me.hookIdentityManagerIdentities(id);
-                        me.readIdentityFiles(id, success, failure);
-                    }
-                    if (name == &quot;CASS Contacts&quot;) {
-                        foundContacts = true;
-                        me.hookIdentityManagerContacts(id);
-                        me.readContactFiles(id, success, failure);
-                    }
-                }
-                if (!foundIdentities) {
-                    me.createIdentityFolder(success);
-                }
-                if (!foundContacts) {
-                    me.createContactFolder();
-                }
-            }).fail(failure);
-        });
-        hello.login(this.server, o).fail(failure);
-    };
-}, {configuration: &quot;Object&quot;, oauthLoginResponse: &quot;Object&quot;}, {});
-/**
  *  Contact Grant that is used to share your public key with another user
  * 
  *  @author fritz.ray@eduworks.com
@@ -2435,6 +2121,320 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
         return passwordSplice;
     };
 }, {}, {});
+/**
+ *  Created by fray on 5/9/17.
+ */
+var OAuth2FileBasedRemoteIdentityManager = /**
+ *  Reads the remote OAuth2 endpoint file.
+ * 
+ *  @param {Callback0} Method to call when initialization is complete.
+ *  @memberOf OAuth2FileBasedRemoteIdentityManager
+ *  @constructor
+ */
+function(initialized) {
+    var me = this;
+    EcRemote.getExpectingObject(&quot;&quot;, &quot;hello.json&quot;, function(o) {
+        try {
+            me.configuration = JSON.parse(JSON.stringify(o));
+            hello.init(o);
+            me.constructor.oauthEnabled = true;
+            initialized();
+        }catch (ex) {
+            me.constructor.oauthEnabled = false;
+        }
+    }, function(s) {
+        me.constructor.oauthEnabled = false;
+    });
+};
+OAuth2FileBasedRemoteIdentityManager = stjs.extend(OAuth2FileBasedRemoteIdentityManager, null, [RemoteIdentityManagerInterface], function(constructor, prototype) {
+    constructor.oauthEnabled = false;
+    prototype.server = null;
+    prototype.configuration = null;
+    prototype.oauthLoginResponse = null;
+    prototype.network = null;
+    prototype.global = null;
+    /**
+     *  Returns true if the identity manager is global. Returns false if the identity manager is local to the server.
+     * 
+     *  @return {Boolean} true if the identity manager is global.
+     *  @memberOf OAuth2FileBasedRemoteIdentityManager
+     *  @method isGlobal
+     */
+    prototype.isGlobal = function() {
+        if (this.global == null) 
+            return true;
+        return this.global;
+    };
+    prototype.configure = function(usernameSalt, usernameIterations, usernameWidth, passwordSalt, passwordIterations, passwordWidth, secretSalt, secretIterations) {};
+    prototype.configureFromServer = function(success, failure) {
+        success(null);
+    };
+    /**
+     *  Wipes login data and logs you out.
+     * 
+     *  @memberOf OAuth2FileBasedRemoteIdentityManager
+     *  @method clear
+     */
+    prototype.clear = function() {
+        OAuth2FileBasedRemoteIdentityManager.oauthEnabled = false;
+        if (this.server != null) 
+            hello.logout(this.server, null);
+    };
+    /**
+     *  Configure compatible remote identity management server.
+     * 
+     *  @param {String} server
+     *                  Name of the remote identity management server.
+     *  @memberOf OAuth2FileBasedRemoteIdentityManager
+     *  @method setDefaultIdentityManagementServer
+     */
+    prototype.setDefaultIdentityManagementServer = function(server) {
+        this.server = server;
+    };
+    prototype.startLogin = function(username, password) {};
+    prototype.changePassword = function(username, oldPassword, newPassword) {
+        return false;
+    };
+    /**
+     *  Fetch credentials from server, invoking events based on login success or
+     *  failure.
+     *  &lt;p&gt;
+     *  Automatically populates EcIdentityManager.
+     *  &lt;p&gt;
+     *  Does not require startLogin().
+     * 
+     *  @param {Callback1&lt;Object&gt;} success
+     *  @param {Callback1&lt;String&gt;} failure
+     *  @memberOf OAuth2FileBasedRemoteIdentityManager
+     *  @method fetch
+     */
+    prototype.fetch = function(success, failure) {
+        var o = new Object();
+        (o)[&quot;scope&quot;] = (this.configuration)[this.server + &quot;Scope&quot;];
+        (o)[&quot;display&quot;] = &quot;page&quot;;
+        var me = this;
+        hello.on(&quot;auth.login&quot;, function(o) {
+            me.oauthLoginResponse = o;
+            me.network = (me.oauthLoginResponse)[&quot;network&quot;];
+            hello.api(me.network + &quot;/me/folders&quot;, &quot;get&quot;, new Object()).then(function(folderResponse) {
+                var folders = (folderResponse)[&quot;data&quot;];
+                var foundIdentities = false;
+                var foundContacts = false;
+                for (var i = 0; i &lt; folders.length; i++) {
+                    var d = folders[i];
+                    var name = (d)[&quot;name&quot;];
+                    var id = (d)[&quot;id&quot;];
+                    if (name == &quot;CASS Identities&quot;) {
+                        foundIdentities = true;
+                        me.hookIdentityManagerIdentities(id);
+                        me.readIdentityFiles(id, success, failure);
+                    }
+                    if (name == &quot;CASS Contacts&quot;) {
+                        foundContacts = true;
+                        me.hookIdentityManagerContacts(id);
+                        me.readContactFiles(id, success, failure);
+                    }
+                }
+                if (!foundIdentities) {
+                    me.createIdentityFolder(success);
+                }
+                if (!foundContacts) {
+                    me.createContactFolder();
+                }
+            }).fail(failure);
+        });
+        hello.login(this.server, o).fail(failure);
+    };
+    prototype.createContactFolder = function() {
+        var me = this;
+        var o = new Object();
+        (o)[&quot;name&quot;] = &quot;CASS Contacts&quot;;
+        hello.api(me.network + &quot;/me/folders&quot;, &quot;post&quot;, o).then(function(r) {
+            me.hookIdentityManagerContacts((r)[&quot;id&quot;]);
+        });
+    };
+    prototype.createIdentityFolder = function(success) {
+        var me = this;
+        var o = new Object();
+        (o)[&quot;name&quot;] = &quot;CASS Identities&quot;;
+        hello.api(me.network + &quot;/me/folders&quot;, &quot;post&quot;, o).then(function(r) {
+            me.hookIdentityManagerIdentities((r)[&quot;id&quot;]);
+            success(r);
+        });
+    };
+    prototype.writeIdentityFiles = function(folderId, success) {
+        var me = this;
+        var helper = new EcAsyncHelper();
+        helper.each(EcIdentityManager.ids, function(identity, callback0) {
+            me.writeIdentityFile(folderId, identity, callback0);
+        }, function(strings) {
+            success(strings);
+        });
+    };
+    prototype.writeIdentityFile = function(folderId, identity, finished) {
+        var file = stringToFile(identity.ppk.toPem(), identity.displayName + &quot;.pem&quot;, &quot;text/plain&quot;);
+        var o = new Object();
+        (o)[&quot;id&quot;] = (identity)[&quot;id&quot;];
+        if ((o)[&quot;id&quot;] == undefined) 
+            (o)[&quot;parent&quot;] = folderId;
+        (o)[&quot;name&quot;] = file.name;
+        var files = new Array();
+        files.push(file);
+        (o)[&quot;file&quot;] = files;
+        hello.api(this.network + &quot;/me/files&quot;, (identity)[&quot;id&quot;] == undefined ? &quot;post&quot; : &quot;put&quot;, o).then(function(r) {
+            (identity)[&quot;id&quot;] = (r)[&quot;id&quot;];
+            if (finished != null) 
+                finished();
+        });
+    };
+    prototype.writeContactFiles = function(folderId) {
+        for (var i = 0; i &lt; EcIdentityManager.contacts.length; i++) {
+            this.writeContactFile(folderId, EcIdentityManager.contacts[i]);
+        }
+    };
+    prototype.writeContactFile = function(folderId, contact) {
+        var file = stringToFile(contact.pk.toPem(), contact.displayName + &quot;.pem&quot;, &quot;text/plain&quot;);
+        var o = new Object();
+        (o)[&quot;id&quot;] = (contact)[&quot;id&quot;];
+        if ((o)[&quot;id&quot;] == undefined) 
+            (o)[&quot;parent&quot;] = folderId;
+        (o)[&quot;name&quot;] = file.name;
+        var files = new Array();
+        files.push(file);
+        (o)[&quot;file&quot;] = files;
+        hello.api(this.network + &quot;/me/files&quot;, (contact)[&quot;id&quot;] == undefined ? &quot;post&quot; : &quot;put&quot;, o).then(function(r) {
+            (contact)[&quot;id&quot;] = (r)[&quot;id&quot;];
+        });
+    };
+    prototype.readIdentityFiles = function(folderId, success, failure) {
+        var me = this;
+        var o = new Object();
+        (o)[&quot;parent&quot;] = folderId;
+        hello.api(this.network + &quot;/me/files&quot;, &quot;get&quot;, o).then(function(folderResponse) {
+            var files = (folderResponse)[&quot;data&quot;];
+            var h = new EcAsyncHelper();
+            h.each(files, function(d, callback0) {
+                var name = ((d)[&quot;name&quot;]).replace(&quot;\\.pem&quot;, &quot;&quot;);
+                var id = (d)[&quot;id&quot;];
+                var directLink = (d)[&quot;downloadUrl&quot;];
+                EcRemote.getExpectingString(&quot;&quot;, directLink + &quot;&amp;access_token=&quot; + (hello.getAuthResponse(me.network))[&quot;access_token&quot;], function(s) {
+                    var identity = new EcIdentity();
+                    identity.displayName = name.replace(&quot;.pem&quot;, &quot;&quot;);
+                    identity.ppk = EcPpk.fromPem(s);
+                    identity.source = &quot;google&quot;;
+                    (identity)[&quot;id&quot;] = id;
+                    EcIdentityManager.addIdentityQuietly(identity);
+                    callback0();
+                }, failure);
+            }, function(strings) {
+                success(null);
+            });
+        });
+    };
+    prototype.readContactFiles = function(folderId, success, failure) {
+        var me = this;
+        var o = new Object();
+        (o)[&quot;parent&quot;] = folderId;
+        hello.api(this.network + &quot;/me/files&quot;, &quot;get&quot;, o).then(function(folderResponse) {
+            var files = (folderResponse)[&quot;data&quot;];
+            var h = new EcAsyncHelper();
+            h.each(files, function(d, callback0) {
+                var name = ((d)[&quot;name&quot;]).replace(&quot;\\.pem&quot;, &quot;&quot;);
+                var id = (d)[&quot;id&quot;];
+                var directLink = (d)[&quot;downloadUrl&quot;];
+                EcRemote.getExpectingString(&quot;&quot;, directLink + &quot;&amp;access_token=&quot; + (hello.getAuthResponse(me.network))[&quot;access_token&quot;], function(s) {
+                    var contact = new EcContact();
+                    contact.displayName = name.replace(&quot;.pem&quot;, &quot;&quot;);
+                    contact.pk = EcPk.fromPem(s);
+                    contact.source = &quot;google&quot;;
+                    (contact)[&quot;id&quot;] = id;
+                    EcIdentityManager.addContactQuietly(contact);
+                    callback0();
+                }, failure);
+            }, function(strings) {
+                success(null);
+            });
+        });
+    };
+    prototype.hookIdentityManagerIdentities = function(folderId) {
+        var me = this;
+        EcIdentityManager.onIdentityChanged = function(identity) {
+            me.writeIdentityFile(folderId, identity, null);
+        };
+    };
+    prototype.hookIdentityManagerContacts = function(folderId) {
+        var me = this;
+        EcIdentityManager.onContactChanged = function(contact) {
+            me.writeContactFile(folderId, contact);
+        };
+    };
+    /**
+     *  Commits credentials in EcIdentityManager to remote server.
+     * 
+     *  @param {Callback1&lt;String&gt;}   success
+     *  @param {Callback1&lt;String&gt;}   failure
+     *  @memberOf OAuth2FileBasedRemoteIdentityManager
+     *  @method commit
+     */
+    prototype.commit = function(success, failure) {
+        var me = this;
+        var apio = new Object();
+        (apio)[&quot;network&quot;] = this.network;
+        if (hello.getAuthResponse(this.server)) 
+            hello.api(me.network + &quot;/me/folders&quot;, &quot;get&quot;, apio).then(function(folderResponse) {
+                var folders = (folderResponse)[&quot;data&quot;];
+                for (var i = 0; i &lt; folders.length; i++) {
+                    var d = folders[i];
+                    var name = (d)[&quot;name&quot;];
+                    var id = (d)[&quot;id&quot;];
+                    if (name == &quot;CASS Identities&quot;) {
+                        me.writeIdentityFiles(id, success);
+                    }
+                    if (name == &quot;CASS Contacts&quot;) {
+                        me.writeContactFiles(id);
+                    }
+                }
+            }).fail(failure);
+         else 
+            failure(&quot;Please login again.&quot;);
+    };
+    prototype.create = function(success, failure) {
+        var o = new Object();
+        (o)[&quot;scope&quot;] = (this.configuration)[this.server + &quot;Scope&quot;];
+        var me = this;
+        hello.on(&quot;auth.login&quot;, function(o) {
+            me.oauthLoginResponse = o;
+            me.network = (me.oauthLoginResponse)[&quot;network&quot;];
+            hello.api(me.network + &quot;/me/folders&quot;, &quot;get&quot;, new Object()).then(function(folderResponse) {
+                var folders = (folderResponse)[&quot;data&quot;];
+                var foundIdentities = false;
+                var foundContacts = false;
+                for (var i = 0; i &lt; folders.length; i++) {
+                    var d = folders[i];
+                    var name = (d)[&quot;name&quot;];
+                    var id = (d)[&quot;id&quot;];
+                    if (name == &quot;CASS Identities&quot;) {
+                        foundIdentities = true;
+                        me.hookIdentityManagerIdentities(id);
+                        me.readIdentityFiles(id, success, failure);
+                    }
+                    if (name == &quot;CASS Contacts&quot;) {
+                        foundContacts = true;
+                        me.hookIdentityManagerContacts(id);
+                        me.readContactFiles(id, success, failure);
+                    }
+                }
+                if (!foundIdentities) {
+                    me.createIdentityFolder(success);
+                }
+                if (!foundContacts) {
+                    me.createContactFolder();
+                }
+            }).fail(failure);
+        });
+        hello.login(this.server, o).fail(failure);
+    };
+}, {configuration: &quot;Object&quot;, oauthLoginResponse: &quot;Object&quot;}, {});
 
     </pre>
 </div>

@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.15</em>
+            <em>API Docs for: 1.2.16</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -825,7 +825,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_cass.import.js.html#l27"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:27</code></a>
+            Defined in: <a href="../files/src_main_js_cass_cass.import.js.html#l31"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:31</code></a>
         </div>
 
             Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
@@ -844,17 +844,177 @@ that are useful for all importers</p>
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
     </ul>
 
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_importCompetencies">importCompetencies</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
 
 
 
         </div>
 
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_importCompetencies" class="method item">
+    <h3 class="name"><code>importCompetencies</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>text</code>
+                </li>
+                <li class="arg">
+                        <code>serverUrl</code>
+                </li>
+                <li class="arg">
+                        <code>owner</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[incremental]</code>
+                </li>
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_cass.import.js.html#l58"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:58</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Method to create competencies (and relationships if the parameters are passed in)
+based on a CSV file and references to which columns correspond to which pieces
+of data.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">text</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Text to extract competencies from</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">serverUrl</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>URL Prefix for the created competencies (and relationships?)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">owner</code>
+                        <span class="type"><a href="../classes/EcIdentity.html" class="crosslink">EcIdentity</a></span>
+
+
+                    <div class="param-description">
+                        <p>EcIdentity that will own the created competencies (and relationships?)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback2<Array<EcCompetency>, Array<EcAlignment>></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after the competencies (and relationships?) have been created</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<Object></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered if an error during creating the competencies</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[incremental]</code>
+                        <span class="type">Callback1<Object></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered incrementally during creation of competencies to indicate progress,
+                                   returns an object indicating the number of competencies (and relationships?) created so far</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to save any new data to, or to use to generate IDs.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
 
 
 

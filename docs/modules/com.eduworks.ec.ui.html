@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.15</em>
+            <em>API Docs for: 1.2.16</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -832,10 +832,9 @@
 
 
 <div class="box intro">
-    <p>Parent class of all view manager classes, stores a cache of the views and
-their corresponding DOM selectors and provides functions for setting a view
-to correspond to a selector and displaying a view after it has been added to
-the cache.</p>
+    <p>Class that represents a "view" that can be displayed in an container element on the page. The View should define
+a display function that loads HTML into the container element on the page and then finally calls the callback once
+the view has been completely initialized</p>
 
 </div>
 

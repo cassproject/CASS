@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.15</em>
+            <em>API Docs for: 1.2.16</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -844,26 +844,6 @@
  * --END_LICENSE--
  */
 /**
- *  Location of strings that store the current namespace for general Eduworks Objects.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class General
- *  @module com.eduworks.ec
- */
-var General = function() {};
-General = stjs.extend(General, null, [], function(constructor, prototype) {
-    constructor.context_0_2 = &quot;http://schema.eduworks.com/general/0.2&quot;;
-    constructor.context_0_1 = &quot;http://schema.eduworks.com/general/0.1&quot;;
-    /**
-     *  The latest version of the Eduworks Object namespace.
-     * 
-     *  @property context
-     *  @static
-     *  @type {string}
-     */
-    constructor.context = &quot;http://schema.eduworks.com/general/0.2&quot;;
-}, {}, {});
-/**
  *  Location of strings that store the current namespace for EBAC/KBAC.
  * 
  *  @author fritz.ray@eduworks.com
@@ -884,6 +864,26 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
      *  @type string (URL)
      */
     constructor.context = Ebac.context_0_4;
+}, {}, {});
+/**
+ *  Location of strings that store the current namespace for general Eduworks Objects.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @class General
+ *  @module com.eduworks.ec
+ */
+var General = function() {};
+General = stjs.extend(General, null, [], function(constructor, prototype) {
+    constructor.context_0_2 = &quot;http://schema.eduworks.com/general/0.2&quot;;
+    constructor.context_0_1 = &quot;http://schema.eduworks.com/general/0.1&quot;;
+    /**
+     *  The latest version of the Eduworks Object namespace.
+     * 
+     *  @property context
+     *  @static
+     *  @type {string}
+     */
+    constructor.context = &quot;http://schema.eduworks.com/general/0.2&quot;;
 }, {}, {});
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for

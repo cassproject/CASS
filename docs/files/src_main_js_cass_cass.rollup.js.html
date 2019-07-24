@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.15</em>
+            <em>API Docs for: 1.2.16</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -843,6 +843,184 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+var NodePacket = function() {
+    this.nodeList = new Array();
+    this.nodeMap = {};
+};
+NodePacket = stjs.extend(NodePacket, null, [], function(constructor, prototype) {
+    prototype.nodeList = null;
+    prototype.nodeMap = null;
+    prototype.getNodeList = function() {
+        return this.nodeList;
+    };
+    prototype.setNodeList = function(nodeList) {
+        this.nodeList = nodeList;
+    };
+    prototype.getNodeCount = function() {
+        return this.nodeList.length;
+    };
+    prototype.addNode = function(n) {
+        if (this.nodeMap[n.getId()] == null) {
+            this.nodeList.push(n);
+            this.nodeMap[n.getId()] = n;
+        }
+    };
+    prototype.toString = function() {
+        var ret = &quot;&quot;;
+        ret = ret + &quot;NodePacket: (&quot;;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            if ((i + 1) &lt; this.nodeList.length) 
+                ret = ret + this.nodeList[i].toString() + &quot;, &quot;;
+             else 
+                ret = ret + this.nodeList[i].toString();
+        }
+        ret = ret + &quot;)&quot;;
+        return ret;
+    };
+}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}}, {});
+var Node = function(nameId) {
+    this.name = nameId;
+    this.id = nameId;
+};
+Node = stjs.extend(Node, null, [], function(constructor, prototype) {
+    prototype.name = null;
+    prototype.id = null;
+    prototype.description = null;
+    prototype.getName = function() {
+        return this.name;
+    };
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.getId = function() {
+        return this.id;
+    };
+    prototype.setId = function(id) {
+        this.id = id;
+    };
+    prototype.getDescription = function() {
+        return this.description;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.toString = function() {
+        return &quot;Node: \&quot;&quot; + this.id + &quot;\&quot;&quot;;
+    };
+}, {}, {});
+var ArrayUtil = function() {};
+ArrayUtil = stjs.extend(ArrayUtil, null, [], function(constructor, prototype) {
+    constructor.arrayContains = function(a, o) {
+        for (var i = 0; i &lt; a.length; i++) {
+            if (a[i] == o) 
+                return true;
+        }
+        return false;
+    };
+    constructor.arrayRemove = function(a, o) {
+        var retArray = new Array();
+        for (var i = 0; i &lt; a.length; i++) {
+            if (a[i] != o) 
+                retArray.push(a[i]);
+        }
+        return retArray;
+    };
+    constructor.arrayLastIndexOf = function(a, o) {
+        for (var i = (a.length - 1); i &gt;= 0; i--) {
+            if (a[i] == o) 
+                return i;
+        }
+        return -1;
+    };
+    constructor.arrayToString = function(a) {
+        if (a == null || a.length == 0) 
+            return &quot;&lt;Emtpy&gt;&quot;;
+        var ret = &quot;&quot;;
+        for (var i = 0; i &lt; a.length; i++) {
+            if ((i + 1) &lt; a.length) 
+                ret = ret + a[i].toString() + &quot;, &quot;;
+             else 
+                ret = ret + a[i].toString();
+        }
+        return ret;
+    };
+}, {}, {});
+var NodeRelation = function(source, target, type) {
+    this.source = source;
+    this.target = target;
+    this.type = type;
+};
+NodeRelation = stjs.extend(NodeRelation, null, [], function(constructor, prototype) {
+    prototype.type = null;
+    prototype.source = null;
+    prototype.target = null;
+    prototype.getSource = function() {
+        return this.source;
+    };
+    prototype.setSource = function(source) {
+        this.source = source;
+    };
+    prototype.getTarget = function() {
+        return this.target;
+    };
+    prototype.setTarget = function(target) {
+        this.target = target;
+    };
+    prototype.getType = function() {
+        return this.type;
+    };
+    prototype.setType = function(type) {
+        this.type = type;
+    };
+    prototype.toString = function() {
+        return this.getSource().toString() + &quot; &gt;&gt;&quot; + this.getType() + &quot;&lt;&lt; &quot; + this.getTarget().toString();
+    };
+}, {type: {name: &quot;Enum&quot;, arguments: [&quot;RelationType.RELATION_TYPE&quot;]}, source: &quot;Node&quot;, target: &quot;Node&quot;}, {});
+var RelationType = function() {};
+RelationType = stjs.extend(RelationType, null, [], function(constructor, prototype) {
+    constructor.RELATION_TYPE = stjs.enumeration(&quot;IS_EQUIVALENT_TO&quot;, &quot;NARROWS&quot;, &quot;BROADENS&quot;, &quot;REQUIRES&quot;, &quot;IS_REQUIRED_BY&quot;);
+}, {}, {});
+var NodeRelationMap = function() {
+    this.nodeList = new Array();
+    this.relationMap = {};
+};
+NodeRelationMap = stjs.extend(NodeRelationMap, null, [], function(constructor, prototype) {
+    prototype.nodeList = null;
+    prototype.relationMap = null;
+    prototype.addNodeRelations = function(n, rm) {
+        this.nodeList.push(n);
+        this.relationMap[n.getId()] = rm;
+    };
+    prototype.getRelationsForNode = function(n) {
+        return this.relationMap[n.getId()];
+    };
+    prototype.getNodeList = function() {
+        return this.nodeList;
+    };
+    prototype.setNodeList = function(nodeList) {
+        this.nodeList = nodeList;
+    };
+    prototype.getRelationMap = function() {
+        return this.relationMap;
+    };
+    prototype.setRelationMap = function(relationMap) {
+        this.relationMap = relationMap;
+    };
+    prototype.toString = function() {
+        var ret = &quot;&quot;;
+        var n;
+        var nra;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + n.toString() + &quot;\n&quot;;
+            nra = this.relationMap[n.getId()];
+            for (var j = 0; j &lt; nra.length; j++) {
+                ret = ret + &quot;\t&quot; + nra[j].toString() + &quot;\n&quot;;
+            }
+        }
+        return ret;
+    };
+}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, relationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}]}}, {});
 /**
  *  Created by fray on 5/30/17.
  */
@@ -1242,85 +1420,89 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     constructor.IPType = stjs.enumeration(&quot;COMPETENCY&quot;, &quot;ROLLUPRULE&quot;, &quot;RELATION_AND&quot;, &quot;RELATION_OR&quot;, &quot;RELATION_NARROWS&quot;, &quot;RELATION_BROADENS&quot;, &quot;RELATION_REQUIRES&quot;, &quot;RELATION_ISREQUIREDBY&quot;);
     constructor.ResultType = stjs.enumeration(&quot;TRUE&quot;, &quot;FALSE&quot;, &quot;UNKNOWN&quot;, &quot;INDETERMINANT&quot;);
 }, {subject: {name: &quot;Array&quot;, arguments: [&quot;EcPk&quot;]}, competency: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, context: &quot;EcFramework&quot;, success: {name: &quot;Callback1&quot;, arguments: [&quot;InquiryPacket&quot;]}, ask: {name: &quot;Function1&quot;, arguments: [null, null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [&quot;EcLevel&quot;]}, equivalentPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, subPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, positive: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, negative: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, type: {name: &quot;Enum&quot;, arguments: [&quot;InquiryPacket.IPType&quot;]}, result: {name: &quot;Enum&quot;, arguments: [&quot;InquiryPacket.ResultType&quot;]}}, {});
-var EcGraphUtil = function() {};
-EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
-    constructor.buildIdSearchQueryForIdList = function(idList) {
-        var searchQuery = &quot;&quot;;
-        if (idList.length &gt; 1) 
-            searchQuery = &quot;(&quot;;
-        for (var i = 0; i &lt; idList.length; i++) {
-            if (i &gt; 0) 
-                searchQuery += &quot; OR &quot;;
-            searchQuery += &quot;(\\*@id:\&quot;&quot; + idList[i] + &quot;\&quot;)&quot;;
-        }
-        if (idList.length &gt; 1) 
-            searchQuery += &quot;)&quot;;
-        return searchQuery;
-    };
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
 }, {}, {});
-var NodePacket = function() {
-    this.nodeList = new Array();
-    this.nodeMap = {};
+var RrQuery = function() {};
+RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
+    prototype.query = null;
+}, {}, {});
+var RrS = function() {
+    this.token = new Array();
+    this.query = new Array();
 };
-NodePacket = stjs.extend(NodePacket, null, [], function(constructor, prototype) {
-    prototype.nodeList = null;
-    prototype.nodeMap = null;
-    prototype.getNodeList = function() {
-        return this.nodeList;
+RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
+    prototype.token = null;
+    prototype.query = null;
+    prototype.addToken = function(rrToken) {
+        this.token.push(rrToken);
     };
-    prototype.setNodeList = function(nodeList) {
-        this.nodeList = nodeList;
+    prototype.addQuery = function(rrQuery) {
+        this.query.push(rrQuery);
     };
-    prototype.getNodeCount = function() {
-        return this.nodeList.length;
+}, {token: {name: &quot;Array&quot;, arguments: [&quot;RrToken&quot;]}, query: {name: &quot;Array&quot;, arguments: [&quot;RrQuery&quot;]}}, {});
+var RollupRuleInterface = function(input, processor) {
+    var chars = new antlr4.InputStream(input);
+    var lexer = new RollupLexer.RollupLexer(chars);
+    var tokens = new antlr4.CommonTokenStream(lexer);
+    this.parser = new RollupParser.RollupParser(tokens);
+    this.parser.buildParseTrees = true;
+    this.listener = new RollupListener.RollupListener();
+    this.processor = processor;
+    var me = this;
+    this.listener.enterS = function(ctx) {
+        me.processor.enterS(ctx);
     };
-    prototype.addNode = function(n) {
-        if (this.nodeMap[n.getId()] == null) {
-            this.nodeList.push(n);
-            this.nodeMap[n.getId()] = n;
-        }
+    this.listener.exitS = function(ctx) {
+        me.processor.exitS(ctx);
+        me.success(true);
     };
-    prototype.toString = function() {
-        var ret = &quot;&quot;;
-        ret = ret + &quot;NodePacket: (&quot;;
-        for (var i = 0; i &lt; this.nodeList.length; i++) {
-            if ((i + 1) &lt; this.nodeList.length) 
-                ret = ret + this.nodeList[i].toString() + &quot;, &quot;;
-             else 
-                ret = ret + this.nodeList[i].toString();
-        }
-        ret = ret + &quot;)&quot;;
-        return ret;
+    this.listener.exitToken = function(ctx) {
+        me.processor.exitToken(ctx);
     };
-}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}}, {});
-var Node = function(nameId) {
-    this.name = nameId;
-    this.id = nameId;
+    this.listener.enterQuery = function(ctx) {
+        me.processor.enterQuery(ctx);
+    };
+    this.listener.exitQuery = function(ctx) {
+        me.processor.exitQuery(ctx);
+    };
+    this.listener.exitInnerquery = function(ctx) {
+        me.processor.exitInnerquery(ctx);
+    };
+    this.listener.exitLogical_or_math_operator = function(ctx) {
+        me.processor.exitLogical_or_math_operator(ctx);
+    };
+    this.parser.addParseListener(this.listener);
 };
-Node = stjs.extend(Node, null, [], function(constructor, prototype) {
-    prototype.name = null;
-    prototype.id = null;
-    prototype.description = null;
-    prototype.getName = function() {
-        return this.name;
+RollupRuleInterface = stjs.extend(RollupRuleInterface, null, [], function(constructor, prototype) {
+    prototype.logFunction = null;
+    prototype.success = null;
+    prototype.failure = null;
+    prototype.listener = null;
+    prototype.parser = null;
+    prototype.processor = null;
+    prototype.go = function() {
+        this.processor.logFunction = this.logFunction;
+        this.processor.success = this.success;
+        this.processor.failure = this.failure;
+        this.parser.s();
     };
-    prototype.setName = function(name) {
-        this.name = name;
+}, {logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, listener: &quot;RollupListener.RollupListener&quot;, parser: &quot;RollupParser.RollupParser&quot;, processor: &quot;RollupRuleProcessor&quot;}, {});
+var ExceptionReturn = function(errorMessage) {
+    this.errorMessage = errorMessage;
+};
+ExceptionReturn = stjs.extend(ExceptionReturn, null, [], function(constructor, prototype) {
+    prototype.errorMessage = null;
+    prototype.getErrorMessage = function() {
+        return this.errorMessage;
     };
-    prototype.getId = function() {
-        return this.id;
+    prototype.setErrorMessage = function(errorMessage) {
+        this.errorMessage = errorMessage;
     };
-    prototype.setId = function(id) {
-        this.id = id;
-    };
-    prototype.getDescription = function() {
-        return this.description;
-    };
-    prototype.setDescription = function(description) {
-        this.description = description;
-    };
-    prototype.toString = function() {
-        return &quot;Node: \&quot;&quot; + this.id + &quot;\&quot;&quot;;
+    prototype.getJsonString = function() {
+        return JSON.stringify(this);
     };
 }, {}, {});
 var PapDependencyParms = function() {};
@@ -1380,77 +1562,88 @@ PapDependencyParms = stjs.extend(PapDependencyParms, null, [], function(construc
         this.childIndex = temp;
     };
 }, {}, {});
-var PapUpdate = function(index, change, positive) {
-    this.index = index;
-    this.change = change;
-    this.visited = new Array();
-    this.positive = positive;
+var PacketRelation = function(source, target, type) {
+    this.source = source;
+    this.target = target;
+    this.type = type;
 };
-PapUpdate = stjs.extend(PapUpdate, null, [], function(constructor, prototype) {
-    prototype.index = 0;
-    prototype.visited = null;
-    prototype.change = 0.0;
-    prototype.positive = false;
-    prototype.hasVisited = function(index) {
-        for (var i = 0; i &lt; this.visited.length; i++) {
-            if (this.visited[i].intValue() == index) 
-                return true;
-        }
-        return false;
+PacketRelation = stjs.extend(PacketRelation, null, [], function(constructor, prototype) {
+    prototype.type = null;
+    prototype.source = null;
+    prototype.target = null;
+    prototype.getSource = function() {
+        return this.source;
     };
-    prototype.updateChild = function(index, change) {
-        var res = new PapUpdate(index, change, this.positive);
-        res.setVisited(this.cloneVisited());
-        res.getVisited().push(index);
-        return res;
+    prototype.setSource = function(source) {
+        this.source = source;
+    };
+    prototype.getTarget = function() {
+        return this.target;
+    };
+    prototype.setTarget = function(target) {
+        this.target = target;
+    };
+    prototype.getType = function() {
+        return this.type;
+    };
+    prototype.setType = function(type) {
+        this.type = type;
     };
     prototype.toString = function() {
-        var sign = this.positive ? &quot;+&quot; : &quot;-&quot;;
-        return &quot;&lt;update &quot; + this.index + &quot; | &quot; + sign + this.change + &quot;&gt;&quot;;
+        return this.getSource().toString() + &quot; &gt;&gt;&quot; + this.getType() + &quot;&lt;&lt; &quot; + this.getTarget().toString();
     };
-    prototype.compare = function(other) {
-        var diff = this.change - other.getChange();
-        if (diff &lt; 0) 
-            return 1;
-        if (diff &gt; 0) 
-            return -1;
-        return 0;
+}, {type: {name: &quot;Enum&quot;, arguments: [&quot;RelationType.RELATION_TYPE&quot;]}, source: &quot;NodePacket&quot;, target: &quot;NodePacket&quot;}, {});
+var PapDependencyDefinitionBase = function(depClass, reverse, weight, leak) {
+    this.depClass = depClass;
+    this.reverse = reverse;
+    this.weight = weight;
+    this.leak = leak;
+};
+PapDependencyDefinitionBase = stjs.extend(PapDependencyDefinitionBase, null, [], function(constructor, prototype) {
+    prototype.depClass = null;
+    prototype.reverse = false;
+    prototype.weight = null;
+    prototype.leak = null;
+    prototype.getDepClass = function() {
+        return this.depClass;
     };
-    prototype.cloneVisited = function() {
-        var newVis = new Array();
-        for (var i = 0; i &lt; this.visited.length; i++) {
-            newVis.push(this.visited[i]);
+    prototype.setDepClass = function(depClass) {
+        this.depClass = depClass;
+    };
+    prototype.getReverse = function() {
+        return this.reverse;
+    };
+    prototype.setReverse = function(reverse) {
+        this.reverse = reverse;
+    };
+    prototype.getWeight = function() {
+        return this.weight;
+    };
+    prototype.setWeight = function(weight) {
+        this.weight = weight;
+    };
+    prototype.getLeak = function() {
+        return this.leak;
+    };
+    prototype.setLeak = function(leak) {
+        this.leak = leak;
+    };
+}, {}, {});
+var EcGraphUtil = function() {};
+EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
+    constructor.buildIdSearchQueryForIdList = function(idList) {
+        var searchQuery = &quot;&quot;;
+        if (idList.length &gt; 1) 
+            searchQuery = &quot;(&quot;;
+        for (var i = 0; i &lt; idList.length; i++) {
+            if (i &gt; 0) 
+                searchQuery += &quot; OR &quot;;
+            searchQuery += &quot;(\\*@id:\&quot;&quot; + idList[i] + &quot;\&quot;)&quot;;
         }
-        return newVis;
+        if (idList.length &gt; 1) 
+            searchQuery += &quot;)&quot;;
+        return searchQuery;
     };
-    prototype.getIndex = function() {
-        return this.index;
-    };
-    prototype.setIndex = function(index) {
-        this.index = index;
-    };
-    prototype.getVisited = function() {
-        return this.visited;
-    };
-    prototype.setVisited = function(visited) {
-        this.visited = visited;
-    };
-    prototype.getChange = function() {
-        return this.change;
-    };
-    prototype.setChange = function(change) {
-        this.change = change;
-    };
-    prototype.getPositive = function() {
-        return this.positive;
-    };
-    prototype.setPositive = function(positive) {
-        this.positive = positive;
-    };
-}, {visited: {name: &quot;Array&quot;, arguments: [null]}}, {});
-var RelationType = function() {};
-RelationType = stjs.extend(RelationType, null, [], function(constructor, prototype) {
-    constructor.RELATION_TYPE = stjs.enumeration(&quot;IS_EQUIVALENT_TO&quot;, &quot;NARROWS&quot;, &quot;BROADENS&quot;, &quot;REQUIRES&quot;, &quot;IS_REQUIRED_BY&quot;);
 }, {}, {});
 var SimpleAssertion = function(id, competencyId, confidence) {
     this.id = id;
@@ -1506,355 +1699,6 @@ SimpleAssertion = stjs.extend(SimpleAssertion, null, [], function(constructor, p
     };
     prototype.setNegative = function(negative) {
         this.negative = negative;
-    };
-}, {}, {});
-var ExceptionReturn = function(errorMessage) {
-    this.errorMessage = errorMessage;
-};
-ExceptionReturn = stjs.extend(ExceptionReturn, null, [], function(constructor, prototype) {
-    prototype.errorMessage = null;
-    prototype.getErrorMessage = function() {
-        return this.errorMessage;
-    };
-    prototype.setErrorMessage = function(errorMessage) {
-        this.errorMessage = errorMessage;
-    };
-    prototype.getJsonString = function() {
-        return JSON.stringify(this);
-    };
-}, {}, {});
-var RrQuery = function() {};
-RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
-    prototype.query = null;
-}, {}, {});
-var PapCompetencyPrediction = function() {};
-PapCompetencyPrediction = stjs.extend(PapCompetencyPrediction, null, [], function(constructor, prototype) {
-    prototype.competencyId = null;
-    prototype.confidence = 0.0;
-    prototype.conflictLevel = 0.0;
-    prototype.conflictClass = null;
-    prototype.getCompetencyId = function() {
-        return this.competencyId;
-    };
-    prototype.setCompetencyId = function(competencyId) {
-        this.competencyId = competencyId;
-    };
-    prototype.getConfidence = function() {
-        return this.confidence;
-    };
-    prototype.setConfidence = function(confidence) {
-        this.confidence = confidence;
-    };
-    prototype.getConflictLevel = function() {
-        return this.conflictLevel;
-    };
-    prototype.setConflictLevel = function(conflictLevel) {
-        this.conflictLevel = conflictLevel;
-    };
-    prototype.getConflictClass = function() {
-        return this.conflictClass;
-    };
-    prototype.setConflictClass = function(conflictClass) {
-        this.conflictClass = conflictClass;
-    };
-}, {}, {});
-var RrS = function() {
-    this.token = new Array();
-    this.query = new Array();
-};
-RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
-    prototype.token = null;
-    prototype.query = null;
-    prototype.addToken = function(rrToken) {
-        this.token.push(rrToken);
-    };
-    prototype.addQuery = function(rrQuery) {
-        this.query.push(rrQuery);
-    };
-}, {token: {name: &quot;Array&quot;, arguments: [&quot;RrToken&quot;]}, query: {name: &quot;Array&quot;, arguments: [&quot;RrQuery&quot;]}}, {});
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
-}, {}, {});
-var NodeRelationMap = function() {
-    this.nodeList = new Array();
-    this.relationMap = {};
-};
-NodeRelationMap = stjs.extend(NodeRelationMap, null, [], function(constructor, prototype) {
-    prototype.nodeList = null;
-    prototype.relationMap = null;
-    prototype.addNodeRelations = function(n, rm) {
-        this.nodeList.push(n);
-        this.relationMap[n.getId()] = rm;
-    };
-    prototype.getRelationsForNode = function(n) {
-        return this.relationMap[n.getId()];
-    };
-    prototype.getNodeList = function() {
-        return this.nodeList;
-    };
-    prototype.setNodeList = function(nodeList) {
-        this.nodeList = nodeList;
-    };
-    prototype.getRelationMap = function() {
-        return this.relationMap;
-    };
-    prototype.setRelationMap = function(relationMap) {
-        this.relationMap = relationMap;
-    };
-    prototype.toString = function() {
-        var ret = &quot;&quot;;
-        var n;
-        var nra;
-        for (var i = 0; i &lt; this.nodeList.length; i++) {
-            n = this.nodeList[i];
-            ret = ret + n.toString() + &quot;\n&quot;;
-            nra = this.relationMap[n.getId()];
-            for (var j = 0; j &lt; nra.length; j++) {
-                ret = ret + &quot;\t&quot; + nra[j].toString() + &quot;\n&quot;;
-            }
-        }
-        return ret;
-    };
-}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, relationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}]}}, {});
-var NodeRelation = function(source, target, type) {
-    this.source = source;
-    this.target = target;
-    this.type = type;
-};
-NodeRelation = stjs.extend(NodeRelation, null, [], function(constructor, prototype) {
-    prototype.type = null;
-    prototype.source = null;
-    prototype.target = null;
-    prototype.getSource = function() {
-        return this.source;
-    };
-    prototype.setSource = function(source) {
-        this.source = source;
-    };
-    prototype.getTarget = function() {
-        return this.target;
-    };
-    prototype.setTarget = function(target) {
-        this.target = target;
-    };
-    prototype.getType = function() {
-        return this.type;
-    };
-    prototype.setType = function(type) {
-        this.type = type;
-    };
-    prototype.toString = function() {
-        return this.getSource().toString() + &quot; &gt;&gt;&quot; + this.getType() + &quot;&lt;&lt; &quot; + this.getTarget().toString();
-    };
-}, {type: {name: &quot;Enum&quot;, arguments: [&quot;RelationType.RELATION_TYPE&quot;]}, source: &quot;Node&quot;, target: &quot;Node&quot;}, {});
-var CgEdge = function(source, target, relation) {
-    this.source = source;
-    this.target = target;
-    this.relation = relation;
-};
-CgEdge = stjs.extend(CgEdge, null, [], function(constructor, prototype) {
-    prototype.source = null;
-    prototype.target = null;
-    prototype.relation = null;
-    prototype.getSource = function() {
-        return this.source;
-    };
-    prototype.setSource = function(source) {
-        this.source = source;
-    };
-    prototype.getTarget = function() {
-        return this.target;
-    };
-    prototype.setTarget = function(target) {
-        this.target = target;
-    };
-    prototype.getRelation = function() {
-        return this.relation;
-    };
-    prototype.setRelation = function(relation) {
-        this.relation = relation;
-    };
-}, {}, {});
-var PapDependencyDefinitionBase = function(depClass, reverse, weight, leak) {
-    this.depClass = depClass;
-    this.reverse = reverse;
-    this.weight = weight;
-    this.leak = leak;
-};
-PapDependencyDefinitionBase = stjs.extend(PapDependencyDefinitionBase, null, [], function(constructor, prototype) {
-    prototype.depClass = null;
-    prototype.reverse = false;
-    prototype.weight = null;
-    prototype.leak = null;
-    prototype.getDepClass = function() {
-        return this.depClass;
-    };
-    prototype.setDepClass = function(depClass) {
-        this.depClass = depClass;
-    };
-    prototype.getReverse = function() {
-        return this.reverse;
-    };
-    prototype.setReverse = function(reverse) {
-        this.reverse = reverse;
-    };
-    prototype.getWeight = function() {
-        return this.weight;
-    };
-    prototype.setWeight = function(weight) {
-        this.weight = weight;
-    };
-    prototype.getLeak = function() {
-        return this.leak;
-    };
-    prototype.setLeak = function(leak) {
-        this.leak = leak;
-    };
-}, {}, {});
-var ArrayUtil = function() {};
-ArrayUtil = stjs.extend(ArrayUtil, null, [], function(constructor, prototype) {
-    constructor.arrayContains = function(a, o) {
-        for (var i = 0; i &lt; a.length; i++) {
-            if (a[i] == o) 
-                return true;
-        }
-        return false;
-    };
-    constructor.arrayRemove = function(a, o) {
-        var retArray = new Array();
-        for (var i = 0; i &lt; a.length; i++) {
-            if (a[i] != o) 
-                retArray.push(a[i]);
-        }
-        return retArray;
-    };
-    constructor.arrayLastIndexOf = function(a, o) {
-        for (var i = (a.length - 1); i &gt;= 0; i--) {
-            if (a[i] == o) 
-                return i;
-        }
-        return -1;
-    };
-    constructor.arrayToString = function(a) {
-        if (a == null || a.length == 0) 
-            return &quot;&lt;Emtpy&gt;&quot;;
-        var ret = &quot;&quot;;
-        for (var i = 0; i &lt; a.length; i++) {
-            if ((i + 1) &lt; a.length) 
-                ret = ret + a[i].toString() + &quot;, &quot;;
-             else 
-                ret = ret + a[i].toString();
-        }
-        return ret;
-    };
-}, {}, {});
-var PacketRelation = function(source, target, type) {
-    this.source = source;
-    this.target = target;
-    this.type = type;
-};
-PacketRelation = stjs.extend(PacketRelation, null, [], function(constructor, prototype) {
-    prototype.type = null;
-    prototype.source = null;
-    prototype.target = null;
-    prototype.getSource = function() {
-        return this.source;
-    };
-    prototype.setSource = function(source) {
-        this.source = source;
-    };
-    prototype.getTarget = function() {
-        return this.target;
-    };
-    prototype.setTarget = function(target) {
-        this.target = target;
-    };
-    prototype.getType = function() {
-        return this.type;
-    };
-    prototype.setType = function(type) {
-        this.type = type;
-    };
-    prototype.toString = function() {
-        return this.getSource().toString() + &quot; &gt;&gt;&quot; + this.getType() + &quot;&lt;&lt; &quot; + this.getTarget().toString();
-    };
-}, {type: {name: &quot;Enum&quot;, arguments: [&quot;RelationType.RELATION_TYPE&quot;]}, source: &quot;NodePacket&quot;, target: &quot;NodePacket&quot;}, {});
-var PapSettings = function() {
-    this.iterations = PapSettings.DEFAULT_ITERATIONS;
-    this.abruptExpiration = PapSettings.DEFAULT_ABRUPT_EXP;
-    this.gradualForgetting = PapSettings.DEFAULT_GRAD_FORGETTING;
-    this.evidenceWeight = PapSettings.DEFAULT_EVIDENCE_WEIGHT;
-    this.discount = PapSettings.DEFAULT_DISCOUNT;
-    this.priorityQueueThreshold = PapSettings.DEFAULT_PRIORITY_QUEUE_THRESHOLD;
-    this.betaPrecision = PapSettings.DEFAULT_BETA_PRECISION;
-    this.betaMean = PapSettings.DEFAULT_BETA_MEAN;
-};
-PapSettings = stjs.extend(PapSettings, null, [], function(constructor, prototype) {
-    constructor.DEFAULT_ITERATIONS = 200;
-    constructor.DEFAULT_ABRUPT_EXP = false;
-    constructor.DEFAULT_GRAD_FORGETTING = true;
-    constructor.DEFAULT_EVIDENCE_WEIGHT = 1.0;
-    constructor.DEFAULT_DISCOUNT = 1.0;
-    constructor.DEFAULT_PRIORITY_QUEUE_THRESHOLD = 0.01;
-    constructor.DEFAULT_BETA_PRECISION = 0.1;
-    constructor.DEFAULT_BETA_MEAN = 0.2;
-    prototype.iterations = null;
-    prototype.abruptExpiration = false;
-    prototype.gradualForgetting = false;
-    prototype.evidenceWeight = null;
-    prototype.discount = null;
-    prototype.priorityQueueThreshold = null;
-    prototype.betaPrecision = null;
-    prototype.betaMean = null;
-    prototype.getIterations = function() {
-        return this.iterations;
-    };
-    prototype.setIterations = function(iterations) {
-        this.iterations = iterations;
-    };
-    prototype.getAbruptExpiration = function() {
-        return this.abruptExpiration;
-    };
-    prototype.setAbruptExpiration = function(abruptExpiration) {
-        this.abruptExpiration = abruptExpiration;
-    };
-    prototype.getGradualForgetting = function() {
-        return this.gradualForgetting;
-    };
-    prototype.setGradualForgetting = function(gradualForgetting) {
-        this.gradualForgetting = gradualForgetting;
-    };
-    prototype.getEvidenceWeight = function() {
-        return this.evidenceWeight;
-    };
-    prototype.setEvidenceWeight = function(evidenceWeight) {
-        this.evidenceWeight = evidenceWeight;
-    };
-    prototype.getDiscount = function() {
-        return this.discount;
-    };
-    prototype.setDiscount = function(discount) {
-        this.discount = discount;
-    };
-    prototype.getPriorityQueueThreshold = function() {
-        return this.priorityQueueThreshold;
-    };
-    prototype.setPriorityQueueThreshold = function(priorityQueueThreshold) {
-        this.priorityQueueThreshold = priorityQueueThreshold;
-    };
-    prototype.getBetaPrecision = function() {
-        return this.betaPrecision;
-    };
-    prototype.setBetaPrecision = function(betaPrecision) {
-        this.betaPrecision = betaPrecision;
-    };
-    prototype.getBetaMean = function() {
-        return this.betaMean;
-    };
-    prototype.setBetaMean = function(betaMean) {
-        this.betaMean = betaMean;
     };
 }, {}, {});
 var PapCompetencyNetwork = function(dependencies, numberNodes, settings) {
@@ -1959,6 +1803,209 @@ PapCompetencyNetwork = stjs.extend(PapCompetencyNetwork, null, [], function(cons
         this.numberNodes = numberNodes;
     };
 }, {dependencies: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapDependency&quot;]}]}]}, activations: {name: &quot;Array&quot;, arguments: [null]}, alphas: {name: &quot;Array&quot;, arguments: [null]}, betas: {name: &quot;Array&quot;, arguments: [null]}, updated: {name: &quot;Array&quot;, arguments: [null]}}, {});
+var PapUpdate = function(index, change, positive) {
+    this.index = index;
+    this.change = change;
+    this.visited = new Array();
+    this.positive = positive;
+};
+PapUpdate = stjs.extend(PapUpdate, null, [], function(constructor, prototype) {
+    prototype.index = 0;
+    prototype.visited = null;
+    prototype.change = 0.0;
+    prototype.positive = false;
+    prototype.hasVisited = function(index) {
+        for (var i = 0; i &lt; this.visited.length; i++) {
+            if (this.visited[i].intValue() == index) 
+                return true;
+        }
+        return false;
+    };
+    prototype.updateChild = function(index, change) {
+        var res = new PapUpdate(index, change, this.positive);
+        res.setVisited(this.cloneVisited());
+        res.getVisited().push(index);
+        return res;
+    };
+    prototype.toString = function() {
+        var sign = this.positive ? &quot;+&quot; : &quot;-&quot;;
+        return &quot;&lt;update &quot; + this.index + &quot; | &quot; + sign + this.change + &quot;&gt;&quot;;
+    };
+    prototype.compare = function(other) {
+        var diff = this.change - other.getChange();
+        if (diff &lt; 0) 
+            return 1;
+        if (diff &gt; 0) 
+            return -1;
+        return 0;
+    };
+    prototype.cloneVisited = function() {
+        var newVis = new Array();
+        for (var i = 0; i &lt; this.visited.length; i++) {
+            newVis.push(this.visited[i]);
+        }
+        return newVis;
+    };
+    prototype.getIndex = function() {
+        return this.index;
+    };
+    prototype.setIndex = function(index) {
+        this.index = index;
+    };
+    prototype.getVisited = function() {
+        return this.visited;
+    };
+    prototype.setVisited = function(visited) {
+        this.visited = visited;
+    };
+    prototype.getChange = function() {
+        return this.change;
+    };
+    prototype.setChange = function(change) {
+        this.change = change;
+    };
+    prototype.getPositive = function() {
+        return this.positive;
+    };
+    prototype.setPositive = function(positive) {
+        this.positive = positive;
+    };
+}, {visited: {name: &quot;Array&quot;, arguments: [null]}}, {});
+var CgEdge = function(source, target, relation) {
+    this.source = source;
+    this.target = target;
+    this.relation = relation;
+};
+CgEdge = stjs.extend(CgEdge, null, [], function(constructor, prototype) {
+    prototype.source = null;
+    prototype.target = null;
+    prototype.relation = null;
+    prototype.getSource = function() {
+        return this.source;
+    };
+    prototype.setSource = function(source) {
+        this.source = source;
+    };
+    prototype.getTarget = function() {
+        return this.target;
+    };
+    prototype.setTarget = function(target) {
+        this.target = target;
+    };
+    prototype.getRelation = function() {
+        return this.relation;
+    };
+    prototype.setRelation = function(relation) {
+        this.relation = relation;
+    };
+}, {}, {});
+var PapCompetencyPrediction = function() {};
+PapCompetencyPrediction = stjs.extend(PapCompetencyPrediction, null, [], function(constructor, prototype) {
+    prototype.competencyId = null;
+    prototype.confidence = 0.0;
+    prototype.conflictLevel = 0.0;
+    prototype.conflictClass = null;
+    prototype.getCompetencyId = function() {
+        return this.competencyId;
+    };
+    prototype.setCompetencyId = function(competencyId) {
+        this.competencyId = competencyId;
+    };
+    prototype.getConfidence = function() {
+        return this.confidence;
+    };
+    prototype.setConfidence = function(confidence) {
+        this.confidence = confidence;
+    };
+    prototype.getConflictLevel = function() {
+        return this.conflictLevel;
+    };
+    prototype.setConflictLevel = function(conflictLevel) {
+        this.conflictLevel = conflictLevel;
+    };
+    prototype.getConflictClass = function() {
+        return this.conflictClass;
+    };
+    prototype.setConflictClass = function(conflictClass) {
+        this.conflictClass = conflictClass;
+    };
+}, {}, {});
+var PapSettings = function() {
+    this.iterations = PapSettings.DEFAULT_ITERATIONS;
+    this.abruptExpiration = PapSettings.DEFAULT_ABRUPT_EXP;
+    this.gradualForgetting = PapSettings.DEFAULT_GRAD_FORGETTING;
+    this.evidenceWeight = PapSettings.DEFAULT_EVIDENCE_WEIGHT;
+    this.discount = PapSettings.DEFAULT_DISCOUNT;
+    this.priorityQueueThreshold = PapSettings.DEFAULT_PRIORITY_QUEUE_THRESHOLD;
+    this.betaPrecision = PapSettings.DEFAULT_BETA_PRECISION;
+    this.betaMean = PapSettings.DEFAULT_BETA_MEAN;
+};
+PapSettings = stjs.extend(PapSettings, null, [], function(constructor, prototype) {
+    constructor.DEFAULT_ITERATIONS = 200;
+    constructor.DEFAULT_ABRUPT_EXP = false;
+    constructor.DEFAULT_GRAD_FORGETTING = true;
+    constructor.DEFAULT_EVIDENCE_WEIGHT = 1.0;
+    constructor.DEFAULT_DISCOUNT = 1.0;
+    constructor.DEFAULT_PRIORITY_QUEUE_THRESHOLD = 0.01;
+    constructor.DEFAULT_BETA_PRECISION = 0.1;
+    constructor.DEFAULT_BETA_MEAN = 0.2;
+    prototype.iterations = null;
+    prototype.abruptExpiration = false;
+    prototype.gradualForgetting = false;
+    prototype.evidenceWeight = null;
+    prototype.discount = null;
+    prototype.priorityQueueThreshold = null;
+    prototype.betaPrecision = null;
+    prototype.betaMean = null;
+    prototype.getIterations = function() {
+        return this.iterations;
+    };
+    prototype.setIterations = function(iterations) {
+        this.iterations = iterations;
+    };
+    prototype.getAbruptExpiration = function() {
+        return this.abruptExpiration;
+    };
+    prototype.setAbruptExpiration = function(abruptExpiration) {
+        this.abruptExpiration = abruptExpiration;
+    };
+    prototype.getGradualForgetting = function() {
+        return this.gradualForgetting;
+    };
+    prototype.setGradualForgetting = function(gradualForgetting) {
+        this.gradualForgetting = gradualForgetting;
+    };
+    prototype.getEvidenceWeight = function() {
+        return this.evidenceWeight;
+    };
+    prototype.setEvidenceWeight = function(evidenceWeight) {
+        this.evidenceWeight = evidenceWeight;
+    };
+    prototype.getDiscount = function() {
+        return this.discount;
+    };
+    prototype.setDiscount = function(discount) {
+        this.discount = discount;
+    };
+    prototype.getPriorityQueueThreshold = function() {
+        return this.priorityQueueThreshold;
+    };
+    prototype.setPriorityQueueThreshold = function(priorityQueueThreshold) {
+        this.priorityQueueThreshold = priorityQueueThreshold;
+    };
+    prototype.getBetaPrecision = function() {
+        return this.betaPrecision;
+    };
+    prototype.setBetaPrecision = function(betaPrecision) {
+        this.betaPrecision = betaPrecision;
+    };
+    prototype.getBetaMean = function() {
+        return this.betaMean;
+    };
+    prototype.setBetaMean = function(betaMean) {
+        this.betaMean = betaMean;
+    };
+}, {}, {});
 var PapAssertion = function(confidence, competencyIndex, assertionDate, expirationDate, result) {
     this.confidence = confidence;
     this.assertionDate = assertionDate;
@@ -2003,53 +2050,186 @@ PapAssertion = stjs.extend(PapAssertion, null, [], function(constructor, prototy
         this.result = result;
     };
 }, {}, {});
-var RollupRuleInterface = function(input, processor) {
-    var chars = new antlr4.InputStream(input);
-    var lexer = new RollupLexer.RollupLexer(chars);
-    var tokens = new antlr4.CommonTokenStream(lexer);
-    this.parser = new RollupParser.RollupParser(tokens);
-    this.parser.buildParseTrees = true;
-    this.listener = new RollupListener.RollupListener();
-    this.processor = processor;
-    var me = this;
-    this.listener.enterS = function(ctx) {
-        me.processor.enterS(ctx);
-    };
-    this.listener.exitS = function(ctx) {
-        me.processor.exitS(ctx);
-        me.success(true);
-    };
-    this.listener.exitToken = function(ctx) {
-        me.processor.exitToken(ctx);
-    };
-    this.listener.enterQuery = function(ctx) {
-        me.processor.enterQuery(ctx);
-    };
-    this.listener.exitQuery = function(ctx) {
-        me.processor.exitQuery(ctx);
-    };
-    this.listener.exitInnerquery = function(ctx) {
-        me.processor.exitInnerquery(ctx);
-    };
-    this.listener.exitLogical_or_math_operator = function(ctx) {
-        me.processor.exitLogical_or_math_operator(ctx);
-    };
-    this.parser.addParseListener(this.listener);
+var NodeGraph = function() {
+    this.nodeList = new Array();
+    this.relationList = new Array();
+    this.nodeMap = {};
+    this.relationMap = {};
 };
-RollupRuleInterface = stjs.extend(RollupRuleInterface, null, [], function(constructor, prototype) {
-    prototype.logFunction = null;
-    prototype.success = null;
-    prototype.failure = null;
-    prototype.listener = null;
-    prototype.parser = null;
-    prototype.processor = null;
-    prototype.go = function() {
-        this.processor.logFunction = this.logFunction;
-        this.processor.success = this.success;
-        this.processor.failure = this.failure;
-        this.parser.s();
+NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
+    prototype.nodeList = null;
+    prototype.nodeMap = null;
+    prototype.relationList = null;
+    prototype.relationMap = null;
+    prototype.addNode = function(n) {
+        if (this.nodeMap[n.getId()] == null) {
+            this.nodeList.push(n);
+            this.nodeMap[n.getId()] = n;
+        }
     };
-}, {logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, listener: &quot;RollupListener.RollupListener&quot;, parser: &quot;RollupParser.RollupParser&quot;, processor: &quot;RollupRuleProcessor&quot;}, {});
+    prototype.createImpliedRelations = function() {
+        try {
+            var relationsToAdd = new Array();
+            var nr;
+            for (var i = 0; i &lt; this.relationList.length; i++) {
+                nr = this.relationList[i];
+                if (nr.getType() == RelationType.RELATION_TYPE.NARROWS) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.BROADENS));
+                } else if (nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.IS_REQUIRED_BY));
+                } else if (nr.getType() == RelationType.RELATION_TYPE.BROADENS) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.NARROWS));
+                } else if (nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.REQUIRES));
+                }
+            }
+            var nnr;
+            for (var i = 0; i &lt; relationsToAdd.length; i++) {
+                nnr = relationsToAdd[i];
+                this.addRelation(nnr.getSource(), nnr.getTarget(), nnr.getType());
+            }
+        }catch (e) {
+             throw new Exception(&quot;createImpliedRelations: &quot; + e.toString());
+        }
+    };
+    prototype.addRelation = function(sourceNode, targetNode, relationType) {
+        try {
+            if (sourceNode == null || targetNode == null) 
+                return;
+            var nodeRelationList;
+            if (this.nodeHasRelations(sourceNode)) 
+                nodeRelationList = this.getRelationListForNode(sourceNode);
+             else {
+                nodeRelationList = new Array();
+                this.relationMap[sourceNode.getId()] = nodeRelationList;
+            }
+            var newNodeRelation = new NodeRelation(sourceNode, targetNode, relationType);
+            if (!this.doesRelationAlreadyExist(newNodeRelation, nodeRelationList)) {
+                nodeRelationList.push(newNodeRelation);
+                this.relationList.push(newNodeRelation);
+            }
+        }catch (e) {
+             throw new Exception(&quot;addRelation: &quot; + e.toString());
+        }
+    };
+    prototype.getRelationListForNode = function(n) {
+        return this.relationMap[n.getId()];
+    };
+    prototype.getNarrowsIsRequiredByEqualsRelationListForNode = function(n) {
+        var retList = new Array();
+        if (this.relationMap[n.getId()] != null) {
+            var nra = this.relationMap[n.getId()];
+            var nr;
+            for (var i = 0; i &lt; nra.length; i++) {
+                nr = nra[i];
+                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO || nr.getType() == RelationType.RELATION_TYPE.NARROWS || nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
+                    retList.push(nr);
+                }
+            }
+        }
+        return retList;
+    };
+    prototype.getBroadensRequiresEqualsRelationListForNode = function(n) {
+        var retList = new Array();
+        if (this.relationMap[n.getId()] != null) {
+            var nra = this.relationMap[n.getId()];
+            var nr;
+            for (var i = 0; i &lt; nra.length; i++) {
+                nr = nra[i];
+                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO || nr.getType() == RelationType.RELATION_TYPE.BROADENS || nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
+                    retList.push(nr);
+                }
+            }
+        }
+        return retList;
+    };
+    prototype.getNodeList = function() {
+        return this.nodeList;
+    };
+    prototype.setNodeList = function(nodeList) {
+        this.nodeList = nodeList;
+    };
+    prototype.getRelationList = function() {
+        return this.relationList;
+    };
+    prototype.setRelationList = function(relationList) {
+        this.relationList = relationList;
+    };
+    prototype.nodeHasRelations = function(n) {
+        if (this.relationMap[n.getId()] == null) 
+            return false;
+        return true;
+    };
+    prototype.doesRelationAlreadyExist = function(nodeRelation, nodeRelationList) {
+        var nr;
+        for (var i = 0; i &lt; nodeRelationList.length; i++) {
+            nr = nodeRelationList[i];
+            if (nodeRelation.getSource().getId() == nr.getSource().getId() &amp;&amp; nodeRelation.getTarget().getId() == nr.getTarget().getId() &amp;&amp; nodeRelation.getType() == nr.getType()) 
+                return true;
+        }
+        return false;
+    };
+    prototype.toStringGraphAll = function() {
+        var ret = &quot;&quot;;
+        var n;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + n.toString() + &quot;\n&quot;;
+        }
+        var nr;
+        for (var i = 0; i &lt; this.relationList.length; i++) {
+            nr = this.relationList[i];
+            ret = ret + nr.toString() + &quot;\n&quot;;
+        }
+        return ret;
+    };
+    prototype.toStringGraphByNode = function() {
+        var ret = &quot;&quot;;
+        ret = ret + &quot; - TEST HOWDY - \n&quot;;
+        var n;
+        var nra;
+        var nr;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + &quot;   --&gt; &quot; + n.toString() + &quot;\n&quot;;
+            if (this.nodeHasRelations(n)) {
+                nra = this.getRelationListForNode(n);
+                for (var j = 0; j &lt; nra.length; j++) {
+                    nr = nra[j];
+                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
+                }
+            } else 
+                ret = ret + &quot;\t\t---------NO RELATIONSHIPS---------\n&quot;;
+        }
+        return ret;
+    };
+    prototype.toStringGraphByNodeSplit = function() {
+        var ret = &quot;&quot;;
+        var n;
+        var nra;
+        var nr;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + &quot;   --&gt; &quot; + n.toString() + &quot;\n&quot;;
+            if (this.nodeHasRelations(n)) {
+                ret = ret + &quot;\t\t=== Narrows/isRequiredBy ===\n&quot;;
+                nra = this.getNarrowsIsRequiredByEqualsRelationListForNode(n);
+                for (var j = 0; j &lt; nra.length; j++) {
+                    nr = nra[j];
+                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
+                }
+                ret = ret + &quot;\t\t=== Broadens/Requires ===\n&quot;;
+                nra = this.getBroadensRequiresEqualsRelationListForNode(n);
+                for (var j = 0; j &lt; nra.length; j++) {
+                    nr = nra[j];
+                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
+                }
+            } else 
+                ret = ret + &quot;\t\t---------NO RELATIONSHIPS---------\n&quot;;
+        }
+        return ret;
+    };
+}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}, relationList: {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}, relationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}]}}, {});
 var RollupRulePacketGenerator = function(ip, ep) {
     this.ip = ip;
     this.ep = ep;
@@ -2153,59 +2333,325 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
 }, {queries: {name: &quot;Array&quot;, arguments: [null]}, queryOperations: {name: &quot;Array&quot;, arguments: [{name: &quot;Enum&quot;, arguments: [&quot;RollupRulePacketGenerator.OperationType&quot;]}]}, ip: &quot;InquiryPacket&quot;, ep: &quot;AssertionProcessor&quot;}, {});
 if (!stjs.mainCallDisabled) 
     RollupRulePacketGenerator.main();
-var PapDependency = function(depParms) {
-    PapDependencyParms.call(this);
-    if (depParms.getDependencyFirst()) {
-        this.setParentIndex(depParms.getParentIndex());
-        this.setChildIndex(depParms.getChildIndex());
-    } else {
-        this.setChildIndex(depParms.getParentIndex());
-        this.setParentIndex(depParms.getChildIndex());
-    }
-    this.setType(depParms.getType());
-    this.setWeight(depParms.getWeight());
-    this.setLeak(depParms.getLeak());
+/**
+ *  Processor used in Assertion Processing. Can estimate or determine competence
+ *  of individuals.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ *  @class AssertionProcessor
+ *  @module org.cassproject
+ */
+var AssertionProcessor = function() {
+    this.repositories = new Array();
+    this.coprocessors = new Array();
+    this.step = AssertionProcessor.DEF_STEP;
+    this.profileMode = false;
 };
-PapDependency = stjs.extend(PapDependency, PapDependencyParms, [], function(constructor, prototype) {
-    constructor.NECESSARY_TYPE = &quot;NECESSARY&quot;;
-    constructor.SUFFICIENT_TYPE = &quot;SUFFICIENT&quot;;
-    constructor.EQUIVALENCE_TYPE = &quot;EQUIVALENCE&quot;;
-    constructor.BROADENS_TYPE = &quot;BROADENS&quot;;
-    constructor.NULL_TYPE = &quot;NULL&quot;;
-    constructor.HASH_CODE_MULTIPLIER = 41;
-    constructor.HASH_CODE_PERCENTAGE_MULTIPLIER = 97;
-    constructor.getDependencyTypes = function() {
-        var dt = new Array();
-        dt.push(PapDependency.NECESSARY_TYPE);
-        dt.push(PapDependency.SUFFICIENT_TYPE);
-        dt.push(PapDependency.EQUIVALENCE_TYPE);
-        dt.push(PapDependency.BROADENS_TYPE);
-        dt.push(PapDependency.NULL_TYPE);
-        return dt;
+AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(constructor, prototype) {
+    constructor.DEF_STEP = false;
+    prototype.repositories = null;
+    prototype.step = false;
+    prototype.profileMode = false;
+    prototype.logFunction = null;
+    prototype.assertions = null;
+    prototype.coprocessors = null;
+    prototype.processedEquivalencies = null;
+    prototype.context = null;
+    prototype.assertionsCollected = false;
+    prototype.log = function(ip, string) {
+        if (this.logFunction != null) {
+            var id = &quot;&quot;;
+            if (ip.competency != null &amp;&amp; ip.competency.length &gt; 0) 
+                id = ip.competency[0].shortId() + &quot;:&quot;;
+            this.logFunction(new Date().getTime() % 100000 + &quot;: &quot; + string);
+        }
+        ip.log += &quot;\n&quot; + string;
     };
-    prototype.toString = function() {
-        return &quot;Dependency: [&quot; + this.getType().toString() + &quot;] &quot; + this.getParentIndex() + &quot; &lt;-- &quot; + this.getChildIndex();
+    /**
+     *  Asynchronously processes and provides an answer to the question: Does an
+     *  individual hold a competency?
+     * 
+     *  @param {EcPk[]}                  subject Public keys that identify the subject.
+     *  @param {EcCompetency}            competency The Competency being inquired about.
+     *  @param {EcLevel}                 level The Level of the Competency at which the question
+     *                                   is being asked.
+     *  @param {EcFramework}             context The Framework in which to scope the inquiry.
+     *  @param {EbacSignature[]}         additionalSignatures Additional signatures
+     *                                   provided by an authority, used to request additional access on a one-time
+     *                                   basis.
+     *  @param {function(InquiryPacket)} success The method that is invoked when
+     *                                   a decision has been reached.
+     *  @param {string                   function(string)} ask The method that is invoked when the
+     *                                   assertion processor detects that it needs information. (Usernames,
+     *                                   passwords, etc)
+     *  @param {function(string)}        failure The method that is invoked when the
+     *                                   assertion processor has failed.
+     *  @method has
+     */
+    prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
+        var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
+        ip.root = true;
+        this.processedEquivalencies = {};
+        this.assertions = null;
+        this.context = context;
+        this.log(ip, &quot;Created new inquiry.&quot;);
+        var me = this;
+        this.continueProcessingFirstPass(ip);
     };
-    prototype.equals = function(other) {
-        return (this.getParentIndex() == (other).getParentIndex()) &amp;&amp; (this.getChildIndex() == (other).getChildIndex()) &amp;&amp; (this.getType() == (other).getType());
+    prototype.collectAssertionsForSecondPass = function(ip, success) {
+        this.assertionsCollected = true;
+        var listOfActivatedCompetencies = new Array();
+        this.collectCompetencies(ip, listOfActivatedCompetencies, new Array());
+        var me = this;
+        listOfActivatedCompetencies.sort(function(a, b) {
+            return b.compareTo(a);
+        });
+        var eah = new EcAsyncHelper();
+        eah.each(this.repositories, function(currentRepository, callback0) {
+            var searchQuery = me.buildAssertionsSearchQuery(ip, listOfActivatedCompetencies);
+            me.log(ip, &quot;Querying repositories for subject assertions on &quot; + listOfActivatedCompetencies.length + &quot; competencies: &quot; + searchQuery);
+            var params = new Object();
+            (params)[&quot;size&quot;] = 5000;
+            EcAssertion.search(currentRepository, searchQuery, function(p1) {
+                me.log(ip, p1.length + &quot; assertions found.&quot;);
+                me.assertions = new Object();
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var a = p1[i];
+                    var competency = EcRemoteLinkedData.trimVersionFromUrl(a.competency);
+                    if ((me.assertions)[competency] == null) 
+                        (me.assertions)[competency] = new Array();
+                    var as = (me.assertions)[competency];
+                    as.push(a);
+                }
+                callback0();
+            }, function(p1) {
+                callback0();
+            }, params);
+        }, function(strings) {
+            var eah2 = new EcAsyncHelper();
+            eah2.each(me.coprocessors, function(ac, callback00) {
+                ac.assertionProcessor = me;
+                ac.collectAssertions(ip, listOfActivatedCompetencies, function(assertions) {
+                    for (var i = 0; i &lt; assertions.length; i++) {
+                        var a = assertions[i];
+                        var competency = EcRemoteLinkedData.trimVersionFromUrl(a.competency);
+                        if ((me.assertions)[competency] == null) 
+                            (me.assertions)[competency] = new Array();
+                        var as = (me.assertions)[competency];
+                        as.push(a);
+                    }
+                    callback00();
+                });
+            }, function(strings) {
+                var eah3 = new EcAsyncHelper();
+                eah3.each(me.coprocessors, function(ac, callback000) {
+                    ac.assertionProcessor = me;
+                    ac.mutateAssertions(ip, listOfActivatedCompetencies, callback000);
+                }, function(strings) {
+                    success(ip);
+                });
+            });
+        });
     };
-    prototype.hashCode = function() {
-        var temp = 0;
-        if (PapDependency.NECESSARY_TYPE.equalsIgnoreCase(this.getType())) 
-            temp = 1;
-         else if (PapDependency.EQUIVALENCE_TYPE.equalsIgnoreCase(this.getType())) 
-            temp = 2;
-         else if (PapDependency.SUFFICIENT_TYPE.equalsIgnoreCase(this.getType())) 
-            temp = 3;
-         else if (PapDependency.BROADENS_TYPE.equalsIgnoreCase(this.getType())) 
-            temp = 4;
-        temp *= PapDependency.HASH_CODE_MULTIPLIER;
-        temp += this.getParentIndex();
-        temp *= PapDependency.HASH_CODE_MULTIPLIER;
-        temp += this.getChildIndex();
-        return temp + (stjs.trunc((100 * this.getWeight())) % PapDependency.HASH_CODE_PERCENTAGE_MULTIPLIER);
+    prototype.isIn = function(ip, alreadyDone) {
+        for (var i = 0; i &lt; alreadyDone.length; i++) 
+            if (ip == alreadyDone[i]) 
+                return true;
+        return false;
     };
-}, {}, {});
+    prototype.continueProcessingSecondPass = function(ip) {
+        if (!ip.hasCheckedAssertionsForCompetency) 
+            if (this.findSubjectAssertionsForCompetency(ip)) 
+                if (EcRemote.async) 
+                    return true;
+        if (this.processChildPacketsSecondPass(ip.equivalentPackets)) 
+            if (EcRemote.async) 
+                return true;
+        if (this.processChildPacketsSecondPass(ip.subPackets)) 
+            if (EcRemote.async) 
+                return true;
+        if (ip.result == null) {
+            this.determineResult(ip);
+            this.log(ip, &quot;Determined Result:&quot; + ip.result);
+            this.log(ip, &quot;Success:&quot; + ip.success);
+            if (ip.result != null &amp;&amp; ip.success != null) {
+                this.log(ip, &quot;Running success:&quot; + ip.result);
+                ip.success(ip);
+            }
+            if (EcRemote.async) 
+                return true;
+        }
+        return false;
+    };
+    prototype.continueProcessingFirstPass = function(ip) {
+        if (!ip.finished) {
+            if (!ip.hasCheckedRelationshipsForCompetency) {
+                this.findCompetencyRelationships(ip);
+                if (EcRemote.async) 
+                    return true;
+            }
+            if (!ip.hasCheckedRollupRulesForCompetency) {
+                this.findRollupRulesForCompetency(ip);
+                if (EcRemote.async) 
+                    return true;
+            }
+            if (this.processChildPackets(ip.equivalentPackets)) 
+                return true;
+            if (this.processChildPackets(ip.subPackets)) 
+                return true;
+            ip.finished = true;
+            if (!this.assertionsCollected) 
+                if (ip.root) {
+                    var me = this;
+                    this.collectAssertionsForSecondPass(ip, function(p1) {
+                        me.continueProcessingSecondPass(ip);
+                    });
+                    if (EcRemote.async) 
+                        return true;
+                } else 
+                    ip.success(ip);
+        }
+        if (ip.finished) 
+            if (this.assertions != null) 
+                return this.continueProcessingSecondPass(ip);
+        return false;
+    };
+    prototype.determineResult = function(ip) {};
+    prototype.findCompetencyRelationships = function(ip) {};
+    prototype.findSubjectAssertionsForCompetency = function(ip) {};
+    prototype.processChildPackets = function(childPackets) {
+        if (childPackets != null) 
+            for (var i = 0; i &lt; childPackets.length; i++) 
+                if (this.continueProcessingFirstPass(childPackets[i])) 
+                    return true;
+        return false;
+    };
+    prototype.checkStep = function(ip) {
+        this.log(ip, &quot;Checkstep First Pass: &quot; + ip.numberOfQueriesRunning);
+        if (ip.numberOfQueriesRunning == 0) 
+            if (!this.step &amp;&amp; EcRemote.async) 
+                this.continueProcessingFirstPass(ip);
+    };
+    prototype.processChildPacketsSecondPass = function(childPackets) {
+        if (childPackets != null) 
+            for (var i = 0; i &lt; childPackets.length; i++) 
+                if (this.continueProcessingSecondPass(childPackets[i])) 
+                    return true;
+        return false;
+    };
+    prototype.checkStepSecondPass = function(ip) {
+        this.log(ip, &quot;Checkstep Second Pass: &quot; + ip.numberOfQueriesRunning);
+        if (ip.numberOfQueriesRunning == 0) 
+            if (!this.step &amp;&amp; EcRemote.async) 
+                this.continueProcessingSecondPass(ip);
+    };
+    prototype.processEventFailure = function(message, ip) {
+        this.log(ip, &quot;Event failed: &quot; + message);
+        ip.numberOfQueriesRunning--;
+        ip.failure(message);
+    };
+    prototype.logFoundAssertion = function(a, ip) {
+        this.log(ip, &quot;No issues found with assertion.&quot;);
+        this.log(ip, &quot;Record Id: &quot; + a.shortId());
+        this.log(ip, &quot;Confidence: &quot; + a.confidence);
+        this.log(ip, &quot;Number of pieces of evidence: &quot; + a.getEvidenceCount());
+        this.log(ip, &quot;Recording in inquiry.&quot;);
+    };
+    prototype.buildAssertionSearchQuery = function(ip, competency) {
+        var result = null;
+        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+            if (ip.rule.indexOf(&quot;AND &quot;) == 0) 
+                ip.rule = ip.rule.replace(&quot;AND &quot;, &quot;&quot;);
+            result = &quot;(&quot; + new EcAssertion().getSearchStringByType() + &quot;) AND (&quot; + ip.rule + &quot;)&quot;;
+        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
+            result = new EcAssertion().getSearchStringByTypeAndCompetency(competency);
+        for (var i = 0; i &lt; ip.subject.length; i++) 
+            result += &quot; AND (\\*@reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
+        this.log(ip, &quot;Search Query: &quot; + result);
+        if (result != null) 
+            return result;
+         throw new RuntimeException(&quot;Trying to build an assertion search query on an unsupported type: &quot; + ip.type);
+    };
+    prototype.buildAssertionsSearchQuery = function(ip, competencies) {
+        var result = null;
+        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+            ip.failure(&quot;NOT SUPPOSED TO BE HERE.&quot;);
+             throw new RuntimeException(&quot;Collecting assertions when root node is a rollup rule. Not supported.&quot;);
+        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
+            result = &quot;(&quot;;
+            for (var i = 0; i &lt; competencies.length; i++) {
+                if (i != 0) 
+                    result += &quot; OR &quot;;
+                result += &quot;competency:\&quot;&quot; + competencies[i] + &quot;\&quot;&quot;;
+            }
+            result += &quot;)&quot;;
+        }
+        for (var i = 0; i &lt; ip.subject.length; i++) 
+            result += &quot; AND (\\*@reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
+        if (result != null) 
+            return result;
+         throw new RuntimeException(&quot;Trying to build an assertion search query on an unsupported type: &quot; + ip.type);
+    };
+    prototype.processRelationshipPacketsGenerated = function(ip, competency) {
+        this.log(ip, &quot;Relationships succesfully processed for: &quot; + competency.id);
+        ip.numberOfQueriesRunning--;
+        this.checkStep(ip);
+    };
+    prototype.processRollupRuleInterpretSuccess = function(status, ip) {
+        this.log(ip, &quot;Rollup rule successfully interpreted.&quot;);
+        ip.numberOfQueriesRunning--;
+        this.checkStep(ip);
+    };
+    prototype.processRollupRuleInterpretSkipped = function(ip) {
+        this.log(ip, &quot;Rollup rule skipped.&quot;);
+        ip.numberOfQueriesRunning--;
+        this.checkStep(ip);
+    };
+    prototype.findRollupRulesForCompetency = function(ip) {
+        ip.hasCheckedRollupRulesForCompetency = true;
+        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
+            this.log(ip, &quot;No rollup rules for combinator types&quot;);
+            this.checkStep(ip);
+            return;
+        }
+        var ep = this;
+        if (ip.getContext().rollupRule == null) {
+            if (EcRemote.async) 
+                this.continueProcessingFirstPass(ip);
+        } else 
+            for (var i = 0; i &lt; ip.getContext().rollupRule.length; i++) {
+                ip.numberOfQueriesRunning++;
+                EcRollupRule.get(ip.getContext().rollupRule[i], function(rr) {
+                    ep.processFindRollupRuleSuccess(rr, ip);
+                }, function(p1) {
+                    ep.processEventFailure(p1, ip);
+                });
+            }
+    };
+    prototype.processFindRollupRuleSuccess = function(rr, ip) {};
+    prototype.collectCompetencies = function(ip, listOfActivatedCompetencies, listOfVisitedPackets) {
+        if (this.profileMode) {
+            for (var i = 0; i &lt; this.context.competency.length; i++) 
+                listOfActivatedCompetencies.push(this.context.competency[i]);
+            return;
+        }
+        for (var i = 0; i &lt; listOfVisitedPackets.length; i++) 
+            if (ip == listOfVisitedPackets[i]) 
+                return;
+        listOfVisitedPackets.push(ip);
+        for (var i = 0; i &lt; ip.competency.length; i++) {
+            for (var j = 0; j &lt; listOfActivatedCompetencies.length; j++) 
+                if (ip.competency[i].shortId() == listOfActivatedCompetencies[j]) 
+                    continue;
+            listOfActivatedCompetencies.push(ip.competency[i].shortId());
+        }
+        for (var i = 0; i &lt; ip.equivalentPackets.length; i++) 
+            this.collectCompetencies(ip.equivalentPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
+        for (var i = 0; i &lt; ip.subPackets.length; i++) 
+            this.collectCompetencies(ip.subPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
+    };
+}, {repositories: {name: &quot;Array&quot;, arguments: [&quot;EcRepository&quot;]}, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, assertions: &quot;Object&quot;, coprocessors: {name: &quot;Array&quot;, arguments: [&quot;AssertionCoprocessor&quot;]}, processedEquivalencies: {name: &quot;Map&quot;, arguments: [null, null]}, context: &quot;EcFramework&quot;}, {});
 /**
  *  Creates child packets for an InquiryPacket based on its context.
  * 
@@ -2526,146 +2972,125 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
             }
     };
 }, {failure: {name: &quot;Callback1&quot;, arguments: [null]}, success: {name: &quot;Callback1&quot;, arguments: [null]}, ip: &quot;InquiryPacket&quot;}, {});
-var PapNetworkPrediction = function(predictionDate, subjectPem, competencyList, competencyNetwork) {
-    this.predictionDate = predictionDate;
-    this.subjectPem = subjectPem;
-    this.predictions = new Array();
-    var currentCompetency;
-    var pcp;
-    for (var i = 0; i &lt; competencyList.length; i++) {
-        currentCompetency = competencyList[i];
-        pcp = new PapCompetencyPrediction();
-        pcp.setCompetencyId(currentCompetency);
-        pcp.setConfidence(competencyNetwork.getPrediction(i));
-        pcp.setConflictLevel(competencyNetwork.getConflictLevel(i));
-        pcp.setConflictClass(competencyNetwork.getConflictClass(i));
-        this.predictions.push(pcp);
+var TrustCoprocessor = function() {
+    AssertionCoprocessor.call(this);
+};
+TrustCoprocessor = stjs.extend(TrustCoprocessor, AssertionCoprocessor, [], function(constructor, prototype) {
+    prototype.agent = null;
+    prototype.multiplier = 1.0;
+    prototype.removeNoConfidence = false;
+    prototype.mutateAssertions = function(ip, listOfCompetencies, success) {
+        var keys = EcObject.keys(this.assertionProcessor.assertions);
+        for (var keyIndex = 0; keyIndex &lt; keys.length; keyIndex++) {
+            var ary = (this.assertionProcessor.assertions)[keys[keyIndex]];
+            for (var i = 0; i &lt; ary.length; i++) {
+                var a = ary[i];
+                if (a.getAgent().toPem() == this.agent.toPem()) {
+                    a.confidence = a.confidence * this.multiplier;
+                    if (this.removeNoConfidence &amp;&amp; a.confidence == 0.0) 
+                        ary.splice(i--, 1);
+                }
+            }
+        }
+        success();
+    };
+}, {agent: &quot;EcPk&quot;, assertionProcessor: &quot;AssertionProcessor&quot;}, {});
+var PapDependency = function(depParms) {
+    PapDependencyParms.call(this);
+    if (depParms.getDependencyFirst()) {
+        this.setParentIndex(depParms.getParentIndex());
+        this.setChildIndex(depParms.getChildIndex());
+    } else {
+        this.setChildIndex(depParms.getParentIndex());
+        this.setParentIndex(depParms.getChildIndex());
     }
+    this.setType(depParms.getType());
+    this.setWeight(depParms.getWeight());
+    this.setLeak(depParms.getLeak());
 };
-PapNetworkPrediction = stjs.extend(PapNetworkPrediction, null, [], function(constructor, prototype) {
-    prototype.predictionDate = null;
-    prototype.subjectPem = null;
-    prototype.predictions = null;
-    prototype.getPredictionDate = function() {
-        return this.predictionDate;
+PapDependency = stjs.extend(PapDependency, PapDependencyParms, [], function(constructor, prototype) {
+    constructor.NECESSARY_TYPE = &quot;NECESSARY&quot;;
+    constructor.SUFFICIENT_TYPE = &quot;SUFFICIENT&quot;;
+    constructor.EQUIVALENCE_TYPE = &quot;EQUIVALENCE&quot;;
+    constructor.BROADENS_TYPE = &quot;BROADENS&quot;;
+    constructor.NULL_TYPE = &quot;NULL&quot;;
+    constructor.HASH_CODE_MULTIPLIER = 41;
+    constructor.HASH_CODE_PERCENTAGE_MULTIPLIER = 97;
+    constructor.getDependencyTypes = function() {
+        var dt = new Array();
+        dt.push(PapDependency.NECESSARY_TYPE);
+        dt.push(PapDependency.SUFFICIENT_TYPE);
+        dt.push(PapDependency.EQUIVALENCE_TYPE);
+        dt.push(PapDependency.BROADENS_TYPE);
+        dt.push(PapDependency.NULL_TYPE);
+        return dt;
     };
-    prototype.setPredictionDate = function(predictionDate) {
-        this.predictionDate = predictionDate;
+    prototype.toString = function() {
+        return &quot;Dependency: [&quot; + this.getType().toString() + &quot;] &quot; + this.getParentIndex() + &quot; &lt;-- &quot; + this.getChildIndex();
     };
-    prototype.getSubjectPem = function() {
-        return this.subjectPem;
+    prototype.equals = function(other) {
+        return (this.getParentIndex() == (other).getParentIndex()) &amp;&amp; (this.getChildIndex() == (other).getChildIndex()) &amp;&amp; (this.getType() == (other).getType());
     };
-    prototype.setSubjectPem = function(subjectPem) {
-        this.subjectPem = subjectPem;
+    prototype.hashCode = function() {
+        var temp = 0;
+        if (PapDependency.NECESSARY_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 1;
+         else if (PapDependency.EQUIVALENCE_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 2;
+         else if (PapDependency.SUFFICIENT_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 3;
+         else if (PapDependency.BROADENS_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 4;
+        temp *= PapDependency.HASH_CODE_MULTIPLIER;
+        temp += this.getParentIndex();
+        temp *= PapDependency.HASH_CODE_MULTIPLIER;
+        temp += this.getChildIndex();
+        return temp + (stjs.trunc((100 * this.getWeight())) % PapDependency.HASH_CODE_PERCENTAGE_MULTIPLIER);
     };
-    prototype.getPredictions = function() {
-        return this.predictions;
-    };
-    prototype.setPredictions = function(predictions) {
-        this.predictions = predictions;
-    };
-    prototype.getJsonString = function() {
-        return JSON.stringify(this);
-    };
-}, {predictions: {name: &quot;Array&quot;, arguments: [&quot;PapCompetencyPrediction&quot;]}}, {});
-var NodeGraph = function() {
-    this.nodeList = new Array();
+}, {}, {});
+var NodePacketGraph = function() {
+    this.nodePacketList = new Array();
+    this.nodePacketMap = {};
     this.relationList = new Array();
-    this.nodeMap = {};
-    this.relationMap = {};
 };
-NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
-    prototype.nodeList = null;
-    prototype.nodeMap = null;
+NodePacketGraph = stjs.extend(NodePacketGraph, null, [], function(constructor, prototype) {
+    prototype.nodePacketList = null;
+    prototype.nodePacketMap = null;
     prototype.relationList = null;
-    prototype.relationMap = null;
-    prototype.addNode = function(n) {
-        if (this.nodeMap[n.getId()] == null) {
-            this.nodeList.push(n);
-            this.nodeMap[n.getId()] = n;
+    prototype.initNodePacketGraph = function(nodes) {
+        var np;
+        var n;
+        this.nodePacketList = new Array();
+        this.nodePacketMap = {};
+        this.relationList = new Array();
+        for (var i = 0; i &lt; nodes.length; i++) {
+            n = nodes[i];
+            np = new NodePacket();
+            np.addNode(n);
+            this.nodePacketList.push(np);
+            this.nodePacketMap[n.getId()] = np;
         }
     };
-    prototype.createImpliedRelations = function() {
-        try {
-            var relationsToAdd = new Array();
-            var nr;
-            for (var i = 0; i &lt; this.relationList.length; i++) {
-                nr = this.relationList[i];
-                if (nr.getType() == RelationType.RELATION_TYPE.NARROWS) {
-                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.BROADENS));
-                } else if (nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
-                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.IS_REQUIRED_BY));
-                } else if (nr.getType() == RelationType.RELATION_TYPE.BROADENS) {
-                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.NARROWS));
-                } else if (nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
-                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.REQUIRES));
-                }
+    prototype.getNodePacketForNode = function(n) {
+        return this.nodePacketMap[n.getId()];
+    };
+    prototype.mergeNodePackets = function(packet1, packet2) {
+        if (packet1 != packet2) {
+            var n;
+            var na = packet2.getNodeList();
+            for (var i = 0; i &lt; na.length; i++) {
+                n = na[i];
+                packet1.addNode(n);
+                this.nodePacketMap[n.getId()] = packet1;
             }
-            var nnr;
-            for (var i = 0; i &lt; relationsToAdd.length; i++) {
-                nnr = relationsToAdd[i];
-                this.addRelation(nnr.getSource(), nnr.getTarget(), nnr.getType());
-            }
-        }catch (e) {
-             throw new Exception(&quot;createImpliedRelations: &quot; + e.toString());
+            this.nodePacketList = ArrayUtil.arrayRemove(this.nodePacketList, packet2);
         }
     };
-    prototype.addRelation = function(sourceNode, targetNode, relationType) {
-        try {
-            if (sourceNode == null || targetNode == null) 
-                return;
-            var nodeRelationList;
-            if (this.nodeHasRelations(sourceNode)) 
-                nodeRelationList = this.getRelationListForNode(sourceNode);
-             else {
-                nodeRelationList = new Array();
-                this.relationMap[sourceNode.getId()] = nodeRelationList;
-            }
-            var newNodeRelation = new NodeRelation(sourceNode, targetNode, relationType);
-            if (!this.doesRelationAlreadyExist(newNodeRelation, nodeRelationList)) {
-                nodeRelationList.push(newNodeRelation);
-                this.relationList.push(newNodeRelation);
-            }
-        }catch (e) {
-             throw new Exception(&quot;addRelation: &quot; + e.toString());
-        }
+    prototype.getNodePacketList = function() {
+        return this.nodePacketList;
     };
-    prototype.getRelationListForNode = function(n) {
-        return this.relationMap[n.getId()];
-    };
-    prototype.getNarrowsIsRequiredByEqualsRelationListForNode = function(n) {
-        var retList = new Array();
-        if (this.relationMap[n.getId()] != null) {
-            var nra = this.relationMap[n.getId()];
-            var nr;
-            for (var i = 0; i &lt; nra.length; i++) {
-                nr = nra[i];
-                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO || nr.getType() == RelationType.RELATION_TYPE.NARROWS || nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
-                    retList.push(nr);
-                }
-            }
-        }
-        return retList;
-    };
-    prototype.getBroadensRequiresEqualsRelationListForNode = function(n) {
-        var retList = new Array();
-        if (this.relationMap[n.getId()] != null) {
-            var nra = this.relationMap[n.getId()];
-            var nr;
-            for (var i = 0; i &lt; nra.length; i++) {
-                nr = nra[i];
-                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO || nr.getType() == RelationType.RELATION_TYPE.BROADENS || nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
-                    retList.push(nr);
-                }
-            }
-        }
-        return retList;
-    };
-    prototype.getNodeList = function() {
-        return this.nodeList;
-    };
-    prototype.setNodeList = function(nodeList) {
-        this.nodeList = nodeList;
+    prototype.setNodePacketList = function(nodePacketList) {
+        this.nodePacketList = nodePacketList;
     };
     prototype.getRelationList = function() {
         return this.relationList;
@@ -2673,81 +3098,129 @@ NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
     prototype.setRelationList = function(relationList) {
         this.relationList = relationList;
     };
-    prototype.nodeHasRelations = function(n) {
-        if (this.relationMap[n.getId()] == null) 
-            return false;
-        return true;
+    prototype.addNodePacket = function(np) {
+        this.nodePacketList.push(np);
     };
-    prototype.doesRelationAlreadyExist = function(nodeRelation, nodeRelationList) {
+    prototype.addRelation = function(sourceNodePacket, targetNodePacket, relationType) {
+        var newPacketRelation = new PacketRelation(sourceNodePacket, targetNodePacket, relationType);
+        this.relationList.push(newPacketRelation);
+    };
+    prototype.buildPacketRelationsFromNodeRelations = function(nodeRelationList) {
+        var sourceNodePacket;
+        var targetNodePacket;
         var nr;
         for (var i = 0; i &lt; nodeRelationList.length; i++) {
             nr = nodeRelationList[i];
-            if (nodeRelation.getSource().getId() == nr.getSource().getId() &amp;&amp; nodeRelation.getTarget().getId() == nr.getTarget().getId() &amp;&amp; nodeRelation.getType() == nr.getType()) 
-                return true;
+            sourceNodePacket = this.getNodePacketForNode(nr.getSource());
+            targetNodePacket = this.getNodePacketForNode(nr.getTarget());
+            if (sourceNodePacket != targetNodePacket) 
+                this.addRelation(sourceNodePacket, targetNodePacket, nr.getType());
         }
-        return false;
     };
     prototype.toStringGraphAll = function() {
         var ret = &quot;&quot;;
-        var n;
-        for (var i = 0; i &lt; this.nodeList.length; i++) {
-            n = this.nodeList[i];
-            ret = ret + n.toString() + &quot;\n&quot;;
+        ret = ret + &quot;&gt;&gt; Packets: \n&quot;;
+        var np;
+        for (var i = 0; i &lt; this.nodePacketList.length; i++) {
+            np = this.nodePacketList[i];
+            ret = ret + &quot;   &quot; + np.toString() + &quot;\n&quot;;
         }
-        var nr;
-        for (var i = 0; i &lt; this.relationList.length; i++) {
-            nr = this.relationList[i];
-            ret = ret + nr.toString() + &quot;\n&quot;;
-        }
-        return ret;
-    };
-    prototype.toStringGraphByNode = function() {
-        var ret = &quot;&quot;;
-        ret = ret + &quot; - TEST HOWDY - \n&quot;;
-        var n;
-        var nra;
-        var nr;
-        for (var i = 0; i &lt; this.nodeList.length; i++) {
-            n = this.nodeList[i];
-            ret = ret + &quot;   --&gt; &quot; + n.toString() + &quot;\n&quot;;
-            if (this.nodeHasRelations(n)) {
-                nra = this.getRelationListForNode(n);
-                for (var j = 0; j &lt; nra.length; j++) {
-                    nr = nra[j];
-                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
-                }
-            } else 
-                ret = ret + &quot;\t\t---------NO RELATIONSHIPS---------\n&quot;;
+        var pr;
+        if (this.relationList.length &gt; 0) {
+            ret = ret + &quot;&gt;&gt;Relationships: &gt;\n&quot;;
+            for (var i = 0; i &lt; this.relationList.length; i++) {
+                pr = this.relationList[i];
+                ret = ret + &quot;   &quot; + pr.toString() + &quot;\n&quot;;
+            }
+        } else {
+            ret = ret + &quot;&gt;&gt;NO RELATIONS EXIST!&quot;;
         }
         return ret;
     };
-    prototype.toStringGraphByNodeSplit = function() {
-        var ret = &quot;&quot;;
-        var n;
-        var nra;
-        var nr;
-        for (var i = 0; i &lt; this.nodeList.length; i++) {
-            n = this.nodeList[i];
-            ret = ret + &quot;   --&gt; &quot; + n.toString() + &quot;\n&quot;;
-            if (this.nodeHasRelations(n)) {
-                ret = ret + &quot;\t\t=== Narrows/isRequiredBy ===\n&quot;;
-                nra = this.getNarrowsIsRequiredByEqualsRelationListForNode(n);
-                for (var j = 0; j &lt; nra.length; j++) {
-                    nr = nra[j];
-                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
-                }
-                ret = ret + &quot;\t\t=== Broadens/Requires ===\n&quot;;
-                nra = this.getBroadensRequiresEqualsRelationListForNode(n);
-                for (var j = 0; j &lt; nra.length; j++) {
-                    nr = nra[j];
-                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
-                }
-            } else 
-                ret = ret + &quot;\t\t---------NO RELATIONSHIPS---------\n&quot;;
-        }
-        return ret;
+}, {nodePacketList: {name: &quot;Array&quot;, arguments: [&quot;NodePacket&quot;]}, nodePacketMap: {name: &quot;Map&quot;, arguments: [null, &quot;NodePacket&quot;]}, relationList: {name: &quot;Array&quot;, arguments: [&quot;PacketRelation&quot;]}}, {});
+var PapDependencyDefinitions = function() {
+    this.dependencyDefinitionMap = {};
+};
+PapDependencyDefinitions = stjs.extend(PapDependencyDefinitions, null, [], function(constructor, prototype) {
+    constructor.DEFAULT_WEIGHT = 1.0;
+    constructor.DEFAULT_LEAK = 0.0;
+    constructor.DEFAULT_REVERSE = false;
+    constructor.DEFAULT_NARROWS_BASE_CLASS = &quot;broadens&quot;;
+    constructor.DEFAULT_NARROWS_REVERSE = true;
+    constructor.DEFAULT_NARROWS_WEIGHT = 0.9;
+    constructor.DEFAULT_NARROWS_LEAK = 0.0;
+    constructor.DEFAULT_NARROWS_KEY = &quot;narrows&quot;;
+    constructor.DEFAULT_ENABLES_BASE_CLASS = &quot;isSufficientFor&quot;;
+    constructor.DEFAULT_ENABLES_REVERSE = true;
+    constructor.DEFAULT_ENABLES_WEIGHT = 0.9;
+    constructor.DEFAULT_ENABLES_LEAK = 0.0;
+    constructor.DEFAULT_ENABLES_KEY = &quot;enables&quot;;
+    constructor.DEFAULT_REQUIRES_BASE_CLASS = &quot;isRequiredBy&quot;;
+    constructor.DEFAULT_REQUIRES_REVERSE = false;
+    constructor.DEFAULT_REQUIRES_WEIGHT = 0.9;
+    constructor.DEFAULT_REQUIRES_LEAK = 0.0;
+    constructor.DEFAULT_REQUIRES_KEY = &quot;requires&quot;;
+    prototype.dependencyDefinitionMap = null;
+    /**
+     *  Pulled default values from CruncherAssertionProcessor
+     *      dependencyDefs = new JSONObject();
+     * 
+     *      JSONObject narrows = new JSONObject();
+     *      narrows.put(&quot;class&quot;,&quot;broadens&quot;);
+     *      narrows.put(&quot;reverse&quot;,true);
+     *      narrows.put(&quot;weight&quot;,0.9);
+     *      dependencyDefs.put(&quot;narrows&quot;,narrows);
+     * 
+     *      JSONObject enables = new JSONObject();
+     *      enables.put(&quot;class&quot;,&quot;isSufficientFor&quot;);
+     *      enables.put(&quot;weight&quot;,0.9);
+     *      enables.put(&quot;reverse&quot;,true);
+     *      dependencyDefs.put(&quot;enables&quot;,enables);
+     * 
+     *      JSONObject requires = new JSONObject();
+     *      requires.put(&quot;class&quot;,&quot;isRequiredBy&quot;);
+     *      requires.put(&quot;weight&quot;,0.9);
+     *      dependencyDefs.put(&quot;requires&quot;,requires);
+     */
+    prototype.initDefaultDefinitions = function() {
+        var narrowsDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_NARROWS_BASE_CLASS, PapDependencyDefinitions.DEFAULT_NARROWS_REVERSE, PapDependencyDefinitions.DEFAULT_NARROWS_WEIGHT, PapDependencyDefinitions.DEFAULT_NARROWS_LEAK);
+        var enablesDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_ENABLES_BASE_CLASS, PapDependencyDefinitions.DEFAULT_ENABLES_REVERSE, PapDependencyDefinitions.DEFAULT_ENABLES_WEIGHT, PapDependencyDefinitions.DEFAULT_ENABLES_LEAK);
+        var requiresDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_REQUIRES_BASE_CLASS, PapDependencyDefinitions.DEFAULT_REQUIRES_REVERSE, PapDependencyDefinitions.DEFAULT_REQUIRES_WEIGHT, PapDependencyDefinitions.DEFAULT_REQUIRES_LEAK);
+        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_NARROWS_KEY, narrowsDepDef);
+        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_ENABLES_KEY, enablesDepDef);
+        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_REQUIRES_KEY, requiresDepDef);
     };
-}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}, relationList: {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}, relationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}]}}, {});
+    prototype.getWeightForType = function(depType) {
+        var base = this.dependencyDefinitionMap[depType];
+        if (base == null) 
+            return PapDependencyDefinitions.DEFAULT_WEIGHT;
+         else 
+            return base.getWeight();
+    };
+    prototype.getLeakForType = function(depType) {
+        var base = this.dependencyDefinitionMap[depType];
+        if (base == null) 
+            return PapDependencyDefinitions.DEFAULT_LEAK;
+         else 
+            return base.getLeak();
+    };
+    prototype.getReverseForType = function(depType) {
+        var base = this.dependencyDefinitionMap[depType];
+        if (base == null) 
+            return PapDependencyDefinitions.DEFAULT_REVERSE;
+         else 
+            return base.getReverse();
+    };
+    prototype.addDependencyDefinition = function(relationshipName, definition) {
+        this.getDependencyDefinitionMap()[relationshipName] = definition;
+    };
+    prototype.getDependencyDefinitionMap = function() {
+        return this.dependencyDefinitionMap;
+    };
+    prototype.setDependencyDefinitionMap = function(dependencyDefinitionMap) {
+        this.dependencyDefinitionMap = dependencyDefinitionMap;
+    };
+}, {dependencyDefinitionMap: {name: &quot;Map&quot;, arguments: [null, &quot;PapDependencyDefinitionBase&quot;]}}, {});
 var CompetencyGraph = function(includeAssertions) {
     this.nodes = new Array();
     this.edges = new Array();
@@ -2875,89 +3348,6 @@ CompetencyGraph = stjs.extend(CompetencyGraph, null, [], function(constructor, p
         this.negativeAssertions = negativeAssertions;
     };
 }, {nodes: {name: &quot;Array&quot;, arguments: [null]}, edges: {name: &quot;Array&quot;, arguments: [&quot;CgEdge&quot;]}, positiveAssertions: {name: &quot;Array&quot;, arguments: [&quot;SimpleAssertion&quot;]}, negativeAssertions: {name: &quot;Array&quot;, arguments: [&quot;SimpleAssertion&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, null]}, edgeMap: {name: &quot;Map&quot;, arguments: [null, null]}}, {});
-var PapDependencyDefinitions = function() {
-    this.dependencyDefinitionMap = {};
-};
-PapDependencyDefinitions = stjs.extend(PapDependencyDefinitions, null, [], function(constructor, prototype) {
-    constructor.DEFAULT_WEIGHT = 1.0;
-    constructor.DEFAULT_LEAK = 0.0;
-    constructor.DEFAULT_REVERSE = false;
-    constructor.DEFAULT_NARROWS_BASE_CLASS = &quot;broadens&quot;;
-    constructor.DEFAULT_NARROWS_REVERSE = true;
-    constructor.DEFAULT_NARROWS_WEIGHT = 0.9;
-    constructor.DEFAULT_NARROWS_LEAK = 0.0;
-    constructor.DEFAULT_NARROWS_KEY = &quot;narrows&quot;;
-    constructor.DEFAULT_ENABLES_BASE_CLASS = &quot;isSufficientFor&quot;;
-    constructor.DEFAULT_ENABLES_REVERSE = true;
-    constructor.DEFAULT_ENABLES_WEIGHT = 0.9;
-    constructor.DEFAULT_ENABLES_LEAK = 0.0;
-    constructor.DEFAULT_ENABLES_KEY = &quot;enables&quot;;
-    constructor.DEFAULT_REQUIRES_BASE_CLASS = &quot;isRequiredBy&quot;;
-    constructor.DEFAULT_REQUIRES_REVERSE = false;
-    constructor.DEFAULT_REQUIRES_WEIGHT = 0.9;
-    constructor.DEFAULT_REQUIRES_LEAK = 0.0;
-    constructor.DEFAULT_REQUIRES_KEY = &quot;requires&quot;;
-    prototype.dependencyDefinitionMap = null;
-    /**
-     *  Pulled default values from CruncherAssertionProcessor
-     *      dependencyDefs = new JSONObject();
-     * 
-     *      JSONObject narrows = new JSONObject();
-     *      narrows.put(&quot;class&quot;,&quot;broadens&quot;);
-     *      narrows.put(&quot;reverse&quot;,true);
-     *      narrows.put(&quot;weight&quot;,0.9);
-     *      dependencyDefs.put(&quot;narrows&quot;,narrows);
-     * 
-     *      JSONObject enables = new JSONObject();
-     *      enables.put(&quot;class&quot;,&quot;isSufficientFor&quot;);
-     *      enables.put(&quot;weight&quot;,0.9);
-     *      enables.put(&quot;reverse&quot;,true);
-     *      dependencyDefs.put(&quot;enables&quot;,enables);
-     * 
-     *      JSONObject requires = new JSONObject();
-     *      requires.put(&quot;class&quot;,&quot;isRequiredBy&quot;);
-     *      requires.put(&quot;weight&quot;,0.9);
-     *      dependencyDefs.put(&quot;requires&quot;,requires);
-     */
-    prototype.initDefaultDefinitions = function() {
-        var narrowsDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_NARROWS_BASE_CLASS, PapDependencyDefinitions.DEFAULT_NARROWS_REVERSE, PapDependencyDefinitions.DEFAULT_NARROWS_WEIGHT, PapDependencyDefinitions.DEFAULT_NARROWS_LEAK);
-        var enablesDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_ENABLES_BASE_CLASS, PapDependencyDefinitions.DEFAULT_ENABLES_REVERSE, PapDependencyDefinitions.DEFAULT_ENABLES_WEIGHT, PapDependencyDefinitions.DEFAULT_ENABLES_LEAK);
-        var requiresDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_REQUIRES_BASE_CLASS, PapDependencyDefinitions.DEFAULT_REQUIRES_REVERSE, PapDependencyDefinitions.DEFAULT_REQUIRES_WEIGHT, PapDependencyDefinitions.DEFAULT_REQUIRES_LEAK);
-        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_NARROWS_KEY, narrowsDepDef);
-        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_ENABLES_KEY, enablesDepDef);
-        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_REQUIRES_KEY, requiresDepDef);
-    };
-    prototype.getWeightForType = function(depType) {
-        var base = this.dependencyDefinitionMap[depType];
-        if (base == null) 
-            return PapDependencyDefinitions.DEFAULT_WEIGHT;
-         else 
-            return base.getWeight();
-    };
-    prototype.getLeakForType = function(depType) {
-        var base = this.dependencyDefinitionMap[depType];
-        if (base == null) 
-            return PapDependencyDefinitions.DEFAULT_LEAK;
-         else 
-            return base.getLeak();
-    };
-    prototype.getReverseForType = function(depType) {
-        var base = this.dependencyDefinitionMap[depType];
-        if (base == null) 
-            return PapDependencyDefinitions.DEFAULT_REVERSE;
-         else 
-            return base.getReverse();
-    };
-    prototype.addDependencyDefinition = function(relationshipName, definition) {
-        this.getDependencyDefinitionMap()[relationshipName] = definition;
-    };
-    prototype.getDependencyDefinitionMap = function() {
-        return this.dependencyDefinitionMap;
-    };
-    prototype.setDependencyDefinitionMap = function(dependencyDefinitionMap) {
-        this.dependencyDefinitionMap = dependencyDefinitionMap;
-    };
-}, {dependencyDefinitionMap: {name: &quot;Map&quot;, arguments: [null, &quot;PapDependencyDefinitionBase&quot;]}}, {});
 /**
  *  Graph for working with a framework. Additional computed data (such as profile data) can be overlaid on the graph through the use of &quot;metaverticies&quot; and &quot;metaedges&quot; that hold additional information.
  * 
@@ -3198,119 +3588,48 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
         return EcAlignment.NARROWS;
     };
 }, {metaVerticies: {name: &quot;Map&quot;, arguments: [null, &quot;Object&quot;]}, metaEdges: {name: &quot;Map&quot;, arguments: [null, &quot;Object&quot;]}, competencyMap: &quot;Object&quot;, edgeMap: &quot;Object&quot;, dontTryAnyMore: &quot;Object&quot;, frameworks: {name: &quot;Array&quot;, arguments: [&quot;EcFramework&quot;]}, addFrameworkSuccessCallback: &quot;Callback0&quot;, addFrameworkFailureCallback: {name: &quot;Callback1&quot;, arguments: [null]}, repo: &quot;EcRepository&quot;, edges: {name: &quot;Array&quot;, arguments: [{name: &quot;Triple&quot;, arguments: [&quot;V&quot;, &quot;V&quot;, &quot;E&quot;]}]}, verticies: {name: &quot;Array&quot;, arguments: [&quot;V&quot;]}}, {});
-var NodePacketGraph = function() {
-    this.nodePacketList = new Array();
-    this.nodePacketMap = {};
-    this.relationList = new Array();
+var PapNetworkPrediction = function(predictionDate, subjectPem, competencyList, competencyNetwork) {
+    this.predictionDate = predictionDate;
+    this.subjectPem = subjectPem;
+    this.predictions = new Array();
+    var currentCompetency;
+    var pcp;
+    for (var i = 0; i &lt; competencyList.length; i++) {
+        currentCompetency = competencyList[i];
+        pcp = new PapCompetencyPrediction();
+        pcp.setCompetencyId(currentCompetency);
+        pcp.setConfidence(competencyNetwork.getPrediction(i));
+        pcp.setConflictLevel(competencyNetwork.getConflictLevel(i));
+        pcp.setConflictClass(competencyNetwork.getConflictClass(i));
+        this.predictions.push(pcp);
+    }
 };
-NodePacketGraph = stjs.extend(NodePacketGraph, null, [], function(constructor, prototype) {
-    prototype.nodePacketList = null;
-    prototype.nodePacketMap = null;
-    prototype.relationList = null;
-    prototype.initNodePacketGraph = function(nodes) {
-        var np;
-        var n;
-        this.nodePacketList = new Array();
-        this.nodePacketMap = {};
-        this.relationList = new Array();
-        for (var i = 0; i &lt; nodes.length; i++) {
-            n = nodes[i];
-            np = new NodePacket();
-            np.addNode(n);
-            this.nodePacketList.push(np);
-            this.nodePacketMap[n.getId()] = np;
-        }
+PapNetworkPrediction = stjs.extend(PapNetworkPrediction, null, [], function(constructor, prototype) {
+    prototype.predictionDate = null;
+    prototype.subjectPem = null;
+    prototype.predictions = null;
+    prototype.getPredictionDate = function() {
+        return this.predictionDate;
     };
-    prototype.getNodePacketForNode = function(n) {
-        return this.nodePacketMap[n.getId()];
+    prototype.setPredictionDate = function(predictionDate) {
+        this.predictionDate = predictionDate;
     };
-    prototype.mergeNodePackets = function(packet1, packet2) {
-        if (packet1 != packet2) {
-            var n;
-            var na = packet2.getNodeList();
-            for (var i = 0; i &lt; na.length; i++) {
-                n = na[i];
-                packet1.addNode(n);
-                this.nodePacketMap[n.getId()] = packet1;
-            }
-            this.nodePacketList = ArrayUtil.arrayRemove(this.nodePacketList, packet2);
-        }
+    prototype.getSubjectPem = function() {
+        return this.subjectPem;
     };
-    prototype.getNodePacketList = function() {
-        return this.nodePacketList;
+    prototype.setSubjectPem = function(subjectPem) {
+        this.subjectPem = subjectPem;
     };
-    prototype.setNodePacketList = function(nodePacketList) {
-        this.nodePacketList = nodePacketList;
+    prototype.getPredictions = function() {
+        return this.predictions;
     };
-    prototype.getRelationList = function() {
-        return this.relationList;
+    prototype.setPredictions = function(predictions) {
+        this.predictions = predictions;
     };
-    prototype.setRelationList = function(relationList) {
-        this.relationList = relationList;
+    prototype.getJsonString = function() {
+        return JSON.stringify(this);
     };
-    prototype.addNodePacket = function(np) {
-        this.nodePacketList.push(np);
-    };
-    prototype.addRelation = function(sourceNodePacket, targetNodePacket, relationType) {
-        var newPacketRelation = new PacketRelation(sourceNodePacket, targetNodePacket, relationType);
-        this.relationList.push(newPacketRelation);
-    };
-    prototype.buildPacketRelationsFromNodeRelations = function(nodeRelationList) {
-        var sourceNodePacket;
-        var targetNodePacket;
-        var nr;
-        for (var i = 0; i &lt; nodeRelationList.length; i++) {
-            nr = nodeRelationList[i];
-            sourceNodePacket = this.getNodePacketForNode(nr.getSource());
-            targetNodePacket = this.getNodePacketForNode(nr.getTarget());
-            if (sourceNodePacket != targetNodePacket) 
-                this.addRelation(sourceNodePacket, targetNodePacket, nr.getType());
-        }
-    };
-    prototype.toStringGraphAll = function() {
-        var ret = &quot;&quot;;
-        ret = ret + &quot;&gt;&gt; Packets: \n&quot;;
-        var np;
-        for (var i = 0; i &lt; this.nodePacketList.length; i++) {
-            np = this.nodePacketList[i];
-            ret = ret + &quot;   &quot; + np.toString() + &quot;\n&quot;;
-        }
-        var pr;
-        if (this.relationList.length &gt; 0) {
-            ret = ret + &quot;&gt;&gt;Relationships: &gt;\n&quot;;
-            for (var i = 0; i &lt; this.relationList.length; i++) {
-                pr = this.relationList[i];
-                ret = ret + &quot;   &quot; + pr.toString() + &quot;\n&quot;;
-            }
-        } else {
-            ret = ret + &quot;&gt;&gt;NO RELATIONS EXIST!&quot;;
-        }
-        return ret;
-    };
-}, {nodePacketList: {name: &quot;Array&quot;, arguments: [&quot;NodePacket&quot;]}, nodePacketMap: {name: &quot;Map&quot;, arguments: [null, &quot;NodePacket&quot;]}, relationList: {name: &quot;Array&quot;, arguments: [&quot;PacketRelation&quot;]}}, {});
-var TrustCoprocessor = function() {
-    AssertionCoprocessor.call(this);
-};
-TrustCoprocessor = stjs.extend(TrustCoprocessor, AssertionCoprocessor, [], function(constructor, prototype) {
-    prototype.agent = null;
-    prototype.multiplier = 1.0;
-    prototype.removeNoConfidence = false;
-    prototype.mutateAssertions = function(ip, listOfCompetencies, success) {
-        var keys = EcObject.keys(this.assertionProcessor.assertions);
-        for (var keyIndex = 0; keyIndex &lt; keys.length; keyIndex++) {
-            var ary = (this.assertionProcessor.assertions)[keys[keyIndex]];
-            for (var i = 0; i &lt; ary.length; i++) {
-                var a = ary[i];
-                if (a.getAgent().toPem() == this.agent.toPem()) {
-                    a.confidence = a.confidence * this.multiplier;
-                    if (this.removeNoConfidence &amp;&amp; a.confidence == 0.0) 
-                        ary.splice(i--, 1);
-                }
-            }
-        }
-        success();
-    };
-}, {agent: &quot;EcPk&quot;, assertionProcessor: &quot;AssertionProcessor&quot;}, {});
+}, {predictions: {name: &quot;Array&quot;, arguments: [&quot;PapCompetencyPrediction&quot;]}}, {});
 var OpenBadgeCoprocessor = function() {
     AssertionCoprocessor.call(this);
 };
@@ -3384,390 +3703,6 @@ OpenBadgeCoprocessor = stjs.extend(OpenBadgeCoprocessor, AssertionCoprocessor, [
         });
     };
 }, {badgePluginIdentifier: &quot;EcPk&quot;, assertionProcessor: &quot;AssertionProcessor&quot;}, {});
-/**
- *  Processor used in Assertion Processing. Can estimate or determine competence
- *  of individuals.
- * 
- *  @author fritz.ray@eduworks.com
- *  @author tom.buskirk@eduworks.com
- *  @class AssertionProcessor
- *  @module org.cassproject
- */
-var AssertionProcessor = function() {
-    this.repositories = new Array();
-    this.coprocessors = new Array();
-    this.step = AssertionProcessor.DEF_STEP;
-    this.profileMode = false;
-};
-AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(constructor, prototype) {
-    constructor.DEF_STEP = false;
-    prototype.repositories = null;
-    prototype.step = false;
-    prototype.profileMode = false;
-    prototype.logFunction = null;
-    prototype.assertions = null;
-    prototype.coprocessors = null;
-    prototype.processedEquivalencies = null;
-    prototype.context = null;
-    prototype.assertionsCollected = false;
-    prototype.log = function(ip, string) {
-        if (this.logFunction != null) {
-            var id = &quot;&quot;;
-            if (ip.competency != null &amp;&amp; ip.competency.length &gt; 0) 
-                id = ip.competency[0].shortId() + &quot;:&quot;;
-            this.logFunction(new Date().getTime() % 100000 + &quot;: &quot; + string);
-        }
-        ip.log += &quot;\n&quot; + string;
-    };
-    /**
-     *  Asynchronously processes and provides an answer to the question: Does an
-     *  individual hold a competency?
-     * 
-     *  @param {EcPk[]}                  subject Public keys that identify the subject.
-     *  @param {EcCompetency}            competency The Competency being inquired about.
-     *  @param {EcLevel}                 level The Level of the Competency at which the question
-     *                                   is being asked.
-     *  @param {EcFramework}             context The Framework in which to scope the inquiry.
-     *  @param {EbacSignature[]}         additionalSignatures Additional signatures
-     *                                   provided by an authority, used to request additional access on a one-time
-     *                                   basis.
-     *  @param {function(InquiryPacket)} success The method that is invoked when
-     *                                   a decision has been reached.
-     *  @param {string                   function(string)} ask The method that is invoked when the
-     *                                   assertion processor detects that it needs information. (Usernames,
-     *                                   passwords, etc)
-     *  @param {function(string)}        failure The method that is invoked when the
-     *                                   assertion processor has failed.
-     *  @method has
-     */
-    prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
-        var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
-        ip.root = true;
-        this.processedEquivalencies = {};
-        this.assertions = null;
-        this.context = context;
-        this.log(ip, &quot;Created new inquiry.&quot;);
-        var me = this;
-        this.continueProcessingFirstPass(ip);
-    };
-    prototype.collectAssertionsForSecondPass = function(ip, success) {
-        this.assertionsCollected = true;
-        var listOfActivatedCompetencies = new Array();
-        this.collectCompetencies(ip, listOfActivatedCompetencies, new Array());
-        var me = this;
-        listOfActivatedCompetencies.sort(function(a, b) {
-            return b.compareTo(a);
-        });
-        var eah = new EcAsyncHelper();
-        eah.each(this.repositories, function(currentRepository, callback0) {
-            var searchQuery = me.buildAssertionsSearchQuery(ip, listOfActivatedCompetencies);
-            me.log(ip, &quot;Querying repositories for subject assertions on &quot; + listOfActivatedCompetencies.length + &quot; competencies: &quot; + searchQuery);
-            var params = new Object();
-            (params)[&quot;size&quot;] = 5000;
-            EcAssertion.search(currentRepository, searchQuery, function(p1) {
-                me.log(ip, p1.length + &quot; assertions found.&quot;);
-                me.assertions = new Object();
-                for (var i = 0; i &lt; p1.length; i++) {
-                    var a = p1[i];
-                    var competency = EcRemoteLinkedData.trimVersionFromUrl(a.competency);
-                    if ((me.assertions)[competency] == null) 
-                        (me.assertions)[competency] = new Array();
-                    var as = (me.assertions)[competency];
-                    as.push(a);
-                }
-                callback0();
-            }, function(p1) {
-                callback0();
-            }, params);
-        }, function(strings) {
-            var eah2 = new EcAsyncHelper();
-            eah2.each(me.coprocessors, function(ac, callback00) {
-                ac.assertionProcessor = me;
-                ac.collectAssertions(ip, listOfActivatedCompetencies, function(assertions) {
-                    for (var i = 0; i &lt; assertions.length; i++) {
-                        var a = assertions[i];
-                        var competency = EcRemoteLinkedData.trimVersionFromUrl(a.competency);
-                        if ((me.assertions)[competency] == null) 
-                            (me.assertions)[competency] = new Array();
-                        var as = (me.assertions)[competency];
-                        as.push(a);
-                    }
-                    callback00();
-                });
-            }, function(strings) {
-                var eah3 = new EcAsyncHelper();
-                eah3.each(me.coprocessors, function(ac, callback000) {
-                    ac.assertionProcessor = me;
-                    ac.mutateAssertions(ip, listOfActivatedCompetencies, callback000);
-                }, function(strings) {
-                    success(ip);
-                });
-            });
-        });
-    };
-    prototype.isIn = function(ip, alreadyDone) {
-        for (var i = 0; i &lt; alreadyDone.length; i++) 
-            if (ip == alreadyDone[i]) 
-                return true;
-        return false;
-    };
-    prototype.continueProcessingSecondPass = function(ip) {
-        if (!ip.hasCheckedAssertionsForCompetency) 
-            if (this.findSubjectAssertionsForCompetency(ip)) 
-                if (EcRemote.async) 
-                    return true;
-        if (this.processChildPacketsSecondPass(ip.equivalentPackets)) 
-            if (EcRemote.async) 
-                return true;
-        if (this.processChildPacketsSecondPass(ip.subPackets)) 
-            if (EcRemote.async) 
-                return true;
-        if (ip.result == null) {
-            this.determineResult(ip);
-            this.log(ip, &quot;Determined Result:&quot; + ip.result);
-            this.log(ip, &quot;Success:&quot; + ip.success);
-            if (ip.result != null &amp;&amp; ip.success != null) {
-                this.log(ip, &quot;Running success:&quot; + ip.result);
-                ip.success(ip);
-            }
-            if (EcRemote.async) 
-                return true;
-        }
-        return false;
-    };
-    prototype.continueProcessingFirstPass = function(ip) {
-        if (!ip.finished) {
-            if (!ip.hasCheckedRelationshipsForCompetency) {
-                this.findCompetencyRelationships(ip);
-                if (EcRemote.async) 
-                    return true;
-            }
-            if (!ip.hasCheckedRollupRulesForCompetency) {
-                this.findRollupRulesForCompetency(ip);
-                if (EcRemote.async) 
-                    return true;
-            }
-            if (this.processChildPackets(ip.equivalentPackets)) 
-                return true;
-            if (this.processChildPackets(ip.subPackets)) 
-                return true;
-            ip.finished = true;
-            if (!this.assertionsCollected) 
-                if (ip.root) {
-                    var me = this;
-                    this.collectAssertionsForSecondPass(ip, function(p1) {
-                        me.continueProcessingSecondPass(ip);
-                    });
-                    if (EcRemote.async) 
-                        return true;
-                } else 
-                    ip.success(ip);
-        }
-        if (ip.finished) 
-            if (this.assertions != null) 
-                return this.continueProcessingSecondPass(ip);
-        return false;
-    };
-    prototype.determineResult = function(ip) {};
-    prototype.findCompetencyRelationships = function(ip) {};
-    prototype.findSubjectAssertionsForCompetency = function(ip) {};
-    prototype.processChildPackets = function(childPackets) {
-        if (childPackets != null) 
-            for (var i = 0; i &lt; childPackets.length; i++) 
-                if (this.continueProcessingFirstPass(childPackets[i])) 
-                    return true;
-        return false;
-    };
-    prototype.checkStep = function(ip) {
-        this.log(ip, &quot;Checkstep First Pass: &quot; + ip.numberOfQueriesRunning);
-        if (ip.numberOfQueriesRunning == 0) 
-            if (!this.step &amp;&amp; EcRemote.async) 
-                this.continueProcessingFirstPass(ip);
-    };
-    prototype.processChildPacketsSecondPass = function(childPackets) {
-        if (childPackets != null) 
-            for (var i = 0; i &lt; childPackets.length; i++) 
-                if (this.continueProcessingSecondPass(childPackets[i])) 
-                    return true;
-        return false;
-    };
-    prototype.checkStepSecondPass = function(ip) {
-        this.log(ip, &quot;Checkstep Second Pass: &quot; + ip.numberOfQueriesRunning);
-        if (ip.numberOfQueriesRunning == 0) 
-            if (!this.step &amp;&amp; EcRemote.async) 
-                this.continueProcessingSecondPass(ip);
-    };
-    prototype.processEventFailure = function(message, ip) {
-        this.log(ip, &quot;Event failed: &quot; + message);
-        ip.numberOfQueriesRunning--;
-        ip.failure(message);
-    };
-    prototype.logFoundAssertion = function(a, ip) {
-        this.log(ip, &quot;No issues found with assertion.&quot;);
-        this.log(ip, &quot;Record Id: &quot; + a.shortId());
-        this.log(ip, &quot;Confidence: &quot; + a.confidence);
-        this.log(ip, &quot;Number of pieces of evidence: &quot; + a.getEvidenceCount());
-        this.log(ip, &quot;Recording in inquiry.&quot;);
-    };
-    prototype.buildAssertionSearchQuery = function(ip, competency) {
-        var result = null;
-        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
-            if (ip.rule.indexOf(&quot;AND &quot;) == 0) 
-                ip.rule = ip.rule.replace(&quot;AND &quot;, &quot;&quot;);
-            result = &quot;(&quot; + new EcAssertion().getSearchStringByType() + &quot;) AND (&quot; + ip.rule + &quot;)&quot;;
-        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
-            result = new EcAssertion().getSearchStringByTypeAndCompetency(competency);
-        for (var i = 0; i &lt; ip.subject.length; i++) 
-            result += &quot; AND (\\*@reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
-        this.log(ip, &quot;Search Query: &quot; + result);
-        if (result != null) 
-            return result;
-         throw new RuntimeException(&quot;Trying to build an assertion search query on an unsupported type: &quot; + ip.type);
-    };
-    prototype.buildAssertionsSearchQuery = function(ip, competencies) {
-        var result = null;
-        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
-            ip.failure(&quot;NOT SUPPOSED TO BE HERE.&quot;);
-             throw new RuntimeException(&quot;Collecting assertions when root node is a rollup rule. Not supported.&quot;);
-        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
-            result = &quot;(&quot;;
-            for (var i = 0; i &lt; competencies.length; i++) {
-                if (i != 0) 
-                    result += &quot; OR &quot;;
-                result += &quot;competency:\&quot;&quot; + competencies[i] + &quot;\&quot;&quot;;
-            }
-            result += &quot;)&quot;;
-        }
-        for (var i = 0; i &lt; ip.subject.length; i++) 
-            result += &quot; AND (\\*@reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
-        if (result != null) 
-            return result;
-         throw new RuntimeException(&quot;Trying to build an assertion search query on an unsupported type: &quot; + ip.type);
-    };
-    prototype.processRelationshipPacketsGenerated = function(ip, competency) {
-        this.log(ip, &quot;Relationships succesfully processed for: &quot; + competency.id);
-        ip.numberOfQueriesRunning--;
-        this.checkStep(ip);
-    };
-    prototype.processRollupRuleInterpretSuccess = function(status, ip) {
-        this.log(ip, &quot;Rollup rule successfully interpreted.&quot;);
-        ip.numberOfQueriesRunning--;
-        this.checkStep(ip);
-    };
-    prototype.processRollupRuleInterpretSkipped = function(ip) {
-        this.log(ip, &quot;Rollup rule skipped.&quot;);
-        ip.numberOfQueriesRunning--;
-        this.checkStep(ip);
-    };
-    prototype.findRollupRulesForCompetency = function(ip) {
-        ip.hasCheckedRollupRulesForCompetency = true;
-        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
-            this.log(ip, &quot;No rollup rules for combinator types&quot;);
-            this.checkStep(ip);
-            return;
-        }
-        var ep = this;
-        if (ip.getContext().rollupRule == null) {
-            if (EcRemote.async) 
-                this.continueProcessingFirstPass(ip);
-        } else 
-            for (var i = 0; i &lt; ip.getContext().rollupRule.length; i++) {
-                ip.numberOfQueriesRunning++;
-                EcRollupRule.get(ip.getContext().rollupRule[i], function(rr) {
-                    ep.processFindRollupRuleSuccess(rr, ip);
-                }, function(p1) {
-                    ep.processEventFailure(p1, ip);
-                });
-            }
-    };
-    prototype.processFindRollupRuleSuccess = function(rr, ip) {};
-    prototype.collectCompetencies = function(ip, listOfActivatedCompetencies, listOfVisitedPackets) {
-        if (this.profileMode) {
-            for (var i = 0; i &lt; this.context.competency.length; i++) 
-                listOfActivatedCompetencies.push(this.context.competency[i]);
-            return;
-        }
-        for (var i = 0; i &lt; listOfVisitedPackets.length; i++) 
-            if (ip == listOfVisitedPackets[i]) 
-                return;
-        listOfVisitedPackets.push(ip);
-        for (var i = 0; i &lt; ip.competency.length; i++) {
-            for (var j = 0; j &lt; listOfActivatedCompetencies.length; j++) 
-                if (ip.competency[i].shortId() == listOfActivatedCompetencies[j]) 
-                    continue;
-            listOfActivatedCompetencies.push(ip.competency[i].shortId());
-        }
-        for (var i = 0; i &lt; ip.equivalentPackets.length; i++) 
-            this.collectCompetencies(ip.equivalentPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
-        for (var i = 0; i &lt; ip.subPackets.length; i++) 
-            this.collectCompetencies(ip.subPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
-    };
-}, {repositories: {name: &quot;Array&quot;, arguments: [&quot;EcRepository&quot;]}, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, assertions: &quot;Object&quot;, coprocessors: {name: &quot;Array&quot;, arguments: [&quot;AssertionCoprocessor&quot;]}, processedEquivalencies: {name: &quot;Map&quot;, arguments: [null, null]}, context: &quot;EcFramework&quot;}, {});
-var RollupRuleProcessor = function(ip, ep) {
-    this.ip = ip;
-    this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
-};
-RollupRuleProcessor = stjs.extend(RollupRuleProcessor, null, [], function(constructor, prototype) {
-    prototype.success = null;
-    prototype.failure = null;
-    prototype.logFunction = null;
-    prototype.positive = null;
-    prototype.negative = null;
-    prototype.onQueryExitResult = null;
-    prototype.query = null;
-    prototype.rollupRulePacketGenerator = null;
-    prototype.s = null;
-    prototype.tok = null;
-    prototype.que = null;
-    prototype.ip = null;
-    prototype.log = function(string) {
-        if (this.logFunction != null) 
-            this.logFunction(string);
-    };
-    prototype.enterS = function(ctx) {
-        if (this.s != null) 
-             throw new RuntimeException(&quot;We found another S in our S.&quot;);
-        this.s = new RrS();
-    };
-    prototype.exitS = function(ctx) {
-        this.ip.subPackets.push(this.rollupRulePacketGenerator.generatePacket());
-    };
-    prototype.enterToken = function(ctx) {
-        this.s.addToken(this.tok = new RrToken());
-    };
-    prototype.exitToken = function(ctx) {};
-    prototype.enterQuery = function(ctx) {
-        this.s.addQuery(this.que = new RrQuery());
-        this.query = &quot;&quot;;
-        this.onQueryExitResult = null;
-    };
-    prototype.exitQuery = function(ctx) {
-        this.que.query = this.query.trim();
-        this.log(&quot;ADDING QUERY: &quot; + this.query.trim());
-        this.rollupRulePacketGenerator.addQuery(this.query.trim());
-    };
-    prototype.exitInnerquery = function(ctx) {
-        if (ctx.cLogic != null) 
-            this.query += &quot; &quot; + ctx.cLogic.text + &quot; &quot;;
-        if (ctx.cValue != null) {
-            this.query += ctx.cKey.text + &quot;&quot; + ctx.cOperator.text + &quot;\&quot;&quot; + ctx.cValue.text + &quot;\&quot; &quot;;
-        }
-        if (ctx.cNumber != null) {
-            this.query += ctx.cKey.text + &quot;&quot; + ctx.cOperator.text + &quot;&quot; + ctx.cNumber.text + &quot; &quot;;
-        }
-    };
-    prototype.exitLogical_or_math_operator = function(ctx) {
-        if (ctx.cLogic != null) {
-            if (&quot;AND&quot; == ctx.cLogic.text.toUpperCase()) {
-                this.log(&quot;ADDING OPERATION: &quot; + RollupRulePacketGenerator.OperationType.AND);
-                this.rollupRulePacketGenerator.addQueryOperation(RollupRulePacketGenerator.OperationType.AND);
-            } else if (&quot;OR&quot; == ctx.cLogic.text.toUpperCase()) {
-                this.log(&quot;ADDING OPERATION: &quot; + RollupRulePacketGenerator.OperationType.OR);
-                this.rollupRulePacketGenerator.addQueryOperation(RollupRulePacketGenerator.OperationType.OR);
-            }
-        }
-    };
-}, {success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, positive: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, negative: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, rollupRulePacketGenerator: &quot;RollupRulePacketGenerator&quot;, s: &quot;RrS&quot;, tok: &quot;RrToken&quot;, que: &quot;RrQuery&quot;, ip: &quot;InquiryPacket&quot;}, {});
 var TestGraphBuilder = function() {};
 TestGraphBuilder = stjs.extend(TestGraphBuilder, null, [], function(constructor, prototype) {
     constructor.buildTest0 = function(graph) {
@@ -3970,6 +3905,182 @@ TestGraphBuilder = stjs.extend(TestGraphBuilder, null, [], function(constructor,
         return graph;
     };
 }, {}, {});
+var RollupRuleProcessor = function(ip, ep) {
+    this.ip = ip;
+    this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
+};
+RollupRuleProcessor = stjs.extend(RollupRuleProcessor, null, [], function(constructor, prototype) {
+    prototype.success = null;
+    prototype.failure = null;
+    prototype.logFunction = null;
+    prototype.positive = null;
+    prototype.negative = null;
+    prototype.onQueryExitResult = null;
+    prototype.query = null;
+    prototype.rollupRulePacketGenerator = null;
+    prototype.s = null;
+    prototype.tok = null;
+    prototype.que = null;
+    prototype.ip = null;
+    prototype.log = function(string) {
+        if (this.logFunction != null) 
+            this.logFunction(string);
+    };
+    prototype.enterS = function(ctx) {
+        if (this.s != null) 
+             throw new RuntimeException(&quot;We found another S in our S.&quot;);
+        this.s = new RrS();
+    };
+    prototype.exitS = function(ctx) {
+        this.ip.subPackets.push(this.rollupRulePacketGenerator.generatePacket());
+    };
+    prototype.enterToken = function(ctx) {
+        this.s.addToken(this.tok = new RrToken());
+    };
+    prototype.exitToken = function(ctx) {};
+    prototype.enterQuery = function(ctx) {
+        this.s.addQuery(this.que = new RrQuery());
+        this.query = &quot;&quot;;
+        this.onQueryExitResult = null;
+    };
+    prototype.exitQuery = function(ctx) {
+        this.que.query = this.query.trim();
+        this.log(&quot;ADDING QUERY: &quot; + this.query.trim());
+        this.rollupRulePacketGenerator.addQuery(this.query.trim());
+    };
+    prototype.exitInnerquery = function(ctx) {
+        if (ctx.cLogic != null) 
+            this.query += &quot; &quot; + ctx.cLogic.text + &quot; &quot;;
+        if (ctx.cValue != null) {
+            this.query += ctx.cKey.text + &quot;&quot; + ctx.cOperator.text + &quot;\&quot;&quot; + ctx.cValue.text + &quot;\&quot; &quot;;
+        }
+        if (ctx.cNumber != null) {
+            this.query += ctx.cKey.text + &quot;&quot; + ctx.cOperator.text + &quot;&quot; + ctx.cNumber.text + &quot; &quot;;
+        }
+    };
+    prototype.exitLogical_or_math_operator = function(ctx) {
+        if (ctx.cLogic != null) {
+            if (&quot;AND&quot; == ctx.cLogic.text.toUpperCase()) {
+                this.log(&quot;ADDING OPERATION: &quot; + RollupRulePacketGenerator.OperationType.AND);
+                this.rollupRulePacketGenerator.addQueryOperation(RollupRulePacketGenerator.OperationType.AND);
+            } else if (&quot;OR&quot; == ctx.cLogic.text.toUpperCase()) {
+                this.log(&quot;ADDING OPERATION: &quot; + RollupRulePacketGenerator.OperationType.OR);
+                this.rollupRulePacketGenerator.addQueryOperation(RollupRulePacketGenerator.OperationType.OR);
+            }
+        }
+    };
+}, {success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, positive: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, negative: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, rollupRulePacketGenerator: &quot;RollupRulePacketGenerator&quot;, s: &quot;RrS&quot;, tok: &quot;RrToken&quot;, que: &quot;RrQuery&quot;, ip: &quot;InquiryPacket&quot;}, {});
+var CyclicGraphCollapser = function() {};
+CyclicGraphCollapser = stjs.extend(CyclicGraphCollapser, null, [], function(constructor, prototype) {
+    prototype.nodesProcessed = null;
+    prototype.visitedNodes = null;
+    prototype.buildNarrowsIsRequiredByEqualsMap = function(graph) {
+        var relationMap = new NodeRelationMap();
+        var n;
+        var nodeList = graph.getNodeList();
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            n = nodeList[i];
+            relationMap.addNodeRelations(n, graph.getNarrowsIsRequiredByEqualsRelationListForNode(n));
+        }
+        return relationMap;
+    };
+    prototype.buildBroadensRequiresEqualsMap = function(graph) {
+        var relationMap = new NodeRelationMap();
+        var n;
+        var nodeList = graph.getNodeList();
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            n = nodeList[i];
+            relationMap.addNodeRelations(n, graph.getBroadensRequiresEqualsRelationListForNode(n));
+        }
+        return relationMap;
+    };
+    prototype.mergeEquivalentNodes = function(relationMap, npg) {
+        var nodeList = relationMap.getNodeList();
+        var nodeRelations;
+        var nr;
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            nodeRelations = relationMap.getRelationsForNode(nodeList[i]);
+            for (var j = 0; j &lt; nodeRelations.length; j++) {
+                nr = nodeRelations[j];
+                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO) {
+                    npg.mergeNodePackets(npg.getNodePacketForNode(nr.getSource()), npg.getNodePacketForNode(nr.getTarget()));
+                }
+            }
+        }
+    };
+    prototype.mergeCyclicNodes = function(startCycleNode, npg) {
+        var startingIdx = ArrayUtil.arrayLastIndexOf(this.visitedNodes, startCycleNode);
+        var partOfCycleNode;
+        for (var i = startingIdx + 1; i &lt; this.visitedNodes.length; i++) {
+            partOfCycleNode = this.visitedNodes[i];
+            if (partOfCycleNode != startCycleNode) {
+                npg.mergeNodePackets(npg.getNodePacketForNode(startCycleNode), npg.getNodePacketForNode(partOfCycleNode));
+            }
+        }
+    };
+    prototype.findCycles = function(n, relationMap, npg) {
+        if (ArrayUtil.arrayContains(this.visitedNodes, n)) {
+            this.mergeCyclicNodes(n, npg);
+        } else {
+            this.nodesProcessed.push(n);
+            var relationsToVisit = relationMap.getRelationsForNode(n);
+            if (relationsToVisit == null || relationsToVisit.length == 0) 
+                return;
+             else {
+                this.visitedNodes.push(n);
+                var nr;
+                for (var i = 0; i &lt; relationsToVisit.length; i++) {
+                    nr = relationsToVisit[i];
+                    this.findCycles(nr.getTarget(), relationMap, npg);
+                }
+                this.visitedNodes = ArrayUtil.arrayRemove(this.visitedNodes, n);
+            }
+        }
+    };
+    prototype.startFindCycles = function(relationMap, npg) {
+        var nodeList = relationMap.getNodeList();
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            this.visitedNodes = new Array();
+            this.findCycles(nodeList[i], relationMap, npg);
+        }
+    };
+    prototype.buildNodePacketGraph = function(relationMap) {
+        var npg = new NodePacketGraph();
+        npg.initNodePacketGraph(relationMap.getNodeList());
+        this.mergeEquivalentNodes(relationMap, npg);
+        this.nodesProcessed = new Array();
+        this.startFindCycles(relationMap, npg);
+        return npg;
+    };
+    prototype.mergeNodePacketGraphs = function(nirbeNpg, breNpg) {
+        var mergedNpg = nirbeNpg;
+        var np;
+        var nodePacketList = breNpg.getNodePacketList();
+        for (var i = 0; i &lt; nodePacketList.length; i++) {
+            np = nodePacketList[i];
+            if (np.getNodeCount() &gt; 1) {
+                var targetNodePacket = mergedNpg.getNodePacketForNode(np.getNodeList()[0]);
+                for (var j = 1; j &lt; np.getNodeList().length; j++) {
+                    mergedNpg.mergeNodePackets(targetNodePacket, mergedNpg.getNodePacketForNode(np.getNodeList()[j]));
+                }
+            }
+        }
+        return mergedNpg;
+    };
+    prototype.collapseGraph = function(graph) {
+        try {
+            var nirbeNrm = this.buildNarrowsIsRequiredByEqualsMap(graph);
+            var nirbeNpg = this.buildNodePacketGraph(nirbeNrm);
+            var breNrm = this.buildBroadensRequiresEqualsMap(graph);
+            var breNpg = this.buildNodePacketGraph(breNrm);
+            var finalNodePacketGraph = this.mergeNodePacketGraphs(nirbeNpg, breNpg);
+            finalNodePacketGraph.buildPacketRelationsFromNodeRelations(graph.getRelationList());
+            return finalNodePacketGraph;
+        }catch (e) {
+             throw e;
+        }
+    };
+}, {nodesProcessed: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, visitedNodes: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}}, {});
 var CompetencyGraphBuilder = function() {
     this.repositories = new Array();
     this.subjects = new Array();
@@ -4260,6 +4371,222 @@ CompetencyGraphBuilder = stjs.extend(CompetencyGraphBuilder, null, [], function(
         this.fetchFrameworkAndGo();
     };
 }, {success: {name: &quot;Callback1&quot;, arguments: [&quot;CompetencyGraph&quot;]}, failure: {name: &quot;Callback1&quot;, arguments: [&quot;ExceptionReturn&quot;]}, repositories: {name: &quot;Array&quot;, arguments: [&quot;EcRepository&quot;]}, subjects: {name: &quot;Array&quot;, arguments: [&quot;EcPk&quot;]}, competencyGraph: &quot;CompetencyGraph&quot;, frameworkRelationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}]}, frameworkRelationList: {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}, assertionList: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, assertionMap: {name: &quot;Map&quot;, arguments: [null, &quot;SimpleAssertion&quot;]}}, {});
+/**
+ *  Processor used in determining all the competencies a for which a user has assertions.
+ *  Utilizes EcFrameworkGraph
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ *  @class ProfileProcessor
+ *  @module org.cassproject
+ */
+var ProfileProcessor = function() {};
+ProfileProcessor = stjs.extend(ProfileProcessor, null, [], function(constructor, prototype) {
+    constructor.DEBUG = true;
+    prototype.profilePkPems = null;
+    prototype.repo = null;
+    prototype.successCallback = null;
+    prototype.failureCallback = null;
+    prototype.frameworksToProcess = 0;
+    prototype.frameworksProcessed = 0;
+    prototype.assertedFrameworkGraphs = null;
+    prototype.unfilteredAssertionList = null;
+    prototype.profileAssertions = null;
+    prototype.addedAssertionIds = null;
+    prototype.assertionCompetencies = null;
+    prototype.debugMessage = function(o) {
+        if (ProfileProcessor.DEBUG) 
+            console.log(o);
+    };
+    prototype.checkAllFrameworkGraphAssertionsHaveProcessed = function() {
+        this.debugMessage(&quot;checkAllFrameworkGraphAssertionsHaveProcessed&quot;);
+        this.debugMessage(&quot;frameworksProcessed: &quot; + this.frameworksProcessed);
+        if (this.frameworksProcessed &gt;= this.frameworksToProcess) {
+            this.debugMessage(&quot;All profile assertion framework graphs processed&quot;);
+            this.successCallback();
+        }
+    };
+    prototype.processFrameworkGraphAssertions = function(efg, framework) {
+        this.debugMessage(&quot;(&quot; + Date.now() + &quot;) Processing framework graph assertions for:&quot;);
+        this.debugMessage(framework.shortId());
+        this.debugMessage(framework.getName());
+        var me = this;
+        efg.processAssertionsBoolean(this.profileAssertions, function() {
+            me.frameworksProcessed++;
+            me.assertedFrameworkGraphs.push(efg);
+            me.checkAllFrameworkGraphAssertionsHaveProcessed();
+        }, function(err) {
+            me.handleFailedFrameworkGraphOperation(&quot;Process Graph: &quot; + err);
+        });
+    };
+    prototype.handleFailedFrameworkGraphOperation = function(err) {
+        this.debugMessage(&quot;handleFailedFrameworkGraphOperation: &quot; + err);
+        this.frameworksProcessed++;
+        this.checkAllFrameworkGraphAssertionsHaveProcessed();
+    };
+    prototype.buildProfileAssertionFrameworkGraph = function(framework) {
+        this.debugMessage(&quot;(&quot; + Date.now() + &quot;) Generating framework graph for:&quot;);
+        this.debugMessage(framework.shortId());
+        this.debugMessage(framework.getName());
+        var me = this;
+        var efg = new EcFrameworkGraph();
+        efg.addFramework(framework, this.repo, function() {
+            me.processFrameworkGraphAssertions(efg, framework);
+        }, function(err) {
+            me.handleFailedFrameworkGraphOperation(&quot;Build Graph: &quot; + err);
+        });
+    };
+    prototype.generateProfileAssertionFrameworkGraphs = function(profileAssertionFrameworks) {
+        if (profileAssertionFrameworks.length &lt;= 0) 
+            this.successCallback();
+         else {
+            this.frameworksToProcess = profileAssertionFrameworks.length;
+            this.debugMessage(&quot;Generating framework graphs...&quot;);
+            this.debugMessage(profileAssertionFrameworks);
+            for (var i = 0; i &lt; profileAssertionFrameworks.length; i++) {
+                this.buildProfileAssertionFrameworkGraph(profileAssertionFrameworks[i]);
+            }
+        }
+    };
+    prototype.buildAssertionCompetencyList = function() {
+        this.assertionCompetencies = new Array();
+        for (var i = 0; i &lt; this.profileAssertions.length; i++) {
+            var asr = this.profileAssertions[i];
+            if (!EcArray.has(this.assertionCompetencies, asr.competency)) {
+                this.assertionCompetencies.push(asr.competency);
+            }
+        }
+    };
+    prototype.getFrameworkSearchQueryForAssertionCompetencies = function() {
+        var searchQuery = &quot;&quot;;
+        if (this.assertionCompetencies.length &gt; 1) 
+            searchQuery = &quot;(&quot;;
+        for (var i = 0; i &lt; this.assertionCompetencies.length; i++) {
+            if (i &gt; 0) 
+                searchQuery += &quot; OR &quot;;
+            searchQuery += &quot;(competency:\&quot;&quot; + this.assertionCompetencies[i] + &quot;\&quot;)&quot;;
+        }
+        if (this.assertionCompetencies.length &gt; 1) 
+            searchQuery += &quot;)&quot;;
+        this.debugMessage(&quot;Framework search query: &quot; + searchQuery);
+        return searchQuery;
+    };
+    prototype.findFrameworksForProfileAssertions = function() {
+        this.unfilteredAssertionList = null;
+        this.buildAssertionCompetencyList();
+        this.debugMessage(&quot;Fetching Assertion Frameworks...&quot;);
+        var me = this;
+        EcFramework.search(this.repo, this.getFrameworkSearchQueryForAssertionCompetencies(), function(arrayOfEcFrameworks) {
+            me.debugMessage(&quot;Assertion Frameworks Fetched&quot;);
+            me.generateProfileAssertionFrameworkGraphs(arrayOfEcFrameworks);
+        }, me.failureCallback, null);
+    };
+    prototype.filterAssertionList = function() {
+        if (this.unfilteredAssertionList.length == 0) 
+            this.successCallback();
+         else {
+            var me = this;
+            var eah = new EcAsyncHelper();
+            eah.each(this.unfilteredAssertionList, function(assertion, done) {
+                assertion.getSubjectAsync(function(subject) {
+                    if (subject != null) {
+                        if (EcArray.has(me.profilePkPems, subject.toPem())) {
+                            if (!EcArray.has(me.addedAssertionIds, assertion.shortId())) {
+                                me.profileAssertions.push(assertion);
+                                me.addedAssertionIds.push(assertion.shortId());
+                            }
+                        }
+                    }
+                    done();
+                }, eah.failWithCallback(me.failureCallback, done));
+            }, function(aa) {
+                me.debugMessage(&quot;Assertions filtered&quot;);
+                me.debugMessage(me.profileAssertions);
+                me.findFrameworksForProfileAssertions();
+            });
+        }
+    };
+    prototype.isEnvelopeOwnedByProfileUser = function(asrEnv) {
+        if (asrEnv.owner == null) 
+            return false;
+        for (var i = 0; i &lt; asrEnv.owner.length; i++) {
+            if (EcArray.has(this.profilePkPems, asrEnv.owner[i])) 
+                return true;
+        }
+        return false;
+    };
+    prototype.isEncryptedAssertionEnvelope = function(asrEnv) {
+        return true;
+    };
+    prototype.processPotentialAssertionEnvelope = function(potAsrEnv) {
+        this.debugMessage(&quot;processPotentialAssertionEnvelope: &quot; + potAsrEnv.shortId());
+        if (this.isEncryptedAssertionEnvelope(potAsrEnv) &amp;&amp; this.isEnvelopeOwnedByProfileUser(potAsrEnv)) {
+            var nv = new EcEncryptedValue();
+            nv.copyFrom(potAsrEnv);
+            var aed = nv.decryptIntoObject();
+            var realAsrEnv = new AssertionEnvelope();
+            realAsrEnv.copyFrom(aed);
+            for (var i = 0; i &lt; realAsrEnv.assertion.length; i++) {
+                var eca = new EcAssertion();
+                eca.copyFrom(realAsrEnv.getAssertion(i));
+                this.unfilteredAssertionList.push(eca);
+            }
+        }
+    };
+    prototype.processAssertionEnvelopes = function(ecRldArray) {
+        this.debugMessage(&quot;Processing Assertion Envelopes...&quot;);
+        if (ecRldArray != null &amp;&amp; ecRldArray.length &gt; 0) {
+            for (var i = 0; i &lt; ecRldArray.length; i++) {
+                this.processPotentialAssertionEnvelope(ecRldArray[i]);
+            }
+        }
+        this.filterAssertionList();
+    };
+    prototype.fetchAssertionEnvelopes = function() {
+        this.debugMessage(&quot;Fetching Assertion Envelopes...&quot;);
+        var me = this;
+        this.repo.searchWithParams(new AssertionEnvelope().getSearchStringByType(), null, null, function(ecRldArray) {
+            me.debugMessage(&quot;Assertion Envelopes Fetched&quot;);
+            me.processAssertionEnvelopes(ecRldArray);
+        }, me.failureCallback);
+    };
+    prototype.getAssertionSearchQueryForProfilePkPems = function() {
+        var searchQuery = &quot;&quot;;
+        if (this.profilePkPems.length &gt; 1) 
+            searchQuery = &quot;(&quot;;
+        for (var i = 0; i &lt; this.profilePkPems.length; i++) {
+            if (i &gt; 0) 
+                searchQuery += &quot; OR &quot;;
+            searchQuery += &quot;(\\*@reader:\&quot;&quot; + this.profilePkPems[i] + &quot;\&quot;)&quot;;
+        }
+        if (this.profilePkPems.length &gt; 1) 
+            searchQuery += &quot;)&quot;;
+        this.debugMessage(&quot;Assertion search query: &quot; + searchQuery);
+        return searchQuery;
+    };
+    prototype.fetchProfileAssertions = function() {
+        this.debugMessage(&quot;Fetching Assertions...&quot;);
+        var me = this;
+        EcAssertion.search(this.repo, this.getAssertionSearchQueryForProfilePkPems(), function(arrayOfEcAssertions) {
+            me.debugMessage(&quot;Assertions Fetched&quot;);
+            if (arrayOfEcAssertions != null &amp;&amp; arrayOfEcAssertions.length &gt; 0) {
+                me.unfilteredAssertionList = arrayOfEcAssertions;
+            }
+            me.fetchAssertionEnvelopes();
+        }, me.failureCallback, null);
+    };
+    prototype.processProfileAssertions = function(repo, profilePkPems, success, failure) {
+        this.profilePkPems = profilePkPems;
+        this.repo = repo;
+        this.successCallback = success;
+        this.failureCallback = failure;
+        this.assertedFrameworkGraphs = new Array();
+        this.profileAssertions = new Array();
+        this.unfilteredAssertionList = new Array();
+        this.addedAssertionIds = new Array();
+        this.fetchProfileAssertions();
+    };
+}, {profilePkPems: {name: &quot;Array&quot;, arguments: [null]}, repo: &quot;EcRepository&quot;, successCallback: &quot;Callback0&quot;, failureCallback: {name: &quot;Callback1&quot;, arguments: [null]}, assertedFrameworkGraphs: {name: &quot;Array&quot;, arguments: [&quot;EcFrameworkGraph&quot;]}, unfilteredAssertionList: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, profileAssertions: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, addedAssertionIds: {name: &quot;Array&quot;, arguments: [null]}, assertionCompetencies: {name: &quot;Array&quot;, arguments: [null]}}, {});
 var PredictiveAssertionProcessor = function() {};
 PredictiveAssertionProcessor = stjs.extend(PredictiveAssertionProcessor, null, [], function(constructor, prototype) {
     constructor.LOG_ENABLED = false;
@@ -4611,333 +4938,6 @@ PredictiveAssertionProcessor = stjs.extend(PredictiveAssertionProcessor, null, [
         return this.competencePrediction;
     };
 }, {competencyIndex: {name: &quot;Map&quot;, arguments: [null, null]}, values: {name: &quot;Array&quot;, arguments: [null]}, dependencies: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapDependency&quot;]}]}]}, assertions: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapAssertion&quot;]}]}, dependencyDefs: &quot;PapDependencyDefinitions&quot;, settings: &quot;PapSettings&quot;, inputGraph: &quot;CompetencyGraph&quot;, competencyNetwork: &quot;PapCompetencyNetwork&quot;, competencePrediction: &quot;PapNetworkPrediction&quot;}, {});
-/**
- *  Processor used in determining all the competencies a for which a user has assertions.
- *  Utilizes EcFrameworkGraph
- * 
- *  @author fritz.ray@eduworks.com
- *  @author tom.buskirk@eduworks.com
- *  @class ProfileProcessor
- *  @module org.cassproject
- */
-var ProfileProcessor = function() {};
-ProfileProcessor = stjs.extend(ProfileProcessor, null, [], function(constructor, prototype) {
-    constructor.DEBUG = true;
-    prototype.profilePkPems = null;
-    prototype.repo = null;
-    prototype.successCallback = null;
-    prototype.failureCallback = null;
-    prototype.frameworksToProcess = 0;
-    prototype.frameworksProcessed = 0;
-    prototype.assertedFrameworkGraphs = null;
-    prototype.unfilteredAssertionList = null;
-    prototype.profileAssertions = null;
-    prototype.addedAssertionIds = null;
-    prototype.assertionCompetencies = null;
-    prototype.debugMessage = function(o) {
-        if (ProfileProcessor.DEBUG) 
-            console.log(o);
-    };
-    prototype.checkAllFrameworkGraphAssertionsHaveProcessed = function() {
-        this.debugMessage(&quot;checkAllFrameworkGraphAssertionsHaveProcessed&quot;);
-        this.debugMessage(&quot;frameworksProcessed: &quot; + this.frameworksProcessed);
-        if (this.frameworksProcessed &gt;= this.frameworksToProcess) {
-            this.debugMessage(&quot;All profile assertion framework graphs processed&quot;);
-            this.successCallback();
-        }
-    };
-    prototype.processFrameworkGraphAssertions = function(efg, framework) {
-        this.debugMessage(&quot;(&quot; + Date.now() + &quot;) Processing framework graph assertions for:&quot;);
-        this.debugMessage(framework.shortId());
-        this.debugMessage(framework.getName());
-        var me = this;
-        efg.processAssertionsBoolean(this.profileAssertions, function() {
-            me.frameworksProcessed++;
-            me.assertedFrameworkGraphs.push(efg);
-            me.checkAllFrameworkGraphAssertionsHaveProcessed();
-        }, function(err) {
-            me.handleFailedFrameworkGraphOperation(&quot;Process Graph: &quot; + err);
-        });
-    };
-    prototype.handleFailedFrameworkGraphOperation = function(err) {
-        this.debugMessage(&quot;handleFailedFrameworkGraphOperation: &quot; + err);
-        this.frameworksProcessed++;
-        this.checkAllFrameworkGraphAssertionsHaveProcessed();
-    };
-    prototype.buildProfileAssertionFrameworkGraph = function(framework) {
-        this.debugMessage(&quot;(&quot; + Date.now() + &quot;) Generating framework graph for:&quot;);
-        this.debugMessage(framework.shortId());
-        this.debugMessage(framework.getName());
-        var me = this;
-        var efg = new EcFrameworkGraph();
-        efg.addFramework(framework, this.repo, function() {
-            me.processFrameworkGraphAssertions(efg, framework);
-        }, function(err) {
-            me.handleFailedFrameworkGraphOperation(&quot;Build Graph: &quot; + err);
-        });
-    };
-    prototype.generateProfileAssertionFrameworkGraphs = function(profileAssertionFrameworks) {
-        if (profileAssertionFrameworks.length &lt;= 0) 
-            this.successCallback();
-         else {
-            this.frameworksToProcess = profileAssertionFrameworks.length;
-            this.debugMessage(&quot;Generating framework graphs...&quot;);
-            this.debugMessage(profileAssertionFrameworks);
-            for (var i = 0; i &lt; profileAssertionFrameworks.length; i++) {
-                this.buildProfileAssertionFrameworkGraph(profileAssertionFrameworks[i]);
-            }
-        }
-    };
-    prototype.buildAssertionCompetencyList = function() {
-        this.assertionCompetencies = new Array();
-        for (var i = 0; i &lt; this.profileAssertions.length; i++) {
-            var asr = this.profileAssertions[i];
-            if (!EcArray.has(this.assertionCompetencies, asr.competency)) {
-                this.assertionCompetencies.push(asr.competency);
-            }
-        }
-    };
-    prototype.getFrameworkSearchQueryForAssertionCompetencies = function() {
-        var searchQuery = &quot;&quot;;
-        if (this.assertionCompetencies.length &gt; 1) 
-            searchQuery = &quot;(&quot;;
-        for (var i = 0; i &lt; this.assertionCompetencies.length; i++) {
-            if (i &gt; 0) 
-                searchQuery += &quot; OR &quot;;
-            searchQuery += &quot;(competency:\&quot;&quot; + this.assertionCompetencies[i] + &quot;\&quot;)&quot;;
-        }
-        if (this.assertionCompetencies.length &gt; 1) 
-            searchQuery += &quot;)&quot;;
-        this.debugMessage(&quot;Framework search query: &quot; + searchQuery);
-        return searchQuery;
-    };
-    prototype.findFrameworksForProfileAssertions = function() {
-        this.unfilteredAssertionList = null;
-        this.buildAssertionCompetencyList();
-        this.debugMessage(&quot;Fetching Assertion Frameworks...&quot;);
-        var me = this;
-        EcFramework.search(this.repo, this.getFrameworkSearchQueryForAssertionCompetencies(), function(arrayOfEcFrameworks) {
-            me.debugMessage(&quot;Assertion Frameworks Fetched&quot;);
-            me.generateProfileAssertionFrameworkGraphs(arrayOfEcFrameworks);
-        }, me.failureCallback, null);
-    };
-    prototype.filterAssertionList = function() {
-        if (this.unfilteredAssertionList.length == 0) 
-            this.successCallback();
-         else {
-            var me = this;
-            var eah = new EcAsyncHelper();
-            eah.each(this.unfilteredAssertionList, function(assertion, done) {
-                assertion.getSubjectAsync(function(subject) {
-                    if (subject != null) {
-                        if (EcArray.has(me.profilePkPems, subject.toPem())) {
-                            if (!EcArray.has(me.addedAssertionIds, assertion.shortId())) {
-                                me.profileAssertions.push(assertion);
-                                me.addedAssertionIds.push(assertion.shortId());
-                            }
-                        }
-                    }
-                    done();
-                }, eah.failWithCallback(me.failureCallback, done));
-            }, function(aa) {
-                me.debugMessage(&quot;Assertions filtered&quot;);
-                me.debugMessage(me.profileAssertions);
-                me.findFrameworksForProfileAssertions();
-            });
-        }
-    };
-    prototype.isEnvelopeOwnedByProfileUser = function(asrEnv) {
-        if (asrEnv.owner == null) 
-            return false;
-        for (var i = 0; i &lt; asrEnv.owner.length; i++) {
-            if (EcArray.has(this.profilePkPems, asrEnv.owner[i])) 
-                return true;
-        }
-        return false;
-    };
-    prototype.isEncryptedAssertionEnvelope = function(asrEnv) {
-        return true;
-    };
-    prototype.processPotentialAssertionEnvelope = function(potAsrEnv) {
-        this.debugMessage(&quot;processPotentialAssertionEnvelope: &quot; + potAsrEnv.shortId());
-        if (this.isEncryptedAssertionEnvelope(potAsrEnv) &amp;&amp; this.isEnvelopeOwnedByProfileUser(potAsrEnv)) {
-            var nv = new EcEncryptedValue();
-            nv.copyFrom(potAsrEnv);
-            var aed = nv.decryptIntoObject();
-            var realAsrEnv = new AssertionEnvelope();
-            realAsrEnv.copyFrom(aed);
-            for (var i = 0; i &lt; realAsrEnv.assertion.length; i++) {
-                var eca = new EcAssertion();
-                eca.copyFrom(realAsrEnv.getAssertion(i));
-                this.unfilteredAssertionList.push(eca);
-            }
-        }
-    };
-    prototype.processAssertionEnvelopes = function(ecRldArray) {
-        this.debugMessage(&quot;Processing Assertion Envelopes...&quot;);
-        if (ecRldArray != null &amp;&amp; ecRldArray.length &gt; 0) {
-            for (var i = 0; i &lt; ecRldArray.length; i++) {
-                this.processPotentialAssertionEnvelope(ecRldArray[i]);
-            }
-        }
-        this.filterAssertionList();
-    };
-    prototype.fetchAssertionEnvelopes = function() {
-        this.debugMessage(&quot;Fetching Assertion Envelopes...&quot;);
-        var me = this;
-        this.repo.searchWithParams(new AssertionEnvelope().getSearchStringByType(), null, null, function(ecRldArray) {
-            me.debugMessage(&quot;Assertion Envelopes Fetched&quot;);
-            me.processAssertionEnvelopes(ecRldArray);
-        }, me.failureCallback);
-    };
-    prototype.getAssertionSearchQueryForProfilePkPems = function() {
-        var searchQuery = &quot;&quot;;
-        if (this.profilePkPems.length &gt; 1) 
-            searchQuery = &quot;(&quot;;
-        for (var i = 0; i &lt; this.profilePkPems.length; i++) {
-            if (i &gt; 0) 
-                searchQuery += &quot; OR &quot;;
-            searchQuery += &quot;(\\*@reader:\&quot;&quot; + this.profilePkPems[i] + &quot;\&quot;)&quot;;
-        }
-        if (this.profilePkPems.length &gt; 1) 
-            searchQuery += &quot;)&quot;;
-        this.debugMessage(&quot;Assertion search query: &quot; + searchQuery);
-        return searchQuery;
-    };
-    prototype.fetchProfileAssertions = function() {
-        this.debugMessage(&quot;Fetching Assertions...&quot;);
-        var me = this;
-        EcAssertion.search(this.repo, this.getAssertionSearchQueryForProfilePkPems(), function(arrayOfEcAssertions) {
-            me.debugMessage(&quot;Assertions Fetched&quot;);
-            if (arrayOfEcAssertions != null &amp;&amp; arrayOfEcAssertions.length &gt; 0) {
-                me.unfilteredAssertionList = arrayOfEcAssertions;
-            }
-            me.fetchAssertionEnvelopes();
-        }, me.failureCallback, null);
-    };
-    prototype.processProfileAssertions = function(repo, profilePkPems, success, failure) {
-        this.profilePkPems = profilePkPems;
-        this.repo = repo;
-        this.successCallback = success;
-        this.failureCallback = failure;
-        this.assertedFrameworkGraphs = new Array();
-        this.profileAssertions = new Array();
-        this.unfilteredAssertionList = new Array();
-        this.addedAssertionIds = new Array();
-        this.fetchProfileAssertions();
-    };
-}, {profilePkPems: {name: &quot;Array&quot;, arguments: [null]}, repo: &quot;EcRepository&quot;, successCallback: &quot;Callback0&quot;, failureCallback: {name: &quot;Callback1&quot;, arguments: [null]}, assertedFrameworkGraphs: {name: &quot;Array&quot;, arguments: [&quot;EcFrameworkGraph&quot;]}, unfilteredAssertionList: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, profileAssertions: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, addedAssertionIds: {name: &quot;Array&quot;, arguments: [null]}, assertionCompetencies: {name: &quot;Array&quot;, arguments: [null]}}, {});
-var CyclicGraphCollapser = function() {};
-CyclicGraphCollapser = stjs.extend(CyclicGraphCollapser, null, [], function(constructor, prototype) {
-    prototype.nodesProcessed = null;
-    prototype.visitedNodes = null;
-    prototype.buildNarrowsIsRequiredByEqualsMap = function(graph) {
-        var relationMap = new NodeRelationMap();
-        var n;
-        var nodeList = graph.getNodeList();
-        for (var i = 0; i &lt; nodeList.length; i++) {
-            n = nodeList[i];
-            relationMap.addNodeRelations(n, graph.getNarrowsIsRequiredByEqualsRelationListForNode(n));
-        }
-        return relationMap;
-    };
-    prototype.buildBroadensRequiresEqualsMap = function(graph) {
-        var relationMap = new NodeRelationMap();
-        var n;
-        var nodeList = graph.getNodeList();
-        for (var i = 0; i &lt; nodeList.length; i++) {
-            n = nodeList[i];
-            relationMap.addNodeRelations(n, graph.getBroadensRequiresEqualsRelationListForNode(n));
-        }
-        return relationMap;
-    };
-    prototype.mergeEquivalentNodes = function(relationMap, npg) {
-        var nodeList = relationMap.getNodeList();
-        var nodeRelations;
-        var nr;
-        for (var i = 0; i &lt; nodeList.length; i++) {
-            nodeRelations = relationMap.getRelationsForNode(nodeList[i]);
-            for (var j = 0; j &lt; nodeRelations.length; j++) {
-                nr = nodeRelations[j];
-                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO) {
-                    npg.mergeNodePackets(npg.getNodePacketForNode(nr.getSource()), npg.getNodePacketForNode(nr.getTarget()));
-                }
-            }
-        }
-    };
-    prototype.mergeCyclicNodes = function(startCycleNode, npg) {
-        var startingIdx = ArrayUtil.arrayLastIndexOf(this.visitedNodes, startCycleNode);
-        var partOfCycleNode;
-        for (var i = startingIdx + 1; i &lt; this.visitedNodes.length; i++) {
-            partOfCycleNode = this.visitedNodes[i];
-            if (partOfCycleNode != startCycleNode) {
-                npg.mergeNodePackets(npg.getNodePacketForNode(startCycleNode), npg.getNodePacketForNode(partOfCycleNode));
-            }
-        }
-    };
-    prototype.findCycles = function(n, relationMap, npg) {
-        if (ArrayUtil.arrayContains(this.visitedNodes, n)) {
-            this.mergeCyclicNodes(n, npg);
-        } else {
-            this.nodesProcessed.push(n);
-            var relationsToVisit = relationMap.getRelationsForNode(n);
-            if (relationsToVisit == null || relationsToVisit.length == 0) 
-                return;
-             else {
-                this.visitedNodes.push(n);
-                var nr;
-                for (var i = 0; i &lt; relationsToVisit.length; i++) {
-                    nr = relationsToVisit[i];
-                    this.findCycles(nr.getTarget(), relationMap, npg);
-                }
-                this.visitedNodes = ArrayUtil.arrayRemove(this.visitedNodes, n);
-            }
-        }
-    };
-    prototype.startFindCycles = function(relationMap, npg) {
-        var nodeList = relationMap.getNodeList();
-        for (var i = 0; i &lt; nodeList.length; i++) {
-            this.visitedNodes = new Array();
-            this.findCycles(nodeList[i], relationMap, npg);
-        }
-    };
-    prototype.buildNodePacketGraph = function(relationMap) {
-        var npg = new NodePacketGraph();
-        npg.initNodePacketGraph(relationMap.getNodeList());
-        this.mergeEquivalentNodes(relationMap, npg);
-        this.nodesProcessed = new Array();
-        this.startFindCycles(relationMap, npg);
-        return npg;
-    };
-    prototype.mergeNodePacketGraphs = function(nirbeNpg, breNpg) {
-        var mergedNpg = nirbeNpg;
-        var np;
-        var nodePacketList = breNpg.getNodePacketList();
-        for (var i = 0; i &lt; nodePacketList.length; i++) {
-            np = nodePacketList[i];
-            if (np.getNodeCount() &gt; 1) {
-                var targetNodePacket = mergedNpg.getNodePacketForNode(np.getNodeList()[0]);
-                for (var j = 1; j &lt; np.getNodeList().length; j++) {
-                    mergedNpg.mergeNodePackets(targetNodePacket, mergedNpg.getNodePacketForNode(np.getNodeList()[j]));
-                }
-            }
-        }
-        return mergedNpg;
-    };
-    prototype.collapseGraph = function(graph) {
-        try {
-            var nirbeNrm = this.buildNarrowsIsRequiredByEqualsMap(graph);
-            var nirbeNpg = this.buildNodePacketGraph(nirbeNrm);
-            var breNrm = this.buildBroadensRequiresEqualsMap(graph);
-            var breNpg = this.buildNodePacketGraph(breNrm);
-            var finalNodePacketGraph = this.mergeNodePacketGraphs(nirbeNpg, breNpg);
-            finalNodePacketGraph.buildPacketRelationsFromNodeRelations(graph.getRelationList());
-            return finalNodePacketGraph;
-        }catch (e) {
-             throw e;
-        }
-    };
-}, {nodesProcessed: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, visitedNodes: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}}, {});
 var CombinatorAssertionProcessor = function() {
     AssertionProcessor.call(this);
 };

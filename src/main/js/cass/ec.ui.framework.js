@@ -18,6 +18,146 @@
  * --END_LICENSE--
  */
 /**
+ *  Class that represents a "view" that can be displayed in an container element on the page. The View should define
+ *  a display function that loads HTML into the container element on the page and then finally calls the callback once
+ *  the view has been completely initialized
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module com.eduworks.ec.ui
+ *  @class EcView
+ */
+var EcView = function() {};
+EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
+    /**
+     *  Function to be defined in subclasses that returns the location of the main html file associated with this view
+     * 
+     *  @return {String}
+     *  The string path to an html file
+     *  @memberOf EcView
+     *  @method getHtmlLocation
+     *  @abstract
+     */
+    prototype.getHtmlLocation = function() {};
+    /**
+     *  Display function to override (usually in JavaScript) that will set up any event handlers
+     * 
+     *  @param {String} containerId
+     *  @memberOf EcView
+     *  @method display
+     */
+    prototype.display = function(containerId) {
+        console.error("Not Implemented");
+    };
+    /**
+     *  Function that will convert a view to a certain other view class as long as it the converted type inherits the
+     *  current type of the view
+     * 
+     *  @memberOf EcView
+     *  @method as
+     *  @param {Class} _interface
+     *  			Class type that the instance should be converted to
+     *  @return {Object}
+     *  			The converted instance of the type passed in
+     */
+    prototype.as = function(_interface) {
+        var prototype = (this)["__proto__"];
+        var constructor = (prototype)["constructor"];
+        var inherits = (constructor)["$inherit"];
+        if (inherits != null) 
+            for (var i = 0; i < inherits.length; i++) {
+                if (inherits[i] == _interface) {
+                    return this;
+                }
+            }
+        return null;
+    };
+    /**
+     *  Event that is called when the view is deleted, removed, or found to have no applicable selector.
+     *  Called upon screen change or when replacing a view with the same selector.
+     * 
+     *  @memberOf EcView
+     *  @method onClose
+     *  @return {Boolean} True if the view finished cleaning up after itself. False otherwise.
+     */
+    prototype.onClose = function() {
+        return true;
+    };
+    /**
+     *  Display this alert on the view.
+     * 
+     *  @memberOf EcView
+     *  @method displayAlert
+     *  @param {String} Error to display.
+     *  @param {String} Type of error.
+     */
+    prototype.displayAlert = function(err, type) {};
+    /**
+     *  Clear the alert.
+     * 
+     *  @memberOf EcView
+     *  @method clearAlert
+     *  @param {String} Type of error.
+     */
+    prototype.clearAlert = function(type) {};
+}, {}, {});
+/**
+ *  Object stored in the ScreenManager's history cache array, to keep track of the history of screens and
+ *  which DOM element they were displayed in
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module com.eduworks.ec.ui
+ *  @class HistoryClosure
+ */
+var HistoryClosure = /**
+ *  Constructor for the HistoryClosure Object
+ * 
+ *  @param {String}   name
+ *                    Page Name associated with this page (used for loading history screens)
+ *  @param {EcScreen} screen
+ *                    Screen to associate with the page name (to display when loading history screens)
+ *  @param {String}   containerId
+ *                    DOM Selector (ID) of the HTML container to display the screen in on load history
+ *  @param {Object}   params
+ *                    URL Params associated with the screen shown
+ *  @constructor
+ */
+function(name, screen, containerId, params) {
+    this.pageName = name;
+    this.screen = screen;
+    this.containerId = containerId;
+    this.screenParameters = params;
+};
+HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
+    /**
+     *  Name of the page (used to retrieve the correct screen on a back/forward button press)
+     * 
+     *  @property pageName
+     *  @type String
+     */
+    prototype.pageName = null;
+    /**
+     *  Screen to store and associate with the page name so that it can be loaded if necessary
+     * 
+     *  @property screen
+     *  @type EcScreen
+     */
+    prototype.screen = null;
+    /**
+     *  ID of the container to display the screen in, once it has been found by page name
+     * 
+     *  @property containerId
+     *  @type String
+     */
+    prototype.containerId = null;
+    /**
+     *  URL Parameters associated with the screen
+     * 
+     *  @property screenParameters
+     *  @type Object
+     */
+    prototype.screenParameters = null;
+}, {screen: "EcScreen", screenParameters: "Object"}, {});
+/**
  *  Parent class of all view manager classes, stores a cache of the views and
  *  their corresponding DOM selectors and provides functions for setting a view
  *  to correspond to a selector and displaying a view after it has been added to
@@ -113,146 +253,6 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 /**
- *  Object stored in the ScreenManager's history cache array, to keep track of the history of screens and
- *  which DOM element they were displayed in
- * 
- *  @author devlin.junker@eduworks.com
- *  @module com.eduworks.ec.ui
- *  @class HistoryClosure
- */
-var HistoryClosure = /**
- *  Constructor for the HistoryClosure Object
- * 
- *  @param {String}   name
- *                    Page Name associated with this page (used for loading history screens)
- *  @param {EcScreen} screen
- *                    Screen to associate with the page name (to display when loading history screens)
- *  @param {String}   containerId
- *                    DOM Selector (ID) of the HTML container to display the screen in on load history
- *  @param {Object}   params
- *                    URL Params associated with the screen shown
- *  @constructor
- */
-function(name, screen, containerId, params) {
-    this.pageName = name;
-    this.screen = screen;
-    this.containerId = containerId;
-    this.screenParameters = params;
-};
-HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
-    /**
-     *  Name of the page (used to retrieve the correct screen on a back/forward button press)
-     * 
-     *  @property pageName
-     *  @type String
-     */
-    prototype.pageName = null;
-    /**
-     *  Screen to store and associate with the page name so that it can be loaded if necessary
-     * 
-     *  @property screen
-     *  @type EcScreen
-     */
-    prototype.screen = null;
-    /**
-     *  ID of the container to display the screen in, once it has been found by page name
-     * 
-     *  @property containerId
-     *  @type String
-     */
-    prototype.containerId = null;
-    /**
-     *  URL Parameters associated with the screen
-     * 
-     *  @property screenParameters
-     *  @type Object
-     */
-    prototype.screenParameters = null;
-}, {screen: "EcScreen", screenParameters: "Object"}, {});
-/**
- *  Class that represents a "view" that can be displayed in an container element on the page. The View should define
- *  a display function that loads HTML into the container element on the page and then finally calls the callback once
- *  the view has been completely initialized
- * 
- *  @author devlin.junker@eduworks.com
- *  @module com.eduworks.ec.ui
- *  @class EcView
- */
-var EcView = function() {};
-EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
-    /**
-     *  Function to be defined in subclasses that returns the location of the main html file associated with this view
-     * 
-     *  @return {String}
-     *  The string path to an html file
-     *  @memberOf EcView
-     *  @method getHtmlLocation
-     *  @abstract
-     */
-    prototype.getHtmlLocation = function() {};
-    /**
-     *  Display function to override (usually in JavaScript) that will set up any event handlers
-     * 
-     *  @param {String} containerId
-     *  @memberOf EcView
-     *  @method display
-     */
-    prototype.display = function(containerId) {
-        console.error("Not Implemented");
-    };
-    /**
-     *  Function that will convert a view to a certain other view class as long as it the converted type inherits the
-     *  current type of the view
-     * 
-     *  @memberOf EcView
-     *  @method as
-     *  @param {Class} _interface
-     *  			Class type that the instance should be converted to
-     *  @return {Object}
-     *  			The converted instance of the type passed in
-     */
-    prototype.as = function(_interface) {
-        var prototype = (this)["__proto__"];
-        var constructor = (prototype)["constructor"];
-        var inherits = (constructor)["$inherit"];
-        if (inherits != null) 
-            for (var i = 0; i < inherits.length; i++) {
-                if (inherits[i] == _interface) {
-                    return this;
-                }
-            }
-        return null;
-    };
-    /**
-     *  Event that is called when the view is deleted, removed, or found to have no applicable selector.
-     *  Called upon screen change or when replacing a view with the same selector.
-     * 
-     *  @memberOf EcView
-     *  @method onClose
-     *  @return {Boolean} True if the view finished cleaning up after itself. False otherwise.
-     */
-    prototype.onClose = function() {
-        return true;
-    };
-    /**
-     *  Display this alert on the view.
-     * 
-     *  @memberOf EcView
-     *  @method displayAlert
-     *  @param {String} Error to display.
-     *  @param {String} Type of error.
-     */
-    prototype.displayAlert = function(err, type) {};
-    /**
-     *  Clear the alert.
-     * 
-     *  @memberOf EcView
-     *  @method clearAlert
-     *  @param {String} Type of error.
-     */
-    prototype.clearAlert = function(type) {};
-}, {}, {});
-/**
  *  STJS Wrapper for the Browser Native History Object
  * 
  *  @author devlin.junker@eduworks.com
@@ -262,98 +262,6 @@ HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, proto
     prototype.name = null;
     prototype.parameters = null;
 }, {parameters: "Object"}, {});
-/**
- *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that
- *  they work properly
- * 
- *  @author devlin.junker@eduworks.com
- *  @module com.eduworks.ec.ui
- *  @class ModalManager
- *  @extends ViewManager
- */
-var ModalManager = function() {
-    ViewManager.call(this);
-};
-ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, prototype) {
-    /**
-     *  DOM Selector (ID) of the container to display Modal's in
-     * 
-     *  @property MODAL_CONTAINER_ID
-     *  @type String
-     */
-    constructor.MODAL_CONTAINER_ID = "#modalContainer";
-    /**
-     *  Application flag that is set when a modal is open, so we can check from the application whether we're in a
-     *  modal or not.
-     * 
-     *  @property inModal
-     *  @type boolean
-     */
-    constructor.inModal = false;
-    /**
-     *  Retrieves the current view that corresponds to the Modal Container Element (Should be a Modal)
-     * 
-     *  @return {EcModal}
-     *  EcModal instance that is currently being shown in the Modal container element
-     *  @memberOf ModalManager
-     *  @method getCurrentModal
-     *  @static
-     */
-    constructor.getCurrentModal = function() {
-        return ViewManager.getView(ModalManager.MODAL_CONTAINER_ID);
-    };
-    /**
-     *  Sets the current modal and then shows it by calling the modals display function
-     * 
-     *  @param {EcModal}   modal
-     *                     Modal Instance to be displayed in the modal container and set as current
-     *  @param {Callback0} callback
-     *                     Function to invoke after the modal has been displayed
-     *  @memberOf ModalManager
-     *  @method showModal
-     *  @static
-     */
-    constructor.showModal = function(modal, callback) {
-        $(ModalManager.MODAL_CONTAINER_ID).removeClass("tiny");
-        $(ModalManager.MODAL_CONTAINER_ID).removeClass("small");
-        $(ModalManager.MODAL_CONTAINER_ID).removeClass("medium");
-        $(ModalManager.MODAL_CONTAINER_ID).removeClass("large");
-        $(ModalManager.MODAL_CONTAINER_ID).removeClass("full");
-        var modalSize = modal.getModalSize();
-        if (modalSize == "tiny" || modalSize == "small" || modalSize == "medium" || modalSize == "large" || modalSize == "full") {
-            $(ModalManager.MODAL_CONTAINER_ID).addClass(modalSize);
-        } else {
-            $(ModalManager.MODAL_CONTAINER_ID).addClass("small");
-        }
-        ViewManager.showView(modal, ModalManager.MODAL_CONTAINER_ID, function() {
-            ($(ModalManager.MODAL_CONTAINER_ID)).foundation();
-            ($(ModalManager.MODAL_CONTAINER_ID)).foundation("open");
-            ModalManager.inModal = true;
-            if (callback != null) {
-                callback();
-            }
-        });
-    };
-    /**
-     *  Hides the modal container and returns to the screen or overlay that was being displayed beneath it
-     * 
-     *  @memberOf ModalManager
-     *  @method hideModal
-     *  @static
-     */
-    constructor.hideModal = function() {
-        ($(ModalManager.MODAL_CONTAINER_ID)).foundation("close");
-        ModalManager.inModal = false;
-    };
-}, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
-(function() {
-    $(ModalManager.MODAL_CONTAINER_ID).one("closed.zf.reveal", function(arg0, arg1) {
-        var result = ModalManager.getCurrentModal().onClose();
-        if (result == null || undefined == result) 
-            return true;
-        return result;
-    });
-})();
 /**
  *  View Subclass representing modal views that are displayed in the modal container
  * 
@@ -579,6 +487,98 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         });
     };
 }, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+/**
+ *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that
+ *  they work properly
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module com.eduworks.ec.ui
+ *  @class ModalManager
+ *  @extends ViewManager
+ */
+var ModalManager = function() {
+    ViewManager.call(this);
+};
+ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, prototype) {
+    /**
+     *  DOM Selector (ID) of the container to display Modal's in
+     * 
+     *  @property MODAL_CONTAINER_ID
+     *  @type String
+     */
+    constructor.MODAL_CONTAINER_ID = "#modalContainer";
+    /**
+     *  Application flag that is set when a modal is open, so we can check from the application whether we're in a
+     *  modal or not.
+     * 
+     *  @property inModal
+     *  @type boolean
+     */
+    constructor.inModal = false;
+    /**
+     *  Retrieves the current view that corresponds to the Modal Container Element (Should be a Modal)
+     * 
+     *  @return {EcModal}
+     *  EcModal instance that is currently being shown in the Modal container element
+     *  @memberOf ModalManager
+     *  @method getCurrentModal
+     *  @static
+     */
+    constructor.getCurrentModal = function() {
+        return ViewManager.getView(ModalManager.MODAL_CONTAINER_ID);
+    };
+    /**
+     *  Sets the current modal and then shows it by calling the modals display function
+     * 
+     *  @param {EcModal}   modal
+     *                     Modal Instance to be displayed in the modal container and set as current
+     *  @param {Callback0} callback
+     *                     Function to invoke after the modal has been displayed
+     *  @memberOf ModalManager
+     *  @method showModal
+     *  @static
+     */
+    constructor.showModal = function(modal, callback) {
+        $(ModalManager.MODAL_CONTAINER_ID).removeClass("tiny");
+        $(ModalManager.MODAL_CONTAINER_ID).removeClass("small");
+        $(ModalManager.MODAL_CONTAINER_ID).removeClass("medium");
+        $(ModalManager.MODAL_CONTAINER_ID).removeClass("large");
+        $(ModalManager.MODAL_CONTAINER_ID).removeClass("full");
+        var modalSize = modal.getModalSize();
+        if (modalSize == "tiny" || modalSize == "small" || modalSize == "medium" || modalSize == "large" || modalSize == "full") {
+            $(ModalManager.MODAL_CONTAINER_ID).addClass(modalSize);
+        } else {
+            $(ModalManager.MODAL_CONTAINER_ID).addClass("small");
+        }
+        ViewManager.showView(modal, ModalManager.MODAL_CONTAINER_ID, function() {
+            ($(ModalManager.MODAL_CONTAINER_ID)).foundation();
+            ($(ModalManager.MODAL_CONTAINER_ID)).foundation("open");
+            ModalManager.inModal = true;
+            if (callback != null) {
+                callback();
+            }
+        });
+    };
+    /**
+     *  Hides the modal container and returns to the screen or overlay that was being displayed beneath it
+     * 
+     *  @memberOf ModalManager
+     *  @method hideModal
+     *  @static
+     */
+    constructor.hideModal = function() {
+        ($(ModalManager.MODAL_CONTAINER_ID)).foundation("close");
+        ModalManager.inModal = false;
+    };
+}, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+(function() {
+    $(ModalManager.MODAL_CONTAINER_ID).one("closed.zf.reveal", function(arg0, arg1) {
+        var result = ModalManager.getCurrentModal().onClose();
+        if (result == null || undefined == result) 
+            return true;
+        return result;
+    });
+})();
 /**
  *  View Manager child class that manages loading "screen"s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the

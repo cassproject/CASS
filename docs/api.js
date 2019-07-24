@@ -758,12 +758,12 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "com.eduworks.ec.ui",
             "name": "com.eduworks.ec.ui",
-            "description": "Parent class of all view manager classes, stores a cache of the views and\ntheir corresponding DOM selectors and provides functions for setting a view\nto correspond to a selector and displaying a view after it has been added to\nthe cache."
+            "description": "Class that represents a \"view\" that can be displayed in an container element on the page. The View should define\na display function that loads HTML into the container element on the page and then finally calls the callback once\nthe view has been completely initialized"
         },
         {
             "displayName": "org.cassproject",
             "name": "org.cassproject",
-            "description": "Location of strings that store the current namespace for EBAC/KBAC."
+            "description": "Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for\npermission controls, signing, identifying and locating the object."
         },
         {
             "displayName": "org.credentialengine",
