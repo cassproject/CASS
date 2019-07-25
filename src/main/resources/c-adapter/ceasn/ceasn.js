@@ -260,6 +260,13 @@ function cassFrameworkAsCeasn() {
             }
         }
 
+        //Remove fields that are only whitespace
+        for (var key in c) {
+            if (typeof c[key] == "string" && c[key].trim().length == 0) {
+                delete c[key];
+            }
+        }
+
         competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
 
         if (competencies[id]["ceterms:ctid"] == null) {
@@ -321,6 +328,13 @@ function cassFrameworkAsCeasn() {
             if (f["schema:identifier"][i].indexOf("http") == -1) {
                 f["schema:identifier"].splice(i, 1);
             }
+        }
+    }
+
+    //Remove fields that are only whitespace
+    for (var key in f) {
+        if (typeof f[key] == "string" && f[key].trim().length == 0) {
+            delete f[key];
         }
     }
 
