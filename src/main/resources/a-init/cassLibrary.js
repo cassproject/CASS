@@ -97,4 +97,6 @@ function repoAutoDetect() {
 
     console.log("Loopback: " + repo.selectedServer);
     console.log("Elasticsearch Endpoint: " + elasticEndpoint);
+    console.log("Text Encoding: " + java.lang.System.getProperty("file.encoding"));
+    console.log("Text Encoding: " + java.nio.charset.Charset.defaultCharset().toString());
 }
