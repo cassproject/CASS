@@ -1523,17 +1523,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                 if ((pretranslatedE)["@type"] == "ceasn:CompetencyFramework") {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    for (var key in (translator)) {
-                        if ((translator)[key] == "") {
-                            (translator)[key] = null;
-                        } else if ((translator)[key] != null) {
-                            var thisKey = (translator)[key];
-                            if ((typeof thisKey) == "string" && (thisKey).indexOf("|") != -1) {
-                                thisKey = (thisKey).split("|");
-                                (translator)[key] = thisKey;
-                            }
-                        }
-                    }
+                    CTDLASNCSVImport.cleanUpTranslator(translator);
                     translator.recast("https://schema.cassproject.org/0.4/ceasn2cass", "https://schema.cassproject.org/0.4", function(e) {
                         var f = new EcFramework();
                         f.copyFrom(e);
@@ -1560,17 +1550,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                 } else if ((pretranslatedE)["@type"] == "ceasn:Competency") {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    for (var key in (translator)) {
-                        if ((translator)[key] == "") {
-                            (translator)[key] = null;
-                        } else if ((translator)[key] != null) {
-                            var thisKey = (translator)[key];
-                            if ((typeof thisKey) == "string" && (thisKey).indexOf("|") != -1) {
-                                thisKey = (thisKey).split("|");
-                                (translator)[key] = thisKey;
-                            }
-                        }
-                    }
+                    CTDLASNCSVImport.cleanUpTranslator(translator);
                     translator.recast("https://schema.cassproject.org/0.4/ceasn2cass", "https://schema.cassproject.org/0.4", function(e) {
                         var f = new EcCompetency();
                         f.copyFrom(e);
@@ -1625,138 +1605,25 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
                         if ((e)["ceasn:isChildOf"] != null) {
-                            var r = new EcAlignment();
-                            r.generateId(repo.selectedServer);
-                            if (ceo != null) 
-                                r.addOwner(ceo.ppk.toPk());
-                            if (id.ppk != null) 
-                                r.addOwner(id.ppk.toPk());
-                            r.source = (e)["id"];
-                            r.relationType = Relation.NARROWS;
-                            r.target = (e)["ceasn:isChildOf"];
-                            relations.push(r);
-                            (relationById)[r.shortId()] = r;
-                            ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
+                            CTDLASNCSVImport.createEachRelation(e, "ceasn:isChildOf", Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks, -1);
                         }
                         if ((e)["ceasn:broadAlignment"] != null) {
-                            if (!EcArray.isArray((e)["ceasn:broadAlignment"])) {
-                                var broad = Array((e)["ceasn:broadAlignment"]);
-                                (e)["ceasn:broadAlignment"] = broad;
-                            }
-                            for (var i = 0; i < ((e)["ceasn:broadAlignment"]).length; i++) {
-                                var r = new EcAlignment();
-                                r.generateId(repo.selectedServer);
-                                if (ceo != null) 
-                                    r.addOwner(ceo.ppk.toPk());
-                                if (id.ppk != null) 
-                                    r.addOwner(id.ppk.toPk());
-                                r.source = (e)["id"];
-                                r.relationType = Relation.NARROWS;
-                                r.target = ((e)["ceasn:broadAlignment"])[i];
-                                relations.push(r);
-                                (relationById)[r.shortId()] = r;
-                                ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
-                            }
+                            CTDLASNCSVImport.createRelations(e, "ceasn:broadAlignment", Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks);
                         }
                         if ((e)["ceasn:narrowAlignment"] != null) {
-                            if (!EcArray.isArray((e)["ceasn:narrowAlignment"])) {
-                                var narrow = Array((e)["ceasn:narrowAlignment"]);
-                                (e)["ceasn:narrowAlignment"] = narrow;
-                            }
-                            for (var i = 0; i < ((e)["ceasn:narrowAlignment"]).length; i++) {
-                                var r = new EcAlignment();
-                                r.generateId(repo.selectedServer);
-                                if (ceo != null) 
-                                    r.addOwner(ceo.ppk.toPk());
-                                if (id.ppk != null) 
-                                    r.addOwner(id.ppk.toPk());
-                                r.source = ((e)["ceasn:narrowAlignment"])[i];
-                                r.relationType = Relation.NARROWS;
-                                r.target = (e)["id"];
-                                relations.push(r);
-                                (relationById)[r.shortId()] = r;
-                                ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
-                            }
+                            CTDLASNCSVImport.createRelations(e, "ceasn:narrowAlignment", Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks);
                         }
                         if ((e)["sameAs"] != null) {
-                            if (!EcArray.isArray((e)["sameAs"])) {
-                                var same = Array((e)["sameAs"]);
-                                (e)["sameAs"] = same;
-                            }
-                            for (var i = 0; i < ((e)["sameAs"]).length; i++) {
-                                var r = new EcAlignment();
-                                r.generateId(repo.selectedServer);
-                                if (ceo != null) 
-                                    r.addOwner(ceo.ppk.toPk());
-                                if (id.ppk != null) 
-                                    r.addOwner(id.ppk.toPk());
-                                r.source = (e)["id"];
-                                r.relationType = Relation.IS_EQUIVALENT_TO;
-                                r.target = ((e)["sameAs"])[i];
-                                relations.push(r);
-                                (relationById)[r.shortId()] = r;
-                                ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
-                            }
+                            CTDLASNCSVImport.createRelations(e, "sameAs", Relation.IS_EQUIVALENT_TO, repo, ceo, id, relations, relationById, frameworks);
                         }
                         if ((e)["ceasn:majorAlignment"] != null) {
-                            if (!EcArray.isArray((e)["ceasn:majorAlignment"])) {
-                                var major = Array((e)["ceasn:majorAlignment"]);
-                                (e)["ceasn:majorAlignment"] = major;
-                            }
-                            for (var i = 0; i < ((e)["ceasn:majorAlignment"]).length; i++) {
-                                var r = new EcAlignment();
-                                r.generateId(repo.selectedServer);
-                                if (ceo != null) 
-                                    r.addOwner(ceo.ppk.toPk());
-                                if (id.ppk != null) 
-                                    r.addOwner(id.ppk.toPk());
-                                r.source = (e)["id"];
-                                r.relationType = "majorRelated";
-                                r.target = ((e)["ceasn:majorAlignment"])[i];
-                                relations.push(r);
-                                (relationById)[r.shortId()] = r;
-                                ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
-                            }
+                            CTDLASNCSVImport.createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceo, id, relations, relationById, frameworks);
                         }
                         if ((e)["ceasn:minorAlignment"] != null) {
-                            if (!EcArray.isArray((e)["ceasn:minorAlignment"])) {
-                                var minor = Array((e)["ceasn:minorAlignment"]);
-                                (e)["ceasn:minorAlignment"] = minor;
-                            }
-                            for (var i = 0; i < ((e)["ceasn:minorAlignment"]).length; i++) {
-                                var r = new EcAlignment();
-                                r.generateId(repo.selectedServer);
-                                if (ceo != null) 
-                                    r.addOwner(ceo.ppk.toPk());
-                                if (id.ppk != null) 
-                                    r.addOwner(id.ppk.toPk());
-                                r.source = (e)["id"];
-                                r.relationType = "minorRelated";
-                                r.target = ((e)["ceasn:minorAlignment"])[i];
-                                relations.push(r);
-                                (relationById)[r.shortId()] = r;
-                                ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
-                            }
+                            CTDLASNCSVImport.createRelations(e, "ceasn:minorAlignment", "minorRelated", repo, ceo, id, relations, relationById, frameworks);
                         }
                         if ((e)["ceasn:prerequisiteAlignment"] != null) {
-                            if (!EcArray.isArray((e)["ceasn:prerequisiteAlignment"])) {
-                                var prereq = Array((e)["ceasn:prerequisiteAlignment"]);
-                                (e)["ceasn:prerequisiteAlignment"] = prereq;
-                            }
-                            for (var i = 0; i < ((e)["ceasn:prerequisiteAlignment"]).length; i++) {
-                                var r = new EcAlignment();
-                                r.generateId(repo.selectedServer);
-                                if (ceo != null) 
-                                    r.addOwner(ceo.ppk.toPk());
-                                if (id.ppk != null) 
-                                    r.addOwner(id.ppk.toPk());
-                                r.source = (e)["id"];
-                                r.relationType = Relation.REQUIRES;
-                                r.target = ((e)["ceasn:prerequisiteAlignment"])[i];
-                                relations.push(r);
-                                (relationById)[r.shortId()] = r;
-                                ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
-                            }
+                            CTDLASNCSVImport.createRelations(e, "ceasn:prerequisiteAlignment", Relation.REQUIRES, repo, ceo, id, relations, relationById, frameworks);
                         }
                         (f)["ceasn:isTopChildOf"] = null;
                         (f)["ceasn:isChildOf"] = null;
@@ -1784,6 +1651,66 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                 success(frameworkArray, competencies, relations);
             });
         }, error: failure});
+    };
+    constructor.cleanUpTranslator = function(translator) {
+        for (var key in (translator)) {
+            if ((translator)[key] == "") {
+                (translator)[key] = null;
+            } else if ((translator)[key] != null) {
+                var thisKey = (translator)[key];
+                if ((typeof thisKey) == "string") {
+                    if (((translator)[key]).trim().length == 0) {
+                        (translator)[key] = null;
+                    } else if ((thisKey).indexOf("|") != -1) {
+                        thisKey = (thisKey).split("|");
+                        (translator)[key] = thisKey;
+                        for (var i = 0; i < (thisKey).length; i++) {
+                            if ((thisKey)[i] != (thisKey)[i].trim()) {
+                                var thisVal = (thisKey)[i].trim();
+                                (thisKey)[i] = thisVal;
+                            }
+                        }
+                    }
+                }
+                if (key != key.trim()) {
+                    var trimKey = key.trim();
+                    (translator)[trimKey] = (translator)[key];
+                    (translator)[key] = null;
+                }
+            }
+        }
+    };
+    constructor.createRelations = function(e, field, type, repo, ceo, id, relations, relationById, frameworks) {
+        if (!EcArray.isArray((e)[field])) {
+            var makeArray = Array((e)[field]);
+            (e)[field] = makeArray;
+        }
+        for (var i = 0; i < ((e)[field]).length; i++) {
+            CTDLASNCSVImport.createEachRelation(e, field, type, repo, ceo, id, relations, relationById, frameworks, i);
+        }
+    };
+    constructor.createEachRelation = function(e, field, type, repo, ceo, id, relations, relationById, frameworks, i) {
+        var r = new EcAlignment();
+        r.generateId(repo.selectedServer);
+        if (ceo != null) 
+            r.addOwner(ceo.ppk.toPk());
+        if (id.ppk != null) 
+            r.addOwner(id.ppk.toPk());
+        r.relationType = type;
+        if (field == "ceasn:narrowAlignment") {
+            r.source = ((e)[field])[i];
+            r.target = (e)["id"];
+        } else {
+            r.source = (e)["id"];
+            if (i != -1) {
+                r.target = ((e)[field])[i];
+            } else {
+                r.target = ((e)[field]);
+            }
+        }
+        relations.push(r);
+        (relationById)[r.shortId()] = r;
+        ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
     };
     constructor.setDateCreated = function(importObject, object) {
         if ((importObject)["ceasn:dateCreated"] == null && (importObject)["schema:dateCreated"] == null) {
@@ -1859,17 +1786,7 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                 if ((pretranslatedE)["@type"] == "skos:ConceptScheme") {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    for (var key in (translator)) {
-                        if ((translator)[key] == "") {
-                            (translator)[key] = null;
-                        } else if ((translator)[key] != null) {
-                            var thisKey = (translator)[key];
-                            if ((typeof thisKey) == "string" && (thisKey).indexOf("|") != -1) {
-                                thisKey = (thisKey).split("|");
-                                (translator)[key] = thisKey;
-                            }
-                        }
-                    }
+                    CTDLASNCSVImport.cleanUpTranslator(translator);
                     if ((translator)["ceasn:name"] != null) {
                         var name = (translator)["ceasn:name"];
                         var nameWithLanguage = new Object();
@@ -1897,17 +1814,7 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                 } else if ((pretranslatedE)["@type"] == "skos:Concept") {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    for (var key in (translator)) {
-                        if ((translator)[key] == "") {
-                            (translator)[key] = null;
-                        } else if ((translator)[key] != null) {
-                            var thisKey = (translator)[key];
-                            if ((typeof thisKey) == "string" && (thisKey).indexOf("|") != -1) {
-                                thisKey = (thisKey).split("|");
-                                (translator)[key] = thisKey;
-                            }
-                        }
-                    }
+                    CTDLASNCSVImport.cleanUpTranslator(translator);
                     if ((translator)["skos:prefLabel"] != null) {
                         var name = (translator)["skos:prefLabel"];
                         var nameWithLanguage = new Object();
