@@ -8,7 +8,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>2.9.10</ec-version>
+		<ec-version>2.9.11</ec-version>
 		<ew-version>5.15.1</ew-version>
 	</properties>
 
