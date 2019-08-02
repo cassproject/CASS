@@ -1,10 +1,10 @@
 version: '3'
 services:
   apache2:
-    image: httpd:2.4
+    build:
+      context: .
+      dockerfile: docker/dev/apache2/Dockerfile
     container_name: apache2
-    volumes:
-      - ./docker/dev/apache2/docker-configure.apache2.config:/usr/local/apache2/conf/httpd.conf
     ports:
       - 80:80
       - 8080:80
