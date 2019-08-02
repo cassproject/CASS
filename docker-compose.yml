@@ -27,9 +27,9 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - ./docker/distributed/tomcat-alpine/server.xml:/usr/local/tomcat/conf/server.xml
-      - ./etc:/usr/local/tomcat/etc/
+#    volumes:
+#      - ./docker/distributed/tomcat-alpine/server.xml:/usr/local/tomcat/conf/server.xml
+#      - ./etc:/usr/local/tomcat/etc/
     networks:
       - esnet
     depends_on:

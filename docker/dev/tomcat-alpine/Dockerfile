@@ -3,4 +3,5 @@ COPY target/cass.war /usr/local/tomcat/webapps/ROOT.war
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
 RUN mkdir /usr/local/tomcat/etc
 VOLUME /usr/local/tomcat/etc/
-EXPOSE 8080
+COPY ./docker/distributed/tomcat-alpine/server.xml /usr/local/tomcat/conf/server.xml
+EXPOSE 80
