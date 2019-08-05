@@ -66,6 +66,8 @@ services:
         hard: -1
     volumes:
       - esdata2:/usr/share/elasticsearch/data
+    depends_on:
+      - elasticsearch
     networks:
       - esnet
   mysql-keycloak:
