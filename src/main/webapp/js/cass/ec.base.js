@@ -1,487 +1,6 @@
-/**
- *  Array Helper Functions
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcArray
- *  @module com.eduworks.ec
- */
-var EcArray = function() {};
-EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
-    /**
-     *  Returns true if the result is an array.
-     * 
-     *  @param {any} o Object to test.
-     *  @return true iff the object is an array.
-     *  @static
-     *  @method isArray
-     *  @memberOf EcArray
-     */
-    constructor.isArray = function(o) {
-        return Object.prototype.toString.call(o) == "[object Array]";
-    };
-    /**
-     *  Removes values IFF the values == one another.
-     * 
-     *  @param a {Array} Array to remove duplicates from.
-     *  @static
-     *  @method removeDuplicates
-     *  @memberOf EcArray
-     */
-    constructor.removeDuplicates = function(a) {
-        for (var i = 0; i < a.length; i++) 
-            for (var j = i; j < a.length; j++) {
-                if (j == i) 
-                    continue;
-                if (a[i] == a[j]) 
-                    a.splice(j, 1);
-            }
-    };
-    /**
-     *  Adds a value if the array does not have the value already.
-     * 
-     *  @param a {Array} Array to add to.
-     *  @param o {Object} Object to add to the array if it isn't in there already.
-     *  @static
-     *  @method setAdd
-     *  @memberOf EcArray
-     */
-    constructor.setAdd = function(a, o) {
-        if (!EcArray.has(a, o)) 
-            a.push(o);
-    };
-    /**
-     *  Removes a value from the array.
-     * 
-     *  @param a {Array} Array to add to.
-     *  @param o {Object} Object to add to the array if it isn't in there already.
-     *  @static
-     *  @method setAdd
-     *  @memberOf EcArray
-     */
-    constructor.setRemove = function(a, o) {
-         while (EcArray.has(a, o))
-            a.splice(EcArray.indexOf(a, o), 1);
-    };
-    /**
-     *  Returns true if the array has the value already.
-     * 
-     *  @param a {Array} Array.
-     *  @param o {Object} Object to sample for.
-     *  @static
-     *  @method has
-     *  @memberOf EcArray
-     */
-    constructor.has = function(a, o) {
-        if (EcArray.isObject(o)) 
-            for (var i = 0; i < a.length; i++) {
-                if (a[i] == o) 
-                    return true;
-                try {
-                    if (a[i].equals(o)) 
-                        return true;
-                }catch (e) {}
-            }
-         else 
-            for (var i = 0; i < a.length; i++) {
-                if (a[i] == o) {
-                    return true;
-                }
-            }
-        return false;
-    };
-    /**
-     *  Returns true if the result is an object.
-     * 
-     *  @param {any} o Object to test.
-     *  @return true iff the object is an object.
-     *  @static
-     *  @method isObject
-     *  @memberOf EcArray
-     */
-    constructor.isObject = function(o) {
-        if (EcArray.isArray(o)) 
-            return false;
-        if (o == null) 
-            return false;
-        return (typeof o) == "object";
-    };
-    /**
-     *  Returns the index of an object or value if the object or value exists in the array. Uses .equals if available.
-     *  @param {Array} a Array to check over.
-     *  @param {any} o Object to check for.
-     *  @return Index of the result, -1 if the result isn't in the array.
-     *  @static
-     *  @method indexOf
-     *  @memberOf EcArray
-     */
-    constructor.indexOf = function(a, o) {
-        if (EcArray.isObject(o)) 
-            for (var i = 0; i < a.length; i++) {
-                if (a[i] == o) 
-                    return i;
-                try {
-                    if (a[i].equals(o)) 
-                        return i;
-                }catch (e) {}
-            }
-         else 
-            for (var i = 0; i < a.length; i++) {
-                if (a[i] == o) {
-                    return i;
-                }
-            }
-        return -1;
-    };
-}, {}, {});
-var EcBrowserDetection = function() {};
-EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
-    constructor.isIeOrEdge = function() {
-        if (window == null) 
-            return false;
-        if (window.navigator == null) 
-            return false;
-        if (window.navigator.appName == null) 
-            return false;
-        return window.navigator.appName == "Microsoft Internet Explorer" || (window.navigator.appName == "Netscape" && window.navigator.appVersion.indexOf("Edge") > -1);
-    };
-}, {}, {});
-/**
- *  Wrapper to handle all remote web service invocations.
- * 
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
- *  @class EcRemote
- *  @module com.eduworks.ec
- */
-var EcRemote = function() {};
-EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
-    /**
-     *  Turn this property off to cause all remote web service calls to be
-     *  synchronous. Can be useful for test scripts, blocking calls, etc.
-     * 
-     *  @property async
-     *  @static
-     *  @type boolean
-     */
-    constructor.async = true;
-    /**
-     *  Timeout for AJAX requests
-     * 
-     *  @property async
-     *  @static
-     *  @type boolean
-     */
-    constructor.timeout = 60 * 1000 * 5;
-    /**
-     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
-     *  URL) and a service (service path). Sends form data as a multi-part mime
-     *  request.
-     * 
-     *  @param {string}           server Protocol, hostname and path to the remote handler.
-     *  @param {string}           service Path to service to invoke.
-     *  @param {FormData}         fd Form data to send as multi-part mime.
-     *  @param {function(object)} success Method that is invoked if the server
-     *                            responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *                            responds with an error (per jQuery ajax) or a non-200/300.
-     *  @method postExpectingObject
-     *  @static
-     */
-    constructor.postExpectingObject = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessJSONCallback(success, failure), failure);
-    };
-    /**
-     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
-     *  URL) and a service (service path). Sends form data as a multi-part mime
-     *  request.
-     * 
-     *  @param {string}           server Protocol, hostname and path to the remote handler.
-     *  @param {string}           service Path to service to invoke.
-     *  @param {FormData}         fd Form data to send as multi-part mime.
-     *  @param {function(string)} success Method that is invoked if the server
-     *                            responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *                            responds with an error (per jQuery ajax) or a non-200/300.
-     *  @method postExpectingString
-     *  @static
-     */
-    constructor.postExpectingString = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, null, success, failure);
-    };
-    /**
-     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
-     *  URL) and a service (service path). Sends form data as a multi-part mime
-     *  request. Includes headers.
-     * 
-     *  @param {string}           server Protocol, hostname and path to the remote handler.
-     *  @param {string}           service Path to service to invoke.
-     *  @param {FormData}         fd Form data to send as multi-part mime.
-     *  @param {Object}           headers Headers to attach to the HTTP post.
-     *  @param {function(string)} success Method that is invoked if the server
-     *                            responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *                            responds with an error (per jQuery ajax) or a non-200/300.
-     *  @method postWithHeadersExpectingString
-     *  @static
-     */
-    constructor.postWithHeadersExpectingString = function(server, service, fd, headers, success, failure) {
-        EcRemote.postInner(server, service, fd, headers, success, failure);
-    };
-    constructor.postInner = function(server, service, fd, headers, successCallback, failureCallback) {
-        var url = server;
-        if (!url.endsWith("/") && service != null && !"".equals(service)) {
-            url += "/";
-        }
-        if (service != null) {
-            url += service;
-        }
-        url = EcRemote.upgradeHttpToHttps(url);
-        var xhr = null;
-        if ((typeof httpStatus) == "undefined") {
-            xhr = new XMLHttpRequest();
-            xhr.open("POST", url, EcRemote.async);
-            var xhrx = xhr;
-            xhr.onreadystatechange = function() {
-                if (xhrx.readyState == 4 && xhrx.status == 200) {
-                    if (successCallback != null) 
-                        successCallback(xhrx.responseText);
-                } else if (xhrx.readyState == 4) {
-                    if (failureCallback != null) 
-                        failureCallback(xhrx.responseText);
-                }
-            };
-        }
-        var theBoundary = null;
-        if ((fd)["_streams"] != null) {
-            var chunks = (fd)["_streams"];
-            var all = "";
-            for (var i = 0; i < chunks.length; i++) {
-                if ((typeof chunks[i]) == "function") {
-                    all = all + "\r\n";
-                } else {
-                    all = all + chunks[i];
-                }
-            }
-            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
-            theBoundary = (fd)["_boundary"];
-            if ((typeof httpStatus) == "undefined") 
-                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + (fd)["_boundary"]);
-            fd = all;
-        } else {}
-        if (xhr != null) 
-            if (EcRemote.async) 
-                (xhr)["timeout"] = EcRemote.timeout;
-        if ((typeof httpStatus) != "undefined") {
-            var result = JSON.stringify(httpPost(fd, url, "multipart/form-data; boundary=" + theBoundary, "false", theBoundary));
-            if (successCallback != null) 
-                successCallback(result);
-        } else {
-            xhr.send(fd);
-        }
-    };
-    /**
-     *  GETs something from a remote endpoint. Composed of a server endpoint
-     *  (root URL) and a service (service path).
-     * 
-     *  @param {string}           server Protocol, hostname and path to the remote handler.
-     *  @param {string}           service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server
-     *                            responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *                            responds with an error (per jQuery ajax) or a non-200/300.
-     *  @method getExpectingObject
-     *  @static
-     */
-    constructor.getExpectingObject = function(server, service, success, failure) {
-        EcRemote.getExpectingString(server, service, EcRemote.getSuccessJSONCallback(success, failure), failure);
-    };
-    /**
-     *  GETs something from a remote endpoint. Composed of a server endpoint
-     *  (root URL) and a service (service path).
-     * 
-     *  @param {string}           server Protocol, hostname and path to the remote handler.
-     *  @param {string}           service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server
-     *                            responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *                            responds with an error (per jQuery ajax) or a non-200/300.
-     *  @method getExpectingString
-     *  @static
-     */
-    constructor.getExpectingString = function(server, service, success, failure) {
-        var url = EcRemote.urlAppend(server, service);
-        url = EcRemote.upgradeHttpToHttps(url);
-        var xhr = null;
-        if ((typeof httpStatus) == "undefined") {
-            xhr = new XMLHttpRequest();
-            xhr.open("GET", url, EcRemote.async);
-            var xhrx = xhr;
-            xhr.onreadystatechange = function() {
-                if (xhrx.readyState == 4 && xhrx.status == 200) 
-                    success(xhrx.responseText);
-                 else if (xhrx.readyState == 4) 
-                    failure(xhrx.responseText);
-            };
-        }
-        if (xhr != null) {
-            if (EcRemote.async) 
-                (xhr)["timeout"] = EcRemote.timeout;
-        }
-        if ((typeof httpStatus) != "undefined") {
-            success(JSON.stringify(httpGet(url)));
-        } else {
-            xhr.send();
-        }
-    };
-    constructor.urlAppend = function(server, service) {
-        var url = server;
-        if (!url.endsWith("/") && service != null && service.equals("")) {
-            url += "/";
-        }
-        if (service != null) {
-            url += service;
-        }
-        return url;
-    };
-    /**
-     *  DELETEs something at a remote endpoint. Composed of a server endpoint
-     *  (root URL) and a service (service path).
-     * 
-     *  @param {string}           server Protocol, hostname and path to the remote handler.
-     *  @param {string}           service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server
-     *                            responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *                            responds with an error (per jQuery ajax) or a non-200/300.
-     *  @method _delete
-     *  @static
-     */
-    constructor._delete = function(url, signatureSheet, success, failure) {
-        url = EcRemote.upgradeHttpToHttps(url);
-        var xhr = null;
-        if ((typeof httpStatus) == "undefined") {
-            xhr = new XMLHttpRequest();
-            xhr.open("DELETE", url, EcRemote.async);
-            var xhrx = xhr;
-            xhr.onreadystatechange = function() {
-                if (xhrx.readyState == 4 && xhrx.status == 200) {
-                    if (success != null) 
-                        success(xhrx.responseText);
-                } else if (xhrx.readyState == 4) {
-                    if (failure != null) 
-                        failure(xhrx.responseText);
-                }
-            };
-        }
-        if (xhr != null) {
-            if (EcRemote.async) 
-                (xhr)["timeout"] = EcRemote.timeout;
-            xhr.setRequestHeader("signatureSheet", signatureSheet);
-        }
-        if ((typeof httpStatus) != "undefined") {
-            if (success != null) {
-                var sso = new Object();
-                (sso)["signatureSheet"] = signatureSheet;
-                success(httpDelete(url, null, null, null, sso));
-            }
-        } else {
-            xhr.send();
-        }
-    };
-    constructor.upgradeHttpToHttps = function(url) {
-        if (window != null) {
-            if (window.location != null) {
-                if (url.indexOf(window.location.protocol) == -1) {
-                    if (window.location.protocol.startsWith("https")) {
-                        if (!url.startsWith("https:")) {
-                            url = url.replace("http:", "https:");
-                        }
-                    }
-                }
-            }
-        }
-        return url;
-    };
-    constructor.getSuccessJSONCallback = function(success, failure) {
-        return function(s) {
-            var o;
-            try {
-                o = JSON.parse(s);
-            }catch (ex) {
-                if (ex == null) 
-                    failure("An unspecified error occurred during a network request.");
-                 else 
-                    failure(ex);
-                return;
-            }
-            success(o);
-        };
-    };
-}, {}, {});
-/**
- *  Object to hold a triple, used in graph.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class Triple
- *  @module com.eduworks.ec
- */
-var Triple = function() {};
-Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
-    /**
-     *  Source vertex.
-     * 
-     *  @property source
-     *  @type any
-     */
-    prototype.source = null;
-    /**
-     *  Destination vertex.
-     * 
-     *  @property destination
-     *  @type any
-     */
-    prototype.destination = null;
-    /**
-     *  Object to hold in the edge.
-     * 
-     *  @property edge
-     *  @type any
-     */
-    prototype.edge = null;
-    /**
-     *  Returns true IFF sources, destinations, and edges match.
-     * 
-     *  @param {Edge} obj
-     *  @return {boolean} true IFF <see method definition>
-     *  @method equals
-     */
-    prototype.equals = function(obj) {
-        if (Object.prototype.equals.call(this, obj)) 
-            return true;
-        if (stjs.isInstanceOf(obj.constructor, Triple)) {
-            var t = obj;
-            if (this.source == t.source && this.destination == t.destination && this.edge == t.edge) 
-                return true;
-        }
-        return false;
-    };
-}, {}, {});
 var Callback5 = function() {};
 Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
     prototype.$invoke = function(p1, p2, p3, p4, p5) {};
-}, {}, {});
-var EcDate = function() {};
-EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
-    /**
-     *  Returns an ISO 8601 TimeDate String from a Date object.
-     *  @param {Date} obj Date Object
-     *  @memberOf EcDate
-     *  @static
-     *  @return
-     */
-    constructor.toISOString = function(obj) {
-        return ((obj)["toISOString"])();
-    };
 }, {}, {});
 /**
  *  A hypergraph, consisting of a set of vertices of type <code>V</code> and a
@@ -943,28 +462,118 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      */
     prototype.getSuccessors = function(vertex) {};
 }, {}, {});
-var EcLocalStorage = function() {};
-EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, prototype) {
-    constructor.removeItem = function(s, key) {
-        ((s)["removeItem"])(key);
+var EcDate = function() {};
+EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
+    /**
+     *  Returns an ISO 8601 TimeDate String from a Date object.
+     *  @param {Date} obj Date Object
+     *  @memberOf EcDate
+     *  @static
+     *  @return
+     */
+    constructor.toISOString = function(obj) {
+        return ((obj)["toISOString"])();
     };
 }, {}, {});
 /**
- *  Object Helper Functions
+ *  Array Helper Functions
  * 
  *  @author fritz.ray@eduworks.com
- *  @class EcObject
+ *  @class EcArray
  *  @module com.eduworks.ec
  */
-var EcObject = function() {};
-EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    /**
+     *  Returns true if the result is an array.
+     * 
+     *  @param {any} o Object to test.
+     *  @return true iff the object is an array.
+     *  @static
+     *  @method isArray
+     *  @memberOf EcArray
+     */
+    constructor.isArray = function(o) {
+        return Object.prototype.toString.call(o) == "[object Array]";
+    };
+    /**
+     *  Removes values IFF the values == one another.
+     * 
+     *  @param a {Array} Array to remove duplicates from.
+     *  @static
+     *  @method removeDuplicates
+     *  @memberOf EcArray
+     */
+    constructor.removeDuplicates = function(a) {
+        for (var i = 0; i < a.length; i++) 
+            for (var j = i; j < a.length; j++) {
+                if (j == i) 
+                    continue;
+                if (a[i] == a[j]) 
+                    a.splice(j, 1);
+            }
+    };
+    /**
+     *  Adds a value if the array does not have the value already.
+     * 
+     *  @param a {Array} Array to add to.
+     *  @param o {Object} Object to add to the array if it isn't in there already.
+     *  @static
+     *  @method setAdd
+     *  @memberOf EcArray
+     */
+    constructor.setAdd = function(a, o) {
+        if (!EcArray.has(a, o)) 
+            a.push(o);
+    };
+    /**
+     *  Removes a value from the array.
+     * 
+     *  @param a {Array} Array to add to.
+     *  @param o {Object} Object to add to the array if it isn't in there already.
+     *  @static
+     *  @method setAdd
+     *  @memberOf EcArray
+     */
+    constructor.setRemove = function(a, o) {
+         while (EcArray.has(a, o))
+            a.splice(EcArray.indexOf(a, o), 1);
+    };
+    /**
+     *  Returns true if the array has the value already.
+     * 
+     *  @param a {Array} Array.
+     *  @param o {Object} Object to sample for.
+     *  @static
+     *  @method has
+     *  @memberOf EcArray
+     */
+    constructor.has = function(a, o) {
+        if (EcArray.isObject(o)) 
+            for (var i = 0; i < a.length; i++) {
+                if (a[i] == o) 
+                    return true;
+                try {
+                    if (a[i].equals(o)) 
+                        return true;
+                }catch (e) {}
+            }
+         else 
+            for (var i = 0; i < a.length; i++) {
+                if (a[i] == o) {
+                    return true;
+                }
+            }
+        return false;
+    };
     /**
      *  Returns true if the result is an object.
      * 
      *  @param {any} o Object to test.
      *  @return true iff the object is an object.
      *  @static
-     *  @method isArray
+     *  @method isObject
+     *  @memberOf EcArray
      */
     constructor.isObject = function(o) {
         if (EcArray.isArray(o)) 
@@ -974,101 +583,372 @@ EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
         return (typeof o) == "object";
     };
     /**
-     *  Returns keys on the object
-     * 
-     *  @param {any} o Object to test.
-     *  @return List of keys
+     *  Returns the index of an object or value if the object or value exists in the array. Uses .equals if available.
+     *  @param {Array} a Array to check over.
+     *  @param {any} o Object to check for.
+     *  @return Index of the result, -1 if the result isn't in the array.
      *  @static
-     *  @method keys
+     *  @method indexOf
+     *  @memberOf EcArray
      */
-    constructor.keys = function(o) {
-        return ecKeys(o);
+    constructor.indexOf = function(a, o) {
+        if (EcArray.isObject(o)) 
+            for (var i = 0; i < a.length; i++) {
+                if (a[i] == o) 
+                    return i;
+                try {
+                    if (a[i].equals(o)) 
+                        return i;
+                }catch (e) {}
+            }
+         else 
+            for (var i = 0; i < a.length; i++) {
+                if (a[i] == o) {
+                    return i;
+                }
+            }
+        return -1;
     };
 }, {}, {});
 /**
- *  Class with static methods to prevent unnecessary overhead with small operations that don't prevent drawing,
- *  but to setTimeout on methods that slow down the browser sufficiently to interfere with drawing.
- *  Uses a framerate timer to determine between the two.
+ *  Object to hold a triple, used in graph.
  * 
- *  @class Task
+ *  @author fritz.ray@eduworks.com
+ *  @class Triple
+ *  @module com.eduworks.ec
  */
-var Task = function() {};
-Task = stjs.extend(Task, null, [], function(constructor, prototype) {
-    constructor.desiredFps = 2;
-    constructor.lastFrame = null;
-    constructor.tasks = new Array();
-    constructor.delayedFunctions = 0;
-    constructor.immediateFunctions = 0;
-    constructor.calledFunctions = 0;
-    constructor.asyncImmediateFunctions = 0;
-    constructor.runningAsyncFunctions = 0;
-    constructor.updateFrameHandle = null;
+var Triple = function() {};
+Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
     /**
-     *  Updates the framerate timer/counter.
-     *  @method updateFrame
+     *  Source vertex.
+     * 
+     *  @property source
+     *  @type any
+     */
+    prototype.source = null;
+    /**
+     *  Destination vertex.
+     * 
+     *  @property destination
+     *  @type any
+     */
+    prototype.destination = null;
+    /**
+     *  Object to hold in the edge.
+     * 
+     *  @property edge
+     *  @type any
+     */
+    prototype.edge = null;
+    /**
+     *  Returns true IFF sources, destinations, and edges match.
+     * 
+     *  @param {Edge} obj
+     *  @return {boolean} true IFF <see method definition>
+     *  @method equals
+     */
+    prototype.equals = function(obj) {
+        if (Object.prototype.equals.call(this, obj)) 
+            return true;
+        if (stjs.isInstanceOf(obj.constructor, Triple)) {
+            var t = obj;
+            if (this.source == t.source && this.destination == t.destination && this.edge == t.edge) 
+                return true;
+        }
+        return false;
+    };
+}, {}, {});
+var EcBrowserDetection = function() {};
+EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
+    constructor.isIeOrEdge = function() {
+        if (window == null) 
+            return false;
+        if (window.navigator == null) 
+            return false;
+        if (window.navigator.appName == null) 
+            return false;
+        return window.navigator.appName == "Microsoft Internet Explorer" || (window.navigator.appName == "Netscape" && window.navigator.appVersion.indexOf("Edge") > -1);
+    };
+}, {}, {});
+/**
+ *  Wrapper to handle all remote web service invocations.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ *  @class EcRemote
+ *  @module com.eduworks.ec
+ */
+var EcRemote = function() {};
+EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
+    /**
+     *  Turn this property off to cause all remote web service calls to be
+     *  synchronous. Can be useful for test scripts, blocking calls, etc.
+     * 
+     *  @property async
+     *  @static
+     *  @type boolean
+     */
+    constructor.async = true;
+    /**
+     *  Timeout for AJAX requests
+     * 
+     *  @property async
+     *  @static
+     *  @type boolean
+     */
+    constructor.timeout = 60 * 1000 * 5;
+    /**
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request.
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {FormData}         fd Form data to send as multi-part mime.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method postExpectingObject
      *  @static
      */
-    constructor.updateFrame = function() {
-        Task.updateFrameHandle = setTimeout(function() {
-            Task.lastFrame = Date.now();
-            if (Task.calledFunctions - Task.delayedFunctions - Task.immediateFunctions == 0) {
-                Task.updateFrameHandle = null;
-            } else 
-                Task.updateFrame();
-        }, 100);
+    constructor.postExpectingObject = function(server, service, fd, success, failure) {
+        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessJSONCallback(success, failure), failure);
     };
     /**
-     *  Invoke a method now or later based on whether some time has passed since we last drew the screen.
-     *  @param {function()} c Method to invoke
-     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request.
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {FormData}         fd Form data to send as multi-part mime.
+     *  @param {function(string)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method postExpectingString
+     *  @static
      */
-    constructor.immediate = function(c) {
-        var currentMs = Date.now();
-        var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
-        Task.calledFunctions++;
-        if (EcRemote.async == true && (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs)) {
-            if (Task.updateFrameHandle == null) 
-                Task.updateFrame();
-            return setTimeout(function() {
-                Task.delayedFunctions++;
-                c();
-            }, 0);
+    constructor.postExpectingString = function(server, service, fd, success, failure) {
+        EcRemote.postInner(server, service, fd, null, success, failure);
+    };
+    /**
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request. Includes headers.
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {FormData}         fd Form data to send as multi-part mime.
+     *  @param {Object}           headers Headers to attach to the HTTP post.
+     *  @param {function(string)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method postWithHeadersExpectingString
+     *  @static
+     */
+    constructor.postWithHeadersExpectingString = function(server, service, fd, headers, success, failure) {
+        EcRemote.postInner(server, service, fd, headers, success, failure);
+    };
+    constructor.postInner = function(server, service, fd, headers, successCallback, failureCallback) {
+        var url = server;
+        if (!url.endsWith("/") && service != null && !"".equals(service)) {
+            url += "/";
+        }
+        if (service != null) {
+            url += service;
+        }
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = null;
+        if ((typeof httpStatus) == "undefined") {
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", url, EcRemote.async);
+            var xhrx = xhr;
+            xhr.onreadystatechange = function() {
+                if (xhrx.readyState == 4 && xhrx.status == 200) {
+                    if (successCallback != null) 
+                        successCallback(xhrx.responseText);
+                } else if (xhrx.readyState == 4) {
+                    if (failureCallback != null) 
+                        failureCallback(xhrx.responseText);
+                }
+            };
+        }
+        var theBoundary = null;
+        if ((fd)["_streams"] != null) {
+            var chunks = (fd)["_streams"];
+            var all = "";
+            for (var i = 0; i < chunks.length; i++) {
+                if ((typeof chunks[i]) == "function") {
+                    all = all + "\r\n";
+                } else {
+                    all = all + chunks[i];
+                }
+            }
+            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
+            theBoundary = (fd)["_boundary"];
+            if ((typeof httpStatus) == "undefined") 
+                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + (fd)["_boundary"]);
+            fd = all;
+        } else {}
+        if (xhr != null) 
+            if (EcRemote.async) 
+                (xhr)["timeout"] = EcRemote.timeout;
+        if ((typeof httpStatus) != "undefined") {
+            var result = JSON.stringify(httpPost(fd, url, "multipart/form-data; boundary=" + theBoundary, "false", theBoundary));
+            if (successCallback != null) 
+                successCallback(result);
         } else {
-            Task.immediateFunctions++;
-            c();
+            xhr.send(fd);
         }
-        return null;
     };
     /**
-     *  Invoke a method at some point in the future, allowing draw methods to occur periodically.
-     *  @param {function()} c Method to invoke
-     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     *  GETs something from a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method getExpectingObject
+     *  @static
      */
-    constructor.asyncImmediate = function(c) {
-        Task.tasks.push(c);
-        Task.asyncImmediateFunctions++;
-        if (Task.runningAsyncFunctions < 20) {
-            Task.runningAsyncFunctions++;
-            return setTimeout(function() {
-                Task.asyncContinue();
-            }, 0);
+    constructor.getExpectingObject = function(server, service, success, failure) {
+        EcRemote.getExpectingString(server, service, EcRemote.getSuccessJSONCallback(success, failure), failure);
+    };
+    /**
+     *  GETs something from a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method getExpectingString
+     *  @static
+     */
+    constructor.getExpectingString = function(server, service, success, failure) {
+        var url = EcRemote.urlAppend(server, service);
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = null;
+        if ((typeof httpStatus) == "undefined") {
+            xhr = new XMLHttpRequest();
+            xhr.open("GET", url, EcRemote.async);
+            var xhrx = xhr;
+            xhr.onreadystatechange = function() {
+                if (xhrx.readyState == 4 && xhrx.status == 200) 
+                    success(xhrx.responseText);
+                 else if (xhrx.readyState == 4) 
+                    failure(xhrx.responseText);
+            };
         }
-        return null;
+        if (xhr != null) {
+            if (EcRemote.async) 
+                (xhr)["timeout"] = EcRemote.timeout;
+        }
+        if ((typeof httpStatus) != "undefined") {
+            success(JSON.stringify(httpGet(url)));
+        } else {
+            xhr.send();
+        }
     };
-    constructor.asyncContinue = function() {
-        var keepGoing = function() {
-            Task.asyncContinue();
+    constructor.urlAppend = function(server, service) {
+        var url = server;
+        if (!url.endsWith("/") && service != null && service.equals("")) {
+            url += "/";
+        }
+        if (service != null) {
+            url += service;
+        }
+        return url;
+    };
+    /**
+     *  DELETEs something at a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method _delete
+     *  @static
+     */
+    constructor._delete = function(url, signatureSheet, success, failure) {
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = null;
+        if ((typeof httpStatus) == "undefined") {
+            xhr = new XMLHttpRequest();
+            xhr.open("DELETE", url, EcRemote.async);
+            var xhrx = xhr;
+            xhr.onreadystatechange = function() {
+                if (xhrx.readyState == 4 && xhrx.status == 200) {
+                    if (success != null) 
+                        success(xhrx.responseText);
+                } else if (xhrx.readyState == 4) {
+                    if (failure != null) 
+                        failure(xhrx.responseText);
+                }
+            };
+        }
+        if (xhr != null) {
+            if (EcRemote.async) 
+                (xhr)["timeout"] = EcRemote.timeout;
+            xhr.setRequestHeader("signatureSheet", signatureSheet);
+        }
+        if ((typeof httpStatus) != "undefined") {
+            if (success != null) {
+                var sso = new Object();
+                (sso)["signatureSheet"] = signatureSheet;
+                success(httpDelete(url, null, null, null, sso));
+            }
+        } else {
+            xhr.send();
+        }
+    };
+    constructor.upgradeHttpToHttps = function(url) {
+        if (window != null) {
+            if (window.location != null) {
+                if (url.indexOf(window.location.protocol) == -1) {
+                    if (window.location.protocol.startsWith("https")) {
+                        if (!url.startsWith("https:")) {
+                            url = url.replace("http:", "https:");
+                        }
+                    }
+                }
+            }
+        }
+        return url;
+    };
+    constructor.getSuccessJSONCallback = function(success, failure) {
+        return function(s) {
+            var o;
+            try {
+                o = JSON.parse(s);
+            }catch (ex) {
+                if (ex == null) 
+                    failure("An unspecified error occurred during a network request.");
+                 else 
+                    failure(ex);
+                return;
+            }
+            success(o);
         };
-        if (Task.tasks.length > 0) {
-            var c = Task.tasks.pop();
-            c(keepGoing);
-        } else 
-            Task.runningAsyncFunctions--;
     };
-}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}, updateFrameHandle: "Object"}, {});
-(function() {
-    Task.updateFrame();
-})();
+}, {}, {});
+var EcLocalStorage = function() {};
+EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, prototype) {
+    constructor.removeItem = function(s, key) {
+        ((s)["removeItem"])(key);
+    };
+}, {}, {});
 /**
  *  A graph consisting of a set of vertices of type <code>V</code>
  *  set and a set of edges of type <code>E</code>.  Edges of this
@@ -1293,88 +1173,125 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
     prototype.getOpposite = function(vertex, edge) {};
 }, {}, {});
 /**
- *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
- *  Will iterate over all items in an array and perform 'each(item,callback)'.
- *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.
- *  When all callbacks have been called, 'after(array)' is called.
+ *  Object Helper Functions
  * 
  *  @author fritz.ray@eduworks.com
+ *  @class EcObject
  *  @module com.eduworks.ec
- *  @class EcAsyncHelper
  */
-var EcAsyncHelper = function() {};
-EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
-    constructor.scriptPath = null;
+var EcObject = function() {};
+EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
     /**
-     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
+     *  Returns true if the result is an object.
      * 
-     *  @property counter
-     *  @type integer
+     *  @param {any} o Object to test.
+     *  @return true iff the object is an object.
+     *  @static
+     *  @method isArray
      */
-    prototype.counter = null;
-    /**
-     *  "Each" method. See class description.
-     * 
-     *  @param {Array}                   array Array to iterate over.
-     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
-     *  @param {function(array)}         after Method invoked when all callbacks are called.
-     *  @method each
-     *  @memberOf EcAsyncHelper
-     */
-    prototype.each = function(array, each, after) {
-        var me = this;
-        this.counter = array.length;
-        if (array.length == 0) 
-            after(array);
-        for (var i = 0; i < array.length; i++) {
-            if (this.counter > 0) 
-                this.execute(array, each, after, me, i);
-        }
-    };
-    prototype.execute = function(array, each, after, me, i) {
-        Task.immediate(function() {
-            each(array[i], function() {
-                me.counter--;
-                if (me.counter == 0) 
-                    after(array);
-            });
-        });
-    };
-    prototype.failWithCallback = function(failure, callback) {
-        return function(s) {
-            callback();
-            failure(s);
-        };
+    constructor.isObject = function(o) {
+        if (EcArray.isArray(o)) 
+            return false;
+        if (o == null) 
+            return false;
+        return (typeof o) == "object";
     };
     /**
-     *  Stops any remaining objects from being iterated over, if they have not already. Will prevent 'after' from being called.
+     *  Returns keys on the object
      * 
-     *  @method stop
-     *  @memberOf EcAsyncHelper
+     *  @param {any} o Object to test.
+     *  @return List of keys
+     *  @static
+     *  @method keys
      */
-    prototype.stop = function() {
-        this.counter = -1;
-    };
-    /**
-     *  Stops any remaining objects from being iterated over, if they have not already. Will allow 'after' to be called.
-     * 
-     *  @method stop
-     *  @memberOf EcAsyncHelper
-     */
-    prototype.finish = function() {
-        this.counter = 1;
-    };
-    /**
-     *  Is preventing 'after' from being called?
-     * 
-     *  @return whether it is stopped.
-     *  @method isStopped
-     *  @memberOf EcAsyncHelper
-     */
-    prototype.isStopped = function() {
-        return this.counter <= -1;
+    constructor.keys = function(o) {
+        return ecKeys(o);
     };
 }, {}, {});
+/**
+ *  Class with static methods to prevent unnecessary overhead with small operations that don't prevent drawing,
+ *  but to setTimeout on methods that slow down the browser sufficiently to interfere with drawing.
+ *  Uses a framerate timer to determine between the two.
+ * 
+ *  @class Task
+ */
+var Task = function() {};
+Task = stjs.extend(Task, null, [], function(constructor, prototype) {
+    constructor.desiredFps = 2;
+    constructor.lastFrame = null;
+    constructor.tasks = new Array();
+    constructor.delayedFunctions = 0;
+    constructor.immediateFunctions = 0;
+    constructor.calledFunctions = 0;
+    constructor.asyncImmediateFunctions = 0;
+    constructor.runningAsyncFunctions = 0;
+    constructor.updateFrameHandle = null;
+    /**
+     *  Updates the framerate timer/counter.
+     *  @method updateFrame
+     *  @static
+     */
+    constructor.updateFrame = function() {
+        Task.updateFrameHandle = setTimeout(function() {
+            Task.lastFrame = Date.now();
+            if (Task.calledFunctions - Task.delayedFunctions - Task.immediateFunctions == 0) {
+                Task.updateFrameHandle = null;
+            } else 
+                Task.updateFrame();
+        }, 100);
+    };
+    /**
+     *  Invoke a method now or later based on whether some time has passed since we last drew the screen.
+     *  @param {function()} c Method to invoke
+     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     */
+    constructor.immediate = function(c) {
+        var currentMs = Date.now();
+        var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
+        Task.calledFunctions++;
+        if (EcRemote.async == true && (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs)) {
+            if (Task.updateFrameHandle == null) 
+                Task.updateFrame();
+            return setTimeout(function() {
+                Task.delayedFunctions++;
+                c();
+            }, 0);
+        } else {
+            Task.immediateFunctions++;
+            c();
+        }
+        return null;
+    };
+    /**
+     *  Invoke a method at some point in the future, allowing draw methods to occur periodically.
+     *  @param {function()} c Method to invoke
+     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     */
+    constructor.asyncImmediate = function(c) {
+        Task.tasks.push(c);
+        Task.asyncImmediateFunctions++;
+        if (Task.runningAsyncFunctions < 20) {
+            Task.runningAsyncFunctions++;
+            return setTimeout(function() {
+                Task.asyncContinue();
+            }, 0);
+        }
+        return null;
+    };
+    constructor.asyncContinue = function() {
+        var keepGoing = function() {
+            Task.asyncContinue();
+        };
+        if (Task.tasks.length > 0) {
+            var c = Task.tasks.pop();
+            c(keepGoing);
+        } else 
+            Task.runningAsyncFunctions--;
+    };
+}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}, updateFrameHandle: "Object"}, {});
+(function() {
+    Task.updateFrame();
+})();
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  * 
@@ -1687,3 +1604,86 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
         return null;
     };
 }, {edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
+/**
+ *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
+ *  Will iterate over all items in an array and perform 'each(item,callback)'.
+ *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.
+ *  When all callbacks have been called, 'after(array)' is called.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
+ *  @class EcAsyncHelper
+ */
+var EcAsyncHelper = function() {};
+EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
+    constructor.scriptPath = null;
+    /**
+     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
+     * 
+     *  @property counter
+     *  @type integer
+     */
+    prototype.counter = null;
+    /**
+     *  "Each" method. See class description.
+     * 
+     *  @param {Array}                   array Array to iterate over.
+     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
+     *  @param {function(array)}         after Method invoked when all callbacks are called.
+     *  @method each
+     *  @memberOf EcAsyncHelper
+     */
+    prototype.each = function(array, each, after) {
+        var me = this;
+        this.counter = array.length;
+        if (array.length == 0) 
+            after(array);
+        for (var i = 0; i < array.length; i++) {
+            if (this.counter > 0) 
+                this.execute(array, each, after, me, i);
+        }
+    };
+    prototype.execute = function(array, each, after, me, i) {
+        Task.immediate(function() {
+            each(array[i], function() {
+                me.counter--;
+                if (me.counter == 0) 
+                    after(array);
+            });
+        });
+    };
+    prototype.failWithCallback = function(failure, callback) {
+        return function(s) {
+            callback();
+            failure(s);
+        };
+    };
+    /**
+     *  Stops any remaining objects from being iterated over, if they have not already. Will prevent 'after' from being called.
+     * 
+     *  @method stop
+     *  @memberOf EcAsyncHelper
+     */
+    prototype.stop = function() {
+        this.counter = -1;
+    };
+    /**
+     *  Stops any remaining objects from being iterated over, if they have not already. Will allow 'after' to be called.
+     * 
+     *  @method stop
+     *  @memberOf EcAsyncHelper
+     */
+    prototype.finish = function() {
+        this.counter = 1;
+    };
+    /**
+     *  Is preventing 'after' from being called?
+     * 
+     *  @return whether it is stopped.
+     *  @method isStopped
+     *  @memberOf EcAsyncHelper
+     */
+    prototype.isStopped = function() {
+        return this.counter <= -1;
+    };
+}, {}, {});

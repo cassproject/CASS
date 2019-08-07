@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.17</em>
+            <em>API Docs for: 1.2.18</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -880,6 +880,10 @@ pulls them out of any temporary storage</p>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_clear">clear</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_clearContacts">clearContacts</a>
 
                                     <span class="flag static">static</span>
@@ -888,6 +892,10 @@ pulls them out of any temporary storage</p>
                                 <a href="#method_clearIdentities">clearIdentities</a>
 
                                     <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_commit">commit</a>
+
                             </li>
                             <li class="index-item method">
                                 <a href="#method_contactChanged">contactChanged</a>
@@ -903,6 +911,10 @@ pulls them out of any temporary storage</p>
                                 <a href="#method_createSignatureAsync">createSignatureAsync</a>
 
                                     <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fetch">fetch</a>
+
                             </li>
                             <li class="index-item method">
                                 <a href="#method_getContact">getContact</a>
@@ -925,6 +937,10 @@ pulls them out of any temporary storage</p>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_isGlobal">isGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_readContacts">readContacts</a>
 
                                     <span class="flag static">static</span>
@@ -943,6 +959,10 @@ pulls them out of any temporary storage</p>
                                 <a href="#method_saveIdentities">saveIdentities</a>
 
                                     <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setDefaultIdentityManagementServer">setDefaultIdentityManagementServer</a>
+
                             </li>
                             <li class="index-item method">
                                 <a href="#method_sign">sign</a>
@@ -1229,6 +1249,37 @@ events.</p>
 
 
 </div>
+<div id="method_clear" class="method item">
+    <h3 class="name"><code>clear</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l922"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:922</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Wipes login data and logs you out.</p>
+
+    </div>
+
+
+
+
+</div>
 <div id="method_clearContacts" class="method item">
     <h3 class="name"><code>clearContacts</code></h3>
 
@@ -1289,6 +1340,72 @@ events.</p>
 
     </div>
 
+
+
+
+</div>
+<div id="method_commit" class="method item">
+    <h3 class="name"><code>commit</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1121"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1121</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Commits credentials in EcIdentityManager to remote server.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -1535,6 +1652,76 @@ control.</p>
                         <p>Callback triggered once the signature sheet has been
 created, returns the signature</p>
 
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_fetch" class="method item">
+    <h3 class="name"><code>fetch</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l948"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:948</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Fetch credentials from server, invoking events based on login success or
+failure.</p>
+<p>
+Automatically populates EcIdentityManager.
+<p>
+Does not require startLogin().
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Object></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                         
                     </div>
 
                 </li>
@@ -1800,6 +1987,49 @@ created, returns the signature</p>
 
 
 </div>
+<div id="method_isGlobal" class="method item">
+    <h3 class="name"><code>isGlobal</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l906"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:906</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true if the identity manager is global. Returns false if the identity manager is local to the server.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>true if the identity manager is global.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_readContacts" class="method item">
     <h3 class="name"><code>readContacts</code></h3>
 
@@ -1924,6 +2154,60 @@ created, returns the signature</p>
 
     </div>
 
+
+
+
+</div>
+<div id="method_setDefaultIdentityManagementServer" class="method item">
+    <h3 class="name"><code>setDefaultIdentityManagementServer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>server</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l933"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:933</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Configure compatible remote identity management server.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">server</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Name of the remote identity management server.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
