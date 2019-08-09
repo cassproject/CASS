@@ -122,21 +122,21 @@ function cassFrameworkAsAsn() {
             if (r.relationType == Relation.IS_RELATED_TO) {
                 EcArray.setRemove(f.competency, r.source);
                 if (competencies[r.target] != null)
-                    if (competencies[r.target]["skos:relatedMatch"] == null)
-                        competencies[r.target]["skos:relatedMatch"] = [];
+                    if (competencies[r.target]["skos:related"] == null)
+                        competencies[r.target]["skos:related"] = [];
                 if (competencies[r.target] != null)
                     if (competencies[r.source] != null)
-                        competencies[r.target]["skos:relatedMatch"].push(competencies[r.source].id);
+                        competencies[r.target]["skos:related"].push(competencies[r.source].id);
                     else
-                        competencies[r.target]["skos:relatedMatch"].push(r.source);
+                        competencies[r.target]["skos:related"].push(r.source);
                 if (competencies[r.source] != null)
-                    if (competencies[r.source]["skos:relatedMatch"] == null)
-                        competencies[r.source]["skos:relatedMatch"] = [];
+                    if (competencies[r.source]["skos:related"] == null)
+                        competencies[r.source]["skos:related"] = [];
                 if (competencies[r.source] != null)
                     if (competencies[r.target] != null)
-                        competencies[r.source]["skos:relatedMatch"].push(competencies[r.target].id);
+                        competencies[r.source]["skos:related"].push(competencies[r.target].id);
                     else
-                        competencies[r.source]["skos:relatedMatch"].push(r.target);
+                        competencies[r.source]["skos:related"].push(r.target);
             }
             if (r.relationType == Relation.REQUIRES) {
                 EcArray.setRemove(f.competency, r.source);
@@ -570,8 +570,8 @@ function importJsonLdGraph(graph, context) {
             if (objToSave["skos:narrowMatch"] != null & !EcArray.isArray(objToSave["skos:narrowMatch"])) {
                 objToSave["skos:narrowMatch"] = [objToSave["skos:narrowMatch"]];
             }
-            if (objToSave["skos:relatedMatch"] != null & !EcArray.isArray(objToSave["skos:relatedMatch"])) {
-                objToSave["skos:relatedMatch"] = [objToSave["skos:relatedMatch"]];
+            if (objToSave["skos:related"] != null & !EcArray.isArray(objToSave["skos:related"])) {
+                objToSave["skos:related"] = [objToSave["skos:related"]];
             }
 
             if (objToSave["skos:inLanguage"] == null || objToSave["skos:inLanguage"] === undefined) {
