@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.19</em>
+            <em>API Docs for: 1.2.20</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -2708,11 +2708,11 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                                 (f)[&quot;skos:narrowMatch&quot;] = array;
                             }
                         }
-                        if ((e)[&quot;skos:relatedMatch&quot;] != null) {
-                            var relation = (e)[&quot;skos:relatedMatch&quot;];
+                        if ((e)[&quot;skos:related&quot;] != null) {
+                            var relation = (e)[&quot;skos:related&quot;];
                             if (!EcArray.isArray(relation)) {
                                 var array = [relation];
-                                (f)[&quot;skos:relatedMatch&quot;] = array;
+                                (f)[&quot;skos:related&quot;] = array;
                             }
                         }
                         (f)[&quot;schema:dateModified&quot;] = new Date().toISOString();

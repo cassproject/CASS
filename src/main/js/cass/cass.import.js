@@ -1882,11 +1882,11 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                                 (f)["skos:narrowMatch"] = array;
                             }
                         }
-                        if ((e)["skos:relatedMatch"] != null) {
-                            var relation = (e)["skos:relatedMatch"];
+                        if ((e)["skos:related"] != null) {
+                            var relation = (e)["skos:related"];
                             if (!EcArray.isArray(relation)) {
                                 var array = [relation];
-                                (f)["skos:relatedMatch"] = array;
+                                (f)["skos:related"] = array;
                             }
                         }
                         (f)["schema:dateModified"] = new Date().toISOString();

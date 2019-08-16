@@ -11,7 +11,7 @@
 	<url>http://github.com/cassproject/cass</url>
 
 	<properties>
-		<ec-version>2.10.0</ec-version>
+		<ec-version>2.10.1</ec-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
