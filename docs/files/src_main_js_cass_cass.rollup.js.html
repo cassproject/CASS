@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.20</em>
+            <em>API Docs for: 1.2.21</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1990,22 +1990,6 @@ PapCompetencyNetwork = stjs.extend(PapCompetencyNetwork, null, [], function(cons
         this.numberNodes = numberNodes;
     };
 }, {dependencies: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapDependency&quot;]}]}]}, activations: {name: &quot;Array&quot;, arguments: [null]}, alphas: {name: &quot;Array&quot;, arguments: [null]}, betas: {name: &quot;Array&quot;, arguments: [null]}, updated: {name: &quot;Array&quot;, arguments: [null]}}, {});
-var EcGraphUtil = function() {};
-EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
-    constructor.buildIdSearchQueryForIdList = function(idList) {
-        var searchQuery = &quot;&quot;;
-        if (idList.length &gt; 1) 
-            searchQuery = &quot;(&quot;;
-        for (var i = 0; i &lt; idList.length; i++) {
-            if (i &gt; 0) 
-                searchQuery += &quot; OR &quot;;
-            searchQuery += &quot;(\\*@id:\&quot;&quot; + idList[i] + &quot;\&quot;)&quot;;
-        }
-        if (idList.length &gt; 1) 
-            searchQuery += &quot;)&quot;;
-        return searchQuery;
-    };
-}, {}, {});
 var PapAssertion = function(confidence, competencyIndex, assertionDate, expirationDate, result) {
     this.confidence = confidence;
     this.assertionDate = assertionDate;
@@ -2048,6 +2032,22 @@ PapAssertion = stjs.extend(PapAssertion, null, [], function(constructor, prototy
     };
     prototype.setResult = function(result) {
         this.result = result;
+    };
+}, {}, {});
+var EcGraphUtil = function() {};
+EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
+    constructor.buildIdSearchQueryForIdList = function(idList) {
+        var searchQuery = &quot;&quot;;
+        if (idList.length &gt; 1) 
+            searchQuery = &quot;(&quot;;
+        for (var i = 0; i &lt; idList.length; i++) {
+            if (i &gt; 0) 
+                searchQuery += &quot; OR &quot;;
+            searchQuery += &quot;(\\*@id:\&quot;&quot; + idList[i] + &quot;\&quot;)&quot;;
+        }
+        if (idList.length &gt; 1) 
+            searchQuery += &quot;)&quot;;
+        return searchQuery;
     };
 }, {}, {});
 var PapNetworkPrediction = function(predictionDate, subjectPem, competencyList, competencyNetwork) {
@@ -5153,18 +5153,20 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     prototype.addRelationshipsToFrameworkNodeGraph = function() {
         var rel;
         var type;
-        var sourceNode;
-        var targetNode;
+        var sourceNode = null;
+        var targetNode = null;
         for (var i = 0; i &lt; this.relationArray.length; i++) {
             rel = this.relationArray[i];
             type = this.getRelationType(rel.relationType);
-            if (type != null) {
-                sourceNode = this.competencyNodeMap[rel.source];
-                targetNode = this.competencyNodeMap[rel.target];
-                if (sourceNode != null &amp;&amp; targetNode != null) {
-                    this.frameworkNodeGraph.addRelation(sourceNode, targetNode, type);
-                }
-            }
+            if (type == null) 
+                continue;
+            if (rel.source == null || rel.source == &quot;&quot; || rel.target == null || rel.target == &quot;&quot;) 
+                continue;
+            sourceNode = this.competencyNodeMap[rel.source];
+            targetNode = this.competencyNodeMap[rel.target];
+            if (sourceNode == null || targetNode == null) 
+                continue;
+            this.frameworkNodeGraph.addRelation(sourceNode, targetNode, type);
         }
     };
     prototype.generateFrameworkNodeGraph = function() {
@@ -5193,10 +5195,16 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     };
     prototype.fetchFrameworkAlignments = function(framework) {
         var me = this;
-        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
-            me.relationArray = ecaa;
+        if (framework.relation != null) 
+            this.repo.multiget(framework.relation, function(ecaa) {
+                for (var i = 0; i &lt; ecaa.length; i++) {
+                    ecaa[i] = EcAlignment.getBlocking(ecaa[i].shortId());
+                }
+                me.relationArray = ecaa;
+                me.continueFrameworkCollapse();
+            }, me.failureCallback);
+         else 
             me.continueFrameworkCollapse();
-        }, me.failureCallback, null);
     };
     prototype.collapseFramework = function(repo, framework, createImpliedRelations, success, failure) {
         if (framework == null) 
@@ -5213,10 +5221,16 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
             this.failureCallback = failure;
             var me = this;
             var fwkParam = framework;
-            EcCompetency.search(repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.competency), function(ecca) {
-                me.competencyArray = ecca;
+            if (framework.competency != null) 
+                repo.multiget(framework.competency, function(ecca) {
+                    for (var i = 0; i &lt; ecca.length; i++) {
+                        ecca[i] = EcCompetency.getBlocking(ecca[i].shortId());
+                    }
+                    me.competencyArray = ecca;
+                    me.fetchFrameworkAlignments(fwkParam);
+                }, me.failureCallback);
+             else 
                 me.fetchFrameworkAlignments(fwkParam);
-            }, me.failureCallback, null);
         }
     };
 }, {repo: &quot;EcRepository&quot;, framework: &quot;EcFramework&quot;, competencyArray: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, competencyNodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}, relationArray: {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}, frameworkNodeGraph: &quot;NodeGraph&quot;, collapsedFrameworkNodePacketGraph: &quot;NodePacketGraph&quot;, successCallback: {name: &quot;Callback2&quot;, arguments: [null, &quot;NodePacketGraph&quot;]}, failureCallback: {name: &quot;Callback1&quot;, arguments: [null]}}, {});

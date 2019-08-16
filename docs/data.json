@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.20",
+        "version": "1.2.21",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -18067,14 +18067,14 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 4522,
+            "line": 4536,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
             "class": "ProfileProcessor",
             "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 4702,
+            "line": 4716,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
             "class": "ProfileProcessor",
             "module": "org.cassproject"
@@ -67486,11 +67486,11 @@
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:4522"
+            "line": " src/main/js/cass/cass.rollup.js:4536"
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:4702"
+            "line": " src/main/js/cass/cass.rollup.js:4716"
         },
         {
             "message": "Missing item type\nCreated by fray on 5/9/17.",

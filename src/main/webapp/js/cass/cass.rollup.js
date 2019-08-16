@@ -1145,22 +1145,6 @@ PapCompetencyNetwork = stjs.extend(PapCompetencyNetwork, null, [], function(cons
         this.numberNodes = numberNodes;
     };
 }, {dependencies: {name: "Map", arguments: [null, {name: "Map", arguments: [null, {name: "Array", arguments: ["PapDependency"]}]}]}, activations: {name: "Array", arguments: [null]}, alphas: {name: "Array", arguments: [null]}, betas: {name: "Array", arguments: [null]}, updated: {name: "Array", arguments: [null]}}, {});
-var EcGraphUtil = function() {};
-EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
-    constructor.buildIdSearchQueryForIdList = function(idList) {
-        var searchQuery = "";
-        if (idList.length > 1) 
-            searchQuery = "(";
-        for (var i = 0; i < idList.length; i++) {
-            if (i > 0) 
-                searchQuery += " OR ";
-            searchQuery += "(\\*@id:\"" + idList[i] + "\")";
-        }
-        if (idList.length > 1) 
-            searchQuery += ")";
-        return searchQuery;
-    };
-}, {}, {});
 var PapAssertion = function(confidence, competencyIndex, assertionDate, expirationDate, result) {
     this.confidence = confidence;
     this.assertionDate = assertionDate;
@@ -1203,6 +1187,22 @@ PapAssertion = stjs.extend(PapAssertion, null, [], function(constructor, prototy
     };
     prototype.setResult = function(result) {
         this.result = result;
+    };
+}, {}, {});
+var EcGraphUtil = function() {};
+EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
+    constructor.buildIdSearchQueryForIdList = function(idList) {
+        var searchQuery = "";
+        if (idList.length > 1) 
+            searchQuery = "(";
+        for (var i = 0; i < idList.length; i++) {
+            if (i > 0) 
+                searchQuery += " OR ";
+            searchQuery += "(\\*@id:\"" + idList[i] + "\")";
+        }
+        if (idList.length > 1) 
+            searchQuery += ")";
+        return searchQuery;
     };
 }, {}, {});
 var PapNetworkPrediction = function(predictionDate, subjectPem, competencyList, competencyNetwork) {
@@ -4308,18 +4308,20 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     prototype.addRelationshipsToFrameworkNodeGraph = function() {
         var rel;
         var type;
-        var sourceNode;
-        var targetNode;
+        var sourceNode = null;
+        var targetNode = null;
         for (var i = 0; i < this.relationArray.length; i++) {
             rel = this.relationArray[i];
             type = this.getRelationType(rel.relationType);
-            if (type != null) {
-                sourceNode = this.competencyNodeMap[rel.source];
-                targetNode = this.competencyNodeMap[rel.target];
-                if (sourceNode != null && targetNode != null) {
-                    this.frameworkNodeGraph.addRelation(sourceNode, targetNode, type);
-                }
-            }
+            if (type == null) 
+                continue;
+            if (rel.source == null || rel.source == "" || rel.target == null || rel.target == "") 
+                continue;
+            sourceNode = this.competencyNodeMap[rel.source];
+            targetNode = this.competencyNodeMap[rel.target];
+            if (sourceNode == null || targetNode == null) 
+                continue;
+            this.frameworkNodeGraph.addRelation(sourceNode, targetNode, type);
         }
     };
     prototype.generateFrameworkNodeGraph = function() {
@@ -4348,10 +4350,16 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     };
     prototype.fetchFrameworkAlignments = function(framework) {
         var me = this;
-        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
-            me.relationArray = ecaa;
+        if (framework.relation != null) 
+            this.repo.multiget(framework.relation, function(ecaa) {
+                for (var i = 0; i < ecaa.length; i++) {
+                    ecaa[i] = EcAlignment.getBlocking(ecaa[i].shortId());
+                }
+                me.relationArray = ecaa;
+                me.continueFrameworkCollapse();
+            }, me.failureCallback);
+         else 
             me.continueFrameworkCollapse();
-        }, me.failureCallback, null);
     };
     prototype.collapseFramework = function(repo, framework, createImpliedRelations, success, failure) {
         if (framework == null) 
@@ -4368,10 +4376,16 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
             this.failureCallback = failure;
             var me = this;
             var fwkParam = framework;
-            EcCompetency.search(repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.competency), function(ecca) {
-                me.competencyArray = ecca;
+            if (framework.competency != null) 
+                repo.multiget(framework.competency, function(ecca) {
+                    for (var i = 0; i < ecca.length; i++) {
+                        ecca[i] = EcCompetency.getBlocking(ecca[i].shortId());
+                    }
+                    me.competencyArray = ecca;
+                    me.fetchFrameworkAlignments(fwkParam);
+                }, me.failureCallback);
+             else 
                 me.fetchFrameworkAlignments(fwkParam);
-            }, me.failureCallback, null);
         }
     };
 }, {repo: "EcRepository", framework: "EcFramework", competencyArray: {name: "Array", arguments: ["EcCompetency"]}, competencyNodeMap: {name: "Map", arguments: [null, "Node"]}, relationArray: {name: "Array", arguments: ["EcAlignment"]}, frameworkNodeGraph: "NodeGraph", collapsedFrameworkNodePacketGraph: "NodePacketGraph", successCallback: {name: "Callback2", arguments: [null, "NodePacketGraph"]}, failureCallback: {name: "Callback1", arguments: [null]}}, {});
