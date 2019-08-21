@@ -148,6 +148,10 @@ var ident = new EcIdentity();
 ident.displayName = "xAPI Adapter";
 ident.ppk = EcPpk.fromPem(xapiMePpk);
 EcIdentityManager.addIdentity(ident);
+xapiKey = function () {
+    return ident.ppk.toPk().toPem();
+}
+bindWebService("/xapi/pk", xapiKey);
 bindWebService("/xapi/statement", xapiStatementListener);
 
 var xapiLoop = function () {
