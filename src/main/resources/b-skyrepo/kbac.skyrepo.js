@@ -169,10 +169,13 @@ var inferTypeWithoutObj = function(atType) {
 var putUrl = function(o, id, version, type) {
     var typeFromObj = inferTypeFromObj(o, type);
     var versionPart = null;
+    var refreshPart = "refresh=true";
+    if (this.ctx.get("refresh") != null) 
+        refreshPart = "refresh=" + this.ctx.get("refresh");
     if (version == null || version == "") {
-        versionPart = "?refresh=true";
+        versionPart = "?" + refreshPart;
     } else 
-        versionPart = "?version=" + version + "&version_type=external&refresh=true";
+        versionPart = "?version=" + version + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/" + typeFromObj.toLowerCase();
     url += "/" + typeFromObj;
@@ -183,11 +186,14 @@ var putUrl = function(o, id, version, type) {
 };
 var putPermanentUrl = function(o, id, version, type) {
     var versionPart = null;
+    var refreshPart = "refresh=true";
+    if (this.ctx.get("refresh") != null) 
+        refreshPart = "refresh=" + this.ctx.get("refresh");
     if (version == null || version == "") {
-        versionPart = "?refresh=true";
+        versionPart = "?" + refreshPart;
         version = "";
     } else 
-        versionPart = "?version=" + version + "&version_type=external&refresh=true";
+        versionPart = "?version=" + version + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/permanent";
     url += "/permanent";
@@ -198,10 +204,13 @@ var putPermanentUrl = function(o, id, version, type) {
 };
 var putPermanentBaseUrl = function(o, id, version, type) {
     var versionPart = null;
+    var refreshPart = "refresh=true";
+    if (this.ctx.get("refresh") != null) 
+        refreshPart = "refresh=" + this.ctx.get("refresh");
     if (version == null || version == "") {
-        versionPart = "?refresh=true";
+        versionPart = "?" + refreshPart;
     } else 
-        versionPart = "?version=" + version + "&version_type=external&refresh=true";
+        versionPart = "?version=" + version + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/permanent";
     url += "/permanent";
@@ -234,11 +243,14 @@ var getUrl = function(index, id, version, type) {
 };
 var deleteUrl = function(id, version, type) {
     var typeFromObj = inferTypeWithoutObj(type);
+    var refreshPart = "refresh=true";
+    if (this.ctx.get("refresh") != null) 
+        refreshPart = "refresh=" + this.ctx.get("refresh");
     var url = elasticEndpoint;
     url += "/" + typeFromObj.toLowerCase();
     url += "/" + typeFromObj;
     url += "/" + urlEncode(id);
-    url += "?refresh=true";
+    url += "?" + refreshPart;
     if (skyrepoDebug) 
         console.log("Delete:" + url);
     return url;
@@ -293,6 +305,18 @@ var flattenLangstrings = function(o) {
 var skyrepoPutInternalIndex = function(o, id, version, type) {
     var url = putUrl(o, id, version, type);
     o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
+    if ((o)["@owner"] != null && EcArray.isArray((o)["@owner"])) {
+        var owners = (o)["@owner"];
+        for (var i = 0; i < owners.length; i++) 
+            if (owners[i].indexOf("\n") != -1) 
+                owners[i] = EcPk.fromPem(owners[i]).toPem();
+    }
+    if ((o)["@reader"] != null && EcArray.isArray((o)["@reader"])) {
+        var owners = (o)["@reader"];
+        for (var i = 0; i < owners.length; i++) 
+            if (owners[i].indexOf("\n") != -1) 
+                owners[i] = EcPk.fromPem(owners[i]).toPem();
+    }
     try {
         (o)["@version"] = parseInt(version);
         if (isNaN((o)["@version"])) 
@@ -642,6 +666,8 @@ var endpointData = function() {
     var size = 50;
     if (this.params.size != null) 
         size = parseInt(this.params.size);
+    if (this.params.refresh != null) 
+        this.ctx.put("refresh", this.params.refresh);
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
     var searchParams = (fileFromDatastream).call(this, "searchParams", null);
@@ -746,25 +772,43 @@ var endpointMultiGet = function() {
     }
     return JSON.stringify(results);
 };
+var endpointMultiPutEach = function() {
+    var ld = new EcRemoteLinkedData(null, null);
+    var o = JSON.parse(this.params.obj);
+    ld.copyFrom(o);
+    var id = null;
+    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id)) 
+        id = stringToHex(md5(ld.shortId()));
+     else 
+        id = ld.getGuid();
+    var version = ld.getTimestamp();
+    var type = ld.getDottedType();
+    try {
+        this.ctx.put("refresh", "false");
+        (skyrepoPutParsed).call(this, o, id, version, type);
+        return o;
+    }catch (ex) {
+        ex.printStackTrace();
+    }
+    return null;
+};
 var endpointMultiPut = function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
-    for (var i = 0; i < ary.length; i++) {
-        var o = ary[i];
-        var ld = new EcRemoteLinkedData(null, null);
-        ld.copyFrom(o);
-        var id = null;
-        if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id)) 
-            id = EcCrypto.md5(ld.shortId());
-         else 
-            id = ld.getGuid();
-        var version = ld.getTimestamp();
-        var type = ld.getDottedType();
-        (skyrepoPutParsed).call(this, o, id, version, type);
+    var results = new Array();
+    if (ary != null) {
+        var forEachResults = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointMultiPutEach"), true, true, false, true, false);
+        for (var i = 0; i < forEachResults.length; i++) 
+            if (forEachResults[i] != null) 
+                results.push(forEachResults[i]);
+    }
+    httpGet(elasticEndpoint + "/_all/_refresh");
+    for (var i = 0; i < results.length; i++) {
+        var o = results[i];
         var params = new Object();
         (params)["obj"] = JSON.stringify(o);
         (afterSave).call(null, params);
     }
-    return null;
+    return JSON.stringify(results);
 };
 var endpointSingleGet = function() {
     var urlRemainder = this.params.obj;
