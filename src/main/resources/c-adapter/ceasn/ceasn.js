@@ -773,7 +773,12 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
             f.addOwner(EcPk.fromPem(owner));
 
         if (f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined) {
-            f["schema:inLanguage"] = "en";
+            if (EcFramework.template["schema:inLanguage"] != null) {
+                f["schema:inLanguage"] = EcFramework.template["schema:inLanguage"];
+            }
+            else {
+                f["schema:inLanguage"] = "en";
+            }
         }
 
         if (f["schema:dateCreated"] == null || f["schema:dateCreated"] === undefined) {

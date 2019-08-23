@@ -518,7 +518,12 @@ function importJsonLdGraph(graph, context) {
                 objToSave.addOwner(EcPk.fromPem(owner));
 
             if (objToSave["dcterms:language"] == null || objToSave["dcterms:language"] === undefined) {
-                objToSave["dcterms:language"] = "en";
+                if (EcConceptScheme.template["dcterms:language"] != null) {
+                    objToSave["dcterms:language"] = EcConceptScheme.template["dcterms:language"];
+                }
+                else {
+                    objToSave["dcterms:language"] = "en";
+                }
             }
             else {
                 lang = objToSave["dcterms:language"];

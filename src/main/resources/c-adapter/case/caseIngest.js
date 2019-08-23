@@ -67,7 +67,7 @@ setDateCreated = function(object) {
 };
 
 getTimestamp = function(object) {
-    var timestamp = object["@id"].substring(object["@id"].lastIndexOf("/") + 1);
+    var timestamp = object["id"].substring(object["id"].lastIndexOf("/") + 1);
     if (timestamp.matches("[0-9]+")) {
         return Integer.parseInt(timestamp);
     } else {
@@ -88,10 +88,14 @@ convertCFDocumentToFramework = function (document) {
     document["@context"] = caseToCassSchema;
     document = jsonLdExpand(JSON.stringify(document));
     document = jsonLdCompact(JSON.stringify(document), cassContext);
-    if (EcFramework.template != null && EcFramework.template["schema:dateCreated"] != null) {
-        setDateCreated(document);
-    }
     f.copyFrom(document);
+    if ((f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined)
+        && EcFramework.template != null && EcFramework.template["schema:inLanguage"] != null) {
+        f["schema:inLanguage"] = EcFramework.template["schema:inLanguage"];
+    }
+    if (EcFramework.template != null && EcFramework.template["schema:dateCreated"] != null) {
+        setDateCreated(f);
+    }
     return f;
 }
 
@@ -129,11 +133,11 @@ convertCFItemIntoCompetency = function (a) {
         }
     a = jsonLdExpand(JSON.stringify(a));
     a = jsonLdCompact(JSON.stringify(a), cassContext);
-    if (EcCompetency.template != null && EcCompetency.template["schema:dateCreated"] != null) {
-        setDateCreated(a);
-    }
     var r = new EcCompetency();
     r.copyFrom(a);
+    if (EcCompetency.template != null && EcCompetency.template["schema:dateCreated"] != null) {
+        setDateCreated(r);
+    }
     return r;
 }
 
