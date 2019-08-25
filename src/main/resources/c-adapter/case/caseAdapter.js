@@ -21,7 +21,7 @@ cfGetFramework = function (f) {
             f = skyrepoGet.call(this, query);
         if (f == null || f["@type"] == null || !f["@type"].contains("ramework"))
             f = null;
-        if (f == null)
+        if (f == null && this.params.id != null)
             f = EcFramework.getBlocking(urlDecode(this.params.id));
         if (f == null)
             f = EcFramework.getBlocking(query.id);
