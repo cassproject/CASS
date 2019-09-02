@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.22",
+        "version": "1.2.23",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -2447,7 +2447,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1152,
+            "line": 1160,
             "description": "Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.\nFalls back to EcAesCtrAsyncWorker, if window.crypto is not available."
         },
         "EcView": {
@@ -23038,7 +23038,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1033,
+            "line": 1041,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/sign:method\"}}EcRsaOaep.sign{{/crossLink}}",
             "params": [
                 {
@@ -23070,7 +23070,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1072,
+            "line": 1080,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/signSha256:method\"}}EcRsaOaep.signSha256{{/crossLink}}",
             "params": [
                 {
@@ -23102,7 +23102,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1111,
+            "line": 1119,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/verify:method\"}}EcRsaOaep.verify{{/crossLink}}",
             "params": [
                 {
@@ -23139,7 +23139,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1159,
+            "line": 1167,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/encrypt:method\"}}EcAesCtr.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -23176,7 +23176,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1197,
+            "line": 1205,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/decrypt:method\"}}EcAesCtr.decrypt{{/crossLink}}",
             "params": [
                 {

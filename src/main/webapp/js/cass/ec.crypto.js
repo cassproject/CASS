@@ -938,13 +938,13 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
      *  @method encrypt
      *  @static
      */
-    constructor.encrypt = function(pk, text, success, failure) {
+    constructor.encrypt = function(pk, plainText, success, failure) {
         if (EcRemote.async == false) {
-            success(EcRsaOaep.encrypt(pk, text));
+            success(EcRsaOaep.encrypt(pk, plainText));
             return;
         }
         if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcRsaOaepAsyncWorker.encrypt(pk, text, success, failure);
+            EcRsaOaepAsyncWorker.encrypt(pk, plainText, success, failure);
             return;
         }
         var keyUsages = new Array();
@@ -955,12 +955,12 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         if (pk.key == null) 
             window.crypto.subtle.importKey("jwk", pk.toJwk(), algorithm, false, keyUsages).then(function(key) {
                 pk.key = key;
-                window.crypto.subtle.encrypt(algorithm, key, str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
+                window.crypto.subtle.encrypt(algorithm, key, str2ab(forge.util.encodeUtf8(plainText))).then(function(p1) {
                     success(base64.encode(p1));
                 }, failure);
             }, failure);
          else 
-            window.crypto.subtle.encrypt(algorithm, pk.key, str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
+            window.crypto.subtle.encrypt(algorithm, pk.key, str2ab(forge.util.encodeUtf8(plainText))).then(function(p1) {
                 success(base64.encode(p1));
             }, failure);
     };
@@ -977,21 +977,21 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
      *  @method decrypt
      *  @static
      */
-    constructor.decrypt = function(ppk, text, success, failure) {
+    constructor.decrypt = function(ppk, cipherText, success, failure) {
         if (EcCrypto.caching) {
             var cacheGet = null;
-            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + text];
+            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + cipherText];
             if (cacheGet != null) {
                 success(cacheGet);
                 return;
             }
         }
         if (EcRemote.async == false) {
-            success(EcRsaOaep.decrypt(ppk, text));
+            success(EcRsaOaep.decrypt(ppk, cipherText));
             return;
         }
         if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcRsaOaepAsyncWorker.decrypt(ppk, text, success, failure);
+            EcRsaOaepAsyncWorker.decrypt(ppk, cipherText, success, failure);
             return;
         }
         var keyUsages = new Array();
@@ -1002,13 +1002,21 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         if (ppk.key == null) 
             window.crypto.subtle.importKey("jwk", ppk.toJwk(), algorithm, false, keyUsages).then(function(key) {
                 ppk.key = key;
-                window.crypto.subtle.decrypt(algorithm, key, base64.decode(text)).then(function(p1) {
-                    success(forge.util.decodeUtf8(ab2str(p1)));
+                window.crypto.subtle.decrypt(algorithm, key, base64.decode(cipherText)).then(function(p1) {
+                    var result = forge.util.decodeUtf8(ab2str(p1));
+                    if (EcCrypto.caching) {
+                        (EcCrypto.decryptionCache)[ppk.toPem() + cipherText] = result;
+                    }
+                    success(result);
                 }, failure);
             }, failure);
          else 
-            window.crypto.subtle.decrypt(algorithm, ppk.key, base64.decode(text)).then(function(p1) {
-                success(forge.util.decodeUtf8(ab2str(p1)));
+            window.crypto.subtle.decrypt(algorithm, ppk.key, base64.decode(cipherText)).then(function(p1) {
+                var result = forge.util.decodeUtf8(ab2str(p1));
+                if (EcCrypto.caching) {
+                    (EcCrypto.decryptionCache)[ppk.toPem() + cipherText] = result;
+                }
+                success(result);
             }, failure);
     };
     /**
