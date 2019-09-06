@@ -287,6 +287,17 @@ function cassFrameworkAsCeasn() {
         }
         if (competencies[id]["ceasn:inLanguage"] == null)
             competencies[id]["ceasn:inLanguage"] = "en";
+        if (c["schema:educationalAlignment"] != null) { 
+            if (!EcArray.isArray(c["schema:educationalAlignment"])) { 
+                competencies[id]["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"]; 
+            } 
+            else { 
+                competencies[id]["ceasn:educationLevelType"] = []; 
+                for (var j = 0; j < c["schema:educationalAlignment"].length; j++) { 
+                    competencies[id]["ceasn:educationLevelType"].push(c["schema:educationalAlignment"][j]["schema:targetName"]); 
+                } 
+            } 
+        } 
         delete competencies[id]["@context"];
         competencies[id] = stripNonCe(competencies[id]);
     }
