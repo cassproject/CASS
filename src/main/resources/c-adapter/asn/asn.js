@@ -518,7 +518,7 @@ function importJsonLdGraph(graph, context) {
                 objToSave.addOwner(EcPk.fromPem(owner));
 
             if (objToSave["dcterms:language"] == null || objToSave["dcterms:language"] === undefined) {
-                if (EcConceptScheme.template["dcterms:language"] != null) {
+                if (EcConceptScheme.template != null && EcConceptScheme.template["dcterms:language"] != null) {
                     objToSave["dcterms:language"] = EcConceptScheme.template["dcterms:language"];
                 }
                 else {
@@ -577,15 +577,6 @@ function importJsonLdGraph(graph, context) {
             }
             if (objToSave["skos:related"] != null & !EcArray.isArray(objToSave["skos:related"])) {
                 objToSave["skos:related"] = [objToSave["skos:related"]];
-            }
-
-            if (objToSave["skos:inLanguage"] == null || objToSave["skos:inLanguage"] === undefined) {
-                if (lang != null) {
-                    objToSave["skos:inLanguage"] = lang;
-                }
-                else {
-                    objToSave["skos:inLanguage"] = "en";
-                }
             }
 
             if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {

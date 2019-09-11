@@ -285,8 +285,6 @@ function cassFrameworkAsCeasn() {
             competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
             delete competencies[id]["ceasn:description"];
         }
-        if (competencies[id]["ceasn:inLanguage"] == null)
-            competencies[id]["ceasn:inLanguage"] = "en";
         if (c["schema:educationalAlignment"] != null) { 
             if (!EcArray.isArray(c["schema:educationalAlignment"])) { 
                 competencies[id]["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"]; 
@@ -319,7 +317,7 @@ function cassFrameworkAsCeasn() {
         }
         f["ceasn:publisherName"].push(f["schema:publisher"]);
         delete f["schema:publisher"];
-    } else if (f["schema:publisher"] != null) {
+    } else if (f["schema:publisher"] != null && EcArray.isArray(f["schema:publisher"])) {
         for (var i = f["schema:publisher"].length - 1; i >= 0; i--) {
             if (f["schema:publisher"][i].indexOf("http") == -1) {
                 if (!EcArray.isArray(f["ceasn:publisherName"])) {
@@ -583,9 +581,6 @@ function cassConceptSchemeAsCeasn(framework) {
             if (concepts[id]["ceterms:ctid"].indexOf("ce-") != 0) {
                 concepts[id]["ceterms:ctid"] = "ce-" + concepts[id]["ceterms:ctid"];
             }
-            if (concepts[id]["skos:inLanguage"] == null) {
-                concepts[id]["skos:inLanguage"] = "en";
-            }
             delete concepts[id]["@context"];
 
             concepts[id] = conceptArrays(concepts[id]);
@@ -729,15 +724,6 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         c.copyFrom(compactedComp);
         c.addOwner(ceasnIdentity.ppk.toPk());
 
-        if (c["schema:inLanguage"] == null || c["schema:inLanguage"] === undefined) {
-            if (frameworkObj != null && (frameworkObj["ceasn:inLanguage"] != null || frameworkObj["schema:inLanguage"] != null)) {
-                c["schema:inLanguage"] = frameworkObj["ceasn:inLanguage"] ? frameworkObj["ceasn:inLanguage"] : frameworkObj["schema:inLanguage"];
-            } else {
-                c["schema:inLanguage"] = "en";
-            }
-        }
-
-
         if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
             var timestamp;
             var date;
@@ -784,7 +770,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
             f.addOwner(EcPk.fromPem(owner));
 
         if (f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined) {
-            if (EcFramework.template["schema:inLanguage"] != null) {
+            if (EcFramework.template != null && EcFramework.template["schema:inLanguage"] != null) {
                 f["schema:inLanguage"] = EcFramework.template["schema:inLanguage"];
             }
             else {
