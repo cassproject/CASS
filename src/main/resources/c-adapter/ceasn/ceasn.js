@@ -259,7 +259,8 @@ function cassFrameworkAsCeasn() {
                 }
             }
         }
-
+        delete c["schema:inLanguage"];
+        
         //Remove fields that are only whitespace
         for (var key in c) {
             if (typeof c[key] == "string" && c[key].trim().length == 0) {
@@ -547,6 +548,7 @@ function cassConceptSchemeAsCeasn(framework) {
             concepts[id] = c;
             delete concepts[id]["owner"];
             delete concepts[id]["signature"];
+            delete concepts[id]["skos:inLanguage"];
 
             c.context = "https://schema.cassproject.org/0.4/cass2ceasnConcepts";
             if (c.id != ceasnExportUriTransform(c.id)) {
