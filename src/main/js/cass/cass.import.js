@@ -865,10 +865,22 @@ var CSVExport = function() {
 CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype) {
     constructor.frameworkCompetencies = null;
     constructor.frameworkRelations = null;
-    constructor.exportObjects = function(objects, fileName) {
+    constructor.exportObjects = function(objects, fileName, piped) {
         var compExport = new CSVExport.CSVExportProcess();
-        compExport.buildExport(objects);
+        compExport.buildExport(objects, piped);
         compExport.downloadCSV(fileName);
+    };
+    constructor.exportCTDLASN = function(json, name) {
+        var graph = (json)["@graph"];
+        var objects = [];
+        for (var i = 0; i < graph.length; i++) {
+            var rld = new EcRemoteLinkedData("https://credreg.net/ctdlasn/schema/context/json", (graph[i])["@type"]);
+            rld.copyFrom(graph[i]);
+            if (i != 0) {
+                objects.push(rld);
+            }
+        }
+        CSVExport.exportObjects(objects, name + ".csv", true);
     };
     /**
      *  Method to export the CSV files of competencies and relationships for a framework
@@ -902,14 +914,14 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                         CSVExport.frameworkCompetencies.push(competency);
                         if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
                             var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkCompetencies);
+                            compExport.buildExport(CSVExport.frameworkCompetencies, false);
                             compExport.downloadCSV(fw.getName() + " - Competencies.csv");
                         } else {}
                     }, function(s) {
                         CSVExport.frameworkCompetencies.push(null);
                         if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
                             var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkCompetencies);
+                            compExport.buildExport(CSVExport.frameworkCompetencies, false);
                             compExport.downloadCSV(fw.getName() + " - Competencies.csv");
                         } else {}
                     });
@@ -920,7 +932,7 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                         CSVExport.frameworkRelations.push(relation);
                         if (CSVExport.frameworkRelations.length == fw.relation.length) {
                             var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkRelations);
+                            compExport.buildExport(CSVExport.frameworkRelations, false);
                             compExport.downloadCSV(fw.getName() + " - Relations.csv");
                             if (success != null && success != undefined) 
                                 success();
@@ -929,7 +941,7 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                         CSVExport.frameworkRelations.push(null);
                         if (CSVExport.frameworkRelations.length == fw.relation.length) {
                             var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkRelations);
+                            compExport.buildExport(CSVExport.frameworkRelations, false);
                             compExport.downloadCSV(fw.getName() + " - Relations.csv");
                             if (success != null && success != undefined) 
                                 success();
@@ -944,28 +956,36 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
     };
     constructor.CSVExportProcess = stjs.extend(constructor.CSVExportProcess, null, [], function(constructor, prototype) {
         prototype.csvOutput = null;
-        prototype.flattenObject = function(flattenedObject, object, prefix) {
+        prototype.flattenObject = function(flattenedObject, object, prefix, piped) {
             var data = new EcRemoteLinkedData((object)["@context"], (object)["@type"]);
             data.copyFrom(object);
             var tempObj = JSON.parse(data.toJson());
             var props = (tempObj);
             for (var prop in props) {
                 var id;
-                if (prefix != null && prefix != undefined) 
+                if (prefix != null && prefix != undefined && !piped) 
                     id = prefix + "." + prop;
                  else 
                     id = prop;
-                if (props[prop] != null && props[prop] != "" && stjs.isInstanceOf(props[prop].constructor, Object)) {
-                    this.flattenObject(flattenedObject, props[prop], id);
+                if (props[prop] != null && props[prop] != "" && stjs.isInstanceOf(props[prop].constructor, Object) && !piped) {
+                    this.flattenObject(flattenedObject, props[prop], id, false);
+                } else if (props[prop] != null && props[prop] != "" && (stjs.isInstanceOf(props[prop].constructor, Object) || EcArray.isArray(props[prop]))) {
+                    var display = "";
+                    var props2 = (props[prop]);
+                    for (var prop2 in props2) {
+                        display += props2[prop2] + "|";
+                    }
+                    display = display.substring(0, display.length - 1);
+                    (flattenedObject)[id] = display;
                 } else {
                     var display = Thing.getDisplayStringFrom(props[prop]);
                     (flattenedObject)[id] = display;
                 }
             }
         };
-        prototype.addCSVRow = function(object) {
+        prototype.addCSVRow = function(object, piped) {
             var flattenedObject = new EcRemoteLinkedData(object.context, object.type);
-            this.flattenObject(flattenedObject, object, null);
+            this.flattenObject(flattenedObject, object, null, piped);
             this.csvOutput.push(JSON.parse(flattenedObject.toJson()));
             var props = (JSON.parse(flattenedObject.toJson()));
             for (var prop in props) {
@@ -979,11 +999,11 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                 }
             }
         };
-        prototype.buildExport = function(objects) {
+        prototype.buildExport = function(objects, piped) {
             for (var i = 0; i < objects.length; i++) 
                 if (objects[i] != null) {
                     var object = objects[i];
-                    this.addCSVRow(object);
+                    this.addCSVRow(object, piped);
                 }
         };
         prototype.downloadCSV = function(name) {
