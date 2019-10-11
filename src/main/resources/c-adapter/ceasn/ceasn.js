@@ -55,6 +55,10 @@ function cassFrameworkAsCeasn() {
         framework = null;
     if (framework == null && urlDecode(this.params.id) != null)
         framework = EcFramework.getBlocking(urlDecode(this.params.id));
+    if (framework == null && this.params.urlRemainder != null) {
+        var id = repoEndpoint() + "data" + this.params.urlRemainder;
+        framework = EcFramework.getBlocking(id);
+    }
     var competency = null;
     if (framework == null) {
         competency = skyrepoGet.call(this, query);
@@ -65,8 +69,12 @@ function cassFrameworkAsCeasn() {
             c.copyFrom(competency);
             competency = c;
         }
+        if (competency == null && this.params.urlRemainder != null) {
+            var id = repoEndpoint() + "data" + this.params.urlRemainder;
+            competency = EcCompetency.getBlocking(id);
+        }
         if (competency != null) {
-            EcFramework.search(repo, "competency:\"" + c.shortId() + "\"", function (frameworks) {
+            EcFramework.search(repo, "competency:\"" + competency.shortId() + "\"", function (frameworks) {
                 if (frameworks.length == 0) {
                     error("Individual competencies are not permitted to be represented in CEASN outside of a framework. See https://github.com/CredentialEngine/CompetencyFrameworks/issues/43 for more details.", 404);
                 }
