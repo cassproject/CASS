@@ -59147,7 +59147,7 @@ EcPerson = stjs.extend(EcPerson, Person, [], function(constructor, prototype) {
     constructor.getByPk = function(repo, pk, success, failure) {
         EcPerson.get(repo.selectedServer + (repo.selectedServer.endsWith("/") ? "" : "/") + "data/" + pk.fingerprint(), success, failure);
     };
-    constructor.getByPkBlocking = function(repo, pk, success, failure) {
+    constructor.getByPkBlocking = function(repo, pk) {
         return EcPerson.getBlocking(repo.selectedServer + (repo.selectedServer.endsWith("/") ? "" : "/") + "data/" + pk.fingerprint());
     };
     prototype.equals = function(obj) {

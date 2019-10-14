@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.24</em>
+            <em>API Docs for: 1.2.25</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1697,16 +1697,31 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
         compExport.downloadCSV(fileName);
     };
     constructor.exportCTDLASN = function(json, name) {
-        var graph = (json)[&quot;@graph&quot;];
         var objects = [];
-        for (var i = 0; i &lt; graph.length; i++) {
-            var rld = new EcRemoteLinkedData(&quot;https://credreg.net/ctdlasn/schema/context/json&quot;, (graph[i])[&quot;@type&quot;]);
-            rld.copyFrom(graph[i]);
-            if (i != 0) {
-                objects.push(rld);
+        CSVExport.findGraphs(json, objects);
+        CSVExport.exportObjects(objects, name + &quot;.csv&quot;, true);
+    };
+    constructor.findGraphs = function(json, objects) {
+        var jsonArray;
+        if (!EcArray.isArray(json)) {
+            jsonArray = [json];
+        } else {
+            jsonArray = json;
+        }
+        for (var j = 0; j &lt; jsonArray.length; j++) {
+            var framework = jsonArray[j];
+            var graph = (framework)[&quot;@graph&quot;];
+            if (graph != null) {
+                for (var i = 0; i &lt; graph.length; i++) {
+                    var rld = new EcRemoteLinkedData(&quot;https://credreg.net/ctdlasn/schema/context/json&quot;, (graph[i])[&quot;@type&quot;]);
+                    rld.copyFrom(graph[i]);
+                    objects.push(rld);
+                    if ((graph[i])[&quot;@graph&quot;] != null) {
+                        CSVExport.findGraphs(graph[i], objects);
+                    }
+                }
             }
         }
-        CSVExport.exportObjects(objects, name + &quot;.csv&quot;, true);
     };
     /**
      *  Method to export the CSV files of competencies and relationships for a framework

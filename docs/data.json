@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.24",
+        "version": "1.2.25",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -1958,7 +1958,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1024,
+            "line": 1039,
             "description": "Import methods to handle an CSV file of competencies and a\nCSV file of relationships and store them in a CASS instance",
             "author": "fritz.ray@eduworks.com"
         },
@@ -17179,7 +17179,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 885,
+            "line": 900,
             "description": "Method to export the CSV files of competencies and relationships for a framework",
             "params": [
                 {
@@ -17207,7 +17207,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1041,
+            "line": 1056,
             "description": "Analyzes a CSV File to return the column names to the user for specifying\nwhich columns contain which data. This should be called before import.",
             "params": [
                 {
@@ -17236,7 +17236,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1070,
+            "line": 1085,
             "description": "Helper function to transform a competencies oldID to match the new server url",
             "params": [
                 {
@@ -17266,7 +17266,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1091,
+            "line": 1106,
             "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
             "params": [
                 {
@@ -17355,7 +17355,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1214,
+            "line": 1229,
             "description": "Handles actually importing the relationships from the relationship CSV file",
             "params": [
                 {
@@ -66250,23 +66250,23 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:885"
+            "line": " src/main/js/cass/cass.import.js:900"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1041"
+            "line": " src/main/js/cass/cass.import.js:1056"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1070"
+            "line": " src/main/js/cass/cass.import.js:1085"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1091"
+            "line": " src/main/js/cass/cass.import.js:1106"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1214"
+            "line": " src/main/js/cass/cass.import.js:1229"
         },
         {
             "message": "unknown tag: internal",

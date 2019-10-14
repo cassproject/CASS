@@ -871,16 +871,31 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
         compExport.downloadCSV(fileName);
     };
     constructor.exportCTDLASN = function(json, name) {
-        var graph = (json)["@graph"];
         var objects = [];
-        for (var i = 0; i < graph.length; i++) {
-            var rld = new EcRemoteLinkedData("https://credreg.net/ctdlasn/schema/context/json", (graph[i])["@type"]);
-            rld.copyFrom(graph[i]);
-            if (i != 0) {
-                objects.push(rld);
+        CSVExport.findGraphs(json, objects);
+        CSVExport.exportObjects(objects, name + ".csv", true);
+    };
+    constructor.findGraphs = function(json, objects) {
+        var jsonArray;
+        if (!EcArray.isArray(json)) {
+            jsonArray = [json];
+        } else {
+            jsonArray = json;
+        }
+        for (var j = 0; j < jsonArray.length; j++) {
+            var framework = jsonArray[j];
+            var graph = (framework)["@graph"];
+            if (graph != null) {
+                for (var i = 0; i < graph.length; i++) {
+                    var rld = new EcRemoteLinkedData("https://credreg.net/ctdlasn/schema/context/json", (graph[i])["@type"]);
+                    rld.copyFrom(graph[i]);
+                    objects.push(rld);
+                    if ((graph[i])["@graph"] != null) {
+                        CSVExport.findGraphs(graph[i], objects);
+                    }
+                }
             }
         }
-        CSVExport.exportObjects(objects, name + ".csv", true);
     };
     /**
      *  Method to export the CSV files of competencies and relationships for a framework
