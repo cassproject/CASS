@@ -70,12 +70,12 @@ skyrepoReindex = function () {
         sort: "_doc"
     };
     var firstQueryUrl = elasticEndpoint + "/_search?scroll=1m&version";
-    var results = httpPost(JSON.stringify(firstQueryPost), firstQueryUrl, "application/json", "false");
-    var scroll = results["_scroll_id"];
+    var reindexResults = httpPost(JSON.stringify(firstQueryPost), firstQueryUrl, "application/json", "false");
+    var scroll = reindexResults["_scroll_id"];
     var counter = 0;
-    while (results != null && scroll != null && scroll != "") {
-        scroll = results["_scroll_id"];
-        var hits = results.hits.hits;
+    while (reindexResults != null && scroll != null && scroll != "") {
+        scroll = reindexResults["_scroll_id"];
+        var hits = reindexResults.hits.hits;
         if (hits.length == 0)
             break;
         for (var i = 0; i < hits.length; i++) {
@@ -85,7 +85,11 @@ skyrepoReindex = function () {
                 skyrepoPutInternalPermanent(JSON.parse(hits[i]["_source"].data), hits[i]["_id"].replace("." + hits[i]["_version"], "").replace(/\.$/, ""), hits[i]["_version"], hits[i]["_type"]);
             }
         }
-        results = httpGet(elasticEndpoint + "/_search/scroll?scroll=1m&scroll_id=" + scroll);
+        var nextQueryPost = {
+            scroll:"1m",
+            scroll_id:scroll
+        };
+        reindexResults = httpPost(JSON.stringify(nextQueryPost),elasticEndpoint + "/_search/scroll", "application/json", "false");
     }
     skyrepoDebug = false;
 }
