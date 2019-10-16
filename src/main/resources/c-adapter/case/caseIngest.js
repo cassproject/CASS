@@ -8,7 +8,7 @@ var caseInterface = {
         return httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments/" + sourcedId,{"Accept":"application/json"});
     },
     CFPackages: function (sourcedId) {
-        return httpGet(debug(this.targetUrl + "/ims/case/v1p0/CFPackages/" + sourcedId),{"Accept":"application/json"});
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFPackages/" + sourcedId,{"Accept":"application/json"});
     },
     CFItems: function (sourcedId) {
         return httpGet(this.targetUrl + "/ims/case/v1p0/CFItems/" + sourcedId,{"Accept":"application/json"});
@@ -143,7 +143,7 @@ convertCFItemIntoCompetency = function (a) {
 
 //Returns array of objects to save.
 embedCFPackageIntoFramework = function(f,document){
-	var p = httpGet(document.CFPackageURI.uri,{"Accept":"application/json"});
+	var p = caseInterface.CFPackages.call(this,document.CFPackageURI.identifier);
 	var results = [f];
 	var i = 0;
 	if (p.CFAssociations != null)
@@ -191,7 +191,7 @@ ingestCase = function () {
     for (var i = 0; i < documents.CFDocuments.length; i++) {
         var document = documents.CFDocuments[i];
         var f = convertCFDocumentToFramework(document);
-        var listToSave = embedCFPackageIntoFramework(f, document);
+        var listToSave = embedCFPackageIntoFramework.call(this,f, document);
         for (var j = 0; j < listToSave.length; j++) {
             listToSave[j].addOwner(caseIdentity.ppk.toPk());
             if (owner != null)
