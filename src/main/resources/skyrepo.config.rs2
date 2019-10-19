@@ -36,6 +36,11 @@ afterSave=#object(
 
 #afterSave=afterSave;
 
+afterSaveBulk=#object(
+	b=#wsBroadcast(obj=#toArray(obj="@obj")).call(background="true")
+);
+#afterSaveBulk=afterSaveBulk;
+
 beforeGet=#if(
 	operator=#variableGet(key="beforeGet"),
 	operand=#date(raw="true").add(a=#add(a="-", b=#multiply(a="1000", b=afterSaveInterval))),
