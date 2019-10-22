@@ -235,9 +235,7 @@ function cassFrameworkAsCeasn() {
         delete competencies[allCompetencies[i]];
         var id = c.id;
         c.context = "https://schema.cassproject.org/0.4/cass2ceasn";
-        console.log(f.id);
         c["ceasn:isPartOf"] = ceasnExportUriTransform(f.id);
-        console.log(c["ceasn:isPartOf"]);
         if (c["ceasn:isChildOf"] == null) {
             c["ceasn:isTopChildOf"] = ceasnExportUriTransform(f.id);
             if (f["ceasn:hasTopChild"] == null)
@@ -806,7 +804,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
         listToSave.push(f);
 
-        repo.multiput(listToSave, console.log, console.error);
+        repo.multiput(listToSave, function(foo){}, console.error);
         return repoEndpoint() + "data/" + guid;
     } // end if frameworkObj != null
 }
