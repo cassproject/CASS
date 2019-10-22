@@ -21,6 +21,43 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return v;
     };
     /**
+     *  Converts a piece of (likely) encrypted remote linked data to an unencrypted object.
+     *  @param d Data to decrypt
+     *  @return Decrypted data
+     *  @memberOf EcEncryptedValue
+     *  @static
+     *  @method fromEncryptedValue
+     */
+    constructor.fromEncryptedValue = function(d) {
+        if (!d.isAny(new EcEncryptedValue().getTypes())) 
+            return d;
+        var eev = new EcEncryptedValue();
+        eev.copyFrom(d);
+        EcEncryptedValue.encryptOnSave(d.id, true);
+        EcEncryptedValue.encryptOnSave(d.shortId(), true);
+        return eev.decryptIntoObject();
+    };
+    /**
+     *  Converts a piece of (likely) encrypted remote linked data to an unencrypted object.
+     *  @param {EcRemoteLinkedData} d Data to decrypt
+     *  @param {Callback1<EcRemoteLinkedData>} success
+     *  @param {Callback1<String>} failure
+     *  @param d Data to decrypt
+     *  @return Decrypted data
+     *  @memberOf EcEncryptedValue
+     *  @static
+     *  @method fromEncryptedValue
+     */
+    constructor.fromEncryptedValueAsync = function(d, success, failure) {
+        if (!d.isAny(new EcEncryptedValue().getTypes())) 
+            success(d);
+        var eev = new EcEncryptedValue();
+        eev.copyFrom(d);
+        EcEncryptedValue.encryptOnSave(d.id, true);
+        EcEncryptedValue.encryptOnSave(d.shortId(), true);
+        eev.decryptIntoObjectAsync(success, failure);
+    };
+    /**
      *  Converts a piece of remote linked data to an encrypted value
      * 
      *  @param {EcRemoteLinkedData} d Data to encrypt
@@ -1319,10 +1356,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  Uses a signature sheet informed by the owner field of the data.
      * 
      *  @param {Array<EcRemoteLinkedData>} data Data to save to the location designated
-     *                              by its id.
-     *  @param {Callback1<String>}  success Callback triggered on successful save
-     *  @param {Callback1<String>}  failure Callback triggered if error during
-     *                              save
+     *                                     by its id.
+     *  @param {Callback1<String>}         success Callback triggered on successful save
+     *  @param {Callback1<String>}         failure Callback triggered if error during
+     *                                     save
      *  @memberOf EcRepository
      *  @method multiput
      *  @static
@@ -2314,6 +2351,75 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }, function(p1) {
             failure("");
         });
+    };
+    constructor.getAs = function(id, result, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if ((p1).prototype == (result).prototype) 
+                if (success != null) {
+                    success(p1);
+                    return;
+                }
+            EcEncryptedValue.fromEncryptedValueAsync(p1, function(p1) {
+                if (p1.isAny(result.getTypes())) {
+                    result.copyFrom(p1);
+                    if (EcRepository.caching) {
+                        (EcRepository.cache)[result.shortId()] = result;
+                        (EcRepository.cache)[result.id] = result;
+                    }
+                    if (success != null) 
+                        success(result);
+                } else {
+                    var msg = "Retrieved object was not a " + result.getFullType();
+                    if (failure != null) 
+                        failure(msg);
+                     else 
+                        console.error(msg);
+                }
+            }, failure);
+        }, failure);
+    };
+    constructor.getBlockingAs = function(id, result) {
+        var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
+        if ((p1).prototype == (result).prototype) 
+            return p1;
+        p1 = EcEncryptedValue.fromEncryptedValue(p1);
+        if (p1.isAny(result.getTypes())) {
+            result.copyFrom(p1);
+            if (EcRepository.caching) {
+                (EcRepository.cache)[result.shortId()] = result;
+                (EcRepository.cache)[result.id] = result;
+            }
+            return result;
+        } else {
+            var msg = "Retrieved object was not a " + result.getFullType();
+            console.error(msg);
+            return null;
+        }
+    };
+    constructor.searchAs = function(repo, query, factory, success, failure, paramObj) {
+        var queryAdd = (factory()).getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1s) {
+            var eah = new EcAsyncHelper();
+            if (success != null) {
+                eah.eachSet(p1s, function(p1, set) {
+                    EcEncryptedValue.fromEncryptedValueAsync(p1, function(p1) {
+                        var result = factory();
+                        if (p1.isAny(result.getTypes())) {
+                            result.copyFrom(p1);
+                            set(result);
+                        }
+                    }, EcAsyncHelper.setNull(set));
+                }, function(results) {
+                    success(results);
+                });
+            }
+        }, failure);
     };
 }, {cache: "Object", fetching: "Object", repos: {name: "Array", arguments: ["EcRepository"]}, adminKeys: {name: "Array", arguments: [null]}}, {});
 /**

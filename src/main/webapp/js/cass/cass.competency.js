@@ -164,8 +164,8 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
  * 
  *  @author fritz.ray@eduworks.com
  *  @author devlin.junker@eduworks.com
- *          <p>
- *          TODO: Test case where an absent relation is in the framework.
+ *  <p>
+ *  TODO: Test case where an absent relation is in the framework.
  *  @module org.cassproject
  *  @class EcAlignment
  *  @constructor
@@ -195,34 +195,7 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (stjs.isInstanceOf(p1.constructor, EcAlignment)) 
-                if (success != null) {
-                    success(p1);
-                    return;
-                }
-            var relation = new EcAlignment();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-            }
-            if (p1.isAny(relation.getTypes())) {
-                relation.copyFrom(p1);
-                if (EcRepository.caching) {
-                    (EcRepository.cache)[relation.shortId()] = relation;
-                    (EcRepository.cache)[relation.id] = relation;
-                }
-                if (success != null) 
-                    success(relation);
-            } else {
-                var msg = "Resultant object is not a relation.";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
+        EcRepository.getAs(id, new EcAlignment(), success, failure);
     };
     /**
      *  Retrieves an alignment from it's server synchronously, the call
@@ -237,30 +210,7 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      *  @static
      */
     constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        if (stjs.isInstanceOf(p1.constructor, EcAlignment)) 
-            return p1;
-        var alignment = new EcAlignment();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(alignment.getTypes())) {
-            alignment.copyFrom(p1);
-            if (EcRepository.caching) {
-                (EcRepository.cache)[alignment.shortId()] = alignment;
-                (EcRepository.cache)[alignment.id] = alignment;
-            }
-            return alignment;
-        } else {
-            var msg = "Retrieved object was not a relation";
-            console.error(msg);
-            return null;
-        }
+        return EcRepository.getBlockingAs(id, new EcAlignment());
     };
     /**
      *  Searches the repository using the query and optional parameters provided
@@ -275,38 +225,14 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      *                                         Callback triggered if error searching
      *  @param {Object}                        [paramObj]
      *                                         Parameters to include in the search
-     *  @param start
-     *  @param size
      *  @memberOf EcAlignment
      *  @method search
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = new EcAlignment().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            alignment.copyFrom(obj);
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcAlignment();
+        }, success, failure, paramObj);
     };
     /**
      *  Searches the repository for alignments with a specific ID in the source field
@@ -321,8 +247,6 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      *                                         Callback triggered if error searching
      *  @param {Object}                        [paramObj]
      *                                         Parameters to include in the search
-     *  @param start
-     *  @param size
      *  @memberOf EcAlignment
      *  @method searchBySource
      *  @static
@@ -336,29 +260,9 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
         } else {
             query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\"))";
         }
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["source"] != sourceId && (obj)["source"] != noVersion) {
-                                continue;
-                            }
-                            alignment.copyFrom(obj);
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcAlignment();
+        }, success, failure, paramObj);
     };
     /**
      *  Searches the repository for alignments with one of an array of IDs in the source field
@@ -373,8 +277,6 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      *                                         Callback triggered if error searching
      *  @param {Object}                        [paramObj]
      *                                         Parameters to include in the search
-     *  @param start
-     *  @param size
      *  @memberOf EcAlignment
      *  @method searchBySource
      *  @static
@@ -1884,35 +1786,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (stjs.isInstanceOf(p1.constructor, EcCompetency)) 
-                if (success != null) {
-                    success(p1);
-                    return;
-                }
-            var competency = new EcCompetency();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(competency.getTypes())) {
-                competency.copyFrom(p1);
-                if (EcRepository.caching) {
-                    (EcRepository.cache)[competency.shortId()] = competency;
-                    (EcRepository.cache)[competency.id] = competency;
-                }
-                if (success != null) 
-                    success(competency);
-            } else {
-                var msg = "Retrieved object was not a competency";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
+        EcRepository.getAs(id, new EcCompetency(), success, failure);
     };
     /**
      *  Retrieves a competency from it's server synchronously, the call
@@ -1927,24 +1801,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *  @static
      */
     constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var competency = new EcCompetency();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(competency.getTypes())) {
-            competency.copyFrom(p1);
-            return competency;
-        } else {
-            var msg = "Retrieved object was not a competency";
-            console.error(msg);
-            return null;
-        }
+        return EcRepository.getBlockingAs(id, new EcCompetency());
     };
     /**
      *  Searches a repository for competencies that match the search query
@@ -1964,33 +1821,9 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcCompetency().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcCompetency();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcCompetency.myType)) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcCompetency();
+        }, success, failure, paramObj);
     };
     /**
      *  Adds a new alignment on the server specified with this competency as its

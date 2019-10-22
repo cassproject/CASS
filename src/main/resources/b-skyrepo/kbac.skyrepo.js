@@ -143,10 +143,10 @@ var skyrepoUrlType = function(o) {
     return getTypeFromObject(o);
 };
 var elasticMapping = function() {
-    return httpGet(elasticEndpoint + "/_mapping");
+    return httpGet(elasticEndpoint + "/_mapping", true);
 };
 var elasticSettings = function() {
-    return httpGet(elasticEndpoint + "/_settings");
+    return httpGet(elasticEndpoint + "/_settings", true);
 };
 var inferTypeFromObj = function(o, atType) {
     if (atType != null) 
@@ -172,10 +172,10 @@ var putUrl = function(o, id, version, type) {
     var refreshPart = "refresh=true";
     if (this.ctx.get("refresh") != null) 
         refreshPart = "refresh=" + this.ctx.get("refresh");
-    if (version == null || version == "") {
+    if (version == null) {
         versionPart = "?" + refreshPart;
     } else 
-        versionPart = "?version=" + version + "&version_type=external&" + refreshPart;
+        versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/" + typeFromObj.toLowerCase();
     url += "/" + typeFromObj;
@@ -189,15 +189,14 @@ var putPermanentUrl = function(o, id, version, type) {
     var refreshPart = "refresh=true";
     if (this.ctx.get("refresh") != null) 
         refreshPart = "refresh=" + this.ctx.get("refresh");
-    if (version == null || version == "") {
+    if (version == null) {
         versionPart = "?" + refreshPart;
-        version = "";
     } else 
-        versionPart = "?version=" + version + "&version_type=external&" + refreshPart;
+        versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/permanent";
     url += "/permanent";
-    url += "/" + urlEncode(id) + "." + version + versionPart;
+    url += "/" + urlEncode(id) + "." + (version == null ? "" : version) + versionPart;
     if (skyrepoDebug) 
         console.log("PutPermanent:" + url);
     return url;
@@ -207,10 +206,10 @@ var putPermanentBaseUrl = function(o, id, version, type) {
     var refreshPart = "refresh=true";
     if (this.ctx.get("refresh") != null) 
         refreshPart = "refresh=" + this.ctx.get("refresh");
-    if (version == null || version == "") {
+    if (version == null) {
         versionPart = "?" + refreshPart;
     } else 
-        versionPart = "?version=" + version + "&version_type=external&" + refreshPart;
+        versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/permanent";
     url += "/permanent";
@@ -222,11 +221,10 @@ var putPermanentBaseUrl = function(o, id, version, type) {
 var getUrl = function(index, id, version, type) {
     var typeFromObj = inferTypeWithoutObj(type);
     var versionPart = null;
-    if (version == null || version == "") {
+    if (version == null) {
         versionPart = "";
-        version = "";
     } else 
-        versionPart = "?version=" + version + "&version_type=external";
+        versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external";
     var url = elasticEndpoint;
     url += "/" + index;
     if (index == "permanent") 
@@ -234,7 +232,7 @@ var getUrl = function(index, id, version, type) {
      else 
         url += "/" + typeFromObj;
     if (index == "permanent") 
-        url += "/" + urlEncode(id) + "." + version;
+        url += "/" + urlEncode(id) + "." + (version == null ? "" : version);
      else 
         url += "/" + urlEncode(id);
     if (skyrepoDebug) 
@@ -330,7 +328,7 @@ var skyrepoPutInternalIndex = function(o, id, version, type) {
     }
     if (skyrepoDebug) 
         console.log(JSON.stringify(o));
-    return httpPost(o, url, "application/json", false);
+    return httpPost(o, url, "application/json", false, null, null, true);
 };
 var permanentCreated = false;
 var skyrepoPutInternalPermanent = function(o, id, version, type) {
@@ -341,7 +339,7 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
         (mappings)["mappings"] = permNoIndex;
         (permNoIndex)["permanent"] = doc;
         (doc)["enabled"] = false;
-        var result = httpPut(mappings, elasticEndpoint + "/permanent", "application/json");
+        var result = httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
         if (skyrepoDebug) 
             console.log(JSON.stringify(result));
         permanentCreated = true;
@@ -349,10 +347,10 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
     var data = new Object();
     (data)["data"] = JSON.stringify(o);
     var url = putPermanentBaseUrl(o, id, version, type);
-    var out = httpPost(data, url, "application/json", false);
-    if (version != null && version != "") {
+    var out = httpPost(data, url, "application/json", false, null, null, true);
+    if (version != null) {
         url = putPermanentUrl(o, id, version, type);
-        out = httpPost(data, url, "application/json", false);
+        out = httpPost(data, url, "application/json", false, null, null, true);
     }
     if (skyrepoDebug) 
         console.log(JSON.stringify(out));
@@ -361,9 +359,9 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
 var skyrepoPutInternal = function(o, id, version, type, oldObj) {
     if (oldObj != null) {
         var oldType = inferTypeFromObj(oldObj, null);
-        if (oldType != type && type != null && (version == null || version == "")) {
+        if (oldType != type && type != null && (version == null)) {
             var perm = skyrepoGetPermanent(id, null, oldType);
-            version = ((((perm)["_version"]) + 1)).toString();
+            version = ((((perm)["_version"]) + 1));
         }
     }
     var obj = skyrepoPutInternalIndex(o, id, version, type);
@@ -384,7 +382,7 @@ var skyRepoPutInternal = function(o, id, version, type) {
 var skyrepoGetIndexInternal = function(index, id, version, type) {
     if (skyrepoDebug) 
         console.log("Fetching from " + index + " : " + type + " / " + id + " / " + version);
-    var result = httpGet(getUrl(index, id, version, type));
+    var result = httpGet(getUrl(index, id, version, type), true);
     return result;
 };
 var skyrepoGetIndex = function(id, version, type) {
@@ -393,7 +391,7 @@ var skyrepoGetIndex = function(id, version, type) {
         return result;
     } else {
         var microSearchUrl = elasticEndpoint + "/_search?version&q=_id:" + id + "";
-        var microSearch = httpGet(microSearchUrl);
+        var microSearch = httpGet(microSearchUrl, true);
         if (skyrepoDebug) 
             console.log(microSearchUrl);
         if (microSearch == null) 
@@ -520,11 +518,11 @@ var validateSignatures = function(id, version, type, errorMessage) {
 };
 var skyrepoDeleteInternalIndex = function(id, version, type) {
     var url = deleteUrl(id, version, type);
-    return httpDelete(url);
+    return httpDelete(url, null, true);
 };
 var skyrepoDeleteInternalPermanent = function(id, version, type) {
     var url = deletePermanentBaseUrl(id, version, type);
-    return httpDelete(url);
+    return httpDelete(url, null, true);
 };
 var skyrepoDelete = function(id, version, type) {
     var oldObj = (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
@@ -588,7 +586,7 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
     var searchParameters = (searchObj).call(this, q, start, size, sort, track_scores);
     if (skyrepoDebug) 
         console.log(JSON.stringify(searchParameters));
-    var results = httpPost(searchParameters, searchUrl(urlRemainder), "application/json", false);
+    var results = httpPost(searchParameters, searchUrl(urlRemainder), "application/json", false, null, null, true);
     if (skyrepoDebug) 
         console.log(JSON.stringify(results));
     if ((results)["error"] != null) {
@@ -610,11 +608,10 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
             continue;
         }
         var id = (searchResult)["_id"];
-        var version = "";
         var hit = "data/";
         if (type != null) 
             hit += type + "/";
-        hit += id + "/" + version;
+        hit += id;
         hits[i] = hit;
     }
     searchResults = (forEach).call(this, hits, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
@@ -634,7 +631,7 @@ var queryParse = function(urlRemainder) {
         (result)["id"] = split[2];
     }
     if (split.length == 4) 
-        (result)["version"] = split[3];
+        (result)["version"] = split[3] == "" ? null : parseInt(split[3]);
     return result;
 };
 var tryFormatOutput = function(o, expand) {
@@ -749,7 +746,7 @@ var endpointMultiGet = function() {
         (p)["_id"] = id + "." + (version == null ? "" : version);
         docs.push(p);
     }
-    var response = httpPost(mget, elasticEndpoint + "/_mget", "application/json", false);
+    var response = httpPost(mget, elasticEndpoint + "/_mget", "application/json", false, null, null, true);
     var resultDocs = (response)["docs"];
     var results = new Array();
     if (resultDocs != null) {
@@ -788,7 +785,7 @@ var endpointMultiPutEach = function() {
         (skyrepoPutParsed).call(this, o, id, version, type);
         return o;
     }catch (ex) {
-        ex.printStackTrace();
+        debug(ex.getMessage());
     }
     return null;
 };
@@ -801,13 +798,15 @@ var endpointMultiPut = function() {
             if (forEachResults[i] != null) 
                 results.push(forEachResults[i]);
     }
-    httpGet(elasticEndpoint + "/_all/_refresh");
+    httpGet(elasticEndpoint + "/_all/_refresh", true);
+    var ids = new Array();
     for (var i = 0; i < results.length; i++) {
         var o = results[i];
-        var params = new Object();
-        (params)["obj"] = JSON.stringify(o);
-        (afterSave).call(null, params);
+        ids.push((o)["@id"]);
     }
+    var params = new Object();
+    (params)["obj"] = JSON.stringify(ids);
+    (afterSaveBulk).call(null, params);
     return JSON.stringify(results);
 };
 var endpointSingleGet = function() {

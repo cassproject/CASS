@@ -1617,6 +1617,11 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
 var EcAsyncHelper = function() {};
 EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
     constructor.scriptPath = null;
+    constructor.setNull = function(set) {
+        return function(s) {
+            set(null);
+        };
+    };
     /**
      *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
      * 
@@ -1643,12 +1648,46 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
                 this.execute(array, each, after, me, i);
         }
     };
+    /**
+     *  "Each" method. Allows for replacing values in the array. See class description.
+     * 
+     *  @param {Array}                   array Array to iterate over.
+     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
+     *  @param {function(array)}         after Method invoked when all callbacks are called.
+     *  @method each
+     *  @memberOf EcAsyncHelper
+     */
+    prototype.eachSet = function(array, each, after) {
+        var me = this;
+        this.counter = array.length;
+        if (array.length == 0) 
+            after(array);
+        for (var i = 0; i < array.length; i++) {
+            if (this.counter > 0) 
+                this.executeSet(array, each, after, me, i);
+        }
+    };
     prototype.execute = function(array, each, after, me, i) {
         Task.immediate(function() {
             each(array[i], function() {
                 me.counter--;
                 if (me.counter == 0) 
                     after(array);
+            });
+        });
+    };
+    prototype.executeSet = function(array, each, after, me, i) {
+        Task.immediate(function() {
+            each(array[i], function(result) {
+                array[i] = result;
+                me.counter--;
+                if (me.counter == 0) {
+                    var finalArray = new Array();
+                    for (var j = 0; j < array.length; j++) 
+                        if (array[j] != null) 
+                            finalArray.push(array[j]);
+                    after(finalArray);
+                }
             });
         });
     };
