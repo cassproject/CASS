@@ -259,6 +259,9 @@ function cassFrameworkAsCeasn() {
         if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
             delete c["schema:identifier"];
         } else if (c["schema:identifier"] != null) {
+            if (!EcArray.isArray(c["schema:identifier"])) { 
+                c["schema:identifier"] = [c["schema:identifier"]]; 
+            }
             for (var i = c["schema:identifier"].length - 1; i >= 0; i--) {
                 if (c["schema:identifier"][i].indexOf("http") == -1) {
                     c["schema:identifier"].splice(i, 1);
@@ -340,6 +343,9 @@ function cassFrameworkAsCeasn() {
     if (f["schema:identifier"] != null && !EcArray.isArray(f["schema:identifier"]) && f["schema:identifier"].indexOf("http") == -1) {
         delete f["schema:identifier"];
     } else if (f["schema:identifier"] != null) {
+        if (!EcArray.isArray(f["schema:identifier"])) { 
+            f["schema:identifier"] = [f["schema:identifier"]]; 
+        }
         for (var i = f["schema:identifier"].length - 1; i >= 0; i--) {
             if (f["schema:identifier"][i].indexOf("http") == -1) {
                 f["schema:identifier"].splice(i, 1);
