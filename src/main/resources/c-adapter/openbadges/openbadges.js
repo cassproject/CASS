@@ -27,6 +27,8 @@ bindWebService("/badge/pk", badgeKey);
 
 badgeGetPerson = function (fingerprint) {
     var person = EcRepository.getBlocking(repoEndpoint() + "data/" + fingerprint);
+    if (person == null) 
+        return null;
 
     if (person.isAny(new EcEncryptedValue().getTypes())) {
         var v = new EcEncryptedValue();
