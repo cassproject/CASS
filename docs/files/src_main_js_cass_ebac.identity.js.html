@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.26</em>
+            <em>API Docs for: 1.2.27</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -2012,39 +2012,6 @@ OAuth2FileBasedRemoteIdentityManager = stjs.extend(OAuth2FileBasedRemoteIdentity
     };
 }, {configuration: &quot;Object&quot;, oauthLoginResponse: &quot;Object&quot;}, {});
 /**
- *  Contact Grant that is used to share your public key with another user
- * 
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcContact
- *  @extends EbacContactGrant
- *  @constructor
- */
-var EcContactGrant = function() {
-    EbacContactGrant.call(this);
-};
-EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
-    /**
-     *  Verifies that the contact grant is valid
-     * 
-     *  @return {boolean}
-     *  true if valid, false if not
-     */
-    prototype.valid = function() {
-        if (!this.verify()) 
-            return false;
-        if (this.invalid()) 
-            return false;
-        var found = false;
-        for (var i = 0; i &lt; EcIdentityManager.ids.length; i++) {
-            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
-                found = true;
-        }
-        return found;
-    };
-}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
-/**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
  *  Performs anonymization of the user.
  *  &lt;p&gt;
@@ -2435,6 +2402,39 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
         return passwordSplice;
     };
 }, {}, {});
+/**
+ *  Contact Grant that is used to share your public key with another user
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ *  @module com.eduworks.ec
+ *  @class EcContact
+ *  @extends EbacContactGrant
+ *  @constructor
+ */
+var EcContactGrant = function() {
+    EbacContactGrant.call(this);
+};
+EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
+    /**
+     *  Verifies that the contact grant is valid
+     * 
+     *  @return {boolean}
+     *  true if valid, false if not
+     */
+    prototype.valid = function() {
+        if (!this.verify()) 
+            return false;
+        if (this.invalid()) 
+            return false;
+        var found = false;
+        for (var i = 0; i &lt; EcIdentityManager.ids.length; i++) {
+            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
+                found = true;
+        }
+        return found;
+    };
+}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 
     </pre>
 </div>

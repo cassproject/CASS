@@ -51,11 +51,13 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
     constructor.fromEncryptedValueAsync = function(d, success, failure) {
         if (!d.isAny(new EcEncryptedValue().getTypes())) 
             success(d);
-        var eev = new EcEncryptedValue();
-        eev.copyFrom(d);
-        EcEncryptedValue.encryptOnSave(d.id, true);
-        EcEncryptedValue.encryptOnSave(d.shortId(), true);
-        eev.decryptIntoObjectAsync(success, failure);
+         else {
+            var eev = new EcEncryptedValue();
+            eev.copyFrom(d);
+            EcEncryptedValue.encryptOnSave(d.id, true);
+            EcEncryptedValue.encryptOnSave(d.shortId(), true);
+            eev.decryptIntoObjectAsync(success, failure);
+        }
     };
     /**
      *  Converts a piece of remote linked data to an encrypted value
@@ -2354,7 +2356,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
     constructor.getAs = function(id, result, success, failure) {
         EcRepository.get(id, function(p1) {
-            if ((p1).prototype == (result).prototype) 
+            if (p1.getClass() == result.getClass()) 
                 if (success != null) {
                     success(p1);
                     return;
@@ -2382,7 +2384,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var p1 = EcRepository.getBlocking(id);
         if (p1 == null) 
             return null;
-        if ((p1).prototype == (result).prototype) 
+        if (p1.getClass() == result.getClass()) 
             return p1;
         p1 = EcEncryptedValue.fromEncryptedValue(p1);
         if (p1.isAny(result.getTypes())) {

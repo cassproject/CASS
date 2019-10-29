@@ -1,7 +1,7 @@
 {
     "name": "CASS Javascript Library",
     "description": "CASS Javascript Library API: ",
-    "version": "1.2.26",
+    "version": "1.2.27",
     "url": "http://cassproject.org/",
     "logo": "http://docs.cassproject.org/img/customLogo-blue.png",
     "options": {

@@ -698,6 +698,8 @@ var endpointData = function() {
     var version = (parseParams)["version"];
     if (methodType == "DELETE") {
         var oldObj = (skyrepoDelete).call(this, id, version, type);
+        if (oldObj == null) 
+            return null;
         var cast = new Object();
         (cast)["obj"] = oldObj.toJson();
         (afterSave).call(this, cast);

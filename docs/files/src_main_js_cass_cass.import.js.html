@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.26</em>
+            <em>API Docs for: 1.2.27</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -879,94 +879,6 @@ PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, p
     prototype.error = null;
     prototype.encoding = null;
 }, {complete: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, error: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}}, {});
-var TabStructuredImport = function() {};
-TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constructor, prototype) {
-    /**
-     *  Method to create competencies (and relationships if the parameters are passed in)
-     *  based on a CSV file and references to which columns correspond to which pieces
-     *  of data.
-     * 
-     *  @param {Object}                        text
-     *                                         Text to extract competencies from
-     *  @param {String}                        serverUrl
-     *                                         URL Prefix for the created competencies (and relationships?)
-     *  @param {EcIdentity}                    owner
-     *                                         EcIdentity that will own the created competencies (and relationships?)
-     *  @param {Callback2&lt;Array&lt;EcCompetency&gt;, Array&lt;EcAlignment&gt;&gt;} success
-     *                                         Callback triggered after the competencies (and relationships?) have been created
-     *  @param {Callback1&lt;Object&gt;}             [failure]
-     *                                         Callback triggered if an error during creating the competencies
-     *  @param {Callback1&lt;Object&gt;}             [incremental]
-     *                                         Callback triggered incrementally during creation of competencies to indicate progress,
-     *                                         returns an object indicating the number of competencies (and relationships?) created so far
-     *  @param {EcRepository}                  repo
-     *                                         Repository to save any new data to, or to use to generate IDs.
-     *  @memberOf TabStructuredImport
-     *  @method importCompetencies
-     *  @static
-     */
-    constructor.importCompetencies = function(text, serverUrl, owner, success, failure, incremental, repo, hashNameForId) {
-        var lines = text.split(&quot;\n&quot;);
-        var competencies = new Array();
-        var alignments = new Array();
-        for (var i = 0; i &lt; lines.length; i++) 
-            TabStructuredImport.parseLinesIntoHierarchy(lines, competencies, alignments, i, serverUrl, hashNameForId);
-        success(competencies, alignments);
-    };
-    constructor.parseLinesIntoHierarchy = function(lines, competencies, alignments, index, serverUrl, hashNameForId) {
-        var parentI = -1;
-        for (var i = index - 1; i &gt;= 0; i--) {
-            if (TabStructuredImport.tabs(lines[i]) &lt; TabStructuredImport.tabs(lines[index])) {
-                parentI = i;
-                break;
-            }
-        }
-        var c = null;
-        for (var i = 0; i &lt; competencies.length; i++) {
-            if (competencies[i].getName().trim() == lines[index].trim()) {
-                c = competencies[i];
-                break;
-            }
-        }
-        if (c == null) {
-            c = new EcCompetency();
-            if (hashNameForId) 
-                c.assignId(serverUrl, EcCrypto.md5(lines[index].trim()));
-             else 
-                c.generateId(serverUrl);
-            c.setName(lines[index]);
-            competencies.push(c);
-        }
-        if (parentI != -1) {
-            var parent = null;
-            for (var i = 0; i &lt; competencies.length; i++) {
-                if (competencies[i].getName().trim() == lines[parentI].trim()) {
-                    parent = competencies[i];
-                    break;
-                }
-            }
-            if (parent != null) {
-                var a = new EcAlignment();
-                a.generateId(serverUrl);
-                a.relationType = EcAlignment.NARROWS;
-                a.source = c.shortId();
-                a.target = parent.shortId();
-                alignments.push(a);
-            }
-        }
-    };
-    constructor.tabs = function(line) {
-        var tabs = 0;
-        for (var i = 0; i &lt; line.length; i++) {
-            var c = line.charAt(i);
-            if (c == &#x27;\t&#x27; || c == &#x27; &#x27;) 
-                tabs++;
-             else 
-                return tabs;
-        }
-        return tabs;
-    };
-}, {}, {});
 /**
  *  Import methods to handle an ASN JSON file containing a framework,
  *  competencies and relationships, and store them in a CASS instance
@@ -1497,6 +1409,94 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
         });
     };
 }, {medbiqXmlCompetencies: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, progressObject: &quot;Object&quot;}, {});
+var TabStructuredImport = function() {};
+TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constructor, prototype) {
+    /**
+     *  Method to create competencies (and relationships if the parameters are passed in)
+     *  based on a CSV file and references to which columns correspond to which pieces
+     *  of data.
+     * 
+     *  @param {Object}                        text
+     *                                         Text to extract competencies from
+     *  @param {String}                        serverUrl
+     *                                         URL Prefix for the created competencies (and relationships?)
+     *  @param {EcIdentity}                    owner
+     *                                         EcIdentity that will own the created competencies (and relationships?)
+     *  @param {Callback2&lt;Array&lt;EcCompetency&gt;, Array&lt;EcAlignment&gt;&gt;} success
+     *                                         Callback triggered after the competencies (and relationships?) have been created
+     *  @param {Callback1&lt;Object&gt;}             [failure]
+     *                                         Callback triggered if an error during creating the competencies
+     *  @param {Callback1&lt;Object&gt;}             [incremental]
+     *                                         Callback triggered incrementally during creation of competencies to indicate progress,
+     *                                         returns an object indicating the number of competencies (and relationships?) created so far
+     *  @param {EcRepository}                  repo
+     *                                         Repository to save any new data to, or to use to generate IDs.
+     *  @memberOf TabStructuredImport
+     *  @method importCompetencies
+     *  @static
+     */
+    constructor.importCompetencies = function(text, serverUrl, owner, success, failure, incremental, repo, hashNameForId) {
+        var lines = text.split(&quot;\n&quot;);
+        var competencies = new Array();
+        var alignments = new Array();
+        for (var i = 0; i &lt; lines.length; i++) 
+            TabStructuredImport.parseLinesIntoHierarchy(lines, competencies, alignments, i, serverUrl, hashNameForId);
+        success(competencies, alignments);
+    };
+    constructor.parseLinesIntoHierarchy = function(lines, competencies, alignments, index, serverUrl, hashNameForId) {
+        var parentI = -1;
+        for (var i = index - 1; i &gt;= 0; i--) {
+            if (TabStructuredImport.tabs(lines[i]) &lt; TabStructuredImport.tabs(lines[index])) {
+                parentI = i;
+                break;
+            }
+        }
+        var c = null;
+        for (var i = 0; i &lt; competencies.length; i++) {
+            if (competencies[i].getName().trim() == lines[index].trim()) {
+                c = competencies[i];
+                break;
+            }
+        }
+        if (c == null) {
+            c = new EcCompetency();
+            if (hashNameForId) 
+                c.assignId(serverUrl, EcCrypto.md5(lines[index].trim()));
+             else 
+                c.generateId(serverUrl);
+            c.setName(lines[index]);
+            competencies.push(c);
+        }
+        if (parentI != -1) {
+            var parent = null;
+            for (var i = 0; i &lt; competencies.length; i++) {
+                if (competencies[i].getName().trim() == lines[parentI].trim()) {
+                    parent = competencies[i];
+                    break;
+                }
+            }
+            if (parent != null) {
+                var a = new EcAlignment();
+                a.generateId(serverUrl);
+                a.relationType = EcAlignment.NARROWS;
+                a.source = c.shortId();
+                a.target = parent.shortId();
+                alignments.push(a);
+            }
+        }
+    };
+    constructor.tabs = function(line) {
+        var tabs = 0;
+        for (var i = 0; i &lt; line.length; i++) {
+            var c = line.charAt(i);
+            if (c == &#x27;\t&#x27; || c == &#x27; &#x27;) 
+                tabs++;
+             else 
+                return tabs;
+        }
+        return tabs;
+    };
+}, {}, {});
 /**
  *  Importer methods to copy or link to competencies that already
  *  exist in another framework in a CASS instance.
@@ -2748,6 +2748,20 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                             if (!EcArray.isArray(relation)) {
                                 var array = [relation];
                                 (f)[&quot;skos:related&quot;] = array;
+                            }
+                        }
+                        if ((e)[&quot;skos:topConceptOf&quot;] != null) {
+                            var scheme = (e)[&quot;skos:topConceptOf&quot;];
+                            for (var i = 0; i &lt; schemeArray.length; i++) {
+                                var schemeObj = schemeArray[i];
+                                if (scheme == (schemeObj)[&quot;id&quot;]) {
+                                    if ((schemeObj)[&quot;skos:hasTopConcept&quot;] == null) {
+                                        var hasTopConcept = new Array();
+                                        (schemeObj)[&quot;skos:hasTopConcept&quot;] = hasTopConcept;
+                                    }
+                                    var conceptId = f.shortId();
+                                    EcArray.setAdd((schemeObj)[&quot;skos:hasTopConcept&quot;], conceptId);
+                                }
                             }
                         }
                         (f)[&quot;schema:dateModified&quot;] = new Date().toISOString();

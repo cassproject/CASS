@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.26",
+        "version": "1.2.27",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -320,8 +320,8 @@
                 "SocialEvent": 1,
                 "LiteraryEvent": 1,
                 "DanceEvent": 1,
-                "UserInteraction": 1,
                 "DeliveryEvent": 1,
+                "UserInteraction": 1,
                 "PublicationEvent": 1,
                 "ScreeningEvent": 1,
                 "ChildrensEvent": 1,
@@ -374,8 +374,8 @@
                 "Seat": 1,
                 "ItemList": 1,
                 "ParcelDelivery": 1,
-                "AlignmentObject": 1,
                 "Role": 1,
+                "AlignmentObject": 1,
                 "Enumeration": 1,
                 "DataFeedItem": 1,
                 "BusTrip": 1,
@@ -387,8 +387,8 @@
                 "ProgramMembership": 1,
                 "PropertyValueSpecification": 1,
                 "Ticket": 1,
-                "BroadcastChannel": 1,
                 "MenuItem": 1,
+                "BroadcastChannel": 1,
                 "Permit": 1,
                 "Brand": 1,
                 "Offer": 1,
@@ -408,8 +408,8 @@
                 "WebSite": 1,
                 "SoftwareApplication": 1,
                 "Question": 1,
-                "VisualArtwork": 1,
                 "Dataset": 1,
+                "VisualArtwork": 1,
                 "TVSeries": 1,
                 "Article": 1,
                 "MusicPlaylist": 1,
@@ -435,8 +435,8 @@
                 "PublicationIssue": 1,
                 "WebPage": 1,
                 "CreativeWorkSeries": 1,
-                "CreativeWorkSeason": 1,
                 "Book": 1,
+                "CreativeWorkSeason": 1,
                 "Series": 1,
                 "State": 1,
                 "Country": 1,
@@ -569,8 +569,8 @@
                 "Pharmacy": 1,
                 "Physician": 1,
                 "GovernmentOffice": 1,
-                "SelfStorage": 1,
                 "RealEstateAgent": 1,
+                "SelfStorage": 1,
                 "FoodEstablishment": 1,
                 "TouristInformationCenter": 1,
                 "EmploymentAgency": 1,
@@ -622,8 +622,8 @@
                 "OrganizationRole": 1,
                 "ItemListOrderType": 1,
                 "DayOfWeek": 1,
-                "RestrictedDiet": 1,
                 "ReservationStatusType": 1,
+                "RestrictedDiet": 1,
                 "PaymentStatusType": 1,
                 "ActionStatusType": 1,
                 "MapCategoryType": 1,
@@ -1163,8 +1163,8 @@
                 "SocialEvent": 1,
                 "LiteraryEvent": 1,
                 "DanceEvent": 1,
-                "UserInteraction": 1,
                 "DeliveryEvent": 1,
+                "UserInteraction": 1,
                 "PublicationEvent": 1,
                 "ScreeningEvent": 1,
                 "ChildrensEvent": 1,
@@ -1217,8 +1217,8 @@
                 "Seat": 1,
                 "ItemList": 1,
                 "ParcelDelivery": 1,
-                "AlignmentObject": 1,
                 "Role": 1,
+                "AlignmentObject": 1,
                 "Enumeration": 1,
                 "DataFeedItem": 1,
                 "BusTrip": 1,
@@ -1230,8 +1230,8 @@
                 "ProgramMembership": 1,
                 "PropertyValueSpecification": 1,
                 "Ticket": 1,
-                "BroadcastChannel": 1,
                 "MenuItem": 1,
+                "BroadcastChannel": 1,
                 "Permit": 1,
                 "Brand": 1,
                 "Offer": 1,
@@ -1251,8 +1251,8 @@
                 "WebSite": 1,
                 "SoftwareApplication": 1,
                 "Question": 1,
-                "VisualArtwork": 1,
                 "Dataset": 1,
+                "VisualArtwork": 1,
                 "TVSeries": 1,
                 "Article": 1,
                 "MusicPlaylist": 1,
@@ -1278,8 +1278,8 @@
                 "PublicationIssue": 1,
                 "WebPage": 1,
                 "CreativeWorkSeries": 1,
-                "CreativeWorkSeason": 1,
                 "Book": 1,
+                "CreativeWorkSeason": 1,
                 "Series": 1,
                 "State": 1,
                 "Country": 1,
@@ -1412,8 +1412,8 @@
                 "Pharmacy": 1,
                 "Physician": 1,
                 "GovernmentOffice": 1,
-                "SelfStorage": 1,
                 "RealEstateAgent": 1,
+                "SelfStorage": 1,
                 "FoodEstablishment": 1,
                 "TouristInformationCenter": 1,
                 "EmploymentAgency": 1,
@@ -1465,8 +1465,8 @@
                 "OrganizationRole": 1,
                 "ItemListOrderType": 1,
                 "DayOfWeek": 1,
-                "RestrictedDiet": 1,
                 "ReservationStatusType": 1,
+                "RestrictedDiet": 1,
                 "PaymentStatusType": 1,
                 "ActionStatusType": 1,
                 "MapCategoryType": 1,
@@ -1898,7 +1898,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 144,
+            "line": 56,
             "description": "Import methods to handle an ASN JSON file containing a framework,\ncompetencies and relationships, and store them in a CASS instance",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1913,7 +1913,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 507,
+            "line": 419,
             "description": "Importer methods to create competencies based on a\nMedbiquitous competency XML file",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2048,7 +2048,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1188,
+            "line": 1579,
             "description": "Contact Grant that is used to share your public key with another user",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2093,7 +2093,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1221,
+            "line": 1188,
             "description": "Logs into and stores/retrieves credentials from a compatible remote server.\nPerforms anonymization of the user.\n<p>\nRequires initialization with server specific salts. Server specific salts\nprevent co-occurrence attacks, should credentials on one server be\ncompromised (intercepted in transit).\n<p>\nTransmits hashed username, hashed password, and encrypts credentials using\nthe hashed combination of the username and password. This prevents the system\nstoring the credentials from having any knowledge of the user.\n<p>\nPassword recovery is done by, when the password changes, creating a\ncryptographic pad (or perfect cipher) where one half is stored on the server,\nand the other half is stored with the user. Should the user lose this pad and\nforget their password, they are not able to recover or reset their password,\nand their data should be considered lost.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2123,7 +2123,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 899,
+            "line": 901,
             "description": "A representation of a file.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2138,7 +2138,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 970,
+            "line": 972,
             "description": "Repository object used to interact with the CASS Repository web services.\nShould be used for all CRUD and search operations",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2153,7 +2153,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2444,
+            "line": 2446,
             "description": "Implementation of a file with methods for communicating with repository services",
             "author": "devlin.junker@eduworks.com"
         },
@@ -4430,22 +4430,6 @@
             "author": "schema.org",
             "extends": "Event"
         },
-        "UserInteraction": {
-            "name": "UserInteraction",
-            "shortname": "UserInteraction",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 3027,
-            "description": "Schema.org/UserInteraction\nUserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].",
-            "author": "schema.org",
-            "extends": "Event"
-        },
         "DeliveryEvent": {
             "name": "DeliveryEvent",
             "shortname": "DeliveryEvent",
@@ -4457,8 +4441,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 3047,
+            "line": 3027,
             "description": "Schema.org/DeliveryEvent\nAn event involving the delivery of an item.",
+            "author": "schema.org",
+            "extends": "Event"
+        },
+        "UserInteraction": {
+            "name": "UserInteraction",
+            "shortname": "UserInteraction",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 3080,
+            "description": "Schema.org/UserInteraction\nUserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].",
             "author": "schema.org",
             "extends": "Event"
         },
@@ -5294,22 +5294,6 @@
             "author": "schema.org",
             "extends": "Intangible"
         },
-        "AlignmentObject": {
-            "name": "AlignmentObject",
-            "shortname": "AlignmentObject",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 5635,
-            "description": "Schema.org/AlignmentObject\nAn intangible item that describes an alignment between a learning resource and a node in an educational framework.",
-            "author": "schema.org",
-            "extends": "Intangible"
-        },
         "Role": {
             "name": "Role",
             "shortname": "Role",
@@ -5321,8 +5305,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 5696,
+            "line": 5635,
             "description": "Schema.org/Role\nRepresents additional information about a relationship or property. For example a Role can be used to say that a 'member' role linking some SportsTeam to a player occurred during a particular time period. Or that a Person's 'actor' role in a Movie was for some particular characterName. Such properties can be attached to a Role entity, which is then associated with the main entities using ordinary properties like 'member' or 'actor'.\\n\\nSee also [blog post](http://blog.schema.org/2014/06/introducing-role.html).",
+            "author": "schema.org",
+            "extends": "Intangible"
+        },
+        "AlignmentObject": {
+            "name": "AlignmentObject",
+            "shortname": "AlignmentObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 5688,
+            "description": "Schema.org/AlignmentObject\nAn intangible item that describes an alignment between a learning resource and a node in an educational framework.",
             "author": "schema.org",
             "extends": "Intangible"
         },
@@ -5502,22 +5502,6 @@
             "author": "schema.org",
             "extends": "Intangible"
         },
-        "BroadcastChannel": {
-            "name": "BroadcastChannel",
-            "shortname": "BroadcastChannel",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 6627,
-            "description": "Schema.org/BroadcastChannel\nA unique instance of a BroadcastService on a CableOrSatelliteService lineup.",
-            "author": "schema.org",
-            "extends": "Intangible"
-        },
         "MenuItem": {
             "name": "MenuItem",
             "shortname": "MenuItem",
@@ -5529,8 +5513,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 6688,
+            "line": 6627,
             "description": "Schema.org/MenuItem\nA food or drink item listed in a menu or menu section.",
+            "author": "schema.org",
+            "extends": "Intangible"
+        },
+        "BroadcastChannel": {
+            "name": "BroadcastChannel",
+            "shortname": "BroadcastChannel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 6672,
+            "description": "Schema.org/BroadcastChannel\nA unique instance of a BroadcastService on a CableOrSatelliteService lineup.",
             "author": "schema.org",
             "extends": "Intangible"
         },
@@ -5838,22 +5838,6 @@
             "author": "schema.org",
             "extends": "CreativeWork"
         },
-        "VisualArtwork": {
-            "name": "VisualArtwork",
-            "shortname": "VisualArtwork",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8257,
-            "description": "Schema.org/VisualArtwork\nA work of art that is primarily visual in character.",
-            "author": "schema.org",
-            "extends": "CreativeWork"
-        },
         "Dataset": {
             "name": "Dataset",
             "shortname": "Dataset",
@@ -5865,8 +5849,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8342,
+            "line": 8257,
             "description": "Schema.org/Dataset\nA body of structured information describing some topic(s) of interest.",
+            "author": "schema.org",
+            "extends": "CreativeWork"
+        },
+        "VisualArtwork": {
+            "name": "VisualArtwork",
+            "shortname": "VisualArtwork",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8334,
+            "description": "Schema.org/VisualArtwork\nA work of art that is primarily visual in character.",
             "author": "schema.org",
             "extends": "CreativeWork"
         },
@@ -6270,22 +6270,6 @@
             "author": "schema.org",
             "extends": "CreativeWork"
         },
-        "CreativeWorkSeason": {
-            "name": "CreativeWorkSeason",
-            "shortname": "CreativeWorkSeason",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10051,
-            "description": "Schema.org/CreativeWorkSeason\nA media season e.g. tv, radio, video game etc.",
-            "author": "schema.org",
-            "extends": "CreativeWork"
-        },
         "Book": {
             "name": "Book",
             "shortname": "Book",
@@ -6297,8 +6281,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10160,
+            "line": 10051,
             "description": "Schema.org/Book\nA book.",
+            "author": "schema.org",
+            "extends": "CreativeWork"
+        },
+        "CreativeWorkSeason": {
+            "name": "CreativeWorkSeason",
+            "shortname": "CreativeWorkSeason",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10112,
+            "description": "Schema.org/CreativeWorkSeason\nA media season e.g. tv, radio, video game etc.",
             "author": "schema.org",
             "extends": "CreativeWork"
         },
@@ -8414,22 +8414,6 @@
             "author": "schema.org",
             "extends": "LocalBusiness"
         },
-        "SelfStorage": {
-            "name": "SelfStorage",
-            "shortname": "SelfStorage",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 13522,
-            "description": "Schema.org/SelfStorage\nA self-storage facility.",
-            "author": "schema.org",
-            "extends": "LocalBusiness"
-        },
         "RealEstateAgent": {
             "name": "RealEstateAgent",
             "shortname": "RealEstateAgent",
@@ -8441,8 +8425,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 13542,
+            "line": 13522,
             "description": "Schema.org/RealEstateAgent\nA real-estate agent.",
+            "author": "schema.org",
+            "extends": "LocalBusiness"
+        },
+        "SelfStorage": {
+            "name": "SelfStorage",
+            "shortname": "SelfStorage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 13542,
+            "description": "Schema.org/SelfStorage\nA self-storage facility.",
             "author": "schema.org",
             "extends": "LocalBusiness"
         },
@@ -9262,22 +9262,6 @@
             "author": "schema.org",
             "extends": "Enumeration"
         },
-        "RestrictedDiet": {
-            "name": "RestrictedDiet",
-            "shortname": "RestrictedDiet",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 15594,
-            "description": "Schema.org/RestrictedDiet\nA diet restricted to certain foods or preparations for cultural, religious, health or lifestyle reasons.",
-            "author": "schema.org",
-            "extends": "Enumeration"
-        },
         "ReservationStatusType": {
             "name": "ReservationStatusType",
             "shortname": "ReservationStatusType",
@@ -9289,8 +9273,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 15614,
+            "line": 15594,
             "description": "Schema.org/ReservationStatusType\nEnumerated status values for Reservation.",
+            "author": "schema.org",
+            "extends": "Enumeration"
+        },
+        "RestrictedDiet": {
+            "name": "RestrictedDiet",
+            "shortname": "RestrictedDiet",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 15614,
+            "description": "Schema.org/RestrictedDiet\nA diet restricted to certain foods or preparations for cultural, religious, health or lifestyle reasons.",
             "author": "schema.org",
             "extends": "Enumeration"
         },
@@ -16703,57 +16703,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 58,
-            "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
-            "params": [
-                {
-                    "name": "text",
-                    "description": "Text to extract competencies from",
-                    "type": "Object"
-                },
-                {
-                    "name": "serverUrl",
-                    "description": "URL Prefix for the created competencies (and relationships?)",
-                    "type": "String"
-                },
-                {
-                    "name": "owner",
-                    "description": "EcIdentity that will own the created competencies (and relationships?)",
-                    "type": "EcIdentity"
-                },
-                {
-                    "name": "success",
-                    "description": "Callback triggered after the competencies (and relationships?) have been created",
-                    "type": "Callback2<Array<EcCompetency>, Array<EcAlignment>>"
-                },
-                {
-                    "name": "failure",
-                    "description": "\n                                       Callback triggered if an error during creating the competencies",
-                    "type": "Callback1<Object>",
-                    "optional": true
-                },
-                {
-                    "name": "incremental",
-                    "description": "\n                                       Callback triggered incrementally during creation of competencies to indicate progress,\n                                       returns an object indicating the number of competencies (and relationships?) created so far",
-                    "type": "Callback1<Object>",
-                    "optional": true
-                },
-                {
-                    "name": "repo",
-                    "description": "Repository to save any new data to, or to use to generate IDs.",
-                    "type": "EcRepository"
-                }
-            ],
-            "memberof": "TabStructuredImport",
-            "itemtype": "method",
-            "name": "importCompetencies",
-            "static": 1,
-            "class": "Exporter",
-            "module": "org.cassproject"
-        },
-        {
-            "file": "src/main/js/cass/cass.import.js",
-            "line": 170,
+            "line": 82,
             "description": "Recursive function that looks through the file and saves each\ncompetency object in a map for use during importing. It also counts\nthe number of competencies and relationships that it finds",
             "params": [
                 {
@@ -16778,7 +16728,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 202,
+            "line": 114,
             "description": "Does the actual legwork of looking for competencies and relationships.\n<p>\nThis function finds the framework information, and pulls out the competency\nobjects array to be scanned by asnJsonPrime",
             "params": [
                 {
@@ -16798,7 +16748,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 236,
+            "line": 148,
             "description": "Analyzes an ASN File for competencies and relationships.\n<p>\nThis should be called before import, the success callback returns an object\nindicating the number of competencies and relationships found.",
             "params": [
                 {
@@ -16827,7 +16777,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 280,
+            "line": 192,
             "description": "Method to import the competencies from an ASN JSON file,\nshould be called after analyzing the file",
             "params": [
                 {
@@ -16871,7 +16821,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 326,
+            "line": 238,
             "description": "Handles creating the competencies found during analysis, iterates through the\ncompetency ASN objects saved and creates them in the CASS repository at the URL given.",
             "params": [
                 {
@@ -16912,7 +16862,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 396,
+            "line": 308,
             "description": "Handles creating the relationships from the file analyzed earlier.\nRecursively travels through looking for the hasChild field and creates\nrelationships based off of that.",
             "params": [
                 {
@@ -16962,7 +16912,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 467,
+            "line": 379,
             "description": "Handles creating the framework if the createFramework flag was set",
             "params": [
                 {
@@ -16997,7 +16947,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 526,
+            "line": 438,
             "description": "Does the legwork of looking for competencies in the XML",
             "params": [
                 {
@@ -17017,7 +16967,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 545,
+            "line": 457,
             "description": "Does the legwork of parsing the competencies out of the parsed XML",
             "params": [
                 {
@@ -17037,7 +16987,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 574,
+            "line": 486,
             "description": "Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process",
             "params": [
                 {
@@ -17066,7 +17016,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 613,
+            "line": 525,
             "description": "Method for actually creating the competencies in the CASS repository after a\nMedbiquitous XML file has been parsed. Must be called after analyzeFile",
             "params": [
                 {
@@ -17098,6 +17048,56 @@
                 }
             ],
             "memberof": "MedbiqImport",
+            "itemtype": "method",
+            "name": "importCompetencies",
+            "static": 1,
+            "class": "MedbiqImport",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.import.js",
+            "line": 588,
+            "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "Text to extract competencies from",
+                    "type": "Object"
+                },
+                {
+                    "name": "serverUrl",
+                    "description": "URL Prefix for the created competencies (and relationships?)",
+                    "type": "String"
+                },
+                {
+                    "name": "owner",
+                    "description": "EcIdentity that will own the created competencies (and relationships?)",
+                    "type": "EcIdentity"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after the competencies (and relationships?) have been created",
+                    "type": "Callback2<Array<EcCompetency>, Array<EcAlignment>>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n                                       Callback triggered if an error during creating the competencies",
+                    "type": "Callback1<Object>",
+                    "optional": true
+                },
+                {
+                    "name": "incremental",
+                    "description": "\n                                       Callback triggered incrementally during creation of competencies to indicate progress,\n                                       returns an object indicating the number of competencies (and relationships?) created so far",
+                    "type": "Callback1<Object>",
+                    "optional": true
+                },
+                {
+                    "name": "repo",
+                    "description": "Repository to save any new data to, or to use to generate IDs.",
+                    "type": "EcRepository"
+                }
+            ],
+            "memberof": "TabStructuredImport",
             "itemtype": "method",
             "name": "importCompetencies",
             "static": 1,
@@ -17773,7 +17773,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 685,
+            "line": 798,
             "description": "Created by fray on 5/30/17.",
             "class": "InquiryPacket",
             "module": "org.cassproject"
@@ -18850,18 +18850,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1202,
-            "description": "Verifies that the contact grant is valid",
-            "return": {
-                "description": "true if valid, false if not",
-                "type": "Boolean"
-            },
-            "class": "EcContact",
-            "module": "com.eduworks.ec"
-        },
-        {
-            "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1261,
+            "line": 1228,
             "description": "Returns true if the identity manager is global. Returns false if the identity manager is local to the server.",
             "return": {
                 "description": "true if the identity manager is global.",
@@ -18873,7 +18862,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1272,
+            "line": 1239,
             "description": "Configure parameters of the remote login storage.",
             "params": [
                 {
@@ -18925,7 +18914,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1305,
+            "line": 1272,
             "description": "Configures parameters of the remote server by accessing configuration details via webservice",
             "params": [
                 {
@@ -18947,7 +18936,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1369,
+            "line": 1336,
             "description": "Wipes login data.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -18957,7 +18946,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1382,
+            "line": 1349,
             "description": "Configure compatible remote identity management server.",
             "params": [
                 {
@@ -18974,7 +18963,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1393,
+            "line": 1360,
             "description": "\"Log Into\" system, generating credentials. Does not actually remotely\naccess any machine.\n<p>\nPlease clear username and password fields after this function is called.",
             "params": [
                 {
@@ -18996,7 +18985,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1417,
+            "line": 1384,
             "description": "Change password of user in memory. Does not automatically commit new credentials.\n<p>\nPlease clear username and password fields after this function is called.",
             "params": [
                 {
@@ -19027,7 +19016,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1449,
+            "line": 1416,
             "description": "Fetch credentials from server, invoking events based on login success or\nfailure.\n<p>\nAutomatically populates EcIdentityManager.\n<p>\nRequires login().",
             "params": [
                 {
@@ -19049,7 +19038,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1498,
+            "line": 1465,
             "description": "Commits credentials in EcIdentityManager to remote server.\n<p>\nWill trigger pad generation and fail if the pad has not been specified.",
             "params": [
                 {
@@ -19071,7 +19060,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1512,
+            "line": 1479,
             "description": "Creates an account.\n<p>\nPlease note that the remote login server does not throw error messages if\nan account creation is blocked due to being a duplicate. This prevents\nlogin probing. This will always succeed (if the request is properly\nformed and makes it to the server).\n<p>\nWill trigger pad generation and fail if the pad has not been specified.",
             "params": [
                 {
@@ -19093,7 +19082,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1533,
+            "line": 1500,
             "description": "Sends the identity managers credentials to the service specified",
             "params": [
                 {
@@ -19119,7 +19108,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1585,
+            "line": 1552,
             "description": "Splices together passwords (in a fashion more like shuffling a deck of\ncards, not appending).",
             "params": [
                 {
@@ -19136,6 +19125,17 @@
             "itemtype": "method",
             "name": "splicePasswords",
             "class": "EcRemoteIdentityManager",
+            "module": "com.eduworks.ec"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 1593,
+            "description": "Verifies that the contact grant is valid",
+            "return": {
+                "description": "true if valid, false if not",
+                "type": "Boolean"
+            },
+            "class": "EcContact",
             "module": "com.eduworks.ec"
         },
         {
@@ -19195,7 +19195,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 79,
+            "line": 81,
             "description": "Converts a piece of remote linked data to an encrypted value",
             "params": [
                 {
@@ -19222,7 +19222,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 137,
+            "line": 139,
             "description": "Converts a piece of remote linked data to an encrypted value,\nasynchronously",
             "params": [
                 {
@@ -19255,7 +19255,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 196,
+            "line": 198,
             "description": "Encrypts a text value with the key provided",
             "params": [
                 {
@@ -19288,7 +19288,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 226,
+            "line": 228,
             "description": "Encrypts a text value with the owners and readers provided",
             "params": [
                 {
@@ -19325,7 +19325,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 281,
+            "line": 283,
             "description": "Encrypts a text value with the owners and readers provided",
             "params": [
                 {
@@ -19362,7 +19362,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 331,
+            "line": 333,
             "description": "Encrypt a value with a specific IV and secret",
             "params": [
                 {
@@ -19409,7 +19409,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 372,
+            "line": 374,
             "description": "Setter and getter function for encryptOnSave of an identifier,\nencryptOnSave is used by the static save functions of a class to\ndetermine whether or not to encrypt something when it is saved. This\nvalue is usually set when an object is decrypted using one of the decrypt\nfunctions above.",
             "params": [
                 {
@@ -19437,7 +19437,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 403,
+            "line": 405,
             "description": "Decrypts this encrypted value into an object",
             "return": {
                 "description": "The Decrypted Object"
@@ -19450,7 +19450,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 424,
+            "line": 426,
             "description": "Asynchronously decrypts this encrypted value into an object",
             "params": [
                 {
@@ -19472,7 +19472,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 450,
+            "line": 452,
             "description": "Asynchronously decrypts this encrypted value into an object with a IV and\nsecret provided",
             "params": [
                 {
@@ -19504,7 +19504,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 477,
+            "line": 479,
             "description": "Decrypts an encrypted value into a string",
             "return": {
                 "description": "Decrypted string value",
@@ -19518,7 +19518,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 491,
+            "line": 493,
             "description": "Decrypts an encrypted value into a string using an alternative secret.",
             "return": {
                 "description": "Decrypted string value",
@@ -19532,7 +19532,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 504,
+            "line": 506,
             "description": "Asynchronously decrypts an encrypted value into a string",
             "params": [
                 {
@@ -19554,7 +19554,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 526,
+            "line": 528,
             "description": "Asynchronously decrypts an encrypted value into a string",
             "params": [
                 {
@@ -19576,7 +19576,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 546,
+            "line": 548,
             "description": "Asynchronously decrypts an encrypted value into a string with an IV and\nsecrete provided",
             "params": [
                 {
@@ -19608,7 +19608,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 566,
+            "line": 568,
             "description": "Attempts to decrypt the secret by using all Identities in the Identity\nManager",
             "return": {
                 "description": "Secret after decrypted",
@@ -19622,7 +19622,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 611,
+            "line": 613,
             "description": "Attempts to decrypt secret with a specific key",
             "params": [
                 {
@@ -19643,7 +19643,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 639,
+            "line": 641,
             "description": "Asynchronously attempts to decrypt secret using all identities in\nIdentity Manager",
             "params": [
                 {
@@ -19665,7 +19665,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 706,
+            "line": 708,
             "description": "Asynchronously attempts to decrypt secret with a specific key",
             "params": [
                 {
@@ -19692,7 +19692,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 757,
+            "line": 759,
             "description": "Checks if this encrypted value is an encrypted version of a specific\ntype, only works if the type wasn't hidden during encryption",
             "params": [
                 {
@@ -19713,7 +19713,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 774,
+            "line": 776,
             "description": "Adds a reader to the object, if the reader does not exist.",
             "params": [
                 {
@@ -19730,7 +19730,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 790,
+            "line": 792,
             "description": "Adds a reader to the object, if the reader does not exist.",
             "params": [
                 {
@@ -19747,7 +19747,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 809,
+            "line": 811,
             "description": "Removes a reader from the object, if the reader does exist.",
             "params": [
                 {
@@ -19764,7 +19764,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 834,
+            "line": 836,
             "description": "Adds a reader to the object, if the reader does not exist.",
             "params": [
                 {
@@ -19791,7 +19791,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 863,
+            "line": 865,
             "description": "Removes a reader from the object, if the reader does exist.",
             "params": [
                 {
@@ -19818,7 +19818,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 915,
+            "line": 917,
             "description": "Optional checksum of the file, used to verify if the file has been\ntransmitted correctly.",
             "itemtype": "property",
             "name": "checksum",
@@ -19828,7 +19828,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 923,
+            "line": 925,
             "description": "Mime type of the file.",
             "itemtype": "property",
             "name": "mimeType",
@@ -19838,7 +19838,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 930,
+            "line": 932,
             "description": "Base-64 encoded version of the bytestream of a file.",
             "itemtype": "property",
             "name": "data",
@@ -19848,7 +19848,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 937,
+            "line": 939,
             "description": "Name of the file, used to distinguish it",
             "itemtype": "property",
             "name": "name",
@@ -19858,7 +19858,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 944,
+            "line": 946,
             "description": "Helper method to force the browser to download the file.",
             "memberof": "GeneralFile",
             "itemtype": "method",
@@ -19868,7 +19868,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 993,
+            "line": 995,
             "description": "Gets a JSON-LD object from the place designated by the URI.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -19896,7 +19896,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1196,
+            "line": 1198,
             "description": "Retrieves a piece of data synchronously from the server, blocking until\nit is returned",
             "params": [
                 {
@@ -19918,7 +19918,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1262,
+            "line": 1264,
             "description": "Escapes a search query",
             "params": [
                 {
@@ -19940,7 +19940,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1297,
+            "line": 1299,
             "description": "Attempts to save a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19968,7 +19968,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1314,
+            "line": 1316,
             "description": "Attempts to save a piece of data. If the @id of the data is not of this server, will register the data to the server.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19996,7 +19996,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1331,
+            "line": 1333,
             "description": "Attempts to save a piece of data. Does some checks before saving to\nensure the data is valid. This version does not send a console warning,\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20024,7 +20024,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1371,
+            "line": 1373,
             "description": "Attempts to save many pieces of data. Does some checks before saving to\nensure the data is valid. This version does not send a console warning,\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20052,7 +20052,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1452,
+            "line": 1454,
             "description": "Attempts to save a piece of data without signing it.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20080,7 +20080,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1509,
+            "line": 1511,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20108,7 +20108,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1527,
+            "line": 1529,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20136,7 +20136,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1581,
+            "line": 1583,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20164,7 +20164,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1630,
+            "line": 1632,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20186,7 +20186,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1675,
+            "line": 1677,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20208,7 +20208,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1713,
+            "line": 1715,
             "description": "Returns an array of JSON-LD objects from the places designated by the given URIs.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20240,7 +20240,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1759,
+            "line": 1761,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20272,7 +20272,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1777,
+            "line": 1779,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20292,7 +20292,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1791,
+            "line": 1793,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20329,7 +20329,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1901,
+            "line": 1903,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20354,7 +20354,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2016,
+            "line": 2018,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20364,7 +20364,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2090,
+            "line": 2092,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20374,7 +20374,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2161,
+            "line": 2163,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20397,7 +20397,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2207,
+            "line": 2209,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20420,7 +20420,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2250,
+            "line": 2252,
             "description": "Lists all types visible to the current user in the repository\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20442,7 +20442,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2270,
+            "line": 2272,
             "description": "Backs up the skyrepo elasticsearch database to the server backup directory",
             "params": [
                 {
@@ -20469,7 +20469,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2282,
+            "line": 2284,
             "description": "Restores the skyrepo elasticsearch backup from the server backup directory",
             "params": [
                 {
@@ -20496,7 +20496,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2294,
+            "line": 2296,
             "description": "Wipes all data from the the skyrepo elasticsearch, can only be restored by using backup restore",
             "params": [
                 {
@@ -20523,7 +20523,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2306,
+            "line": 2308,
             "description": "Handles the search results in search by params, before returning them\nwith the callback passed into search method",
             "params": [
                 {
@@ -20556,7 +20556,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2343,
+            "line": 2345,
             "description": "Fetches the admin keys from the server to compare for check if current\nuser is an admin user",
             "params": [
                 {
@@ -20578,7 +20578,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2457,
+            "line": 2459,
             "description": "Factory method for creating a file with certain values",
             "params": [
                 {
@@ -20610,7 +20610,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2479,
+            "line": 2481,
             "description": "Retrieves a file from the server specified by it's ID",
             "params": [
                 {
@@ -20638,7 +20638,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2513,
+            "line": 2515,
             "description": "Searches the repository given for files that match the query passed in",
             "params": [
                 {
@@ -20683,7 +20683,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2562,
+            "line": 2564,
             "description": "Saves this file in the repository using the repository web services",
             "params": [
                 {
@@ -20705,7 +20705,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2583,
+            "line": 2585,
             "description": "Deletes the file from the repository using repository web services",
             "params": [
                 {
@@ -55864,7 +55864,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 3067,
+            "line": 3047,
             "description": "Schema.org/hasDeliveryMethod\nMethod used for delivery or shipping.",
             "itemtype": "property",
             "name": "hasDeliveryMethod",
@@ -55874,7 +55874,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 3075,
+            "line": 3055,
             "description": "Schema.org/availableThrough\nAfter this date, the item will no longer be available for pickup.",
             "itemtype": "property",
             "name": "availableThrough",
@@ -55884,7 +55884,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 3083,
+            "line": 3063,
             "description": "Schema.org/availableFrom\nWhen the item is available for pickup from the store, locker, etc.",
             "itemtype": "property",
             "name": "availableFrom",
@@ -55894,7 +55894,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 3091,
+            "line": 3071,
             "description": "Schema.org/accessCode\nPassword, PIN, or access code needed for delivery (e.g. from a locker).",
             "itemtype": "property",
             "name": "accessCode",
@@ -57735,56 +57735,6 @@
         {
             "file": "src/main/js/cass/org.schema.js",
             "line": 5655,
-            "description": "Schema.org/targetDescription\nThe description of a node in an established educational framework.",
-            "itemtype": "property",
-            "name": "targetDescription",
-            "type": "Text",
-            "class": "AlignmentObject",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 5663,
-            "description": "Schema.org/alignmentType\nA category of alignment between the learning resource and the framework node. Recommended values include: 'assesses', 'teaches', 'requires', 'textComplexity', 'readingLevel', 'educationalSubject', and 'educationalLevel'.",
-            "itemtype": "property",
-            "name": "alignmentType",
-            "type": "Text",
-            "class": "AlignmentObject",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 5671,
-            "description": "Schema.org/targetUrl\nThe URL of a node in an established educational framework.",
-            "itemtype": "property",
-            "name": "targetUrl",
-            "type": "URL",
-            "class": "AlignmentObject",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 5679,
-            "description": "Schema.org/targetName\nThe name of a node in an established educational framework.",
-            "itemtype": "property",
-            "name": "targetName",
-            "type": "Text",
-            "class": "AlignmentObject",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 5687,
-            "description": "Schema.org/educationalFramework\nThe framework to which the resource being described is aligned.",
-            "itemtype": "property",
-            "name": "educationalFramework",
-            "type": "Text",
-            "class": "AlignmentObject",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 5716,
             "description": "Schema.org/endDate\nThe end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).",
             "itemtype": "property",
             "name": "endDate",
@@ -57794,7 +57744,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 5724,
+            "line": 5663,
             "description": "Schema.org/startDate\nThe start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).",
             "itemtype": "property",
             "name": "startDate",
@@ -57804,7 +57754,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 5732,
+            "line": 5671,
             "description": "Schema.org/namedPosition\nA position played, performed or filled by a person or organization, as part of an organization. For example, an athlete in a SportsTeam might play in the position named 'Quarterback'.",
             "itemtype": "property",
             "name": "namedPosition",
@@ -57814,12 +57764,62 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 5740,
+            "line": 5679,
             "description": "Schema.org/roleName\nA role played, performed or filled by a person or organization. For example, the team of creators for a comic book might fill the roles named 'inker', 'penciller', and 'letterer'; or an athlete in a SportsTeam might play in the position named 'Quarterback'.",
             "itemtype": "property",
             "name": "roleName",
             "type": "Text",
             "class": "Role",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 5708,
+            "description": "Schema.org/targetDescription\nThe description of a node in an established educational framework.",
+            "itemtype": "property",
+            "name": "targetDescription",
+            "type": "Text",
+            "class": "AlignmentObject",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 5716,
+            "description": "Schema.org/alignmentType\nA category of alignment between the learning resource and the framework node. Recommended values include: 'assesses', 'teaches', 'requires', 'textComplexity', 'readingLevel', 'educationalSubject', and 'educationalLevel'.",
+            "itemtype": "property",
+            "name": "alignmentType",
+            "type": "Text",
+            "class": "AlignmentObject",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 5724,
+            "description": "Schema.org/targetUrl\nThe URL of a node in an established educational framework.",
+            "itemtype": "property",
+            "name": "targetUrl",
+            "type": "URL",
+            "class": "AlignmentObject",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 5732,
+            "description": "Schema.org/targetName\nThe name of a node in an established educational framework.",
+            "itemtype": "property",
+            "name": "targetName",
+            "type": "Text",
+            "class": "AlignmentObject",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 5740,
+            "description": "Schema.org/educationalFramework\nThe framework to which the resource being described is aligned.",
+            "itemtype": "property",
+            "name": "educationalFramework",
+            "type": "Text",
+            "class": "AlignmentObject",
             "module": "org.schema"
         },
         {
@@ -58635,56 +58635,6 @@
         {
             "file": "src/main/js/cass/org.schema.js",
             "line": 6647,
-            "description": "Schema.org/broadcastChannelId\nThe unique address by which the BroadcastService can be identified in a provider lineup. In US, this is typically a number.",
-            "itemtype": "property",
-            "name": "broadcastChannelId",
-            "type": "Text",
-            "class": "BroadcastChannel",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 6655,
-            "description": "Schema.org/broadcastServiceTier\nThe type of service required to have access to the channel (e.g. Standard or Premium).",
-            "itemtype": "property",
-            "name": "broadcastServiceTier",
-            "type": "Text",
-            "class": "BroadcastChannel",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 6663,
-            "description": "Schema.org/inBroadcastLineup\nThe CableOrSatelliteService offering the channel.",
-            "itemtype": "property",
-            "name": "inBroadcastLineup",
-            "type": "CableOrSatelliteService",
-            "class": "BroadcastChannel",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 6671,
-            "description": "Schema.org/providesBroadcastService\nThe BroadcastService offered on this channel.",
-            "itemtype": "property",
-            "name": "providesBroadcastService",
-            "type": "BroadcastService",
-            "class": "BroadcastChannel",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 6679,
-            "description": "Schema.org/genre\nGenre of the creative work, broadcast channel or group.",
-            "itemtype": "property",
-            "name": "genre",
-            "type": "URL",
-            "class": "BroadcastChannel",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 6708,
             "description": "Schema.org/nutrition\nNutrition information about the recipe or menu item.",
             "itemtype": "property",
             "name": "nutrition",
@@ -58694,7 +58644,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 6716,
+            "line": 6655,
             "description": "Schema.org/offers\nAn offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.",
             "itemtype": "property",
             "name": "offers",
@@ -58704,12 +58654,62 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 6724,
+            "line": 6663,
             "description": "Schema.org/suitableForDiet\nIndicates a dietary restriction or guideline for which this recipe or menu item is suitable, e.g. diabetic, halal etc.",
             "itemtype": "property",
             "name": "suitableForDiet",
             "type": "RestrictedDiet",
             "class": "MenuItem",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 6692,
+            "description": "Schema.org/broadcastChannelId\nThe unique address by which the BroadcastService can be identified in a provider lineup. In US, this is typically a number.",
+            "itemtype": "property",
+            "name": "broadcastChannelId",
+            "type": "Text",
+            "class": "BroadcastChannel",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 6700,
+            "description": "Schema.org/broadcastServiceTier\nThe type of service required to have access to the channel (e.g. Standard or Premium).",
+            "itemtype": "property",
+            "name": "broadcastServiceTier",
+            "type": "Text",
+            "class": "BroadcastChannel",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 6708,
+            "description": "Schema.org/inBroadcastLineup\nThe CableOrSatelliteService offering the channel.",
+            "itemtype": "property",
+            "name": "inBroadcastLineup",
+            "type": "CableOrSatelliteService",
+            "class": "BroadcastChannel",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 6716,
+            "description": "Schema.org/providesBroadcastService\nThe BroadcastService offered on this channel.",
+            "itemtype": "property",
+            "name": "providesBroadcastService",
+            "type": "BroadcastService",
+            "class": "BroadcastChannel",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 6724,
+            "description": "Schema.org/genre\nGenre of the creative work, broadcast channel or group.",
+            "itemtype": "property",
+            "name": "genre",
+            "type": "URL",
+            "class": "BroadcastChannel",
             "module": "org.schema"
         },
         {
@@ -60125,86 +60125,6 @@
         {
             "file": "src/main/js/cass/org.schema.js",
             "line": 8277,
-            "description": "Schema.org/height\nThe height of the item.",
-            "itemtype": "property",
-            "name": "height",
-            "type": "Distance",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8285,
-            "description": "Schema.org/artMedium\nThe material used. (e.g. Oil, Watercolour, Acrylic, Linoprint, Marble, Cyanotype, Digital, Lithograph, DryPoint, Intaglio, Pastel, Woodcut, Pencil, Mixed Media, etc.)",
-            "itemtype": "property",
-            "name": "artMedium",
-            "type": "Text",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8293,
-            "description": "Schema.org/artform\ne.g. Painting, Drawing, Sculpture, Print, Photograph, Assemblage, Collage, etc.",
-            "itemtype": "property",
-            "name": "artform",
-            "type": "Text",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8301,
-            "description": "Schema.org/artworkSurface\nThe supporting materials for the artwork, e.g. Canvas, Paper, Wood, Board, etc.",
-            "itemtype": "property",
-            "name": "artworkSurface",
-            "type": "Text",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8309,
-            "description": "Schema.org/artEdition\nThe number of copies when multiple copies of a piece of artwork are produced - e.g. for a limited edition of 20 prints, 'artEdition' refers to the total number of copies (in this example \"20\").",
-            "itemtype": "property",
-            "name": "artEdition",
-            "type": "Integer",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8317,
-            "description": "Schema.org/width\nThe width of the item.",
-            "itemtype": "property",
-            "name": "width",
-            "type": "Distance",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8325,
-            "description": "Schema.org/surface\nA material used as a surface in some artwork, e.g. Canvas, Paper, Wood, Board, etc.",
-            "itemtype": "property",
-            "name": "surface",
-            "type": "Text",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8333,
-            "description": "Schema.org/depth\nThe depth of the item.",
-            "itemtype": "property",
-            "name": "depth",
-            "type": "Distance",
-            "class": "VisualArtwork",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8362,
             "description": "Schema.org/catalog\nA data catalog which contains this dataset.",
             "itemtype": "property",
             "name": "catalog",
@@ -60214,7 +60134,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8370,
+            "line": 8285,
             "description": "Schema.org/includedInDataCatalog\nA data catalog which contains this dataset.",
             "itemtype": "property",
             "name": "includedInDataCatalog",
@@ -60224,7 +60144,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8378,
+            "line": 8293,
             "description": "Schema.org/datasetTimeInterval\nThe range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).",
             "itemtype": "property",
             "name": "datasetTimeInterval",
@@ -60234,7 +60154,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8386,
+            "line": 8301,
             "description": "Schema.org/spatial\nThe range of spatial applicability of a dataset, e.g. for a dataset of New York weather, the state of New York.",
             "itemtype": "property",
             "name": "spatial",
@@ -60244,7 +60164,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8394,
+            "line": 8309,
             "description": "Schema.org/temporal\nThe range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).",
             "itemtype": "property",
             "name": "temporal",
@@ -60254,7 +60174,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8402,
+            "line": 8317,
             "description": "Schema.org/includedDataCatalog\nA data catalog which contains this dataset (this property was previously 'catalog', preferred name is now 'includedInDataCatalog').",
             "itemtype": "property",
             "name": "includedDataCatalog",
@@ -60264,12 +60184,92 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8410,
+            "line": 8325,
             "description": "Schema.org/distribution\nA downloadable form of this dataset, at a specific location, in a specific format.",
             "itemtype": "property",
             "name": "distribution",
             "type": "DataDownload",
             "class": "Dataset",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8354,
+            "description": "Schema.org/height\nThe height of the item.",
+            "itemtype": "property",
+            "name": "height",
+            "type": "Distance",
+            "class": "VisualArtwork",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8362,
+            "description": "Schema.org/artMedium\nThe material used. (e.g. Oil, Watercolour, Acrylic, Linoprint, Marble, Cyanotype, Digital, Lithograph, DryPoint, Intaglio, Pastel, Woodcut, Pencil, Mixed Media, etc.)",
+            "itemtype": "property",
+            "name": "artMedium",
+            "type": "Text",
+            "class": "VisualArtwork",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8370,
+            "description": "Schema.org/artform\ne.g. Painting, Drawing, Sculpture, Print, Photograph, Assemblage, Collage, etc.",
+            "itemtype": "property",
+            "name": "artform",
+            "type": "Text",
+            "class": "VisualArtwork",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8378,
+            "description": "Schema.org/artworkSurface\nThe supporting materials for the artwork, e.g. Canvas, Paper, Wood, Board, etc.",
+            "itemtype": "property",
+            "name": "artworkSurface",
+            "type": "Text",
+            "class": "VisualArtwork",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8386,
+            "description": "Schema.org/artEdition\nThe number of copies when multiple copies of a piece of artwork are produced - e.g. for a limited edition of 20 prints, 'artEdition' refers to the total number of copies (in this example \"20\").",
+            "itemtype": "property",
+            "name": "artEdition",
+            "type": "Integer",
+            "class": "VisualArtwork",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8394,
+            "description": "Schema.org/width\nThe width of the item.",
+            "itemtype": "property",
+            "name": "width",
+            "type": "Distance",
+            "class": "VisualArtwork",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8402,
+            "description": "Schema.org/surface\nA material used as a surface in some artwork, e.g. Canvas, Paper, Wood, Board, etc.",
+            "itemtype": "property",
+            "name": "surface",
+            "type": "Text",
+            "class": "VisualArtwork",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8410,
+            "description": "Schema.org/depth\nThe depth of the item.",
+            "itemtype": "property",
+            "name": "depth",
+            "type": "Distance",
+            "class": "VisualArtwork",
             "module": "org.schema"
         },
         {
@@ -61635,116 +61635,6 @@
         {
             "file": "src/main/js/cass/org.schema.js",
             "line": 10071,
-            "description": "Schema.org/actor\nAn actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.",
-            "itemtype": "property",
-            "name": "actor",
-            "type": "Person",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10079,
-            "description": "Schema.org/partOfSeries\nThe series to which this episode or season belongs.",
-            "itemtype": "property",
-            "name": "partOfSeries",
-            "type": "CreativeWorkSeries",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10087,
-            "description": "Schema.org/numberOfEpisodes\nThe number of episodes in this season or series.",
-            "itemtype": "property",
-            "name": "numberOfEpisodes",
-            "type": "Integer",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10095,
-            "description": "Schema.org/trailer\nThe trailer of a movie or tv/radio series, season, episode, etc.",
-            "itemtype": "property",
-            "name": "trailer",
-            "type": "VideoObject",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10103,
-            "description": "Schema.org/endDate\nThe end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).",
-            "itemtype": "property",
-            "name": "endDate",
-            "type": "DateTime",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10111,
-            "description": "Schema.org/episodes\nAn episode of a TV/radio series or season.",
-            "itemtype": "property",
-            "name": "episodes",
-            "type": "Episode",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10119,
-            "description": "Schema.org/startDate\nThe start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).",
-            "itemtype": "property",
-            "name": "startDate",
-            "type": "Date",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10127,
-            "description": "Schema.org/director\nA director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.",
-            "itemtype": "property",
-            "name": "director",
-            "type": "Person",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10135,
-            "description": "Schema.org/productionCompany\nThe production company or studio responsible for the item e.g. series, video game, episode etc.",
-            "itemtype": "property",
-            "name": "productionCompany",
-            "type": "Organization",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10143,
-            "description": "Schema.org/episode\nAn episode of a tv, radio or game media within a series or season.",
-            "itemtype": "property",
-            "name": "episode",
-            "type": "Episode",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10151,
-            "description": "Schema.org/seasonNumber\nPosition of the season within an ordered group of seasons.",
-            "itemtype": "property",
-            "name": "seasonNumber",
-            "type": "Text",
-            "class": "CreativeWorkSeason",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10180,
             "description": "Schema.org/isbn\nThe ISBN of the book.",
             "itemtype": "property",
             "name": "isbn",
@@ -61754,7 +61644,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10188,
+            "line": 10079,
             "description": "Schema.org/bookEdition\nThe edition of the book.",
             "itemtype": "property",
             "name": "bookEdition",
@@ -61764,7 +61654,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10196,
+            "line": 10087,
             "description": "Schema.org/bookFormat\nThe format of the book.",
             "itemtype": "property",
             "name": "bookFormat",
@@ -61774,7 +61664,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10204,
+            "line": 10095,
             "description": "Schema.org/numberOfPages\nThe number of pages in the book.",
             "itemtype": "property",
             "name": "numberOfPages",
@@ -61784,12 +61674,122 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10212,
+            "line": 10103,
             "description": "Schema.org/illustrator\nThe illustrator of the book.",
             "itemtype": "property",
             "name": "illustrator",
             "type": "Person",
             "class": "Book",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10132,
+            "description": "Schema.org/actor\nAn actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.",
+            "itemtype": "property",
+            "name": "actor",
+            "type": "Person",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10140,
+            "description": "Schema.org/partOfSeries\nThe series to which this episode or season belongs.",
+            "itemtype": "property",
+            "name": "partOfSeries",
+            "type": "CreativeWorkSeries",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10148,
+            "description": "Schema.org/numberOfEpisodes\nThe number of episodes in this season or series.",
+            "itemtype": "property",
+            "name": "numberOfEpisodes",
+            "type": "Integer",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10156,
+            "description": "Schema.org/trailer\nThe trailer of a movie or tv/radio series, season, episode, etc.",
+            "itemtype": "property",
+            "name": "trailer",
+            "type": "VideoObject",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10164,
+            "description": "Schema.org/endDate\nThe end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).",
+            "itemtype": "property",
+            "name": "endDate",
+            "type": "DateTime",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10172,
+            "description": "Schema.org/episodes\nAn episode of a TV/radio series or season.",
+            "itemtype": "property",
+            "name": "episodes",
+            "type": "Episode",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10180,
+            "description": "Schema.org/startDate\nThe start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).",
+            "itemtype": "property",
+            "name": "startDate",
+            "type": "Date",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10188,
+            "description": "Schema.org/director\nA director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.",
+            "itemtype": "property",
+            "name": "director",
+            "type": "Person",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10196,
+            "description": "Schema.org/productionCompany\nThe production company or studio responsible for the item e.g. series, video game, episode etc.",
+            "itemtype": "property",
+            "name": "productionCompany",
+            "type": "Organization",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10204,
+            "description": "Schema.org/episode\nAn episode of a tv, radio or game media within a series or season.",
+            "itemtype": "property",
+            "name": "episode",
+            "type": "Episode",
+            "class": "CreativeWorkSeason",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10212,
+            "description": "Schema.org/seasonNumber\nPosition of the season within an ordered group of seasons.",
+            "itemtype": "property",
+            "name": "seasonNumber",
+            "type": "Text",
+            "class": "CreativeWorkSeason",
             "module": "org.schema"
         },
         {
@@ -66256,51 +66256,51 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:58"
+            "line": " src/main/js/cass/cass.import.js:82"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:170"
+            "line": " src/main/js/cass/cass.import.js:114"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:202"
+            "line": " src/main/js/cass/cass.import.js:148"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:236"
+            "line": " src/main/js/cass/cass.import.js:192"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:280"
+            "line": " src/main/js/cass/cass.import.js:238"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:326"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:396"
+            "line": " src/main/js/cass/cass.import.js:308"
         },
         {
             "message": "unknown tag: meberof",
-            "line": " src/main/js/cass/cass.import.js:467"
+            "line": " src/main/js/cass/cass.import.js:379"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:526"
+            "line": " src/main/js/cass/cass.import.js:438"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:545"
+            "line": " src/main/js/cass/cass.import.js:457"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:574"
+            "line": " src/main/js/cass/cass.import.js:486"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:613"
+            "line": " src/main/js/cass/cass.import.js:525"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.import.js:588"
         },
         {
             "message": "unknown tag: memberof",
@@ -66476,7 +66476,11 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1261"
+            "line": " src/main/js/cass/ebac.identity.js:1228"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/ebac.identity.js:1239"
         },
         {
             "message": "unknown tag: memberof",
@@ -66484,43 +66488,39 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1305"
+            "line": " src/main/js/cass/ebac.identity.js:1336"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1369"
+            "line": " src/main/js/cass/ebac.identity.js:1349"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1382"
+            "line": " src/main/js/cass/ebac.identity.js:1360"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1393"
+            "line": " src/main/js/cass/ebac.identity.js:1384"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1417"
+            "line": " src/main/js/cass/ebac.identity.js:1416"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1449"
+            "line": " src/main/js/cass/ebac.identity.js:1465"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1498"
+            "line": " src/main/js/cass/ebac.identity.js:1479"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1512"
+            "line": " src/main/js/cass/ebac.identity.js:1500"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1533"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1585"
+            "line": " src/main/js/cass/ebac.identity.js:1552"
         },
         {
             "message": "unknown tag: memberof",
@@ -66532,247 +66532,247 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:79"
+            "line": " src/main/js/cass/ebac.repository.js:81"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:137"
+            "line": " src/main/js/cass/ebac.repository.js:139"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:196"
+            "line": " src/main/js/cass/ebac.repository.js:198"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:226"
+            "line": " src/main/js/cass/ebac.repository.js:228"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:281"
+            "line": " src/main/js/cass/ebac.repository.js:283"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:331"
+            "line": " src/main/js/cass/ebac.repository.js:333"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:372"
+            "line": " src/main/js/cass/ebac.repository.js:374"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:403"
+            "line": " src/main/js/cass/ebac.repository.js:405"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:424"
+            "line": " src/main/js/cass/ebac.repository.js:426"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:450"
+            "line": " src/main/js/cass/ebac.repository.js:452"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:477"
+            "line": " src/main/js/cass/ebac.repository.js:479"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:491"
+            "line": " src/main/js/cass/ebac.repository.js:493"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:504"
+            "line": " src/main/js/cass/ebac.repository.js:506"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:526"
+            "line": " src/main/js/cass/ebac.repository.js:528"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:546"
+            "line": " src/main/js/cass/ebac.repository.js:548"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:566"
+            "line": " src/main/js/cass/ebac.repository.js:568"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:611"
+            "line": " src/main/js/cass/ebac.repository.js:613"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:639"
+            "line": " src/main/js/cass/ebac.repository.js:641"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:706"
+            "line": " src/main/js/cass/ebac.repository.js:708"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:757"
+            "line": " src/main/js/cass/ebac.repository.js:759"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:774"
+            "line": " src/main/js/cass/ebac.repository.js:776"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:790"
+            "line": " src/main/js/cass/ebac.repository.js:792"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:809"
+            "line": " src/main/js/cass/ebac.repository.js:811"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:834"
+            "line": " src/main/js/cass/ebac.repository.js:836"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:863"
+            "line": " src/main/js/cass/ebac.repository.js:865"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:944"
+            "line": " src/main/js/cass/ebac.repository.js:946"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:993"
+            "line": " src/main/js/cass/ebac.repository.js:995"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1196"
+            "line": " src/main/js/cass/ebac.repository.js:1198"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1262"
+            "line": " src/main/js/cass/ebac.repository.js:1264"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1297"
+            "line": " src/main/js/cass/ebac.repository.js:1299"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1314"
+            "line": " src/main/js/cass/ebac.repository.js:1316"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1331"
+            "line": " src/main/js/cass/ebac.repository.js:1333"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1371"
+            "line": " src/main/js/cass/ebac.repository.js:1373"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1452"
+            "line": " src/main/js/cass/ebac.repository.js:1454"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1509"
+            "line": " src/main/js/cass/ebac.repository.js:1511"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1527"
+            "line": " src/main/js/cass/ebac.repository.js:1529"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1581"
+            "line": " src/main/js/cass/ebac.repository.js:1583"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1630"
+            "line": " src/main/js/cass/ebac.repository.js:1632"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1675"
+            "line": " src/main/js/cass/ebac.repository.js:1677"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1713"
+            "line": " src/main/js/cass/ebac.repository.js:1715"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1759"
+            "line": " src/main/js/cass/ebac.repository.js:1761"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1777"
+            "line": " src/main/js/cass/ebac.repository.js:1779"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1777"
+            "line": " src/main/js/cass/ebac.repository.js:1779"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1791"
+            "line": " src/main/js/cass/ebac.repository.js:1793"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1901"
+            "line": " src/main/js/cass/ebac.repository.js:1903"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1901"
+            "line": " src/main/js/cass/ebac.repository.js:1903"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2016"
+            "line": " src/main/js/cass/ebac.repository.js:2018"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2090"
+            "line": " src/main/js/cass/ebac.repository.js:2092"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2161"
+            "line": " src/main/js/cass/ebac.repository.js:2163"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2207"
+            "line": " src/main/js/cass/ebac.repository.js:2209"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2250"
+            "line": " src/main/js/cass/ebac.repository.js:2252"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2270"
+            "line": " src/main/js/cass/ebac.repository.js:2272"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2282"
+            "line": " src/main/js/cass/ebac.repository.js:2284"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2294"
+            "line": " src/main/js/cass/ebac.repository.js:2296"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2306"
+            "line": " src/main/js/cass/ebac.repository.js:2308"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2343"
+            "line": " src/main/js/cass/ebac.repository.js:2345"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2457"
+            "line": " src/main/js/cass/ebac.repository.js:2459"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2479"
+            "line": " src/main/js/cass/ebac.repository.js:2481"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2513"
+            "line": " src/main/js/cass/ebac.repository.js:2515"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2562"
+            "line": " src/main/js/cass/ebac.repository.js:2564"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2583"
+            "line": " src/main/js/cass/ebac.repository.js:2585"
         },
         {
             "message": "unknown tag: memberof",
@@ -67544,7 +67544,7 @@
         },
         {
             "message": "Missing item type\nCreated by fray on 5/30/17.",
-            "line": " src/main/js/cass/cass.rollup.js:685"
+            "line": " src/main/js/cass/cass.rollup.js:798"
         },
         {
             "message": "Missing item type\nPulled default values from CruncherAssertionProcessor\n    dependencyDefs = new JSONObject();\n \n    JSONObject narrows = new JSONObject();\n    narrows.put(\"class\",\"broadens\");\n    narrows.put(\"reverse\",true);\n    narrows.put(\"weight\",0.9);\n    dependencyDefs.put(\"narrows\",narrows);\n \n    JSONObject enables = new JSONObject();\n    enables.put(\"class\",\"isSufficientFor\");\n    enables.put(\"weight\",0.9);\n    enables.put(\"reverse\",true);\n    dependencyDefs.put(\"enables\",enables);\n \n    JSONObject requires = new JSONObject();\n    requires.put(\"class\",\"isRequiredBy\");\n    requires.put(\"weight\",0.9);\n    dependencyDefs.put(\"requires\",requires);",
@@ -67567,12 +67567,12 @@
             "line": " src/main/js/cass/ebac.identity.js:874"
         },
         {
-            "message": "Missing item type\nVerifies that the contact grant is valid",
-            "line": " src/main/js/cass/ebac.identity.js:1202"
+            "message": "Missing item type\nReturns true if the identity manager is global. Returns false if the identity manager is local to the server.",
+            "line": " src/main/js/cass/ebac.identity.js:1228"
         },
         {
-            "message": "Missing item type\nReturns true if the identity manager is global. Returns false if the identity manager is local to the server.",
-            "line": " src/main/js/cass/ebac.identity.js:1261"
+            "message": "Missing item type\nVerifies that the contact grant is valid",
+            "line": " src/main/js/cass/ebac.identity.js:1593"
         },
         {
             "message": "Missing item type\nReturns an ISO 8601 TimeDate String from a Date object.",

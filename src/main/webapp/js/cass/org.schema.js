@@ -3006,26 +3006,6 @@ function() {
 };
 DanceEvent = stjs.extend(DanceEvent, Event, [], null, {about: "Thing", funder: "Person", workFeatured: "CreativeWork", audience: "Audience", actor: "Person", performers: "Organization", contributor: "Organization", organizer: "Person", attendees: "Person", aggregateRating: "AggregateRating", subEvent: "Event", subEvents: "Event", offers: "Offer", attendee: "Organization", workPerformed: "CreativeWork", eventStatus: "EventStatusType", director: "Person", superEvent: "Event", duration: "Duration", translator: "Person", inLanguage: "Language", review: "Review", sponsor: "Organization", location: "PostalAddress", recordedIn: "CreativeWork", composer: "Organization", performer: "Person", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Schema.org/UserInteraction
- *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
- * 
- *  @author schema.org
- *  @class UserInteraction
- *  @module org.schema
- *  @extends Event
- */
-var UserInteraction = /**
- *  Constructor, automatically sets @context and @type.
- * 
- *  @constructor
- */
-function() {
-    Event.call(this);
-    this.context = "http://schema.org/";
-    this.type = "UserInteraction";
-};
-UserInteraction = stjs.extend(UserInteraction, Event, [], null, {about: "Thing", funder: "Person", workFeatured: "CreativeWork", audience: "Audience", actor: "Person", performers: "Organization", contributor: "Organization", organizer: "Person", attendees: "Person", aggregateRating: "AggregateRating", subEvent: "Event", subEvents: "Event", offers: "Offer", attendee: "Organization", workPerformed: "CreativeWork", eventStatus: "EventStatusType", director: "Person", superEvent: "Event", duration: "Duration", translator: "Person", inLanguage: "Language", review: "Review", sponsor: "Organization", location: "PostalAddress", recordedIn: "CreativeWork", composer: "Organization", performer: "Person", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  Schema.org/DeliveryEvent
  *  An event involving the delivery of an item.
  * 
@@ -3078,6 +3058,26 @@ DeliveryEvent = stjs.extend(DeliveryEvent, Event, [], function(constructor, prot
      */
     prototype.accessCode = null;
 }, {hasDeliveryMethod: "DeliveryMethod", about: "Thing", funder: "Person", workFeatured: "CreativeWork", audience: "Audience", actor: "Person", performers: "Organization", contributor: "Organization", organizer: "Person", attendees: "Person", aggregateRating: "AggregateRating", subEvent: "Event", subEvents: "Event", offers: "Offer", attendee: "Organization", workPerformed: "CreativeWork", eventStatus: "EventStatusType", director: "Person", superEvent: "Event", duration: "Duration", translator: "Person", inLanguage: "Language", review: "Review", sponsor: "Organization", location: "PostalAddress", recordedIn: "CreativeWork", composer: "Organization", performer: "Person", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Schema.org/UserInteraction
+ *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
+ *  @author schema.org
+ *  @class UserInteraction
+ *  @module org.schema
+ *  @extends Event
+ */
+var UserInteraction = /**
+ *  Constructor, automatically sets @context and @type.
+ * 
+ *  @constructor
+ */
+function() {
+    Event.call(this);
+    this.context = "http://schema.org/";
+    this.type = "UserInteraction";
+};
+UserInteraction = stjs.extend(UserInteraction, Event, [], null, {about: "Thing", funder: "Person", workFeatured: "CreativeWork", audience: "Audience", actor: "Person", performers: "Organization", contributor: "Organization", organizer: "Person", attendees: "Person", aggregateRating: "AggregateRating", subEvent: "Event", subEvents: "Event", offers: "Offer", attendee: "Organization", workPerformed: "CreativeWork", eventStatus: "EventStatusType", director: "Person", superEvent: "Event", duration: "Duration", translator: "Person", inLanguage: "Language", review: "Review", sponsor: "Organization", location: "PostalAddress", recordedIn: "CreativeWork", composer: "Organization", performer: "Person", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/PublicationEvent
  *  A PublicationEvent corresponds indifferently to the event of publication for a CreativeWork of any type e.g. a broadcast event, an on-demand event, a book/journal publication via a variety of delivery media.
@@ -5614,6 +5614,59 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     prototype.expectedArrivalUntil = null;
 }, {provider: "Person", deliveryAddress: "PostalAddress", hasDeliveryMethod: "DeliveryMethod", deliveryStatus: "DeliveryEvent", carrier: "Organization", originAddress: "PostalAddress", itemShipped: "Product", partOfOrder: "Order", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Schema.org/Role
+ *  Represents additional information about a relationship or property. For example a Role can be used to say that a 'member' role linking some SportsTeam to a player occurred during a particular time period. Or that a Person's 'actor' role in a Movie was for some particular characterName. Such properties can be attached to a Role entity, which is then associated with the main entities using ordinary properties like 'member' or 'actor'.\n\nSee also [blog post](http://blog.schema.org/2014/06/introducing-role.html).
+ * 
+ *  @author schema.org
+ *  @class Role
+ *  @module org.schema
+ *  @extends Intangible
+ */
+var Role = /**
+ *  Constructor, automatically sets @context and @type.
+ * 
+ *  @constructor
+ */
+function() {
+    Intangible.call(this);
+    this.context = "http://schema.org/";
+    this.type = "Role";
+};
+Role = stjs.extend(Role, Intangible, [], function(constructor, prototype) {
+    /**
+     *  Schema.org/endDate
+     *  The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
+     *  @property endDate
+     *  @type DateTime
+     */
+    prototype.endDate = null;
+    /**
+     *  Schema.org/startDate
+     *  The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
+     *  @property startDate
+     *  @type Date
+     */
+    prototype.startDate = null;
+    /**
+     *  Schema.org/namedPosition
+     *  A position played, performed or filled by a person or organization, as part of an organization. For example, an athlete in a SportsTeam might play in the position named 'Quarterback'.
+     * 
+     *  @property namedPosition
+     *  @type Text
+     */
+    prototype.namedPosition = null;
+    /**
+     *  Schema.org/roleName
+     *  A role played, performed or filled by a person or organization. For example, the team of creators for a comic book might fill the roles named 'inker', 'penciller', and 'letterer'; or an athlete in a SportsTeam might play in the position named 'Quarterback'.
+     * 
+     *  @property roleName
+     *  @type Text
+     */
+    prototype.roleName = null;
+}, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  Schema.org/AlignmentObject
  *  An intangible item that describes an alignment between a learning resource and a node in an educational framework.
  * 
@@ -5673,59 +5726,6 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
      *  @type Text
      */
     prototype.educationalFramework = null;
-}, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Schema.org/Role
- *  Represents additional information about a relationship or property. For example a Role can be used to say that a 'member' role linking some SportsTeam to a player occurred during a particular time period. Or that a Person's 'actor' role in a Movie was for some particular characterName. Such properties can be attached to a Role entity, which is then associated with the main entities using ordinary properties like 'member' or 'actor'.\n\nSee also [blog post](http://blog.schema.org/2014/06/introducing-role.html).
- * 
- *  @author schema.org
- *  @class Role
- *  @module org.schema
- *  @extends Intangible
- */
-var Role = /**
- *  Constructor, automatically sets @context and @type.
- * 
- *  @constructor
- */
-function() {
-    Intangible.call(this);
-    this.context = "http://schema.org/";
-    this.type = "Role";
-};
-Role = stjs.extend(Role, Intangible, [], function(constructor, prototype) {
-    /**
-     *  Schema.org/endDate
-     *  The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
-     * 
-     *  @property endDate
-     *  @type DateTime
-     */
-    prototype.endDate = null;
-    /**
-     *  Schema.org/startDate
-     *  The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
-     * 
-     *  @property startDate
-     *  @type Date
-     */
-    prototype.startDate = null;
-    /**
-     *  Schema.org/namedPosition
-     *  A position played, performed or filled by a person or organization, as part of an organization. For example, an athlete in a SportsTeam might play in the position named 'Quarterback'.
-     * 
-     *  @property namedPosition
-     *  @type Text
-     */
-    prototype.namedPosition = null;
-    /**
-     *  Schema.org/roleName
-     *  A role played, performed or filled by a person or organization. For example, the team of creators for a comic book might fill the roles named 'inker', 'penciller', and 'letterer'; or an athlete in a SportsTeam might play in the position named 'Quarterback'.
-     * 
-     *  @property roleName
-     *  @type Text
-     */
-    prototype.roleName = null;
 }, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Enumeration
@@ -6606,6 +6606,51 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
     prototype.dateIssued = null;
 }, {underName: "Organization", issuedBy: "Organization", ticketedSeat: "Seat", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Schema.org/MenuItem
+ *  A food or drink item listed in a menu or menu section.
+ * 
+ *  @author schema.org
+ *  @class MenuItem
+ *  @module org.schema
+ *  @extends Intangible
+ */
+var MenuItem = /**
+ *  Constructor, automatically sets @context and @type.
+ * 
+ *  @constructor
+ */
+function() {
+    Intangible.call(this);
+    this.context = "http://schema.org/";
+    this.type = "MenuItem";
+};
+MenuItem = stjs.extend(MenuItem, Intangible, [], function(constructor, prototype) {
+    /**
+     *  Schema.org/nutrition
+     *  Nutrition information about the recipe or menu item.
+     * 
+     *  @property nutrition
+     *  @type NutritionInformation
+     */
+    prototype.nutrition = null;
+    /**
+     *  Schema.org/offers
+     *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
+     * 
+     *  @property offers
+     *  @type Offer
+     */
+    prototype.offers = null;
+    /**
+     *  Schema.org/suitableForDiet
+     *  Indicates a dietary restriction or guideline for which this recipe or menu item is suitable, e.g. diabetic, halal etc.
+     * 
+     *  @property suitableForDiet
+     *  @type RestrictedDiet
+     */
+    prototype.suitableForDiet = null;
+}, {nutrition: "NutritionInformation", offers: "Offer", suitableForDiet: "RestrictedDiet", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  Schema.org/BroadcastChannel
  *  A unique instance of a BroadcastService on a CableOrSatelliteService lineup.
  * 
@@ -6666,51 +6711,6 @@ BroadcastChannel = stjs.extend(BroadcastChannel, Intangible, [], function(constr
      */
     prototype.genre = null;
 }, {inBroadcastLineup: "CableOrSatelliteService", providesBroadcastService: "BroadcastService", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Schema.org/MenuItem
- *  A food or drink item listed in a menu or menu section.
- * 
- *  @author schema.org
- *  @class MenuItem
- *  @module org.schema
- *  @extends Intangible
- */
-var MenuItem = /**
- *  Constructor, automatically sets @context and @type.
- * 
- *  @constructor
- */
-function() {
-    Intangible.call(this);
-    this.context = "http://schema.org/";
-    this.type = "MenuItem";
-};
-MenuItem = stjs.extend(MenuItem, Intangible, [], function(constructor, prototype) {
-    /**
-     *  Schema.org/nutrition
-     *  Nutrition information about the recipe or menu item.
-     * 
-     *  @property nutrition
-     *  @type NutritionInformation
-     */
-    prototype.nutrition = null;
-    /**
-     *  Schema.org/offers
-     *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
-     * 
-     *  @property offers
-     *  @type Offer
-     */
-    prototype.offers = null;
-    /**
-     *  Schema.org/suitableForDiet
-     *  Indicates a dietary restriction or guideline for which this recipe or menu item is suitable, e.g. diabetic, halal etc.
-     * 
-     *  @property suitableForDiet
-     *  @type RestrictedDiet
-     */
-    prototype.suitableForDiet = null;
-}, {nutrition: "NutritionInformation", offers: "Offer", suitableForDiet: "RestrictedDiet", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Permit
  *  A permit issued by an organization, e.g. a parking pass.
@@ -8236,6 +8236,83 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
     prototype.downvoteCount = null;
 }, {acceptedAnswer: "Answer", suggestedAnswer: "Answer", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Schema.org/Dataset
+ *  A body of structured information describing some topic(s) of interest.
+ * 
+ *  @author schema.org
+ *  @class Dataset
+ *  @module org.schema
+ *  @extends CreativeWork
+ */
+var Dataset = /**
+ *  Constructor, automatically sets @context and @type.
+ * 
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.org/";
+    this.type = "Dataset";
+};
+Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  Schema.org/catalog
+     *  A data catalog which contains this dataset.
+     * 
+     *  @property catalog
+     *  @type DataCatalog
+     */
+    prototype.catalog = null;
+    /**
+     *  Schema.org/includedInDataCatalog
+     *  A data catalog which contains this dataset.
+     * 
+     *  @property includedInDataCatalog
+     *  @type DataCatalog
+     */
+    prototype.includedInDataCatalog = null;
+    /**
+     *  Schema.org/datasetTimeInterval
+     *  The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).
+     * 
+     *  @property datasetTimeInterval
+     *  @type DateTime
+     */
+    prototype.datasetTimeInterval = null;
+    /**
+     *  Schema.org/spatial
+     *  The range of spatial applicability of a dataset, e.g. for a dataset of New York weather, the state of New York.
+     * 
+     *  @property spatial
+     *  @type Place
+     */
+    prototype.spatial = null;
+    /**
+     *  Schema.org/temporal
+     *  The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).
+     * 
+     *  @property temporal
+     *  @type DateTime
+     */
+    prototype.temporal = null;
+    /**
+     *  Schema.org/includedDataCatalog
+     *  A data catalog which contains this dataset (this property was previously 'catalog', preferred name is now 'includedInDataCatalog').
+     * 
+     *  @property includedDataCatalog
+     *  @type DataCatalog
+     */
+    prototype.includedDataCatalog = null;
+    /**
+     *  Schema.org/distribution
+     *  A downloadable form of this dataset, at a specific location, in a specific format.
+     * 
+     *  @property distribution
+     *  @type DataDownload
+     */
+    prototype.distribution = null;
+}, {catalog: "DataCatalog", includedInDataCatalog: "DataCatalog", spatial: "Place", includedDataCatalog: "DataCatalog", distribution: "DataDownload", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  Schema.org/VisualArtwork
  *  A work of art that is primarily visual in character.
  * 
@@ -8320,83 +8397,6 @@ VisualArtwork = stjs.extend(VisualArtwork, CreativeWork, [], function(constructo
      */
     prototype.depth = null;
 }, {height: "Distance", width: "Distance", depth: "Distance", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Schema.org/Dataset
- *  A body of structured information describing some topic(s) of interest.
- * 
- *  @author schema.org
- *  @class Dataset
- *  @module org.schema
- *  @extends CreativeWork
- */
-var Dataset = /**
- *  Constructor, automatically sets @context and @type.
- * 
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.org/";
-    this.type = "Dataset";
-};
-Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  Schema.org/catalog
-     *  A data catalog which contains this dataset.
-     * 
-     *  @property catalog
-     *  @type DataCatalog
-     */
-    prototype.catalog = null;
-    /**
-     *  Schema.org/includedInDataCatalog
-     *  A data catalog which contains this dataset.
-     * 
-     *  @property includedInDataCatalog
-     *  @type DataCatalog
-     */
-    prototype.includedInDataCatalog = null;
-    /**
-     *  Schema.org/datasetTimeInterval
-     *  The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).
-     * 
-     *  @property datasetTimeInterval
-     *  @type DateTime
-     */
-    prototype.datasetTimeInterval = null;
-    /**
-     *  Schema.org/spatial
-     *  The range of spatial applicability of a dataset, e.g. for a dataset of New York weather, the state of New York.
-     * 
-     *  @property spatial
-     *  @type Place
-     */
-    prototype.spatial = null;
-    /**
-     *  Schema.org/temporal
-     *  The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).
-     * 
-     *  @property temporal
-     *  @type DateTime
-     */
-    prototype.temporal = null;
-    /**
-     *  Schema.org/includedDataCatalog
-     *  A data catalog which contains this dataset (this property was previously 'catalog', preferred name is now 'includedInDataCatalog').
-     * 
-     *  @property includedDataCatalog
-     *  @type DataCatalog
-     */
-    prototype.includedDataCatalog = null;
-    /**
-     *  Schema.org/distribution
-     *  A downloadable form of this dataset, at a specific location, in a specific format.
-     * 
-     *  @property distribution
-     *  @type DataDownload
-     */
-    prototype.distribution = null;
-}, {catalog: "DataCatalog", includedInDataCatalog: "DataCatalog", spatial: "Place", includedDataCatalog: "DataCatalog", distribution: "DataDownload", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/TVSeries
  *  CreativeWorkSeries dedicated to TV broadcast and associated online delivery.
@@ -10030,6 +10030,67 @@ CreativeWorkSeries = stjs.extend(CreativeWorkSeries, CreativeWork, [], function(
     prototype.startDate = null;
 }, {about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Schema.org/Book
+ *  A book.
+ * 
+ *  @author schema.org
+ *  @class Book
+ *  @module org.schema
+ *  @extends CreativeWork
+ */
+var Book = /**
+ *  Constructor, automatically sets @context and @type.
+ * 
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.org/";
+    this.type = "Book";
+};
+Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  Schema.org/isbn
+     *  The ISBN of the book.
+     * 
+     *  @property isbn
+     *  @type Text
+     */
+    prototype.isbn = null;
+    /**
+     *  Schema.org/bookEdition
+     *  The edition of the book.
+     * 
+     *  @property bookEdition
+     *  @type Text
+     */
+    prototype.bookEdition = null;
+    /**
+     *  Schema.org/bookFormat
+     *  The format of the book.
+     * 
+     *  @property bookFormat
+     *  @type BookFormatType
+     */
+    prototype.bookFormat = null;
+    /**
+     *  Schema.org/numberOfPages
+     *  The number of pages in the book.
+     * 
+     *  @property numberOfPages
+     *  @type Integer
+     */
+    prototype.numberOfPages = null;
+    /**
+     *  Schema.org/illustrator
+     *  The illustrator of the book.
+     * 
+     *  @property illustrator
+     *  @type Person
+     */
+    prototype.illustrator = null;
+}, {bookFormat: "BookFormatType", illustrator: "Person", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  Schema.org/CreativeWorkSeason
  *  A media season e.g. tv, radio, video game etc.
  * 
@@ -10138,67 +10199,6 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
      */
     prototype.seasonNumber = null;
 }, {actor: "Person", partOfSeries: "CreativeWorkSeries", trailer: "VideoObject", episodes: "Episode", director: "Person", productionCompany: "Organization", episode: "Episode", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Schema.org/Book
- *  A book.
- * 
- *  @author schema.org
- *  @class Book
- *  @module org.schema
- *  @extends CreativeWork
- */
-var Book = /**
- *  Constructor, automatically sets @context and @type.
- * 
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.org/";
-    this.type = "Book";
-};
-Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  Schema.org/isbn
-     *  The ISBN of the book.
-     * 
-     *  @property isbn
-     *  @type Text
-     */
-    prototype.isbn = null;
-    /**
-     *  Schema.org/bookEdition
-     *  The edition of the book.
-     * 
-     *  @property bookEdition
-     *  @type Text
-     */
-    prototype.bookEdition = null;
-    /**
-     *  Schema.org/bookFormat
-     *  The format of the book.
-     * 
-     *  @property bookFormat
-     *  @type BookFormatType
-     */
-    prototype.bookFormat = null;
-    /**
-     *  Schema.org/numberOfPages
-     *  The number of pages in the book.
-     * 
-     *  @property numberOfPages
-     *  @type Integer
-     */
-    prototype.numberOfPages = null;
-    /**
-     *  Schema.org/illustrator
-     *  The illustrator of the book.
-     * 
-     *  @property illustrator
-     *  @type Person
-     */
-    prototype.illustrator = null;
-}, {bookFormat: "BookFormatType", illustrator: "Person", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Series
  *  <p>
@@ -13501,26 +13501,6 @@ function() {
 };
 GovernmentOffice = stjs.extend(GovernmentOffice, LocalBusiness, [], null, {branchOf: "Organization", serviceArea: "GeoShape", address: "PostalAddress", funder: "Person", memberOf: "Organization", subOrganization: "Organization", hasOfferCatalog: "OfferCatalog", reviews: "Review", members: "Organization", aggregateRating: "AggregateRating", makesOffer: "Offer", contactPoints: "ContactPoint", seeks: "Demand", member: "Organization", founders: "Person", alumni: "Person", events: "Event", logo: "ImageObject", employees: "Person", department: "Organization", contactPoint: "ContactPoint", parentOrganization: "Organization", employee: "Person", numberOfEmployees: "QuantitativeValue", hasPOS: "Place", review: "Review", foundingLocation: "Place", owns: "OwnershipInfo", event: "Event", founder: "Person", sponsor: "Organization", location: "PostalAddress", brand: "Organization", areaServed: "Place", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Schema.org/SelfStorage
- *  A self-storage facility.
- * 
- *  @author schema.org
- *  @class SelfStorage
- *  @module org.schema
- *  @extends LocalBusiness
- */
-var SelfStorage = /**
- *  Constructor, automatically sets @context and @type.
- * 
- *  @constructor
- */
-function() {
-    LocalBusiness.call(this);
-    this.context = "http://schema.org/";
-    this.type = "SelfStorage";
-};
-SelfStorage = stjs.extend(SelfStorage, LocalBusiness, [], null, {branchOf: "Organization", serviceArea: "GeoShape", address: "PostalAddress", funder: "Person", memberOf: "Organization", subOrganization: "Organization", hasOfferCatalog: "OfferCatalog", reviews: "Review", members: "Organization", aggregateRating: "AggregateRating", makesOffer: "Offer", contactPoints: "ContactPoint", seeks: "Demand", member: "Organization", founders: "Person", alumni: "Person", events: "Event", logo: "ImageObject", employees: "Person", department: "Organization", contactPoint: "ContactPoint", parentOrganization: "Organization", employee: "Person", numberOfEmployees: "QuantitativeValue", hasPOS: "Place", review: "Review", foundingLocation: "Place", owns: "OwnershipInfo", event: "Event", founder: "Person", sponsor: "Organization", location: "PostalAddress", brand: "Organization", areaServed: "Place", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  Schema.org/RealEstateAgent
  *  A real-estate agent.
  * 
@@ -13540,6 +13520,26 @@ function() {
     this.type = "RealEstateAgent";
 };
 RealEstateAgent = stjs.extend(RealEstateAgent, LocalBusiness, [], null, {branchOf: "Organization", serviceArea: "GeoShape", address: "PostalAddress", funder: "Person", memberOf: "Organization", subOrganization: "Organization", hasOfferCatalog: "OfferCatalog", reviews: "Review", members: "Organization", aggregateRating: "AggregateRating", makesOffer: "Offer", contactPoints: "ContactPoint", seeks: "Demand", member: "Organization", founders: "Person", alumni: "Person", events: "Event", logo: "ImageObject", employees: "Person", department: "Organization", contactPoint: "ContactPoint", parentOrganization: "Organization", employee: "Person", numberOfEmployees: "QuantitativeValue", hasPOS: "Place", review: "Review", foundingLocation: "Place", owns: "OwnershipInfo", event: "Event", founder: "Person", sponsor: "Organization", location: "PostalAddress", brand: "Organization", areaServed: "Place", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Schema.org/SelfStorage
+ *  A self-storage facility.
+ * 
+ *  @author schema.org
+ *  @class SelfStorage
+ *  @module org.schema
+ *  @extends LocalBusiness
+ */
+var SelfStorage = /**
+ *  Constructor, automatically sets @context and @type.
+ * 
+ *  @constructor
+ */
+function() {
+    LocalBusiness.call(this);
+    this.context = "http://schema.org/";
+    this.type = "SelfStorage";
+};
+SelfStorage = stjs.extend(SelfStorage, LocalBusiness, [], null, {branchOf: "Organization", serviceArea: "GeoShape", address: "PostalAddress", funder: "Person", memberOf: "Organization", subOrganization: "Organization", hasOfferCatalog: "OfferCatalog", reviews: "Review", members: "Organization", aggregateRating: "AggregateRating", makesOffer: "Offer", contactPoints: "ContactPoint", seeks: "Demand", member: "Organization", founders: "Person", alumni: "Person", events: "Event", logo: "ImageObject", employees: "Person", department: "Organization", contactPoint: "ContactPoint", parentOrganization: "Organization", employee: "Person", numberOfEmployees: "QuantitativeValue", hasPOS: "Place", review: "Review", foundingLocation: "Place", owns: "OwnershipInfo", event: "Event", founder: "Person", sponsor: "Organization", location: "PostalAddress", brand: "Organization", areaServed: "Place", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/FoodEstablishment
  *  A food-related business.
@@ -15573,26 +15573,6 @@ function() {
 };
 DayOfWeek = stjs.extend(DayOfWeek, Enumeration, [], null, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Schema.org/RestrictedDiet
- *  A diet restricted to certain foods or preparations for cultural, religious, health or lifestyle reasons.
- * 
- *  @author schema.org
- *  @class RestrictedDiet
- *  @module org.schema
- *  @extends Enumeration
- */
-var RestrictedDiet = /**
- *  Constructor, automatically sets @context and @type.
- * 
- *  @constructor
- */
-function() {
-    Enumeration.call(this);
-    this.context = "http://schema.org/";
-    this.type = "RestrictedDiet";
-};
-RestrictedDiet = stjs.extend(RestrictedDiet, Enumeration, [], null, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  Schema.org/ReservationStatusType
  *  Enumerated status values for Reservation.
  * 
@@ -15612,6 +15592,26 @@ function() {
     this.type = "ReservationStatusType";
 };
 ReservationStatusType = stjs.extend(ReservationStatusType, Enumeration, [], null, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Schema.org/RestrictedDiet
+ *  A diet restricted to certain foods or preparations for cultural, religious, health or lifestyle reasons.
+ * 
+ *  @author schema.org
+ *  @class RestrictedDiet
+ *  @module org.schema
+ *  @extends Enumeration
+ */
+var RestrictedDiet = /**
+ *  Constructor, automatically sets @context and @type.
+ * 
+ *  @constructor
+ */
+function() {
+    Enumeration.call(this);
+    this.context = "http://schema.org/";
+    this.type = "RestrictedDiet";
+};
+RestrictedDiet = stjs.extend(RestrictedDiet, Enumeration, [], null, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/PaymentStatusType
  *  A specific payment status. For example, PaymentDue, PaymentComplete, etc.

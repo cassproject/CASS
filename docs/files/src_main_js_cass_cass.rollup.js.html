@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.26</em>
+            <em>API Docs for: 1.2.27</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -939,29 +939,6 @@ NodeRelation = stjs.extend(NodeRelation, null, [], function(constructor, prototy
         return this.getSource().toString() + &quot; &gt;&gt;&quot; + this.getType() + &quot;&lt;&lt; &quot; + this.getTarget().toString();
     };
 }, {type: {name: &quot;Enum&quot;, arguments: [&quot;RelationType.RELATION_TYPE&quot;]}, source: &quot;Node&quot;, target: &quot;Node&quot;}, {});
-var RrS = function() {
-    this.token = new Array();
-    this.query = new Array();
-};
-RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
-    prototype.token = null;
-    prototype.query = null;
-    prototype.addToken = function(rrToken) {
-        this.token.push(rrToken);
-    };
-    prototype.addQuery = function(rrQuery) {
-        this.query.push(rrQuery);
-    };
-}, {token: {name: &quot;Array&quot;, arguments: [&quot;RrToken&quot;]}, query: {name: &quot;Array&quot;, arguments: [&quot;RrQuery&quot;]}}, {});
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
-}, {}, {});
-var RrQuery = function() {};
-RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
-    prototype.query = null;
-}, {}, {});
 var CgEdge = function(source, target, relation) {
     this.source = source;
     this.target = target;
@@ -1045,6 +1022,29 @@ SimpleAssertion = stjs.extend(SimpleAssertion, null, [], function(constructor, p
     prototype.setNegative = function(negative) {
         this.negative = negative;
     };
+}, {}, {});
+var RrS = function() {
+    this.token = new Array();
+    this.query = new Array();
+};
+RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
+    prototype.token = null;
+    prototype.query = null;
+    prototype.addToken = function(rrToken) {
+        this.token.push(rrToken);
+    };
+    prototype.addQuery = function(rrQuery) {
+        this.query.push(rrQuery);
+    };
+}, {token: {name: &quot;Array&quot;, arguments: [&quot;RrToken&quot;]}, query: {name: &quot;Array&quot;, arguments: [&quot;RrQuery&quot;]}}, {});
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
+}, {}, {});
+var RrQuery = function() {};
+RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
+    prototype.query = null;
 }, {}, {});
 /**
  *  Data structure used to hold data relevant to a request to determine the competence of an individual.
@@ -1508,19 +1508,6 @@ PapSettings = stjs.extend(PapSettings, null, [], function(constructor, prototype
         this.betaMean = betaMean;
     };
 }, {}, {});
-/**
- *  Created by fray on 5/30/17.
- */
-var AssertionCoprocessor = function() {};
-AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(constructor, prototype) {
-    prototype.assertionProcessor = null;
-    prototype.collectAssertions = function(ip, listOfCompetencies, success) {
-        success(new Array());
-    };
-    prototype.mutateAssertions = function(ip, listOfCompetencies, success) {
-        success();
-    };
-}, {assertionProcessor: &quot;AssertionProcessor&quot;}, {});
 var ArrayUtil = function() {};
 ArrayUtil = stjs.extend(ArrayUtil, null, [], function(constructor, prototype) {
     constructor.arrayContains = function(a, o) {
@@ -1634,6 +1621,19 @@ NodeRelationMap = stjs.extend(NodeRelationMap, null, [], function(constructor, p
         return ret;
     };
 }, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, relationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}]}}, {});
+/**
+ *  Created by fray on 5/30/17.
+ */
+var AssertionCoprocessor = function() {};
+AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(constructor, prototype) {
+    prototype.assertionProcessor = null;
+    prototype.collectAssertions = function(ip, listOfCompetencies, success) {
+        success(new Array());
+    };
+    prototype.mutateAssertions = function(ip, listOfCompetencies, success) {
+        success();
+    };
+}, {assertionProcessor: &quot;AssertionProcessor&quot;}, {});
 var PapDependencyDefinitionBase = function(depClass, reverse, weight, leak) {
     this.depClass = depClass;
     this.reverse = reverse;
