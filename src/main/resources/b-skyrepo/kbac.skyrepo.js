@@ -569,12 +569,16 @@ var searchObj = function(q, start, size, sort, track_scores) {
     }
     return s;
 };
-var searchUrl = function(urlRemainder) {
+var searchUrl = function(urlRemainder, index_hint) {
     var url = elasticEndpoint;
+    if (index_hint != null && index_hint.indexOf("permanent") != -1) 
+        index_hint = null;
     if (urlRemainder != null && urlRemainder != "" && urlRemainder != "/") 
         url += urlRemainder.toLowerCase();
-     else 
+     else if (index_hint == null) 
         url += "/*,-permanent";
+     else 
+        url += "/" + index_hint;
     if (!url.endsWith("/")) 
         url += "/";
     url += "_search";
@@ -582,11 +586,11 @@ var searchUrl = function(urlRemainder) {
         console.log(url);
     return url;
 };
-var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
+var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores, index_hint) {
     var searchParameters = (searchObj).call(this, q, start, size, sort, track_scores);
     if (skyrepoDebug) 
         console.log(JSON.stringify(searchParameters));
-    var results = httpPost(searchParameters, searchUrl(urlRemainder), "application/json", false, null, null, true);
+    var results = httpPost(searchParameters, searchUrl(urlRemainder, index_hint), "application/json", false, null, null, true);
     if (skyrepoDebug) 
         console.log(JSON.stringify(results));
     if ((results)["error"] != null) {
@@ -667,6 +671,7 @@ var endpointData = function() {
         this.ctx.put("refresh", this.params.refresh);
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
+    var index_hint = this.params.index_hint;
     var searchParams = (fileFromDatastream).call(this, "searchParams", null);
     if (searchParams != null) {
         searchParams = fileToString(searchParams);
@@ -682,6 +687,8 @@ var endpointData = function() {
             sort = (searchParams)["sort"];
         if ((searchParams)["track_scores"] != null) 
             track_scores = (searchParams)["track_scores"];
+        if ((searchParams)["index_hint"] != null) 
+            track_scores = (searchParams)["index_hint"];
     }
     if (size == null) 
         size = 50;
@@ -689,7 +696,7 @@ var endpointData = function() {
         start = 0;
     if (q != null) {
         (beforeGet).call(this);
-        return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores));
+        return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint));
     }
     var methodType = this.params.methodType;
     var parseParams = (queryParse).call(this, urlRemainder, null);
@@ -833,6 +840,7 @@ var skyRepoSearch = function() {
         size = parseInt(this.params.size);
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
+    var index_hint = this.params.index_hint;
     var searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, "searchParams", null)));
     if (searchParams != null) {
         if ((searchParams)["q"] != null) 
@@ -845,13 +853,15 @@ var skyRepoSearch = function() {
             sort = (searchParams)["sort"];
         if ((searchParams)["track_scores"] != null) 
             track_scores = (searchParams)["track_scores"];
+        if ((searchParams)["index_hint"] != null) 
+            index_hint = (searchParams)["index_hint"];
     }
     var data = fileToString((fileFromDatastream).call(this, "data", null));
     if (data != null && data != "") 
         q = data;
     if (q == null || q == "") 
         q = "*";
-    return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores));
+    return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint));
 };
 var endpointSearch = function() {
     return (skyRepoSearch).call(this);

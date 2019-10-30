@@ -5,7 +5,7 @@ function importJsonLd(){
 	var jsonLd, text;
 
 	if(this.params.url != undefined && this.params.url != ""){
-		text = httpGet(this.params.url);
+		text = httpGet(this.params.url,false);
 	}else if(this.params.path != undefined && this.params.path  != ""){
 		text = fileToString(fileLoad(this.params.path));
 	}else if(this.params.text != undefined && this.params.text != ""){

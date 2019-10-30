@@ -227,8 +227,10 @@ cfItems = function (f, fw) {
         guid = guid.substring(3);
     if (f["schema:identifier"] == null)
         f["schema:identifier"] = guid;
-    f.context = "https://schema.cassproject.org/0.4/cass2case";
-    f = jsonLdExpand(f.toJson());
+    if (f.toJson != null)
+        f = JSON.parse(f.toJson());
+    f["@context"] = "https://schema.cassproject.org/0.4/cass2case";
+    f = jsonLdExpand(f);
     var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
@@ -245,7 +247,7 @@ cfItems = function (f, fw) {
     f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
-        var parent = skyrepoSearch("competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
+        var parent = skyrepoSearch.call(this,"competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\""); 
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
         t = parent[0];

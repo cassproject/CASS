@@ -24,7 +24,7 @@ var xapiEndpoint = function (more, since) {
     var headers = {};
     headers["Authorization"] = xapiConfig.call(this).xapiAuth;
     headers["X-Experience-API-Version"] = "1.0.1";
-    return httpGet(endpoint, headers);
+    return httpGet(endpoint,false, headers);
 }
 bindWebService("/xapi/endpoint", xapiEndpoint);
 

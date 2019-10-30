@@ -62,7 +62,7 @@ registerWithCer = function (boolDelete) {
     if (resource == null)
         error("Candidate for registration not found.", 404);
 
-    var ceasnResource = httpGet(repoEndpoint() + "ceasn" + this.params.urlRemainder);
+    var ceasnResource = httpGet(repoEndpoint() + "ceasn" + this.params.urlRemainder,true);
 
     if (ceasnResource["@graph"] != null) {
         var results = [];

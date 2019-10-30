@@ -223,7 +223,7 @@ function cassFrameworkAsCeasn() {
         }
     }
 
-    var ctx = JSON.stringify(httpGet("https://credreg.net/ctdlasn/schema/context/json")["@context"]);
+    var ctx = JSON.stringify(httpGet("https://credreg.net/ctdlasn/schema/context/json")["@context"],true);
     f.competency = [];
     for (var i = 0; i < allCompetencies.length; i++) {
         var c = competencies[allCompetencies[i]];
@@ -550,7 +550,7 @@ function cassConceptSchemeAsCeasn(framework) {
         }
     }
 
-    var ctx = JSON.stringify(httpGet("https://credreg.net/ctdlasn/schema/context/json")["@context"]);
+    var ctx = JSON.stringify(httpGet("https://credreg.net/ctdlasn/schema/context/json")["@context"],true);
 
     for (var i = 0; i < allConcepts.length; i++) {
         var c = concepts[allConcepts[i]];
