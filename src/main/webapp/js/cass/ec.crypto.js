@@ -1175,7 +1175,7 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         algorithm.counter = base64.decode(iv);
         algorithm.length = 128;
         var data;
-        data = str2ab(forge.util.encodeUtf8(plaintext));
+        data = str2ab(plaintext);
         window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
             var p = window.crypto.subtle.encrypt(algorithm, key, data);
             p.then(function(p1) {
@@ -1223,8 +1223,8 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
             var p = window.crypto.subtle.decrypt(algorithm, key, data);
             p.then(function(p1) {
-                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(ab2str(p1));
-                success(forge.util.decodeUtf8(ab2str(p1)));
+                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = ab2str(p1);
+                success(ab2str(p1));
             }, failure);
         }, failure);
     };

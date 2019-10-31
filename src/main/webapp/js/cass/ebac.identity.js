@@ -115,7 +115,7 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
      */
     prototype.toEncryptedContact = function(secret) {
         var c = new EbacContact();
-        c.iv = EcAes.newIv(32);
+        c.iv = EcAes.newIv(16);
         c.pk = EcAesCtr.encrypt(this.pk.toPem(), secret, c.iv);
         c.displayNameIv = EcAes.newIv(16);
         c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);

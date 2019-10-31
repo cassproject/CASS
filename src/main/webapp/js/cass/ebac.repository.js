@@ -1155,6 +1155,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return null;
         }
         var repo = EcRepository.repos[i];
+        if (repo.selectedServer == null) {
+            return EcRepository.findBlocking(url, error, history, i + 1);
+        }
         if (((history)[repo.selectedServer]) == true) 
             EcRepository.findBlocking(url, error, history, i + 1);
         (history)[repo.selectedServer] = true;
@@ -2401,7 +2404,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
     };
     constructor.searchAs = function(repo, query, factory, success, failure, paramObj) {
-        var queryAdd = (factory()).getSearchStringByType();
+        if (paramObj == null) 
+            paramObj = new Object();
+        var template = (factory());
+        var queryAdd = template.getSearchStringByType();
+        (paramObj)["index_hint"] = "*" + template.type.toLowerCase();
         if (query == null || query == "") 
             query = queryAdd;
          else 
@@ -2474,24 +2481,10 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var f = new EcFile();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1 != null && p1.isA(GeneralFile.myType)) {
-                f.copyFrom(p1);
-                if (success != null) 
-                    success(f);
-            } else {
-                if (failure != null) 
-                    failure("Resultant object is not a competency.");
-                return;
-            }
-        }, failure);
+        EcRepository.getAs(id, new EcFile(), success, failure);
+    };
+    constructor.getBlocking = function(id) {
+        return EcRepository.getBlockingAs(id, new EcFile());
     };
     /**
      *  Searches the repository given for files that match the query passed in
@@ -2507,40 +2500,14 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
      *                              Callback triggered if error occurs while searching
      *  @param {Object}             paramObj
      *                              Parameters to pass to search
-     *  @param start
-     *  @param size
      *  @memberOf EcFile
      *  @method search
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new GeneralFile().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var file = new EcFile();
-                    if (p1[i].isAny(file.getTypes())) {
-                        file.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcFile.myType)) {
-                            var obj = val.decryptIntoObject();
-                            file.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(file.id, true);
-                        }
-                    }
-                    ret[i] = file;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcFile();
+        }, success, failure, paramObj);
     };
     /**
      *  Saves this file in the repository using the repository web services

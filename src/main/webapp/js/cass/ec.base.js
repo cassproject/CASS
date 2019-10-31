@@ -843,9 +843,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             var xhrx = xhr;
             xhr.onreadystatechange = function() {
                 if (xhrx.readyState == 4 && xhrx.status == 200) 
-                    success(xhrx.responseText);
-                 else if (xhrx.readyState == 4) 
-                    failure(xhrx.responseText);
+                    if (success != null) 
+                        success(xhrx.responseText);
+                     else if (xhrx.readyState == 4) 
+                        if (failure != null) 
+                            failure(xhrx.responseText);
             };
         }
         if (xhr != null) {
@@ -853,7 +855,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 (xhr)["timeout"] = EcRemote.timeout;
         }
         if ((typeof httpStatus) != "undefined") {
-            success(JSON.stringify(httpGet(url)));
+            if (success != null) 
+                success(JSON.stringify(httpGet(url)));
         } else {
             xhr.send();
         }

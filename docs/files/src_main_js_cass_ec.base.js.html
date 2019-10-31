@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.27</em>
+            <em>API Docs for: 1.2.28</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1688,9 +1688,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             var xhrx = xhr;
             xhr.onreadystatechange = function() {
                 if (xhrx.readyState == 4 &amp;&amp; xhrx.status == 200) 
-                    success(xhrx.responseText);
-                 else if (xhrx.readyState == 4) 
-                    failure(xhrx.responseText);
+                    if (success != null) 
+                        success(xhrx.responseText);
+                     else if (xhrx.readyState == 4) 
+                        if (failure != null) 
+                            failure(xhrx.responseText);
             };
         }
         if (xhr != null) {
@@ -1698,7 +1700,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 (xhr)[&quot;timeout&quot;] = EcRemote.timeout;
         }
         if ((typeof httpStatus) != &quot;undefined&quot;) {
-            success(JSON.stringify(httpGet(url)));
+            if (success != null) 
+                success(JSON.stringify(httpGet(url)));
         } else {
             xhr.send();
         }

@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.27</em>
+            <em>API Docs for: 1.2.28</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -2020,7 +2020,7 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         algorithm.counter = base64.decode(iv);
         algorithm.length = 128;
         var data;
-        data = str2ab(forge.util.encodeUtf8(plaintext));
+        data = str2ab(plaintext);
         window.crypto.subtle.importKey(&quot;raw&quot;, base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
             var p = window.crypto.subtle.encrypt(algorithm, key, data);
             p.then(function(p1) {
@@ -2068,8 +2068,8 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         window.crypto.subtle.importKey(&quot;raw&quot;, base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
             var p = window.crypto.subtle.decrypt(algorithm, key, data);
             p.then(function(p1) {
-                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(ab2str(p1));
-                success(forge.util.decodeUtf8(ab2str(p1)));
+                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = ab2str(p1);
+                success(ab2str(p1));
             }, failure);
         }, failure);
     };

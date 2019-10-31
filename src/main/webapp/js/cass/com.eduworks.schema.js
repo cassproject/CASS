@@ -30,35 +30,7 @@ EcPerson = stjs.extend(EcPerson, Person, [], function(constructor, prototype) {
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (stjs.isInstanceOf(p1.constructor, EcPerson)) 
-                if (success != null) {
-                    success(p1);
-                    return;
-                }
-            var person = new EcPerson();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(person.getTypes())) {
-                person.copyFrom(p1);
-                if (EcRepository.caching) {
-                    (EcRepository.cache)[person.shortId()] = person;
-                    (EcRepository.cache)[person.id] = person;
-                }
-                if (success != null) 
-                    success(person);
-            } else {
-                var msg = "Retrieved object was not a person";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
+        EcRepository.getAs(id, new EcPerson(), success, failure);
     };
     /**
      *  Retrieves a person from it's server synchronously, the call
@@ -73,24 +45,7 @@ EcPerson = stjs.extend(EcPerson, Person, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var person = new EcPerson();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(person.getTypes())) {
-            person.copyFrom(p1);
-            return person;
-        } else {
-            var msg = "Retrieved object was not a person";
-            console.error(msg);
-            return null;
-        }
+        return EcRepository.getBlockingAs(id, new EcPerson());
     };
     /**
      *  Searches a repository for persons that match the search query
@@ -106,33 +61,9 @@ EcPerson = stjs.extend(EcPerson, Person, [], function(constructor, prototype) {
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new Person().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcPerson();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(new EcPerson().getFullType())) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcPerson();
+        }, success, failure, paramObj);
     };
     /**
      *  Attempts to find and return the person's fingerprint from the id.
@@ -158,6 +89,38 @@ var EcCreativeWork = function() {
 };
 EcCreativeWork = stjs.extend(EcCreativeWork, CreativeWork, [], function(constructor, prototype) {
     /**
+     *  Retrieves a creative work from it's server asynchronously
+     * 
+     *  @param {String}            id
+     *                             ID of the creative work to retrieve from the server
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after retrieving the creative work,
+     *                             returns the creative work retrieved
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error retrieving creative work
+     *  @memberOf EcCreativeWork
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.getAs(id, new EcCreativeWork(), success, failure);
+    };
+    /**
+     *  Retrieves a creative work from it's server synchronously, the call
+     *  blocks until it is successful or an error occurs
+     * 
+     *  @param {String} id
+     *                  ID of the creative work to retrieve
+     *  @return EcCreativeWork
+     *  The creative work retrieved
+     *  @memberOf EcCreativeWork
+     *  @method getBlocking
+     *  @static
+     */
+    constructor.getBlocking = function(id) {
+        return EcRepository.getBlockingAs(id, new EcCreativeWork());
+    };
+    /**
      *  Searches a repository for creative works that match the search query
      * 
      *  @param {EcRepository}                    repo
@@ -175,33 +138,9 @@ EcCreativeWork = stjs.extend(EcCreativeWork, CreativeWork, [], function(construc
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcCreativeWork().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcCreativeWork();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(new EcCreativeWork().getFullType())) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcCreativeWork();
+        }, success, failure, paramObj);
     };
 }, {about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcQuiz = function() {
@@ -229,34 +168,9 @@ EcQuiz = stjs.extend(EcQuiz, CreativeWork, [], function(constructor, prototype) 
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcQuiz().getSearchStringByType();
-        if (query == null || query == "") {
-            query = queryAdd;
-        } else {
-            query = "(" + query + ") AND " + queryAdd;
-        }
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcQuiz();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcQuiz.myType)) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcQuiz();
+        }, success, failure, paramObj);
     };
 }, {question: {name: "Array", arguments: [null]}, about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcQuestion = function() {
@@ -283,34 +197,9 @@ EcQuestion = stjs.extend(EcQuestion, Question, [], function(constructor, prototy
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new Question().getSearchStringByType();
-        if (query == null || query == "") {
-            query = queryAdd;
-        } else {
-            query = "(" + query + ") AND " + queryAdd;
-        }
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcQuestion();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(new EcQuestion().getFullType())) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcQuestion();
+        }, success, failure, paramObj);
     };
     /**
      *  Heuristic method of determining how this question should be asked.
@@ -441,6 +330,38 @@ var EcOrganization = function() {
 };
 EcOrganization = stjs.extend(EcOrganization, Organization, [], function(constructor, prototype) {
     /**
+     *  Retrieves an organization from it's server asynchronously
+     * 
+     *  @param {String}            id
+     *                             ID of the concept to retrieve from the server
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after retrieving the organization,
+     *                             returns the organization retrieved
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error retrieving organization
+     *  @memberOf EcOrganization
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.getAs(id, new EcOrganization(), success, failure);
+    };
+    /**
+     *  Retrieves an organization from it's server synchronously, the call
+     *  blocks until it is successful or an error occurs
+     * 
+     *  @param {String} id
+     *                  ID of the organization to retrieve
+     *  @return EcOrganization
+     *  The concept retrieved
+     *  @memberOf EcOrganization
+     *  @method getBlocking
+     *  @static
+     */
+    constructor.getBlocking = function(id) {
+        return EcRepository.getBlockingAs(id, new EcOrganization());
+    };
+    /**
      *  Searches a repository for organizations that match the search query
      * 
      *  @param {EcRepository}          repo Repository to search using the query
@@ -454,33 +375,9 @@ EcOrganization = stjs.extend(EcOrganization, Organization, [], function(construc
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new Organization().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcOrganization();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(new EcOrganization().getFullType())) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcOrganization();
+        }, success, failure, paramObj);
     };
     /**
      *  Adds the given person's id to the employee list

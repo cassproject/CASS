@@ -28,21 +28,10 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (success == null) 
-                return;
-            if (!p1.isA(EcRollupRule.myType)) {
-                if (failure != null) 
-                    failure("Resultant object is not a level.");
-                return;
-            }
-            var c = new EcRollupRule();
-            c.copyFrom(p1);
-            success(c);
-        }, function(p1) {
-            if (failure != null) 
-                failure(p1);
-        });
+        EcRepository.getAs(id, new EcRollupRule(), success, failure);
+    };
+    constructor.getBlocking = function(id) {
+        return EcRepository.getBlockingAs(id, new EcRollupRule());
     };
     /**
      *  Searches for levels with a string query
@@ -57,40 +46,14 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
      *                                          Callback triggered if an error occurs while searching
      *  @param {Object}                         paramObj
      *                                          Search parameters object to pass in
-     *  @param size
-     *  @param start
      *  @memberOf EcRollupRule
      *  @method search
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcRollupRule().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var rule = new EcRollupRule();
-                    if (p1[i].isAny(rule.getTypes())) {
-                        rule.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcRollupRule.myType)) {
-                            var obj = val.decryptIntoObject();
-                            rule.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(rule.id, true);
-                        }
-                    }
-                    ret[i] = rule;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcRollupRule();
+        }, success, failure, paramObj);
     };
     /**
      *  Method for setting a rollup rule name
@@ -253,16 +216,13 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      */
     constructor.searchBySource = function(repo, sourceId, success, failure, paramObj) {
         var query = "";
-        query = "(" + new EcAlignment().getSearchStringByType();
         var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
         if (noVersion == sourceId) {
-            query += " AND (source:\"" + sourceId + "\"))";
+            query += "source:\"" + sourceId + "\"";
         } else {
-            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\"))";
+            query += "source:\"" + sourceId + "\" OR source:\"" + noVersion + "\"";
         }
-        EcRepository.searchAs(repo, query, function() {
-            return new EcAlignment();
-        }, success, failure, paramObj);
+        EcAlignment.search(repo, query, success, failure, paramObj);
     };
     /**
      *  Searches the repository for alignments with one of an array of IDs in the source field
@@ -283,7 +243,7 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      */
     constructor.searchBySources = function(repo, sourceIds, success, failure, paramObj) {
         var query = "";
-        query = "(" + new EcAlignment().getSearchStringByType() + " AND (source:";
+        query = "(source:";
         var noVersions = [];
         for (var i = 0; i < sourceIds.length; i++) {
             var sourceId = sourceIds[i];
@@ -297,31 +257,8 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
             }
             noVersions.push(noVersion);
         }
-        query += "))";
-        var finalNoVersions = noVersions;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if (sourceIds.indexOf((obj)["source"]) == -1 && finalNoVersions.indexOf((obj)["source"]) == -1) {
-                                continue;
-                            }
-                            alignment.copyFrom(obj);
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure);
+        query += ")";
+        EcAlignment.search(repo, query, success, failure, paramObj);
     };
     /**
      *  Searches the repository for alignments with a specific ID in the target field
@@ -342,37 +279,13 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      */
     constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
         var query = "";
-        query = "(" + new EcAlignment().getSearchStringByType();
         var noVersion = EcRemoteLinkedData.trimVersionFromUrl(competencyId);
         if (noVersion == competencyId) {
-            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\"))";
+            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\")";
         } else {
-            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\"))";
+            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\")";
         }
-        query += " OR @encryptedType:\"" + EcAlignment.myType + "\" OR @encryptedType:\"" + EcAlignment.myType.replace(Cass.context + "/", "") + "\")";
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["source"] != competencyId && (obj)["source"] != noVersion && (obj)["target"] != competencyId && (obj)["target"] != noVersion) {
-                                continue;
-                            }
-                            alignment.copyFrom(obj);
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcAlignment.search(repo, query, success, failure, paramObj);
     };
     /**
      *  Setter for alignment name
@@ -481,29 +394,7 @@ EcConceptScheme = stjs.extend(EcConceptScheme, ConceptScheme, [], function(const
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var scheme = new EcConceptScheme();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(scheme.getTypes())) {
-                scheme.copyFrom(p1);
-                if (success != null) 
-                    success(scheme);
-            } else {
-                var msg = "Resultant object is not a concept scheme.";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, function(p1) {
-            if (failure != null) 
-                failure(p1);
-        });
+        EcRepository.getAs(id, new EcConceptScheme(), success, failure);
     };
     /**
      *  Retrieves a concept scheme from the server in a blocking fashion, specified by the ID
@@ -520,22 +411,7 @@ EcConceptScheme = stjs.extend(EcConceptScheme, ConceptScheme, [], function(const
      *  @static
      */
     constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var scheme = new EcConceptScheme();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(scheme.getTypes())) {
-            scheme.copyFrom(p1);
-            return scheme;
-        } else {
-            return null;
-        }
+        return EcRepository.getBlockingAs(id, new EcConceptScheme());
     };
     /**
      *  Searches the repository given for concept schemes using the query passed in
@@ -556,33 +432,9 @@ EcConceptScheme = stjs.extend(EcConceptScheme, ConceptScheme, [], function(const
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcConceptScheme().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var scheme = new EcConceptScheme();
-                    if (p1[i].isAny(scheme.getTypes())) {
-                        scheme.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcConceptScheme.myType)) {
-                            var obj = val.decryptIntoObject();
-                            scheme.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(scheme.id, true);
-                        }
-                    }
-                    ret[i] = scheme;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcConceptScheme();
+        }, success, failure, paramObj);
     };
 }, {template: "Object", hasTopConcept: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
@@ -616,35 +468,7 @@ EcConcept = stjs.extend(EcConcept, Concept, [], function(constructor, prototype)
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (stjs.isInstanceOf(p1.constructor, EcConcept)) 
-                if (success != null) {
-                    success(p1);
-                    return;
-                }
-            var concept = new EcConcept();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(concept.getTypes())) {
-                concept.copyFrom(p1);
-                if (EcRepository.caching) {
-                    (EcRepository.cache)[concept.shortId()] = concept;
-                    (EcRepository.cache)[concept.id] = concept;
-                }
-                if (success != null) 
-                    success(concept);
-            } else {
-                var msg = "Retrieved object was not a concept";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
+        EcRepository.getAs(id, new EcConcept(), success, failure);
     };
     /**
      *  Retrieves a concept from it's server synchronously, the call
@@ -659,24 +483,7 @@ EcConcept = stjs.extend(EcConcept, Concept, [], function(constructor, prototype)
      *  @static
      */
     constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var concept = new EcConcept();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(concept.getTypes())) {
-            concept.copyFrom(p1);
-            return concept;
-        } else {
-            var msg = "Retrieved object was not a concept";
-            console.error(msg);
-            return null;
-        }
+        return EcRepository.getBlockingAs(id, new EcConcept());
     };
     /**
      *  Searches a repository for competencies that match the search query
@@ -696,33 +503,9 @@ EcConcept = stjs.extend(EcConcept, Concept, [], function(constructor, prototype)
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcConcept().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcConcept();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcConcept.myType)) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcConcept();
+        }, success, failure, paramObj);
     };
 }, {template: "Object", topConceptOf: "ConceptScheme", semanticRelation: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
@@ -741,38 +524,15 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         return this.isId((obj).id);
     };
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var assertion = new EcAssertion();
-            if (p1.isAny(assertion.getTypes())) {
-                assertion.copyFrom(p1);
-                if (success != null) 
-                    success(assertion);
-            } else {
-                var msg = "Retrieved object was not an assertion";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
+        EcRepository.getAs(id, new EcAssertion(), success, failure);
+    };
+    constructor.getBlocking = function(id) {
+        return EcRepository.getBlockingAs(id, new EcAssertion());
     };
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = new EcAssertion().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var assertion = new EcAssertion();
-                    assertion.copyFrom(p1[i]);
-                    ret[i] = assertion;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcAssertion();
+        }, success, failure, paramObj);
     };
     prototype.getSubject = function() {
         if (this.subject == null) 
@@ -1495,26 +1255,7 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var level = new EcLevel();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(level.getTypes())) {
-                level.copyFrom(p1);
-                if (success != null) 
-                    success(level);
-            } else {
-                var msg = "Resultant object is not a level.";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
+        EcRepository.getAs(id, new EcLevel(), success, failure);
     };
     /**
      *  Retrieves a level from it's server synchronously, the call
@@ -1529,24 +1270,7 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var level = new EcLevel();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(level.getTypes())) {
-            level.copyFrom(p1);
-            return level;
-        } else {
-            var msg = "Retrieved object was not a level";
-            console.error(msg);
-            return null;
-        }
+        return EcRepository.getBlockingAs(id, new EcLevel());
     };
     /**
      *  Searches for levels with a string query
@@ -1566,33 +1290,9 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcLevel().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var level = new EcLevel();
-                    if (p1[i].isAny(level.getTypes())) {
-                        level.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcLevel.myType)) {
-                            var obj = val.decryptIntoObject();
-                            level.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(level.id, true);
-                        }
-                    }
-                    ret[i] = level;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcLevel();
+        }, success, failure, paramObj);
     };
     /**
      *  Searches for levels using a competency that the results must be related to
@@ -1616,35 +1316,8 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
             failure("No Competency Specified");
             return;
         }
-        var query = "(" + new EcLevel().getSearchStringByType();
-        query += " AND ( competency:\"" + competencyId + "\" OR competency:\"" + EcRemoteLinkedData.trimVersionFromUrl(competencyId) + "\"))";
-        query += " OR @encryptedType:\"" + EcLevel.myType + "\" OR @encryptedType:\"" + EcLevel.myType.replace(Cass.context + "/", "") + "\"";
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var levels = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var level = new EcLevel();
-                    if (p1[i].isAny(level.getTypes())) {
-                        level.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcLevel.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["competency"] != competencyId) {
-                                continue;
-                            }
-                            level.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(level.id, true);
-                        }
-                    }
-                    level.copyFrom(p1[i]);
-                    levels[i] = level;
-                }
-                if (success != null) 
-                    success(levels);
-            }
-        }, failure);
+        var query = "competency:\"" + competencyId + "\" OR competency:\"" + EcRemoteLinkedData.trimVersionFromUrl(competencyId) + "\"";
+        EcLevel.search(repo, competencyId, success, failure, paramObj);
     };
     /**
      *  Adds a relationship between this level and a target level to define
@@ -1892,23 +1565,11 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *  @deprecated
      */
     prototype.relationships = function(repo, eachSuccess, failure, successAll) {
-        repo.search(new EcAlignment().getSearchStringByType() + " AND (source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\")", function(p1) {
-            var a = new EcAlignment();
-            a.copyFrom(p1);
-            if (eachSuccess != null) 
-                eachSuccess(a);
-        }, function(p1) {
-            if (successAll != null) {
-                var rels = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var a = new EcAlignment();
-                    a.copyFrom(p1[i]);
-                    rels[i] = a;
-                }
-                if (successAll != null) 
-                    successAll(rels);
-            }
-        }, failure);
+        EcAlignment.search(repo, "source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\"", function(results) {
+            for (var i = 0; i < results.length; i++) 
+                eachSuccess(results[i]);
+            successAll(results);
+        }, failure, new Object());
     };
     /**
      *  Adds a new level on the server specified for this competency.
@@ -1957,55 +1618,13 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *  @memberOf EcCompetency
      *  @method levels
      */
-    prototype.levels = function(repo, success, failure, successAll) {
-        var query = "(" + new EcLevel().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
-        query += " OR @encryptedType:\"" + EcLevel.myType + "\" OR @encryptedType:\"" + EcLevel.myType.replace(Cass.context + "/", "") + "\"";
-        var competencyId = this.id;
-        var shortId = this.shortId();
-        repo.search(query, function(p1) {
-            if (success != null) {
-                var a = new EcLevel();
-                if (p1.isA(EcLevel.myType)) {
-                    a.copyFrom(p1);
-                } else if (p1.isA(EcEncryptedValue.myType)) {
-                    var val = new EcEncryptedValue();
-                    val.copyFrom(p1);
-                    if (val.isAnEncrypted(EcLevel.myType)) {
-                        var obj = val.decryptIntoObject();
-                        if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
-                            return;
-                        }
-                        a.copyFrom(obj);
-                        EcEncryptedValue.encryptOnSave(a.id, true);
-                    }
-                }
-                success(a);
-            }
-        }, function(p1) {
-            if (successAll != null) {
-                var levels = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var a = new EcLevel();
-                    if (p1[i].isA(EcLevel.myType)) {
-                        a.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcLevel.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
-                                continue;
-                            }
-                            a.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(a.id, true);
-                        }
-                    }
-                    levels[i] = a;
-                }
-                if (successAll != null) 
-                    successAll(levels);
-            }
-        }, failure);
+    prototype.levels = function(repo, eachSuccess, failure, successAll) {
+        var query = "competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"";
+        EcLevel.search(repo, query, function(results) {
+            for (var i = 0; i < results.length; i++) 
+                eachSuccess(results[i]);
+            successAll(results);
+        }, failure, new Object());
     };
     /**
      *  Adds a new rollup rule on the server specified for this competency
@@ -2055,55 +1674,13 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *  @memberOf EcCompetency
      *  @method rollupRules
      */
-    prototype.rollupRules = function(repo, success, failure, successAll) {
-        var query = "(" + new EcRollupRule().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
-        query += " OR @encryptedType:\"" + EcRollupRule.myType + "\" OR @encryptedType:\"" + EcRollupRule.myType.replace(Cass.context + "/", "") + "\"";
-        var competencyId = this.id;
-        var shortId = this.shortId();
-        repo.search(query, function(p1) {
-            if (success != null) {
-                var a = new EcRollupRule();
-                if (p1.isA(EcRollupRule.myType)) {
-                    a.copyFrom(p1);
-                } else if (p1.isA(EcEncryptedValue.myType)) {
-                    var val = new EcEncryptedValue();
-                    val.copyFrom(p1);
-                    if (val.isAnEncrypted(EcRollupRule.myType)) {
-                        var obj = val.decryptIntoObject();
-                        if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
-                            return;
-                        }
-                        a.copyFrom(obj);
-                        EcEncryptedValue.encryptOnSave(a.id, true);
-                    }
-                }
-                success(a);
-            }
-        }, function(p1) {
-            if (successAll != null) {
-                var rollupRules = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var a = new EcRollupRule();
-                    if (p1[i].isA(EcRollupRule.myType)) {
-                        a.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcRollupRule.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
-                                continue;
-                            }
-                            a.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(a.id, true);
-                        }
-                    }
-                    rollupRules[i] = a;
-                }
-                if (successAll != null) 
-                    successAll(rollupRules);
-            }
-        }, failure);
+    prototype.rollupRules = function(repo, eachSuccess, failure, successAll) {
+        var query = "competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"";
+        EcRollupRule.search(repo, query, function(results) {
+            for (var i = 0; i < results.length; i++) 
+                eachSuccess(results[i]);
+            successAll(results);
+        }, failure, new Object());
     };
     /**
      *  Method to set competency scope
@@ -2249,29 +1826,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
      *  @static
      */
     constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var framework = new EcFramework();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(framework.getTypes())) {
-                framework.copyFrom(p1);
-                if (success != null) 
-                    success(framework);
-            } else {
-                var msg = "Resultant object is not a framework.";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, function(p1) {
-            if (failure != null) 
-                failure(p1);
-        });
+        EcRepository.getAs(id, new EcFramework(), success, failure);
     };
     /**
      *  Retrieves a framework from the server in a blocking fashion, specified by the ID
@@ -2288,22 +1843,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
      *  @static
      */
     constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var framework = new EcFramework();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(framework.getTypes())) {
-            framework.copyFrom(p1);
-            return framework;
-        } else {
-            return null;
-        }
+        return EcRepository.getBlockingAs(id, new EcFramework());
     };
     /**
      *  Searches the repository given for frameworks using the query passed in
@@ -2324,33 +1864,9 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
      *  @static
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcFramework().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var framework = new EcFramework();
-                    if (p1[i].isAny(framework.getTypes())) {
-                        framework.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcFramework.myType)) {
-                            var obj = val.decryptIntoObject();
-                            framework.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(framework.id, true);
-                        }
-                    }
-                    ret[i] = framework;
-                }
-                success(ret);
-            }
-        }, failure);
+        EcRepository.searchAs(repo, query, function() {
+            return new EcFramework();
+        }, success, failure, paramObj);
     };
     /**
      *  Adds the competency ID specified to the frameworks list of competency IDs
