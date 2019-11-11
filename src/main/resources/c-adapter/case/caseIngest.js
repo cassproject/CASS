@@ -1,4 +1,5 @@
 var caseToCassSchema = "https://schema.cassproject.org/0.4/case2cass";
+var testCase = false;
 
 var caseInterface = {
     CFDocuments: function () {
@@ -165,8 +166,27 @@ embedCFPackageIntoFramework = function(f,document){
 	return results;
 }
 
+testSuiteCase = function() {
+    var targetUrl = this.params.caseEndpoint;
+    this.targetUrl = targetUrl;
+    caseInterface.CFAssociationGroupings.call(this, this.params.dId);
+    caseInterface.CFConcepts.call(this, this.params.dId);
+    caseInterface.CFDocuments.call(this, this.params.dId);
+    caseInterface.CFItemAssociations.call(this, this.params.dId);
+    caseInterface.CFItemTypes.call(this, this.params.dId);
+    caseInterface.CFItems.call(this, this.params.dId);
+    caseInterface.CFLicenses.call(this, this.params.dId);
+    caseInterface.CFPackages.call(this, this.params.dId);
+    caseInterface.CFRubrics.call(this, this.params.dId);
+    caseInterface.CFSubjects.call(this, this.params.dId);
+    caseInterface.CFAssociations.call(this, this.params.dId);
+}
+
 var cassContext = null;
 ingestCase = function () {
+    if (testCase == true) {
+        return testSuiteCase.call(this);
+    }
     cassContext = JSON.stringify(JSON.parse(httpGet("https://schema.cassproject.org/0.4/",true,{"Accept":"application/json"}))["@context"]);
     var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
 
@@ -201,4 +221,13 @@ ingestCase = function () {
     }
     return JSON.stringify(dx, null, 2);
 }
+
+getDocuments = function () {
+    var url = this.params.url;
+    url += "ims/case/v1p0/CFDocuments";
+    var results = httpGet(url,true,{"Accept":"application/json"});
+    return JSON.stringify(results);
+}
+
 bindWebService("/ims/case/harvest", ingestCase);
+bindWebService("/ims/case/getDocs", getDocuments);
