@@ -171,7 +171,7 @@ testSuiteCase = function() {
     this.targetUrl = targetUrl;
     caseInterface.CFAssociationGroupings.call(this, this.params.dId);
     caseInterface.CFConcepts.call(this, this.params.dId);
-    caseInterface.CFDocuments.call(this, this.params.dId);
+    caseInterface.CFDocument.call(this, this.params.dId);
     caseInterface.CFItemAssociations.call(this, this.params.dId);
     caseInterface.CFItemTypes.call(this, this.params.dId);
     caseInterface.CFItems.call(this, this.params.dId);
