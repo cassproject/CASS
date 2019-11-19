@@ -1976,6 +1976,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if ((paramObj)["track_scores"] != null) {
             paramProps["track_scores"] = (paramObj)["track_scores"];
         }
+        if ((paramObj)["index_hint"] != null) {
+            paramProps["index_hint"] = (paramObj)["index_hint"];
+        }
         if ((paramObj)["ownership"] != null) {
             var ownership = (paramObj)["ownership"];
             if (!query.startsWith("(") || !query.endsWith(")")) {

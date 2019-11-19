@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.28</em>
+            <em>API Docs for: 1.2.29</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -2820,6 +2820,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         if ((paramObj)[&quot;track_scores&quot;] != null) {
             paramProps[&quot;track_scores&quot;] = (paramObj)[&quot;track_scores&quot;];
+        }
+        if ((paramObj)[&quot;index_hint&quot;] != null) {
+            paramProps[&quot;index_hint&quot;] = (paramObj)[&quot;index_hint&quot;];
         }
         if ((paramObj)[&quot;ownership&quot;] != null) {
             var ownership = (paramObj)[&quot;ownership&quot;];
