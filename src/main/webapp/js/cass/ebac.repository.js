@@ -1586,10 +1586,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var targetUrl;
         if (EcRepository.shouldTryUrl(data.id)) 
-            targetUrl = data.shortId();
-         else {
+            targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + data.getDottedType() + "/" + data.getGuid());
+         else 
             targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.shortId()));
-        }
         var me = this;
         if (data.owner != null && data.owner.length > 0) {
             if (EcRemote.async) {

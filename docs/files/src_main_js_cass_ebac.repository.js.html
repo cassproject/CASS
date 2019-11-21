@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.29</em>
+            <em>API Docs for: 1.2.30</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -2431,10 +2431,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var targetUrl;
         if (EcRepository.shouldTryUrl(data.id)) 
-            targetUrl = data.shortId();
-         else {
+            targetUrl = EcRemote.urlAppend(this.selectedServer, &quot;data/&quot; + data.getDottedType() + &quot;/&quot; + data.getGuid());
+         else 
             targetUrl = EcRemote.urlAppend(this.selectedServer, &quot;data/&quot; + data.getDottedType() + &quot;/&quot; + EcCrypto.md5(data.shortId()));
-        }
         var me = this;
         if (data.owner != null &amp;&amp; data.owner.length &gt; 0) {
             if (EcRemote.async) {
