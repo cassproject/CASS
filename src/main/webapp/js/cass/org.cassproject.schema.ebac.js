@@ -23,6 +23,14 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      */
     prototype.encryptedType = null;
     /**
+     *  Optional Hint used to aid in search.
+     *  Displays the context of the encrypted object.
+     * 
+     *  @property encryptedContext
+     *  @type string
+     */
+    prototype.encryptedContext = null;
+    /**
      *  Base-64 encoded, AES encrypted form of the encrypted object (or string).
      * 
      *  @property payload

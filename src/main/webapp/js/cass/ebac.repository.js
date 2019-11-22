@@ -60,6 +60,38 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
     };
     /**
+     *  Gets the fully qualified type name, as JSON-LD allows the "namespace" of
+     *  the type to be defined in @context.
+     * 
+     *  @return {string} Fully qualified type name.
+     *  @method getEncryptedFullType
+     */
+    prototype.getEncryptedFullType = function() {
+        if (this.encryptedContext == null) 
+            return this.encryptedType;
+        if (this.encryptedType.indexOf("http") != -1) 
+            return this.encryptedType;
+        var computedType = this.encryptedContext;
+        if (EcObject.isObject(this.encryptedContext)) {
+            var typeParts = this.encryptedType.split(":");
+            if (typeParts.length == 2) {
+                computedType = (this.encryptedContext)[typeParts[0]];
+                if (!computedType.endsWith("/")) 
+                    computedType += "/";
+                computedType += typeParts[1];
+                return computedType;
+            } else if ((this.encryptedContext)["@vocab"] != null) 
+                computedType = (this.encryptedContext)["@vocab"];
+        }
+        if (!computedType.endsWith("/")) 
+            computedType += "/";
+        computedType += this.encryptedType;
+        return computedType;
+    };
+    prototype.getEncryptedDottedType = function() {
+        return this.getEncryptedFullType().replace("http://", "").replace("https://", "").replaceAll("/", ".");
+    };
+    /**
      *  Converts a piece of remote linked data to an encrypted value
      * 
      *  @param {EcRemoteLinkedData} d Data to encrypt
@@ -75,6 +107,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         var v = new EcEncryptedValue();
         if (hideType == null || !hideType) {
             v.encryptedType = d.type;
+            v.encryptedContext = d.context;
         }
         var newIv = EcAes.newIv(16);
         var newSecret = EcAes.newIv(16);
@@ -2410,7 +2443,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             paramObj = new Object();
         var template = (factory());
         var queryAdd = template.getSearchStringByType();
-        (paramObj)["index_hint"] = "*" + template.type.toLowerCase();
+        (paramObj)["index_hint"] = "*" + template.type.toLowerCase() + ",*encryptedvalue";
         if (query == null || query == "") 
             query = queryAdd;
          else 

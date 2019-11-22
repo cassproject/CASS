@@ -18,7 +18,7 @@ function(context, type) {
     this.setContextAndType(context, type);
 };
 EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototype) {
-    constructor.atProperties = ["id", "type", "schema", "context", "signature", "graph", "owner", "reader", "encryptedType"];
+    constructor.atProperties = ["id", "type", "schema", "context", "signature", "graph", "owner", "reader", "encryptedType", "encryptedContext"];
     /**
      *  JSON-LD @type field.
      * 

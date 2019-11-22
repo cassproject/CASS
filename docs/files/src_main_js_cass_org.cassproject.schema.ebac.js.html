@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.30</em>
+            <em>API Docs for: 1.2.31</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -867,6 +867,14 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  @type string
      */
     prototype.encryptedType = null;
+    /**
+     *  Optional Hint used to aid in search.
+     *  Displays the context of the encrypted object.
+     * 
+     *  @property encryptedContext
+     *  @type string
+     */
+    prototype.encryptedContext = null;
     /**
      *  Base-64 encoded, AES encrypted form of the encrypted object (or string).
      * 

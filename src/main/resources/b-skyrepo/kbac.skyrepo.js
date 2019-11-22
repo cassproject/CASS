@@ -19,12 +19,18 @@ var signature = function() {
     return "@signature";
 };
 var getTypeFromObject = function(o) {
+    var encryptedType = (o)["@encryptedType"];
+    var encryptedContext = (o)["@encryptedContext"];
     var type = (o)["@type"];
     var context = (o)["@context"];
     if (type == null) 
         type = (o)["type"];
     if (context == null) 
         context = (o)["context"];
+    if (encryptedType != null) 
+        type = encryptedType;
+    if (encryptedContext != null) 
+        context = encryptedContext;
     if (type == null) 
         return null;
     if (type.indexOf("http") != -1) 
