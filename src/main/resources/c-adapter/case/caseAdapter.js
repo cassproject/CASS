@@ -360,8 +360,8 @@ cfPackages = function (f) {
 
     EcRepository.cache = {};
     var result = {};
-    var f2 = result;
     f = cfGetFramework.call(this, f);
+    repo.precache(f.competency.concat(f.relation), function (results) {});
 
     result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     result.CFDocument = JSON.parse(cfDocuments.call(this, f));
@@ -389,7 +389,7 @@ cfPackages = function (f) {
             }
         }
     result.CFDefinitions = {CFConcepts: [], CFSubject: [], CFLicenses: [], CFItemTypes: [], CFAssociationGroupings: []};
-    f2 = cfClean(f2);
+    delete result["@context"];
     return JSON.stringify(result, null, 2);
 }
 /*
