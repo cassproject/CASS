@@ -529,6 +529,10 @@ function importJsonLdGraph(graph, context) {
                 lang = objToSave["dcterms:language"];
             }
 
+            if (objToSave["skos:hasTopConcept"] != null && !EcArray.isArray(objToSave["skos:hasTopConcept"])) {
+                objToSave["skos:hasTopConcept"] = [objToSave["skos:hasTopConcept"]];
+            }
+
             if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
                 var timestamp;
                 var date;
@@ -557,25 +561,25 @@ function importJsonLdGraph(graph, context) {
             if (owner != null)
                 objToSave.addOwner(EcPk.fromPem(owner));
 
-            if (objToSave["skos:narrower"] != null & !EcArray.isArray(objToSave["skos:narrower"])) {
+            if (objToSave["skos:narrower"] != null && !EcArray.isArray(objToSave["skos:narrower"])) {
                 objToSave["skos:narrower"] = [objToSave["skos:narrower"]];
             }
-            if (objToSave["skos:broader"] != null & !EcArray.isArray(objToSave["skos:broader"])) {
+            if (objToSave["skos:broader"] != null && !EcArray.isArray(objToSave["skos:broader"])) {
                 objToSave["skos:broader"] = [objToSave["skos:broader"]];
             }
-            if (objToSave["skos:broadMatch"] != null & !EcArray.isArray(objToSave["skos:broadMatch"])) {
+            if (objToSave["skos:broadMatch"] != null && !EcArray.isArray(objToSave["skos:broadMatch"])) {
                 objToSave["skos:broadMatch"] = [objToSave["skos:broadMatch"]];
             }
-            if (objToSave["skos:closeMatch"] != null & !EcArray.isArray(objToSave["skos:closeMatch"])) {
+            if (objToSave["skos:closeMatch"] != null && !EcArray.isArray(objToSave["skos:closeMatch"])) {
                 objToSave["skos:closeMatch"] = [objToSave["skos:closeMatch"]];
             }
-            if (objToSave["skos:exactMatch"] != null & !EcArray.isArray(objToSave["skos:exactMatch"])) {
+            if (objToSave["skos:exactMatch"] != null && !EcArray.isArray(objToSave["skos:exactMatch"])) {
                 objToSave["skos:exactMatch"] = [objToSave["skos:exactMatch"]];
             }
-            if (objToSave["skos:narrowMatch"] != null & !EcArray.isArray(objToSave["skos:narrowMatch"])) {
+            if (objToSave["skos:narrowMatch"] != null && !EcArray.isArray(objToSave["skos:narrowMatch"])) {
                 objToSave["skos:narrowMatch"] = [objToSave["skos:narrowMatch"]];
             }
-            if (objToSave["skos:related"] != null & !EcArray.isArray(objToSave["skos:related"])) {
+            if (objToSave["skos:related"] != null && !EcArray.isArray(objToSave["skos:related"])) {
                 objToSave["skos:related"] = [objToSave["skos:related"]];
             }
 
