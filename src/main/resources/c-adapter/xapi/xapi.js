@@ -45,7 +45,7 @@ var personFromEmail = function (mbox) {
     if (mbox == null) return null;
     var person = null;
     mbox = mbox.replace("mailto:", "");
-    if (mbox.indexOf("@") != null)
+    if (mbox.indexOf("@") != -1)
         repo.search("@type:Person AND email:\"" + mbox + "\"", function (person) {}, function (people) {
             if (people.length == 1)
                 person = people[0];
