@@ -119,7 +119,7 @@ var xapiStatement = function (s) {
     var alreadyAligned = {};
     for (var i = 0; i < alignedCompetencies.length; i++) {
         var a = new EcAssertion();
-        a.assignId(repo.selectedServer, s.id);
+        a.assignId(repo.selectedServer, EcCrypto.md5(s.id+alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
         a.addOwner(authorityPk);
         a.setSubject(actorPk);
