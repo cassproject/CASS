@@ -464,7 +464,7 @@ function asnFrameworkToCass() {
  * @param context
  */
 function importJsonLdGraph(graph, context) {
-
+    EcRemote.async = false;
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
     var skosIdentity = new EcIdentity();
@@ -474,12 +474,13 @@ function importJsonLdGraph(graph, context) {
 
     var conceptSchemeGuid;
     var lang = null;
+    var toSave = [];
 
     for (var idx in graph) {
         var graphObj = graph[idx];
 
         if (context != undefined) {
-            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json" 
+            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json"
                 || context == "https://credreg.net/ctdlasn/schema/context/json" || context == "https://credreg.net/ctdl/schema/context/json") {
                 context = "https://schema.cassproject.org/0.4/ceasn2cassConcepts";
             }
@@ -550,8 +551,7 @@ function importJsonLdGraph(graph, context) {
                 }
                 objToSave["schema:dateCreated"] = date;
             }
-
-            repo.saveTo(objToSave, print, print);
+            toSave.push(objToSave);
         }
         else if (type == "Concept") {
             objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
@@ -601,9 +601,10 @@ function importJsonLdGraph(graph, context) {
                 objToSave["schema:dateCreated"] = date;
             }
 
-            repo.saveTo(objToSave, print, print);
+            toSave.push(objToSave);
         }
     }
+    repo.multiput(toSave, function() {}, console.error);
     if (conceptSchemeGuid) {
         return repoEndpoint() + "data/" + conceptSchemeGuid;
     }
