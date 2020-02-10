@@ -522,6 +522,7 @@ function cassConceptSchemeAsCeasn(framework) {
     cs.copyFrom(framework);
     if (cs["skos:hasTopConcept"] == null) {
         cs["skos:hasTopConcept"] = [];
+        repo.precache(cs["skos:hasTopConcept"], function() {});
     }
 
     var concepts = {};
@@ -533,6 +534,7 @@ function cassConceptSchemeAsCeasn(framework) {
             concepts[cs["skos:hasTopConcept"][i]] = concepts[c.id] = c;
             if (c["skos:narrower"]) {
                 function getSubConcepts(c) {
+                    repo.precache(c["skos:narrower"], function() {});
                     for (var j = 0; j < c["skos:narrower"].length; j++) {
                         var subC = EcConcept.getBlocking(c["skos:narrower"][j]);
                         if (subC != null) {
