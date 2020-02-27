@@ -1,7 +1,7 @@
 variables:
    DEV_USERNAME: deployment
 
-image: openjdk:8
+image: maven:latest
 
 cache:
     paths:
