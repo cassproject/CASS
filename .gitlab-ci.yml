@@ -1,0 +1,102 @@
+variables:
+   DEV_USERNAME: deployment
+
+image: openjdk:8
+
+cache:
+    paths:
+    # - node_modules/
+
+stages:
+   - build
+   - deploy
+
+### BUILDS
+
+
+buildDev:
+  stage: build
+  only:
+    - dev
+  before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+  script:
+  # - LAST_TAG=$(git describe --tags)
+  - mvn install
+  artifacts:
+    paths:
+    - ./target/cassDev.war
+
+
+    
+buildQA:
+  stage: build
+  only:
+    - qa
+  before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+  script:
+  # - LAST_TAG=$(git describe --tags)
+  - mvn install
+  artifacts:
+    paths:
+    - ./target/cassQA.war
+
+    
+### DEPLOYMENTS
+
+
+
+deployDev:
+  stage: deploy
+  only:
+    - dev
+  environment:
+    name: dev
+    url: https://dev.api.cassproject.org
+  script:
+   - apt-get update -y
+   - apt-get install openssh-client -y
+   - 'which ssh-agent || apt-get install openssh-client -y'
+
+   - eval $(ssh-agent -s)
+
+   - mkdir -p ~/.ssh
+   - chmod 700 ~/.ssh
+   - echo "$DEV_KNOWN_HOSTS" > ~/.ssh/known_hosts
+   - chmod 644 ~/.ssh/known_hosts
+
+   - chmod 600 "$DEV_PRIVATE_KEY"
+   - ssh-add "$DEV_PRIVATE_KEY" > /dev/null
+
+   ## Build commands
+   - scp -P22 -r ./target/cassDev.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassDev/
+
+
+   
+deployQA:
+  stage: deploy
+  only:
+    - qa
+  environment:
+    name: qa
+    url: https://qa.api.cassproject.org
+  script:
+   - apt-get update -y
+   - apt-get install openssh-client -y
+   - 'which ssh-agent || apt-get install openssh-client -y'
+
+   - eval $(ssh-agent -s)
+
+   - mkdir -p ~/.ssh
+   - chmod 700 ~/.ssh
+   - echo "$DEV_KNOWN_HOSTS" > ~/.ssh/known_hosts
+   - chmod 644 ~/.ssh/known_hosts
+
+   - chmod 600 "$DEV_PRIVATE_KEY"
+   - ssh-add "$DEV_PRIVATE_KEY" > /dev/null
+
+   ## Build commands
+   - scp -P22 -r ./target/cassQA.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassQA/
