@@ -59,6 +59,8 @@ deployDev:
   environment:
     name: dev
     url: https://dev.api.cassproject.org
+  before_script:
+   - apt-key adv --keyserver subkeys.pgp.net --recv-keys AA8E81B4331F7F50
   script:
    - apt-get update -y
    - apt-get install openssh-client -y
@@ -86,6 +88,8 @@ deployQA:
   environment:
     name: qa
     url: https://qa.api.cassproject.org
+  before_script:
+   - apt-key adv --keyserver subkeys.pgp.net --recv-keys AA8E81B4331F7F50
   script:
    - apt-get update -y
    - apt-get install openssh-client -y
