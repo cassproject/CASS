@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -4,11 +4,11 @@
 	<groupId>org.cassproject</groupId>
 	<artifactId>cass</artifactId>
 	<packaging>war</packaging>
-	<version>1.2.32</version>
+	<version>1.2.33</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>2.11.5</ec-version>
+		<ec-version>2.11.6</ec-version>
 		<ew-version>5.16.2</ew-version>
 	</properties>
 

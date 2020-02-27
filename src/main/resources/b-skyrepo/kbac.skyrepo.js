@@ -226,11 +226,6 @@ var putPermanentBaseUrl = function(o, id, version, type) {
 };
 var getUrl = function(index, id, version, type) {
     var typeFromObj = inferTypeWithoutObj(type);
-    var versionPart = null;
-    if (version == null) {
-        versionPart = "";
-    } else 
-        versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external";
     var url = elasticEndpoint;
     url += "/" + index;
     if (index == "permanent") 
@@ -417,7 +412,6 @@ var skyrepoGetPermanent = function(id, version, type) {
     return result;
 };
 var skyrepoGetInternal = function(id, version, type) {
-    var versionRetrievalObject = null;
     var result = skyrepoGetPermanent(id, version, type);
     if (result == null) 
         return null;
@@ -427,10 +421,7 @@ var skyrepoGetInternal = function(id, version, type) {
         return JSON.parse(((result)["_source"])["data"]);
     if (skyrepoDebug) 
         console.log("Failed to find " + type + "/" + id + "/" + version + " -- trying degraded form from search index.");
-    if (versionRetrievalObject != null) 
-        result = versionRetrievalObject;
-     else 
-        result = (skyrepoGetIndex).call(this, id, version, type, null);
+    result = (skyrepoGetIndex).call(this, id, version, type, null);
     if (result == null) 
         return null;
     if ((result)["error"] != null) 
@@ -694,7 +685,7 @@ var endpointData = function() {
         if ((searchParams)["track_scores"] != null) 
             track_scores = (searchParams)["track_scores"];
         if ((searchParams)["index_hint"] != null) 
-            track_scores = (searchParams)["index_hint"];
+            index_hint = (searchParams)["index_hint"];
     }
     if (size == null) 
         size = 50;
