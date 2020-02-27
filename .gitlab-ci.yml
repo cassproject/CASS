@@ -1,6 +1,7 @@
 variables:
-   DEV_USERNAME: deployment
-   MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  DEV_USERNAME: deployment
+  QA_USERNAME: deployment
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
 #   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
 
@@ -75,7 +76,7 @@ deployDev:
    - ssh-add "$DEV_PRIVATE_KEY" > /dev/null
 
    ## Build commands
-   - scp -P22 -r ./target/cass.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassDev/cassDev.war
+   - scp -P22 -r ./target/cass.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/
 
 
    
@@ -95,11 +96,11 @@ deployQA:
 
    - mkdir -p ~/.ssh
    - chmod 700 ~/.ssh
-   - echo "$DEV_KNOWN_HOSTS" > ~/.ssh/known_hosts
+   - echo "$QA_KNOWN_HOSTS" > ~/.ssh/known_hosts
    - chmod 644 ~/.ssh/known_hosts
 
-   - chmod 600 "$DEV_PRIVATE_KEY"
-   - ssh-add "$DEV_PRIVATE_KEY" > /dev/null
+   - chmod 600 "$QA_PRIVATE_KEY"
+   - ssh-add "$QA_PRIVATE_KEY" > /dev/null
 
    ## Build commands
-   - scp -P22 -r ./target/cass.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassQA/cassQA.war
+   - scp -P22 -r ./target/cass.war $QA_USERNAME@$QA_SERVER_IP:/srv/deployer/
