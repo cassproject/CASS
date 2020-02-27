@@ -29,7 +29,7 @@ buildDev:
   - mvn install
   artifacts:
     paths:
-    - ./target/cassDev.war
+    - ./target/cass.war
 
 
     
@@ -45,7 +45,7 @@ buildQA:
   - mvn install
   artifacts:
     paths:
-    - ./target/cassQA.war
+    - ./target/cass.war
 
     
 ### DEPLOYMENTS
@@ -75,7 +75,7 @@ deployDev:
    - ssh-add "$DEV_PRIVATE_KEY" > /dev/null
 
    ## Build commands
-   - scp -P22 -r ./target/cassDev.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassDev/
+   - scp -P22 -r ./target/cass.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassDev/cassDev.war
 
 
    
@@ -102,4 +102,4 @@ deployQA:
    - ssh-add "$DEV_PRIVATE_KEY" > /dev/null
 
    ## Build commands
-   - scp -P22 -r ./target/cassQA.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassQA/
+   - scp -P22 -r ./target/cass.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/cassQA/cassQA.war
