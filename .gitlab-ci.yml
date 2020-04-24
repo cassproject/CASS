@@ -6,7 +6,7 @@ variables:
 #   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
 
-image: maven:latest
+image: maven:3.6.2
 
 cache:
     paths:
@@ -24,9 +24,9 @@ buildDev:
   only:
     - dev
   before_script:
-  script:
   - git submodule sync --recursive
-  - git submodule update --init --recursive
+  - git submodule update --init --recursive    
+  script:
   # - LAST_TAG=$(git describe --tags)
   - mvn install
   artifacts:
