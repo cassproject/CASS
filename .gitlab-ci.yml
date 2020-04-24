@@ -1,16 +1,17 @@
 variables:
   DEV_USERNAME: deployment
   QA_USERNAME: deployment
+  T3_USERNAME: deploymentcass
   MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
 #   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
 
-image: maven:latest
+image: maven:3.6.2
 
 cache:
     paths:
     - .m2/repository
-  
+
 stages:
    - build
    - deploy
@@ -23,8 +24,8 @@ buildDev:
   only:
     - dev
   before_script:
-    - git submodule sync --recursive
-    - git submodule update --init --recursive
+  - git submodule sync --recursive
+  - git submodule update --init --recursive    
   script:
   # - LAST_TAG=$(git describe --tags)
   - mvn install
@@ -33,7 +34,7 @@ buildDev:
     - ./target/cass.war
 
 
-    
+
 buildQA:
   stage: build
   only:
@@ -48,7 +49,21 @@ buildQA:
     paths:
     - ./target/cass.war
 
-    
+
+buildT3:
+  stage: build
+  only:
+    - t3
+  before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+  script:
+  # - LAST_TAG=$(git describe --tags)
+  - mvn install
+  artifacts:
+    paths:
+    - ./target/cass.war
+
 ### DEPLOYMENTS
 
 
@@ -79,7 +94,7 @@ deployDev:
    - scp -P22 -r ./target/cass.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/
 
 
-   
+
 deployQA:
   stage: deploy
   only:
@@ -104,3 +119,29 @@ deployQA:
 
    ## Build commands
    - scp -P22 -r ./target/cass.war $QA_USERNAME@$QA_SERVER_IP:/srv/deployer/
+
+
+deployT3:
+  stage: deploy
+  only:
+    - t3
+  environment:
+    name: t3
+    url: https://t3.api.cassproject.org
+  script:
+   - apt-get update -y
+   - apt-get install openssh-client -y
+   - 'which ssh-agent || apt-get install openssh-client -y'
+
+   - eval $(ssh-agent -s)
+
+   - mkdir -p ~/.ssh
+   - chmod 700 ~/.ssh
+   - echo "$T3_KNOWN_HOSTS" > ~/.ssh/known_hosts
+   - chmod 644 ~/.ssh/known_hosts
+
+   - chmod 600 "$T3_PRIVATE_KEY"
+   - ssh-add "$T3_PRIVATE_KEY" > /dev/null
+
+   ## Build commands
+   - scp -P22 -r ./target/cass.war $T3_USERNAME@$T3_SERVER_IP:/srv/deployer/
