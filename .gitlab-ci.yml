@@ -24,7 +24,6 @@ buildDev:
   only:
     - dev
   before_script:
-    - apt-get update && apt-get install -y git
     - git submodule sync --recursive
     - git submodule update --init --recursive
   script:
@@ -41,7 +40,6 @@ buildQA:
   only:
     - qa
   before_script:
-    - apt-get update && apt-get install -y git
     - git submodule sync --recursive
     - git submodule update --init --recursive
   script:
@@ -57,7 +55,6 @@ buildT3:
   only:
     - t3
   before_script:
-    - apt-get update && apt-get install -y git
     - git submodule sync --recursive
     - git submodule update --init --recursive
   script:
