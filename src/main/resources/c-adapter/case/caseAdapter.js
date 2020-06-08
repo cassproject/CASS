@@ -44,7 +44,7 @@ cfGetFramework = function (f) {
 };
 var cfGetContext = function () {
     if (this.cfContext == null)
-        this.cfContext = JSON.stringify(httpGet("http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"));
+        this.cfContext = JSON.stringify(httpGet("https://schema.cassproject.org/imscasev1p0_context_v1p0.jsonld"));
     return this.cfContext;
 }
 cfGetCompetency = function (c) {
@@ -247,7 +247,7 @@ cfItems = function (f, fw) {
     f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
-        var parent = skyrepoSearch.call(this,"competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\""); 
+        var parent = skyrepoSearch.call(this,"competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
         t = parent[0];
@@ -361,7 +361,14 @@ cfPackages = function (f) {
     EcRepository.cache = {};
     var result = {};
     f = cfGetFramework.call(this, f);
-    repo.precache(f.competency.concat(f.relation), function (results) {});
+    var toPrecache = [];
+    if (f.competency) {
+        toPrecache = toPrecache.concat(f.competency);
+    }
+    if (f.relation) {
+        toPrecache = toPrecache.concat(f.relation);
+    }
+    repo.precache(toPrecache, function (results) {});
 
     result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     result.CFDocument = JSON.parse(cfDocuments.call(this, f));
