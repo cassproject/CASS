@@ -438,6 +438,7 @@ var skyrepoGet = function(parseParams) {
         (parseParams)["id"] = this.params.id;
         (parseParams)["type"] = this.params.type;
         (parseParams)["version"] = this.params.version;
+        (parseParams)["versions"] = this.params.versions;
     }
     if (skyrepoDebug) 
         console.log(JSON.stringify(parseParams));
@@ -446,9 +447,10 @@ var skyrepoGet = function(parseParams) {
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
-    return (skyrepoGetParsed).call(this, id, version, type, null);
+    var versions = (parseParams)["versions"];
+    return (skyrepoGetParsed).call(this, id, version, type, null, versions);
 };
-var skyrepoGetParsed = function(id, version, type) {
+var skyrepoGetParsed = function(id, version, type, versions) {
     var result = (skyrepoGetInternal).call(this, id, version, type, null);
     if (result == null) 
         return null;
@@ -459,6 +461,7 @@ var skyrepoGetParsed = function(id, version, type) {
         if (ex.getMessage() != "Signature Violation") 
              throw ex;
     }
+    if (versions == "true") {}
     if (filtered == null) 
         return null;
     if (EcObject.keys(filtered).length == 0) 
@@ -669,6 +672,7 @@ var endpointData = function() {
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
     var index_hint = this.params.index_hint;
+    var versions = this.params.versions;
     var searchParams = (fileFromDatastream).call(this, "searchParams", null);
     if (searchParams != null) {
         searchParams = fileToString(searchParams);
@@ -686,6 +690,8 @@ var endpointData = function() {
             track_scores = (searchParams)["track_scores"];
         if ((searchParams)["index_hint"] != null) 
             index_hint = (searchParams)["index_hint"];
+        if ((searchParams)["versions"] != null) 
+            versions = (searchParams)["versions"];
     }
     if (size == null) 
         size = 50;
@@ -712,7 +718,7 @@ var endpointData = function() {
         var o = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
         if (o == null || o == "") {
             (beforeGet).call(this);
-            o = (skyrepoGetParsed).call(this, id, version, type, null);
+            o = (skyrepoGetParsed).call(this, id, version, type, null, versions);
             if (o == null) 
                 error("Object not found or you did not supply sufficient permissions to access the object.", 404);
             var expand = this.params.expand != null;
@@ -724,7 +730,7 @@ var endpointData = function() {
         return null;
     } else if (methodType == "GET") {
         (beforeGet).call(this);
-        var o = (skyrepoGetParsed).call(this, id, version, type, null);
+        var o = (skyrepoGetParsed).call(this, id, version, type, null, versions);
         if (o == null) 
             error("Object not found or you did not supply sufficient permissions to access the object.", 404);
         var expand = this.params.expand != null;
@@ -821,7 +827,7 @@ var endpointSingleGet = function() {
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
-    var o = (skyrepoGetParsed).call(this, id, version, type, null);
+    var o = (skyrepoGetParsed).call(this, id, version, type, null, null);
     if (o != null) 
         return o;
     return null;

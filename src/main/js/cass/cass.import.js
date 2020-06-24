@@ -614,10 +614,10 @@ TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constr
         var competencies = new Array();
         var alignments = new Array();
         for (var i = 0; i < lines.length; i++) 
-            TabStructuredImport.parseLinesIntoHierarchy(lines, competencies, alignments, i, serverUrl, hashNameForId);
+            TabStructuredImport.parseLinesIntoHierarchy(lines, competencies, alignments, i, serverUrl, hashNameForId, repo);
         success(competencies, alignments);
     };
-    constructor.parseLinesIntoHierarchy = function(lines, competencies, alignments, index, serverUrl, hashNameForId) {
+    constructor.parseLinesIntoHierarchy = function(lines, competencies, alignments, index, serverUrl, hashNameForId, repo) {
         var parentI = -1;
         for (var i = index - 1; i >= 0; i--) {
             if (TabStructuredImport.tabs(lines[i]) < TabStructuredImport.tabs(lines[index])) {
@@ -636,6 +636,8 @@ TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constr
             c = new EcCompetency();
             if (hashNameForId) 
                 c.assignId(serverUrl, EcCrypto.md5(lines[index].trim()));
+             else if (serverUrl != repo.selectedServer) 
+                c.generateShortId(serverUrl);
              else 
                 c.generateId(serverUrl);
             c.setName(lines[index]);
@@ -651,7 +653,10 @@ TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constr
             }
             if (parent != null) {
                 var a = new EcAlignment();
-                a.generateId(serverUrl);
+                if (serverUrl != repo.selectedServer) 
+                    a.generateShortId(serverUrl);
+                 else 
+                    a.generateId(serverUrl);
                 a.relationType = EcAlignment.NARROWS;
                 a.source = c.shortId();
                 a.target = parent.shortId();

@@ -849,6 +849,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                         if (failure != null) 
                             failure(xhrx.responseText);
             };
+            xhr.onerror = function(e) {
+                if (failure != null) {
+                    failure(null);
+                }
+            };
         }
         if (xhr != null) {
             if (EcRemote.async) 

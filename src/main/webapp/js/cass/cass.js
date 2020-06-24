@@ -31595,6 +31595,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                         if (failure != null) 
                             failure(xhrx.responseText);
             };
+            xhr.onerror = function(e) {
+                if (failure != null) {
+                    failure(null);
+                }
+            };
         }
         if (xhr != null) {
             if (EcRemote.async) 
@@ -59361,6 +59366,125 @@ EcQuiz = stjs.extend(EcQuiz, CreativeWork, [], function(constructor, prototype) 
         }, success, failure, paramObj);
     };
 }, {question: {name: "Array", arguments: [null]}, about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+var EcComment = function() {
+    Comment.call(this);
+};
+EcComment = stjs.extend(EcComment, Comment, [], function(constructor, prototype) {
+    /**
+     *  Retrieves a comment from it's server asynchronously
+     * 
+     *  @param {String}            id
+     *                             ID of the comment to retrieve from the server
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after retrieving the comment,
+     *                             returns the comment retrieved
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error retrieving comment
+     *  @memberOf EcComment
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.getAs(id, new EcComment(), success, failure);
+    };
+    /**
+     *  Retrieves an comment from it's server synchronously, the call
+     *  blocks until it is successful or an error occurs
+     * 
+     *  @param {String} id
+     *                  ID of the comment to retrieve
+     *  @return EcComment
+     *  The concept retrieved
+     *  @memberOf EcComment
+     *  @method getBlocking
+     *  @static
+     */
+    constructor.getBlocking = function(id) {
+        return EcRepository.getBlockingAs(id, new EcComment());
+    };
+    /**
+     *  Searches a repository for comments that match the search query
+     * 
+     *  @param {EcRepository}                repo Repository to search using the query
+     *  @param {String}                      query Query string to pass to the search web service
+     *  @param {Callback1<Array<EcComment>>  success Callback triggered after
+     *                                       completing the search, returns the results
+     *  @param {Callback1<String>}           failure Callback triggered if error searching
+     *  @param {Object}                      paramObj Parameter object for search
+     *  @memberOf EcComment
+     *  @method search
+     *  @static
+     */
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        EcRepository.searchAs(repo, query, function() {
+            return new EcComment();
+        }, success, failure, paramObj);
+    };
+    /**
+     *  Sets the comment's subject as follows:
+     *   Comment.isBasedOn: framework.shortId to provide a framework context to the comment
+     *   Comment.about: aboutObj.shortId to provide an about/subject to the comment
+     * 
+     *  @param {EcFramework}         framework Framework which contains the id to set to the comment's isBasedOn
+     *  @param {EcRemoteLinkedData}  aboutObj Object which contains the id to set to the comment's about
+     *  @method setSubject
+     */
+    prototype.setSubject = function(framework, aboutObj) {
+        if (framework != null) {
+            (this)["isBasedOn"] = framework.shortId();
+        }
+        if (aboutObj != null) {
+            (this)["about"] = aboutObj.shortId();
+        }
+    };
+    /**
+     *  Sets the comment's subject as follows:
+     *   Comment.isBasedOn: frameworkId to provide a framework context to the comment
+     *   Comment.about: aboutId to provide an about/subject to the comment
+     * 
+     *  @param {String}  frameworkId Framework ID to set to the comment's isBasedOn
+     *  @param {String}  aboutId Object ID to set to the comment's about
+     *  @method setSubjectIds
+     */
+    prototype.setSubjectIds = function(frameworkId, aboutId) {
+        if (frameworkId != null) {
+            (this)["isBasedOn"] = frameworkId;
+        }
+        if (aboutId != null) {
+            (this)["about"] = aboutId;
+        }
+    };
+    /**
+     *  Sets the comment's creator to the ID of the given person object
+     *  @param {EcPerson}  person Person which contains the id to set to the comment's creator
+     *  @method setCreator
+     */
+    prototype.setCreator = function(creatorObj) {
+        if (creatorObj != null) {
+            (this)["creator"] = creatorObj.shortId();
+        }
+    };
+    /**
+     *  Sets the comment's creator to the given person ID
+     *  @param {String}  creatorId ID of the person to set to the comment's creator
+     *  @method setCreatorId
+     */
+    prototype.setCreatorId = function(creatorId) {
+        if (creatorId != null) {
+            (this)["creator"] = creatorId;
+        }
+    };
+    /**
+     *  Sets the comment's dateCreated to the given time in milliseconds
+     *  @param {String}  longDateString The time in milliseconds to set to the comment's dateCreated
+     *  @method setDateCreated
+     */
+    prototype.setDateCreated = function(longDateString) {
+        if (longDateString != null) {
+            (this)["dateCreated"] = longDateString;
+        }
+    };
+}, {parentItem: "Question", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "Event", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcQuestion = function() {
     Question.call(this);
 };
@@ -59552,12 +59676,12 @@ EcOrganization = stjs.extend(EcOrganization, Organization, [], function(construc
     /**
      *  Searches a repository for organizations that match the search query
      * 
-     *  @param {EcRepository}          repo Repository to search using the query
-     *  @param {String}                query Query string to pass to the search web service
-     *  @param {Callback1<Array<Quiz>> success Callback triggered after
-     *                                 completing the search, returns the results
-     *  @param {Callback1<String>}     failure Callback triggered if error searching
-     *  @param {Object}                paramObj Parameter object for search
+     *  @param {EcRepository}                    repo Repository to search using the query
+     *  @param {String}                          query Query string to pass to the search web service
+     *  @param {Callback1<Array<EcOrganization>> success Callback triggered after
+     *                                           completing the search, returns the results
+     *  @param {Callback1<String>}               failure Callback triggered if error searching
+     *  @param {Object}                          paramObj Parameter object for search
      *  @memberOf EcOrganization
      *  @method search
      *  @static
@@ -62728,6 +62852,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.caching) {
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
+            if (repo != null) 
+                delete (EcRepository.cache)[EcRemoteLinkedData.veryShortId(repo.selectedServer, data.getGuid())];
         }
         if (data.invalid()) {
             failure("Data is malformed.");
@@ -62858,6 +62984,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.caching) {
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
+            delete (EcRepository.cache)[EcRemoteLinkedData.veryShortId(this.selectedServer, data.getGuid())];
         }
         var targetUrl;
         if (EcRepository.shouldTryUrl(data.id)) 
@@ -62963,6 +63090,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     }
                     (EcRepository.cache)[d.shortId()] = d;
                     (EcRepository.cache)[d.id] = d;
+                    (EcRepository.cache)[EcRemoteLinkedData.veryShortId(me.selectedServer, d.getGuid())] = d;
                 }
             }
             if (success != null) {
@@ -63593,6 +63721,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (EcRepository.caching) {
                 (EcRepository.cache)[d.shortId()] = d;
                 (EcRepository.cache)[d.id] = d;
+                (EcRepository.cache)[EcRemoteLinkedData.veryShortId(this.selectedServer, d.getGuid())] = d;
             }
             if (eachSuccess != null) {
                 eachSuccess(results[i]);
@@ -68638,7 +68767,14 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
-        repo.multiget(framework.competency.concat(framework.relation), function(data) {
+        var precache = new Array();
+        if (framework.competency != null) {
+            precache = precache.concat(framework.competency);
+        }
+        if (framework.relation != null) {
+            precache = precache.concat(framework.relation);
+        }
+        repo.multiget(precache, function(data) {
             var competencyTemplate = new EcCompetency();
             var alignmentTemplate = new EcAlignment();
             var eah = new EcAsyncHelper();

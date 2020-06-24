@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.33</em>
+            <em>API Docs for: 1.2.34</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1693,6 +1693,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                      else if (xhrx.readyState == 4) 
                         if (failure != null) 
                             failure(xhrx.responseText);
+            };
+            xhr.onerror = function(e) {
+                if (failure != null) {
+                    failure(null);
+                }
             };
         }
         if (xhr != null) {

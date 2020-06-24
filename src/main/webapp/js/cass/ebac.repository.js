@@ -1482,6 +1482,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.caching) {
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
+            if (repo != null) 
+                delete (EcRepository.cache)[EcRemoteLinkedData.veryShortId(repo.selectedServer, data.getGuid())];
         }
         if (data.invalid()) {
             failure("Data is malformed.");
@@ -1612,6 +1614,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.caching) {
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
+            delete (EcRepository.cache)[EcRemoteLinkedData.veryShortId(this.selectedServer, data.getGuid())];
         }
         var targetUrl;
         if (EcRepository.shouldTryUrl(data.id)) 
@@ -1717,6 +1720,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     }
                     (EcRepository.cache)[d.shortId()] = d;
                     (EcRepository.cache)[d.id] = d;
+                    (EcRepository.cache)[EcRemoteLinkedData.veryShortId(me.selectedServer, d.getGuid())] = d;
                 }
             }
             if (success != null) {
@@ -2347,6 +2351,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (EcRepository.caching) {
                 (EcRepository.cache)[d.shortId()] = d;
                 (EcRepository.cache)[d.id] = d;
+                (EcRepository.cache)[EcRemoteLinkedData.veryShortId(this.selectedServer, d.getGuid())] = d;
             }
             if (eachSuccess != null) {
                 eachSuccess(results[i]);

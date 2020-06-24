@@ -2657,7 +2657,14 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
-        repo.multiget(framework.competency.concat(framework.relation), function(data) {
+        var precache = new Array();
+        if (framework.competency != null) {
+            precache = precache.concat(framework.competency);
+        }
+        if (framework.relation != null) {
+            precache = precache.concat(framework.relation);
+        }
+        repo.multiget(precache, function(data) {
             var competencyTemplate = new EcCompetency();
             var alignmentTemplate = new EcAlignment();
             var eah = new EcAsyncHelper();
