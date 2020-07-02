@@ -259,17 +259,17 @@ function cassFrameworkAsCeasn() {
         if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
             delete c["schema:identifier"];
         } else if (c["schema:identifier"] != null) {
-            if (!EcArray.isArray(c["schema:identifier"])) { 
-                c["schema:identifier"] = [c["schema:identifier"]]; 
+            if (!EcArray.isArray(c["schema:identifier"])) {
+                c["schema:identifier"] = [c["schema:identifier"]];
             }
-            for (var i = c["schema:identifier"].length - 1; i >= 0; i--) {
-                if (c["schema:identifier"][i].indexOf("http") == -1) {
-                    c["schema:identifier"].splice(i, 1);
+            for (var k = c["schema:identifier"].length - 1; k >= 0; k--) {
+                if (c["schema:identifier"][k].indexOf("http") == -1) {
+                    c["schema:identifier"].splice(k, 1);
                 }
             }
         }
         delete c["schema:inLanguage"];
-        
+
         //Remove fields that are only whitespace
         for (var key in c) {
             if (typeof c[key] == "string" && c[key].trim().length == 0) {
