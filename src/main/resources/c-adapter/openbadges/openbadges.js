@@ -238,11 +238,14 @@ openbadgeCheckId = function(){
 	if (a.subject["reader"] == null && a.subject["@reader"] == null)
 		return debug("Badge not generated for assertion: Assertion has no readers.");
 
-	if (!EcArray.has(a.subject["reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
+    if (repoEndpoint().contains("localhost"))
+        return debug("Badge not generated for assertion: Endpoint Configuration is not set.");
+
+	if (a.subject["reader"] && !EcArray.has(a.subject["reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
 		return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
-	if (repoEndpoint().contains("localhost"))
-		return debug("Badge not generated for assertion: Endpoint Configuration is not set.");
+    if (a.subject["@reader"] && !EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
+        return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
 	var subject = a.getSubject();
 	if (subject == null)
