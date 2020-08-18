@@ -1,8 +1,0 @@
-{
-    "jscodehints.detectedExclusions": [
-        "C:/java/workspace/CASS/src/main/webapp/cass.manager/forge/forge.min.js",
-        "C:/java/workspace/CASS/src/main/webapp/cass.assertionProcessingVisualizer/js/apVisualizer.js",
-        "C:/java/workspace/CASS/src/main/webapp/cass.manager/forge/prime.worker.js",
-        "/home/fray/workspace/CASS/src/main/webapp/cass.example/js/vendor/moment-with-locales.js"
-    ]
-}
