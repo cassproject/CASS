@@ -522,7 +522,11 @@ var validateSignatures = function(id, version, type, errorMessage) {
         var signatures = (signatureSheet).call(this);
         var success = false;
         for (var i = 0; i < signatures.length; i++) {
-            if (oldObj.hasOwner(EcPk.fromPem(signatures[i].owner))) {
+            var owner = signatures[i].owner;
+            if (owner == null) {
+                owner = (signatures[i])["@owner"];
+            }
+            if (oldObj.hasOwner(EcPk.fromPem(owner))) {
                 success = true;
                 break;
             }

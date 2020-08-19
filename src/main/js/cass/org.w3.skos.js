@@ -69,7 +69,7 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
      */
     prototype.hasTopConcept = null;
     prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
+        EcRemoteLinkedData.prototype.upgrade.call(this);
         if (ConceptScheme.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", ConceptScheme.TYPE_0_2);
         }
@@ -119,7 +119,7 @@ Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, pro
      */
     prototype.semanticRelation = null;
     prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
+        EcRemoteLinkedData.prototype.upgrade.call(this);
         if (Concept.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", Concept.TYPE_0_2);
         }
