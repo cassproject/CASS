@@ -17,57 +17,8 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-var jwk = function() {};
-jwk = stjs.extend(jwk, null, [], function(constructor, prototype) {
-    prototype.kty = null;
-    prototype.k = null;
-    prototype.alg = null;
-    prototype.ext = null;
-}, {}, {});
-var EcAesParameters = function(iv) {
-    this.iv = forge.util.decode64(iv);
-};
-EcAesParameters = stjs.extend(EcAesParameters, null, [], function(constructor, prototype) {
-    prototype.iv = null;
-}, {iv: "forge.payload"}, {});
-/**
- *  @author Fritz
- *  @class EcCrypto
- */
-var EcCrypto = function() {};
-EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
-    /**
-     *  Turn on (defualt off) caching of decrypted data.
-     *  @property caching
-     *  @type boolean
-     */
-    constructor.caching = false;
-    constructor.decryptionCache = new Object();
-    /**
-     *  Calculate MD5 hash of a string.
-     *  @param {String} s String to MD5
-     *  @return {String} MD5 hash
-     *  @static
-     *  @method md5
-     */
-    constructor.md5 = function(s) {
-        var m = forge.md.md5.create();
-        m.update(s);
-        return m.digest().toHex();
-    };
-    /**
-     *  Calculate SHA-256 hash of a string.
-     *  @param {String} s String to SHA-256
-     *  @return {String} SHA-256 hash
-     *  @static
-     *  @method sha256
-     */
-    constructor.sha256 = function(s) {
-        var m = forge.md.sha256.create();
-        m.update(s, "utf8");
-        return m.digest().toHex();
-    };
-}, {decryptionCache: "Object"}, {});
+var CryptoKey = function() {};
+CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
 var AlgorithmIdentifier = function() {};
 AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constructor, prototype) {
     prototype.name = null;
@@ -78,34 +29,12 @@ AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constr
     prototype.iv = null;
     prototype.counter = null;
 }, {iv: "ArrayBuffer", counter: "ArrayBuffer"}, {});
-/**
- *  AES encryption tasks common across all variants of AES.
- *  @class EcAes
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- */
-var EcAes = function() {};
-EcAes = stjs.extend(EcAes, null, [], function(constructor, prototype) {
-    /**
-     *  Generates a random secret of length @i
-     *  @method newSecret
-     *  @static
-     *  @param {integer} i Length of secret
-     *  @return {string} String representing the new secret, encoded using Base64.
-     */
-    constructor.newSecret = function(i) {
-        return forge.util.encode64(forge.random.getBytesSync(i));
-    };
-    /**
-     *  Generates a random Initialization Vector of length @i
-     *  @method newIv
-     *  @static
-     *  @param {integer} i Length of initialization Vector
-     *  @return {string} String representing the new Initialization Vector, encoded using Base64.
-     */
-    constructor.newIv = function(i) {
-        return forge.util.encode64(forge.random.getBytesSync(i));
-    };
+var jwk = function() {};
+jwk = stjs.extend(jwk, null, [], function(constructor, prototype) {
+    prototype.kty = null;
+    prototype.k = null;
+    prototype.alg = null;
+    prototype.ext = null;
 }, {}, {});
 /**
  *  Helper classes for dealing with RSA Public Keys.
@@ -212,8 +141,79 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     if (EcPk.cache == null) 
         EcPk.cache = new Object();
 })();
-var CryptoKey = function() {};
-CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
+/**
+ *  AES encryption tasks common across all variants of AES.
+ *  @class EcAes
+ *  @module com.eduworks.ec
+ *  @author fritz.ray@eduworks.com
+ */
+var EcAes = function() {};
+EcAes = stjs.extend(EcAes, null, [], function(constructor, prototype) {
+    /**
+     *  Generates a random secret of length @i
+     *  @method newSecret
+     *  @static
+     *  @param {integer} i Length of secret
+     *  @return {string} String representing the new secret, encoded using Base64.
+     */
+    constructor.newSecret = function(i) {
+        return forge.util.encode64(forge.random.getBytesSync(i));
+    };
+    /**
+     *  Generates a random Initialization Vector of length @i
+     *  @method newIv
+     *  @static
+     *  @param {integer} i Length of initialization Vector
+     *  @return {string} String representing the new Initialization Vector, encoded using Base64.
+     */
+    constructor.newIv = function(i) {
+        return forge.util.encode64(forge.random.getBytesSync(i));
+    };
+}, {}, {});
+/**
+ *  @author Fritz
+ *  @class EcCrypto
+ */
+var EcCrypto = function() {};
+EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
+    /**
+     *  Turn on (defualt off) caching of decrypted data.
+     *  @property caching
+     *  @type boolean
+     */
+    constructor.caching = false;
+    constructor.decryptionCache = new Object();
+    /**
+     *  Calculate MD5 hash of a string.
+     *  @param {String} s String to MD5
+     *  @return {String} MD5 hash
+     *  @static
+     *  @method md5
+     */
+    constructor.md5 = function(s) {
+        var m = forge.md.md5.create();
+        m.update(s);
+        return m.digest().toHex();
+    };
+    /**
+     *  Calculate SHA-256 hash of a string.
+     *  @param {String} s String to SHA-256
+     *  @return {String} SHA-256 hash
+     *  @static
+     *  @method sha256
+     */
+    constructor.sha256 = function(s) {
+        var m = forge.md.sha256.create();
+        m.update(s, "utf8");
+        return m.digest().toHex();
+    };
+}, {decryptionCache: "Object"}, {});
+var EcAesParameters = function(iv) {
+    this.iv = forge.util.decode64(iv);
+};
+EcAesParameters = stjs.extend(EcAesParameters, null, [], function(constructor, prototype) {
+    prototype.iv = null;
+}, {iv: "forge.payload"}, {});
 var SubtleCrypto = function() {};
 SubtleCrypto = stjs.extend(SubtleCrypto, null, [], function(constructor, prototype) {
     prototype.encrypt = function(algorithm, key, data) {
@@ -236,186 +236,6 @@ SubtleCrypto = stjs.extend(SubtleCrypto, null, [], function(constructor, prototy
     };
     prototype.importKey = function(format, keyData, algorithm, extractable, keyUsages) {
         return null;
-    };
-}, {}, {});
-/**
- *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
- *  Output is encoded in base64 for easier handling.
- * 
- *  @author fritz.ray@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcAesCtr
- */
-var EcAesCtr = function() {};
-EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
-    /**
-     *  Encrypts plaintext using AES-256-CTR.
-     *  Plaintext is treated as as a sequence of bytes, does not perform UTF8 decoding.
-     *  Returns base64 encoded ciphertext.
-     * 
-     *  @param {string} plaintext Text to encrypt.
-     *  @param {string} secret Secret to use to encrypt.
-     *  @param {string} iv Initialization Vector to use to encrypt.
-     *  @return {string} Ciphertext encoded using base64.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(plaintext, secret, iv) {
-        if ((typeof httpStatus) != "undefined" && forge.util.decode64(secret).length == 16 && forge.util.decode64(iv).length == 16) 
-            return aesEncrypt(plaintext, iv, secret);
-        var c = forge.cipher.createCipher("AES-CTR", forge.util.decode64(secret));
-        c.start(new EcAesParameters(iv));
-        c.update(forge.util.createBuffer(forge.util.encodeUtf8(plaintext)));
-        c.finish();
-        var encrypted = c.output;
-        return forge.util.encode64(encrypted.bytes());
-    };
-    /**
-     *  Decrypts ciphertext using AES-256-CTR.
-     *  Ciphertext must be base64 encoded ciphertext.
-     *  Returns plaintext as a string (Sequence of bytes, no encoding).
-     * 
-     *  @param {string} ciphertext Ciphertext to decrypt.
-     *  @param {string} secret Secret to use to decrypt.
-     *  @param {string} iv Initialization Vector to use to decrypt.
-     *  @return {string} Plaintext with no encoding.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ciphertext, secret, iv) {
-        if (EcCrypto.caching) {
-            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
-            if (cacheGet != null) 
-                return cacheGet;
-        }
-        if ((typeof httpStatus) != "undefined" && forge.util.decode64(secret).length == 16 && forge.util.decode64(iv).length == 16) {
-            var result = aesDecrypt(ciphertext, iv, secret);
-            if (EcCrypto.caching) 
-                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = result;
-            return result;
-        }
-        var c = forge.cipher.createDecipher("AES-CTR", forge.util.decode64(secret));
-        c.start(new EcAesParameters(iv));
-        c.update(forge.util.createBuffer(forge.util.decode64(ciphertext)));
-        c.finish();
-        var decrypted = c.output;
-        if (EcCrypto.caching) 
-            (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(decrypted.data);
-        return forge.util.decodeUtf8(decrypted.data);
-    };
-}, {}, {});
-/**
- *  Helper methods for performing RSA Encryption methods. Uses Optimal Asymmetric
- *  Encryption Padding (OAEP) encryption and decryption. Uses RSA SSA PKCS#1 v1.5
- *  (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.
- * 
- *  @author fritz.ray@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcRsaOaep
- */
-var EcRsaOaep = function() {};
-EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
-    /**
-     *  Encrypts a block of plaintext (no more than 256 bytes) with a public key
-     *  using RSA OAEP encryption. Returns a base64 encoded ciphertext.
-     * 
-     *  @param {EcPk}   pk Public Key.
-     *  @param {string} plaintext Plaintext. Does not perform encoding.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(pk, plaintext) {
-        if ((typeof httpStatus) != "undefined") {
-            return rsaEncrypt(plaintext, pk.toPem());
-        }
-        return forge.util.encode64(pk.pk.encrypt(forge.util.encodeUtf8(plaintext), "RSA-OAEP"));
-    };
-    /**
-     *  Decrypts a block of ciphertext (no more than 256 bytes) with a private
-     *  key using RSA OAEP encryption. Returns a unencoded plaintext.
-     * 
-     *  @param {EcPpk}  ppk Public private keypair.
-     *  @param {string} ciphertext Ciphertext.
-     *  @return {string} Unencoded plaintext.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ppk, ciphertext) {
-        if (EcCrypto.caching) {
-            var cacheGet = null;
-            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
-            if (cacheGet != null) {
-                return cacheGet;
-            }
-        }
-        var result;
-        if ((typeof httpStatus) != "undefined") {
-            result = rsaDecrypt(ciphertext, ppk.toPem());
-        } else {
-            result = forge.util.decodeUtf8(ppk.ppk.decrypt(forge.util.decode64(ciphertext), "RSA-OAEP"));
-        }
-        if (EcCrypto.caching) {
-            (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext] = result;
-        }
-        return result;
-    };
-    /**
-     *  Creates a signature for the provided text using the public private
-     *  keypair. May be verified with the public key. Uses SHA1 hash with a UTF8
-     *  decoding of the text. Returns base64 encoded signature.
-     * 
-     *  @param {EcPpk}  ppk Public private keypair.
-     *  @param {string} text Text to sign.
-     *  @return Base64 encoded signature.
-     *  @method sign
-     *  @static
-     */
-    constructor.sign = function(ppk, text) {
-        if ((typeof httpStatus) != "undefined") {
-            return rsaSign(text, ppk.toPem());
-        }
-        var s = forge.md.sha1.create();
-        s.update(forge.util.encodeUtf8(text), "utf8");
-        return forge.util.encode64(ppk.ppk.sign(s));
-    };
-    /**
-     *  Creates a signature for the provided text using the public private
-     *  keypair. May be verified with the public key. Uses SHA256 hash with a
-     *  UTF8 decoding of the text. Returns base64 encoded signature.
-     * 
-     *  @param {EcPpk}  ppk Public private keypair.
-     *  @param {string} text Text to sign.
-     *  @return Base64 encoded signature.
-     *  @method signSha256
-     *  @static
-     */
-    constructor.signSha256 = function(ppk, text) {
-        var s = forge.md.sha256.create();
-        s.update(forge.util.encodeUtf8(text), "utf8");
-        return forge.util.encode64(ppk.ppk.sign(s));
-    };
-    /**
-     *  Verifies the integrity of the provided text using a signature and a
-     *  public key. Uses SHA1 hash with a UTF8 decoding of the text.
-     * 
-     *  @param {EcPk}   pk Public key.
-     *  @param {string} text Text to verify.
-     *  @param {string} signature Base64 encoded signature.
-     *  @return True IFF the signature is valid.
-     *  @static
-     *  @method verify
-     */
-    constructor.verify = function(pk, text, signature) {
-        if ((typeof httpStatus) != "undefined") {
-            return rsaVerify(signature, pk.toPem(), text);
-        }
-        var s = forge.md.sha1.create();
-        s.update(forge.util.encodeUtf8(text), "utf8");
-        try {
-            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
-        }catch (ex) {
-            return false;
-        }
     };
 }, {}, {});
 /**
@@ -575,144 +395,185 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
         EcPpk.cache = new Object();
 })();
 /**
- *  Asynchronous implementation of {{#crossLink
- *  "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
+ *  Helper methods for performing RSA Encryption methods. Uses Optimal Asymmetric
+ *  Encryption Padding (OAEP) encryption and decryption. Uses RSA SSA PKCS#1 v1.5
+ *  (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.
  * 
  *  @author fritz.ray@eduworks.com
- *  @class EcAesCtrAsyncWorker
  *  @module com.eduworks.ec
+ *  @class EcRsaOaep
  */
-var EcAesCtrAsyncWorker = function() {};
-EcAesCtrAsyncWorker = stjs.extend(EcAesCtrAsyncWorker, null, [], function(constructor, prototype) {
-    constructor.rotator = 0;
-    constructor.w = null;
-    constructor.q1 = null;
-    constructor.q2 = null;
-    constructor.initWorker = function() {
-        if (window == null && ((typeof self).equals("undefined")) || Worker == undefined || Worker == null) {
-            return;
-        }
-        if (!EcRemote.async) {
-            return;
-        }
-        if (EcAesCtrAsyncWorker.w != null) {
-            return;
-        }
-        EcAesCtrAsyncWorker.rotator = 0;
-        EcAesCtrAsyncWorker.q1 = new Array();
-        EcAesCtrAsyncWorker.q2 = new Array();
-        EcAesCtrAsyncWorker.w = new Array();
-        for (var index = 0; index < 8; index++) {
-            EcAesCtrAsyncWorker.createWorker(index);
-        }
-    };
-    constructor.createWorker = function(index) {
-        EcAesCtrAsyncWorker.q1.push(new Array());
-        EcAesCtrAsyncWorker.q2.push(new Array());
-        var wkr;
-        if ((window)["scriptPath"] != null) 
-            EcAesCtrAsyncWorker.w.push(wkr = new Worker((window)["scriptPath"] + "forgeAsync.js"));
-         else 
-            EcAesCtrAsyncWorker.w.push(wkr = new Worker("forgeAsync.js"));
-        wkr.onmessage = function(p1) {
-            var o = p1.data;
-            var success = EcAesCtrAsyncWorker.q1[index].shift();
-            var failure = EcAesCtrAsyncWorker.q2[index].shift();
-            if ((o)["error"] != null) {
-                if (failure != null) 
-                    failure((o)["error"]);
-            } else if (success != null) {
-                success((o)["result"]);
-            }
-        };
-        wkr.onerror = function(p1) {
-            var success = EcAesCtrAsyncWorker.q1[index].shift();
-            var failure = EcAesCtrAsyncWorker.q2[index].shift();
-            if (failure != null) {
-                failure(p1.toString());
-            }
-        };
-    };
+var EcRsaOaep = function() {};
+EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
     /**
-     *  Asynchronous form of {{#crossLink
-     *  "EcAesCtr/encrypt:method"}}EcAesCtr.encrypt{{/crossLink}}
+     *  Encrypts a block of plaintext (no more than 256 bytes) with a public key
+     *  using RSA OAEP encryption. Returns a base64 encoded ciphertext.
      * 
-     *  @param {string}           plaintext Text to encrypt.
-     *  @param {string}           secret Secret to use to encrypt.
-     *  @param {string}           iv Initialization Vector to use to encrypt.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
+     *  @param {EcPk}   pk Public Key.
+     *  @param {string} plaintext Plaintext. Does not perform encoding.
      *  @method encrypt
      *  @static
      */
-    constructor.encrypt = function(plaintext, secret, iv, success, failure) {
-        EcAesCtrAsyncWorker.initWorker();
-        if (!EcRemote.async || EcAesCtrAsyncWorker.w == null) {
-            success(EcAesCtr.encrypt(plaintext, secret, iv));
-        } else {
-            var worker = EcAesCtrAsyncWorker.rotator++;
-            EcAesCtrAsyncWorker.rotator = EcAesCtrAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)["secret"] = secret;
-            (o)["iv"] = iv;
-            (o)["text"] = forge.util.encodeUtf8(plaintext);
-            (o)["cmd"] = "encryptAesCtr";
-            EcAesCtrAsyncWorker.q1[worker].push(success);
-            EcAesCtrAsyncWorker.q2[worker].push(failure);
-            EcAesCtrAsyncWorker.w[worker].postMessage(o);
+    constructor.encrypt = function(pk, plaintext) {
+        if ((typeof httpStatus) != "undefined") {
+            return rsaEncrypt(plaintext, pk.toPem());
         }
+        return forge.util.encode64(pk.pk.encrypt(forge.util.encodeUtf8(plaintext), "RSA-OAEP"));
     };
     /**
-     *  Asynchronous form of {{#crossLink
-     *  "EcAesCtr/decrypt:method"}}EcAesCtr.decrypt{{/crossLink}}
+     *  Decrypts a block of ciphertext (no more than 256 bytes) with a private
+     *  key using RSA OAEP encryption. Returns a unencoded plaintext.
      * 
-     *  @param {string}           ciphertext Text to decrypt.
-     *  @param {string}           secret Secret to use to decrypt.
-     *  @param {string}           iv Initialization Vector to use to decrypt.
-     *  @param {function(string)} success Success method, result is Plaintext
-     *                            with no encoding.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
+     *  @param {EcPpk}  ppk Public private keypair.
+     *  @param {string} ciphertext Ciphertext.
+     *  @return {string} Unencoded plaintext.
      *  @method decrypt
      *  @static
      */
-    constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
+    constructor.decrypt = function(ppk, ciphertext) {
         if (EcCrypto.caching) {
             var cacheGet = null;
-            cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
+            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
             if (cacheGet != null) {
-                success(cacheGet);
-                return;
+                return cacheGet;
             }
         }
-        EcAesCtrAsyncWorker.initWorker();
-        if (!EcRemote.async || EcAesCtrAsyncWorker.w == null) {
-            success(EcAesCtr.decrypt(ciphertext, secret, iv));
+        var result;
+        if ((typeof httpStatus) != "undefined") {
+            result = rsaDecrypt(ciphertext, ppk.toPem());
         } else {
-            var worker = EcAesCtrAsyncWorker.rotator++;
-            EcAesCtrAsyncWorker.rotator = EcAesCtrAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)["secret"] = secret;
-            (o)["iv"] = iv;
-            (o)["text"] = ciphertext;
-            (o)["cmd"] = "decryptAesCtr";
-            if (EcCrypto.caching) {
-                EcAesCtrAsyncWorker.q1[worker].push(function(p1) {
-                    (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(p1);
-                    success(forge.util.decodeUtf8(p1));
-                });
-            } else {
-                EcAesCtrAsyncWorker.q1[worker].push(function(p1) {
-                    success(forge.util.decodeUtf8(p1));
-                });
-            }
-            EcAesCtrAsyncWorker.q2[worker].push(failure);
-            EcAesCtrAsyncWorker.w[worker].postMessage(o);
+            result = forge.util.decodeUtf8(ppk.ppk.decrypt(forge.util.decode64(ciphertext), "RSA-OAEP"));
+        }
+        if (EcCrypto.caching) {
+            (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext] = result;
+        }
+        return result;
+    };
+    /**
+     *  Creates a signature for the provided text using the public private
+     *  keypair. May be verified with the public key. Uses SHA1 hash with a UTF8
+     *  decoding of the text. Returns base64 encoded signature.
+     * 
+     *  @param {EcPpk}  ppk Public private keypair.
+     *  @param {string} text Text to sign.
+     *  @return Base64 encoded signature.
+     *  @method sign
+     *  @static
+     */
+    constructor.sign = function(ppk, text) {
+        if ((typeof httpStatus) != "undefined") {
+            return rsaSign(text, ppk.toPem());
+        }
+        var s = forge.md.sha1.create();
+        s.update(forge.util.encodeUtf8(text), "utf8");
+        return forge.util.encode64(ppk.ppk.sign(s));
+    };
+    /**
+     *  Creates a signature for the provided text using the public private
+     *  keypair. May be verified with the public key. Uses SHA256 hash with a
+     *  UTF8 decoding of the text. Returns base64 encoded signature.
+     * 
+     *  @param {EcPpk}  ppk Public private keypair.
+     *  @param {string} text Text to sign.
+     *  @return Base64 encoded signature.
+     *  @method signSha256
+     *  @static
+     */
+    constructor.signSha256 = function(ppk, text) {
+        var s = forge.md.sha256.create();
+        s.update(forge.util.encodeUtf8(text), "utf8");
+        return forge.util.encode64(ppk.ppk.sign(s));
+    };
+    /**
+     *  Verifies the integrity of the provided text using a signature and a
+     *  public key. Uses SHA1 hash with a UTF8 decoding of the text.
+     * 
+     *  @param {EcPk}   pk Public key.
+     *  @param {string} text Text to verify.
+     *  @param {string} signature Base64 encoded signature.
+     *  @return True IFF the signature is valid.
+     *  @static
+     *  @method verify
+     */
+    constructor.verify = function(pk, text, signature) {
+        if ((typeof httpStatus) != "undefined") {
+            return rsaVerify(signature, pk.toPem(), text);
+        }
+        var s = forge.md.sha1.create();
+        s.update(forge.util.encodeUtf8(text), "utf8");
+        try {
+            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
+        }catch (ex) {
+            return false;
         }
     };
-}, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
+}, {}, {});
+/**
+ *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
+ *  Output is encoded in base64 for easier handling.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
+ *  @class EcAesCtr
+ */
+var EcAesCtr = function() {};
+EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
+    /**
+     *  Encrypts plaintext using AES-256-CTR.
+     *  Plaintext is treated as as a sequence of bytes, does not perform UTF8 decoding.
+     *  Returns base64 encoded ciphertext.
+     * 
+     *  @param {string} plaintext Text to encrypt.
+     *  @param {string} secret Secret to use to encrypt.
+     *  @param {string} iv Initialization Vector to use to encrypt.
+     *  @return {string} Ciphertext encoded using base64.
+     *  @method encrypt
+     *  @static
+     */
+    constructor.encrypt = function(plaintext, secret, iv) {
+        if ((typeof httpStatus) != "undefined" && forge.util.decode64(secret).length == 16 && forge.util.decode64(iv).length == 16) 
+            return aesEncrypt(plaintext, iv, secret);
+        var c = forge.cipher.createCipher("AES-CTR", forge.util.decode64(secret));
+        c.start(new EcAesParameters(iv));
+        c.update(forge.util.createBuffer(forge.util.encodeUtf8(plaintext)));
+        c.finish();
+        var encrypted = c.output;
+        return forge.util.encode64(encrypted.bytes());
+    };
+    /**
+     *  Decrypts ciphertext using AES-256-CTR.
+     *  Ciphertext must be base64 encoded ciphertext.
+     *  Returns plaintext as a string (Sequence of bytes, no encoding).
+     * 
+     *  @param {string} ciphertext Ciphertext to decrypt.
+     *  @param {string} secret Secret to use to decrypt.
+     *  @param {string} iv Initialization Vector to use to decrypt.
+     *  @return {string} Plaintext with no encoding.
+     *  @method decrypt
+     *  @static
+     */
+    constructor.decrypt = function(ciphertext, secret, iv) {
+        if (EcCrypto.caching) {
+            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
+            if (cacheGet != null) 
+                return cacheGet;
+        }
+        if ((typeof httpStatus) != "undefined" && forge.util.decode64(secret).length == 16 && forge.util.decode64(iv).length == 16) {
+            var result = aesDecrypt(ciphertext, iv, secret);
+            if (EcCrypto.caching) 
+                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = result;
+            return result;
+        }
+        var c = forge.cipher.createDecipher("AES-CTR", forge.util.decode64(secret));
+        c.start(new EcAesParameters(iv));
+        c.update(forge.util.createBuffer(forge.util.decode64(ciphertext)));
+        c.finish();
+        var decrypted = c.output;
+        if (EcCrypto.caching) 
+            (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(decrypted.data);
+        return forge.util.decodeUtf8(decrypted.data);
+    };
+}, {}, {});
 /**
  *  Asynchronous implementation of {{#crossLink
  *  "EcRsaOaep"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
@@ -938,12 +799,64 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
     };
 }, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
 /**
- *  Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.
- *  Falls back to EcAesCtrAsyncWorker, if window.crypto is not available.
- *  @class EcAesCtrAsync
+ *  Asynchronous implementation of {{#crossLink
+ *  "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @class EcAesCtrAsyncWorker
+ *  @module com.eduworks.ec
  */
-var EcAesCtrAsync = function() {};
-EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
+var EcAesCtrAsyncWorker = function() {};
+EcAesCtrAsyncWorker = stjs.extend(EcAesCtrAsyncWorker, null, [], function(constructor, prototype) {
+    constructor.rotator = 0;
+    constructor.w = null;
+    constructor.q1 = null;
+    constructor.q2 = null;
+    constructor.initWorker = function() {
+        if (window == null && ((typeof self).equals("undefined")) || Worker == undefined || Worker == null) {
+            return;
+        }
+        if (!EcRemote.async) {
+            return;
+        }
+        if (EcAesCtrAsyncWorker.w != null) {
+            return;
+        }
+        EcAesCtrAsyncWorker.rotator = 0;
+        EcAesCtrAsyncWorker.q1 = new Array();
+        EcAesCtrAsyncWorker.q2 = new Array();
+        EcAesCtrAsyncWorker.w = new Array();
+        for (var index = 0; index < 8; index++) {
+            EcAesCtrAsyncWorker.createWorker(index);
+        }
+    };
+    constructor.createWorker = function(index) {
+        EcAesCtrAsyncWorker.q1.push(new Array());
+        EcAesCtrAsyncWorker.q2.push(new Array());
+        var wkr;
+        if ((window)["scriptPath"] != null) 
+            EcAesCtrAsyncWorker.w.push(wkr = new Worker((window)["scriptPath"] + "forgeAsync.js"));
+         else 
+            EcAesCtrAsyncWorker.w.push(wkr = new Worker("forgeAsync.js"));
+        wkr.onmessage = function(p1) {
+            var o = p1.data;
+            var success = EcAesCtrAsyncWorker.q1[index].shift();
+            var failure = EcAesCtrAsyncWorker.q2[index].shift();
+            if ((o)["error"] != null) {
+                if (failure != null) 
+                    failure((o)["error"]);
+            } else if (success != null) {
+                success((o)["result"]);
+            }
+        };
+        wkr.onerror = function(p1) {
+            var success = EcAesCtrAsyncWorker.q1[index].shift();
+            var failure = EcAesCtrAsyncWorker.q2[index].shift();
+            if (failure != null) {
+                failure(p1.toString());
+            }
+        };
+    };
     /**
      *  Asynchronous form of {{#crossLink
      *  "EcAesCtr/encrypt:method"}}EcAesCtr.encrypt{{/crossLink}}
@@ -959,28 +872,21 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
      *  @static
      */
     constructor.encrypt = function(plaintext, secret, iv, success, failure) {
-        if (window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcAesCtrAsyncWorker.encrypt(plaintext, secret, iv, success, failure);
-            return;
-        }
-        if (EcRemote.async == false) {
+        EcAesCtrAsyncWorker.initWorker();
+        if (!EcRemote.async || EcAesCtrAsyncWorker.w == null) {
             success(EcAesCtr.encrypt(plaintext, secret, iv));
-            return;
+        } else {
+            var worker = EcAesCtrAsyncWorker.rotator++;
+            EcAesCtrAsyncWorker.rotator = EcAesCtrAsyncWorker.rotator % 8;
+            var o = new Object();
+            (o)["secret"] = secret;
+            (o)["iv"] = iv;
+            (o)["text"] = forge.util.encodeUtf8(plaintext);
+            (o)["cmd"] = "encryptAesCtr";
+            EcAesCtrAsyncWorker.q1[worker].push(success);
+            EcAesCtrAsyncWorker.q2[worker].push(failure);
+            EcAesCtrAsyncWorker.w[worker].postMessage(o);
         }
-        var keyUsages = new Array();
-        keyUsages.push("encrypt", "decrypt");
-        var algorithm = new Object();
-        algorithm.name = "AES-CTR";
-        algorithm.counter = base64.decode(iv);
-        algorithm.length = 128;
-        var data;
-        data = str2ab(plaintext);
-        window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
-            var p = window.crypto.subtle.encrypt(algorithm, key, data);
-            p.then(function(p1) {
-                success(base64.encode(p1));
-            }, failure);
-        }, failure);
     };
     /**
      *  Asynchronous form of {{#crossLink
@@ -998,36 +904,39 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
      */
     constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
         if (EcCrypto.caching) {
-            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
+            var cacheGet = null;
+            cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
             if (cacheGet != null) {
                 success(cacheGet);
                 return;
             }
         }
-        if (window.crypto == null || window.crypto.subtle == null) {
-            EcAesCtrAsyncWorker.decrypt(ciphertext, secret, iv, success, failure);
-            return;
-        }
-        if (EcRemote.async == false) {
+        EcAesCtrAsyncWorker.initWorker();
+        if (!EcRemote.async || EcAesCtrAsyncWorker.w == null) {
             success(EcAesCtr.decrypt(ciphertext, secret, iv));
+        } else {
+            var worker = EcAesCtrAsyncWorker.rotator++;
+            EcAesCtrAsyncWorker.rotator = EcAesCtrAsyncWorker.rotator % 8;
+            var o = new Object();
+            (o)["secret"] = secret;
+            (o)["iv"] = iv;
+            (o)["text"] = ciphertext;
+            (o)["cmd"] = "decryptAesCtr";
+            if (EcCrypto.caching) {
+                EcAesCtrAsyncWorker.q1[worker].push(function(p1) {
+                    (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(p1);
+                    success(forge.util.decodeUtf8(p1));
+                });
+            } else {
+                EcAesCtrAsyncWorker.q1[worker].push(function(p1) {
+                    success(forge.util.decodeUtf8(p1));
+                });
+            }
+            EcAesCtrAsyncWorker.q2[worker].push(failure);
+            EcAesCtrAsyncWorker.w[worker].postMessage(o);
         }
-        var keyUsages = new Array();
-        keyUsages.push("encrypt", "decrypt");
-        var algorithm = new Object();
-        algorithm.name = "AES-CTR";
-        algorithm.counter = base64.decode(iv);
-        algorithm.length = 128;
-        var data;
-        data = base64.decode(ciphertext);
-        window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
-            var p = window.crypto.subtle.decrypt(algorithm, key, data);
-            p.then(function(p1) {
-                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = ab2str(p1);
-                success(ab2str(p1));
-            }, failure);
-        }, failure);
     };
-}, {}, {});
+}, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
 /**
  *  Async version of EcRsaOaep that uses browser extensions (window.crypto) to accomplish cryptography much faster.
  *  Falls back to EcRsaOaepAsyncWorker, if window.crypto is not available.
@@ -1246,5 +1155,96 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             window.crypto.subtle.verify(algorithm, pk.signKey, base64.decode(signature), str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
                 success(p1);
             }, failure);
+    };
+}, {}, {});
+/**
+ *  Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.
+ *  Falls back to EcAesCtrAsyncWorker, if window.crypto is not available.
+ *  @class EcAesCtrAsync
+ */
+var EcAesCtrAsync = function() {};
+EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcAesCtr/encrypt:method"}}EcAesCtr.encrypt{{/crossLink}}
+     * 
+     *  @param {string}           plaintext Text to encrypt.
+     *  @param {string}           secret Secret to use to encrypt.
+     *  @param {string}           iv Initialization Vector to use to encrypt.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method encrypt
+     *  @static
+     */
+    constructor.encrypt = function(plaintext, secret, iv, success, failure) {
+        if (window == null || window.crypto == null || window.crypto.subtle == null) {
+            EcAesCtrAsyncWorker.encrypt(plaintext, secret, iv, success, failure);
+            return;
+        }
+        if (EcRemote.async == false) {
+            success(EcAesCtr.encrypt(plaintext, secret, iv));
+            return;
+        }
+        var keyUsages = new Array();
+        keyUsages.push("encrypt", "decrypt");
+        var algorithm = new Object();
+        algorithm.name = "AES-CTR";
+        algorithm.counter = base64.decode(iv);
+        algorithm.length = 128;
+        var data;
+        data = str2ab(plaintext);
+        window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.encrypt(algorithm, key, data);
+            p.then(function(p1) {
+                success(base64.encode(p1));
+            }, failure);
+        }, failure);
+    };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcAesCtr/decrypt:method"}}EcAesCtr.decrypt{{/crossLink}}
+     * 
+     *  @param {string}           ciphertext Text to decrypt.
+     *  @param {string}           secret Secret to use to decrypt.
+     *  @param {string}           iv Initialization Vector to use to decrypt.
+     *  @param {function(string)} success Success method, result is Plaintext
+     *                            with no encoding.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method decrypt
+     *  @static
+     */
+    constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
+        if (EcCrypto.caching) {
+            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
+            if (cacheGet != null) {
+                success(cacheGet);
+                return;
+            }
+        }
+        if (window.crypto == null || window.crypto.subtle == null) {
+            EcAesCtrAsyncWorker.decrypt(ciphertext, secret, iv, success, failure);
+            return;
+        }
+        if (EcRemote.async == false) {
+            success(EcAesCtr.decrypt(ciphertext, secret, iv));
+        }
+        var keyUsages = new Array();
+        keyUsages.push("encrypt", "decrypt");
+        var algorithm = new Object();
+        algorithm.name = "AES-CTR";
+        algorithm.counter = base64.decode(iv);
+        algorithm.length = 128;
+        var data;
+        data = base64.decode(ciphertext);
+        window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.decrypt(algorithm, key, data);
+            p.then(function(p1) {
+                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = ab2str(p1);
+                success(ab2str(p1));
+            }, failure);
+        }, failure);
     };
 }, {}, {});

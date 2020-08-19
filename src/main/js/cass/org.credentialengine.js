@@ -189,6 +189,616 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     prototype.weight = null;
 }, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  credentialengine.org/IdentifierValueSet
+ *  Related set of identifier values.
+ *  @author credentialengine.org
+ *  @class IdentifierValueSet
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var IdentifierValueSet = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "IdentifierValueSet";
+};
+IdentifierValueSet = stjs.extend(IdentifierValueSet, CreativeWork, [], null, {about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/EarningsProfile
+ *  Entity that describes earning and related statistical information for a given credential.
+ *  @author credentialengine.org
+ *  @class EarningsProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var EarningsProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "EarningsProfile";
+};
+EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/highEarnings
+     *  Upper interquartile earnings.
+     *  @property highEarnings
+     *  @type integer
+     */
+    prototype.highEarnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/lowEarnings
+     *  Lower interquartile earnings.
+     *  @property lowEarnings
+     *  @type integer
+     */
+    prototype.lowEarnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/medianEarnings
+     *  Median earnings.
+     *  @property medianEarnings
+     *  @type integer
+     */
+    prototype.medianEarnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/postReceiptMonths
+     *  Number of months after earning a credential when employment and earnings data is collected.
+     *  Number of months usually range between 3 months (one quarter) to ten years.
+     *  @property postReceiptMonths
+     *  @type integer
+     */
+    prototype.postReceiptMonths = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/source
+     *  Authoritative source of an entity's information.
+     *  Citation or description of an authoritative souce from which information or description has been derived.
+     *  @property source
+     *  @type anyURI
+     */
+    prototype.source = null;
+}, {jurisdiction: "JurisdictionProfile", region: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/RevocationProfile
+ *  Entity describing conditions and methods by which a credential can be removed from a holder.
+ *  @author credentialengine.org
+ *  @class RevocationProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var RevocationProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "RevocationProfile";
+};
+RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationCriteria
+     *  Webpage or online document that provides information about the removal criteria for an awarded credential.
+     *  @property revocationCriteria
+     *  @type anyURI
+     */
+    prototype.revocationCriteria = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationCriteriaDescription
+     *  Textual description providing information about the removal criteria for an awarded credential.
+     *  @property revocationCriteriaDescription
+     *  @type langString
+     */
+    prototype.revocationCriteriaDescription = null;
+}, {jurisdiction: "JurisdictionProfile", region: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/HoldersProfile
+ *  Entity describing the count and related statistical information of holders of a given credential.
+ *  @author credentialengine.org
+ *  @class HoldersProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var HoldersProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "HoldersProfile";
+};
+HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/demographicInformation
+     *  Aggregate data or summaries of statistical data relating to the population of credential holders including data about gender, geopolitical regions, age, education levels, and other categories of interest.
+     *  @property demographicInformation
+     *  @type langString
+     */
+    prototype.demographicInformation = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/numberAwarded
+     *  Number of credentials awarded.
+     *  @property numberAwarded
+     *  @type integer
+     */
+    prototype.numberAwarded = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/source
+     *  Authoritative source of an entity's information.
+     *  Citation or description of an authoritative souce from which information or description has been derived.
+     *  @property source
+     *  @type anyURI
+     */
+    prototype.source = null;
+}, {jurisdiction: "JurisdictionProfile", region: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/TaskProfile
+ *  Entity describing the required or recommended tasks to be performed by a holder of, or applicant for, a credential.
+ *  @author credentialengine.org
+ *  @class TaskProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var TaskProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "TaskProfile";
+};
+TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/affiliatedAgent
+     *  Organization or person that plays some role in assigning, performing, assisting with, facilitating, approving of, or otherwise being involved with the task being described.
+     *  @property affiliatedAgent
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.affiliatedAgent = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableAt
+     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableAt
+     *  @type Place
+     */
+    prototype.availableAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableOnlineAt
+     *  Online location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableOnlineAt
+     *  @type anyURI
+     */
+    prototype.availableOnlineAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedDuration
+     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
+     *  @property estimatedDuration
+     *  @type DurationProfile
+     */
+    prototype.estimatedDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/taskDetails
+     *  Webpage or online document that provides additional information about the task.
+     *  @property taskDetails
+     *  @type anyURI
+     */
+    prototype.taskDetails = null;
+}, {affiliatedAgent: "Object", availableAt: "Place", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", jurisdiction: "JurisdictionProfile", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/LearningResource
+ *  Entity that is used as part of an learning activity (e.g. a textbook) or that describes (e.g. a lesson plan) or records the educational activity (e.g. an audio- or video-recording of a lesson).
+ *  @author credentialengine.org
+ *  @class LearningResource
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var LearningResource = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "LearningResource";
+};
+LearningResource = stjs.extend(LearningResource, CreativeWork, [], null, {about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/JurisdictionProfile
+ *  Geo-political information about applicable geographic areas and their exceptions.
+ *  @author credentialengine.org
+ *  @class JurisdictionProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var JurisdictionProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "JurisdictionProfile";
+};
+JurisdictionProfile = stjs.extend(JurisdictionProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/assertedBy
+     *  Agent making a statement based on fact or belief.
+     *  @property assertedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.assertedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/globalJurisdiction
+     *  Whether or not the credential is useful, applicable or recognized everywhere.
+     *  Exceptions indicated by the ceterms:jurisdictionException property apply.
+     *  @property globalJurisdiction
+     *  @type boolean
+     */
+    prototype.globalJurisdiction = false;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdictionException
+     *  Geographic or political region in which the credential is not formally recognized or an organization has no authority to act .
+     *  The ceterms:jurisdictionalException property is used in conjunction with the ceterms:jurisdiction property and expresses any exceptions to a more general statement; e.g., the United states except for Colorado.
+     *  @property jurisdictionException
+     *  @type Place
+     */
+    prototype.jurisdictionException = null;
+    /**
+     *  http://purl.org/ctdl/terms/mainJurisdiction
+     *  Primary geographic or political region in which the credential is recognized as applicable or in which an organization has recognized authority to act.
+     *  @property mainJurisdiction
+     *  @type Place
+     */
+    prototype.mainJurisdiction = null;
+}, {assertedBy: "Object", jurisdictionException: "Place", mainJurisdiction: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/EmploymentOutcomeProfile
+ *  Entity that describes employment outcomes and related statistical information for a given credential.
+ *  @author credentialengine.org
+ *  @class EmploymentOutcomeProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var EmploymentOutcomeProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "EmploymentOutcomeProfile";
+};
+EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/jobsObtained
+     *  Number of jobs obtained in the region during a given timeframe.
+     *  @property jobsObtained
+     *  @type integer
+     */
+    prototype.jobsObtained = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/source
+     *  Authoritative source of an entity's information.
+     *  Citation or description of an authoritative souce from which information or description has been derived.
+     *  @property source
+     *  @type anyURI
+     */
+    prototype.source = null;
+}, {jurisdiction: "JurisdictionProfile", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/ProcessProfile
+ *  Entity describing the type, nature, and other relevant information about a process related to a credential.
+ *  @author credentialengine.org
+ *  @class ProcessProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var ProcessProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "ProcessProfile";
+};
+ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/externalInputType
+     *  Types of external stakeholders that provide input to an entity's processes or resources; select from an existing enumeration of such types.
+     *  @property externalInputType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.externalInputType = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/processFrequency
+     *  Interval of process occurence.
+     *  @property processFrequency
+     *  @type langString
+     */
+    prototype.processFrequency = null;
+    /**
+     *  http://purl.org/ctdl/terms/processingAgent
+     *  Organization or person performing the process.
+     *  @property processingAgent
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.processingAgent = null;
+    /**
+     *  http://purl.org/ctdl/terms/processMethod
+     *  Webpage or online document that describes the process methods.
+     *  @property processMethod
+     *  @type anyURI
+     */
+    prototype.processMethod = null;
+    /**
+     *  http://purl.org/ctdl/terms/processMethodDescription
+     *  Textual description of the process methods.
+     *  @property processMethodDescription
+     *  @type langString
+     */
+    prototype.processMethodDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandards
+     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
+     *  @property processStandards
+     *  @type anyURI
+     */
+    prototype.processStandards = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandardsDescription
+     *  Textual description of the criteria, standards, and/or requirements used with a process.
+     *  @property processStandardsDescription
+     *  @type langString
+     */
+    prototype.processStandardsDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/scoringMethodDescription
+     *  Textual description of the method used to score the assessment.
+     *  @property scoringMethodDescription
+     *  @type langString
+     */
+    prototype.scoringMethodDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/scoringMethodExample
+     *  Webpage or online document providing an example of the method or tool used to score the assessment.
+     *  @property scoringMethodExample
+     *  @type anyURI
+     */
+    prototype.scoringMethodExample = null;
+    /**
+     *  http://purl.org/ctdl/terms/scoringMethodExampleDescription
+     *  Textual example of the method or tool used to score the assessment.
+     *  @property scoringMethodExampleDescription
+     *  @type langString
+     */
+    prototype.scoringMethodExampleDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetAssessment
+     *  Assessment that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for an entity.
+     *  @property targetAssessment
+     *  @type Assessment | AssessmentProfile
+     */
+    prototype.targetAssessment = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetCompetencyFramework
+     *  Competency framework relevant to the process being described.
+     *  @property targetCompetencyFramework
+     *  @type CompetencyFramework | CredentialAlignmentObject
+     */
+    prototype.targetCompetencyFramework = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetCredential
+     *  Credential that is a focus or target of the condition, process or verification service.
+     *  @property targetCredential
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.targetCredential = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetLearningOpportunity
+     *  Learning opportunity that is the focus of a condition, process or another learning opportunity.
+     *  @property targetLearningOpportunity
+     *  @type LearningOpportunity | LearningOpportunityProfile
+     */
+    prototype.targetLearningOpportunity = null;
+    /**
+     *  http://purl.org/ctdl/terms/verificationMethodDescription
+     *  Textual description of the methods used to evaluate an assessment, learning opportunity, process or verificaiton service for validity or reliability.
+     *  @property verificationMethodDescription
+     *  @type langString
+     */
+    prototype.verificationMethodDescription = null;
+}, {externalInputType: "CredentialAlignmentObject", jurisdiction: "JurisdictionProfile", processingAgent: "Object", region: "Place", targetAssessment: "Object", targetCompetencyFramework: "Object", targetCredential: "Object", targetLearningOpportunity: "Object", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  credentialengine.org/Credential
  *  Qualification, achievement, personal or organizational quality, or aspect of an identity typically used to indicate suitability.
  *  The ceterms:Credential class is broadly defined to encompass credentials used across domains and communities of practice. The class should be used only when speaking of credentials in general. Subclasses of ceterms:Credential as defined by Credential Engine (or other communities) should be used when referencing specific types of credentials.
@@ -806,6 +1416,350 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  credentialengine.org/ConditionProfile
+ *  Entity describing a constraint, prerequisite, entry condition, or requirement.
+ *  Constraints exist with credentials, learning opportunities, assessments and other entites to which they are subject during their lifecycles.
+ *  @author credentialengine.org
+ *  @class ConditionProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var ConditionProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "ConditionProfile";
+};
+ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/alternativeCondition
+     *  Constraints, prerequisites, entry conditions, or requirementst in a context where more than one alternative condition or path has been defined and from which any one path fulfills the parent condition.
+     *  A set of alternative conditions are not necessarily mutually exclusive paths; for example, a set of alternative concentrations for a degree may allow a person to optionally complete more than one concentration even though only one is required to earn the degree.
+     *  @property alternativeCondition
+     *  @type ConditionProfile
+     */
+    prototype.alternativeCondition = null;
+    /**
+     *  http://purl.org/ctdl/terms/assertedBy
+     *  Agent making a statement based on fact or belief.
+     *  @property assertedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.assertedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceLevelType
+     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
+     *  @property audienceLevelType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceLevelType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonCosts
+     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
+     *  @property commonCosts
+     *  @type CostManifest
+     */
+    prototype.commonCosts = null;
+    /**
+     *  http://purl.org/ctdl/terms/condition
+     *  Single constraint, prerequisite, entry condition, requirement, or cost.
+     *  @property condition
+     *  @type langString
+     */
+    prototype.condition = null;
+    /**
+     *  http://purl.org/ctdl/terms/creditHourType
+     *  Type of unit of time corresponding to type of credit such as semester hours, quarter hours, clock hours, or hours of participation.
+     *  @property creditHourType
+     *  @type langString
+     */
+    prototype.creditHourType = null;
+    /**
+     *  http://purl.org/ctdl/terms/creditHourValue
+     *  Number of credit hours awarded for successful completion of a learning opportunity or assessment.
+     *  @property creditHourValue
+     *  @type float
+     */
+    prototype.creditHourValue = null;
+    /**
+     *  http://purl.org/ctdl/terms/creditUnitType
+     *  Type of credit associated with both degree and non-degree learning opportunities; select from an existing enumeration of such types.
+     *  @property creditUnitType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.creditUnitType = null;
+    /**
+     *  http://purl.org/ctdl/terms/creditUnitTypeDescription
+     *  Detailed description of credit unit type.
+     *  @property creditUnitTypeDescription
+     *  @type langString
+     */
+    prototype.creditUnitTypeDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/creditUnitValue
+     *  Number of either credit units awarded for college credit or continuing education units for successful completion of the learning opportunity or assessment.
+     *  @property creditUnitValue
+     *  @type float
+     */
+    prototype.creditUnitValue = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/experience
+     *  Amount and nature of required work, experiential learning or other relevant experience.
+     *  @property experience
+     *  @type langString
+     */
+    prototype.experience = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/minimumAge
+     *  Minimum allowed age at which a person is eligible for the credential.
+     *  @property minimumAge
+     *  @type integer
+     */
+    prototype.minimumAge = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/residentOf
+     *  Geographic or political region of which a person must be a legal resident or citizen in order to be eligible for the credential.
+     *  Residency defines the duration of stay required by national, state, provincial or local laws that entitles a person to the legal protection and benefits provided to the applicable type.
+     *  @property residentOf
+     *  @type JurisdictionProfile
+     */
+    prototype.residentOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/submissionOf
+     *  Artifact to be submitted such as a transcript, portfolio, or an affidavit.
+     *  @property submissionOf
+     *  @type langString
+     */
+    prototype.submissionOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetAssessment
+     *  Assessment that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for an entity.
+     *  @property targetAssessment
+     *  @type Assessment | AssessmentProfile
+     */
+    prototype.targetAssessment = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetCompetency
+     *  A competency relevant to the condition being described.
+     *  @property targetCompetency
+     *  @type Competency | CredentialAlignmentObject
+     */
+    prototype.targetCompetency = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetCredential
+     *  Credential that is a focus or target of the condition, process or verification service.
+     *  @property targetCredential
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.targetCredential = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetLearningOpportunity
+     *  Learning opportunity that is the focus of a condition, process or another learning opportunity.
+     *  @property targetLearningOpportunity
+     *  @type LearningOpportunity | LearningOpportunityProfile
+     */
+    prototype.targetLearningOpportunity = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetPathway
+     *  Career pathway in which the credential is a potential component.
+     *  @property targetPathway
+     *  @type CareerPathway
+     */
+    prototype.targetPathway = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetTask
+     *  Task to be completed.
+     *  @property targetTask
+     *  @type TaskProfile
+     */
+    prototype.targetTask = null;
+    /**
+     *  http://purl.org/ctdl/terms/weight
+     *  Measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.
+     *  @property weight
+     *  @type float
+     */
+    prototype.weight = null;
+    /**
+     *  http://purl.org/ctdl/terms/yearsOfExperience
+     *  Years of relevant experience.
+     *  @property yearsOfExperience
+     *  @type float
+     */
+    prototype.yearsOfExperience = null;
+}, {alternativeCondition: "ConditionProfile", assertedBy: "Object", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", commonCosts: "CostManifest", creditUnitType: "CredentialAlignmentObject", estimatedCost: "CostProfile", jurisdiction: "JurisdictionProfile", residentOf: "JurisdictionProfile", targetAssessment: "Object", targetCompetency: "Object", targetCredential: "Object", targetLearningOpportunity: "Object", targetPathway: "CareerPathway", targetTask: "TaskProfile", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/CostProfile
+ *  Entity that describes direct costs one would incur if one were to pursue a credential, assessment, learning opportunity, or aspects thereof.
+ *  @author credentialengine.org
+ *  @class CostProfile
+ *  @module org.credentialengine
+ *  @extends CreativeWork
+ */
+var CostProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CreativeWork.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "CostProfile";
+};
+CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/condition
+     *  Single constraint, prerequisite, entry condition, requirement, or cost.
+     *  @property condition
+     *  @type langString
+     */
+    prototype.condition = null;
+    /**
+     *  http://purl.org/ctdl/terms/costDetails
+     *  Webpage or online document containing human-readable, in-depth information about costs.
+     *  @property costDetails
+     *  @type anyURI
+     */
+    prototype.costDetails = null;
+    /**
+     *  http://purl.org/ctdl/terms/currency
+     *  Currency in which the monetary amount is expressed in 3-letter ISO 4217 format such as "USD".
+     *  @property currency
+     *  @type string
+     */
+    prototype.currency = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/directCostType
+     *  Types of direct costs associated with earning or completing a credential, assessment or learning opportunity; select from an existing enumeration of such types.
+     *  @property directCostType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.directCostType = null;
+    /**
+     *  http://purl.org/ctdl/terms/endDate
+     *  Date some event or activity ends.
+     *  @property endDate
+     *  @type date
+     */
+    prototype.endDate = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/paymentPattern
+     *  Applicable pattern for payments such as "per sementer" and "every three months".
+     *  @property paymentPattern
+     *  @type langString
+     */
+    prototype.paymentPattern = null;
+    /**
+     *  http://purl.org/ctdl/terms/price
+     *  Offer price of a credential, learning resource, assessment, related activity or resource.
+     *  @property price
+     *  @type integer
+     */
+    prototype.price = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/residencyType
+     *  Type of legal residency status of a person; select from an existing enumeration of such types.
+     *  Residency defines the duration of stay required by national, state, provincial or local laws that entitles a person to the legal protection and benefits provided to the applicable type.
+     *  @property residencyType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.residencyType = null;
+    /**
+     *  http://purl.org/ctdl/terms/startDate
+     *  Date the validity or usefulness of the information in this resource begins.
+     *  @property startDate
+     *  @type date
+     */
+    prototype.startDate = null;
+}, {audienceType: "CredentialAlignmentObject", directCostType: "CredentialAlignmentObject", jurisdiction: "JurisdictionProfile", region: "Place", residencyType: "CredentialAlignmentObject", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  credentialengine.org/LearningOpportunityProfile
  *  Entity describing an educational or training opportunity.
  *  Opportunities include formal and informal educational training programs and classes, apprenticeship or work experience programs, or other structured or unstructured experiences that serve as educational or training activities.
@@ -1241,217 +2195,6 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
      */
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", advancedStandingFrom: "Object", approvedBy: "Object", approvedIn: "JurisdictionProfile", audienceType: "CredentialAlignmentObject", availableAt: "Place", commonConditions: "ConditionManifest", commonCosts: "CostManifest", corequisite: "ConditionProfile", creditUnitType: "CredentialAlignmentObject", deliveryType: "CredentialAlignmentObject", entryCondition: "ConditionProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", learningMethodType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", requires: "Object", subject: "CredentialAlignmentObject", targetAssessment: "Object", targetLearningOpportunity: "Object", targetLearningResource: "LearningResource", teaches: "Object", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/EmploymentOutcomeProfile
- *  Entity that describes employment outcomes and related statistical information for a given credential.
- *  @author credentialengine.org
- *  @class EmploymentOutcomeProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var EmploymentOutcomeProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "EmploymentOutcomeProfile";
-};
-EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/jobsObtained
-     *  Number of jobs obtained in the region during a given timeframe.
-     *  @property jobsObtained
-     *  @type integer
-     */
-    prototype.jobsObtained = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/source
-     *  Authoritative source of an entity's information.
-     *  Citation or description of an authoritative souce from which information or description has been derived.
-     *  @property source
-     *  @type anyURI
-     */
-    prototype.source = null;
-}, {jurisdiction: "JurisdictionProfile", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/LearningResource
- *  Entity that is used as part of an learning activity (e.g. a textbook) or that describes (e.g. a lesson plan) or records the educational activity (e.g. an audio- or video-recording of a lesson).
- *  @author credentialengine.org
- *  @class LearningResource
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var LearningResource = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "LearningResource";
-};
-LearningResource = stjs.extend(LearningResource, CreativeWork, [], null, {about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/RevocationProfile
- *  Entity describing conditions and methods by which a credential can be removed from a holder.
- *  @author credentialengine.org
- *  @class RevocationProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var RevocationProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "RevocationProfile";
-};
-RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationCriteria
-     *  Webpage or online document that provides information about the removal criteria for an awarded credential.
-     *  @property revocationCriteria
-     *  @type anyURI
-     */
-    prototype.revocationCriteria = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationCriteriaDescription
-     *  Textual description providing information about the removal criteria for an awarded credential.
-     *  @property revocationCriteriaDescription
-     *  @type langString
-     */
-    prototype.revocationCriteriaDescription = null;
-}, {jurisdiction: "JurisdictionProfile", region: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/EarningsProfile
- *  Entity that describes earning and related statistical information for a given credential.
- *  @author credentialengine.org
- *  @class EarningsProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var EarningsProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "EarningsProfile";
-};
-EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/highEarnings
-     *  Upper interquartile earnings.
-     *  @property highEarnings
-     *  @type integer
-     */
-    prototype.highEarnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/lowEarnings
-     *  Lower interquartile earnings.
-     *  @property lowEarnings
-     *  @type integer
-     */
-    prototype.lowEarnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/medianEarnings
-     *  Median earnings.
-     *  @property medianEarnings
-     *  @type integer
-     */
-    prototype.medianEarnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/postReceiptMonths
-     *  Number of months after earning a credential when employment and earnings data is collected.
-     *  Number of months usually range between 3 months (one quarter) to ten years.
-     *  @property postReceiptMonths
-     *  @type integer
-     */
-    prototype.postReceiptMonths = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/source
-     *  Authoritative source of an entity's information.
-     *  Citation or description of an authoritative souce from which information or description has been derived.
-     *  @property source
-     *  @type anyURI
-     */
-    prototype.source = null;
-}, {jurisdiction: "JurisdictionProfile", region: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/AssessmentProfile
  *  Entity that describes the key characteristics of an assessment for a credential.
@@ -1988,58 +2731,45 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", approvedBy: "Object", approvedIn: "JurisdictionProfile", assesses: "Object", assessmentMethodType: "CredentialAlignmentObject", assessmentUseType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", commonConditions: "ConditionManifest", commonCosts: "CostManifest", corequisite: "ConditionProfile", creditUnitType: "CredentialAlignmentObject", deliveryType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", entryCondition: "ConditionProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", financialAssistance: "FinancialAssistanceProfile", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", maintenanceProcess: "ProcessProfile", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", requires: "Object", scoringMethodType: "CredentialAlignmentObject", subject: "CredentialAlignmentObject", targetAssessment: "Object", targetLearningResource: "LearningResource", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/TaskProfile
- *  Entity describing the required or recommended tasks to be performed by a holder of, or applicant for, a credential.
+ *  credentialengine.org/Agent
+ *  Organization or person that acts or has the power to act.
+ *  Broad type that includes both organizations and people who play roles in the lifecycle of a credential.
  *  @author credentialengine.org
- *  @class TaskProfile
+ *  @class Agent
  *  @module org.credentialengine
- *  @extends CreativeWork
  */
-var TaskProfile = /**
+var Agent = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "TaskProfile";
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "Agent");
 };
-TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, prototype) {
+Agent = stjs.extend(Agent, EcRemoteLinkedData, [], function(constructor, prototype) {
     /**
-     *  http://purl.org/ctdl/terms/affiliatedAgent
-     *  Organization or person that plays some role in assigning, performing, assisting with, facilitating, approving of, or otherwise being involved with the task being described.
-     *  @property affiliatedAgent
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     *  http://purl.org/ctdl/terms/hasAlignmentMap
+     *  Alignment map owned by the agent.
+     *  @property hasAlignmentMap
+     *  @type AlignmentMap
      */
-    prototype.affiliatedAgent = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableAt
-     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableAt
-     *  @type Place
-     */
-    prototype.availableAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableOnlineAt
-     *  Online location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableOnlineAt
-     *  @type anyURI
-     */
-    prototype.availableOnlineAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
+    prototype.hasAlignmentMap = null;
+}, {hasAlignmentMap: "AlignmentMap", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/DurationProfile
+ *  Entity describing the temporal aspects of a resource.
+ *  Temporal aspects include exact, minimum, and maximum timeframes of an activity.
+ *  @author credentialengine.org
+ *  @class DurationProfile
+ *  @module org.credentialengine
+ */
+var DurationProfile = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "DurationProfile");
+};
+DurationProfile = stjs.extend(DurationProfile, EcRemoteLinkedData, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/description
      *  Statement, characterization or account of the entity.
@@ -2048,764 +2778,28 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
      */
     prototype.description = null;
     /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedDuration
-     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
-     *  @property estimatedDuration
-     *  @type DurationProfile
-     */
-    prototype.estimatedDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/taskDetails
-     *  Webpage or online document that provides additional information about the task.
-     *  @property taskDetails
-     *  @type anyURI
-     */
-    prototype.taskDetails = null;
-}, {affiliatedAgent: "Object", availableAt: "Place", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", jurisdiction: "JurisdictionProfile", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/ConditionProfile
- *  Entity describing a constraint, prerequisite, entry condition, or requirement.
- *  Constraints exist with credentials, learning opportunities, assessments and other entites to which they are subject during their lifecycles.
- *  @author credentialengine.org
- *  @class ConditionProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var ConditionProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "ConditionProfile";
-};
-ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/alternativeCondition
-     *  Constraints, prerequisites, entry conditions, or requirementst in a context where more than one alternative condition or path has been defined and from which any one path fulfills the parent condition.
-     *  A set of alternative conditions are not necessarily mutually exclusive paths; for example, a set of alternative concentrations for a degree may allow a person to optionally complete more than one concentration even though only one is required to earn the degree.
-     *  @property alternativeCondition
-     *  @type ConditionProfile
-     */
-    prototype.alternativeCondition = null;
-    /**
-     *  http://purl.org/ctdl/terms/assertedBy
-     *  Agent making a statement based on fact or belief.
-     *  @property assertedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.assertedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceLevelType
-     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
-     *  @property audienceLevelType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceLevelType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonCosts
-     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
-     *  @property commonCosts
-     *  @type CostManifest
-     */
-    prototype.commonCosts = null;
-    /**
-     *  http://purl.org/ctdl/terms/condition
-     *  Single constraint, prerequisite, entry condition, requirement, or cost.
-     *  @property condition
-     *  @type langString
-     */
-    prototype.condition = null;
-    /**
-     *  http://purl.org/ctdl/terms/creditHourType
-     *  Type of unit of time corresponding to type of credit such as semester hours, quarter hours, clock hours, or hours of participation.
-     *  @property creditHourType
-     *  @type langString
-     */
-    prototype.creditHourType = null;
-    /**
-     *  http://purl.org/ctdl/terms/creditHourValue
-     *  Number of credit hours awarded for successful completion of a learning opportunity or assessment.
-     *  @property creditHourValue
-     *  @type float
-     */
-    prototype.creditHourValue = null;
-    /**
-     *  http://purl.org/ctdl/terms/creditUnitType
-     *  Type of credit associated with both degree and non-degree learning opportunities; select from an existing enumeration of such types.
-     *  @property creditUnitType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.creditUnitType = null;
-    /**
-     *  http://purl.org/ctdl/terms/creditUnitTypeDescription
-     *  Detailed description of credit unit type.
-     *  @property creditUnitTypeDescription
-     *  @type langString
-     */
-    prototype.creditUnitTypeDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/creditUnitValue
-     *  Number of either credit units awarded for college credit or continuing education units for successful completion of the learning opportunity or assessment.
-     *  @property creditUnitValue
-     *  @type float
-     */
-    prototype.creditUnitValue = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/experience
-     *  Amount and nature of required work, experiential learning or other relevant experience.
-     *  @property experience
-     *  @type langString
-     */
-    prototype.experience = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/minimumAge
-     *  Minimum allowed age at which a person is eligible for the credential.
-     *  @property minimumAge
-     *  @type integer
-     */
-    prototype.minimumAge = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/residentOf
-     *  Geographic or political region of which a person must be a legal resident or citizen in order to be eligible for the credential.
-     *  Residency defines the duration of stay required by national, state, provincial or local laws that entitles a person to the legal protection and benefits provided to the applicable type.
-     *  @property residentOf
-     *  @type JurisdictionProfile
-     */
-    prototype.residentOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/submissionOf
-     *  Artifact to be submitted such as a transcript, portfolio, or an affidavit.
-     *  @property submissionOf
-     *  @type langString
-     */
-    prototype.submissionOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetAssessment
-     *  Assessment that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for an entity.
-     *  @property targetAssessment
-     *  @type Assessment | AssessmentProfile
-     */
-    prototype.targetAssessment = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetCompetency
-     *  A competency relevant to the condition being described.
-     *  @property targetCompetency
-     *  @type Competency | CredentialAlignmentObject
-     */
-    prototype.targetCompetency = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetCredential
-     *  Credential that is a focus or target of the condition, process or verification service.
-     *  @property targetCredential
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.targetCredential = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetLearningOpportunity
-     *  Learning opportunity that is the focus of a condition, process or another learning opportunity.
-     *  @property targetLearningOpportunity
-     *  @type LearningOpportunity | LearningOpportunityProfile
-     */
-    prototype.targetLearningOpportunity = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetPathway
-     *  Career pathway in which the credential is a potential component.
-     *  @property targetPathway
-     *  @type CareerPathway
-     */
-    prototype.targetPathway = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetTask
-     *  Task to be completed.
-     *  @property targetTask
-     *  @type TaskProfile
-     */
-    prototype.targetTask = null;
-    /**
-     *  http://purl.org/ctdl/terms/weight
-     *  Measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.
-     *  @property weight
-     *  @type float
-     */
-    prototype.weight = null;
-    /**
-     *  http://purl.org/ctdl/terms/yearsOfExperience
-     *  Years of relevant experience.
-     *  @property yearsOfExperience
-     *  @type float
-     */
-    prototype.yearsOfExperience = null;
-}, {alternativeCondition: "ConditionProfile", assertedBy: "Object", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", commonCosts: "CostManifest", creditUnitType: "CredentialAlignmentObject", estimatedCost: "CostProfile", jurisdiction: "JurisdictionProfile", residentOf: "JurisdictionProfile", targetAssessment: "Object", targetCompetency: "Object", targetCredential: "Object", targetLearningOpportunity: "Object", targetPathway: "CareerPathway", targetTask: "TaskProfile", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/HoldersProfile
- *  Entity describing the count and related statistical information of holders of a given credential.
- *  @author credentialengine.org
- *  @class HoldersProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var HoldersProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "HoldersProfile";
-};
-HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/demographicInformation
-     *  Aggregate data or summaries of statistical data relating to the population of credential holders including data about gender, geopolitical regions, age, education levels, and other categories of interest.
-     *  @property demographicInformation
-     *  @type langString
-     */
-    prototype.demographicInformation = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/numberAwarded
-     *  Number of credentials awarded.
-     *  @property numberAwarded
-     *  @type integer
-     */
-    prototype.numberAwarded = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/source
-     *  Authoritative source of an entity's information.
-     *  Citation or description of an authoritative souce from which information or description has been derived.
-     *  @property source
-     *  @type anyURI
-     */
-    prototype.source = null;
-}, {jurisdiction: "JurisdictionProfile", region: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/CostProfile
- *  Entity that describes direct costs one would incur if one were to pursue a credential, assessment, learning opportunity, or aspects thereof.
- *  @author credentialengine.org
- *  @class CostProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var CostProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "CostProfile";
-};
-CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/condition
-     *  Single constraint, prerequisite, entry condition, requirement, or cost.
-     *  @property condition
-     *  @type langString
-     */
-    prototype.condition = null;
-    /**
-     *  http://purl.org/ctdl/terms/costDetails
-     *  Webpage or online document containing human-readable, in-depth information about costs.
-     *  @property costDetails
-     *  @type anyURI
-     */
-    prototype.costDetails = null;
-    /**
-     *  http://purl.org/ctdl/terms/currency
-     *  Currency in which the monetary amount is expressed in 3-letter ISO 4217 format such as "USD".
-     *  @property currency
-     *  @type string
-     */
-    prototype.currency = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/directCostType
-     *  Types of direct costs associated with earning or completing a credential, assessment or learning opportunity; select from an existing enumeration of such types.
-     *  @property directCostType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.directCostType = null;
-    /**
-     *  http://purl.org/ctdl/terms/endDate
-     *  Date some event or activity ends.
-     *  @property endDate
-     *  @type date
-     */
-    prototype.endDate = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/paymentPattern
-     *  Applicable pattern for payments such as "per sementer" and "every three months".
-     *  @property paymentPattern
-     *  @type langString
-     */
-    prototype.paymentPattern = null;
-    /**
-     *  http://purl.org/ctdl/terms/price
-     *  Offer price of a credential, learning resource, assessment, related activity or resource.
-     *  @property price
-     *  @type integer
-     */
-    prototype.price = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/residencyType
-     *  Type of legal residency status of a person; select from an existing enumeration of such types.
-     *  Residency defines the duration of stay required by national, state, provincial or local laws that entitles a person to the legal protection and benefits provided to the applicable type.
-     *  @property residencyType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.residencyType = null;
-    /**
-     *  http://purl.org/ctdl/terms/startDate
-     *  Date the validity or usefulness of the information in this resource begins.
-     *  @property startDate
-     *  @type date
-     */
-    prototype.startDate = null;
-}, {audienceType: "CredentialAlignmentObject", directCostType: "CredentialAlignmentObject", jurisdiction: "JurisdictionProfile", region: "Place", residencyType: "CredentialAlignmentObject", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/IdentifierValueSet
- *  Related set of identifier values.
- *  @author credentialengine.org
- *  @class IdentifierValueSet
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var IdentifierValueSet = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "IdentifierValueSet";
-};
-IdentifierValueSet = stjs.extend(IdentifierValueSet, CreativeWork, [], null, {about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/JurisdictionProfile
- *  Geo-political information about applicable geographic areas and their exceptions.
- *  @author credentialengine.org
- *  @class JurisdictionProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var JurisdictionProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "JurisdictionProfile";
-};
-JurisdictionProfile = stjs.extend(JurisdictionProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/assertedBy
-     *  Agent making a statement based on fact or belief.
-     *  @property assertedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.assertedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/globalJurisdiction
-     *  Whether or not the credential is useful, applicable or recognized everywhere.
-     *  Exceptions indicated by the ceterms:jurisdictionException property apply.
-     *  @property globalJurisdiction
-     *  @type boolean
-     */
-    prototype.globalJurisdiction = false;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdictionException
-     *  Geographic or political region in which the credential is not formally recognized or an organization has no authority to act .
-     *  The ceterms:jurisdictionalException property is used in conjunction with the ceterms:jurisdiction property and expresses any exceptions to a more general statement; e.g., the United states except for Colorado.
-     *  @property jurisdictionException
-     *  @type Place
-     */
-    prototype.jurisdictionException = null;
-    /**
-     *  http://purl.org/ctdl/terms/mainJurisdiction
-     *  Primary geographic or political region in which the credential is recognized as applicable or in which an organization has recognized authority to act.
-     *  @property mainJurisdiction
-     *  @type Place
-     */
-    prototype.mainJurisdiction = null;
-}, {assertedBy: "Object", jurisdictionException: "Place", mainJurisdiction: "Place", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/ProcessProfile
- *  Entity describing the type, nature, and other relevant information about a process related to a credential.
- *  @author credentialengine.org
- *  @class ProcessProfile
- *  @module org.credentialengine
- *  @extends CreativeWork
- */
-var ProcessProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CreativeWork.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "ProcessProfile";
-};
-ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/externalInputType
-     *  Types of external stakeholders that provide input to an entity's processes or resources; select from an existing enumeration of such types.
-     *  @property externalInputType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.externalInputType = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/processFrequency
-     *  Interval of process occurence.
-     *  @property processFrequency
-     *  @type langString
-     */
-    prototype.processFrequency = null;
-    /**
-     *  http://purl.org/ctdl/terms/processingAgent
-     *  Organization or person performing the process.
-     *  @property processingAgent
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.processingAgent = null;
-    /**
-     *  http://purl.org/ctdl/terms/processMethod
-     *  Webpage or online document that describes the process methods.
-     *  @property processMethod
-     *  @type anyURI
-     */
-    prototype.processMethod = null;
-    /**
-     *  http://purl.org/ctdl/terms/processMethodDescription
-     *  Textual description of the process methods.
-     *  @property processMethodDescription
-     *  @type langString
-     */
-    prototype.processMethodDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandards
-     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
-     *  @property processStandards
-     *  @type anyURI
-     */
-    prototype.processStandards = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandardsDescription
-     *  Textual description of the criteria, standards, and/or requirements used with a process.
-     *  @property processStandardsDescription
-     *  @type langString
-     */
-    prototype.processStandardsDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/scoringMethodDescription
-     *  Textual description of the method used to score the assessment.
-     *  @property scoringMethodDescription
-     *  @type langString
-     */
-    prototype.scoringMethodDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/scoringMethodExample
-     *  Webpage or online document providing an example of the method or tool used to score the assessment.
-     *  @property scoringMethodExample
-     *  @type anyURI
-     */
-    prototype.scoringMethodExample = null;
-    /**
-     *  http://purl.org/ctdl/terms/scoringMethodExampleDescription
-     *  Textual example of the method or tool used to score the assessment.
-     *  @property scoringMethodExampleDescription
-     *  @type langString
-     */
-    prototype.scoringMethodExampleDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetAssessment
-     *  Assessment that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for an entity.
-     *  @property targetAssessment
-     *  @type Assessment | AssessmentProfile
-     */
-    prototype.targetAssessment = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetCompetencyFramework
-     *  Competency framework relevant to the process being described.
-     *  @property targetCompetencyFramework
-     *  @type CompetencyFramework | CredentialAlignmentObject
-     */
-    prototype.targetCompetencyFramework = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetCredential
-     *  Credential that is a focus or target of the condition, process or verification service.
-     *  @property targetCredential
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.targetCredential = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetLearningOpportunity
-     *  Learning opportunity that is the focus of a condition, process or another learning opportunity.
-     *  @property targetLearningOpportunity
-     *  @type LearningOpportunity | LearningOpportunityProfile
-     */
-    prototype.targetLearningOpportunity = null;
-    /**
-     *  http://purl.org/ctdl/terms/verificationMethodDescription
-     *  Textual description of the methods used to evaluate an assessment, learning opportunity, process or verificaiton service for validity or reliability.
-     *  @property verificationMethodDescription
-     *  @type langString
-     */
-    prototype.verificationMethodDescription = null;
-}, {externalInputType: "CredentialAlignmentObject", jurisdiction: "JurisdictionProfile", processingAgent: "Object", region: "Place", targetAssessment: "Object", targetCompetencyFramework: "Object", targetCredential: "Object", targetLearningOpportunity: "Object", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/AlignmentMap
- *  An entity comprised of a set of alignment or mapping assertions between two existing entities such as mapping a certificate providing advanced standing to a degree.
- *  Alignment maps provide the means for parties to assert sets of alignments between already existing entities created by themselves or other parties--e.g., a 3rd party mapping of a learning resource owned by one party to a credential owned by another; or, mapping a military occupational experience or Military Occupational Specialty (MOS code) as advanced standing to a course or credential.
- *  @author credentialengine.org
- *  @class AlignmentMap
- *  @module org.credentialengine
- */
-var AlignmentMap = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "AlignmentMap");
-};
-AlignmentMap = stjs.extend(AlignmentMap, EcRemoteLinkedData, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/hasStatement
-     *  Alignment assertion belonging to the alignment map.
-     *  @property hasStatement
-     *  @type Statement
-     */
-    prototype.hasStatement = null;
-}, {hasStatement: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/Assessment
- *  Direct, indirect, formative, and summative evaluation or estimation of the nature, ability, or quality of an entity, performance, or outcome of an action.
- *  @author credentialengine.org
- *  @class Assessment
- *  @module org.credentialengine
- */
-var Assessment = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "Assessment");
-};
-Assessment = stjs.extend(Assessment, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/FinancialAssistanceProfile
- *  Entity that describes financial assistance that is offered or available.
- *  @author credentialengine.org
- *  @class FinancialAssistanceProfile
- *  @module org.credentialengine
- */
-var FinancialAssistanceProfile = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "FinancialAssistanceProfile");
-};
-FinancialAssistanceProfile = stjs.extend(FinancialAssistanceProfile, EcRemoteLinkedData, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
+     *  http://purl.org/ctdl/terms/exactDuration
+     *  Exact period of time of an activity or event.
+     *  @property exactDuration
+     *  @type duration
+     */
+    prototype.exactDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/maximumDuration
+     *  Maximum amount of time it will take to complete the activity.
+     *  The value of ceterms:maximumDuration denotes an approximation of duration.
+     *  @property maximumDuration
+     *  @type duration
+     */
+    prototype.maximumDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/minimumDuration
+     *  Minimum amount of time it will take to complete the activity.
+     *  The value of ceterms:minimumDuration denotes an approximation of duration.
+     *  @property minimumDuration
+     *  @type duration
+     */
+    prototype.minimumDuration = null;
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/CompetencyFramework
@@ -3031,95 +3025,20 @@ CompetencyFramework = stjs.extend(CompetencyFramework, EcRemoteLinkedData, [], f
     prototype.tableOfContents = null;
 }, {alignFrom: "Object", alignTo: "Object", conceptTerm: "Concept", creator: "Object", derivedFrom: "Object", educationLevelType: "Concept", hasTopChild: "Competency", publicationStatusType: "Concept", publisher: "Object", rightsHolder: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/CredentialFramework
- *  Class of all structured sets of conceptual entities intentionally designed for use as value vocabulary terms for description and classification in the credentialing context.
- *  The class includes, but is not limited to, subclasses of specialized concept schemes describing industries, occupations, professions, learning contexts and jobs, as well as specialized subject concept schemes, assessment rubrics, proficiency scales, and competency frameworks.
+ *  credentialengine.org/Assessment
+ *  Direct, indirect, formative, and summative evaluation or estimation of the nature, ability, or quality of an entity, performance, or outcome of an action.
  *  @author credentialengine.org
- *  @class CredentialFramework
+ *  @class Assessment
  *  @module org.credentialengine
  */
-var CredentialFramework = /**
+var Assessment = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "CredentialFramework");
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "Assessment");
 };
-CredentialFramework = stjs.extend(CredentialFramework, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/CostManifest
- *  Entity that describes a set of costs maintained at, and applicable across the organizational and/or sub-organizational level.
- *  Instances of these ceterms:CostManifest entities are intended to be referenced by other entities to augment the process of describing their costs.
- *  @author credentialengine.org
- *  @class CostManifest
- *  @module org.credentialengine
- */
-var CostManifest = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "CostManifest");
-};
-CostManifest = stjs.extend(CostManifest, EcRemoteLinkedData, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/costDetails
-     *  Webpage or online document containing human-readable, in-depth information about costs.
-     *  @property costDetails
-     *  @type anyURI
-     */
-    prototype.costDetails = null;
-    /**
-     *  http://purl.org/ctdl/terms/costManifestOf
-     *  Organization maintaining the cost manifest.
-     *  @property costManifestOf
-     *  @type CredentialOrganization | QACredentialOrganization
-     */
-    prototype.costManifestOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/endDate
-     *  Date some event or activity ends.
-     *  @property endDate
-     *  @type date
-     */
-    prototype.endDate = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/startDate
-     *  Date the validity or usefulness of the information in this resource begins.
-     *  @property startDate
-     *  @type date
-     */
-    prototype.startDate = null;
-}, {costManifestOf: "Object", estimatedCost: "CostProfile", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+Assessment = stjs.extend(Assessment, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/Place
  *  Entity describing a physical location or geospatial area.
@@ -3224,6 +3143,66 @@ Place = stjs.extend(Place, EcRemoteLinkedData, [], function(constructor, prototy
     prototype.targetContactPoint = null;
 }, {targetContactPoint: "ContactPoint", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  credentialengine.org/ContactPoint
+ *  Means of contacting an organization or its representative.
+ *  For example, a public relations email address or phone number.
+ *  @author credentialengine.org
+ *  @class ContactPoint
+ *  @module org.credentialengine
+ */
+var ContactPoint = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "ContactPoint");
+};
+ContactPoint = stjs.extend(ContactPoint, EcRemoteLinkedData, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/contactType
+     *  Text identifying the type of service provided by an organizational contact.
+     *  A person or organization may have different contact points for different services. The contact type property provides for adding text to identity the service; e.g., "toll-free number" or "support for hearing-impaired callers".
+     *  @property contactType
+     *  @type langString
+     */
+    prototype.contactType = null;
+    /**
+     *  http://purl.org/ctdl/terms/email
+     *  Email address of the organization or person.
+     *  @property email
+     *  @type string
+     */
+    prototype.email = null;
+    /**
+     *  http://purl.org/ctdl/terms/faxNumber
+     *  Fax number.
+     *  @property faxNumber
+     *  @type string
+     */
+    prototype.faxNumber = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/socialMedia
+     *  Social media access point for an agent or an agent's contact point.
+     *  @property socialMedia
+     *  @type anyURI
+     */
+    prototype.socialMedia = null;
+    /**
+     *  http://purl.org/ctdl/terms/telephone
+     *  Telephone number.
+     *  @property telephone
+     *  @type string
+     */
+    prototype.telephone = null;
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  credentialengine.org/LearningOpportunity
  *  Structured and unstructured learning and development opportunities based in direct experience, formal and informal study, observation, and involvement in discourse and practice.
  *  Examples of learning opportunities include education and training programs and classes, courses of study, apprenticeship or work experience programs, or other structured experiences intended to serve as educational or training events.
@@ -3240,36 +3219,90 @@ function() {
 };
 LearningOpportunity = stjs.extend(LearningOpportunity, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/ConditionManifest
- *  Set of constraints, prerequisites, entry conditions, or requirements maintained at the organizational and/or sub-organizational level.
- *  These conditions are intended to be referenced by external entities such as individual credentials in order to facilitate the process of their description and to reduce unnecessary duplication of data applicable across an array of entities.
+ *  credentialengine.org/FinancialAssistanceProfile
+ *  Entity that describes financial assistance that is offered or available.
  *  @author credentialengine.org
- *  @class ConditionManifest
+ *  @class FinancialAssistanceProfile
  *  @module org.credentialengine
  */
-var ConditionManifest = /**
+var FinancialAssistanceProfile = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "ConditionManifest");
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "FinancialAssistanceProfile");
 };
-ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], function(constructor, prototype) {
+FinancialAssistanceProfile = stjs.extend(FinancialAssistanceProfile, EcRemoteLinkedData, [], function(constructor, prototype) {
     /**
-     *  http://purl.org/ctdl/terms/conditionManifestOf
-     *  Organization maintaining the condition manifest.
-     *  @property conditionManifestOf
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/ProficiencyScale
+ *  The class of structured profiles describing discrete levels of expertise and performance mastery.
+ *  Proficiency scales define levels of performance (what a person does) as distinct from knowledge of specific information (what a person knows) and outline tasks a person can manage and the skills necessary to progressively accomplish explicit competencies at increasing levels of complexity. Proficiency scales: (1) assist in making judgments about the kinds of tasks related to a competency that a person is able to perform; and (2) to compare the abilities of different persons with regard to achievement of those competencies at different levels.
+ *  @author credentialengine.org
+ *  @class ProficiencyScale
+ *  @module org.credentialengine
+ *  @extends EducationalFramework
+ */
+var ProficiencyScale = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "ProficiencyScale");
+};
+ProficiencyScale = stjs.extend(ProficiencyScale, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/CostManifest
+ *  Entity that describes a set of costs maintained at, and applicable across the organizational and/or sub-organizational level.
+ *  Instances of these ceterms:CostManifest entities are intended to be referenced by other entities to augment the process of describing their costs.
+ *  @author credentialengine.org
+ *  @class CostManifest
+ *  @module org.credentialengine
+ */
+var CostManifest = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "CostManifest");
+};
+CostManifest = stjs.extend(CostManifest, EcRemoteLinkedData, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/costDetails
+     *  Webpage or online document containing human-readable, in-depth information about costs.
+     *  @property costDetails
+     *  @type anyURI
+     */
+    prototype.costDetails = null;
+    /**
+     *  http://purl.org/ctdl/terms/costManifestOf
+     *  Organization maintaining the cost manifest.
+     *  @property costManifestOf
      *  @type CredentialOrganization | QACredentialOrganization
      */
-    prototype.conditionManifestOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/corequisite
-     *  Credentials that must be pursued concurrently.
-     *  Includes dual (double) degrees that cannot be earned independently of each other.
-     *  @property corequisite
-     *  @type ConditionProfile
-     */
-    prototype.corequisite = null;
+    prototype.costManifestOf = null;
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
@@ -3286,12 +3319,19 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
      */
     prototype.description = null;
     /**
-     *  http://purl.org/ctdl/terms/entryCondition
-     *  Prerequisites for entry into a credentialing program, a learning opportunity or an assessment including transcripts, records of previous experience, and lower-level learning opportunities.
-     *  @property entryCondition
-     *  @type ConditionProfile
+     *  http://purl.org/ctdl/terms/endDate
+     *  Date some event or activity ends.
+     *  @property endDate
+     *  @type date
      */
-    prototype.entryCondition = null;
+    prototype.endDate = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
     /**
      *  http://purl.org/ctdl/terms/name
      *  Name or title of the entity.
@@ -3300,60 +3340,13 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
      */
     prototype.name = null;
     /**
-     *  http://purl.org/ctdl/terms/recommends
-     *  Recommended credential, learning opportunity or assessment.
-     *  @property recommends
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     *  http://purl.org/ctdl/terms/startDate
+     *  Date the validity or usefulness of the information in this resource begins.
+     *  @property startDate
+     *  @type date
      */
-    prototype.recommends = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewal
-     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
-     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
-     *  @property renewal
-     *  @type ConditionProfile
-     */
-    prototype.renewal = null;
-    /**
-     *  http://purl.org/ctdl/terms/requires
-     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
-     *  @property requires
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.requires = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-}, {conditionManifestOf: "Object", corequisite: "ConditionProfile", entryCondition: "ConditionProfile", recommends: "Object", renewal: "ConditionProfile", requires: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/Agent
- *  Organization or person that acts or has the power to act.
- *  Broad type that includes both organizations and people who play roles in the lifecycle of a credential.
- *  @author credentialengine.org
- *  @class Agent
- *  @module org.credentialengine
- */
-var Agent = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "Agent");
-};
-Agent = stjs.extend(Agent, EcRemoteLinkedData, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/hasAlignmentMap
-     *  Alignment map owned by the agent.
-     *  @property hasAlignmentMap
-     *  @type AlignmentMap
-     */
-    prototype.hasAlignmentMap = null;
-}, {hasAlignmentMap: "AlignmentMap", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.startDate = null;
+}, {costManifestOf: "Object", estimatedCost: "CostProfile", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/Competency
  *  Description of knowledge, skills, and/or abilities.
@@ -3637,6 +3630,37 @@ Competency = stjs.extend(Competency, EcRemoteLinkedData, [], function(constructo
     prototype.weight = null;
 }, {alignFrom: "Object", alignTo: "Object", broadAlignment: "Competency", complexityLevel: "ProficiencyScale", comprisedOf: "Competency", conceptTerm: "Concept", creator: "Object", crossSubjectReference: "Competency", derivedFrom: "Object", educationLevelType: "Concept", exactAlignment: "Competency", hasChild: "Competency", isChildOf: "Competency", isPartOf: "CompetencyFramework", isTopChildOf: "CompetencyFramework", isVersionOf: "Competency", majorAlignment: "Competency", minorAlignment: "Competency", narrowAlignment: "Competency", prerequisiteAlignment: "Competency", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  credentialengine.org/CredentialFramework
+ *  Class of all structured sets of conceptual entities intentionally designed for use as value vocabulary terms for description and classification in the credentialing context.
+ *  The class includes, but is not limited to, subclasses of specialized concept schemes describing industries, occupations, professions, learning contexts and jobs, as well as specialized subject concept schemes, assessment rubrics, proficiency scales, and competency frameworks.
+ *  @author credentialengine.org
+ *  @class CredentialFramework
+ *  @module org.credentialengine
+ */
+var CredentialFramework = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "CredentialFramework");
+};
+CredentialFramework = stjs.extend(CredentialFramework, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/CareerPathway
+ *  Integrated, sequentially ordered collection of credentials, programs, experiences, and services intended to develop technical, academic, and employability skills in a cluster of occupations that share common skills, knowledge, and interests.
+ *  @author credentialengine.org
+ *  @class CareerPathway
+ *  @module org.credentialengine
+ */
+var CareerPathway = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "CareerPathway");
+};
+CareerPathway = stjs.extend(CareerPathway, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  credentialengine.org/CredentialAssertion
  *  Representation of a credential awarded to a person.
  *  @author credentialengine.org
@@ -3651,23 +3675,6 @@ function() {
     EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "CredentialAssertion");
 };
 CredentialAssertion = stjs.extend(CredentialAssertion, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/ProficiencyScale
- *  The class of structured profiles describing discrete levels of expertise and performance mastery.
- *  Proficiency scales define levels of performance (what a person does) as distinct from knowledge of specific information (what a person knows) and outline tasks a person can manage and the skills necessary to progressively accomplish explicit competencies at increasing levels of complexity. Proficiency scales: (1) assist in making judgments about the kinds of tasks related to a competency that a person is able to perform; and (2) to compare the abilities of different persons with regard to achievement of those competencies at different levels.
- *  @author credentialengine.org
- *  @class ProficiencyScale
- *  @module org.credentialengine
- *  @extends EducationalFramework
- */
-var ProficiencyScale = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "ProficiencyScale");
-};
-ProficiencyScale = stjs.extend(ProficiencyScale, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/IdentifierValue
  *  Alphanumeric Identifier value.
@@ -3715,21 +3722,44 @@ IdentifierValue = stjs.extend(IdentifierValue, EcRemoteLinkedData, [], function(
     prototype.name = null;
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/DurationProfile
- *  Entity describing the temporal aspects of a resource.
- *  Temporal aspects include exact, minimum, and maximum timeframes of an activity.
+ *  credentialengine.org/ConditionManifest
+ *  Set of constraints, prerequisites, entry conditions, or requirements maintained at the organizational and/or sub-organizational level.
+ *  These conditions are intended to be referenced by external entities such as individual credentials in order to facilitate the process of their description and to reduce unnecessary duplication of data applicable across an array of entities.
  *  @author credentialengine.org
- *  @class DurationProfile
+ *  @class ConditionManifest
  *  @module org.credentialengine
  */
-var DurationProfile = /**
+var ConditionManifest = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "DurationProfile");
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "ConditionManifest");
 };
-DurationProfile = stjs.extend(DurationProfile, EcRemoteLinkedData, [], function(constructor, prototype) {
+ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/conditionManifestOf
+     *  Organization maintaining the condition manifest.
+     *  @property conditionManifestOf
+     *  @type CredentialOrganization | QACredentialOrganization
+     */
+    prototype.conditionManifestOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/corequisite
+     *  Credentials that must be pursued concurrently.
+     *  Includes dual (double) degrees that cannot be earned independently of each other.
+     *  @property corequisite
+     *  @type ConditionProfile
+     */
+    prototype.corequisite = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
     /**
      *  http://purl.org/ctdl/terms/description
      *  Statement, characterization or account of the entity.
@@ -3738,82 +3768,12 @@ DurationProfile = stjs.extend(DurationProfile, EcRemoteLinkedData, [], function(
      */
     prototype.description = null;
     /**
-     *  http://purl.org/ctdl/terms/exactDuration
-     *  Exact period of time of an activity or event.
-     *  @property exactDuration
-     *  @type duration
+     *  http://purl.org/ctdl/terms/entryCondition
+     *  Prerequisites for entry into a credentialing program, a learning opportunity or an assessment including transcripts, records of previous experience, and lower-level learning opportunities.
+     *  @property entryCondition
+     *  @type ConditionProfile
      */
-    prototype.exactDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/maximumDuration
-     *  Maximum amount of time it will take to complete the activity.
-     *  The value of ceterms:maximumDuration denotes an approximation of duration.
-     *  @property maximumDuration
-     *  @type duration
-     */
-    prototype.maximumDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/minimumDuration
-     *  Minimum amount of time it will take to complete the activity.
-     *  The value of ceterms:minimumDuration denotes an approximation of duration.
-     *  @property minimumDuration
-     *  @type duration
-     */
-    prototype.minimumDuration = null;
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/CareerPathway
- *  Integrated, sequentially ordered collection of credentials, programs, experiences, and services intended to develop technical, academic, and employability skills in a cluster of occupations that share common skills, knowledge, and interests.
- *  @author credentialengine.org
- *  @class CareerPathway
- *  @module org.credentialengine
- */
-var CareerPathway = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "CareerPathway");
-};
-CareerPathway = stjs.extend(CareerPathway, EcRemoteLinkedData, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/ContactPoint
- *  Means of contacting an organization or its representative.
- *  For example, a public relations email address or phone number.
- *  @author credentialengine.org
- *  @class ContactPoint
- *  @module org.credentialengine
- */
-var ContactPoint = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "ContactPoint");
-};
-ContactPoint = stjs.extend(ContactPoint, EcRemoteLinkedData, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/contactType
-     *  Text identifying the type of service provided by an organizational contact.
-     *  A person or organization may have different contact points for different services. The contact type property provides for adding text to identity the service; e.g., "toll-free number" or "support for hearing-impaired callers".
-     *  @property contactType
-     *  @type langString
-     */
-    prototype.contactType = null;
-    /**
-     *  http://purl.org/ctdl/terms/email
-     *  Email address of the organization or person.
-     *  @property email
-     *  @type string
-     */
-    prototype.email = null;
-    /**
-     *  http://purl.org/ctdl/terms/faxNumber
-     *  Fax number.
-     *  @property faxNumber
-     *  @type string
-     */
-    prototype.faxNumber = null;
+    prototype.entryCondition = null;
     /**
      *  http://purl.org/ctdl/terms/name
      *  Name or title of the entity.
@@ -3822,20 +3782,110 @@ ContactPoint = stjs.extend(ContactPoint, EcRemoteLinkedData, [], function(constr
      */
     prototype.name = null;
     /**
-     *  http://purl.org/ctdl/terms/socialMedia
-     *  Social media access point for an agent or an agent's contact point.
-     *  @property socialMedia
+     *  http://purl.org/ctdl/terms/recommends
+     *  Recommended credential, learning opportunity or assessment.
+     *  @property recommends
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recommends = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewal
+     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
+     *  @property renewal
+     *  @type ConditionProfile
+     */
+    prototype.renewal = null;
+    /**
+     *  http://purl.org/ctdl/terms/requires
+     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
+     *  @property requires
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.requires = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
      *  @type anyURI
      */
-    prototype.socialMedia = null;
+    prototype.subjectWebpage = null;
+}, {conditionManifestOf: "Object", corequisite: "ConditionProfile", entryCondition: "ConditionProfile", recommends: "Object", renewal: "ConditionProfile", requires: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/AlignmentMap
+ *  An entity comprised of a set of alignment or mapping assertions between two existing entities such as mapping a certificate providing advanced standing to a degree.
+ *  Alignment maps provide the means for parties to assert sets of alignments between already existing entities created by themselves or other parties--e.g., a 3rd party mapping of a learning resource owned by one party to a credential owned by another; or, mapping a military occupational experience or Military Occupational Specialty (MOS code) as advanced standing to a course or credential.
+ *  @author credentialengine.org
+ *  @class AlignmentMap
+ *  @module org.credentialengine
+ */
+var AlignmentMap = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.eduworks.com/simpleCtdl", "AlignmentMap");
+};
+AlignmentMap = stjs.extend(AlignmentMap, EcRemoteLinkedData, [], function(constructor, prototype) {
     /**
-     *  http://purl.org/ctdl/terms/telephone
-     *  Telephone number.
-     *  @property telephone
-     *  @type string
+     *  http://purl.org/ctdl/terms/hasStatement
+     *  Alignment assertion belonging to the alignment map.
+     *  @property hasStatement
+     *  @type Statement
      */
-    prototype.telephone = null;
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.hasStatement = null;
+}, {hasStatement: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/GeoCoordinates
+ *  Geographic coordinates of a place or event including latitude and longitude as well as other locational information.
+ *  @author credentialengine.org
+ *  @class GeoCoordinates
+ *  @module org.credentialengine
+ *  @extends StructuredValue
+ */
+var GeoCoordinates = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    StructuredValue.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "GeoCoordinates";
+};
+GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/geoURI
+     *  Entity that describes the longitude, latitude and other location details of a place.
+     *  This may define a place at any scale. Examples include a city, state, province, country, or continent.
+     *  @property geoURI
+     *  @type anyURI
+     */
+    prototype.geoURI = null;
+    /**
+     *  http://purl.org/ctdl/terms/latitude
+     *  Latitude of a location.
+     *  For example 37.42242 (WGS 84)
+     *  @property latitude
+     *  @type float
+     */
+    prototype.latitude = null;
+    /**
+     *  http://purl.org/ctdl/terms/longitude
+     *  The longitude of a location.
+     *  For example -122.08585 (WGS 84).
+     *  @property longitude
+     *  @type float
+     */
+    prototype.longitude = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+}, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/VerificationServiceProfile
  *  Entity describing the means by which someone can verify whether a credential has been attained.
@@ -3957,74 +4007,24 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     prototype.verifiedClaimType = null;
 }, {estimatedCost: "CostProfile", jurisdiction: "JurisdictionProfile", offeredBy: "Object", offeredIn: "JurisdictionProfile", region: "Place", targetCredential: "Object", verifiedClaimType: "CredentialAlignmentObject", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/GeoCoordinates
- *  Geographic coordinates of a place or event including latitude and longitude as well as other locational information.
- *  @author credentialengine.org
- *  @class GeoCoordinates
- *  @module org.credentialengine
- *  @extends StructuredValue
- */
-var GeoCoordinates = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    StructuredValue.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "GeoCoordinates";
-};
-GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/geoURI
-     *  Entity that describes the longitude, latitude and other location details of a place.
-     *  This may define a place at any scale. Examples include a city, state, province, country, or continent.
-     *  @property geoURI
-     *  @type anyURI
-     */
-    prototype.geoURI = null;
-    /**
-     *  http://purl.org/ctdl/terms/latitude
-     *  Latitude of a location.
-     *  For example 37.42242 (WGS 84)
-     *  @property latitude
-     *  @type float
-     */
-    prototype.latitude = null;
-    /**
-     *  http://purl.org/ctdl/terms/longitude
-     *  The longitude of a location.
-     *  For example -122.08585 (WGS 84).
-     *  @property longitude
-     *  @type float
-     */
-    prototype.longitude = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-}, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/RecognizeAction
- *  Action by an independent, neutral, and authoritative agent acknowledging the validity of a resource.
+ *  credentialengine.org/RevokeAction
+ *  Action by an agent removing an awarded credential (credential assertion) from the credential holder based on violations or failure of the holder to renew.
  *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
  *  @author credentialengine.org
- *  @class RecognizeAction
+ *  @class RevokeAction
  *  @module org.credentialengine
  *  @extends CredentialingAction
  */
-var RecognizeAction = /**
+var RevokeAction = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     CredentialingAction.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "RecognizeAction";
+    this.type = "RevokeAction";
 };
-RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function(constructor, prototype) {
+RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  Organization or person performing an action.
@@ -4177,24 +4177,24 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     prototype.startDate = null;
 }, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/ApproveAction
- *  Action by an independent, neutral, and authoritative agent that pronounces a favorable judgment of a credential.
+ *  credentialengine.org/RecognizeAction
+ *  Action by an independent, neutral, and authoritative agent acknowledging the validity of a resource.
  *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
  *  @author credentialengine.org
- *  @class ApproveAction
+ *  @class RecognizeAction
  *  @module org.credentialengine
  *  @extends CredentialingAction
  */
-var ApproveAction = /**
+var RecognizeAction = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     CredentialingAction.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "ApproveAction";
+    this.type = "RecognizeAction";
 };
-ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(constructor, prototype) {
+RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  Organization or person performing an action.
@@ -4262,202 +4262,24 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     prototype.startDate = null;
 }, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/RevokeAction
- *  Action by an agent removing an awarded credential (credential assertion) from the credential holder based on violations or failure of the holder to renew.
+ *  credentialengine.org/RightsAction
+ *  Action asserting legal rights by an agent to possess, defend, transfer, license, and grant conditional access to a credential, learning opportunity, or assessment.
  *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
  *  @author credentialengine.org
- *  @class RevokeAction
+ *  @class RightsAction
  *  @module org.credentialengine
  *  @extends CredentialingAction
  */
-var RevokeAction = /**
+var RightsAction = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     CredentialingAction.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "RevokeAction";
+    this.type = "RightsAction";
 };
-RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/actingAgent
-     *  Organization or person performing an action.
-     *  @property actingAgent
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.actingAgent = null;
-    /**
-     *  http://purl.org/ctdl/terms/actionStatusType
-     *  Entity describing the current disposition or standing of an action; select from an existing enumeration of such types.
-     *  @property actionStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.actionStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/endDate
-     *  Date some event or activity ends.
-     *  @property endDate
-     *  @type date
-     */
-    prototype.endDate = null;
-    /**
-     *  http://purl.org/ctdl/terms/evidenceOfAction
-     *  Entity that proves that the action occured or that the action continues to be valid.
-     *  The evidence verifies the information in the action and is particular to it. It is not a directory of such evidentiary entities or a description of how such verifications might generically be characterized.
-     *  @property evidenceOfAction
-     *  @type anyURI
-     */
-    prototype.evidenceOfAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/instrument
-     *  Object that helped the agent perform the action. e.g. John wrote a book with a pen.
-     *  A credential or other instrument whose criteria was applied in executing the action.
-     *  @property instrument
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.instrument = null;
-    /**
-     *  http://purl.org/ctdl/terms/object
-     *  Object upon which the action is carried out, whose state is kept intact or changed.
-     *  @property object
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.object = null;
-    /**
-     *  http://purl.org/ctdl/terms/participant
-     *  Co-agents that participated in the action indirectly.
-     *  @property participant
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.participant = null;
-    /**
-     *  http://purl.org/ctdl/terms/startDate
-     *  Date the validity or usefulness of the information in this resource begins.
-     *  @property startDate
-     *  @type date
-     */
-    prototype.startDate = null;
-}, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/RenewAction
- *  Action by an agent renewing an existing credential assertion.
- *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
- *  @author credentialengine.org
- *  @class RenewAction
- *  @module org.credentialengine
- *  @extends CredentialingAction
- */
-var RenewAction = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CredentialingAction.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "RenewAction";
-};
-RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/actingAgent
-     *  Organization or person performing an action.
-     *  @property actingAgent
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.actingAgent = null;
-    /**
-     *  http://purl.org/ctdl/terms/actionStatusType
-     *  Entity describing the current disposition or standing of an action; select from an existing enumeration of such types.
-     *  @property actionStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.actionStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/endDate
-     *  Date some event or activity ends.
-     *  @property endDate
-     *  @type date
-     */
-    prototype.endDate = null;
-    /**
-     *  http://purl.org/ctdl/terms/evidenceOfAction
-     *  Entity that proves that the action occured or that the action continues to be valid.
-     *  The evidence verifies the information in the action and is particular to it. It is not a directory of such evidentiary entities or a description of how such verifications might generically be characterized.
-     *  @property evidenceOfAction
-     *  @type anyURI
-     */
-    prototype.evidenceOfAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/instrument
-     *  Object that helped the agent perform the action. e.g. John wrote a book with a pen.
-     *  A credential or other instrument whose criteria was applied in executing the action.
-     *  @property instrument
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.instrument = null;
-    /**
-     *  http://purl.org/ctdl/terms/object
-     *  Object upon which the action is carried out, whose state is kept intact or changed.
-     *  @property object
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.object = null;
-    /**
-     *  http://purl.org/ctdl/terms/participant
-     *  Co-agents that participated in the action indirectly.
-     *  @property participant
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.participant = null;
-    /**
-     *  http://purl.org/ctdl/terms/resultingAward
-     *  Awarded credential resulting from an action.
-     *  An awarded credential is of the type ceterms:CredentialAssertion.
-     *  @property resultingAward
-     *  @type CredentialAssertion
-     */
-    prototype.resultingAward = null;
-    /**
-     *  http://purl.org/ctdl/terms/startDate
-     *  Date the validity or usefulness of the information in this resource begins.
-     *  @property startDate
-     *  @type date
-     */
-    prototype.startDate = null;
-}, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", resultingAward: "CredentialAssertion", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/OfferAction
- *  Action by an authoritative agent offering access to a entity such as a credential, learning opportunity or assessment.
- *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
- *  @author credentialengine.org
- *  @class OfferAction
- *  @module org.credentialengine
- *  @extends CredentialingAction
- */
-var OfferAction = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CredentialingAction.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "OfferAction";
-};
-OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constructor, prototype) {
+RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  Organization or person performing an action.
@@ -4618,24 +4440,24 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     prototype.startDate = null;
 }, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", resultingAward: "CredentialAssertion", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/RightsAction
- *  Action asserting legal rights by an agent to possess, defend, transfer, license, and grant conditional access to a credential, learning opportunity, or assessment.
+ *  credentialengine.org/RegulateAction
+ *  Action by an independent, neutral, and authoritative agent enforcing the legal requirements of a resource.
  *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
  *  @author credentialengine.org
- *  @class RightsAction
+ *  @class RegulateAction
  *  @module org.credentialengine
  *  @extends CredentialingAction
  */
-var RightsAction = /**
+var RegulateAction = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     CredentialingAction.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "RightsAction";
+    this.type = "RegulateAction";
 };
-RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(constructor, prototype) {
+RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  Organization or person performing an action.
@@ -4703,24 +4525,202 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     prototype.startDate = null;
 }, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/RegulateAction
- *  Action by an independent, neutral, and authoritative agent enforcing the legal requirements of a resource.
+ *  credentialengine.org/OfferAction
+ *  Action by an authoritative agent offering access to a entity such as a credential, learning opportunity or assessment.
  *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
  *  @author credentialengine.org
- *  @class RegulateAction
+ *  @class OfferAction
  *  @module org.credentialengine
  *  @extends CredentialingAction
  */
-var RegulateAction = /**
+var OfferAction = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     CredentialingAction.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "RegulateAction";
+    this.type = "OfferAction";
 };
-RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(constructor, prototype) {
+OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/actingAgent
+     *  Organization or person performing an action.
+     *  @property actingAgent
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.actingAgent = null;
+    /**
+     *  http://purl.org/ctdl/terms/actionStatusType
+     *  Entity describing the current disposition or standing of an action; select from an existing enumeration of such types.
+     *  @property actionStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.actionStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/endDate
+     *  Date some event or activity ends.
+     *  @property endDate
+     *  @type date
+     */
+    prototype.endDate = null;
+    /**
+     *  http://purl.org/ctdl/terms/evidenceOfAction
+     *  Entity that proves that the action occured or that the action continues to be valid.
+     *  The evidence verifies the information in the action and is particular to it. It is not a directory of such evidentiary entities or a description of how such verifications might generically be characterized.
+     *  @property evidenceOfAction
+     *  @type anyURI
+     */
+    prototype.evidenceOfAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/instrument
+     *  Object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     *  A credential or other instrument whose criteria was applied in executing the action.
+     *  @property instrument
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.instrument = null;
+    /**
+     *  http://purl.org/ctdl/terms/object
+     *  Object upon which the action is carried out, whose state is kept intact or changed.
+     *  @property object
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.object = null;
+    /**
+     *  http://purl.org/ctdl/terms/participant
+     *  Co-agents that participated in the action indirectly.
+     *  @property participant
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.participant = null;
+    /**
+     *  http://purl.org/ctdl/terms/startDate
+     *  Date the validity or usefulness of the information in this resource begins.
+     *  @property startDate
+     *  @type date
+     */
+    prototype.startDate = null;
+}, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/RenewAction
+ *  Action by an agent renewing an existing credential assertion.
+ *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
+ *  @author credentialengine.org
+ *  @class RenewAction
+ *  @module org.credentialengine
+ *  @extends CredentialingAction
+ */
+var RenewAction = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CredentialingAction.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "RenewAction";
+};
+RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/actingAgent
+     *  Organization or person performing an action.
+     *  @property actingAgent
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.actingAgent = null;
+    /**
+     *  http://purl.org/ctdl/terms/actionStatusType
+     *  Entity describing the current disposition or standing of an action; select from an existing enumeration of such types.
+     *  @property actionStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.actionStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/endDate
+     *  Date some event or activity ends.
+     *  @property endDate
+     *  @type date
+     */
+    prototype.endDate = null;
+    /**
+     *  http://purl.org/ctdl/terms/evidenceOfAction
+     *  Entity that proves that the action occured or that the action continues to be valid.
+     *  The evidence verifies the information in the action and is particular to it. It is not a directory of such evidentiary entities or a description of how such verifications might generically be characterized.
+     *  @property evidenceOfAction
+     *  @type anyURI
+     */
+    prototype.evidenceOfAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/instrument
+     *  Object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     *  A credential or other instrument whose criteria was applied in executing the action.
+     *  @property instrument
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.instrument = null;
+    /**
+     *  http://purl.org/ctdl/terms/object
+     *  Object upon which the action is carried out, whose state is kept intact or changed.
+     *  @property object
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.object = null;
+    /**
+     *  http://purl.org/ctdl/terms/participant
+     *  Co-agents that participated in the action indirectly.
+     *  @property participant
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.participant = null;
+    /**
+     *  http://purl.org/ctdl/terms/resultingAward
+     *  Awarded credential resulting from an action.
+     *  An awarded credential is of the type ceterms:CredentialAssertion.
+     *  @property resultingAward
+     *  @type CredentialAssertion
+     */
+    prototype.resultingAward = null;
+    /**
+     *  http://purl.org/ctdl/terms/startDate
+     *  Date the validity or usefulness of the information in this resource begins.
+     *  @property startDate
+     *  @type date
+     */
+    prototype.startDate = null;
+}, {actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", resultingAward: "CredentialAssertion", actingAgent: "Object", actionStatusType: "CredentialAlignmentObject", instrument: "Object", object: "Object", participant: "Object", result: "Thing", actionStatus: "ActionStatusType", target: "EntryPoint", agent: "Person", participant: "Person", instrument: "Thing", object: "Thing", error: "Thing", location: "PostalAddress", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/ApproveAction
+ *  Action by an independent, neutral, and authoritative agent that pronounces a favorable judgment of a credential.
+ *  Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.
+ *  @author credentialengine.org
+ *  @class ApproveAction
+ *  @module org.credentialengine
+ *  @extends CredentialingAction
+ */
+var ApproveAction = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CredentialingAction.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "ApproveAction";
+};
+ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  Organization or person performing an action.
@@ -5491,639 +5491,23 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/Diploma
- *  Credential awarded by educational institutions for successful completion of a course of study or its equivalent.
+ *  credentialengine.org/License
+ *  Credential awarded by a government agency that constitutes legal authority to do a specific job and/or utilize a specific item, system or infrastructure and are typically earned through some combination of degree or certificate attainment, certifications, assessments, work experience, and/or fees, and are time-limited and must be renewed periodically.
  *  @author credentialengine.org
- *  @class Diploma
+ *  @class License
  *  @module org.credentialengine
  *  @extends Credential
  */
-var Diploma = /**
+var License = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     Credential.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "Diploma";
+    this.type = "License";
 };
-Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/accreditedBy
-     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
-     *  @property accreditedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.accreditedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/accreditedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
-     *  @property accreditedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.accreditedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/administrationProcess
-     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
-     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
-     *  @property administrationProcess
-     *  @type ProcessProfile
-     */
-    prototype.administrationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/advancedStandingFrom
-     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
-     *  @property advancedStandingFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.advancedStandingFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternateName
-     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
-     *  @property alternateName
-     *  @type langString
-     */
-    prototype.alternateName = null;
-    /**
-     *  http://purl.org/ctdl/terms/appealProcess
-     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
-     *  @property appealProcess
-     *  @type ProcessProfile
-     */
-    prototype.appealProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/assessmentDeliveryType
-     *  Delivery type for the assessment for the credential.
-     *  Indicates the delivery type for the assessment for the credential.
-     *  @property assessmentDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.assessmentDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceLevelType
-     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
-     *  @property audienceLevelType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceLevelType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableAt
-     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableAt
-     *  @type Place
-     */
-    prototype.availableAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableOnlineAt
-     *  Online location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableOnlineAt
-     *  @type anyURI
-     */
-    prototype.availableOnlineAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/broadAlignment
-     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
-     *  @property broadAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.broadAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/codedNotation
-     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
-     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
-     *  @property codedNotation
-     *  @type string
-     */
-    prototype.codedNotation = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonConditions
-     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
-     *  @property commonConditions
-     *  @type ConditionManifest
-     */
-    prototype.commonConditions = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonCosts
-     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
-     *  @property commonCosts
-     *  @type CostManifest
-     */
-    prototype.commonCosts = null;
-    /**
-     *  http://purl.org/ctdl/terms/complaintProcess
-     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
-     *  @property complaintProcess
-     *  @type ProcessProfile
-     */
-    prototype.complaintProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/copyrightHolder
-     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
-     *  @property copyrightHolder
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.copyrightHolder = null;
-    /**
-     *  http://purl.org/ctdl/terms/corequisite
-     *  Credentials that must be pursued concurrently.
-     *  Includes dual (double) degrees that cannot be earned independently of each other.
-     *  @property corequisite
-     *  @type ConditionProfile
-     */
-    prototype.corequisite = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialId
-     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
-     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
-     *  @property credentialId
-     *  @type string
-     */
-    prototype.credentialId = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialStatusType
-     *  Type of official status of the credential; select from an enumeration of such types.
-     *  @property credentialStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.credentialStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/developmentProcess
-     *  Entity describing the process by which a credential, or aspects of it, were created.
-     *  @property developmentProcess
-     *  @type ProcessProfile
-     */
-    prototype.developmentProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/earnings
-     *  Entity describing aggregate credential holder earnings data.
-     *  @property earnings
-     *  @type EarningsProfile
-     */
-    prototype.earnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/employmentOutcome
-     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
-     *  @property employmentOutcome
-     *  @type EmploymentOutcomeProfile
-     */
-    prototype.employmentOutcome = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedDuration
-     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
-     *  @property estimatedDuration
-     *  @type DurationProfile
-     */
-    prototype.estimatedDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/exactAlignment
-     *  Relevant concepts in two entities being compared are coextensive.
-     *  @property exactAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.exactAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/financialAssistance
-     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
-     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
-     *  @property financialAssistance
-     *  @type FinancialAssistanceProfile
-     */
-    prototype.financialAssistance = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasPart
-     *  Indicates a separately identifiable and independently useful component of the entity.
-     *  Such partitive components can frequently be used in more than one context.
-     *  @property hasPart
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.hasPart = null;
-    /**
-     *  http://purl.org/ctdl/terms/holders
-     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
-     *  @property holders
-     *  @type HoldersProfile
-     */
-    prototype.holders = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/industryType
-     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
-     *  @property industryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.industryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/inLanguage
-     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
-     *  @property inLanguage
-     *  @type language
-     */
-    prototype.inLanguage = null;
-    /**
-     *  http://purl.org/ctdl/terms/instructionalProgramType
-     *  Type of instructional program; select from an existing enumeration of such types.
-     *  @property instructionalProgramType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.instructionalProgramType = null;
-    /**
-     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
-     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isAdvancedStandingFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isAdvancedStandingFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPartOf
-     *  Indicates another entity of which this entity is a component.
-     *  Covers partitive notions such as "embedded".
-     *  @property isPartOf
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPartOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPreparationFor
-     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
-     *  @property isPreparationFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPreparationFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRecommendedFor
-     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRecommendedFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRecommendedFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRequiredFor
-     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRequiredFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRequiredFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/latestVersion
-     *  Latest version of the credential.
-     *  @property latestVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.latestVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/learningDeliveryType
-     *  Delivery type for the learning opportunity for the credential.
-     *  Indicates the delivery type for the learning opportunity for the credential.
-     *  @property learningDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.learningDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/maintenanceProcess
-     *  Entity describing the process by which the credential is maintained including review and updating.
-     *  Such maintenance does not include renewal of a credential by an individual holder.
-     *  @property maintenanceProcess
-     *  @type ProcessProfile
-     */
-    prototype.maintenanceProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/majorAlignment
-     *  Major overlap of relevant concepts between the two resources being compared.
-     *  @property majorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.majorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/minorAlignment
-     *  Minor overlap of relevant concepts between the two credentials being compared.
-     *  @property minorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.minorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/naics
-     *  North American Industry Classification System (NAICS) code of an organization or business person.
-     *  @property naics
-     *  @type string
-     */
-    prototype.naics = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/narrowAlignment
-     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
-     *  @property narrowAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.narrowAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/occupationType
-     *  Type of occupation; select from an existing enumeration of such types.
-     *  @property occupationType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.occupationType = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredBy
-     *  Agent that offers the credential, learning opportunity or assessment.
-     *  @property offeredBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.offeredBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredIn
-     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
-     *  @property offeredIn
-     *  @type JurisdictionProfile
-     */
-    prototype.offeredIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/ownedBy
-     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
-     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
-     *  @property ownedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.ownedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/preparationFrom
-     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
-     *  @property preparationFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.preparationFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/previousVersion
-     *  Version of the credential that immediately precedes this credential.
-     *  @property previousVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.previousVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandards
-     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
-     *  @property processStandards
-     *  @type anyURI
-     */
-    prototype.processStandards = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandardsDescription
-     *  Textual description of the criteria, standards, and/or requirements used with a process.
-     *  @property processStandardsDescription
-     *  @type langString
-     */
-    prototype.processStandardsDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/purposeType
-     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
-     *  @property purposeType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.purposeType = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recommends
-     *  Recommended credential, learning opportunity or assessment.
-     *  @property recommends
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recommends = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedBy
-     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
-     *  @property regulatedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.regulatedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
-     *  @property regulatedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.regulatedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/relatedAction
-     *  Action related to the credential.
-     *  @property relatedAction
-     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
-     */
-    prototype.relatedAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewal
-     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
-     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
-     *  @property renewal
-     *  @type ConditionProfile
-     */
-    prototype.renewal = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewalFrequency
-     *  Frequency with which the credential needs to be renewed.
-     *  @property renewalFrequency
-     *  @type duration
-     */
-    prototype.renewalFrequency = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedBy
-     *  Organization or person that handles the renewal of the credential.
-     *  @property renewedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.renewedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
-     *  @property renewedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.renewedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/requires
-     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
-     *  @property requires
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.requires = null;
-    /**
-     *  http://purl.org/ctdl/terms/reviewProcess
-     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
-     *  @property reviewProcess
-     *  @type ProcessProfile
-     */
-    prototype.reviewProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocation
-     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
-     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
-     *  @property revocation
-     *  @type RevocationProfile
-     */
-    prototype.revocation = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationProcess
-     *  Entity describing the process by which the credential is revoked.
-     *  @property revocationProcess
-     *  @type ProcessProfile
-     */
-    prototype.revocationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedBy
-     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
-     *  @property revokedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.revokedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
-     *  @property revokedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.revokedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/subject
-     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
-     *  @property subject
-     *  @type CredentialAlignmentObject
-     */
-    prototype.subject = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/versionIdentifier
-     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
-     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
-     *  @property versionIdentifier
-     *  @type IdentifierValue
-     */
-    prototype.versionIdentifier = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/MicroCredential
- *  Credential that addresses a subset of field-specific knowledge, skills, or competencies; often developmental with relationships to other micro-credentials and field credentials.
- *  @author credentialengine.org
- *  @class MicroCredential
- *  @module org.credentialengine
- *  @extends Credential
- */
-var MicroCredential = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Credential.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "MicroCredential";
-};
-MicroCredential = stjs.extend(MicroCredential, Credential, [], function(constructor, prototype) {
+License = stjs.extend(License, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
@@ -7339,23 +6723,639 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/Badge
- *  Recognition designed to be displayed as a marker of accomplishment, activity, achievement, skill, interest, association, or identity.
+ *  credentialengine.org/Certification
+ *  Time-limited, renewable credential awarded by an authoritative body to an individual or organization for demonstrating the designated knowledge, skills, and abilities to perform a specific occupation.
  *  @author credentialengine.org
- *  @class Badge
+ *  @class Certification
  *  @module org.credentialengine
  *  @extends Credential
  */
-var Badge = /**
+var Certification = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     Credential.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "Badge";
+    this.type = "Certification";
 };
-Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
+Certification = stjs.extend(Certification, Credential, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/accreditedBy
+     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
+     *  @property accreditedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.accreditedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/accreditedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
+     *  @property accreditedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.accreditedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/administrationProcess
+     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
+     *  @property administrationProcess
+     *  @type ProcessProfile
+     */
+    prototype.administrationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/advancedStandingFrom
+     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
+     *  @property advancedStandingFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.advancedStandingFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternateName
+     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
+     *  @property alternateName
+     *  @type langString
+     */
+    prototype.alternateName = null;
+    /**
+     *  http://purl.org/ctdl/terms/appealProcess
+     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
+     *  @property appealProcess
+     *  @type ProcessProfile
+     */
+    prototype.appealProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/assessmentDeliveryType
+     *  Delivery type for the assessment for the credential.
+     *  Indicates the delivery type for the assessment for the credential.
+     *  @property assessmentDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.assessmentDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceLevelType
+     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
+     *  @property audienceLevelType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceLevelType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableAt
+     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableAt
+     *  @type Place
+     */
+    prototype.availableAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableOnlineAt
+     *  Online location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableOnlineAt
+     *  @type anyURI
+     */
+    prototype.availableOnlineAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/broadAlignment
+     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+     *  @property broadAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.broadAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/codedNotation
+     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
+     *  @property codedNotation
+     *  @type string
+     */
+    prototype.codedNotation = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonConditions
+     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
+     *  @property commonConditions
+     *  @type ConditionManifest
+     */
+    prototype.commonConditions = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonCosts
+     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
+     *  @property commonCosts
+     *  @type CostManifest
+     */
+    prototype.commonCosts = null;
+    /**
+     *  http://purl.org/ctdl/terms/complaintProcess
+     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
+     *  @property complaintProcess
+     *  @type ProcessProfile
+     */
+    prototype.complaintProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/copyrightHolder
+     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
+     *  @property copyrightHolder
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.copyrightHolder = null;
+    /**
+     *  http://purl.org/ctdl/terms/corequisite
+     *  Credentials that must be pursued concurrently.
+     *  Includes dual (double) degrees that cannot be earned independently of each other.
+     *  @property corequisite
+     *  @type ConditionProfile
+     */
+    prototype.corequisite = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialId
+     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
+     *  @property credentialId
+     *  @type string
+     */
+    prototype.credentialId = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialStatusType
+     *  Type of official status of the credential; select from an enumeration of such types.
+     *  @property credentialStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.credentialStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/developmentProcess
+     *  Entity describing the process by which a credential, or aspects of it, were created.
+     *  @property developmentProcess
+     *  @type ProcessProfile
+     */
+    prototype.developmentProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/earnings
+     *  Entity describing aggregate credential holder earnings data.
+     *  @property earnings
+     *  @type EarningsProfile
+     */
+    prototype.earnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/employmentOutcome
+     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+     *  @property employmentOutcome
+     *  @type EmploymentOutcomeProfile
+     */
+    prototype.employmentOutcome = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedDuration
+     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
+     *  @property estimatedDuration
+     *  @type DurationProfile
+     */
+    prototype.estimatedDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/exactAlignment
+     *  Relevant concepts in two entities being compared are coextensive.
+     *  @property exactAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.exactAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/financialAssistance
+     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
+     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
+     *  @property financialAssistance
+     *  @type FinancialAssistanceProfile
+     */
+    prototype.financialAssistance = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasPart
+     *  Indicates a separately identifiable and independently useful component of the entity.
+     *  Such partitive components can frequently be used in more than one context.
+     *  @property hasPart
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.hasPart = null;
+    /**
+     *  http://purl.org/ctdl/terms/holders
+     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
+     *  @property holders
+     *  @type HoldersProfile
+     */
+    prototype.holders = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/industryType
+     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
+     *  @property industryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.industryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/inLanguage
+     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
+     *  @property inLanguage
+     *  @type language
+     */
+    prototype.inLanguage = null;
+    /**
+     *  http://purl.org/ctdl/terms/instructionalProgramType
+     *  Type of instructional program; select from an existing enumeration of such types.
+     *  @property instructionalProgramType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.instructionalProgramType = null;
+    /**
+     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
+     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isAdvancedStandingFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isAdvancedStandingFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPartOf
+     *  Indicates another entity of which this entity is a component.
+     *  Covers partitive notions such as "embedded".
+     *  @property isPartOf
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPartOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPreparationFor
+     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
+     *  @property isPreparationFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPreparationFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRecommendedFor
+     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRecommendedFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRecommendedFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRequiredFor
+     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRequiredFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRequiredFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/latestVersion
+     *  Latest version of the credential.
+     *  @property latestVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.latestVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/learningDeliveryType
+     *  Delivery type for the learning opportunity for the credential.
+     *  Indicates the delivery type for the learning opportunity for the credential.
+     *  @property learningDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.learningDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/maintenanceProcess
+     *  Entity describing the process by which the credential is maintained including review and updating.
+     *  Such maintenance does not include renewal of a credential by an individual holder.
+     *  @property maintenanceProcess
+     *  @type ProcessProfile
+     */
+    prototype.maintenanceProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/majorAlignment
+     *  Major overlap of relevant concepts between the two resources being compared.
+     *  @property majorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.majorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/minorAlignment
+     *  Minor overlap of relevant concepts between the two credentials being compared.
+     *  @property minorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.minorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/naics
+     *  North American Industry Classification System (NAICS) code of an organization or business person.
+     *  @property naics
+     *  @type string
+     */
+    prototype.naics = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/narrowAlignment
+     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
+     *  @property narrowAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.narrowAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/occupationType
+     *  Type of occupation; select from an existing enumeration of such types.
+     *  @property occupationType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.occupationType = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredBy
+     *  Agent that offers the credential, learning opportunity or assessment.
+     *  @property offeredBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.offeredBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredIn
+     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+     *  @property offeredIn
+     *  @type JurisdictionProfile
+     */
+    prototype.offeredIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/ownedBy
+     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
+     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
+     *  @property ownedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.ownedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/preparationFrom
+     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+     *  @property preparationFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.preparationFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/previousVersion
+     *  Version of the credential that immediately precedes this credential.
+     *  @property previousVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.previousVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandards
+     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
+     *  @property processStandards
+     *  @type anyURI
+     */
+    prototype.processStandards = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandardsDescription
+     *  Textual description of the criteria, standards, and/or requirements used with a process.
+     *  @property processStandardsDescription
+     *  @type langString
+     */
+    prototype.processStandardsDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/purposeType
+     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
+     *  @property purposeType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.purposeType = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recommends
+     *  Recommended credential, learning opportunity or assessment.
+     *  @property recommends
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recommends = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedBy
+     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
+     *  @property regulatedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.regulatedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+     *  @property regulatedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.regulatedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/relatedAction
+     *  Action related to the credential.
+     *  @property relatedAction
+     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
+     */
+    prototype.relatedAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewal
+     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
+     *  @property renewal
+     *  @type ConditionProfile
+     */
+    prototype.renewal = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewalFrequency
+     *  Frequency with which the credential needs to be renewed.
+     *  @property renewalFrequency
+     *  @type duration
+     */
+    prototype.renewalFrequency = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedBy
+     *  Organization or person that handles the renewal of the credential.
+     *  @property renewedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.renewedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
+     *  @property renewedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.renewedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/requires
+     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
+     *  @property requires
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.requires = null;
+    /**
+     *  http://purl.org/ctdl/terms/reviewProcess
+     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+     *  @property reviewProcess
+     *  @type ProcessProfile
+     */
+    prototype.reviewProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocation
+     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
+     *  @property revocation
+     *  @type RevocationProfile
+     */
+    prototype.revocation = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationProcess
+     *  Entity describing the process by which the credential is revoked.
+     *  @property revocationProcess
+     *  @type ProcessProfile
+     */
+    prototype.revocationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedBy
+     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+     *  @property revokedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.revokedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+     *  @property revokedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.revokedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/subject
+     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+     *  @property subject
+     *  @type CredentialAlignmentObject
+     */
+    prototype.subject = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/versionIdentifier
+     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
+     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
+     *  @property versionIdentifier
+     *  @type IdentifierValue
+     */
+    prototype.versionIdentifier = null;
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/MicroCredential
+ *  Credential that addresses a subset of field-specific knowledge, skills, or competencies; often developmental with relationships to other micro-credentials and field credentials.
+ *  @author credentialengine.org
+ *  @class MicroCredential
+ *  @module org.credentialengine
+ *  @extends Credential
+ */
+var MicroCredential = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    Credential.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "MicroCredential";
+};
+MicroCredential = stjs.extend(MicroCredential, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
@@ -8592,23 +8592,23 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/Certification
- *  Time-limited, renewable credential awarded by an authoritative body to an individual or organization for demonstrating the designated knowledge, skills, and abilities to perform a specific occupation.
+ *  credentialengine.org/Badge
+ *  Recognition designed to be displayed as a marker of accomplishment, activity, achievement, skill, interest, association, or identity.
  *  @author credentialengine.org
- *  @class Certification
+ *  @class Badge
  *  @module org.credentialengine
  *  @extends Credential
  */
-var Certification = /**
+var Badge = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     Credential.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "Certification";
+    this.type = "Badge";
 };
-Certification = stjs.extend(Certification, Credential, [], function(constructor, prototype) {
+Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
@@ -9208,23 +9208,23 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/License
- *  Credential awarded by a government agency that constitutes legal authority to do a specific job and/or utilize a specific item, system or infrastructure and are typically earned through some combination of degree or certificate attainment, certifications, assessments, work experience, and/or fees, and are time-limited and must be renewed periodically.
+ *  credentialengine.org/Diploma
+ *  Credential awarded by educational institutions for successful completion of a course of study or its equivalent.
  *  @author credentialengine.org
- *  @class License
+ *  @class Diploma
  *  @module org.credentialengine
  *  @extends Credential
  */
-var License = /**
+var Diploma = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     Credential.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "License";
+    this.type = "Diploma";
 };
-License = stjs.extend(License, Credential, [], function(constructor, prototype) {
+Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
@@ -9824,77 +9824,635 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/IndustryClassification
- *  Class of of concept schemes defining industries such as NAICS in the U.S. and ESCO in the European Union.
+ *  credentialengine.org/CredentialOrganization
+ *  Organization that plays one or more key roles in the lifecycle of a credential.
  *  @author credentialengine.org
- *  @class IndustryClassification
+ *  @class CredentialOrganization
  *  @module org.credentialengine
- *  @extends CredentialFramework
+ *  @extends Agent
  */
-var IndustryClassification = /**
+var CredentialOrganization = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
-    CredentialFramework.call(this);
+    Agent.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "IndustryClassification";
+    this.type = "CredentialOrganization";
 };
-IndustryClassification = stjs.extend(IndustryClassification, CredentialFramework, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/accreditedBy
+     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
+     *  @property accreditedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.accreditedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/accreditedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
+     *  @property accreditedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.accreditedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/address
+     *  Particulars describing the location of the place.
+     *  @property address
+     *  @type Place
+     */
+    prototype.address = null;
+    /**
+     *  http://purl.org/ctdl/terms/administrationProcess
+     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
+     *  @property administrationProcess
+     *  @type ProcessProfile
+     */
+    prototype.administrationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/agentPurpose
+     *  Organization's primary purpose as found on an "about" page of a website.
+     *  @property agentPurpose
+     *  @type anyURI
+     */
+    prototype.agentPurpose = null;
+    /**
+     *  http://purl.org/ctdl/terms/agentPurposeDescription
+     *  Short, key phrases describing the primary purpose of an organization as might be derived from the "about" page of it's website.
+     *  @property agentPurposeDescription
+     *  @type langString
+     */
+    prototype.agentPurposeDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/agentSectorType
+     *  Type of sociological, economic, or political subdivision served by an organization; select from an existing enumeration of such types.
+     *  @property agentSectorType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.agentSectorType = null;
+    /**
+     *  http://purl.org/ctdl/terms/agentType
+     *  Type of organization such as educational institution, credentialing organization or quality assurance body; select from an existing enumeration of such types.
+     *  @property agentType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.agentType = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternateName
+     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
+     *  @property alternateName
+     *  @type langString
+     */
+    prototype.alternateName = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternativeIdentifier
+     *  Alternative, publicly available and globally unique identifier for an organization issued by an authoritative entity.
+     *  The alternative identifier should be used where no identifier is available for the DUNS, FEIN, NAICS or IPEDS ID properties.
+     *  @property alternativeIdentifier
+     *  @type IdentifierValue
+     */
+    prototype.alternativeIdentifier = null;
+    /**
+     *  http://purl.org/ctdl/terms/appealProcess
+     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
+     *  @property appealProcess
+     *  @type ProcessProfile
+     */
+    prototype.appealProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/approves
+     *  Credential, assessment, learning opportunity, or organization for which this organization pronounces favorable judgment.
+     *  @property approves
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.approves = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/complaintProcess
+     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
+     *  @property complaintProcess
+     *  @type ProcessProfile
+     */
+    prototype.complaintProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialingAction
+     *  Indicates a past or potential credentialing action in which the resource being described plays an 'object' role.
+     *  @property credentialingAction
+     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
+     */
+    prototype.credentialingAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
+    /**
+     *  http://purl.org/ctdl/terms/department
+     *  Department of the organization.
+     *  @property department
+     *  @type CredentialOrganization | QACredentialOrganization
+     */
+    prototype.department = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/developmentProcess
+     *  Entity describing the process by which a credential, or aspects of it, were created.
+     *  @property developmentProcess
+     *  @type ProcessProfile
+     */
+    prototype.developmentProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/duns
+     *  Dun & Bradstreet DUNS number for identifying an organization or business person.
+     *  @property duns
+     *  @type string
+     */
+    prototype.duns = null;
+    /**
+     *  http://purl.org/ctdl/terms/email
+     *  Email address of the organization or person.
+     *  @property email
+     *  @type string
+     */
+    prototype.email = null;
+    /**
+     *  http://purl.org/ctdl/terms/employee
+     *  Person employed for wages or salary by the organization.
+     *  @property employee
+     *  @type CredentialPerson
+     */
+    prototype.employee = null;
+    /**
+     *  http://purl.org/ctdl/terms/fein
+     *  Federal Employer Identification Number (FEIN) identifying organizations, persons, states, government agencies, corporations, and companies.
+     *  @property fein
+     *  @type string
+     */
+    prototype.fein = null;
+    /**
+     *  http://purl.org/ctdl/terms/foundingDate
+     *  Date the organization was founded.
+     *  @property foundingDate
+     *  @type string
+     */
+    prototype.foundingDate = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasConditionManifest
+     *  Entity that describes a set of constraints, prerequisites, entry conditions, or requirements applicable across the organization, sub-organization or sets of credentials or acitivites.
+     *  @property hasConditionManifest
+     *  @type ConditionManifest
+     */
+    prototype.hasConditionManifest = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasCostManifest
+     *  Entity that describes a set of cost data applicable across the organization, sub-organization or sets of credentials or acitivites.
+     *  @property hasCostManifest
+     *  @type CostManifest
+     */
+    prototype.hasCostManifest = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasVerificationService
+     *  Entity describing available systems provided by the agent to verify credential holders.
+     *  Systems in place to verify credential holders and communicate the current credentialing status of all credential holders to employers and other labor market participants, as well as to education and workforce development funders and regulators.
+     *  @property hasVerificationService
+     *  @type VerificationServiceProfile
+     */
+    prototype.hasVerificationService = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/industryType
+     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
+     *  @property industryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.industryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/ipedsID
+     *  Unique six digit identifier assigned to all U.S. institutions that have submitted data to the Integrated Postsecondary Education Data System (IPEDS).
+     *  @property ipedsID
+     *  @type string
+     */
+    prototype.ipedsID = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/leiCode
+     *  A 20-digit, alpha-numeric code, based on the ISO 17442 standard, for identifying legal entities participating in financial transactions.
+     *  @property leiCode
+     *  @type string
+     */
+    prototype.leiCode = null;
+    /**
+     *  http://purl.org/ctdl/terms/maintenanceProcess
+     *  Entity describing the process by which the credential is maintained including review and updating.
+     *  Such maintenance does not include renewal of a credential by an individual holder.
+     *  @property maintenanceProcess
+     *  @type ProcessProfile
+     */
+    prototype.maintenanceProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/missionAndGoalsStatement
+     *  Webpage or online document that defines or explains the mission and goals of the organization.
+     *  @property missionAndGoalsStatement
+     *  @type anyURI
+     */
+    prototype.missionAndGoalsStatement = null;
+    /**
+     *  http://purl.org/ctdl/terms/missionAndGoalsStatementDescription
+     *  Textual statement of the mission and goals of the organization.
+     *  @property missionAndGoalsStatementDescription
+     *  @type langString
+     */
+    prototype.missionAndGoalsStatementDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/naics
+     *  North American Industry Classification System (NAICS) code of an organization or business person.
+     *  @property naics
+     *  @type string
+     */
+    prototype.naics = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/offers
+     *  Credential, learning opportunity or assessment offered or conferred by the organization or person.
+     *  @property offers
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.offers = null;
+    /**
+     *  http://purl.org/ctdl/terms/opeID
+     *  OPE ID number (U.S. Office of Postsecondary Education Identification), sometimes referred to as the Federal School Code.
+     *  Identification number used by the U.S. Department of Education's Office of Postsecondary Education (OPE) to identify schools that have Program Participation Agreements (PPA) so that its students are eligible to participate in Federal Student Financial Assistance (FAFSA) programs under Title IV regulations. This is a 6-digit number followed by a 2-digit suffix used to identify branches, additional locations, and other entities that are part of the eligible institution.
+     *  @property opeID
+     *  @type string
+     */
+    prototype.opeID = null;
+    /**
+     *  http://purl.org/ctdl/terms/owns
+     *  Credential, learning opportunity or assessment over which the organization or person claims legal title.
+     *  Generally, the value of the property should be one of the subclasses of ceterms:Credential.
+     *  @property owns
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.owns = null;
+    /**
+     *  http://purl.org/ctdl/terms/parentOrganization
+     *  Larger organization exercising authority over the organization being described.
+     *  @property parentOrganization
+     *  @type CredentialOrganization | QACredentialOrganization
+     */
+    prototype.parentOrganization = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizes
+     *  Credential, learning opportunity or assessment that the agent recommends, endorses, indicates preference for, or otherwise provides a positive judgment.
+     *  @property recognizes
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recognizes = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedBy
+     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
+     *  @property regulatedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.regulatedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+     *  @property regulatedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.regulatedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/renews
+     *  Credential type that has its validity extended by the organization or person.
+     *  The value of ceterms:renews should be one of the specific subclasses of ceterms:Credential.
+     *  @property renews
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.renews = null;
+    /**
+     *  http://purl.org/ctdl/terms/reviewProcess
+     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+     *  @property reviewProcess
+     *  @type ProcessProfile
+     */
+    prototype.reviewProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationProcess
+     *  Entity describing the process by which the credential is revoked.
+     *  @property revocationProcess
+     *  @type ProcessProfile
+     */
+    prototype.revocationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokes
+     *  Credential type that can be invalidated or retracted by the awarding agent.
+     *  The value of ceterms:revokes should be one of the specific subclasses of ceterms:Credential.
+     *  @property revokes
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.revokes = null;
+    /**
+     *  http://purl.org/ctdl/terms/sameAs
+     *  Another entity that unambiguously indicates the identity of the entity being described.
+     *  Entities that may indicate identity include, but are not limited to, descriptions of entities in open databases such as DBpedia and Wikidata or social media accounts such as FaceBook and LinkedIn.
+     *  @property sameAs
+     *  @type anyURI
+     */
+    prototype.sameAs = null;
+    /**
+     *  http://purl.org/ctdl/terms/serviceType
+     *  Type of service offered by the agent being described; select from an existing enumeration of such terms.
+     *  @property serviceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.serviceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/socialMedia
+     *  Social media access point for an agent or an agent's contact point.
+     *  @property socialMedia
+     *  @type anyURI
+     */
+    prototype.socialMedia = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/subOrganization
+     *  Organization in a subordinate or lower position than a parent organization.
+     *  @property subOrganization
+     *  @type CredentialOrganization | QACredentialOrganization
+     */
+    prototype.subOrganization = null;
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", address: "Place", administrationProcess: "ProcessProfile", agentSectorType: "CredentialAlignmentObject", agentType: "CredentialAlignmentObject", alternativeIdentifier: "IdentifierValue", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", approves: "Object", complaintProcess: "ProcessProfile", credentialingAction: "Object", department: "Object", developmentProcess: "ProcessProfile", employee: "CredentialPerson", hasConditionManifest: "ConditionManifest", hasCostManifest: "CostManifest", hasVerificationService: "VerificationServiceProfile", industryType: "CredentialAlignmentObject", jurisdiction: "JurisdictionProfile", maintenanceProcess: "ProcessProfile", offers: "Object", owns: "Object", parentOrganization: "Object", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recognizes: "Object", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", renews: "Object", reviewProcess: "ProcessProfile", revocationProcess: "ProcessProfile", revokes: "Object", serviceType: "CredentialAlignmentObject", subOrganization: "Object", hasAlignmentMap: "AlignmentMap", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/InstructionalProgramClassification
- *  Class of concept schemes defining instructional program types such as the CIP codes in the U.S.
+ *  credentialengine.org/CredentialPerson
+ *  Person who plays a role as primary agent in a credentialing action.
+ *  The ceterms:CredentialPerson class should be used to describe persons directly engaged as primary agent in credentialing actions such as approving, offering, recognizing, renewing and revoking credentials and should not include persons merely affiliated with, or employed by organizations that perform such actions.
  *  @author credentialengine.org
- *  @class InstructionalProgramClassification
+ *  @class CredentialPerson
  *  @module org.credentialengine
- *  @extends CredentialFramework
+ *  @extends Agent
  */
-var InstructionalProgramClassification = /**
+var CredentialPerson = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
-    CredentialFramework.call(this);
+    Agent.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "InstructionalProgramClassification";
+    this.type = "CredentialPerson";
 };
-InstructionalProgramClassification = stjs.extend(InstructionalProgramClassification, CredentialFramework, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/OccupationClassification
- *  Class of concept schemes identifying occupations such as the Standard Occupational Classification (SOC) system in the U.S. and the European Skills/Competences, Qualifications and Occupations (ESCO).
- *  @author credentialengine.org
- *  @class OccupationClassification
- *  @module org.credentialengine
- *  @extends CredentialFramework
- */
-var OccupationClassification = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    CredentialFramework.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "OccupationClassification";
-};
-OccupationClassification = stjs.extend(OccupationClassification, CredentialFramework, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/Course
- *  Structured sequence of one or more educational activities that aims to develop a prescribed set of knowledge, competence or ability of learners.
- *  @author credentialengine.org
- *  @class Course
- *  @module org.credentialengine
- *  @extends LearningOpportunity
- */
-var Course = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    LearningOpportunity.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "Course";
-};
-Course = stjs.extend(Course, LearningOpportunity, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/affiliation
+     *  Organization to which a person is formally related through work, sudy, or social engagement.
+     *  @property affiliation
+     *  @type CredentialOrganization | QACredentialOrganization
+     */
+    prototype.affiliation = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/approves
+     *  Credential, assessment, learning opportunity, or organization for which this organization pronounces favorable judgment.
+     *  @property approves
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.approves = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/email
+     *  Email address of the organization or person.
+     *  @property email
+     *  @type string
+     */
+    prototype.email = null;
+    /**
+     *  http://purl.org/ctdl/terms/familyName
+     *  Family name such as the last name of a person in the U.S..
+     *  The ceterms:familyName property can be used along with givenName instead of the ceterms:name property.
+     *  @property familyName
+     *  @type langString
+     */
+    prototype.familyName = null;
+    /**
+     *  http://purl.org/ctdl/terms/givenName
+     *  First name of a person.
+     *  @property givenName
+     *  @type langString
+     */
+    prototype.givenName = null;
+    /**
+     *  http://purl.org/ctdl/terms/honorificSuffix
+     *  Honorific suffix preceding a person's name such as M.D. , PhD, or MSCSW.
+     *  @property honorificSuffix
+     *  @type langString
+     */
+    prototype.honorificSuffix = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/offers
+     *  Credential, learning opportunity or assessment offered or conferred by the organization or person.
+     *  @property offers
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.offers = null;
+    /**
+     *  http://purl.org/ctdl/terms/owns
+     *  Credential, learning opportunity or assessment over which the organization or person claims legal title.
+     *  Generally, the value of the property should be one of the subclasses of ceterms:Credential.
+     *  @property owns
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.owns = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizes
+     *  Credential, learning opportunity or assessment that the agent recommends, endorses, indicates preference for, or otherwise provides a positive judgment.
+     *  @property recognizes
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recognizes = null;
+    /**
+     *  http://purl.org/ctdl/terms/renews
+     *  Credential type that has its validity extended by the organization or person.
+     *  The value of ceterms:renews should be one of the specific subclasses of ceterms:Credential.
+     *  @property renews
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.renews = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokes
+     *  Credential type that can be invalidated or retracted by the awarding agent.
+     *  The value of ceterms:revokes should be one of the specific subclasses of ceterms:Credential.
+     *  @property revokes
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.revokes = null;
+    /**
+     *  http://purl.org/ctdl/terms/sameAs
+     *  Another entity that unambiguously indicates the identity of the entity being described.
+     *  Entities that may indicate identity include, but are not limited to, descriptions of entities in open databases such as DBpedia and Wikidata or social media accounts such as FaceBook and LinkedIn.
+     *  @property sameAs
+     *  @type anyURI
+     */
+    prototype.sameAs = null;
+    /**
+     *  http://purl.org/ctdl/terms/serviceType
+     *  Type of service offered by the agent being described; select from an existing enumeration of such terms.
+     *  @property serviceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.serviceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/socialMedia
+     *  Social media access point for an agent or an agent's contact point.
+     *  @property socialMedia
+     *  @type anyURI
+     */
+    prototype.socialMedia = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/targetContactPoint
+     *  Options for contacting the organization or person.
+     *  @property targetContactPoint
+     *  @type ContactPoint
+     */
+    prototype.targetContactPoint = null;
+    /**
+     *  http://purl.org/ctdl/terms/worksFor
+     *  Person's place of employment.
+     *  @property worksFor
+     *  @type CredentialOrganization | QACredentialOrganization
+     */
+    prototype.worksFor = null;
+}, {affiliation: "Object", approvedBy: "Object", approvedIn: "JurisdictionProfile", approves: "Object", offers: "Object", owns: "Object", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recognizes: "Object", renews: "Object", revokes: "Object", serviceType: "CredentialAlignmentObject", targetContactPoint: "ContactPoint", worksFor: "Object", hasAlignmentMap: "AlignmentMap", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/QACredentialOrganization
  *  Quality assurance organization that plays one or more key roles in the lifecycle of a credential, learning program, or assessment.
@@ -10354,636 +10912,6 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     prototype.subOrganization = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", accredits: "Object", address: "Place", administrationProcess: "ProcessProfile", agentSectorType: "CredentialAlignmentObject", agentType: "CredentialAlignmentObject", alternativeIdentifier: "IdentifierValue", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", approves: "Object", complaintProcess: "ProcessProfile", credentialingAction: "Object", department: "Object", developmentProcess: "ProcessProfile", employee: "CredentialPerson", hasConditionManifest: "ConditionManifest", hasCostManifest: "CostManifest", hasVerificationService: "VerificationServiceProfile", industryType: "CredentialAlignmentObject", jurisdiction: "JurisdictionProfile", maintenanceProcess: "ProcessProfile", offers: "Object", owns: "Object", parentOrganization: "Object", qualityAssuranceTargetType: "Object", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recognizes: "Object", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", regulates: "Object", renews: "Object", reviewProcess: "ProcessProfile", revocationProcess: "ProcessProfile", revokes: "Object", serviceType: "CredentialAlignmentObject", subOrganization: "Object", hasAlignmentMap: "AlignmentMap", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/CredentialPerson
- *  Person who plays a role as primary agent in a credentialing action.
- *  The ceterms:CredentialPerson class should be used to describe persons directly engaged as primary agent in credentialing actions such as approving, offering, recognizing, renewing and revoking credentials and should not include persons merely affiliated with, or employed by organizations that perform such actions.
- *  @author credentialengine.org
- *  @class CredentialPerson
- *  @module org.credentialengine
- *  @extends Agent
- */
-var CredentialPerson = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Agent.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "CredentialPerson";
-};
-CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/affiliation
-     *  Organization to which a person is formally related through work, sudy, or social engagement.
-     *  @property affiliation
-     *  @type CredentialOrganization | QACredentialOrganization
-     */
-    prototype.affiliation = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/approves
-     *  Credential, assessment, learning opportunity, or organization for which this organization pronounces favorable judgment.
-     *  @property approves
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.approves = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/email
-     *  Email address of the organization or person.
-     *  @property email
-     *  @type string
-     */
-    prototype.email = null;
-    /**
-     *  http://purl.org/ctdl/terms/familyName
-     *  Family name such as the last name of a person in the U.S..
-     *  The ceterms:familyName property can be used along with givenName instead of the ceterms:name property.
-     *  @property familyName
-     *  @type langString
-     */
-    prototype.familyName = null;
-    /**
-     *  http://purl.org/ctdl/terms/givenName
-     *  First name of a person.
-     *  @property givenName
-     *  @type langString
-     */
-    prototype.givenName = null;
-    /**
-     *  http://purl.org/ctdl/terms/honorificSuffix
-     *  Honorific suffix preceding a person's name such as M.D. , PhD, or MSCSW.
-     *  @property honorificSuffix
-     *  @type langString
-     */
-    prototype.honorificSuffix = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/offers
-     *  Credential, learning opportunity or assessment offered or conferred by the organization or person.
-     *  @property offers
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.offers = null;
-    /**
-     *  http://purl.org/ctdl/terms/owns
-     *  Credential, learning opportunity or assessment over which the organization or person claims legal title.
-     *  Generally, the value of the property should be one of the subclasses of ceterms:Credential.
-     *  @property owns
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.owns = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizes
-     *  Credential, learning opportunity or assessment that the agent recommends, endorses, indicates preference for, or otherwise provides a positive judgment.
-     *  @property recognizes
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recognizes = null;
-    /**
-     *  http://purl.org/ctdl/terms/renews
-     *  Credential type that has its validity extended by the organization or person.
-     *  The value of ceterms:renews should be one of the specific subclasses of ceterms:Credential.
-     *  @property renews
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.renews = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokes
-     *  Credential type that can be invalidated or retracted by the awarding agent.
-     *  The value of ceterms:revokes should be one of the specific subclasses of ceterms:Credential.
-     *  @property revokes
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.revokes = null;
-    /**
-     *  http://purl.org/ctdl/terms/sameAs
-     *  Another entity that unambiguously indicates the identity of the entity being described.
-     *  Entities that may indicate identity include, but are not limited to, descriptions of entities in open databases such as DBpedia and Wikidata or social media accounts such as FaceBook and LinkedIn.
-     *  @property sameAs
-     *  @type anyURI
-     */
-    prototype.sameAs = null;
-    /**
-     *  http://purl.org/ctdl/terms/serviceType
-     *  Type of service offered by the agent being described; select from an existing enumeration of such terms.
-     *  @property serviceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.serviceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/socialMedia
-     *  Social media access point for an agent or an agent's contact point.
-     *  @property socialMedia
-     *  @type anyURI
-     */
-    prototype.socialMedia = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/targetContactPoint
-     *  Options for contacting the organization or person.
-     *  @property targetContactPoint
-     *  @type ContactPoint
-     */
-    prototype.targetContactPoint = null;
-    /**
-     *  http://purl.org/ctdl/terms/worksFor
-     *  Person's place of employment.
-     *  @property worksFor
-     *  @type CredentialOrganization | QACredentialOrganization
-     */
-    prototype.worksFor = null;
-}, {affiliation: "Object", approvedBy: "Object", approvedIn: "JurisdictionProfile", approves: "Object", offers: "Object", owns: "Object", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recognizes: "Object", renews: "Object", revokes: "Object", serviceType: "CredentialAlignmentObject", targetContactPoint: "ContactPoint", worksFor: "Object", hasAlignmentMap: "AlignmentMap", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/CredentialOrganization
- *  Organization that plays one or more key roles in the lifecycle of a credential.
- *  @author credentialengine.org
- *  @class CredentialOrganization
- *  @module org.credentialengine
- *  @extends Agent
- */
-var CredentialOrganization = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Agent.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "CredentialOrganization";
-};
-CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/accreditedBy
-     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
-     *  @property accreditedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.accreditedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/accreditedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
-     *  @property accreditedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.accreditedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/address
-     *  Particulars describing the location of the place.
-     *  @property address
-     *  @type Place
-     */
-    prototype.address = null;
-    /**
-     *  http://purl.org/ctdl/terms/administrationProcess
-     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
-     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
-     *  @property administrationProcess
-     *  @type ProcessProfile
-     */
-    prototype.administrationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/agentPurpose
-     *  Organization's primary purpose as found on an "about" page of a website.
-     *  @property agentPurpose
-     *  @type anyURI
-     */
-    prototype.agentPurpose = null;
-    /**
-     *  http://purl.org/ctdl/terms/agentPurposeDescription
-     *  Short, key phrases describing the primary purpose of an organization as might be derived from the "about" page of it's website.
-     *  @property agentPurposeDescription
-     *  @type langString
-     */
-    prototype.agentPurposeDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/agentSectorType
-     *  Type of sociological, economic, or political subdivision served by an organization; select from an existing enumeration of such types.
-     *  @property agentSectorType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.agentSectorType = null;
-    /**
-     *  http://purl.org/ctdl/terms/agentType
-     *  Type of organization such as educational institution, credentialing organization or quality assurance body; select from an existing enumeration of such types.
-     *  @property agentType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.agentType = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternateName
-     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
-     *  @property alternateName
-     *  @type langString
-     */
-    prototype.alternateName = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternativeIdentifier
-     *  Alternative, publicly available and globally unique identifier for an organization issued by an authoritative entity.
-     *  The alternative identifier should be used where no identifier is available for the DUNS, FEIN, NAICS or IPEDS ID properties.
-     *  @property alternativeIdentifier
-     *  @type IdentifierValue
-     */
-    prototype.alternativeIdentifier = null;
-    /**
-     *  http://purl.org/ctdl/terms/appealProcess
-     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
-     *  @property appealProcess
-     *  @type ProcessProfile
-     */
-    prototype.appealProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/approves
-     *  Credential, assessment, learning opportunity, or organization for which this organization pronounces favorable judgment.
-     *  @property approves
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.approves = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/complaintProcess
-     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
-     *  @property complaintProcess
-     *  @type ProcessProfile
-     */
-    prototype.complaintProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialingAction
-     *  Indicates a past or potential credentialing action in which the resource being described plays an 'object' role.
-     *  @property credentialingAction
-     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
-     */
-    prototype.credentialingAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/department
-     *  Department of the organization.
-     *  @property department
-     *  @type CredentialOrganization | QACredentialOrganization
-     */
-    prototype.department = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/developmentProcess
-     *  Entity describing the process by which a credential, or aspects of it, were created.
-     *  @property developmentProcess
-     *  @type ProcessProfile
-     */
-    prototype.developmentProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/duns
-     *  Dun & Bradstreet DUNS number for identifying an organization or business person.
-     *  @property duns
-     *  @type string
-     */
-    prototype.duns = null;
-    /**
-     *  http://purl.org/ctdl/terms/email
-     *  Email address of the organization or person.
-     *  @property email
-     *  @type string
-     */
-    prototype.email = null;
-    /**
-     *  http://purl.org/ctdl/terms/employee
-     *  Person employed for wages or salary by the organization.
-     *  @property employee
-     *  @type CredentialPerson
-     */
-    prototype.employee = null;
-    /**
-     *  http://purl.org/ctdl/terms/fein
-     *  Federal Employer Identification Number (FEIN) identifying organizations, persons, states, government agencies, corporations, and companies.
-     *  @property fein
-     *  @type string
-     */
-    prototype.fein = null;
-    /**
-     *  http://purl.org/ctdl/terms/foundingDate
-     *  Date the organization was founded.
-     *  @property foundingDate
-     *  @type string
-     */
-    prototype.foundingDate = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasConditionManifest
-     *  Entity that describes a set of constraints, prerequisites, entry conditions, or requirements applicable across the organization, sub-organization or sets of credentials or acitivites.
-     *  @property hasConditionManifest
-     *  @type ConditionManifest
-     */
-    prototype.hasConditionManifest = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasCostManifest
-     *  Entity that describes a set of cost data applicable across the organization, sub-organization or sets of credentials or acitivites.
-     *  @property hasCostManifest
-     *  @type CostManifest
-     */
-    prototype.hasCostManifest = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasVerificationService
-     *  Entity describing available systems provided by the agent to verify credential holders.
-     *  Systems in place to verify credential holders and communicate the current credentialing status of all credential holders to employers and other labor market participants, as well as to education and workforce development funders and regulators.
-     *  @property hasVerificationService
-     *  @type VerificationServiceProfile
-     */
-    prototype.hasVerificationService = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/industryType
-     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
-     *  @property industryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.industryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/ipedsID
-     *  Unique six digit identifier assigned to all U.S. institutions that have submitted data to the Integrated Postsecondary Education Data System (IPEDS).
-     *  @property ipedsID
-     *  @type string
-     */
-    prototype.ipedsID = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/leiCode
-     *  A 20-digit, alpha-numeric code, based on the ISO 17442 standard, for identifying legal entities participating in financial transactions.
-     *  @property leiCode
-     *  @type string
-     */
-    prototype.leiCode = null;
-    /**
-     *  http://purl.org/ctdl/terms/maintenanceProcess
-     *  Entity describing the process by which the credential is maintained including review and updating.
-     *  Such maintenance does not include renewal of a credential by an individual holder.
-     *  @property maintenanceProcess
-     *  @type ProcessProfile
-     */
-    prototype.maintenanceProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/missionAndGoalsStatement
-     *  Webpage or online document that defines or explains the mission and goals of the organization.
-     *  @property missionAndGoalsStatement
-     *  @type anyURI
-     */
-    prototype.missionAndGoalsStatement = null;
-    /**
-     *  http://purl.org/ctdl/terms/missionAndGoalsStatementDescription
-     *  Textual statement of the mission and goals of the organization.
-     *  @property missionAndGoalsStatementDescription
-     *  @type langString
-     */
-    prototype.missionAndGoalsStatementDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/naics
-     *  North American Industry Classification System (NAICS) code of an organization or business person.
-     *  @property naics
-     *  @type string
-     */
-    prototype.naics = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/offers
-     *  Credential, learning opportunity or assessment offered or conferred by the organization or person.
-     *  @property offers
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.offers = null;
-    /**
-     *  http://purl.org/ctdl/terms/opeID
-     *  OPE ID number (U.S. Office of Postsecondary Education Identification), sometimes referred to as the Federal School Code.
-     *  Identification number used by the U.S. Department of Education's Office of Postsecondary Education (OPE) to identify schools that have Program Participation Agreements (PPA) so that its students are eligible to participate in Federal Student Financial Assistance (FAFSA) programs under Title IV regulations. This is a 6-digit number followed by a 2-digit suffix used to identify branches, additional locations, and other entities that are part of the eligible institution.
-     *  @property opeID
-     *  @type string
-     */
-    prototype.opeID = null;
-    /**
-     *  http://purl.org/ctdl/terms/owns
-     *  Credential, learning opportunity or assessment over which the organization or person claims legal title.
-     *  Generally, the value of the property should be one of the subclasses of ceterms:Credential.
-     *  @property owns
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.owns = null;
-    /**
-     *  http://purl.org/ctdl/terms/parentOrganization
-     *  Larger organization exercising authority over the organization being described.
-     *  @property parentOrganization
-     *  @type CredentialOrganization | QACredentialOrganization
-     */
-    prototype.parentOrganization = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizes
-     *  Credential, learning opportunity or assessment that the agent recommends, endorses, indicates preference for, or otherwise provides a positive judgment.
-     *  @property recognizes
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recognizes = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedBy
-     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
-     *  @property regulatedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.regulatedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
-     *  @property regulatedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.regulatedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/renews
-     *  Credential type that has its validity extended by the organization or person.
-     *  The value of ceterms:renews should be one of the specific subclasses of ceterms:Credential.
-     *  @property renews
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.renews = null;
-    /**
-     *  http://purl.org/ctdl/terms/reviewProcess
-     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
-     *  @property reviewProcess
-     *  @type ProcessProfile
-     */
-    prototype.reviewProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationProcess
-     *  Entity describing the process by which the credential is revoked.
-     *  @property revocationProcess
-     *  @type ProcessProfile
-     */
-    prototype.revocationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokes
-     *  Credential type that can be invalidated or retracted by the awarding agent.
-     *  The value of ceterms:revokes should be one of the specific subclasses of ceterms:Credential.
-     *  @property revokes
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.revokes = null;
-    /**
-     *  http://purl.org/ctdl/terms/sameAs
-     *  Another entity that unambiguously indicates the identity of the entity being described.
-     *  Entities that may indicate identity include, but are not limited to, descriptions of entities in open databases such as DBpedia and Wikidata or social media accounts such as FaceBook and LinkedIn.
-     *  @property sameAs
-     *  @type anyURI
-     */
-    prototype.sameAs = null;
-    /**
-     *  http://purl.org/ctdl/terms/serviceType
-     *  Type of service offered by the agent being described; select from an existing enumeration of such terms.
-     *  @property serviceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.serviceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/socialMedia
-     *  Social media access point for an agent or an agent's contact point.
-     *  @property socialMedia
-     *  @type anyURI
-     */
-    prototype.socialMedia = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/subOrganization
-     *  Organization in a subordinate or lower position than a parent organization.
-     *  @property subOrganization
-     *  @type CredentialOrganization | QACredentialOrganization
-     */
-    prototype.subOrganization = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", address: "Place", administrationProcess: "ProcessProfile", agentSectorType: "CredentialAlignmentObject", agentType: "CredentialAlignmentObject", alternativeIdentifier: "IdentifierValue", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", approves: "Object", complaintProcess: "ProcessProfile", credentialingAction: "Object", department: "Object", developmentProcess: "ProcessProfile", employee: "CredentialPerson", hasConditionManifest: "ConditionManifest", hasCostManifest: "CostManifest", hasVerificationService: "VerificationServiceProfile", industryType: "CredentialAlignmentObject", jurisdiction: "JurisdictionProfile", maintenanceProcess: "ProcessProfile", offers: "Object", owns: "Object", parentOrganization: "Object", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recognizes: "Object", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", renews: "Object", reviewProcess: "ProcessProfile", revocationProcess: "ProcessProfile", revokes: "Object", serviceType: "CredentialAlignmentObject", subOrganization: "Object", hasAlignmentMap: "AlignmentMap", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  credentialengine.org/PostalAddress
  *  Entity describing a mailing address.
  *  @author credentialengine.org
@@ -11051,6 +10979,78 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
      */
     prototype.streetAddress = null;
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/Course
+ *  Structured sequence of one or more educational activities that aims to develop a prescribed set of knowledge, competence or ability of learners.
+ *  @author credentialengine.org
+ *  @class Course
+ *  @module org.credentialengine
+ *  @extends LearningOpportunity
+ */
+var Course = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    LearningOpportunity.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "Course";
+};
+Course = stjs.extend(Course, LearningOpportunity, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/InstructionalProgramClassification
+ *  Class of concept schemes defining instructional program types such as the CIP codes in the U.S.
+ *  @author credentialengine.org
+ *  @class InstructionalProgramClassification
+ *  @module org.credentialengine
+ *  @extends CredentialFramework
+ */
+var InstructionalProgramClassification = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CredentialFramework.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "InstructionalProgramClassification";
+};
+InstructionalProgramClassification = stjs.extend(InstructionalProgramClassification, CredentialFramework, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/IndustryClassification
+ *  Class of of concept schemes defining industries such as NAICS in the U.S. and ESCO in the European Union.
+ *  @author credentialengine.org
+ *  @class IndustryClassification
+ *  @module org.credentialengine
+ *  @extends CredentialFramework
+ */
+var IndustryClassification = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CredentialFramework.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "IndustryClassification";
+};
+IndustryClassification = stjs.extend(IndustryClassification, CredentialFramework, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/OccupationClassification
+ *  Class of concept schemes identifying occupations such as the Standard Occupational Classification (SOC) system in the U.S. and the European Skills/Competences, Qualifications and Occupations (ESCO).
+ *  @author credentialengine.org
+ *  @class OccupationClassification
+ *  @module org.credentialengine
+ *  @extends CredentialFramework
+ */
+var OccupationClassification = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    CredentialFramework.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "OccupationClassification";
+};
+OccupationClassification = stjs.extend(OccupationClassification, CredentialFramework, [], null, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/ApprenticeshipCertificate
  *  Credential earned through work-based learning and earn-and-learn models that meet standards and are applicable to industry trades and professions.
@@ -11667,3109 +11667,6 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
      */
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/SecondarySchoolDiploma
- *  Diploma awarded by secondary education institutions for successful completion of a secondary school program of study.
- *  Equivalent to an award at UNESCO ISCED 2011 Levels 2 or 3.
- *  @author credentialengine.org
- *  @class SecondarySchoolDiploma
- *  @module org.credentialengine
- *  @extends Diploma
- */
-var SecondarySchoolDiploma = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Diploma.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "SecondarySchoolDiploma";
-};
-SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/accreditedBy
-     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
-     *  @property accreditedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.accreditedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/accreditedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
-     *  @property accreditedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.accreditedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/administrationProcess
-     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
-     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
-     *  @property administrationProcess
-     *  @type ProcessProfile
-     */
-    prototype.administrationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/advancedStandingFrom
-     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
-     *  @property advancedStandingFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.advancedStandingFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternateName
-     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
-     *  @property alternateName
-     *  @type langString
-     */
-    prototype.alternateName = null;
-    /**
-     *  http://purl.org/ctdl/terms/appealProcess
-     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
-     *  @property appealProcess
-     *  @type ProcessProfile
-     */
-    prototype.appealProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/assessmentDeliveryType
-     *  Delivery type for the assessment for the credential.
-     *  Indicates the delivery type for the assessment for the credential.
-     *  @property assessmentDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.assessmentDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceLevelType
-     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
-     *  @property audienceLevelType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceLevelType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableAt
-     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableAt
-     *  @type Place
-     */
-    prototype.availableAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableOnlineAt
-     *  Online location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableOnlineAt
-     *  @type anyURI
-     */
-    prototype.availableOnlineAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/broadAlignment
-     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
-     *  @property broadAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.broadAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/codedNotation
-     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
-     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
-     *  @property codedNotation
-     *  @type string
-     */
-    prototype.codedNotation = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonConditions
-     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
-     *  @property commonConditions
-     *  @type ConditionManifest
-     */
-    prototype.commonConditions = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonCosts
-     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
-     *  @property commonCosts
-     *  @type CostManifest
-     */
-    prototype.commonCosts = null;
-    /**
-     *  http://purl.org/ctdl/terms/complaintProcess
-     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
-     *  @property complaintProcess
-     *  @type ProcessProfile
-     */
-    prototype.complaintProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/copyrightHolder
-     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
-     *  @property copyrightHolder
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.copyrightHolder = null;
-    /**
-     *  http://purl.org/ctdl/terms/corequisite
-     *  Credentials that must be pursued concurrently.
-     *  Includes dual (double) degrees that cannot be earned independently of each other.
-     *  @property corequisite
-     *  @type ConditionProfile
-     */
-    prototype.corequisite = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialId
-     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
-     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
-     *  @property credentialId
-     *  @type string
-     */
-    prototype.credentialId = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialStatusType
-     *  Type of official status of the credential; select from an enumeration of such types.
-     *  @property credentialStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.credentialStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/developmentProcess
-     *  Entity describing the process by which a credential, or aspects of it, were created.
-     *  @property developmentProcess
-     *  @type ProcessProfile
-     */
-    prototype.developmentProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/earnings
-     *  Entity describing aggregate credential holder earnings data.
-     *  @property earnings
-     *  @type EarningsProfile
-     */
-    prototype.earnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/employmentOutcome
-     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
-     *  @property employmentOutcome
-     *  @type EmploymentOutcomeProfile
-     */
-    prototype.employmentOutcome = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedDuration
-     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
-     *  @property estimatedDuration
-     *  @type DurationProfile
-     */
-    prototype.estimatedDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/exactAlignment
-     *  Relevant concepts in two entities being compared are coextensive.
-     *  @property exactAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.exactAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/financialAssistance
-     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
-     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
-     *  @property financialAssistance
-     *  @type FinancialAssistanceProfile
-     */
-    prototype.financialAssistance = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasPart
-     *  Indicates a separately identifiable and independently useful component of the entity.
-     *  Such partitive components can frequently be used in more than one context.
-     *  @property hasPart
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.hasPart = null;
-    /**
-     *  http://purl.org/ctdl/terms/holders
-     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
-     *  @property holders
-     *  @type HoldersProfile
-     */
-    prototype.holders = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/industryType
-     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
-     *  @property industryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.industryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/inLanguage
-     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
-     *  @property inLanguage
-     *  @type language
-     */
-    prototype.inLanguage = null;
-    /**
-     *  http://purl.org/ctdl/terms/instructionalProgramType
-     *  Type of instructional program; select from an existing enumeration of such types.
-     *  @property instructionalProgramType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.instructionalProgramType = null;
-    /**
-     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
-     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isAdvancedStandingFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isAdvancedStandingFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPartOf
-     *  Indicates another entity of which this entity is a component.
-     *  Covers partitive notions such as "embedded".
-     *  @property isPartOf
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPartOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPreparationFor
-     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
-     *  @property isPreparationFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPreparationFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRecommendedFor
-     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRecommendedFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRecommendedFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRequiredFor
-     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRequiredFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRequiredFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/latestVersion
-     *  Latest version of the credential.
-     *  @property latestVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.latestVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/learningDeliveryType
-     *  Delivery type for the learning opportunity for the credential.
-     *  Indicates the delivery type for the learning opportunity for the credential.
-     *  @property learningDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.learningDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/maintenanceProcess
-     *  Entity describing the process by which the credential is maintained including review and updating.
-     *  Such maintenance does not include renewal of a credential by an individual holder.
-     *  @property maintenanceProcess
-     *  @type ProcessProfile
-     */
-    prototype.maintenanceProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/majorAlignment
-     *  Major overlap of relevant concepts between the two resources being compared.
-     *  @property majorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.majorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/minorAlignment
-     *  Minor overlap of relevant concepts between the two credentials being compared.
-     *  @property minorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.minorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/naics
-     *  North American Industry Classification System (NAICS) code of an organization or business person.
-     *  @property naics
-     *  @type string
-     */
-    prototype.naics = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/narrowAlignment
-     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
-     *  @property narrowAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.narrowAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/occupationType
-     *  Type of occupation; select from an existing enumeration of such types.
-     *  @property occupationType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.occupationType = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredBy
-     *  Agent that offers the credential, learning opportunity or assessment.
-     *  @property offeredBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.offeredBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredIn
-     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
-     *  @property offeredIn
-     *  @type JurisdictionProfile
-     */
-    prototype.offeredIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/ownedBy
-     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
-     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
-     *  @property ownedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.ownedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/preparationFrom
-     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
-     *  @property preparationFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.preparationFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/previousVersion
-     *  Version of the credential that immediately precedes this credential.
-     *  @property previousVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.previousVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandards
-     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
-     *  @property processStandards
-     *  @type anyURI
-     */
-    prototype.processStandards = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandardsDescription
-     *  Textual description of the criteria, standards, and/or requirements used with a process.
-     *  @property processStandardsDescription
-     *  @type langString
-     */
-    prototype.processStandardsDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/purposeType
-     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
-     *  @property purposeType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.purposeType = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recommends
-     *  Recommended credential, learning opportunity or assessment.
-     *  @property recommends
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recommends = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedBy
-     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
-     *  @property regulatedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.regulatedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
-     *  @property regulatedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.regulatedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/relatedAction
-     *  Action related to the credential.
-     *  @property relatedAction
-     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
-     */
-    prototype.relatedAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewal
-     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
-     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
-     *  @property renewal
-     *  @type ConditionProfile
-     */
-    prototype.renewal = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewalFrequency
-     *  Frequency with which the credential needs to be renewed.
-     *  @property renewalFrequency
-     *  @type duration
-     */
-    prototype.renewalFrequency = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedBy
-     *  Organization or person that handles the renewal of the credential.
-     *  @property renewedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.renewedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
-     *  @property renewedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.renewedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/requires
-     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
-     *  @property requires
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.requires = null;
-    /**
-     *  http://purl.org/ctdl/terms/reviewProcess
-     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
-     *  @property reviewProcess
-     *  @type ProcessProfile
-     */
-    prototype.reviewProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocation
-     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
-     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
-     *  @property revocation
-     *  @type RevocationProfile
-     */
-    prototype.revocation = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationProcess
-     *  Entity describing the process by which the credential is revoked.
-     *  @property revocationProcess
-     *  @type ProcessProfile
-     */
-    prototype.revocationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedBy
-     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
-     *  @property revokedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.revokedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
-     *  @property revokedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.revokedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/subject
-     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
-     *  @property subject
-     *  @type CredentialAlignmentObject
-     */
-    prototype.subject = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/versionIdentifier
-     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
-     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
-     *  @property versionIdentifier
-     *  @type IdentifierValue
-     */
-    prototype.versionIdentifier = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/GeneralEducationDevelopment
- *  Credential awarded by examination that demonstrates that an individual has acquired secondary school-level academic skills.
- *  @author credentialengine.org
- *  @class GeneralEducationDevelopment
- *  @module org.credentialengine
- *  @extends Diploma
- */
-var GeneralEducationDevelopment = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Diploma.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "GeneralEducationDevelopment";
-};
-GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/accreditedBy
-     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
-     *  @property accreditedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.accreditedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/accreditedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
-     *  @property accreditedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.accreditedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/administrationProcess
-     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
-     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
-     *  @property administrationProcess
-     *  @type ProcessProfile
-     */
-    prototype.administrationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/advancedStandingFrom
-     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
-     *  @property advancedStandingFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.advancedStandingFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternateName
-     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
-     *  @property alternateName
-     *  @type langString
-     */
-    prototype.alternateName = null;
-    /**
-     *  http://purl.org/ctdl/terms/appealProcess
-     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
-     *  @property appealProcess
-     *  @type ProcessProfile
-     */
-    prototype.appealProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/assessmentDeliveryType
-     *  Delivery type for the assessment for the credential.
-     *  Indicates the delivery type for the assessment for the credential.
-     *  @property assessmentDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.assessmentDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceLevelType
-     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
-     *  @property audienceLevelType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceLevelType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableAt
-     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableAt
-     *  @type Place
-     */
-    prototype.availableAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableOnlineAt
-     *  Online location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableOnlineAt
-     *  @type anyURI
-     */
-    prototype.availableOnlineAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/broadAlignment
-     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
-     *  @property broadAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.broadAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/codedNotation
-     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
-     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
-     *  @property codedNotation
-     *  @type string
-     */
-    prototype.codedNotation = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonConditions
-     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
-     *  @property commonConditions
-     *  @type ConditionManifest
-     */
-    prototype.commonConditions = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonCosts
-     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
-     *  @property commonCosts
-     *  @type CostManifest
-     */
-    prototype.commonCosts = null;
-    /**
-     *  http://purl.org/ctdl/terms/complaintProcess
-     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
-     *  @property complaintProcess
-     *  @type ProcessProfile
-     */
-    prototype.complaintProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/copyrightHolder
-     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
-     *  @property copyrightHolder
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.copyrightHolder = null;
-    /**
-     *  http://purl.org/ctdl/terms/corequisite
-     *  Credentials that must be pursued concurrently.
-     *  Includes dual (double) degrees that cannot be earned independently of each other.
-     *  @property corequisite
-     *  @type ConditionProfile
-     */
-    prototype.corequisite = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialId
-     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
-     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
-     *  @property credentialId
-     *  @type string
-     */
-    prototype.credentialId = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialStatusType
-     *  Type of official status of the credential; select from an enumeration of such types.
-     *  @property credentialStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.credentialStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/developmentProcess
-     *  Entity describing the process by which a credential, or aspects of it, were created.
-     *  @property developmentProcess
-     *  @type ProcessProfile
-     */
-    prototype.developmentProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/earnings
-     *  Entity describing aggregate credential holder earnings data.
-     *  @property earnings
-     *  @type EarningsProfile
-     */
-    prototype.earnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/employmentOutcome
-     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
-     *  @property employmentOutcome
-     *  @type EmploymentOutcomeProfile
-     */
-    prototype.employmentOutcome = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedDuration
-     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
-     *  @property estimatedDuration
-     *  @type DurationProfile
-     */
-    prototype.estimatedDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/exactAlignment
-     *  Relevant concepts in two entities being compared are coextensive.
-     *  @property exactAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.exactAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/financialAssistance
-     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
-     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
-     *  @property financialAssistance
-     *  @type FinancialAssistanceProfile
-     */
-    prototype.financialAssistance = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasPart
-     *  Indicates a separately identifiable and independently useful component of the entity.
-     *  Such partitive components can frequently be used in more than one context.
-     *  @property hasPart
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.hasPart = null;
-    /**
-     *  http://purl.org/ctdl/terms/holders
-     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
-     *  @property holders
-     *  @type HoldersProfile
-     */
-    prototype.holders = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/industryType
-     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
-     *  @property industryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.industryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/inLanguage
-     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
-     *  @property inLanguage
-     *  @type language
-     */
-    prototype.inLanguage = null;
-    /**
-     *  http://purl.org/ctdl/terms/instructionalProgramType
-     *  Type of instructional program; select from an existing enumeration of such types.
-     *  @property instructionalProgramType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.instructionalProgramType = null;
-    /**
-     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
-     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isAdvancedStandingFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isAdvancedStandingFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPartOf
-     *  Indicates another entity of which this entity is a component.
-     *  Covers partitive notions such as "embedded".
-     *  @property isPartOf
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPartOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPreparationFor
-     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
-     *  @property isPreparationFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPreparationFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRecommendedFor
-     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRecommendedFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRecommendedFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRequiredFor
-     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRequiredFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRequiredFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/latestVersion
-     *  Latest version of the credential.
-     *  @property latestVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.latestVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/learningDeliveryType
-     *  Delivery type for the learning opportunity for the credential.
-     *  Indicates the delivery type for the learning opportunity for the credential.
-     *  @property learningDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.learningDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/maintenanceProcess
-     *  Entity describing the process by which the credential is maintained including review and updating.
-     *  Such maintenance does not include renewal of a credential by an individual holder.
-     *  @property maintenanceProcess
-     *  @type ProcessProfile
-     */
-    prototype.maintenanceProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/majorAlignment
-     *  Major overlap of relevant concepts between the two resources being compared.
-     *  @property majorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.majorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/minorAlignment
-     *  Minor overlap of relevant concepts between the two credentials being compared.
-     *  @property minorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.minorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/naics
-     *  North American Industry Classification System (NAICS) code of an organization or business person.
-     *  @property naics
-     *  @type string
-     */
-    prototype.naics = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/narrowAlignment
-     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
-     *  @property narrowAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.narrowAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/occupationType
-     *  Type of occupation; select from an existing enumeration of such types.
-     *  @property occupationType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.occupationType = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredBy
-     *  Agent that offers the credential, learning opportunity or assessment.
-     *  @property offeredBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.offeredBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredIn
-     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
-     *  @property offeredIn
-     *  @type JurisdictionProfile
-     */
-    prototype.offeredIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/ownedBy
-     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
-     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
-     *  @property ownedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.ownedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/preparationFrom
-     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
-     *  @property preparationFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.preparationFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/previousVersion
-     *  Version of the credential that immediately precedes this credential.
-     *  @property previousVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.previousVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandards
-     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
-     *  @property processStandards
-     *  @type anyURI
-     */
-    prototype.processStandards = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandardsDescription
-     *  Textual description of the criteria, standards, and/or requirements used with a process.
-     *  @property processStandardsDescription
-     *  @type langString
-     */
-    prototype.processStandardsDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/purposeType
-     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
-     *  @property purposeType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.purposeType = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recommends
-     *  Recommended credential, learning opportunity or assessment.
-     *  @property recommends
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recommends = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedBy
-     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
-     *  @property regulatedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.regulatedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
-     *  @property regulatedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.regulatedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/relatedAction
-     *  Action related to the credential.
-     *  @property relatedAction
-     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
-     */
-    prototype.relatedAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewal
-     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
-     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
-     *  @property renewal
-     *  @type ConditionProfile
-     */
-    prototype.renewal = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewalFrequency
-     *  Frequency with which the credential needs to be renewed.
-     *  @property renewalFrequency
-     *  @type duration
-     */
-    prototype.renewalFrequency = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedBy
-     *  Organization or person that handles the renewal of the credential.
-     *  @property renewedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.renewedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
-     *  @property renewedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.renewedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/requires
-     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
-     *  @property requires
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.requires = null;
-    /**
-     *  http://purl.org/ctdl/terms/reviewProcess
-     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
-     *  @property reviewProcess
-     *  @type ProcessProfile
-     */
-    prototype.reviewProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocation
-     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
-     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
-     *  @property revocation
-     *  @type RevocationProfile
-     */
-    prototype.revocation = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationProcess
-     *  Entity describing the process by which the credential is revoked.
-     *  @property revocationProcess
-     *  @type ProcessProfile
-     */
-    prototype.revocationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedBy
-     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
-     *  @property revokedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.revokedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
-     *  @property revokedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.revokedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/subject
-     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
-     *  @property subject
-     *  @type CredentialAlignmentObject
-     */
-    prototype.subject = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/versionIdentifier
-     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
-     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
-     *  @property versionIdentifier
-     *  @type IdentifierValue
-     */
-    prototype.versionIdentifier = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/OpenBadge
- *  Visual symbol containing verifiable claims in accordance with the Open Badges specification and delivered digitally.
- *  @author credentialengine.org
- *  @class OpenBadge
- *  @module org.credentialengine
- *  @extends Badge
- */
-var OpenBadge = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Badge.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "OpenBadge";
-};
-OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/accreditedBy
-     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
-     *  @property accreditedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.accreditedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/accreditedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
-     *  @property accreditedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.accreditedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/administrationProcess
-     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
-     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
-     *  @property administrationProcess
-     *  @type ProcessProfile
-     */
-    prototype.administrationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/advancedStandingFrom
-     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
-     *  @property advancedStandingFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.advancedStandingFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternateName
-     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
-     *  @property alternateName
-     *  @type langString
-     */
-    prototype.alternateName = null;
-    /**
-     *  http://purl.org/ctdl/terms/appealProcess
-     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
-     *  @property appealProcess
-     *  @type ProcessProfile
-     */
-    prototype.appealProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/assessmentDeliveryType
-     *  Delivery type for the assessment for the credential.
-     *  Indicates the delivery type for the assessment for the credential.
-     *  @property assessmentDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.assessmentDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceLevelType
-     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
-     *  @property audienceLevelType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceLevelType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableAt
-     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableAt
-     *  @type Place
-     */
-    prototype.availableAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableOnlineAt
-     *  Online location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableOnlineAt
-     *  @type anyURI
-     */
-    prototype.availableOnlineAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/broadAlignment
-     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
-     *  @property broadAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.broadAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/codedNotation
-     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
-     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
-     *  @property codedNotation
-     *  @type string
-     */
-    prototype.codedNotation = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonConditions
-     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
-     *  @property commonConditions
-     *  @type ConditionManifest
-     */
-    prototype.commonConditions = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonCosts
-     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
-     *  @property commonCosts
-     *  @type CostManifest
-     */
-    prototype.commonCosts = null;
-    /**
-     *  http://purl.org/ctdl/terms/complaintProcess
-     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
-     *  @property complaintProcess
-     *  @type ProcessProfile
-     */
-    prototype.complaintProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/copyrightHolder
-     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
-     *  @property copyrightHolder
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.copyrightHolder = null;
-    /**
-     *  http://purl.org/ctdl/terms/corequisite
-     *  Credentials that must be pursued concurrently.
-     *  Includes dual (double) degrees that cannot be earned independently of each other.
-     *  @property corequisite
-     *  @type ConditionProfile
-     */
-    prototype.corequisite = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialId
-     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
-     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
-     *  @property credentialId
-     *  @type string
-     */
-    prototype.credentialId = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialStatusType
-     *  Type of official status of the credential; select from an enumeration of such types.
-     *  @property credentialStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.credentialStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/developmentProcess
-     *  Entity describing the process by which a credential, or aspects of it, were created.
-     *  @property developmentProcess
-     *  @type ProcessProfile
-     */
-    prototype.developmentProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/earnings
-     *  Entity describing aggregate credential holder earnings data.
-     *  @property earnings
-     *  @type EarningsProfile
-     */
-    prototype.earnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/employmentOutcome
-     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
-     *  @property employmentOutcome
-     *  @type EmploymentOutcomeProfile
-     */
-    prototype.employmentOutcome = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedDuration
-     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
-     *  @property estimatedDuration
-     *  @type DurationProfile
-     */
-    prototype.estimatedDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/exactAlignment
-     *  Relevant concepts in two entities being compared are coextensive.
-     *  @property exactAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.exactAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/financialAssistance
-     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
-     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
-     *  @property financialAssistance
-     *  @type FinancialAssistanceProfile
-     */
-    prototype.financialAssistance = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasPart
-     *  Indicates a separately identifiable and independently useful component of the entity.
-     *  Such partitive components can frequently be used in more than one context.
-     *  @property hasPart
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.hasPart = null;
-    /**
-     *  http://purl.org/ctdl/terms/holders
-     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
-     *  @property holders
-     *  @type HoldersProfile
-     */
-    prototype.holders = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/industryType
-     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
-     *  @property industryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.industryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/inLanguage
-     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
-     *  @property inLanguage
-     *  @type language
-     */
-    prototype.inLanguage = null;
-    /**
-     *  http://purl.org/ctdl/terms/instructionalProgramType
-     *  Type of instructional program; select from an existing enumeration of such types.
-     *  @property instructionalProgramType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.instructionalProgramType = null;
-    /**
-     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
-     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isAdvancedStandingFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isAdvancedStandingFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPartOf
-     *  Indicates another entity of which this entity is a component.
-     *  Covers partitive notions such as "embedded".
-     *  @property isPartOf
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPartOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPreparationFor
-     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
-     *  @property isPreparationFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPreparationFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRecommendedFor
-     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRecommendedFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRecommendedFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRequiredFor
-     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRequiredFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRequiredFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/latestVersion
-     *  Latest version of the credential.
-     *  @property latestVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.latestVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/learningDeliveryType
-     *  Delivery type for the learning opportunity for the credential.
-     *  Indicates the delivery type for the learning opportunity for the credential.
-     *  @property learningDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.learningDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/maintenanceProcess
-     *  Entity describing the process by which the credential is maintained including review and updating.
-     *  Such maintenance does not include renewal of a credential by an individual holder.
-     *  @property maintenanceProcess
-     *  @type ProcessProfile
-     */
-    prototype.maintenanceProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/majorAlignment
-     *  Major overlap of relevant concepts between the two resources being compared.
-     *  @property majorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.majorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/minorAlignment
-     *  Minor overlap of relevant concepts between the two credentials being compared.
-     *  @property minorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.minorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/naics
-     *  North American Industry Classification System (NAICS) code of an organization or business person.
-     *  @property naics
-     *  @type string
-     */
-    prototype.naics = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/narrowAlignment
-     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
-     *  @property narrowAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.narrowAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/occupationType
-     *  Type of occupation; select from an existing enumeration of such types.
-     *  @property occupationType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.occupationType = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredBy
-     *  Agent that offers the credential, learning opportunity or assessment.
-     *  @property offeredBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.offeredBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredIn
-     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
-     *  @property offeredIn
-     *  @type JurisdictionProfile
-     */
-    prototype.offeredIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/ownedBy
-     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
-     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
-     *  @property ownedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.ownedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/preparationFrom
-     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
-     *  @property preparationFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.preparationFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/previousVersion
-     *  Version of the credential that immediately precedes this credential.
-     *  @property previousVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.previousVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandards
-     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
-     *  @property processStandards
-     *  @type anyURI
-     */
-    prototype.processStandards = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandardsDescription
-     *  Textual description of the criteria, standards, and/or requirements used with a process.
-     *  @property processStandardsDescription
-     *  @type langString
-     */
-    prototype.processStandardsDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/purposeType
-     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
-     *  @property purposeType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.purposeType = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recommends
-     *  Recommended credential, learning opportunity or assessment.
-     *  @property recommends
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recommends = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedBy
-     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
-     *  @property regulatedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.regulatedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
-     *  @property regulatedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.regulatedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/relatedAction
-     *  Action related to the credential.
-     *  @property relatedAction
-     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
-     */
-    prototype.relatedAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewal
-     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
-     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
-     *  @property renewal
-     *  @type ConditionProfile
-     */
-    prototype.renewal = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewalFrequency
-     *  Frequency with which the credential needs to be renewed.
-     *  @property renewalFrequency
-     *  @type duration
-     */
-    prototype.renewalFrequency = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedBy
-     *  Organization or person that handles the renewal of the credential.
-     *  @property renewedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.renewedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
-     *  @property renewedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.renewedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/requires
-     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
-     *  @property requires
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.requires = null;
-    /**
-     *  http://purl.org/ctdl/terms/reviewProcess
-     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
-     *  @property reviewProcess
-     *  @type ProcessProfile
-     */
-    prototype.reviewProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocation
-     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
-     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
-     *  @property revocation
-     *  @type RevocationProfile
-     */
-    prototype.revocation = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationProcess
-     *  Entity describing the process by which the credential is revoked.
-     *  @property revocationProcess
-     *  @type ProcessProfile
-     */
-    prototype.revocationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedBy
-     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
-     *  @property revokedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.revokedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
-     *  @property revokedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.revokedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/subject
-     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
-     *  @property subject
-     *  @type CredentialAlignmentObject
-     */
-    prototype.subject = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/versionIdentifier
-     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
-     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
-     *  @property versionIdentifier
-     *  @type IdentifierValue
-     */
-    prototype.versionIdentifier = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/DigitalBadge
- *  Badge offered in digital form.
- *  @author credentialengine.org
- *  @class DigitalBadge
- *  @module org.credentialengine
- *  @extends Badge
- */
-var DigitalBadge = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Badge.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "DigitalBadge";
-};
-DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/accreditedBy
-     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
-     *  @property accreditedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.accreditedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/accreditedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
-     *  @property accreditedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.accreditedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/administrationProcess
-     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
-     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
-     *  @property administrationProcess
-     *  @type ProcessProfile
-     */
-    prototype.administrationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/advancedStandingFrom
-     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
-     *  @property advancedStandingFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.advancedStandingFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternateName
-     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
-     *  @property alternateName
-     *  @type langString
-     */
-    prototype.alternateName = null;
-    /**
-     *  http://purl.org/ctdl/terms/appealProcess
-     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
-     *  @property appealProcess
-     *  @type ProcessProfile
-     */
-    prototype.appealProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/assessmentDeliveryType
-     *  Delivery type for the assessment for the credential.
-     *  Indicates the delivery type for the assessment for the credential.
-     *  @property assessmentDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.assessmentDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceLevelType
-     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
-     *  @property audienceLevelType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceLevelType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableAt
-     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableAt
-     *  @type Place
-     */
-    prototype.availableAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableOnlineAt
-     *  Online location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableOnlineAt
-     *  @type anyURI
-     */
-    prototype.availableOnlineAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/broadAlignment
-     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
-     *  @property broadAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.broadAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/codedNotation
-     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
-     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
-     *  @property codedNotation
-     *  @type string
-     */
-    prototype.codedNotation = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonConditions
-     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
-     *  @property commonConditions
-     *  @type ConditionManifest
-     */
-    prototype.commonConditions = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonCosts
-     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
-     *  @property commonCosts
-     *  @type CostManifest
-     */
-    prototype.commonCosts = null;
-    /**
-     *  http://purl.org/ctdl/terms/complaintProcess
-     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
-     *  @property complaintProcess
-     *  @type ProcessProfile
-     */
-    prototype.complaintProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/copyrightHolder
-     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
-     *  @property copyrightHolder
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.copyrightHolder = null;
-    /**
-     *  http://purl.org/ctdl/terms/corequisite
-     *  Credentials that must be pursued concurrently.
-     *  Includes dual (double) degrees that cannot be earned independently of each other.
-     *  @property corequisite
-     *  @type ConditionProfile
-     */
-    prototype.corequisite = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialId
-     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
-     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
-     *  @property credentialId
-     *  @type string
-     */
-    prototype.credentialId = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialStatusType
-     *  Type of official status of the credential; select from an enumeration of such types.
-     *  @property credentialStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.credentialStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/developmentProcess
-     *  Entity describing the process by which a credential, or aspects of it, were created.
-     *  @property developmentProcess
-     *  @type ProcessProfile
-     */
-    prototype.developmentProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/earnings
-     *  Entity describing aggregate credential holder earnings data.
-     *  @property earnings
-     *  @type EarningsProfile
-     */
-    prototype.earnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/employmentOutcome
-     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
-     *  @property employmentOutcome
-     *  @type EmploymentOutcomeProfile
-     */
-    prototype.employmentOutcome = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedDuration
-     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
-     *  @property estimatedDuration
-     *  @type DurationProfile
-     */
-    prototype.estimatedDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/exactAlignment
-     *  Relevant concepts in two entities being compared are coextensive.
-     *  @property exactAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.exactAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/financialAssistance
-     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
-     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
-     *  @property financialAssistance
-     *  @type FinancialAssistanceProfile
-     */
-    prototype.financialAssistance = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasPart
-     *  Indicates a separately identifiable and independently useful component of the entity.
-     *  Such partitive components can frequently be used in more than one context.
-     *  @property hasPart
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.hasPart = null;
-    /**
-     *  http://purl.org/ctdl/terms/holders
-     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
-     *  @property holders
-     *  @type HoldersProfile
-     */
-    prototype.holders = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/industryType
-     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
-     *  @property industryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.industryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/inLanguage
-     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
-     *  @property inLanguage
-     *  @type language
-     */
-    prototype.inLanguage = null;
-    /**
-     *  http://purl.org/ctdl/terms/instructionalProgramType
-     *  Type of instructional program; select from an existing enumeration of such types.
-     *  @property instructionalProgramType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.instructionalProgramType = null;
-    /**
-     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
-     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isAdvancedStandingFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isAdvancedStandingFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPartOf
-     *  Indicates another entity of which this entity is a component.
-     *  Covers partitive notions such as "embedded".
-     *  @property isPartOf
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPartOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPreparationFor
-     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
-     *  @property isPreparationFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPreparationFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRecommendedFor
-     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRecommendedFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRecommendedFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRequiredFor
-     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRequiredFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRequiredFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/latestVersion
-     *  Latest version of the credential.
-     *  @property latestVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.latestVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/learningDeliveryType
-     *  Delivery type for the learning opportunity for the credential.
-     *  Indicates the delivery type for the learning opportunity for the credential.
-     *  @property learningDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.learningDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/maintenanceProcess
-     *  Entity describing the process by which the credential is maintained including review and updating.
-     *  Such maintenance does not include renewal of a credential by an individual holder.
-     *  @property maintenanceProcess
-     *  @type ProcessProfile
-     */
-    prototype.maintenanceProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/majorAlignment
-     *  Major overlap of relevant concepts between the two resources being compared.
-     *  @property majorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.majorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/minorAlignment
-     *  Minor overlap of relevant concepts between the two credentials being compared.
-     *  @property minorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.minorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/naics
-     *  North American Industry Classification System (NAICS) code of an organization or business person.
-     *  @property naics
-     *  @type string
-     */
-    prototype.naics = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/narrowAlignment
-     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
-     *  @property narrowAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.narrowAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/occupationType
-     *  Type of occupation; select from an existing enumeration of such types.
-     *  @property occupationType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.occupationType = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredBy
-     *  Agent that offers the credential, learning opportunity or assessment.
-     *  @property offeredBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.offeredBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredIn
-     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
-     *  @property offeredIn
-     *  @type JurisdictionProfile
-     */
-    prototype.offeredIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/ownedBy
-     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
-     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
-     *  @property ownedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.ownedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/preparationFrom
-     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
-     *  @property preparationFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.preparationFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/previousVersion
-     *  Version of the credential that immediately precedes this credential.
-     *  @property previousVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.previousVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandards
-     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
-     *  @property processStandards
-     *  @type anyURI
-     */
-    prototype.processStandards = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandardsDescription
-     *  Textual description of the criteria, standards, and/or requirements used with a process.
-     *  @property processStandardsDescription
-     *  @type langString
-     */
-    prototype.processStandardsDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/purposeType
-     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
-     *  @property purposeType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.purposeType = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recommends
-     *  Recommended credential, learning opportunity or assessment.
-     *  @property recommends
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recommends = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedBy
-     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
-     *  @property regulatedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.regulatedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
-     *  @property regulatedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.regulatedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/relatedAction
-     *  Action related to the credential.
-     *  @property relatedAction
-     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
-     */
-    prototype.relatedAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewal
-     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
-     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
-     *  @property renewal
-     *  @type ConditionProfile
-     */
-    prototype.renewal = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewalFrequency
-     *  Frequency with which the credential needs to be renewed.
-     *  @property renewalFrequency
-     *  @type duration
-     */
-    prototype.renewalFrequency = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedBy
-     *  Organization or person that handles the renewal of the credential.
-     *  @property renewedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.renewedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
-     *  @property renewedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.renewedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/requires
-     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
-     *  @property requires
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.requires = null;
-    /**
-     *  http://purl.org/ctdl/terms/reviewProcess
-     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
-     *  @property reviewProcess
-     *  @type ProcessProfile
-     */
-    prototype.reviewProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocation
-     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
-     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
-     *  @property revocation
-     *  @type RevocationProfile
-     */
-    prototype.revocation = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationProcess
-     *  Entity describing the process by which the credential is revoked.
-     *  @property revocationProcess
-     *  @type ProcessProfile
-     */
-    prototype.revocationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedBy
-     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
-     *  @property revokedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.revokedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
-     *  @property revokedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.revokedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/subject
-     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
-     *  @property subject
-     *  @type CredentialAlignmentObject
-     */
-    prototype.subject = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/versionIdentifier
-     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
-     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
-     *  @property versionIdentifier
-     *  @type IdentifierValue
-     */
-    prototype.versionIdentifier = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  credentialengine.org/AssociateDegree
- *  College/university award for students typically completing the first one to two years of post secondary school education.
- *  Equivalent to an award at UNESCO ISCED 2011, Level 5.
- *  @author credentialengine.org
- *  @class AssociateDegree
- *  @module org.credentialengine
- *  @extends Degree
- */
-var AssociateDegree = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Degree.call(this);
-    this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "AssociateDegree";
-};
-AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor, prototype) {
-    /**
-     *  http://purl.org/ctdl/terms/accreditedBy
-     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
-     *  @property accreditedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.accreditedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/accreditedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
-     *  @property accreditedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.accreditedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/administrationProcess
-     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
-     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
-     *  @property administrationProcess
-     *  @type ProcessProfile
-     */
-    prototype.administrationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/advancedStandingFrom
-     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
-     *  @property advancedStandingFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.advancedStandingFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/alternateName
-     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
-     *  @property alternateName
-     *  @type langString
-     */
-    prototype.alternateName = null;
-    /**
-     *  http://purl.org/ctdl/terms/appealProcess
-     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
-     *  @property appealProcess
-     *  @type ProcessProfile
-     */
-    prototype.appealProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedBy
-     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.approvedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/approvedIn
-     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
-     *  @property approvedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.approvedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/assessmentDeliveryType
-     *  Delivery type for the assessment for the credential.
-     *  Indicates the delivery type for the assessment for the credential.
-     *  @property assessmentDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.assessmentDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceLevelType
-     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
-     *  @property audienceLevelType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceLevelType = null;
-    /**
-     *  http://purl.org/ctdl/terms/audienceType
-     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
-     *  @property audienceType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.audienceType = null;
-    /**
-     *  http://purl.org/ctdl/terms/availabilityListing
-     *  Listing of online and/or physical locations where a credential can be pursued.
-     *  @property availabilityListing
-     *  @type anyURI
-     */
-    prototype.availabilityListing = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableAt
-     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableAt
-     *  @type Place
-     */
-    prototype.availableAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/availableOnlineAt
-     *  Online location where the credential, assessment, or learning opportunity can be pursued.
-     *  @property availableOnlineAt
-     *  @type anyURI
-     */
-    prototype.availableOnlineAt = null;
-    /**
-     *  http://purl.org/ctdl/terms/broadAlignment
-     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
-     *  @property broadAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.broadAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/codedNotation
-     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
-     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
-     *  @property codedNotation
-     *  @type string
-     */
-    prototype.codedNotation = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonConditions
-     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
-     *  @property commonConditions
-     *  @type ConditionManifest
-     */
-    prototype.commonConditions = null;
-    /**
-     *  http://purl.org/ctdl/terms/commonCosts
-     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
-     *  @property commonCosts
-     *  @type CostManifest
-     */
-    prototype.commonCosts = null;
-    /**
-     *  http://purl.org/ctdl/terms/complaintProcess
-     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
-     *  @property complaintProcess
-     *  @type ProcessProfile
-     */
-    prototype.complaintProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/copyrightHolder
-     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
-     *  @property copyrightHolder
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.copyrightHolder = null;
-    /**
-     *  http://purl.org/ctdl/terms/corequisite
-     *  Credentials that must be pursued concurrently.
-     *  Includes dual (double) degrees that cannot be earned independently of each other.
-     *  @property corequisite
-     *  @type ConditionProfile
-     */
-    prototype.corequisite = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialId
-     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
-     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
-     *  @property credentialId
-     *  @type string
-     */
-    prototype.credentialId = null;
-    /**
-     *  http://purl.org/ctdl/terms/credentialStatusType
-     *  Type of official status of the credential; select from an enumeration of such types.
-     *  @property credentialStatusType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.credentialStatusType = null;
-    /**
-     *  http://purl.org/ctdl/terms/ctid
-     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
-     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
-     *  @property ctid
-     *  @type string
-     */
-    prototype.ctid = null;
-    /**
-     *  http://purl.org/ctdl/terms/dateEffective
-     *  Effective date of the content of a credential, assessment or learning opportunity.
-     *  @property dateEffective
-     *  @type date
-     */
-    prototype.dateEffective = null;
-    /**
-     *  http://purl.org/ctdl/terms/degreeConcentration
-     *  Focused plan of study within a college or university degree such as a concentration in Aerospace Engineering within an Engineering degree.
-     *  @property degreeConcentration
-     *  @type CredentialAlignmentObject
-     */
-    prototype.degreeConcentration = null;
-    /**
-     *  http://purl.org/ctdl/terms/degreeMajor
-     *  Primary field of study of a degree-seeking student.
-     *  @property degreeMajor
-     *  @type CredentialAlignmentObject
-     */
-    prototype.degreeMajor = null;
-    /**
-     *  http://purl.org/ctdl/terms/degreeMinor
-     *  Optional, secondary field of study of a degree-seeking student.
-     *  @property degreeMinor
-     *  @type CredentialAlignmentObject
-     */
-    prototype.degreeMinor = null;
-    /**
-     *  http://purl.org/ctdl/terms/description
-     *  Statement, characterization or account of the entity.
-     *  @property description
-     *  @type langString
-     */
-    prototype.description = null;
-    /**
-     *  http://purl.org/ctdl/terms/developmentProcess
-     *  Entity describing the process by which a credential, or aspects of it, were created.
-     *  @property developmentProcess
-     *  @type ProcessProfile
-     */
-    prototype.developmentProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/earnings
-     *  Entity describing aggregate credential holder earnings data.
-     *  @property earnings
-     *  @type EarningsProfile
-     */
-    prototype.earnings = null;
-    /**
-     *  http://purl.org/ctdl/terms/employmentOutcome
-     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
-     *  @property employmentOutcome
-     *  @type EmploymentOutcomeProfile
-     */
-    prototype.employmentOutcome = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedCost
-     *  Estimated cost of a credential, learning opportunity or assessment.
-     *  @property estimatedCost
-     *  @type CostProfile
-     */
-    prototype.estimatedCost = null;
-    /**
-     *  http://purl.org/ctdl/terms/estimatedDuration
-     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
-     *  @property estimatedDuration
-     *  @type DurationProfile
-     */
-    prototype.estimatedDuration = null;
-    /**
-     *  http://purl.org/ctdl/terms/exactAlignment
-     *  Relevant concepts in two entities being compared are coextensive.
-     *  @property exactAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.exactAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/financialAssistance
-     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
-     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
-     *  @property financialAssistance
-     *  @type FinancialAssistanceProfile
-     */
-    prototype.financialAssistance = null;
-    /**
-     *  http://purl.org/ctdl/terms/hasPart
-     *  Indicates a separately identifiable and independently useful component of the entity.
-     *  Such partitive components can frequently be used in more than one context.
-     *  @property hasPart
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.hasPart = null;
-    /**
-     *  http://purl.org/ctdl/terms/holders
-     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
-     *  @property holders
-     *  @type HoldersProfile
-     */
-    prototype.holders = null;
-    /**
-     *  http://purl.org/ctdl/terms/image
-     *  Image, icon or logo that represents the entity including registered trade or service marks.
-     *  @property image
-     *  @type anyURI
-     */
-    prototype.image = null;
-    /**
-     *  http://purl.org/ctdl/terms/industryType
-     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
-     *  @property industryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.industryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/inLanguage
-     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
-     *  @property inLanguage
-     *  @type language
-     */
-    prototype.inLanguage = null;
-    /**
-     *  http://purl.org/ctdl/terms/instructionalProgramType
-     *  Type of instructional program; select from an existing enumeration of such types.
-     *  @property instructionalProgramType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.instructionalProgramType = null;
-    /**
-     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
-     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isAdvancedStandingFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isAdvancedStandingFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPartOf
-     *  Indicates another entity of which this entity is a component.
-     *  Covers partitive notions such as "embedded".
-     *  @property isPartOf
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPartOf = null;
-    /**
-     *  http://purl.org/ctdl/terms/isPreparationFor
-     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
-     *  @property isPreparationFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isPreparationFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRecommendedFor
-     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRecommendedFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRecommendedFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/isRequiredFor
-     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
-     *  @property isRequiredFor
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.isRequiredFor = null;
-    /**
-     *  http://purl.org/ctdl/terms/jurisdiction
-     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
-     *  @property jurisdiction
-     *  @type JurisdictionProfile
-     */
-    prototype.jurisdiction = null;
-    /**
-     *  http://purl.org/ctdl/terms/keyword
-     *  Keyword or key phrase describing relevant aspects of an entity.
-     *  @property keyword
-     *  @type langString
-     */
-    prototype.keyword = null;
-    /**
-     *  http://purl.org/ctdl/terms/latestVersion
-     *  Latest version of the credential.
-     *  @property latestVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.latestVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/learningDeliveryType
-     *  Delivery type for the learning opportunity for the credential.
-     *  Indicates the delivery type for the learning opportunity for the credential.
-     *  @property learningDeliveryType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.learningDeliveryType = null;
-    /**
-     *  http://purl.org/ctdl/terms/maintenanceProcess
-     *  Entity describing the process by which the credential is maintained including review and updating.
-     *  Such maintenance does not include renewal of a credential by an individual holder.
-     *  @property maintenanceProcess
-     *  @type ProcessProfile
-     */
-    prototype.maintenanceProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/majorAlignment
-     *  Major overlap of relevant concepts between the two resources being compared.
-     *  @property majorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.majorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/minorAlignment
-     *  Minor overlap of relevant concepts between the two credentials being compared.
-     *  @property minorAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.minorAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/naics
-     *  North American Industry Classification System (NAICS) code of an organization or business person.
-     *  @property naics
-     *  @type string
-     */
-    prototype.naics = null;
-    /**
-     *  http://purl.org/ctdl/terms/name
-     *  Name or title of the entity.
-     *  @property name
-     *  @type langString
-     */
-    prototype.name = null;
-    /**
-     *  http://purl.org/ctdl/terms/narrowAlignment
-     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
-     *  @property narrowAlignment
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.narrowAlignment = null;
-    /**
-     *  http://purl.org/ctdl/terms/occupationType
-     *  Type of occupation; select from an existing enumeration of such types.
-     *  @property occupationType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.occupationType = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredBy
-     *  Agent that offers the credential, learning opportunity or assessment.
-     *  @property offeredBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.offeredBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/offeredIn
-     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
-     *  @property offeredIn
-     *  @type JurisdictionProfile
-     */
-    prototype.offeredIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/ownedBy
-     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
-     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
-     *  @property ownedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.ownedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/preparationFrom
-     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
-     *  @property preparationFrom
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.preparationFrom = null;
-    /**
-     *  http://purl.org/ctdl/terms/previousVersion
-     *  Version of the credential that immediately precedes this credential.
-     *  @property previousVersion
-     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.previousVersion = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandards
-     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
-     *  @property processStandards
-     *  @type anyURI
-     */
-    prototype.processStandards = null;
-    /**
-     *  http://purl.org/ctdl/terms/processStandardsDescription
-     *  Textual description of the criteria, standards, and/or requirements used with a process.
-     *  @property processStandardsDescription
-     *  @type langString
-     */
-    prototype.processStandardsDescription = null;
-    /**
-     *  http://purl.org/ctdl/terms/purposeType
-     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
-     *  @property purposeType
-     *  @type CredentialAlignmentObject
-     */
-    prototype.purposeType = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedBy
-     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
-     *  @property recognizedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.recognizedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/recognizedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
-     *  @property recognizedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.recognizedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/recommends
-     *  Recommended credential, learning opportunity or assessment.
-     *  @property recommends
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.recommends = null;
-    /**
-     *  http://purl.org/ctdl/terms/region
-     *  Entity that describes the longitude, latitude and other location details of an area.
-     *  @property region
-     *  @type Place
-     */
-    prototype.region = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedBy
-     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
-     *  @property regulatedBy
-     *  @type QACredentialOrganization
-     */
-    prototype.regulatedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/regulatedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
-     *  @property regulatedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.regulatedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/relatedAction
-     *  Action related to the credential.
-     *  @property relatedAction
-     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
-     */
-    prototype.relatedAction = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewal
-     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
-     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
-     *  @property renewal
-     *  @type ConditionProfile
-     */
-    prototype.renewal = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewalFrequency
-     *  Frequency with which the credential needs to be renewed.
-     *  @property renewalFrequency
-     *  @type duration
-     */
-    prototype.renewalFrequency = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedBy
-     *  Organization or person that handles the renewal of the credential.
-     *  @property renewedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.renewedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/renewedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
-     *  @property renewedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.renewedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/requires
-     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
-     *  @property requires
-     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
-     */
-    prototype.requires = null;
-    /**
-     *  http://purl.org/ctdl/terms/reviewProcess
-     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
-     *  @property reviewProcess
-     *  @type ProcessProfile
-     */
-    prototype.reviewProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocation
-     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
-     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
-     *  @property revocation
-     *  @type RevocationProfile
-     */
-    prototype.revocation = null;
-    /**
-     *  http://purl.org/ctdl/terms/revocationProcess
-     *  Entity describing the process by which the credential is revoked.
-     *  @property revocationProcess
-     *  @type ProcessProfile
-     */
-    prototype.revocationProcess = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedBy
-     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
-     *  @property revokedBy
-     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
-     */
-    prototype.revokedBy = null;
-    /**
-     *  http://purl.org/ctdl/terms/revokedIn
-     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
-     *  @property revokedIn
-     *  @type JurisdictionProfile
-     */
-    prototype.revokedIn = null;
-    /**
-     *  http://purl.org/ctdl/terms/subject
-     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
-     *  @property subject
-     *  @type CredentialAlignmentObject
-     */
-    prototype.subject = null;
-    /**
-     *  http://purl.org/ctdl/terms/subjectWebpage
-     *  The webpage that describes this entity.
-     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
-     *  @property subjectWebpage
-     *  @type anyURI
-     */
-    prototype.subjectWebpage = null;
-    /**
-     *  http://purl.org/ctdl/terms/versionIdentifier
-     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
-     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
-     *  @property versionIdentifier
-     *  @type IdentifierValue
-     */
-    prototype.versionIdentifier = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/DoctoralDegree
  *  Highest credential award for students who have completed both a bachelor's degree and a master's degree or their equivalent as well as independent research and/or a significant project or paper.
@@ -16047,6 +12944,644 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  credentialengine.org/AssociateDegree
+ *  College/university award for students typically completing the first one to two years of post secondary school education.
+ *  Equivalent to an award at UNESCO ISCED 2011, Level 5.
+ *  @author credentialengine.org
+ *  @class AssociateDegree
+ *  @module org.credentialengine
+ *  @extends Degree
+ */
+var AssociateDegree = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    Degree.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "AssociateDegree";
+};
+AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/accreditedBy
+     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
+     *  @property accreditedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.accreditedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/accreditedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
+     *  @property accreditedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.accreditedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/administrationProcess
+     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
+     *  @property administrationProcess
+     *  @type ProcessProfile
+     */
+    prototype.administrationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/advancedStandingFrom
+     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
+     *  @property advancedStandingFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.advancedStandingFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternateName
+     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
+     *  @property alternateName
+     *  @type langString
+     */
+    prototype.alternateName = null;
+    /**
+     *  http://purl.org/ctdl/terms/appealProcess
+     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
+     *  @property appealProcess
+     *  @type ProcessProfile
+     */
+    prototype.appealProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/assessmentDeliveryType
+     *  Delivery type for the assessment for the credential.
+     *  Indicates the delivery type for the assessment for the credential.
+     *  @property assessmentDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.assessmentDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceLevelType
+     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
+     *  @property audienceLevelType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceLevelType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableAt
+     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableAt
+     *  @type Place
+     */
+    prototype.availableAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableOnlineAt
+     *  Online location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableOnlineAt
+     *  @type anyURI
+     */
+    prototype.availableOnlineAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/broadAlignment
+     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+     *  @property broadAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.broadAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/codedNotation
+     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
+     *  @property codedNotation
+     *  @type string
+     */
+    prototype.codedNotation = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonConditions
+     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
+     *  @property commonConditions
+     *  @type ConditionManifest
+     */
+    prototype.commonConditions = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonCosts
+     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
+     *  @property commonCosts
+     *  @type CostManifest
+     */
+    prototype.commonCosts = null;
+    /**
+     *  http://purl.org/ctdl/terms/complaintProcess
+     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
+     *  @property complaintProcess
+     *  @type ProcessProfile
+     */
+    prototype.complaintProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/copyrightHolder
+     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
+     *  @property copyrightHolder
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.copyrightHolder = null;
+    /**
+     *  http://purl.org/ctdl/terms/corequisite
+     *  Credentials that must be pursued concurrently.
+     *  Includes dual (double) degrees that cannot be earned independently of each other.
+     *  @property corequisite
+     *  @type ConditionProfile
+     */
+    prototype.corequisite = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialId
+     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
+     *  @property credentialId
+     *  @type string
+     */
+    prototype.credentialId = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialStatusType
+     *  Type of official status of the credential; select from an enumeration of such types.
+     *  @property credentialStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.credentialStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/degreeConcentration
+     *  Focused plan of study within a college or university degree such as a concentration in Aerospace Engineering within an Engineering degree.
+     *  @property degreeConcentration
+     *  @type CredentialAlignmentObject
+     */
+    prototype.degreeConcentration = null;
+    /**
+     *  http://purl.org/ctdl/terms/degreeMajor
+     *  Primary field of study of a degree-seeking student.
+     *  @property degreeMajor
+     *  @type CredentialAlignmentObject
+     */
+    prototype.degreeMajor = null;
+    /**
+     *  http://purl.org/ctdl/terms/degreeMinor
+     *  Optional, secondary field of study of a degree-seeking student.
+     *  @property degreeMinor
+     *  @type CredentialAlignmentObject
+     */
+    prototype.degreeMinor = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/developmentProcess
+     *  Entity describing the process by which a credential, or aspects of it, were created.
+     *  @property developmentProcess
+     *  @type ProcessProfile
+     */
+    prototype.developmentProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/earnings
+     *  Entity describing aggregate credential holder earnings data.
+     *  @property earnings
+     *  @type EarningsProfile
+     */
+    prototype.earnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/employmentOutcome
+     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+     *  @property employmentOutcome
+     *  @type EmploymentOutcomeProfile
+     */
+    prototype.employmentOutcome = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedDuration
+     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
+     *  @property estimatedDuration
+     *  @type DurationProfile
+     */
+    prototype.estimatedDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/exactAlignment
+     *  Relevant concepts in two entities being compared are coextensive.
+     *  @property exactAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.exactAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/financialAssistance
+     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
+     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
+     *  @property financialAssistance
+     *  @type FinancialAssistanceProfile
+     */
+    prototype.financialAssistance = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasPart
+     *  Indicates a separately identifiable and independently useful component of the entity.
+     *  Such partitive components can frequently be used in more than one context.
+     *  @property hasPart
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.hasPart = null;
+    /**
+     *  http://purl.org/ctdl/terms/holders
+     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
+     *  @property holders
+     *  @type HoldersProfile
+     */
+    prototype.holders = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/industryType
+     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
+     *  @property industryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.industryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/inLanguage
+     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
+     *  @property inLanguage
+     *  @type language
+     */
+    prototype.inLanguage = null;
+    /**
+     *  http://purl.org/ctdl/terms/instructionalProgramType
+     *  Type of instructional program; select from an existing enumeration of such types.
+     *  @property instructionalProgramType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.instructionalProgramType = null;
+    /**
+     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
+     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isAdvancedStandingFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isAdvancedStandingFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPartOf
+     *  Indicates another entity of which this entity is a component.
+     *  Covers partitive notions such as "embedded".
+     *  @property isPartOf
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPartOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPreparationFor
+     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
+     *  @property isPreparationFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPreparationFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRecommendedFor
+     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRecommendedFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRecommendedFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRequiredFor
+     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRequiredFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRequiredFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/latestVersion
+     *  Latest version of the credential.
+     *  @property latestVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.latestVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/learningDeliveryType
+     *  Delivery type for the learning opportunity for the credential.
+     *  Indicates the delivery type for the learning opportunity for the credential.
+     *  @property learningDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.learningDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/maintenanceProcess
+     *  Entity describing the process by which the credential is maintained including review and updating.
+     *  Such maintenance does not include renewal of a credential by an individual holder.
+     *  @property maintenanceProcess
+     *  @type ProcessProfile
+     */
+    prototype.maintenanceProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/majorAlignment
+     *  Major overlap of relevant concepts between the two resources being compared.
+     *  @property majorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.majorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/minorAlignment
+     *  Minor overlap of relevant concepts between the two credentials being compared.
+     *  @property minorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.minorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/naics
+     *  North American Industry Classification System (NAICS) code of an organization or business person.
+     *  @property naics
+     *  @type string
+     */
+    prototype.naics = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/narrowAlignment
+     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
+     *  @property narrowAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.narrowAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/occupationType
+     *  Type of occupation; select from an existing enumeration of such types.
+     *  @property occupationType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.occupationType = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredBy
+     *  Agent that offers the credential, learning opportunity or assessment.
+     *  @property offeredBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.offeredBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredIn
+     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+     *  @property offeredIn
+     *  @type JurisdictionProfile
+     */
+    prototype.offeredIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/ownedBy
+     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
+     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
+     *  @property ownedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.ownedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/preparationFrom
+     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+     *  @property preparationFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.preparationFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/previousVersion
+     *  Version of the credential that immediately precedes this credential.
+     *  @property previousVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.previousVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandards
+     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
+     *  @property processStandards
+     *  @type anyURI
+     */
+    prototype.processStandards = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandardsDescription
+     *  Textual description of the criteria, standards, and/or requirements used with a process.
+     *  @property processStandardsDescription
+     *  @type langString
+     */
+    prototype.processStandardsDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/purposeType
+     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
+     *  @property purposeType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.purposeType = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recommends
+     *  Recommended credential, learning opportunity or assessment.
+     *  @property recommends
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recommends = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedBy
+     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
+     *  @property regulatedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.regulatedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+     *  @property regulatedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.regulatedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/relatedAction
+     *  Action related to the credential.
+     *  @property relatedAction
+     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
+     */
+    prototype.relatedAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewal
+     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
+     *  @property renewal
+     *  @type ConditionProfile
+     */
+    prototype.renewal = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewalFrequency
+     *  Frequency with which the credential needs to be renewed.
+     *  @property renewalFrequency
+     *  @type duration
+     */
+    prototype.renewalFrequency = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedBy
+     *  Organization or person that handles the renewal of the credential.
+     *  @property renewedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.renewedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
+     *  @property renewedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.renewedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/requires
+     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
+     *  @property requires
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.requires = null;
+    /**
+     *  http://purl.org/ctdl/terms/reviewProcess
+     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+     *  @property reviewProcess
+     *  @type ProcessProfile
+     */
+    prototype.reviewProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocation
+     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
+     *  @property revocation
+     *  @type RevocationProfile
+     */
+    prototype.revocation = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationProcess
+     *  Entity describing the process by which the credential is revoked.
+     *  @property revocationProcess
+     *  @type ProcessProfile
+     */
+    prototype.revocationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedBy
+     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+     *  @property revokedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.revokedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+     *  @property revokedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.revokedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/subject
+     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+     *  @property subject
+     *  @type CredentialAlignmentObject
+     */
+    prototype.subject = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/versionIdentifier
+     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
+     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
+     *  @property versionIdentifier
+     *  @type IdentifierValue
+     */
+    prototype.versionIdentifier = null;
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  credentialengine.org/BachelorDegree
  *  College/university award for students typically completing three to five years of education where course work and activities advance skills beyond those of the first one to two years of college/university study.
  *  Equivalent to an award at UNESCO ISCED 2011, Level 6.
@@ -16685,23 +14220,23 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/MasterCertificate
- *  Credential awarded upon demonstration through apprenticeship of the highest level of skills and performance in industry trades and professions.
+ *  credentialengine.org/DigitalBadge
+ *  Badge offered in digital form.
  *  @author credentialengine.org
- *  @class MasterCertificate
+ *  @class DigitalBadge
  *  @module org.credentialengine
- *  @extends ApprenticeshipCertificate
+ *  @extends Badge
  */
-var MasterCertificate = /**
+var DigitalBadge = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
-    ApprenticeshipCertificate.call(this);
+    Badge.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "MasterCertificate";
+    this.type = "DigitalBadge";
 };
-MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, [], function(constructor, prototype) {
+DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
@@ -17299,7 +14834,1856 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
      *  @type IdentifierValue
      */
     prototype.versionIdentifier = null;
-}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/OpenBadge
+ *  Visual symbol containing verifiable claims in accordance with the Open Badges specification and delivered digitally.
+ *  @author credentialengine.org
+ *  @class OpenBadge
+ *  @module org.credentialengine
+ *  @extends Badge
+ */
+var OpenBadge = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    Badge.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "OpenBadge";
+};
+OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/accreditedBy
+     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
+     *  @property accreditedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.accreditedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/accreditedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
+     *  @property accreditedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.accreditedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/administrationProcess
+     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
+     *  @property administrationProcess
+     *  @type ProcessProfile
+     */
+    prototype.administrationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/advancedStandingFrom
+     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
+     *  @property advancedStandingFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.advancedStandingFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternateName
+     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
+     *  @property alternateName
+     *  @type langString
+     */
+    prototype.alternateName = null;
+    /**
+     *  http://purl.org/ctdl/terms/appealProcess
+     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
+     *  @property appealProcess
+     *  @type ProcessProfile
+     */
+    prototype.appealProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/assessmentDeliveryType
+     *  Delivery type for the assessment for the credential.
+     *  Indicates the delivery type for the assessment for the credential.
+     *  @property assessmentDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.assessmentDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceLevelType
+     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
+     *  @property audienceLevelType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceLevelType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableAt
+     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableAt
+     *  @type Place
+     */
+    prototype.availableAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableOnlineAt
+     *  Online location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableOnlineAt
+     *  @type anyURI
+     */
+    prototype.availableOnlineAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/broadAlignment
+     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+     *  @property broadAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.broadAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/codedNotation
+     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
+     *  @property codedNotation
+     *  @type string
+     */
+    prototype.codedNotation = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonConditions
+     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
+     *  @property commonConditions
+     *  @type ConditionManifest
+     */
+    prototype.commonConditions = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonCosts
+     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
+     *  @property commonCosts
+     *  @type CostManifest
+     */
+    prototype.commonCosts = null;
+    /**
+     *  http://purl.org/ctdl/terms/complaintProcess
+     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
+     *  @property complaintProcess
+     *  @type ProcessProfile
+     */
+    prototype.complaintProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/copyrightHolder
+     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
+     *  @property copyrightHolder
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.copyrightHolder = null;
+    /**
+     *  http://purl.org/ctdl/terms/corequisite
+     *  Credentials that must be pursued concurrently.
+     *  Includes dual (double) degrees that cannot be earned independently of each other.
+     *  @property corequisite
+     *  @type ConditionProfile
+     */
+    prototype.corequisite = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialId
+     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
+     *  @property credentialId
+     *  @type string
+     */
+    prototype.credentialId = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialStatusType
+     *  Type of official status of the credential; select from an enumeration of such types.
+     *  @property credentialStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.credentialStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/developmentProcess
+     *  Entity describing the process by which a credential, or aspects of it, were created.
+     *  @property developmentProcess
+     *  @type ProcessProfile
+     */
+    prototype.developmentProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/earnings
+     *  Entity describing aggregate credential holder earnings data.
+     *  @property earnings
+     *  @type EarningsProfile
+     */
+    prototype.earnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/employmentOutcome
+     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+     *  @property employmentOutcome
+     *  @type EmploymentOutcomeProfile
+     */
+    prototype.employmentOutcome = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedDuration
+     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
+     *  @property estimatedDuration
+     *  @type DurationProfile
+     */
+    prototype.estimatedDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/exactAlignment
+     *  Relevant concepts in two entities being compared are coextensive.
+     *  @property exactAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.exactAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/financialAssistance
+     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
+     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
+     *  @property financialAssistance
+     *  @type FinancialAssistanceProfile
+     */
+    prototype.financialAssistance = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasPart
+     *  Indicates a separately identifiable and independently useful component of the entity.
+     *  Such partitive components can frequently be used in more than one context.
+     *  @property hasPart
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.hasPart = null;
+    /**
+     *  http://purl.org/ctdl/terms/holders
+     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
+     *  @property holders
+     *  @type HoldersProfile
+     */
+    prototype.holders = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/industryType
+     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
+     *  @property industryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.industryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/inLanguage
+     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
+     *  @property inLanguage
+     *  @type language
+     */
+    prototype.inLanguage = null;
+    /**
+     *  http://purl.org/ctdl/terms/instructionalProgramType
+     *  Type of instructional program; select from an existing enumeration of such types.
+     *  @property instructionalProgramType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.instructionalProgramType = null;
+    /**
+     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
+     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isAdvancedStandingFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isAdvancedStandingFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPartOf
+     *  Indicates another entity of which this entity is a component.
+     *  Covers partitive notions such as "embedded".
+     *  @property isPartOf
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPartOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPreparationFor
+     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
+     *  @property isPreparationFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPreparationFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRecommendedFor
+     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRecommendedFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRecommendedFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRequiredFor
+     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRequiredFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRequiredFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/latestVersion
+     *  Latest version of the credential.
+     *  @property latestVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.latestVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/learningDeliveryType
+     *  Delivery type for the learning opportunity for the credential.
+     *  Indicates the delivery type for the learning opportunity for the credential.
+     *  @property learningDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.learningDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/maintenanceProcess
+     *  Entity describing the process by which the credential is maintained including review and updating.
+     *  Such maintenance does not include renewal of a credential by an individual holder.
+     *  @property maintenanceProcess
+     *  @type ProcessProfile
+     */
+    prototype.maintenanceProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/majorAlignment
+     *  Major overlap of relevant concepts between the two resources being compared.
+     *  @property majorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.majorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/minorAlignment
+     *  Minor overlap of relevant concepts between the two credentials being compared.
+     *  @property minorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.minorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/naics
+     *  North American Industry Classification System (NAICS) code of an organization or business person.
+     *  @property naics
+     *  @type string
+     */
+    prototype.naics = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/narrowAlignment
+     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
+     *  @property narrowAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.narrowAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/occupationType
+     *  Type of occupation; select from an existing enumeration of such types.
+     *  @property occupationType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.occupationType = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredBy
+     *  Agent that offers the credential, learning opportunity or assessment.
+     *  @property offeredBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.offeredBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredIn
+     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+     *  @property offeredIn
+     *  @type JurisdictionProfile
+     */
+    prototype.offeredIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/ownedBy
+     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
+     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
+     *  @property ownedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.ownedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/preparationFrom
+     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+     *  @property preparationFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.preparationFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/previousVersion
+     *  Version of the credential that immediately precedes this credential.
+     *  @property previousVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.previousVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandards
+     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
+     *  @property processStandards
+     *  @type anyURI
+     */
+    prototype.processStandards = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandardsDescription
+     *  Textual description of the criteria, standards, and/or requirements used with a process.
+     *  @property processStandardsDescription
+     *  @type langString
+     */
+    prototype.processStandardsDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/purposeType
+     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
+     *  @property purposeType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.purposeType = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recommends
+     *  Recommended credential, learning opportunity or assessment.
+     *  @property recommends
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recommends = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedBy
+     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
+     *  @property regulatedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.regulatedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+     *  @property regulatedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.regulatedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/relatedAction
+     *  Action related to the credential.
+     *  @property relatedAction
+     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
+     */
+    prototype.relatedAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewal
+     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
+     *  @property renewal
+     *  @type ConditionProfile
+     */
+    prototype.renewal = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewalFrequency
+     *  Frequency with which the credential needs to be renewed.
+     *  @property renewalFrequency
+     *  @type duration
+     */
+    prototype.renewalFrequency = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedBy
+     *  Organization or person that handles the renewal of the credential.
+     *  @property renewedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.renewedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
+     *  @property renewedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.renewedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/requires
+     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
+     *  @property requires
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.requires = null;
+    /**
+     *  http://purl.org/ctdl/terms/reviewProcess
+     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+     *  @property reviewProcess
+     *  @type ProcessProfile
+     */
+    prototype.reviewProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocation
+     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
+     *  @property revocation
+     *  @type RevocationProfile
+     */
+    prototype.revocation = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationProcess
+     *  Entity describing the process by which the credential is revoked.
+     *  @property revocationProcess
+     *  @type ProcessProfile
+     */
+    prototype.revocationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedBy
+     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+     *  @property revokedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.revokedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+     *  @property revokedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.revokedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/subject
+     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+     *  @property subject
+     *  @type CredentialAlignmentObject
+     */
+    prototype.subject = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/versionIdentifier
+     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
+     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
+     *  @property versionIdentifier
+     *  @type IdentifierValue
+     */
+    prototype.versionIdentifier = null;
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/GeneralEducationDevelopment
+ *  Credential awarded by examination that demonstrates that an individual has acquired secondary school-level academic skills.
+ *  @author credentialengine.org
+ *  @class GeneralEducationDevelopment
+ *  @module org.credentialengine
+ *  @extends Diploma
+ */
+var GeneralEducationDevelopment = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    Diploma.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "GeneralEducationDevelopment";
+};
+GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/accreditedBy
+     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
+     *  @property accreditedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.accreditedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/accreditedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
+     *  @property accreditedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.accreditedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/administrationProcess
+     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
+     *  @property administrationProcess
+     *  @type ProcessProfile
+     */
+    prototype.administrationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/advancedStandingFrom
+     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
+     *  @property advancedStandingFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.advancedStandingFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternateName
+     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
+     *  @property alternateName
+     *  @type langString
+     */
+    prototype.alternateName = null;
+    /**
+     *  http://purl.org/ctdl/terms/appealProcess
+     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
+     *  @property appealProcess
+     *  @type ProcessProfile
+     */
+    prototype.appealProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/assessmentDeliveryType
+     *  Delivery type for the assessment for the credential.
+     *  Indicates the delivery type for the assessment for the credential.
+     *  @property assessmentDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.assessmentDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceLevelType
+     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
+     *  @property audienceLevelType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceLevelType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableAt
+     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableAt
+     *  @type Place
+     */
+    prototype.availableAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableOnlineAt
+     *  Online location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableOnlineAt
+     *  @type anyURI
+     */
+    prototype.availableOnlineAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/broadAlignment
+     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+     *  @property broadAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.broadAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/codedNotation
+     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
+     *  @property codedNotation
+     *  @type string
+     */
+    prototype.codedNotation = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonConditions
+     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
+     *  @property commonConditions
+     *  @type ConditionManifest
+     */
+    prototype.commonConditions = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonCosts
+     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
+     *  @property commonCosts
+     *  @type CostManifest
+     */
+    prototype.commonCosts = null;
+    /**
+     *  http://purl.org/ctdl/terms/complaintProcess
+     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
+     *  @property complaintProcess
+     *  @type ProcessProfile
+     */
+    prototype.complaintProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/copyrightHolder
+     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
+     *  @property copyrightHolder
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.copyrightHolder = null;
+    /**
+     *  http://purl.org/ctdl/terms/corequisite
+     *  Credentials that must be pursued concurrently.
+     *  Includes dual (double) degrees that cannot be earned independently of each other.
+     *  @property corequisite
+     *  @type ConditionProfile
+     */
+    prototype.corequisite = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialId
+     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
+     *  @property credentialId
+     *  @type string
+     */
+    prototype.credentialId = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialStatusType
+     *  Type of official status of the credential; select from an enumeration of such types.
+     *  @property credentialStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.credentialStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/developmentProcess
+     *  Entity describing the process by which a credential, or aspects of it, were created.
+     *  @property developmentProcess
+     *  @type ProcessProfile
+     */
+    prototype.developmentProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/earnings
+     *  Entity describing aggregate credential holder earnings data.
+     *  @property earnings
+     *  @type EarningsProfile
+     */
+    prototype.earnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/employmentOutcome
+     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+     *  @property employmentOutcome
+     *  @type EmploymentOutcomeProfile
+     */
+    prototype.employmentOutcome = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedDuration
+     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
+     *  @property estimatedDuration
+     *  @type DurationProfile
+     */
+    prototype.estimatedDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/exactAlignment
+     *  Relevant concepts in two entities being compared are coextensive.
+     *  @property exactAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.exactAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/financialAssistance
+     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
+     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
+     *  @property financialAssistance
+     *  @type FinancialAssistanceProfile
+     */
+    prototype.financialAssistance = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasPart
+     *  Indicates a separately identifiable and independently useful component of the entity.
+     *  Such partitive components can frequently be used in more than one context.
+     *  @property hasPart
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.hasPart = null;
+    /**
+     *  http://purl.org/ctdl/terms/holders
+     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
+     *  @property holders
+     *  @type HoldersProfile
+     */
+    prototype.holders = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/industryType
+     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
+     *  @property industryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.industryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/inLanguage
+     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
+     *  @property inLanguage
+     *  @type language
+     */
+    prototype.inLanguage = null;
+    /**
+     *  http://purl.org/ctdl/terms/instructionalProgramType
+     *  Type of instructional program; select from an existing enumeration of such types.
+     *  @property instructionalProgramType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.instructionalProgramType = null;
+    /**
+     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
+     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isAdvancedStandingFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isAdvancedStandingFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPartOf
+     *  Indicates another entity of which this entity is a component.
+     *  Covers partitive notions such as "embedded".
+     *  @property isPartOf
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPartOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPreparationFor
+     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
+     *  @property isPreparationFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPreparationFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRecommendedFor
+     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRecommendedFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRecommendedFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRequiredFor
+     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRequiredFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRequiredFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/latestVersion
+     *  Latest version of the credential.
+     *  @property latestVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.latestVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/learningDeliveryType
+     *  Delivery type for the learning opportunity for the credential.
+     *  Indicates the delivery type for the learning opportunity for the credential.
+     *  @property learningDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.learningDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/maintenanceProcess
+     *  Entity describing the process by which the credential is maintained including review and updating.
+     *  Such maintenance does not include renewal of a credential by an individual holder.
+     *  @property maintenanceProcess
+     *  @type ProcessProfile
+     */
+    prototype.maintenanceProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/majorAlignment
+     *  Major overlap of relevant concepts between the two resources being compared.
+     *  @property majorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.majorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/minorAlignment
+     *  Minor overlap of relevant concepts between the two credentials being compared.
+     *  @property minorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.minorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/naics
+     *  North American Industry Classification System (NAICS) code of an organization or business person.
+     *  @property naics
+     *  @type string
+     */
+    prototype.naics = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/narrowAlignment
+     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
+     *  @property narrowAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.narrowAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/occupationType
+     *  Type of occupation; select from an existing enumeration of such types.
+     *  @property occupationType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.occupationType = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredBy
+     *  Agent that offers the credential, learning opportunity or assessment.
+     *  @property offeredBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.offeredBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredIn
+     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+     *  @property offeredIn
+     *  @type JurisdictionProfile
+     */
+    prototype.offeredIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/ownedBy
+     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
+     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
+     *  @property ownedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.ownedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/preparationFrom
+     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+     *  @property preparationFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.preparationFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/previousVersion
+     *  Version of the credential that immediately precedes this credential.
+     *  @property previousVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.previousVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandards
+     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
+     *  @property processStandards
+     *  @type anyURI
+     */
+    prototype.processStandards = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandardsDescription
+     *  Textual description of the criteria, standards, and/or requirements used with a process.
+     *  @property processStandardsDescription
+     *  @type langString
+     */
+    prototype.processStandardsDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/purposeType
+     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
+     *  @property purposeType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.purposeType = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recommends
+     *  Recommended credential, learning opportunity or assessment.
+     *  @property recommends
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recommends = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedBy
+     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
+     *  @property regulatedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.regulatedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+     *  @property regulatedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.regulatedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/relatedAction
+     *  Action related to the credential.
+     *  @property relatedAction
+     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
+     */
+    prototype.relatedAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewal
+     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
+     *  @property renewal
+     *  @type ConditionProfile
+     */
+    prototype.renewal = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewalFrequency
+     *  Frequency with which the credential needs to be renewed.
+     *  @property renewalFrequency
+     *  @type duration
+     */
+    prototype.renewalFrequency = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedBy
+     *  Organization or person that handles the renewal of the credential.
+     *  @property renewedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.renewedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
+     *  @property renewedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.renewedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/requires
+     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
+     *  @property requires
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.requires = null;
+    /**
+     *  http://purl.org/ctdl/terms/reviewProcess
+     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+     *  @property reviewProcess
+     *  @type ProcessProfile
+     */
+    prototype.reviewProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocation
+     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
+     *  @property revocation
+     *  @type RevocationProfile
+     */
+    prototype.revocation = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationProcess
+     *  Entity describing the process by which the credential is revoked.
+     *  @property revocationProcess
+     *  @type ProcessProfile
+     */
+    prototype.revocationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedBy
+     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+     *  @property revokedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.revokedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+     *  @property revokedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.revokedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/subject
+     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+     *  @property subject
+     *  @type CredentialAlignmentObject
+     */
+    prototype.subject = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/versionIdentifier
+     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
+     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
+     *  @property versionIdentifier
+     *  @type IdentifierValue
+     */
+    prototype.versionIdentifier = null;
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/SecondarySchoolDiploma
+ *  Diploma awarded by secondary education institutions for successful completion of a secondary school program of study.
+ *  Equivalent to an award at UNESCO ISCED 2011 Levels 2 or 3.
+ *  @author credentialengine.org
+ *  @class SecondarySchoolDiploma
+ *  @module org.credentialengine
+ *  @extends Diploma
+ */
+var SecondarySchoolDiploma = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    Diploma.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "SecondarySchoolDiploma";
+};
+SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/accreditedBy
+     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
+     *  @property accreditedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.accreditedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/accreditedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
+     *  @property accreditedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.accreditedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/administrationProcess
+     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
+     *  @property administrationProcess
+     *  @type ProcessProfile
+     */
+    prototype.administrationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/advancedStandingFrom
+     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
+     *  @property advancedStandingFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.advancedStandingFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternateName
+     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
+     *  @property alternateName
+     *  @type langString
+     */
+    prototype.alternateName = null;
+    /**
+     *  http://purl.org/ctdl/terms/appealProcess
+     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
+     *  @property appealProcess
+     *  @type ProcessProfile
+     */
+    prototype.appealProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/assessmentDeliveryType
+     *  Delivery type for the assessment for the credential.
+     *  Indicates the delivery type for the assessment for the credential.
+     *  @property assessmentDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.assessmentDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceLevelType
+     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
+     *  @property audienceLevelType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceLevelType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableAt
+     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableAt
+     *  @type Place
+     */
+    prototype.availableAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableOnlineAt
+     *  Online location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableOnlineAt
+     *  @type anyURI
+     */
+    prototype.availableOnlineAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/broadAlignment
+     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+     *  @property broadAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.broadAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/codedNotation
+     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
+     *  @property codedNotation
+     *  @type string
+     */
+    prototype.codedNotation = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonConditions
+     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
+     *  @property commonConditions
+     *  @type ConditionManifest
+     */
+    prototype.commonConditions = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonCosts
+     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
+     *  @property commonCosts
+     *  @type CostManifest
+     */
+    prototype.commonCosts = null;
+    /**
+     *  http://purl.org/ctdl/terms/complaintProcess
+     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
+     *  @property complaintProcess
+     *  @type ProcessProfile
+     */
+    prototype.complaintProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/copyrightHolder
+     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
+     *  @property copyrightHolder
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.copyrightHolder = null;
+    /**
+     *  http://purl.org/ctdl/terms/corequisite
+     *  Credentials that must be pursued concurrently.
+     *  Includes dual (double) degrees that cannot be earned independently of each other.
+     *  @property corequisite
+     *  @type ConditionProfile
+     */
+    prototype.corequisite = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialId
+     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
+     *  @property credentialId
+     *  @type string
+     */
+    prototype.credentialId = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialStatusType
+     *  Type of official status of the credential; select from an enumeration of such types.
+     *  @property credentialStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.credentialStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/developmentProcess
+     *  Entity describing the process by which a credential, or aspects of it, were created.
+     *  @property developmentProcess
+     *  @type ProcessProfile
+     */
+    prototype.developmentProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/earnings
+     *  Entity describing aggregate credential holder earnings data.
+     *  @property earnings
+     *  @type EarningsProfile
+     */
+    prototype.earnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/employmentOutcome
+     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+     *  @property employmentOutcome
+     *  @type EmploymentOutcomeProfile
+     */
+    prototype.employmentOutcome = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedDuration
+     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
+     *  @property estimatedDuration
+     *  @type DurationProfile
+     */
+    prototype.estimatedDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/exactAlignment
+     *  Relevant concepts in two entities being compared are coextensive.
+     *  @property exactAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.exactAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/financialAssistance
+     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
+     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
+     *  @property financialAssistance
+     *  @type FinancialAssistanceProfile
+     */
+    prototype.financialAssistance = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasPart
+     *  Indicates a separately identifiable and independently useful component of the entity.
+     *  Such partitive components can frequently be used in more than one context.
+     *  @property hasPart
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.hasPart = null;
+    /**
+     *  http://purl.org/ctdl/terms/holders
+     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
+     *  @property holders
+     *  @type HoldersProfile
+     */
+    prototype.holders = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/industryType
+     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
+     *  @property industryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.industryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/inLanguage
+     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
+     *  @property inLanguage
+     *  @type language
+     */
+    prototype.inLanguage = null;
+    /**
+     *  http://purl.org/ctdl/terms/instructionalProgramType
+     *  Type of instructional program; select from an existing enumeration of such types.
+     *  @property instructionalProgramType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.instructionalProgramType = null;
+    /**
+     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
+     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isAdvancedStandingFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isAdvancedStandingFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPartOf
+     *  Indicates another entity of which this entity is a component.
+     *  Covers partitive notions such as "embedded".
+     *  @property isPartOf
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPartOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPreparationFor
+     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
+     *  @property isPreparationFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPreparationFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRecommendedFor
+     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRecommendedFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRecommendedFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRequiredFor
+     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRequiredFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRequiredFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/latestVersion
+     *  Latest version of the credential.
+     *  @property latestVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.latestVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/learningDeliveryType
+     *  Delivery type for the learning opportunity for the credential.
+     *  Indicates the delivery type for the learning opportunity for the credential.
+     *  @property learningDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.learningDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/maintenanceProcess
+     *  Entity describing the process by which the credential is maintained including review and updating.
+     *  Such maintenance does not include renewal of a credential by an individual holder.
+     *  @property maintenanceProcess
+     *  @type ProcessProfile
+     */
+    prototype.maintenanceProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/majorAlignment
+     *  Major overlap of relevant concepts between the two resources being compared.
+     *  @property majorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.majorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/minorAlignment
+     *  Minor overlap of relevant concepts between the two credentials being compared.
+     *  @property minorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.minorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/naics
+     *  North American Industry Classification System (NAICS) code of an organization or business person.
+     *  @property naics
+     *  @type string
+     */
+    prototype.naics = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/narrowAlignment
+     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
+     *  @property narrowAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.narrowAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/occupationType
+     *  Type of occupation; select from an existing enumeration of such types.
+     *  @property occupationType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.occupationType = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredBy
+     *  Agent that offers the credential, learning opportunity or assessment.
+     *  @property offeredBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.offeredBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredIn
+     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+     *  @property offeredIn
+     *  @type JurisdictionProfile
+     */
+    prototype.offeredIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/ownedBy
+     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
+     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
+     *  @property ownedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.ownedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/preparationFrom
+     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+     *  @property preparationFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.preparationFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/previousVersion
+     *  Version of the credential that immediately precedes this credential.
+     *  @property previousVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.previousVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandards
+     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
+     *  @property processStandards
+     *  @type anyURI
+     */
+    prototype.processStandards = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandardsDescription
+     *  Textual description of the criteria, standards, and/or requirements used with a process.
+     *  @property processStandardsDescription
+     *  @type langString
+     */
+    prototype.processStandardsDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/purposeType
+     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
+     *  @property purposeType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.purposeType = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recommends
+     *  Recommended credential, learning opportunity or assessment.
+     *  @property recommends
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recommends = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedBy
+     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
+     *  @property regulatedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.regulatedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+     *  @property regulatedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.regulatedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/relatedAction
+     *  Action related to the credential.
+     *  @property relatedAction
+     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
+     */
+    prototype.relatedAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewal
+     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
+     *  @property renewal
+     *  @type ConditionProfile
+     */
+    prototype.renewal = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewalFrequency
+     *  Frequency with which the credential needs to be renewed.
+     *  @property renewalFrequency
+     *  @type duration
+     */
+    prototype.renewalFrequency = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedBy
+     *  Organization or person that handles the renewal of the credential.
+     *  @property renewedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.renewedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
+     *  @property renewedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.renewedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/requires
+     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
+     *  @property requires
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.requires = null;
+    /**
+     *  http://purl.org/ctdl/terms/reviewProcess
+     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+     *  @property reviewProcess
+     *  @type ProcessProfile
+     */
+    prototype.reviewProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocation
+     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
+     *  @property revocation
+     *  @type RevocationProfile
+     */
+    prototype.revocation = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationProcess
+     *  Entity describing the process by which the credential is revoked.
+     *  @property revocationProcess
+     *  @type ProcessProfile
+     */
+    prototype.revocationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedBy
+     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+     *  @property revokedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.revokedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+     *  @property revokedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.revokedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/subject
+     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+     *  @property subject
+     *  @type CredentialAlignmentObject
+     */
+    prototype.subject = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/versionIdentifier
+     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
+     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
+     *  @property versionIdentifier
+     *  @type IdentifierValue
+     */
+    prototype.versionIdentifier = null;
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  credentialengine.org/JourneymanCertificate
  *  Credential awarded to skilled workers on successful completion of an apprenticeship in industry trades and professions.
@@ -17917,24 +17301,640 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/ResearchDoctorate
- *  Doctoral degree conferred for advanced work beyond the master level, including the preparation and defense of a thesis or dissertation based on original research, or the planning and execution of an original project demonstrating substantial artistic or scholarly achievement.
+ *  credentialengine.org/MasterCertificate
+ *  Credential awarded upon demonstration through apprenticeship of the highest level of skills and performance in industry trades and professions.
+ *  @author credentialengine.org
+ *  @class MasterCertificate
+ *  @module org.credentialengine
+ *  @extends ApprenticeshipCertificate
+ */
+var MasterCertificate = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    ApprenticeshipCertificate.call(this);
+    this.context = "http://schema.eduworks.com/simpleCtdl";
+    this.type = "MasterCertificate";
+};
+MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, [], function(constructor, prototype) {
+    /**
+     *  http://purl.org/ctdl/terms/accreditedBy
+     *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
+     *  @property accreditedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.accreditedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/accreditedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.
+     *  @property accreditedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.accreditedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/administrationProcess
+     *  Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+     *  Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.
+     *  @property administrationProcess
+     *  @type ProcessProfile
+     */
+    prototype.administrationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/advancedStandingFrom
+     *  Credential that has its time or cost reduced by another credential, assessment or learning opportunity.
+     *  @property advancedStandingFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.advancedStandingFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/alternateName
+     *  Alias for the entity including acronyms, alpha-numeric notations, and other forms of name abbreviations in common use such as PhD, MA, and BA.
+     *  @property alternateName
+     *  @type langString
+     */
+    prototype.alternateName = null;
+    /**
+     *  http://purl.org/ctdl/terms/appealProcess
+     *  Formal process for objecting to decisions of the organization regarding credentials, assessments or processes.
+     *  @property appealProcess
+     *  @type ProcessProfile
+     */
+    prototype.appealProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedBy
+     *  Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.approvedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/approvedIn
+     *  Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.
+     *  @property approvedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.approvedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/assessmentDeliveryType
+     *  Delivery type for the assessment for the credential.
+     *  Indicates the delivery type for the assessment for the credential.
+     *  @property assessmentDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.assessmentDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceLevelType
+     *  Type of level indicating a point in a progression through an educational or training context, for which the credential is intended; select from an existing enumeration of such types.
+     *  @property audienceLevelType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceLevelType = null;
+    /**
+     *  http://purl.org/ctdl/terms/audienceType
+     *  The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.
+     *  @property audienceType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.audienceType = null;
+    /**
+     *  http://purl.org/ctdl/terms/availabilityListing
+     *  Listing of online and/or physical locations where a credential can be pursued.
+     *  @property availabilityListing
+     *  @type anyURI
+     */
+    prototype.availabilityListing = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableAt
+     *  Physical location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableAt
+     *  @type Place
+     */
+    prototype.availableAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/availableOnlineAt
+     *  Online location where the credential, assessment, or learning opportunity can be pursued.
+     *  @property availableOnlineAt
+     *  @type anyURI
+     */
+    prototype.availableOnlineAt = null;
+    /**
+     *  http://purl.org/ctdl/terms/broadAlignment
+     *  Item that covers all of the relevant concepts in the item being described as well as additional relevant concepts.
+     *  @property broadAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.broadAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/codedNotation
+     *  Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+     *  Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".
+     *  @property codedNotation
+     *  @type string
+     */
+    prototype.codedNotation = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonConditions
+     *  Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.
+     *  @property commonConditions
+     *  @type ConditionManifest
+     */
+    prototype.commonConditions = null;
+    /**
+     *  http://purl.org/ctdl/terms/commonCosts
+     *  Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.
+     *  @property commonCosts
+     *  @type CostManifest
+     */
+    prototype.commonCosts = null;
+    /**
+     *  http://purl.org/ctdl/terms/complaintProcess
+     *  Process for handling complaints about a credential, or aspects of it including related learning opportunities and assessments.
+     *  @property complaintProcess
+     *  @type ProcessProfile
+     */
+    prototype.complaintProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/copyrightHolder
+     *  Person or organization holding the rights in copyright to entities such as credentials, learning opportunities, assessments, competencies or concept schemes.
+     *  @property copyrightHolder
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.copyrightHolder = null;
+    /**
+     *  http://purl.org/ctdl/terms/corequisite
+     *  Credentials that must be pursued concurrently.
+     *  Includes dual (double) degrees that cannot be earned independently of each other.
+     *  @property corequisite
+     *  @type ConditionProfile
+     */
+    prototype.corequisite = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialId
+     *  Globally unique identifier by which the creator, owner or provider of a credential recognizes that credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     *  The  identifier may take the form of a URN, UUID, ARK, DOI, INFO or any other publicly recognized, globally unique identifier scheme.
+     *  @property credentialId
+     *  @type string
+     */
+    prototype.credentialId = null;
+    /**
+     *  http://purl.org/ctdl/terms/credentialStatusType
+     *  Type of official status of the credential; select from an enumeration of such types.
+     *  @property credentialStatusType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.credentialStatusType = null;
+    /**
+     *  http://purl.org/ctdl/terms/ctid
+     *  Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+     *  The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.
+     *  @property ctid
+     *  @type string
+     */
+    prototype.ctid = null;
+    /**
+     *  http://purl.org/ctdl/terms/dateEffective
+     *  Effective date of the content of a credential, assessment or learning opportunity.
+     *  @property dateEffective
+     *  @type date
+     */
+    prototype.dateEffective = null;
+    /**
+     *  http://purl.org/ctdl/terms/description
+     *  Statement, characterization or account of the entity.
+     *  @property description
+     *  @type langString
+     */
+    prototype.description = null;
+    /**
+     *  http://purl.org/ctdl/terms/developmentProcess
+     *  Entity describing the process by which a credential, or aspects of it, were created.
+     *  @property developmentProcess
+     *  @type ProcessProfile
+     */
+    prototype.developmentProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/earnings
+     *  Entity describing aggregate credential holder earnings data.
+     *  @property earnings
+     *  @type EarningsProfile
+     */
+    prototype.earnings = null;
+    /**
+     *  http://purl.org/ctdl/terms/employmentOutcome
+     *  Entity describing aggregate data on jobs obtained with the credential by occupation and industry for a given period of time in a specific region.
+     *  @property employmentOutcome
+     *  @type EmploymentOutcomeProfile
+     */
+    prototype.employmentOutcome = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedCost
+     *  Estimated cost of a credential, learning opportunity or assessment.
+     *  @property estimatedCost
+     *  @type CostProfile
+     */
+    prototype.estimatedCost = null;
+    /**
+     *  http://purl.org/ctdl/terms/estimatedDuration
+     *  Estimated time it will take to complete a credential, learning opportunity or assessment.
+     *  @property estimatedDuration
+     *  @type DurationProfile
+     */
+    prototype.estimatedDuration = null;
+    /**
+     *  http://purl.org/ctdl/terms/exactAlignment
+     *  Relevant concepts in two entities being compared are coextensive.
+     *  @property exactAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.exactAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/financialAssistance
+     *  Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
+     *  Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.
+     *  @property financialAssistance
+     *  @type FinancialAssistanceProfile
+     */
+    prototype.financialAssistance = null;
+    /**
+     *  http://purl.org/ctdl/terms/hasPart
+     *  Indicates a separately identifiable and independently useful component of the entity.
+     *  Such partitive components can frequently be used in more than one context.
+     *  @property hasPart
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.hasPart = null;
+    /**
+     *  http://purl.org/ctdl/terms/holders
+     *  Entity describing the number and characteristics of credentialed individuals and their geographic location.
+     *  @property holders
+     *  @type HoldersProfile
+     */
+    prototype.holders = null;
+    /**
+     *  http://purl.org/ctdl/terms/image
+     *  Image, icon or logo that represents the entity including registered trade or service marks.
+     *  @property image
+     *  @type anyURI
+     */
+    prototype.image = null;
+    /**
+     *  http://purl.org/ctdl/terms/industryType
+     *  Type of industry; select from an existing enumeration of such types such as the SIC, NAICS, and ISIC classifications.
+     *  @property industryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.industryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/inLanguage
+     *  The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.
+     *  @property inLanguage
+     *  @type language
+     */
+    prototype.inLanguage = null;
+    /**
+     *  http://purl.org/ctdl/terms/instructionalProgramType
+     *  Type of instructional program; select from an existing enumeration of such types.
+     *  @property instructionalProgramType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.instructionalProgramType = null;
+    /**
+     *  http://purl.org/ctdl/terms/isAdvancedStandingFor
+     *  This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isAdvancedStandingFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isAdvancedStandingFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPartOf
+     *  Indicates another entity of which this entity is a component.
+     *  Covers partitive notions such as "embedded".
+     *  @property isPartOf
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPartOf = null;
+    /**
+     *  http://purl.org/ctdl/terms/isPreparationFor
+     *  This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.
+     *  @property isPreparationFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isPreparationFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRecommendedFor
+     *  It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRecommendedFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRecommendedFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/isRequiredFor
+     *  This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.
+     *  @property isRequiredFor
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.isRequiredFor = null;
+    /**
+     *  http://purl.org/ctdl/terms/jurisdiction
+     *  Geographic or political region in which the credential is formally applicable or an organization has authority to act.
+     *  @property jurisdiction
+     *  @type JurisdictionProfile
+     */
+    prototype.jurisdiction = null;
+    /**
+     *  http://purl.org/ctdl/terms/keyword
+     *  Keyword or key phrase describing relevant aspects of an entity.
+     *  @property keyword
+     *  @type langString
+     */
+    prototype.keyword = null;
+    /**
+     *  http://purl.org/ctdl/terms/latestVersion
+     *  Latest version of the credential.
+     *  @property latestVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.latestVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/learningDeliveryType
+     *  Delivery type for the learning opportunity for the credential.
+     *  Indicates the delivery type for the learning opportunity for the credential.
+     *  @property learningDeliveryType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.learningDeliveryType = null;
+    /**
+     *  http://purl.org/ctdl/terms/maintenanceProcess
+     *  Entity describing the process by which the credential is maintained including review and updating.
+     *  Such maintenance does not include renewal of a credential by an individual holder.
+     *  @property maintenanceProcess
+     *  @type ProcessProfile
+     */
+    prototype.maintenanceProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/majorAlignment
+     *  Major overlap of relevant concepts between the two resources being compared.
+     *  @property majorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.majorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/minorAlignment
+     *  Minor overlap of relevant concepts between the two credentials being compared.
+     *  @property minorAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.minorAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/naics
+     *  North American Industry Classification System (NAICS) code of an organization or business person.
+     *  @property naics
+     *  @type string
+     */
+    prototype.naics = null;
+    /**
+     *  http://purl.org/ctdl/terms/name
+     *  Name or title of the entity.
+     *  @property name
+     *  @type langString
+     */
+    prototype.name = null;
+    /**
+     *  http://purl.org/ctdl/terms/narrowAlignment
+     *  Credential covers all of the relevant concepts in another credential as well as relevant concepts not found in the other credential.
+     *  @property narrowAlignment
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.narrowAlignment = null;
+    /**
+     *  http://purl.org/ctdl/terms/occupationType
+     *  Type of occupation; select from an existing enumeration of such types.
+     *  @property occupationType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.occupationType = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredBy
+     *  Agent that offers the credential, learning opportunity or assessment.
+     *  @property offeredBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.offeredBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/offeredIn
+     *  Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.
+     *  @property offeredIn
+     *  @type JurisdictionProfile
+     */
+    prototype.offeredIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/ownedBy
+     *  Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
+     *  Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.
+     *  @property ownedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.ownedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/preparationFrom
+     *  Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.
+     *  @property preparationFrom
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.preparationFrom = null;
+    /**
+     *  http://purl.org/ctdl/terms/previousVersion
+     *  Version of the credential that immediately precedes this credential.
+     *  @property previousVersion
+     *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.previousVersion = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandards
+     *  Webpage or online document that describes the criteria, standards, and/or requirements used with a process.
+     *  @property processStandards
+     *  @type anyURI
+     */
+    prototype.processStandards = null;
+    /**
+     *  http://purl.org/ctdl/terms/processStandardsDescription
+     *  Textual description of the criteria, standards, and/or requirements used with a process.
+     *  @property processStandardsDescription
+     *  @type langString
+     */
+    prototype.processStandardsDescription = null;
+    /**
+     *  http://purl.org/ctdl/terms/purposeType
+     *  Type of intended application of the credential by the holder; select from an existing enumeration of such types.
+     *  @property purposeType
+     *  @type CredentialAlignmentObject
+     */
+    prototype.purposeType = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedBy
+     *  Agent that acknowledges the validity of the credential, learning opportunity of assessment.
+     *  @property recognizedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.recognizedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/recognizedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.
+     *  @property recognizedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.recognizedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/recommends
+     *  Recommended credential, learning opportunity or assessment.
+     *  @property recommends
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.recommends = null;
+    /**
+     *  http://purl.org/ctdl/terms/region
+     *  Entity that describes the longitude, latitude and other location details of an area.
+     *  @property region
+     *  @type Place
+     */
+    prototype.region = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedBy
+     *  Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.
+     *  @property regulatedBy
+     *  @type QACredentialOrganization
+     */
+    prototype.regulatedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/regulatedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.
+     *  @property regulatedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.regulatedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/relatedAction
+     *  Action related to the credential.
+     *  @property relatedAction
+     *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
+     */
+    prototype.relatedAction = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewal
+     *  Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+     *  Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.
+     *  @property renewal
+     *  @type ConditionProfile
+     */
+    prototype.renewal = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewalFrequency
+     *  Frequency with which the credential needs to be renewed.
+     *  @property renewalFrequency
+     *  @type duration
+     */
+    prototype.renewalFrequency = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedBy
+     *  Organization or person that handles the renewal of the credential.
+     *  @property renewedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.renewedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/renewedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential is renewable.
+     *  @property renewedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.renewedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/requires
+     *  Requirement or set of requirements for this credential, learning opportunity, or assessment.
+     *  @property requires
+     *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
+     */
+    prototype.requires = null;
+    /**
+     *  http://purl.org/ctdl/terms/reviewProcess
+     *  Entity that describes the process by which the credential, or aspects of it, are reviewed.
+     *  @property reviewProcess
+     *  @type ProcessProfile
+     */
+    prototype.reviewProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocation
+     *  Entity that describes the processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     *  Generally, revocation applies to certifications and licenses; however, it may also apply to other types of credential under extraordinary circumstances.
+     *  @property revocation
+     *  @type RevocationProfile
+     */
+    prototype.revocation = null;
+    /**
+     *  http://purl.org/ctdl/terms/revocationProcess
+     *  Entity describing the process by which the credential is revoked.
+     *  @property revocationProcess
+     *  @type ProcessProfile
+     */
+    prototype.revocationProcess = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedBy
+     *  Organization or person that handles revocation of an awarded credential due to violations or failure to renew.
+     *  @property revokedBy
+     *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
+     */
+    prototype.revokedBy = null;
+    /**
+     *  http://purl.org/ctdl/terms/revokedIn
+     *  Region or political jurisdiction such as a state, province or locale in which the credential can be revoked.
+     *  @property revokedIn
+     *  @type JurisdictionProfile
+     */
+    prototype.revokedIn = null;
+    /**
+     *  http://purl.org/ctdl/terms/subject
+     *  Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.
+     *  @property subject
+     *  @type CredentialAlignmentObject
+     */
+    prototype.subject = null;
+    /**
+     *  http://purl.org/ctdl/terms/subjectWebpage
+     *  The webpage that describes this entity.
+     *  The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.
+     *  @property subjectWebpage
+     *  @type anyURI
+     */
+    prototype.subjectWebpage = null;
+    /**
+     *  http://purl.org/ctdl/terms/versionIdentifier
+     *  Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
+     *  The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.
+     *  @property versionIdentifier
+     *  @type IdentifierValue
+     */
+    prototype.versionIdentifier = null;
+}, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  credentialengine.org/ProfessionalDoctorate
+ *  Doctoral degree conferred upon completion of a program providing the knowledge and skills for the recognition, credential, or license required for professional practice.
  *  Equivalent to an award at UNESCO ISCED 2011, Level 8.
  *  @author credentialengine.org
- *  @class ResearchDoctorate
+ *  @class ProfessionalDoctorate
  *  @module org.credentialengine
  *  @extends DoctoralDegree
  */
-var ResearchDoctorate = /**
+var ProfessionalDoctorate = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     DoctoralDegree.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "ResearchDoctorate";
+    this.type = "ProfessionalDoctorate";
 };
-ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(constructor, prototype) {
+ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
@@ -18534,24 +18534,24 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     prototype.versionIdentifier = null;
 }, {accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", degreeConcentration: "CredentialAlignmentObject", degreeMajor: "CredentialAlignmentObject", degreeMinor: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", accreditedBy: "QACredentialOrganization", accreditedIn: "JurisdictionProfile", administrationProcess: "ProcessProfile", advancedStandingFrom: "Object", appealProcess: "ProcessProfile", approvedBy: "Object", approvedIn: "JurisdictionProfile", assessmentDeliveryType: "CredentialAlignmentObject", audienceLevelType: "CredentialAlignmentObject", audienceType: "CredentialAlignmentObject", availableAt: "Place", broadAlignment: "Object", commonConditions: "ConditionManifest", commonCosts: "CostManifest", complaintProcess: "ProcessProfile", copyrightHolder: "Object", corequisite: "ConditionProfile", credentialStatusType: "CredentialAlignmentObject", developmentProcess: "ProcessProfile", earnings: "EarningsProfile", employmentOutcome: "EmploymentOutcomeProfile", estimatedCost: "CostProfile", estimatedDuration: "DurationProfile", exactAlignment: "Object", financialAssistance: "FinancialAssistanceProfile", hasPart: "Object", holders: "HoldersProfile", industryType: "CredentialAlignmentObject", instructionalProgramType: "CredentialAlignmentObject", isAdvancedStandingFor: "Object", isPartOf: "Object", isPreparationFor: "Object", isRecommendedFor: "Object", isRequiredFor: "Object", jurisdiction: "JurisdictionProfile", latestVersion: "Object", learningDeliveryType: "CredentialAlignmentObject", maintenanceProcess: "ProcessProfile", majorAlignment: "Object", minorAlignment: "Object", narrowAlignment: "Object", occupationType: "CredentialAlignmentObject", offeredBy: "Object", offeredIn: "JurisdictionProfile", ownedBy: "Object", preparationFrom: "Object", previousVersion: "Object", purposeType: "CredentialAlignmentObject", recognizedBy: "Object", recognizedIn: "JurisdictionProfile", recommends: "Object", region: "Place", regulatedBy: "QACredentialOrganization", regulatedIn: "JurisdictionProfile", relatedAction: "Object", renewal: "ConditionProfile", renewedBy: "Object", renewedIn: "JurisdictionProfile", requires: "Object", reviewProcess: "ProcessProfile", revocation: "RevocationProfile", revocationProcess: "ProcessProfile", revokedBy: "Object", revokedIn: "JurisdictionProfile", subject: "CredentialAlignmentObject", versionIdentifier: "IdentifierValue", about: "Thing", educationalAlignment: "AlignmentObject", associatedMedia: "MediaObject", funder: "Person", audio: "AudioObject", workExample: "CreativeWork", provider: "Person", encoding: "MediaObject", character: "Person", audience: "Audience", sourceOrganization: "Organization", isPartOf: "CreativeWork", video: "VideoObject", publication: "PublicationEvent", contributor: "Organization", reviews: "Review", hasPart: "CreativeWork", releasedEvent: "PublicationEvent", contentLocation: "Place", aggregateRating: "AggregateRating", locationCreated: "Place", accountablePerson: "Person", spatialCoverage: "Place", offers: "Offer", editor: "Person", copyrightHolder: "Person", recordedAt: "SchemaEvent", publisher: "Person", interactionStatistic: "InteractionCounter", exampleOfWork: "CreativeWork", mainEntity: "Thing", author: "Person", timeRequired: "Duration", translator: "Person", comment: "Comment", inLanguage: "Language", review: "Review", license: "CreativeWork", encodings: "MediaObject", isBasedOn: "Product", creator: "Person", sponsor: "Organization", producer: "Person", mentions: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  credentialengine.org/ProfessionalDoctorate
- *  Doctoral degree conferred upon completion of a program providing the knowledge and skills for the recognition, credential, or license required for professional practice.
+ *  credentialengine.org/ResearchDoctorate
+ *  Doctoral degree conferred for advanced work beyond the master level, including the preparation and defense of a thesis or dissertation based on original research, or the planning and execution of an original project demonstrating substantial artistic or scholarly achievement.
  *  Equivalent to an award at UNESCO ISCED 2011, Level 8.
  *  @author credentialengine.org
- *  @class ProfessionalDoctorate
+ *  @class ResearchDoctorate
  *  @module org.credentialengine
  *  @extends DoctoralDegree
  */
-var ProfessionalDoctorate = /**
+var ResearchDoctorate = /**
  *  Constructor, automatically sets @context and @type.
  *  @constructor
  */
 function() {
     DoctoralDegree.call(this);
     this.context = "http://schema.eduworks.com/simpleCtdl";
-    this.type = "ProfessionalDoctorate";
+    this.type = "ResearchDoctorate";
 };
-ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], function(constructor, prototype) {
+ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.
