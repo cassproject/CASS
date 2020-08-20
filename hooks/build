@@ -1,1 +1,1 @@
-docker build --build-arg VERSION=$VERSION -f $DOCKERFILE_PATH -t $IMAGE_NAME .
+docker build --build-arg VERSION=$SOURCE_BRANCH -f $DOCKERFILE_PATH -t $IMAGE_NAME .
