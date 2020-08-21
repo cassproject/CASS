@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -723,10 +723,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.createSignature = function(duration, server, ppk) {
         var s = new EbacSignature();
-        s.owner = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
         s.server = server;
-        s.signature = EcRsaOaep.sign(ppk, s.toJson());
+        (s)["@owner"] = ppk.toPk().toPem();
+        (s)["@signature"] = EcRsaOaep.sign(ppk, s.toJson());
         return s;
     };
     /**
@@ -854,9 +854,9 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             if (i > 0) {
                 searchString += " OR ";
             }
-            searchString += "@reader:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+            searchString += "\\*reader:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
             searchString += " OR ";
-            searchString += "@owner:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+            searchString += "\\*owner:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
         }
         return searchString;
     };

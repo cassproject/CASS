@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
      */
     prototype.hasTopConcept = null;
     prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
+        EcRemoteLinkedData.prototype.upgrade.call(this);
         if (ConceptScheme.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", ConceptScheme.TYPE_0_2);
         }
@@ -119,7 +119,7 @@ Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, pro
      */
     prototype.semanticRelation = null;
     prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
+        EcRemoteLinkedData.prototype.upgrade.call(this);
         if (Concept.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", Concept.TYPE_0_2);
         }
