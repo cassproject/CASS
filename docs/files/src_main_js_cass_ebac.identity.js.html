@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.3.1</em>
+            <em>API Docs for: 1.3.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1570,11 +1570,11 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.createSignatureAsync = function(duration, server, ppk, success, failure) {
         var s = new EbacSignature();
-        s.owner = ppk.toPk().toPem();
+        (s)[&quot;@owner&quot;] = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
         s.server = server;
         EcRsaOaepAsync.sign(ppk, s.toJson(), function(p1) {
-            s.signature = p1;
+            (s)[&quot;@signature&quot;] = p1;
             success(s);
         }, failure);
     };
