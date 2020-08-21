@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ function(context, type) {
     this.setContextAndType(context, type);
 };
 EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototype) {
-    constructor.atProperties = ["id", "type", "schema", "context", "signature", "graph", "owner", "reader", "encryptedType", "encryptedContext"];
+    constructor.atProperties = ["id", "type", "schema", "context", "graph"];
     /**
      *  JSON-LD @type field.
      * 
