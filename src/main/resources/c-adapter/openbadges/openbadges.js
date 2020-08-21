@@ -1,7 +1,7 @@
 badgeSetup = function () {
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
-    
+
     if (forge == null){
         print("classpath:forge/forge.bundle.js");
         load("classpath:forge/forge.bundle.js");
@@ -27,7 +27,7 @@ bindWebService("/badge/pk", badgeKey);
 
 badgeGetPerson = function (fingerprint) {
     var person = EcRepository.getBlocking(repoEndpoint() + "data/" + fingerprint);
-    if (person == null) 
+    if (person == null)
         return null;
 
     if (person.isAny(new EcEncryptedValue().getTypes())) {
@@ -183,10 +183,10 @@ badgeAssertion = function () {
 
     var subject = a.getSubject();
     if (subject == null)
-        error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's @readers.", 401);
+        error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's readers.", 401);
     var agent = a.getAgent();
     if (agent == null)
-        error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's @readers.", 401);
+        error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's readers.", 401);
     subject = JSON.parse(badgeSubject(subject.fingerprint()));
     if (subject == null)
         error("Insufficient data available to generate badge recipient object.", 405);
@@ -235,14 +235,17 @@ openbadgeCheckId = function(){
 	var a = new EcAssertion();
 	a.copyFrom(JSON.parse(this.params.obj));
 
-	if (a.subject["@reader"] == null)
+	if (a.subject["reader"] == null && a.subject["@reader"] == null)
 		return debug("Badge not generated for assertion: Assertion has no readers.");
 
-	if (!EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
+    if (repoEndpoint().contains("localhost"))
+        return debug("Badge not generated for assertion: Endpoint Configuration is not set.");
+
+	if (a.subject["reader"] && !EcArray.has(a.subject["reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
 		return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
-	if (repoEndpoint().contains("localhost"))
-		return debug("Badge not generated for assertion: Endpoint Configuration is not set.");
+    if (a.subject["@reader"] && !EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
+        return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
 	var subject = a.getSubject();
 	if (subject == null)
