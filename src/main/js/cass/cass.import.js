@@ -614,10 +614,10 @@ TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constr
         var competencies = new Array();
         var alignments = new Array();
         for (var i = 0; i < lines.length; i++) 
-            TabStructuredImport.parseLinesIntoHierarchy(lines, competencies, alignments, i, serverUrl, hashNameForId);
+            TabStructuredImport.parseLinesIntoHierarchy(lines, competencies, alignments, i, serverUrl, hashNameForId, repo);
         success(competencies, alignments);
     };
-    constructor.parseLinesIntoHierarchy = function(lines, competencies, alignments, index, serverUrl, hashNameForId) {
+    constructor.parseLinesIntoHierarchy = function(lines, competencies, alignments, index, serverUrl, hashNameForId, repo) {
         var parentI = -1;
         for (var i = index - 1; i >= 0; i--) {
             if (TabStructuredImport.tabs(lines[i]) < TabStructuredImport.tabs(lines[index])) {
@@ -636,6 +636,8 @@ TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constr
             c = new EcCompetency();
             if (hashNameForId) 
                 c.assignId(serverUrl, EcCrypto.md5(lines[index].trim()));
+             else if (serverUrl != repo.selectedServer) 
+                c.generateShortId(serverUrl);
              else 
                 c.generateId(serverUrl);
             c.setName(lines[index]);
@@ -649,9 +651,12 @@ TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constr
                     break;
                 }
             }
-            if (parent != null) {
+            if (parent != null && parent.shortId() != c.shortId()) {
                 var a = new EcAlignment();
-                a.generateId(serverUrl);
+                if (serverUrl != repo.selectedServer) 
+                    a.generateShortId(serverUrl);
+                 else 
+                    a.generateId(serverUrl);
                 a.relationType = EcAlignment.NARROWS;
                 a.source = c.shortId();
                 a.target = parent.shortId();
@@ -984,7 +989,7 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                     id = prop;
                 if (props[prop] != null && props[prop] != "" && stjs.isInstanceOf(props[prop].constructor, Object) && !piped) {
                     this.flattenObject(flattenedObject, props[prop], id, false);
-                } else if (props[prop] != null && props[prop] != "" && (stjs.isInstanceOf(props[prop].constructor, Object) || EcArray.isArray(props[prop]))) {
+                } else if (props[prop] != null && props[prop] != "" && (stjs.isInstanceOf(props[prop].constructor, Object) || EcArray.isArray(props[prop])) && piped) {
                     var display = "";
                     var props2 = (props[prop]);
                     for (var prop2 in props2) {
