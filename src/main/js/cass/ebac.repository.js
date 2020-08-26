@@ -1457,7 +1457,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 failure("Data is malformed.");
                 return;
             }
-            if (EcRepository.alwaysTryUrl || this.constructor.shouldTryUrl(d.id)) 
+            if (EcRepository.alwaysTryUrl || this.constructor.shouldTryUrl(d.id) || d.id.indexOf(this.selectedServer) != -1) 
                 d.updateTimestamp();
             if (d.owner != null) 
                 for (var j = 0; j < d.owner.length; j++) 
@@ -1509,18 +1509,24 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             failure("Data is malformed.");
             return;
         }
-        if (EcRepository.alwaysTryUrl || repo == null || repo.constructor.shouldTryUrl(data.id)) 
+        if (EcRepository.alwaysTryUrl || repo == null || repo.constructor.shouldTryUrl(data.id) || (repo != null && data.id.indexOf(repo.selectedServer) != -1)) 
             data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
         var afterSignatureSheet = function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
-            if (!EcRepository.alwaysTryUrl) 
-                if (repo != null) 
+            if (!EcRepository.alwaysTryUrl) {
+                if (repo != null) {
+                    if (data.id.indexOf(repo.selectedServer) != -1) {
+                        EcRemote.postExpectingString(data.id, "", fd, success, failure);
+                        return;
+                    }
                     if (!repo.constructor.shouldTryUrl(data.id) || data.id.indexOf(repo.selectedServer) == -1) {
                         EcRemote.postExpectingString(EcRemote.urlAppend(repo.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.shortId())), "", fd, success, failure);
                         return;
                     }
+                }
+            }
             EcRemote.postExpectingString(data.id, "", fd, success, failure);
         };
         var offset = 0;
@@ -1637,7 +1643,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             delete (EcRepository.cache)[EcRemoteLinkedData.veryShortId(this.selectedServer, data.getGuid())];
         }
         var targetUrl;
-        if (EcRepository.shouldTryUrl(data.id)) 
+        if (EcRepository.shouldTryUrl(data.id) || data.id.indexOf(this.selectedServer) != -1) 
             targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + data.getDottedType() + "/" + data.getGuid());
          else 
             targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.shortId()));

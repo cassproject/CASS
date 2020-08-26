@@ -810,7 +810,7 @@ var endpointMultiPutEach = function() {
     var o = JSON.parse(this.params.obj);
     ld.copyFrom(o);
     var id = null;
-    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id)) 
+    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServer) == -1) 
         id = stringToHex(md5(ld.shortId()));
      else 
         id = ld.getGuid();
