@@ -744,11 +744,11 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.createSignatureAsync = function(duration, server, ppk, success, failure) {
         var s = new EbacSignature();
-        s.owner = ppk.toPk().toPem();
+        (s)["@owner"] = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
         s.server = server;
         EcRsaOaepAsync.sign(ppk, s.toJson(), function(p1) {
-            s.signature = p1;
+            (s)["@signature"] = p1;
             success(s);
         }, failure);
     };

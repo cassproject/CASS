@@ -2,3 +2,9 @@
 	path = src/main/webapp/cass-editor
 #	url = https://github.com/cassproject/cass-editor.git
 	url = ../cass-editor.git
+
+[submodule "cass-vlrc"]
+	path = src/main/webapp/cass-vlrc
+#	url = https://github.com/cassproject/cass-vlrc.git
+	url = ../cass-vlrc.git
+
