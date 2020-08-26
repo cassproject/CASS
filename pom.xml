@@ -8,7 +8,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<<<<<<< HEAD
 		<ec-version>3.0.6</ec-version>
+=======
+		<ec-version>3.0.9</ec-version>
+>>>>>>> master
 		<ew-version>5.16.2</ew-version>
 	</properties>
 
