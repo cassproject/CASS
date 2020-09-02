@@ -137,7 +137,7 @@ RUN apk add --no-cache git
 
 COPY docker/distributed/tomcat-alpine/server.xml /usr/local/tomcat/conf/server.xml
 
-ARG VERSION=1.3.3
+ARG VERSION=1.3.4
 RUN git clone --recurse-submodules -b $VERSION https://github.com/cassproject/CASS && \
 cd CASS && \
 mvn install && \

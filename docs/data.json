@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.3.3",
+        "version": "1.3.4",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -2153,7 +2153,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2496,
+            "line": 2498,
             "description": "Implementation of a file with methods for communicating with repository services",
             "author": "devlin.junker@eduworks.com"
         },
@@ -20583,7 +20583,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2509,
+            "line": 2511,
             "description": "Factory method for creating a file with certain values",
             "params": [
                 {
@@ -20615,7 +20615,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2531,
+            "line": 2533,
             "description": "Retrieves a file from the server specified by it's ID",
             "params": [
                 {
@@ -20643,7 +20643,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2551,
+            "line": 2553,
             "description": "Searches the repository given for files that match the query passed in",
             "params": [
                 {
@@ -20680,7 +20680,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2574,
+            "line": 2576,
             "description": "Saves this file in the repository using the repository web services",
             "params": [
                 {
@@ -20702,7 +20702,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2595,
+            "line": 2597,
             "description": "Deletes the file from the repository using repository web services",
             "params": [
                 {
@@ -66772,23 +66772,23 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2509"
+            "line": " src/main/js/cass/ebac.repository.js:2511"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2531"
+            "line": " src/main/js/cass/ebac.repository.js:2533"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2551"
+            "line": " src/main/js/cass/ebac.repository.js:2553"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2574"
+            "line": " src/main/js/cass/ebac.repository.js:2576"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2595"
+            "line": " src/main/js/cass/ebac.repository.js:2597"
         },
         {
             "message": "unknown tag: memberof",
