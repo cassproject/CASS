@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+
 /**
  *  Represents an encrypted piece of data. Provides helper functions for
  *  encryption/decryption of JSON-LD objects, and provides some searchability of

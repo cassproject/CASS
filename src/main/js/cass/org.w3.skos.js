@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+
 /**
  *  www.w3.org/2004/02/skos/core/Collection
  *  A meaningful collection of concepts.

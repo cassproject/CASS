@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+
 /**
  *  Object that holds the xAPI Adapter configuration values returned
  *  from the server and provides methods for saving new config values

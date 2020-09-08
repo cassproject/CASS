@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+
 /**
  *  Implementation of a Rollup Rule object with methods for interacting with CASS
  *  services on a server.
