@@ -1,7 +1,7 @@
 var skyrepoDebug = false;
 var elasticEndpoint = "http://localhost:9200";
 var owner = function() {
-    return "@owner";
+    return "owner";
 };
 var context = function() {
     return "@context";
@@ -10,23 +10,27 @@ var type = function() {
     return "@type";
 };
 var reader = function() {
-    return "@reader";
+    return "reader";
 };
 var id = function() {
     return "@id";
 };
 var signature = function() {
-    return "@signature";
+    return "signature";
 };
 var getTypeFromObject = function(o) {
-    var encryptedType = (o)["@encryptedType"];
-    var encryptedContext = (o)["@encryptedContext"];
+    var encryptedType = (o)["encryptedType"];
+    var encryptedContext = (o)["encryptedContext"];
     var type = (o)["@type"];
     var context = (o)["@context"];
     if (type == null) 
         type = (o)["type"];
     if (context == null) 
         context = (o)["context"];
+    if (encryptedType == null) 
+        encryptedType = (o)["@encryptedType"];
+    if (encryptedContext == null) 
+        encryptedContext = (o)["@encryptedContext"];
     if (encryptedType != null) 
         type = encryptedType;
     if (encryptedContext != null) 
@@ -84,9 +88,18 @@ var signatureSheet = function() {
         if (signature.expiry < now) 
             error("A Signature is Expired. My time is " + now + " and the signature expires at " + signature.expiry, 419);
         var signBytes = signature.signature;
+        if (signBytes == null) 
+            signBytes = (signature)["@signature"];
         signature.signature = null;
-        if (!EcRsaOaep.verify(EcPk.fromPem(signature.owner), signature.toJson(), signBytes)) 
+        (signature)["@signature"] = null;
+        var owner = signature.owner;
+        if (owner == null) 
+            owner = (signature)["@owner"];
+        (signature)["@owner"] = owner;
+        signature.owner = null;
+        if (!EcRsaOaep.verify(EcPk.fromPem(owner), signature.toJson(), signBytes)) 
             error("Invalid Signature Detected: " + signature.toJson(), 451);
+        signature.owner = (signature)["@owner"];
         sigSheet[i] = signature;
     }
     this.ctx.put("signatureSheet", sigSheet);
@@ -119,7 +132,10 @@ var filterResults = function(o) {
         return ary;
     } else if (EcObject.isObject(o)) {
         var rld = new EcRemoteLinkedData((o)["@context"], (o)["@type"]);
-        rld.reader = (o)["@reader"];
+        rld.reader = (o)["reader"];
+        if (rld.reader == null || rld.reader.length == 0) {
+            rld.reader = (o)["@reader"];
+        }
         if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             var signatures = (signatureSheet).call(this);
             var foundSignature = false;
@@ -226,11 +242,6 @@ var putPermanentBaseUrl = function(o, id, version, type) {
 };
 var getUrl = function(index, id, version, type) {
     var typeFromObj = inferTypeWithoutObj(type);
-    var versionPart = null;
-    if (version == null) {
-        versionPart = "";
-    } else 
-        versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external";
     var url = elasticEndpoint;
     url += "/" + index;
     if (index == "permanent") 
@@ -309,14 +320,14 @@ var flattenLangstrings = function(o) {
 var skyrepoPutInternalIndex = function(o, id, version, type) {
     var url = putUrl(o, id, version, type);
     o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
-    if ((o)["@owner"] != null && EcArray.isArray((o)["@owner"])) {
-        var owners = (o)["@owner"];
+    if ((o)["owner"] != null && EcArray.isArray((o)["owner"])) {
+        var owners = (o)["owner"];
         for (var i = 0; i < owners.length; i++) 
             if (owners[i].indexOf("\n") != -1) 
                 owners[i] = EcPk.fromPem(owners[i]).toPem();
     }
-    if ((o)["@reader"] != null && EcArray.isArray((o)["@reader"])) {
-        var owners = (o)["@reader"];
+    if ((o)["reader"] != null && EcArray.isArray((o)["reader"])) {
+        var owners = (o)["reader"];
         for (var i = 0; i < owners.length; i++) 
             if (owners[i].indexOf("\n") != -1) 
                 owners[i] = EcPk.fromPem(owners[i]).toPem();
@@ -417,7 +428,6 @@ var skyrepoGetPermanent = function(id, version, type) {
     return result;
 };
 var skyrepoGetInternal = function(id, version, type) {
-    var versionRetrievalObject = null;
     var result = skyrepoGetPermanent(id, version, type);
     if (result == null) 
         return null;
@@ -427,10 +437,7 @@ var skyrepoGetInternal = function(id, version, type) {
         return JSON.parse(((result)["_source"])["data"]);
     if (skyrepoDebug) 
         console.log("Failed to find " + type + "/" + id + "/" + version + " -- trying degraded form from search index.");
-    if (versionRetrievalObject != null) 
-        result = versionRetrievalObject;
-     else 
-        result = (skyrepoGetIndex).call(this, id, version, type, null);
+    result = (skyrepoGetIndex).call(this, id, version, type, null);
     if (result == null) 
         return null;
     if ((result)["error"] != null) 
@@ -447,6 +454,7 @@ var skyrepoGet = function(parseParams) {
         (parseParams)["id"] = this.params.id;
         (parseParams)["type"] = this.params.type;
         (parseParams)["version"] = this.params.version;
+        (parseParams)["versions"] = this.params.versions;
     }
     if (skyrepoDebug) 
         console.log(JSON.stringify(parseParams));
@@ -455,9 +463,10 @@ var skyrepoGet = function(parseParams) {
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
-    return (skyrepoGetParsed).call(this, id, version, type, null);
+    var versions = (parseParams)["versions"];
+    return (skyrepoGetParsed).call(this, id, version, type, null, versions);
 };
-var skyrepoGetParsed = function(id, version, type) {
+var skyrepoGetParsed = function(id, version, type, versions) {
     var result = (skyrepoGetInternal).call(this, id, version, type, null);
     if (result == null) 
         return null;
@@ -468,6 +477,7 @@ var skyrepoGetParsed = function(id, version, type) {
         if (ex.getMessage() != "Signature Violation") 
              throw ex;
     }
+    if (versions == "true") {}
     if (filtered == null) 
         return null;
     if (EcObject.keys(filtered).length == 0) 
@@ -512,7 +522,11 @@ var validateSignatures = function(id, version, type, errorMessage) {
         var signatures = (signatureSheet).call(this);
         var success = false;
         for (var i = 0; i < signatures.length; i++) {
-            if (oldObj.hasOwner(EcPk.fromPem(signatures[i].owner))) {
+            var owner = signatures[i].owner;
+            if (owner == null) {
+                owner = (signatures[i])["@owner"];
+            }
+            if (oldObj.hasOwner(EcPk.fromPem(owner))) {
                 success = true;
                 break;
             }
@@ -532,8 +546,12 @@ var skyrepoDeleteInternalPermanent = function(id, version, type) {
 };
 var skyrepoDelete = function(id, version, type) {
     var oldObj = (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
-    skyrepoDeleteInternalIndex(id, version, type);
-    skyrepoDeleteInternalPermanent(id, version, type);
+    if (oldObj != null) {
+        skyrepoDeleteInternalIndex(id, version, type);
+        skyrepoDeleteInternalPermanent(id, version, type);
+    } else {
+        error("Can't find object to delete", 401);
+    }
     return oldObj;
 };
 var searchObj = function(q, start, size, sort, track_scores) {
@@ -557,7 +575,7 @@ var searchObj = function(q, start, size, sort, track_scores) {
     var concern = false;
     if (q.indexOf("*") != -1 && q.trim() != "*") 
         concern = true;
-    if (q.indexOf("@reader") != -1) 
+    if (q.indexOf("reader") != -1 || q.indexOf("@reader") != -1) 
         concern = true;
     (query_string)["query"] = q;
     if (signatures != null && signatures.length > 0) {
@@ -678,6 +696,7 @@ var endpointData = function() {
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
     var index_hint = this.params.index_hint;
+    var versions = this.params.versions;
     var searchParams = (fileFromDatastream).call(this, "searchParams", null);
     if (searchParams != null) {
         searchParams = fileToString(searchParams);
@@ -694,7 +713,9 @@ var endpointData = function() {
         if ((searchParams)["track_scores"] != null) 
             track_scores = (searchParams)["track_scores"];
         if ((searchParams)["index_hint"] != null) 
-            track_scores = (searchParams)["index_hint"];
+            index_hint = (searchParams)["index_hint"];
+        if ((searchParams)["versions"] != null) 
+            versions = (searchParams)["versions"];
     }
     if (size == null) 
         size = 50;
@@ -721,7 +742,7 @@ var endpointData = function() {
         var o = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
         if (o == null || o == "") {
             (beforeGet).call(this);
-            o = (skyrepoGetParsed).call(this, id, version, type, null);
+            o = (skyrepoGetParsed).call(this, id, version, type, null, versions);
             if (o == null) 
                 error("Object not found or you did not supply sufficient permissions to access the object.", 404);
             var expand = this.params.expand != null;
@@ -733,7 +754,7 @@ var endpointData = function() {
         return null;
     } else if (methodType == "GET") {
         (beforeGet).call(this);
-        var o = (skyrepoGetParsed).call(this, id, version, type, null);
+        var o = (skyrepoGetParsed).call(this, id, version, type, null, versions);
         if (o == null) 
             error("Object not found or you did not supply sufficient permissions to access the object.", 404);
         var expand = this.params.expand != null;
@@ -789,7 +810,7 @@ var endpointMultiPutEach = function() {
     var o = JSON.parse(this.params.obj);
     ld.copyFrom(o);
     var id = null;
-    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id)) 
+    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServer) == -1) 
         id = stringToHex(md5(ld.shortId()));
      else 
         id = ld.getGuid();
@@ -830,7 +851,7 @@ var endpointSingleGet = function() {
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
-    var o = (skyrepoGetParsed).call(this, id, version, type, null);
+    var o = (skyrepoGetParsed).call(this, id, version, type, null, null);
     if (o != null) 
         return o;
     return null;

@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.32</em>
+            <em>API Docs for: 1.3.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -323,7 +323,6 @@
                                 <li><a href="../classes/EntryPoint.html">EntryPoint</a></li>
                                 <li><a href="../classes/Enumeration.html">Enumeration</a></li>
                                 <li><a href="../classes/Episode.html">Episode</a></li>
-                                <li><a href="../classes/Event.html">Event</a></li>
                                 <li><a href="../classes/EventReservation.html">EventReservation</a></li>
                                 <li><a href="../classes/EventStatusType.html">EventStatusType</a></li>
                                 <li><a href="../classes/EventVenue.html">EventVenue</a></li>
@@ -645,6 +644,7 @@
                                 <li><a href="../classes/RVPark.html">RVPark</a></li>
                                 <li><a href="../classes/SaleEvent.html">SaleEvent</a></li>
                                 <li><a href="../classes/ScheduleAction.html">ScheduleAction</a></li>
+                                <li><a href="../classes/SchemaEvent.html">SchemaEvent</a></li>
                                 <li><a href="../classes/ScholarlyArticle.html">ScholarlyArticle</a></li>
                                 <li><a href="../classes/School.html">School</a></li>
                                 <li><a href="../classes/ScreeningEvent.html">ScreeningEvent</a></li>
@@ -828,7 +828,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -3056,7 +3056,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
             result = new EcAssertion().getSearchStringByTypeAndCompetency(competency);
         for (var i = 0; i &lt; ip.subject.length; i++) 
-            result += &quot; AND (\\*@reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
+            result += &quot; AND (\\*reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
         this.log(ip, &quot;Search Query: &quot; + result);
         if (result != null) 
             return result;
@@ -3077,7 +3077,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
             result += &quot;)&quot;;
         }
         for (var i = 0; i &lt; ip.subject.length; i++) 
-            result += &quot; AND (\\*@reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
+            result += &quot; AND (\\*reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
         if (result != null) 
             return result;
          throw new RuntimeException(&quot;Trying to build an assertion search query on an unsupported type: &quot; + ip.type);
@@ -3502,7 +3502,14 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
-        repo.multiget(framework.competency.concat(framework.relation), function(data) {
+        var precache = new Array();
+        if (framework.competency != null) {
+            precache = precache.concat(framework.competency);
+        }
+        if (framework.relation != null) {
+            precache = precache.concat(framework.relation);
+        }
+        repo.multiget(precache, function(data) {
             var competencyTemplate = new EcCompetency();
             var alignmentTemplate = new EcAlignment();
             var eah = new EcAsyncHelper();
@@ -4098,7 +4105,7 @@ CompetencyGraphBuilder = stjs.extend(CompetencyGraphBuilder, null, [], function(
         query += &quot;)&quot;;
         if (this.subjects != null) {
             for (var i = 0; i &lt; this.subjects.length; i++) {
-                query += &quot; AND (\\*@reader:\&quot;&quot; + this.subjects[i].toPem() + &quot;\&quot;)&quot;;
+                query += &quot; AND (\\*reader:\&quot;&quot; + this.subjects[i].toPem() + &quot;\&quot;)&quot;;
             }
         }
         return query;
@@ -4908,7 +4915,7 @@ ProfileProcessor = stjs.extend(ProfileProcessor, null, [], function(constructor,
         for (var i = 0; i &lt; this.profilePkPems.length; i++) {
             if (i &gt; 0) 
                 searchQuery += &quot; OR &quot;;
-            searchQuery += &quot;(\\*@reader:\&quot;&quot; + this.profilePkPems[i] + &quot;\&quot;)&quot;;
+            searchQuery += &quot;(\\*reader:\&quot;&quot; + this.profilePkPems[i] + &quot;\&quot;)&quot;;
         }
         if (this.profilePkPems.length &gt; 1) 
             searchQuery += &quot;)&quot;;

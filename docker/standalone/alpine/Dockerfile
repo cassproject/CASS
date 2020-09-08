@@ -5,7 +5,7 @@ COPY docker/standalone/alpine/config/server.xml /usr/local/tomcat/conf/server.xm
 
 VOLUME /usr/share/elasticsearch/data
 
-ARG VERSION=master
+ARG VERSION=1.3.4
 RUN git clone --recurse-submodules -b $VERSION https://github.com/cassproject/CASS && \
 cd CASS && \
 mvn install && \

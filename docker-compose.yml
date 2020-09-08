@@ -46,6 +46,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    ports:
+      - 9200:9200
     volumes:
       - esdata1:/usr/share/elasticsearch/data
     networks:
