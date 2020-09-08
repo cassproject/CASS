@@ -723,10 +723,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.createSignature = function(duration, server, ppk) {
         var s = new EbacSignature();
-        s.owner = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
         s.server = server;
-        s.signature = EcRsaOaep.sign(ppk, s.toJson());
+        (s)["@owner"] = ppk.toPk().toPem();
+        (s)["@signature"] = EcRsaOaep.sign(ppk, s.toJson());
         return s;
     };
     /**
@@ -744,11 +744,11 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.createSignatureAsync = function(duration, server, ppk, success, failure) {
         var s = new EbacSignature();
-        s.owner = ppk.toPk().toPem();
+        (s)["@owner"] = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
         s.server = server;
         EcRsaOaepAsync.sign(ppk, s.toJson(), function(p1) {
-            s.signature = p1;
+            (s)["@signature"] = p1;
             success(s);
         }, failure);
     };
@@ -854,9 +854,9 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             if (i > 0) {
                 searchString += " OR ";
             }
-            searchString += "@reader:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+            searchString += "\\*reader:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
             searchString += " OR ";
-            searchString += "@owner:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+            searchString += "\\*owner:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
         }
         return searchString;
     };

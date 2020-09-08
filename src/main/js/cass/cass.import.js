@@ -651,7 +651,7 @@ TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constr
                     break;
                 }
             }
-            if (parent != null) {
+            if (parent != null && parent.shortId() != c.shortId()) {
                 var a = new EcAlignment();
                 if (serverUrl != repo.selectedServer) 
                     a.generateShortId(serverUrl);
@@ -989,7 +989,7 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                     id = prop;
                 if (props[prop] != null && props[prop] != "" && stjs.isInstanceOf(props[prop].constructor, Object) && !piped) {
                     this.flattenObject(flattenedObject, props[prop], id, false);
-                } else if (props[prop] != null && props[prop] != "" && (stjs.isInstanceOf(props[prop].constructor, Object) || EcArray.isArray(props[prop]))) {
+                } else if (props[prop] != null && props[prop] != "" && (stjs.isInstanceOf(props[prop].constructor, Object) || EcArray.isArray(props[prop])) && piped) {
                     var display = "";
                     var props2 = (props[prop]);
                     for (var prop2 in props2) {

@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.34</em>
+            <em>API Docs for: 1.2.35</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -323,7 +323,6 @@
                                 <li><a href="../classes/EntryPoint.html">EntryPoint</a></li>
                                 <li><a href="../classes/Enumeration.html">Enumeration</a></li>
                                 <li><a href="../classes/Episode.html">Episode</a></li>
-                                <li><a href="../classes/Event.html">Event</a></li>
                                 <li><a href="../classes/EventReservation.html">EventReservation</a></li>
                                 <li><a href="../classes/EventStatusType.html">EventStatusType</a></li>
                                 <li><a href="../classes/EventVenue.html">EventVenue</a></li>
@@ -645,6 +644,7 @@
                                 <li><a href="../classes/RVPark.html">RVPark</a></li>
                                 <li><a href="../classes/SaleEvent.html">SaleEvent</a></li>
                                 <li><a href="../classes/ScheduleAction.html">ScheduleAction</a></li>
+                                <li><a href="../classes/SchemaEvent.html">SchemaEvent</a></li>
                                 <li><a href="../classes/ScholarlyArticle.html">ScholarlyArticle</a></li>
                                 <li><a href="../classes/School.html">School</a></li>
                                 <li><a href="../classes/ScreeningEvent.html">ScreeningEvent</a></li>
@@ -912,7 +912,7 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
              throw new RuntimeException(&quot;Incompatible type: &quot; + this.getFullType());
     };
     prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
+        EcRemoteLinkedData.prototype.upgrade.call(this);
         if (EbacEncryptedValue.TYPE_0_1 == this.type) {
             var me = (this);
             if (me[&quot;@context&quot;] == null &amp;&amp; me[&quot;@schema&quot;] != null) 
@@ -935,6 +935,84 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
         return a;
     };
 }, {secret: {name: &quot;Array&quot;, arguments: [null]}, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+/**
+ *  AES encrypted public key and display name message.
+ *  Used to grant access to a contact.
+ *  Contains Initialization Vectors, but not secrets.
+ *  Used to encrypt public identities for storage on remote systems.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @class EbacContactGrant
+ *  @module org.cassproject
+ */
+var EbacContactGrant = function() {
+    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_4);
+};
+EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = &quot;http://schema.eduworks.com/ebac/0.1/contactGrant&quot;;
+    constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/ebac/0.2/contactGrant&quot;;
+    constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/kbac/0.2/ContactGrant&quot;;
+    constructor.TYPE_0_4 = &quot;https://schema.cassproject.org/kbac/0.4/ContactGrant&quot;;
+    /**
+     *  Public key being granted to the owner of this message.
+     * 
+     *  @property pk
+     *  @type string(pem)
+     */
+    prototype.pk = null;
+    /**
+     *  Display name of the contact.
+     * 
+     *  @property displayName
+     *  @type string
+     */
+    prototype.displayName = null;
+    /**
+     *  Source server of the contact.
+     * 
+     *  @property source
+     *  @type string
+     */
+    prototype.source = null;
+    /**
+     *  Response token used to validate that this grant is in response to a contact request you sent.
+     * 
+     *  @property responseToken
+     *  @type string
+     */
+    prototype.responseToken = null;
+    /**
+     *  Signature (Base64 encoded) of the response token to verify against your own public key
+     *  to ensure that this grant is in response to a contact request you sent.
+     * 
+     *  @property responseSignature
+     *  @type string
+     */
+    prototype.responseSignature = null;
+    prototype.upgrade = function() {
+        EcRemoteLinkedData.prototype.upgrade.call(this);
+        if (EbacContactGrant.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me[&quot;@context&quot;] == null &amp;&amp; me[&quot;@schema&quot;] != null) 
+                me[&quot;@context&quot;] = me[&quot;@schema&quot;];
+            this.setContextAndType(Ebac.context_0_2, EbacContactGrant.TYPE_0_2);
+        }
+        if (EbacContactGrant.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacContactGrant.TYPE_0_3);
+        }
+        if (EbacContactGrant.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacContactGrant.TYPE_0_4);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(EbacContactGrant.TYPE_0_4);
+        a.push(EbacContactGrant.TYPE_0_3);
+        a.push(EbacContactGrant.TYPE_0_2);
+        a.push(EbacContactGrant.TYPE_0_1);
+        return a;
+    };
+}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  AES encrypted public key and display name. Contains Initialization Vectors,
  *  but not secrets. Used to encrypt public identities for storage on remote
@@ -1313,84 +1391,6 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
         return a;
     };
 }, {atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
-/**
- *  AES encrypted public key and display name message.
- *  Used to grant access to a contact.
- *  Contains Initialization Vectors, but not secrets.
- *  Used to encrypt public identities for storage on remote systems.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EbacContactGrant
- *  @module org.cassproject
- */
-var EbacContactGrant = function() {
-    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_4);
-};
-EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = &quot;http://schema.eduworks.com/ebac/0.1/contactGrant&quot;;
-    constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/ebac/0.2/contactGrant&quot;;
-    constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/kbac/0.2/ContactGrant&quot;;
-    constructor.TYPE_0_4 = &quot;https://schema.cassproject.org/kbac/0.4/ContactGrant&quot;;
-    /**
-     *  Public key being granted to the owner of this message.
-     * 
-     *  @property pk
-     *  @type string(pem)
-     */
-    prototype.pk = null;
-    /**
-     *  Display name of the contact.
-     * 
-     *  @property displayName
-     *  @type string
-     */
-    prototype.displayName = null;
-    /**
-     *  Source server of the contact.
-     * 
-     *  @property source
-     *  @type string
-     */
-    prototype.source = null;
-    /**
-     *  Response token used to validate that this grant is in response to a contact request you sent.
-     * 
-     *  @property responseToken
-     *  @type string
-     */
-    prototype.responseToken = null;
-    /**
-     *  Signature (Base64 encoded) of the response token to verify against your own public key
-     *  to ensure that this grant is in response to a contact request you sent.
-     * 
-     *  @property responseSignature
-     *  @type string
-     */
-    prototype.responseSignature = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (EbacContactGrant.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me[&quot;@context&quot;] == null &amp;&amp; me[&quot;@schema&quot;] != null) 
-                me[&quot;@context&quot;] = me[&quot;@schema&quot;];
-            this.setContextAndType(Ebac.context_0_2, EbacContactGrant.TYPE_0_2);
-        }
-        if (EbacContactGrant.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(Ebac.context_0_3, EbacContactGrant.TYPE_0_3);
-        }
-        if (EbacContactGrant.TYPE_0_3.equals(this.getFullType())) {
-            this.setContextAndType(Ebac.context_0_4, EbacContactGrant.TYPE_0_4);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(EbacContactGrant.TYPE_0_4);
-        a.push(EbacContactGrant.TYPE_0_3);
-        a.push(EbacContactGrant.TYPE_0_2);
-        a.push(EbacContactGrant.TYPE_0_1);
-        return a;
-    };
-}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Credential list along with one time pad and session-based token for use in
  *  commit actions.

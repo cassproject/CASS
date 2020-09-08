@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.34</em>
+            <em>API Docs for: 1.2.35</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -323,7 +323,6 @@
                                 <li><a href="../classes/EntryPoint.html">EntryPoint</a></li>
                                 <li><a href="../classes/Enumeration.html">Enumeration</a></li>
                                 <li><a href="../classes/Episode.html">Episode</a></li>
-                                <li><a href="../classes/Event.html">Event</a></li>
                                 <li><a href="../classes/EventReservation.html">EventReservation</a></li>
                                 <li><a href="../classes/EventStatusType.html">EventStatusType</a></li>
                                 <li><a href="../classes/EventVenue.html">EventVenue</a></li>
@@ -645,6 +644,7 @@
                                 <li><a href="../classes/RVPark.html">RVPark</a></li>
                                 <li><a href="../classes/SaleEvent.html">SaleEvent</a></li>
                                 <li><a href="../classes/ScheduleAction.html">ScheduleAction</a></li>
+                                <li><a href="../classes/SchemaEvent.html">SchemaEvent</a></li>
                                 <li><a href="../classes/ScholarlyArticle.html">ScholarlyArticle</a></li>
                                 <li><a href="../classes/School.html">School</a></li>
                                 <li><a href="../classes/ScreeningEvent.html">ScreeningEvent</a></li>
@@ -920,7 +920,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      */
     prototype.toPem = function() {
         if (this.defaultPem == null) 
-            this.defaultPem = forge.pki.publicKeyToPem(this.pk).replaceAll(&quot;\r?\n&quot;, &quot;&quot;);
+            this.defaultPem = forge.pki.publicKeyToPem(this.pk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
         return this.defaultPem;
     };
     /**
@@ -931,7 +931,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @method toPkcs1Pem
      */
     prototype.toPkcs1Pem = function() {
-        return forge.pki.publicKeyToRSAPublicKeyPem(this.pk).replaceAll(&quot;\r?\n&quot;, &quot;&quot;);
+        return forge.pki.publicKeyToRSAPublicKeyPem(this.pk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
     };
     /**
      *  Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.
@@ -941,7 +941,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @method toPkcs8Pem
      */
     prototype.toPkcs8Pem = function() {
-        return forge.pki.publicKeyToPem(this.pk).replaceAll(&quot;\r?\n&quot;, &quot;&quot;);
+        return forge.pki.publicKeyToPem(this.pk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
     };
     prototype.toJwk = function() {
         if (this.jwk == null) 
@@ -1157,7 +1157,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      */
     prototype.toPem = function() {
         if (this.defaultPem == null) 
-            this.defaultPem = forge.pki.privateKeyToPem(this.ppk).replaceAll(&quot;\r?\n&quot;, &quot;&quot;);
+            this.defaultPem = forge.pki.privateKeyToPem(this.ppk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
         return this.defaultPem;
     };
     /**
@@ -1168,7 +1168,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPkcs1Pem
      */
     prototype.toPkcs1Pem = function() {
-        return forge.pki.privateKeyToPem(this.ppk).replaceAll(&quot;\r?\n&quot;, &quot;&quot;);
+        return forge.pki.privateKeyToPem(this.ppk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
     };
     /**
      *  Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.
@@ -1178,7 +1178,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPkcs8Pem
      */
     prototype.toPkcs8Pem = function() {
-        return forge.pki.privateKeyInfoToPem(forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk))).replaceAll(&quot;\r?\n&quot;, &quot;&quot;);
+        return forge.pki.privateKeyInfoToPem(forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk))).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
     };
     prototype.toJwk = function() {
         if (this.jwk == null) 
