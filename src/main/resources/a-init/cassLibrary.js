@@ -76,6 +76,8 @@ repoEndpoint = function () {
 }
 
 var keyFor = function (filename) {
+    if (java.lang.System.getenv(filename) != null)
+        return java.lang.System.getenv(filename);
     if (fileExists(filename + ".pem"))
         return fileToString(fileLoad(filename + ".pem", false, true));
     if (fileExists("etc/" + filename + ".pem"))
