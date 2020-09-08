@@ -287,7 +287,7 @@
 							<cssSourceFiles></cssSourceFiles>
 							<jsSourceDir>.</jsSourceDir>
 							<jsSourceFiles>
-								<jsSourceFile>src/main/webapp/cass-editor/forge/forge.min.js</jsSourceFile>
+								<jsSourceFile>src/main/webapp/forge/forge.min.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/papaparse.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/FileSaver.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/xml2json.js</jsSourceFile>
