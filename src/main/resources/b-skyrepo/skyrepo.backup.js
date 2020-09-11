@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+
 skyrepoMigrate = function () {
     if (!fileExists("skyrepo"))
         return;

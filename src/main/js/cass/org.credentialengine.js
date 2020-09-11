@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+
 /**
  *  credentialengine.org/CredentialingAction
  *  Action taken by an agent affecting the status of an object entity.
