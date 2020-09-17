@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 /**
  *  Represents a JSON-LD linked data object and performs serialization.
  *  Note: Serialization and deserialization remove parameters that begin with '@'.

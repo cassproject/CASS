@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 /**
  *  Location of strings that store the current namespace for EBAC/KBAC.
  * 

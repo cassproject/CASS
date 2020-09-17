@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 /**
  *  Class that represents a "view" that can be displayed in an container element on the page. The View should define
  *  a display function that loads HTML into the container element on the page and then finally calls the callback once
