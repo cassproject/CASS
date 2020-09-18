@@ -66,3 +66,12 @@ To support open linked data, it is important that the objects created in CaSS ha
  * Assign this server a domain name.
  * Enable HTTPS.
  * (Optional) Use a reverse proxy to control the endpoint closely.
+
+# Running Locally
+After cloning this repository, you can run CaSS locally with Jetty or Docker:
+
+    mvn jetty:run
+or
+
+    mvn install
+    docker-compose up --build -d
