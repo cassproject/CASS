@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 /**
  *  Encrypted JSON-LD object or string.
  * 

@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 var CryptoKey = function() {};
 CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
 var AlgorithmIdentifier = function() {};

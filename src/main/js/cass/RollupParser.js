@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 // Generated from Rollup.g4 by ANTLR 4.8
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
