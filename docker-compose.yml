@@ -11,7 +11,6 @@ services:
     restart: always
     depends_on:
       - cass
-      - keycloak
     networks:
       - esnet
   cass:
@@ -27,13 +26,49 @@ services:
       memlock:
         soft: -1
         hard: -1
-#    volumes:
+    volumes:
 #      - ./docker/distributed/tomcat-alpine/server.xml:/usr/local/tomcat/conf/server.xml
-#      - ./etc:/usr/local/tomcat/etc/
+      - etc:/usr/local/tomcat/etc/
     networks:
       - esnet
     depends_on:
       - elasticsearch
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.2
+#    container_name: elasticsearch
+#    environment:
+#      - cluster.name=docker-cluster
+#      - node.name=node-1
+#      - cluster.initial_master_nodes=node-1
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ports:
+#      - 9200:9200
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    volumes:
+#      - esdata1:/usr/share/elasticsearch/data
+#    networks:
+#      - esnet
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.12
+#    container_name: elasticsearch
+#    environment:
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ports:
+#      - 9200:9200
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    volumes:
+#      - esdata1:/usr/share/elasticsearch/data
+#    networks:
+#      - esnet
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
     container_name: elasticsearch
@@ -41,100 +76,16 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - xpack.security.enabled=false
+      - xpack.monitoring.collection.interval=-1
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9200:9200
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    ports:
-      - 9200:9200
     volumes:
       - esdata1:/usr/share/elasticsearch/data
-    networks:
-      - esnet
-  mysql-keycloak:
-    image: mysql:5.7
-    container_name: mysql-keycloak
-    volumes:
-      - mysql_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: password
-    networks:
-      - esnet
-  keycloak:
-    image: jboss/keycloak
-    container_name: keycloak
-    environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: mysql-keycloak
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: password
-      KEYCLOAK_USER: cass
-      KEYCLOAK_PASSWORD: cass
-      KEYCLOAK_HOSTNAME: localhost
-      KEYCLOAK_HTTP_PORT: 80
-    depends_on:
-      - mysql-keycloak
-    networks:
-      - esnet
-  mariadb:
-    image: 'bitnami/mariadb:latest'
-    container_name: mariadb
-    environment:
-      - MARIADB_USER=bn_moodle
-      - MARIADB_DATABASE=bitnami_moodle
-      - ALLOW_EMPTY_PASSWORD=yes
-    volumes:
-      - 'mariadb_data:/bitnami'
-    networks:
-      - esnet
-  moodle:
-    image: 'bitnami/moodle:latest'
-    container_name: moodle
-    environment:
-      - MARIADB_HOST=mariadb
-      - MARIADB_PORT_NUMBER=3306
-      - MOODLE_DATABASE_USER=bn_moodle
-      - MOODLE_DATABASE_NAME=bitnami_moodle
-      - ALLOW_EMPTY_PASSWORD=yes
-    labels:
-      kompose.service.type: nodeport
-    volumes:
-      - 'moodle_data:/bitnami'
-    depends_on:
-      - mariadb
-    networks:
-      - esnet
-  lrs:
-    image: dirichlet/lrs
-    ports:
-      - "8081:8080"
-    links:
-      - postgres
-    environment:
-      - LRS_ADMIN_NAME=
-      - LRS_ADMIN_PASS=
-      - LRS_ADMIN_MAIL=
-      - LRS_SECRET_KEY=
-      - POSTGRES_USER=
-      - POSTGRES_PASSWORD=
-      - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_DB=lrs
-    networks:
-      - esnet
-  postgres:
-    image: postgres
-    environment:
-      - POSTGRES_USER=
-      - POSTGRES_PASSWORD=
-      - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_DB=lrs
-    volumes:
-      - psql_data:/var/lib/postgresql/data/pgdata
     networks:
       - esnet
 volumes:
