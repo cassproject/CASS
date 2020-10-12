@@ -21,6 +21,7 @@ var $ = null;
 var document = null;
 var window = {};
 var localStorage = {};
+var elasticEndpoint = null;
 
 var setTimeout = function (f, time) {
     if (f != null)
@@ -28,13 +29,13 @@ var setTimeout = function (f, time) {
 }
 
 console = {
-    log: function (s) {
-        debug(s);
-    },
+   log: function (s) {
+       debug(s);
+   },
 
-    error: function (s) {
-        debug("error:" + s);
-    }
+   error: function (s) {
+       debug("error:" + s);
+   }
 };
 
 load("classpath:stjs.js");
@@ -63,15 +64,15 @@ var repo = new EcRepository();
 repo.selectedServer = "http://localhost:8080/api/";
 
 if (java.lang.System.getenv("CASS_LOOPBACK") != null)
-    repo.selectedServer = java.lang.System.getenv("CASS_LOOPBACK")
+    repo.selectedServer = java.lang.System.getenv("CASS_LOOPBACK");
 
 if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
     elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
 
-thisEndpoint = function () {
+var thisEndpoint = function () {
     return repo.selectedServer;
 }
-repoEndpoint = function () {
+var repoEndpoint = function () {
     return repo.selectedServer;
 }
 
