@@ -131,11 +131,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.eduworks</groupId>
-			<artifactId>ec.ui.framework</artifactId>
-			<version>${ec-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.eduworks</groupId>
 			<artifactId>forge</artifactId>
 			<version>${ec-version}</version>
 		</dependency>
