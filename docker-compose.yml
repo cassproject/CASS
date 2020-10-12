@@ -28,56 +28,21 @@ services:
         hard: -1
     volumes:
 #      - ./docker/distributed/tomcat-alpine/server.xml:/usr/local/tomcat/conf/server.xml
-      - etc:/usr/local/tomcat/etc/
+      - ./etc:/usr/local/tomcat/etc/
     networks:
       - esnet
     depends_on:
       - elasticsearch
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.2
-#    container_name: elasticsearch
-#    environment:
-#      - cluster.name=docker-cluster
-#      - node.name=node-1
-#      - cluster.initial_master_nodes=node-1
-#      - bootstrap.memory_lock=true
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#    ports:
-#      - 9200:9200
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-#    volumes:
-#      - esdata1:/usr/share/elasticsearch/data
-#    networks:
-#      - esnet
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.12
-#    container_name: elasticsearch
-#    environment:
-#      - cluster.name=docker-cluster
-#      - bootstrap.memory_lock=true
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#    ports:
-#      - 9200:9200
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-#    volumes:
-#      - esdata1:/usr/share/elasticsearch/data
-#    networks:
-#      - esnet
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.2
     container_name: elasticsearch
     environment:
       - cluster.name=docker-cluster
+      - node.name=node-1
+      - cluster.initial_master_nodes=node-1
+      - cluster.max_shards_per_node=3000
       - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
-      - xpack.monitoring.collection.interval=-1
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
     ports:
       - 9200:9200
     ulimits:
@@ -85,9 +50,46 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
+      - ./data:/usr/share/elasticsearch/data
     networks:
       - esnet
+#  elasticsearch:
+#     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.12
+#     container_name: elasticsearch
+#     environment:
+#       - cluster.name=docker-cluster
+#       - bootstrap.memory_lock=true
+#       - cluster.max_shards_per_node=3000
+#       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+#     ports:
+#       - 9200:9200
+#     ulimits:
+#       memlock:
+#         soft: -1
+#         hard: -1
+#     volumes:
+#       - ./data:/usr/share/elasticsearch/data
+#     networks:
+#       - esnet
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+#    container_name: elasticsearch
+#    environment:
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - xpack.security.enabled=false
+#      - xpack.monitoring.collection.interval=-1
+#      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+#    ports:
+#      - 9200:9200
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    volumes:
+#      - ./data:/usr/share/elasticsearch/data
+#    networks:
+#      - esnet
 volumes:
   etc:
     driver: local
