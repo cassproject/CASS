@@ -114,7 +114,7 @@ var xapiStatement = function (s) {
     if (authorityPk == null) return;
 
     if (s.object == null) return;
-    console.log(s.object.id);
+    
     var alignedCompetencies = getAlignedCompetencies.call(this, s.object.id);
     var alreadyAligned = {};
     for (var i = 0; i < alignedCompetencies.length; i++) {
@@ -168,7 +168,6 @@ var xapiLoop = function () {
     var results = xapiEndpoint.call(this, null, since);
     while (results.statements != null && results.statements.length > 0) {
         for (var i = 0; i < results.statements.length; i++) {
-            console.log(results.statements[i].id);
             xapiStatement.call(this, results.statements[i]);
         }
         fileSave(date(null, "yyyy-MM-dd'T'HH:mm:ssXXX"), sinceFilePath);
