@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.3.11",
+        "version": "1.3.12",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -120,25 +120,6 @@
                 "EcAesCtrAsyncWorker": 1,
                 "EcRsaOaepAsync": 1,
                 "EcAesCtrAsync": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/main/js/cass/ec.ui.framework.js": {
-            "name": "src/main/js/cass/ec.ui.framework.js",
-            "modules": {
-                "com.eduworks.ec.ui": 1
-            },
-            "classes": {
-                "EcView": 1,
-                "ViewManager": 1,
-                "HistoryClosure": 1,
-                "EcModal": 1,
-                "ModalManager": 1,
-                "EcScreen": 1,
-                "Screenmanager": 1,
-                "EcOverlay": 1,
-                "OverlayManager": 1
             },
             "fors": {},
             "namespaces": {}
@@ -1009,30 +990,6 @@
             "is_constructor": 1,
             "static": 1,
             "extends": "EbacContactGrant"
-        },
-        "com.eduworks.ec.ui": {
-            "name": "com.eduworks.ec.ui",
-            "submodules": {},
-            "elements": {},
-            "classes": {
-                "EcView": 1,
-                "ViewManager": 1,
-                "HistoryClosure": 1,
-                "EcModal": 1,
-                "ModalManager": 1,
-                "EcScreen": 1,
-                "Screenmanager": 1,
-                "EcOverlay": 1,
-                "OverlayManager": 1
-            },
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1084,
-            "description": "Class that represents a \"view\" that can be displayed in an container element on the page. The View should define\na display function that loads HTML into the container element on the page and then finally calls the callback once\nthe view has been completely initialized",
-            "author": "devlin.junker@eduworks.com",
-            "extends": "EcView"
         },
         "org.credentialengine": {
             "name": "org.credentialengine",
@@ -2153,7 +2110,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2498,
+            "line": 2500,
             "description": "Implementation of a file with methods for communicating with repository services",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2449,141 +2406,6 @@
             "file": "src/main/js/cass/ec.crypto.js",
             "line": 1160,
             "description": "Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.\nFalls back to EcAesCtrAsyncWorker, if window.crypto is not available."
-        },
-        "EcView": {
-            "name": "EcView",
-            "shortname": "EcView",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 20,
-            "description": "Class that represents a \"view\" that can be displayed in an container element on the page. The View should define\na display function that loads HTML into the container element on the page and then finally calls the callback once\nthe view has been completely initialized",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "ViewManager": {
-            "name": "ViewManager",
-            "shortname": "ViewManager",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 103,
-            "description": "Parent class of all view manager classes, stores a cache of the views and\ntheir corresponding DOM selectors and provides functions for setting a view\nto correspond to a selector and displaying a view after it has been added to\nthe cache.",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "HistoryClosure": {
-            "name": "HistoryClosure",
-            "shortname": "HistoryClosure",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 198,
-            "description": "Object stored in the ScreenManager's history cache array, to keep track of the history of screens and\nwhich DOM element they were displayed in",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "EcModal": {
-            "name": "EcModal",
-            "shortname": "EcModal",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 265,
-            "description": "View Subclass representing modal views that are displayed in the modal container",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "ModalManager": {
-            "name": "ModalManager",
-            "shortname": "ModalManager",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 293,
-            "description": "View Manager sub class that manages loading \"modal\"s and has a few helper functions to make sure that\nthey work properly",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "EcScreen": {
-            "name": "EcScreen",
-            "shortname": "EcScreen",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 385,
-            "description": "Subclass of view that is specific for a screen, providing a display name that\nwill be shown in the URL bar and that can be used on startup to check if the\nURL is asking for a certain page on startup.",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "Screenmanager": {
-            "name": "Screenmanager",
-            "shortname": "Screenmanager",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 582,
-            "description": "View Manager child class that manages loading \"screen\"s and saving screen history. This is the main view type\nin an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the\nsession, so  when the back button is pressed, the application will load the previous screen with any data that\nwas associated with it.",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "EcOverlay": {
-            "name": "EcOverlay",
-            "shortname": "EcOverlay",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 963,
-            "description": "Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used\nin the URL bar and in the history so the page can be loaded on back button or startup",
-            "author": "devlin.junker@eduworks.com"
-        },
-        "OverlayManager": {
-            "name": "OverlayManager",
-            "shortname": "OverlayManager",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec.ui",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1084,
-            "description": "View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to\nthe previous screen) with a few helper functions for managing overlays",
-            "author": "devlin.junker@eduworks.com\n        (NOT TESTED MUCH YET)"
         },
         "Cass": {
             "name": "Cass",
@@ -20141,7 +19963,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1624,
+            "line": 1626,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20169,7 +19991,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1673,
+            "line": 1675,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20191,7 +20013,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1718,
+            "line": 1720,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20213,7 +20035,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1757,
+            "line": 1759,
             "description": "Returns an array of JSON-LD objects from the places designated by the given URIs.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20245,7 +20067,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1803,
+            "line": 1805,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20277,7 +20099,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1821,
+            "line": 1823,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20297,7 +20119,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1835,
+            "line": 1837,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20334,7 +20156,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1945,
+            "line": 1947,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20359,7 +20181,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2063,
+            "line": 2065,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20369,7 +20191,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2137,
+            "line": 2139,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20379,7 +20201,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2208,
+            "line": 2210,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20402,7 +20224,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2254,
+            "line": 2256,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20425,7 +20247,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2297,
+            "line": 2299,
             "description": "Lists all types visible to the current user in the repository\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20447,7 +20269,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2317,
+            "line": 2319,
             "description": "Backs up the skyrepo elasticsearch database to the server backup directory",
             "params": [
                 {
@@ -20474,7 +20296,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2329,
+            "line": 2331,
             "description": "Restores the skyrepo elasticsearch backup from the server backup directory",
             "params": [
                 {
@@ -20501,7 +20323,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2341,
+            "line": 2343,
             "description": "Wipes all data from the the skyrepo elasticsearch, can only be restored by using backup restore",
             "params": [
                 {
@@ -20528,7 +20350,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2353,
+            "line": 2355,
             "description": "Handles the search results in search by params, before returning them\nwith the callback passed into search method",
             "params": [
                 {
@@ -20561,7 +20383,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2391,
+            "line": 2393,
             "description": "Fetches the admin keys from the server to compare for check if current\nuser is an admin user",
             "params": [
                 {
@@ -20583,7 +20405,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2511,
+            "line": 2513,
             "description": "Factory method for creating a file with certain values",
             "params": [
                 {
@@ -20615,7 +20437,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2533,
+            "line": 2535,
             "description": "Retrieves a file from the server specified by it's ID",
             "params": [
                 {
@@ -20643,7 +20465,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2553,
+            "line": 2555,
             "description": "Searches the repository given for files that match the query passed in",
             "params": [
                 {
@@ -20680,7 +20502,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2576,
+            "line": 2578,
             "description": "Saves this file in the repository using the repository web services",
             "params": [
                 {
@@ -20702,7 +20524,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2597,
+            "line": 2599,
             "description": "Deletes the file from the repository using repository web services",
             "params": [
                 {
@@ -23267,961 +23089,13 @@
             "module": "com.eduworks.ec"
         },
         {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 31,
-            "description": "Function to be defined in subclasses that returns the location of the main html file associated with this view",
-            "return": {
-                "description": "The string path to an html file",
-                "type": "String"
-            },
-            "memberof": "EcView",
-            "itemtype": "method",
-            "name": "getHtmlLocation",
-            "abstract": "",
-            "class": "EcView",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 41,
-            "description": "Display function to override (usually in JavaScript) that will set up any event handlers",
-            "params": [
-                {
-                    "name": "containerId",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "memberof": "EcView",
-            "itemtype": "method",
-            "name": "display",
-            "class": "EcView",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 51,
-            "description": "Function that will convert a view to a certain other view class as long as it the converted type inherits the\ncurrent type of the view",
-            "memberof": "EcView",
-            "itemtype": "method",
-            "name": "as",
-            "params": [
-                {
-                    "name": "_interface",
-                    "description": "Class type that the instance should be converted to",
-                    "type": "Class"
-                }
-            ],
-            "return": {
-                "description": "The converted instance of the type passed in",
-                "type": "Object"
-            },
-            "class": "EcView",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 74,
-            "description": "Event that is called when the view is deleted, removed, or found to have no applicable selector.\nCalled upon screen change or when replacing a view with the same selector.",
-            "memberof": "EcView",
-            "itemtype": "method",
-            "name": "onClose",
-            "return": {
-                "description": "True if the view finished cleaning up after itself. False otherwise.",
-                "type": "Boolean"
-            },
-            "class": "EcView",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 85,
-            "description": "Display this alert on the view.",
-            "memberof": "EcView",
-            "itemtype": "method",
-            "name": "displayAlert",
-            "params": [
-                {
-                    "name": "Error",
-                    "description": "to display.",
-                    "type": "String"
-                },
-                {
-                    "name": "Type",
-                    "description": "of error.",
-                    "type": "String"
-                }
-            ],
-            "class": "EcView",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 94,
-            "description": "Clear the alert.",
-            "memberof": "EcView",
-            "itemtype": "method",
-            "name": "clearAlert",
-            "params": [
-                {
-                    "name": "Type",
-                    "description": "of error.",
-                    "type": "String"
-                }
-            ],
-            "class": "EcView",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 115,
-            "description": "Storage that maps view class instances to DOM Elements",
-            "access": "private",
-            "tagname": "",
-            "itemtype": "property",
-            "name": "viewMap",
-            "type": "Map<String, EcView>",
-            "class": "ViewManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 123,
-            "description": "Set's the view instance for a specific DOM selector",
-            "params": [
-                {
-                    "name": "containerId",
-                    "description": "DOM Selector for the element that will correspond to the view",
-                    "type": "String"
-                },
-                {
-                    "name": "view",
-                    "description": "View that will correspond to the DOM Selector",
-                    "type": "EcView"
-                }
-            ],
-            "memberof": "ViewManager",
-            "itemtype": "method",
-            "name": "setView",
-            "class": "ViewManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 136,
-            "description": "Returns the view instance that currently corresponds to a specific DOM\nselector",
-            "params": [
-                {
-                    "name": "containerId",
-                    "description": "DOM Selector that corresponds to the view to be returned",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "The view that corresponds to the DOM Selector passed in, or null\nif no view corresponds with it",
-                "type": "EcView"
-            },
-            "memberof": "ViewManager",
-            "itemtype": "method",
-            "name": "getView",
-            "class": "ViewManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 151,
-            "description": "Relates the view to a DOM Selector and calls the view's display function\nto populate the inner html of the DOM Selector Element",
-            "params": [
-                {
-                    "name": "view",
-                    "description": "View to be displayed in the DOM Selector Element",
-                    "type": "EcView"
-                },
-                {
-                    "name": "containerId",
-                    "description": "DOM Selector for element that the view will be displayed in",
-                    "type": "String"
-                },
-                {
-                    "name": "callback",
-                    "description": "Callback function to be passed in to the view's display\n                   function (to be called once the view has been displayed)",
-                    "type": "Callback0"
-                }
-            ],
-            "memberof": "ViewManager",
-            "itemtype": "method",
-            "name": "showView",
-            "class": "ViewManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 180,
-            "description": "Hides the container specified by the containerId by adding 'hide' class",
-            "params": [
-                {
-                    "name": "containerId",
-                    "description": "DOM Selector for the element to add the 'hide' class to",
-                    "type": "String"
-                }
-            ],
-            "memberof": "ViewManager",
-            "itemtype": "method",
-            "name": "hideView",
-            "class": "ViewManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 226,
-            "description": "Name of the page (used to retrieve the correct screen on a back/forward button press)",
-            "itemtype": "property",
-            "name": "pageName",
-            "type": "String",
-            "class": "HistoryClosure",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 233,
-            "description": "Screen to store and associate with the page name so that it can be loaded if necessary",
-            "itemtype": "property",
-            "name": "screen",
-            "type": "EcScreen",
-            "class": "HistoryClosure",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 240,
-            "description": "ID of the container to display the screen in, once it has been found by page name",
-            "itemtype": "property",
-            "name": "containerId",
-            "type": "String",
-            "class": "HistoryClosure",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 247,
-            "description": "URL Parameters associated with the screen",
-            "itemtype": "property",
-            "name": "screenParameters",
-            "type": "Object",
-            "class": "HistoryClosure",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 255,
-            "description": "STJS Wrapper for the Browser Native History Object",
-            "author": "devlin.junker@eduworks.com",
-            "class": "HistoryClosure",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 277,
-            "description": "To be overrided in subclasses, lets the developer define the size of the modal\n(Possible: tiny, small, medium, large, xlarge)",
-            "itemtype": "property",
-            "name": "modalSize",
-            "type": "String",
-            "class": "EcModal",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 285,
-            "return": {
-                "description": "tiny, small, medium, large, or full depending on how large the modal should be"
-            },
-            "memberof": "EcModal",
-            "itemtype": "method",
-            "name": "getModalSize",
-            "abstract": "",
-            "class": "EcModal",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 306,
-            "description": "DOM Selector (ID) of the container to display Modal's in",
-            "itemtype": "property",
-            "name": "MODAL_CONTAINER_ID",
-            "type": "String",
-            "class": "ModalManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 313,
-            "description": "Application flag that is set when a modal is open, so we can check from the application whether we're in a\nmodal or not.",
-            "itemtype": "property",
-            "name": "inModal",
-            "type": "boolean",
-            "class": "ModalManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 321,
-            "description": "Retrieves the current view that corresponds to the Modal Container Element (Should be a Modal)",
-            "return": {
-                "description": "EcModal instance that is currently being shown in the Modal container element",
-                "type": "EcModal"
-            },
-            "memberof": "ModalManager",
-            "itemtype": "method",
-            "name": "getCurrentModal",
-            "static": 1,
-            "class": "ModalManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 333,
-            "description": "Sets the current modal and then shows it by calling the modals display function",
-            "params": [
-                {
-                    "name": "modal",
-                    "description": "Modal Instance to be displayed in the modal container and set as current",
-                    "type": "EcModal"
-                },
-                {
-                    "name": "callback",
-                    "description": "Function to invoke after the modal has been displayed",
-                    "type": "Callback0"
-                }
-            ],
-            "memberof": "ModalManager",
-            "itemtype": "method",
-            "name": "showModal",
-            "static": 1,
-            "class": "ModalManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 365,
-            "description": "Hides the modal container and returns to the screen or overlay that was being displayed beneath it",
-            "memberof": "ModalManager",
-            "itemtype": "method",
-            "name": "hideModal",
-            "static": 1,
-            "class": "ModalManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 399,
-            "description": "Name that identifies a certain type of screen, shown in the URL bar to\nhelp the user understand the page that they are on and used during\nstartup to decide whether or not to load a specific page on startup.",
-            "itemtype": "property",
-            "name": "displayName",
-            "type": "string",
-            "class": "EcScreen",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 410,
-            "description": "Getter for the display name",
-            "return": {
-                "description": "The display name for the screen"
-            },
-            "memberof": "EcScreen",
-            "itemtype": "method",
-            "name": "getDisplayName",
-            "class": "EcScreen",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 597,
-            "description": "Screen to be used when another screen is loading information from the server before being able to display\nitself. Notice that the display function does not affect the DOM on the page in any way.",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 608,
-            "description": "Screen to be set by application on application startup, dictates what the screen should be if the startup\nScreen hasn't been set",
-            "itemtype": "property",
-            "name": "defaultScreen",
-            "type": "EcScreen",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 616,
-            "description": "Screen to be set by application if it notices that a certain screen should be loaded on startup that is\ndifferent from the default Screen",
-            "itemtype": "property",
-            "name": "startupScreen",
-            "type": "EcScreen",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 624,
-            "description": "DOM Selector (ID) of the Screen Container that will display all of the screen views",
-            "itemtype": "property",
-            "name": "SCREEN_CONTAINER_ID",
-            "type": "String",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 631,
-            "description": "Array to track the history of the current session",
-            "itemtype": "property",
-            "name": "myHistory",
-            "type": "HistoryClosure[]",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 638,
-            "description": "Callback to be invoked once the application has started and the first screen has been completely loaded\nand displayed",
-            "itemtype": "property",
-            "name": "startupCallback",
-            "type": "Callback1<String>",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 646,
-            "description": "Callback invoked during a history load (used in Overlay Manager to open an overlay if it was last history view)",
-            "itemtype": "property",
-            "name": "loadHistoryCallback",
-            "type": "Callback2<EcScreen, Object>",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 653,
-            "description": "Array of callbacks that will compare any markers saved in the browser to see if a specific startup screen\nshould be set. These callbacks should be defined in the screen Java implementation to check if the screen\nshould be loaded.",
-            "itemtype": "property",
-            "name": "startupScreenCallbacks",
-            "type": "Callback0[]",
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 662,
-            "description": "Function to add startup screen callbacks to the array of callbacks",
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "callback to add, all callbacks will be invoked on the application startup",
-                    "type": "Callback0"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "addStartupScreenCallback",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 674,
-            "description": "Retrieves the current view that corresponds to the Screen Container Element (Should be a screen)",
-            "return": {
-                "description": "EcScreen instance that is currently being shown in the screen container element",
-                "type": "EcScreen"
-            },
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "getCurrentScreen",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 686,
-            "description": "Sets the application default Screen that is shown if no startup screen has been defined.\nAlso sets up some code to run during the application load, that calls the startup callbacks\nto see if there is a startup screen different than the defaultScreen, then displays it or the\ndefaultScreen depending on the results",
-            "params": [
-                {
-                    "name": "page",
-                    "description": "The default screen that will be displayed if no startup screen is defined during load",
-                    "type": "EcPage"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "setDefaultScreen",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 738,
-            "description": "Set's the current screen, then show's it by calling the display function. Depending on the\naddHistory flag, will add the page passed in to the history array, tracking session page history",
-            "params": [
-                {
-                    "name": "page",
-                    "description": "The screen to set as current and display",
-                    "type": "EcScreen"
-                },
-                {
-                    "name": "callback",
-                    "description": "Function to invoke after the page has been displayed and foundation has been set up on the new HTML",
-                    "type": "Callback0"
-                },
-                {
-                    "name": "params",
-                    "description": "URL parameters to set when the screen changes",
-                    "type": "Object"
-                },
-                {
-                    "name": "addHistory",
-                    "description": "Flag for whether to store this page in the history array",
-                    "type": "Boolean"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "changeScreen",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 765,
-            "description": "Set's the current screen, then show's it by calling the display function. This replaces the current HistoryClosure\nelement for the current screen in the history array, rather than leaving it and (potentially) adding another\nhistory array element like changeScreen",
-            "params": [
-                {
-                    "name": "page",
-                    "description": "Screen to set as current and display",
-                    "type": "EcScreen"
-                },
-                {
-                    "name": "callback",
-                    "description": "Function to invoke after the page has been displayed and foundation has been set up on the new HTML",
-                    "type": "Callback0"
-                },
-                {
-                    "name": "params",
-                    "description": "URL Parameters to set when replacing screen",
-                    "type": "Object"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "replaceScreen",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 788,
-            "description": "Reloads the current screen, leaving the history alone",
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "Function to invoke after the page has been redisplayed and foundation has been set up on the new HTML",
-                    "type": "Callback0"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "reloadCurrentScreen",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 804,
-            "description": "Adds the screen passed in and the display container to a HistoryClosure element and pushes it\non the end of the history cache array. This does not ensure that the screen is displayed though.",
-            "params": [
-                {
-                    "name": "screen",
-                    "description": "The screen to add to the history cache array",
-                    "type": "EcScreen"
-                },
-                {
-                    "name": "displayContainerId",
-                    "description": "DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)",
-                    "type": "String"
-                },
-                {
-                    "name": "params",
-                    "description": "Object containing key to value pairs that should be put in the url bar to store in history",
-                    "type": "Object"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "addHistory",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 840,
-            "description": "Replaces the current end of the history array with a new HistoryClosure element that contains the screen and\ncontainerId passed in.",
-            "params": [
-                {
-                    "name": "screen",
-                    "description": "Screen to add to the history element that will replace the last in the history array",
-                    "type": "EcScreen"
-                },
-                {
-                    "name": "displayContainerId",
-                    "description": "DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)",
-                    "type": "String"
-                },
-                {
-                    "name": "{Object{",
-                    "description": "params\n                  Object containing key to value pairs that should be put in the url bar to remember state at this history point"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "replaceHistory",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 881,
-            "description": "Sets the url parameters on the current page",
-            "params": [
-                {
-                    "name": "params",
-                    "description": "url parameters json object",
-                    "type": "Object"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "setScreenParameters",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 893,
-            "description": "Searches through the history array for the last screen that was loaded with the name passed in, and then displays\nit in the container that it was associated with. If there is no screen in the history, then check\nif there is a startupScreen that can be loaded right now, otherwise load the default screen",
-            "params": [
-                {
-                    "name": "name",
-                    "description": "Name of the screen to search for in the history array",
-                    "type": "String"
-                }
-            ],
-            "memberof": "ScreenManager",
-            "itemtype": "method",
-            "name": "loadHistoryScreen",
-            "static": 1,
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 939,
-            "description": "Shows a screen, and cleans up the previous screen.",
-            "params": [
-                {
-                    "name": "screen",
-                    "description": "Screen to display."
-                },
-                {
-                    "name": "screenContainerId",
-                    "description": "Container ID to display the screen in."
-                },
-                {
-                    "name": "callback0",
-                    "description": "Event to call when finished displaying."
-                }
-            ],
-            "class": "Screenmanager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 978,
-            "description": "Returns the URL Query parameters of the browser window",
-            "return": {
-                "description": "URL Query Parameters in a map",
-                "type": "Map<String, String>"
-            },
-            "memberof": "URLParams",
-            "itemtype": "method",
-            "name": "queryParams",
-            "static": 1,
-            "class": "EcOverlay",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1001,
-            "description": "Returns the URL Hash parameters of the browser window",
-            "return": {
-                "description": "URL Hash Parameters in a map",
-                "type": "Map<String, String>"
-            },
-            "memberof": "EcView",
-            "itemtype": "method",
-            "name": "hashParams",
-            "static": 1,
-            "class": "EcOverlay",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1024,
-            "description": "Returns the URL parameters of the browser window",
-            "return": {
-                "description": "URL Parameters in a map",
-                "type": "Map<String, String>"
-            },
-            "memberof": "URLParams",
-            "itemtype": "method",
-            "name": "getParams",
-            "static": 1,
-            "class": "EcOverlay",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1041,
-            "description": "Returns a specific URL parameter",
-            "params": [
-                {
-                    "name": "paramName",
-                    "description": "Name of URL parameter to retrieve",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "Value of URL parameter if it exists",
-                "type": "String"
-            },
-            "memberof": "URLParams",
-            "itemtype": "method",
-            "name": "get",
-            "static": 1,
-            "class": "EcOverlay",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1055,
-            "description": "Sets a specific URL Parameter",
-            "params": [
-                {
-                    "name": "paramName",
-                    "description": "Name of URL parameter to set",
-                    "type": "String"
-                },
-                {
-                    "name": "val",
-                    "description": "Value to set for URL parameter",
-                    "type": "String"
-                }
-            ],
-            "memberof": "URLParams",
-            "itemtype": "method",
-            "name": "set",
-            "static": 1,
-            "class": "EcOverlay",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1071,
-            "description": "Sets a specific URL Parameter",
-            "params": [
-                {
-                    "name": "params",
-                    "description": "Map of Strings to Strings for URL parameters",
-                    "type": "Object"
-                }
-            ],
-            "memberof": "URLParams",
-            "itemtype": "method",
-            "name": "setAll",
-            "static": 1,
-            "class": "EcOverlay",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1098,
-            "description": "Used if one of the startupOverlayCallbacks decides that it should be displayed on startup (usually using\nthe URL to check what should be displayed on start)",
-            "itemtype": "property",
-            "name": "startupOverlay",
-            "type": "EcOverlay",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1106,
-            "description": "Application flag to change the screen to the same screen on overlay close.",
-            "itemtype": "property",
-            "name": "refreshOnOverlayClose",
-            "type": "boolean",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1113,
-            "description": "DOM Selector of the overlay wrapper (Should contain the overlay container and overlay close button)",
-            "itemtype": "property",
-            "name": "OVERLAY_WRAPPER_ID",
-            "type": "String",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1120,
-            "description": "DOM Selector of the overlay close button (clicking this should hide the current overlay)",
-            "itemtype": "property",
-            "name": "OVERLAY_CLOSE_BTN_ID",
-            "type": "String",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1127,
-            "description": "DOM Selector of the HTML Element that will display the Overlay's HTML",
-            "itemtype": "property",
-            "name": "OVERLAY_CONTAINER_ID",
-            "type": "String",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1134,
-            "description": "Callbacks that can be defined and run on startup, that should check to see if an overlay should be displayed\nimmediately when the application starts",
-            "itemtype": "property",
-            "name": "startupOverlayCallbacks",
-            "type": "Callback1<String>[]",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1142,
-            "description": "Application flag to check if we're currently in an overlay or not",
-            "itemtype": "property",
-            "name": "inOverlay",
-            "type": "boolean",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1149,
-            "description": "Variable to hold the last screen, this is useful if we follow a chain of overlays and then want to close them,\nwe'll make sure to go back to the last screen that was visible to the user",
-            "itemtype": "property",
-            "name": "lastScreen",
-            "type": "EcScreen",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1157,
-            "description": "Variable to hold the last screen URL Parameters",
-            "itemtype": "property",
-            "name": "lastScreenParams",
-            "type": "Object",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1164,
-            "description": "Adds a callback to be run on startup that can check if an overlay should be displayed (the callback should\nbe defined in the overlay)",
-            "params": [
-                {
-                    "name": "callback",
-                    "description": "callback to be added to the startupOverlayCallbacks list",
-                    "type": "Callback1<String>"
-                }
-            ],
-            "memberof": "OverlayManager",
-            "itemtype": "method",
-            "name": "addStartupOverlayCallback",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1176,
-            "description": "Retrieves the current view that corresponds to the Overlay Container Element (Should be a Overlay)",
-            "return": {
-                "description": "EcOverlay instance that is currently being shown in the Overlay container element",
-                "type": "EcOverlay"
-            },
-            "memberof": "OverlayManager",
-            "itemtype": "method",
-            "name": "getCurrentOverlay",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1187,
-            "description": "Set's the current overlay, then show's it by calling the display function and unhiding the overlay container.\nDepending on the addHistory flag, will add the overlay passed in to the history array",
-            "params": [
-                {
-                    "name": "overlay",
-                    "description": "The overlay to set as current and display",
-                    "type": "EcOverlay"
-                },
-                {
-                    "name": "addHistory",
-                    "description": "Flag for whether to store this overlay in the history array",
-                    "type": "Boolean"
-                }
-            ],
-            "memberof": "OverlayManager",
-            "itemtype": "method",
-            "name": "showOverlay",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
-            "file": "src/main/js/cass/ec.ui.framework.js",
-            "line": 1219,
-            "description": "Hides the overlay container and sets the inOverlay flag to false, adds the last screen to the history array so\nthere is a chain from initial screen to overlay (could be multiple) to initial screen. This way we can press the\nback button and be shown the last overlay.",
-            "memberof": "OverlayManager",
-            "itemtype": "method",
-            "name": "hideOverlay",
-            "class": "OverlayManager",
-            "module": "com.eduworks.ec.ui"
-        },
-        {
             "file": "src/main/js/cass/jsonld.js",
             "line": 1,
             "description": "A JavaScript implementation of the JSON-LD API.",
             "author": "Dave Longley",
             "license": "BSD 3-Clause License\nCopyright (c) 2011-2015 Digital Bazaar, Inc.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice,\nthis list of conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright\nnotice, this list of conditions and the following disclaimer in the\ndocumentation and/or other materials provided with the distribution.\n\nNeither the name of the Digital Bazaar, Inc. nor the names of its\ncontributors may be used to endorse or promote products derived from\nthis software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\nIS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\nTO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\nPARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\nHOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\nTO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\nPROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\nLIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\nNEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24246,7 +23120,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24267,7 +23141,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24292,7 +23166,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24317,7 +23191,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24342,7 +23216,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24367,7 +23241,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24388,7 +23262,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24409,7 +23283,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24430,7 +23304,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24451,7 +23325,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24476,7 +23350,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24493,7 +23367,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24513,7 +23387,7 @@
                 "description": "the absolute IRI."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24533,14 +23407,14 @@
                 "description": "a promise, if using a promises API."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
             "line": 1229,
             "description": "Deprecated default document loader. Use or override jsonld.documentLoader\ninstead.",
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24556,7 +23430,7 @@
                 "description": "the promises API object."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24572,7 +23446,7 @@
                 "description": "the promise."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24585,14 +23459,14 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
             "line": 1516,
             "description": "Creates a simple queue for requesting documents.",
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24605,7 +23479,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24618,21 +23492,21 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
             "line": 1641,
             "description": "Default JSON-LD cache.",
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
             "line": 1648,
             "description": "Document loaders.",
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24652,7 +23526,7 @@
                 "description": "the jquery document loader."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24668,7 +23542,7 @@
                 "description": "the node document loader."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24684,7 +23558,7 @@
                 "description": "the XMLHttpRequest document loader."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24702,7 +23576,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24727,7 +23601,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24747,7 +23621,7 @@
                 "description": "true if the subject has the given property, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24771,7 +23645,7 @@
                 "description": "true if the value exists, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24796,7 +23670,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24816,7 +23690,7 @@
                 "description": "all of the values for a subject's property as an array."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24833,7 +23707,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24858,7 +23732,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24878,7 +23752,7 @@
                 "description": "true if v1 and v2 are considered equal, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24903,13 +23777,13 @@
                 "description": "the value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
             "line": 2291,
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24926,7 +23800,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24939,7 +23813,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24960,14 +23834,14 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
             "line": 2395,
             "description": "Constructs a new JSON-LD Processor.",
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -24995,7 +23869,7 @@
                 "description": "the compacted value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25027,7 +23901,7 @@
                 "description": "the expanded value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25047,7 +23921,7 @@
                 "description": "the node map."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25063,7 +23937,7 @@
                 "description": "the flattened output."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25087,7 +23961,7 @@
                 "description": "the framed output."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25108,7 +23982,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25129,7 +24003,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25149,7 +24023,7 @@
                 "description": "the RDF dataset."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25173,7 +24047,7 @@
                 "description": "the new active context."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25189,7 +24063,7 @@
                 "description": "the expanded language map."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25209,7 +24083,7 @@
                 "description": "the element."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25233,7 +24107,7 @@
                 "description": "the expanded value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25257,7 +24131,7 @@
                 "description": "the array of RDF triples for the given graph."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25286,7 +24160,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25302,7 +24176,7 @@
                 "description": "the RDF literal or RDF resource."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25322,7 +24196,7 @@
                 "description": "the JSON-LD object."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25342,7 +24216,7 @@
                 "description": "true if the triples are the same, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25375,7 +24249,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25404,7 +24278,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25420,7 +24294,7 @@
                 "description": "the implicit frame."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25440,7 +24314,7 @@
                 "description": "true if a circular reference would be created, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25464,7 +24338,7 @@
                 "description": "the flag value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25477,7 +24351,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25505,7 +24379,7 @@
                 "description": "all of the matched subjects."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25529,7 +24403,7 @@
                 "description": "true if the subject matches, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25546,7 +24420,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25567,7 +24441,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25591,7 +24465,7 @@
                 "description": "the resulting output."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25611,7 +24485,7 @@
                 "description": "-1 if a < b, 1 if a > b, 0 if a == b."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25647,7 +24521,7 @@
                 "description": "the preferred term."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25679,7 +24553,7 @@
                 "description": "the compacted term, prefix, keyword alias, or the original IRI."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25703,7 +24577,7 @@
                 "description": "the compaction result."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25728,7 +24602,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25760,7 +24634,7 @@
                 "description": "the expanded value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25780,7 +24654,7 @@
                 "description": "the relative IRI if relative to base, otherwise the absolute IRI."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25796,7 +24670,7 @@
                 "description": "the initial context."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25806,7 +24680,7 @@
                 "description": "the inverse context."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25827,7 +24701,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25852,7 +24726,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25862,7 +24736,7 @@
                 "description": "a clone (child) of the active context."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25878,7 +24752,7 @@
                 "description": "true if the value is a keyword, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25894,7 +24768,7 @@
                 "description": "true if the value is an Object, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25910,7 +24784,7 @@
                 "description": "true if the value is an empty Object, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25926,7 +24800,7 @@
                 "description": "true if the value is an Array, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25939,7 +24813,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25955,7 +24829,7 @@
                 "description": "true if the value is a String, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25971,7 +24845,7 @@
                 "description": "true if the value is a Number, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -25987,7 +24861,7 @@
                 "description": "true if the value is a double, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26003,7 +24877,7 @@
                 "description": "true if the value is numeric, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26019,7 +24893,7 @@
                 "description": "true if the value is a Boolean, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26035,7 +24909,7 @@
                 "description": "true if the value is undefined, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26051,7 +24925,7 @@
                 "description": "true if the value is a subject with properties, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26067,7 +24941,7 @@
                 "description": "true if the value is a subject reference, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26083,7 +24957,7 @@
                 "description": "true if the value is a @value, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26099,7 +24973,7 @@
                 "description": "true if the value is a @list, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26115,7 +24989,7 @@
                 "description": "true if the value is a blank node, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26131,7 +25005,7 @@
                 "description": "true if the value is an absolute IRI, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26147,7 +25021,7 @@
                 "description": "the cloned value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26176,7 +25050,7 @@
                 "description": "true if new URLs to retrieve were found, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26197,7 +25071,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26213,7 +25087,7 @@
                 "description": "an RDF dataset."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26229,7 +25103,7 @@
                 "description": "the N-Quads string."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26249,7 +25123,7 @@
                 "description": "the N-Quad string."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26265,7 +25139,7 @@
                 "description": "the RDF dataset."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26278,7 +25152,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26288,7 +25162,7 @@
                 "description": "a copy of this IdentifierIssuer."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26305,7 +25179,7 @@
                 "description": "the new identifier."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26321,7 +25195,7 @@
                 "description": "true if the old identifier has been assigned a new identifier, false\n  if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26334,7 +25208,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26344,7 +25218,7 @@
                 "description": "true if there is another permutation, false if not."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26354,7 +25228,7 @@
                 "description": "the next permutation."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26367,7 +25241,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26380,7 +25254,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26390,7 +25264,7 @@
                 "description": "this digest object."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26406,7 +25280,7 @@
                 "description": "this digest object."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26416,7 +25290,7 @@
                 "description": "a byte buffer containing the digest value."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26429,7 +25303,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26442,7 +25316,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26452,7 +25326,7 @@
                 "description": "the word."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26465,7 +25339,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26475,7 +25349,7 @@
                 "description": "a string full of UTF-8 encoded characters."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26485,14 +25359,14 @@
                 "description": "the number of bytes in this buffer."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
             "line": 7686,
             "description": "Compacts this buffer.",
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26502,7 +25376,7 @@
                 "description": "a hexadecimal string."
             },
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/jsonld.js",
@@ -26519,7 +25393,7 @@
                 }
             ],
             "class": "Cass",
-            "module": "com.eduworks.ec.ui"
+            "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
@@ -66692,103 +65566,103 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1624"
+            "line": " src/main/js/cass/ebac.repository.js:1626"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1673"
+            "line": " src/main/js/cass/ebac.repository.js:1675"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1718"
+            "line": " src/main/js/cass/ebac.repository.js:1720"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1757"
+            "line": " src/main/js/cass/ebac.repository.js:1759"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1803"
+            "line": " src/main/js/cass/ebac.repository.js:1805"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1821"
+            "line": " src/main/js/cass/ebac.repository.js:1823"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1821"
+            "line": " src/main/js/cass/ebac.repository.js:1823"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1835"
+            "line": " src/main/js/cass/ebac.repository.js:1837"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1945"
+            "line": " src/main/js/cass/ebac.repository.js:1947"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1945"
+            "line": " src/main/js/cass/ebac.repository.js:1947"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2063"
+            "line": " src/main/js/cass/ebac.repository.js:2065"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2137"
+            "line": " src/main/js/cass/ebac.repository.js:2139"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2208"
+            "line": " src/main/js/cass/ebac.repository.js:2210"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2254"
+            "line": " src/main/js/cass/ebac.repository.js:2256"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2297"
+            "line": " src/main/js/cass/ebac.repository.js:2299"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2317"
+            "line": " src/main/js/cass/ebac.repository.js:2319"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2329"
+            "line": " src/main/js/cass/ebac.repository.js:2331"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2341"
+            "line": " src/main/js/cass/ebac.repository.js:2343"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2353"
+            "line": " src/main/js/cass/ebac.repository.js:2355"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2391"
+            "line": " src/main/js/cass/ebac.repository.js:2393"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2511"
+            "line": " src/main/js/cass/ebac.repository.js:2513"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2533"
+            "line": " src/main/js/cass/ebac.repository.js:2535"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2553"
+            "line": " src/main/js/cass/ebac.repository.js:2555"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2576"
+            "line": " src/main/js/cass/ebac.repository.js:2578"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2597"
+            "line": " src/main/js/cass/ebac.repository.js:2599"
         },
         {
             "message": "unknown tag: memberof",
@@ -66841,154 +65715,6 @@
         {
             "message": "unknown tag: memberof",
             "line": " src/main/js/cass/ec.base.js:1745"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:31"
-        },
-        {
-            "message": "unknown tag: abstract",
-            "line": " src/main/js/cass/ec.ui.framework.js:31"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:41"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:51"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:74"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:85"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:94"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:123"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:136"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:151"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:180"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:285"
-        },
-        {
-            "message": "unknown tag: abstract",
-            "line": " src/main/js/cass/ec.ui.framework.js:285"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:321"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:333"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:365"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:410"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:662"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:674"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:686"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:738"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:765"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:788"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:804"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:840"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:881"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:893"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:978"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1001"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1024"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1041"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1055"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1071"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1164"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1176"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1187"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.ui.framework.js:1219"
         },
         {
             "message": "unknown tag: license",
@@ -67605,18 +66331,6 @@
         {
             "message": "Missing item type\nInvoke a method at some point in the future, allowing draw methods to occur periodically.",
             "line": " src/main/js/cass/ec.base.js:1292"
-        },
-        {
-            "message": "Missing item type\nSTJS Wrapper for the Browser Native History Object",
-            "line": " src/main/js/cass/ec.ui.framework.js:255"
-        },
-        {
-            "message": "Missing item type\nScreen to be used when another screen is loading information from the server before being able to display\nitself. Notice that the display function does not affect the DOM on the page in any way.",
-            "line": " src/main/js/cass/ec.ui.framework.js:597"
-        },
-        {
-            "message": "Missing item type\nShows a screen, and cleans up the previous screen.",
-            "line": " src/main/js/cass/ec.ui.framework.js:939"
         },
         {
             "message": "Missing item type\nA JavaScript implementation of the JSON-LD API.",
