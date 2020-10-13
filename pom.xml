@@ -8,7 +8,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>3.0.11</ec-version>
+		<ec-version>3.0.12</ec-version>
 		<ew-version>5.16.3</ew-version>
 	</properties>
 
@@ -188,7 +188,7 @@
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.4.31.v20200723</version>
+				<version>9.4.32.v20200930</version>
 				<configuration>
 					<httpConnector>
 						<port>80</port>
