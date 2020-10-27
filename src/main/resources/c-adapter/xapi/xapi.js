@@ -64,10 +64,11 @@ var personFromEmail = function (mbox) {
 
 var pkFromMbox = function (xapiPerson) {
     var mbox = getMbox.call(this, xapiPerson);
-    if (mbox == null) return;
+    if (mbox == null)
+        return null;
     var person = personFromEmail.call(this, mbox);
     if (person == null)
-        return;
+        return null;
     var pk = null;
     for (var i = 0; i < person.owner.length; i++)
         if (EcPk.fromPem(person.owner[i]).fingerprint() == person.getGuid())
@@ -90,6 +91,9 @@ var getAlignedCompetencies = function (objectId) {
 
 var xapiStatement = function (s) {
     if (s == null) return;
+    if (EcObject.isArray(s))
+        for (var i = 0;i < s.length;i++)
+            xapiStatement(s[i]);
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
     var negative = false;
@@ -111,6 +115,8 @@ var xapiStatement = function (s) {
     var actorPk = pkFromMbox.call(this, s.actor);
     if (actorPk == null) return;
     var authorityPk = pkFromMbox.call(this, s.authority);
+    if (authorityPk == null)
+        authorityPk = EcPpk.fromPem(xapiMePpk).toPk();
     if (authorityPk == null) return;
 
     if (s.object == null) return;
