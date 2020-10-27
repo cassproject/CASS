@@ -174,6 +174,61 @@ chkconfig elasticsearch on
 fi
 
 #Upgrade script
+if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-6.*.jar' | head -1)" ]
+ then
+ echo -----
+ echo Getting ready to upgrade ElasticSearch 6.x to 7.x... Backing up to ~/es.6.tar.gz...
+ echo WAIT....
+ echo DO YOU HAVE ENOUGH HARD DRIVE SPACE?
+ du -s -h /var/lib/elasticsearch
+ df -h
+ read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ if [ "$result" == "yes" ]
+  then
+  echo Now backing up to ~/es.6.tar.gz -- Please Wait...
+  tar -czf es.6.tar.gz /var/lib/elasticsearch
+  echo -----
+  echo Upgrading ElasticSearch 6.x to 7.x...
+  echo WAIT....
+  echo HAVE YOU STARTED CASS USING ELASTICSEARCH 6.x AND HAD IT FINISH ITS MIGRATION AND FULLY COME UP?
+  echo IF YOU DO NOT, IT WILL NOT LOAD THE INDICES CREATED IN ELASTICSEARCH 5.x. NOTHING WILL APPEAR TO BE WORKING.
+  echo TO REMEDY THIS IF IT HAPPENS, REMOVE ELASTICSEARCH 7.x, REMOVE THE APT SOURCE AND DOWNGRADE TO ELASTICSEARCH 6.x AND START CASS AND LET IT FINISH MIGRATING.
+  echo YOU ALSO SHOULD TAKE A BACKUP. (copy out the /var/lib/elasticsearch directory)
+  read -p "DO YOU WANT TO CONTINUE WITH THE UPGRADE TO ELASTICSEARCH 7.x? [default=yes]" result
+  result=${result:-yes}
+  if [ "$result" == "yes" ]
+   then
+   wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+   apt-get -qqy install apt-transport-https
+   echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-7.x.list
+   apt-get -qqy update
+   apt-get -qqy install elasticsearch
+   update-rc.d elasticsearch defaults 95 10
+  fi
+ fi
+fi
+if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-5.*.jar' | head -1)" ]
+ then
+ echo -----
+ echo Getting ready to upgrade ElasticSearch 5.x to 6.x... Backing up to ~/es.5.tar.gz...
+ echo WAIT....
+ echo DO YOU HAVE ENOUGH HARD DRIVE SPACE?
+ du -s -h /var/lib/elasticsearch
+ df -h
+ read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ if [ "$result" == "yes" ]
+  then
+  echo Now backing up to ~/es.5.tar.gz -- Please Wait...
+  tar -czf es.5.tar.gz /var/lib/elasticsearch
+  echo Upgrading ElasticSearch 5.x to 6.x...
+  wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+  apt-get -qqy install apt-transport-https
+  echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
+  apt-get -qqy update
+  apt-get -qqy install elasticsearch
+  update-rc.d elasticsearch defaults 95 10
+ fi
+fi
 if [ "$platformDebian" -ne 0 ] && [ -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
  then
 echo -----
@@ -184,6 +239,75 @@ echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /e
 apt-get -qqy update
 apt-get -qqy install elasticsearch
 update-rc.d elasticsearch defaults 95 10
+fi
+
+
+if [ "$platformFedora" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-6.*.jar' | head -1)" ]
+ then
+ echo -----
+ echo Getting ready to upgrade ElasticSearch 6.x to 7.x... Backing up to ~/es.6.tar.gz...
+ echo WAIT....
+ echo DO YOU HAVE ENOUGH HARD DRIVE SPACE?
+ du -s -h /var/lib/elasticsearch
+ df -h
+ read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ if [ "$result" == "yes" ]
+  then
+  echo Now backing up to ~/es.6.tar.gz -- Please Wait...
+  tar -czf es.6.tar.gz /var/lib/elasticsearch
+  echo -----
+  echo Upgrading ElasticSearch 6.x to 7.x...
+  echo WAIT....
+  echo HAVE YOU STARTED CASS USING ELASTICSEARCH 6.x AND HAD IT FINISH ITS MIGRATION AND FULLY COME UP?
+  echo IF YOU DO NOT, IT WILL NOT LOAD THE INDICES CREATED IN ELASTICSEARCH 5.x. NOTHING WILL APPEAR TO BE WORKING.
+  echo TO REMEDY THIS IF IT HAPPENS, REMOVE ELASTICSEARCH 7.x, REMOVE THE APT SOURCE AND DOWNGRADE TO ELASTICSEARCH 6.x AND START CASS AND LET IT FINISH MIGRATING.
+  echo YOU ALSO SHOULD TAKE A BACKUP. (copy out the /var/lib/elasticsearch directory)
+  read -p "DO YOU WANT TO CONTINUE WITH THE UPGRADE TO ELASTICSEARCH 7.x? [default=yes]" result
+  result=${result:-yes}
+  if [ "$result" == "yes" ]
+   then
+   rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+   echo "[elasticsearch-7.x]" >> /etc/yum.repos.d/elasticsearch.7.repo
+   echo "name=Elasticsearch repository for 7.x packages" >> /etc/yum.repos.d/elasticsearch.7.repo
+   echo "baseurl=https://artifacts.elastic.co/packages/7.x/yum" >> /etc/yum.repos.d/elasticsearch.7.repo
+   echo "gpgcheck=1" >> /etc/yum.repos.d/elasticsearch.7.repo
+   echo "gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch" >> /etc/yum.repos.d/elasticsearch.7.repo
+   echo "enabled=1" >> /etc/yum.repos.d/elasticsearch.7.repo
+   echo "autorefresh=1" >> /etc/yum.repos.d/elasticsearch.7.repo
+   echo "type=rpm-md" >> /etc/yum.repos.d/elasticsearch.7.repo
+   yum install elasticsearch
+   chkconfig --add elasticsearch
+   chkconfig elasticsearch on
+  fi
+ fi
+fi
+if [ "$platformFedora" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-5.*.jar' | head -1)" ]
+ then
+ echo -----
+ echo Getting ready to upgrade ElasticSearch 5.x to 6.x... Backing up to ~/es.5.tar.gz...
+ echo WAIT....
+ echo DO YOU HAVE ENOUGH HARD DRIVE SPACE?
+ du -s -h /var/lib/elasticsearch
+ df -h
+ read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ if [ "$result" == "yes" ]
+  then
+  echo Now backing up to ~/es.5.tar.gz -- Please Wait...
+  tar -czf es.5.tar.gz /var/lib/elasticsearch
+  echo Upgrading ElasticSearch 5.x to 6.x...
+  rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  echo "[elasticsearch-6.x]" >> /etc/yum.repos.d/elasticsearch.6.repo
+  echo "name=Elasticsearch repository for 6.x packages" >> /etc/yum.repos.d/elasticsearch.6.repo
+  echo "baseurl=https://artifacts.elastic.co/packages/6.x/yum" >> /etc/yum.repos.d/elasticsearch.6.repo
+  echo "gpgcheck=1" >> /etc/yum.repos.d/elasticsearch.6.repo
+  echo "gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch" >> /etc/yum.repos.d/elasticsearch.6.repo
+  echo "enabled=1" >> /etc/yum.repos.d/elasticsearch.6.repo
+  echo "autorefresh=1" >> /etc/yum.repos.d/elasticsearch.6.repo
+  echo "type=rpm-md" >> /etc/yum.repos.d/elasticsearch.6.repo
+  yum install elasticsearch
+  chkconfig --add elasticsearch
+  chkconfig elasticsearch on
+ fi
 fi
 if [ "$platformFedora" -ne 0 ] && [ -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
  then
