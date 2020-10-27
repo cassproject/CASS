@@ -94,7 +94,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      */
     prototype.toPem = function() {
         if (this.defaultPem == null) 
-            this.defaultPem = forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
+            this.defaultPem = forge.pki.publicKeyToPem(this.pk).replaceAll("\r", "").replaceAll("\n", "");
         return this.defaultPem;
     };
     /**
@@ -105,7 +105,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @method toPkcs1Pem
      */
     prototype.toPkcs1Pem = function() {
-        return forge.pki.publicKeyToRSAPublicKeyPem(this.pk).replaceAll("\r?\n", "");
+        return forge.pki.publicKeyToRSAPublicKeyPem(this.pk).replaceAll("\r", "").replaceAll("\n", "");
     };
     /**
      *  Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.
@@ -115,7 +115,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @method toPkcs8Pem
      */
     prototype.toPkcs8Pem = function() {
-        return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
+        return forge.pki.publicKeyToPem(this.pk).replaceAll("\r", "").replaceAll("\n", "");
     };
     prototype.toJwk = function() {
         if (this.jwk == null) 
@@ -331,7 +331,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      */
     prototype.toPem = function() {
         if (this.defaultPem == null) 
-            this.defaultPem = forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
+            this.defaultPem = forge.pki.privateKeyToPem(this.ppk).replaceAll("\r", "").replaceAll("\n", "");
         return this.defaultPem;
     };
     /**
@@ -342,7 +342,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPkcs1Pem
      */
     prototype.toPkcs1Pem = function() {
-        return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
+        return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r", "").replaceAll("\n", "");
     };
     /**
      *  Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.
@@ -352,7 +352,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPkcs8Pem
      */
     prototype.toPkcs8Pem = function() {
-        return forge.pki.privateKeyInfoToPem(forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk))).replaceAll("\r?\n", "");
+        return forge.pki.privateKeyInfoToPem(forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk))).replaceAll("\r", "").replaceAll("\n", "");
     };
     prototype.toJwk = function() {
         if (this.jwk == null) 

@@ -17,33 +17,61 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-// Generated from Rollup.g4 by ANTLR 4.5
+// Generated from Rollup.g4 by ANTLR 4.8
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 var RollupListener = require('./RollupListener').RollupListener;
 var grammarFileName = "Rollup.g4";
 
-var serializedATN = ["\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
-    "\3\fJ\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\5\2\17\n\2\3\2",
-    "\5\2\22\n\2\3\2\3\2\5\2\26\n\2\3\2\3\2\5\2\32\n\2\7\2\34\n\2\f\2\16",
-    "\2\37\13\2\3\3\3\3\3\3\5\3$\n\3\3\4\3\4\5\4(\n\4\3\4\3\4\5\4,\n\4\3",
-    "\4\3\4\3\5\3\5\3\5\5\5\63\n\5\3\5\3\5\5\5\67\n\5\3\5\5\5:\n\5\3\5\3",
-    "\5\5\5>\n\5\3\5\7\5A\n\5\f\5\16\5D\13\5\3\6\3\6\5\6H\n\6\3\6\2\2\7\2",
-    "\4\6\b\n\2\2S\2\f\3\2\2\2\4#\3\2\2\2\6%\3\2\2\2\b/\3\2\2\2\nG\3\2\2",
-    "\2\f\16\5\4\3\2\r\17\7\b\2\2\16\r\3\2\2\2\16\17\3\2\2\2\17\35\3\2\2",
-    "\2\20\22\7\b\2\2\21\20\3\2\2\2\21\22\3\2\2\2\22\23\3\2\2\2\23\25\5\n",
-    "\6\2\24\26\7\b\2\2\25\24\3\2\2\2\25\26\3\2\2\2\26\27\3\2\2\2\27\31\5",
-    "\4\3\2\30\32\7\b\2\2\31\30\3\2\2\2\31\32\3\2\2\2\32\34\3\2\2\2\33\21",
-    "\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36\3\3\2\2\2\37\35",
-    "\3\2\2\2 $\7\3\2\2!$\5\6\4\2\"$\7\4\2\2# \3\2\2\2#!\3\2\2\2#\"\3\2\2",
-    "\2$\5\3\2\2\2%\'\7\n\2\2&(\7\b\2\2\'&\3\2\2\2\'(\3\2\2\2()\3\2\2\2)",
-    "+\5\b\5\2*,\7\b\2\2+*\3\2\2\2+,\3\2\2\2,-\3\2\2\2-.\7\13\2\2.\7\3\2",
-    "\2\2/\60\7\t\2\2\60\62\7\7\2\2\61\63\7\b\2\2\62\61\3\2\2\2\62\63\3\2",
-    "\2\2\63\66\3\2\2\2\64\67\7\f\2\2\65\67\7\3\2\2\66\64\3\2\2\2\66\65\3",
-    "\2\2\2\679\3\2\2\28:\7\b\2\298\3\2\2\29:\3\2\2\2:B\3\2\2\2;=\7\5\2\2",
-    "<>\7\b\2\2=<\3\2\2\2=>\3\2\2\2>?\3\2\2\2?A\5\b\5\2@;\3\2\2\2AD\3\2\2",
-    "\2B@\3\2\2\2BC\3\2\2\2C\t\3\2\2\2DB\3\2\2\2EH\7\5\2\2FH\7\6\2\2GE\3",
-    "\2\2\2GF\3\2\2\2H\13\3\2\2\2\20\16\21\25\31\35#\'+\62\669=BG"].join("");
+
+var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
+    "\u0003\fJ\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t\u0004",
+    "\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0003\u0002\u0003\u0002\u0005",
+    "\u0002\u000f\n\u0002\u0003\u0002\u0005\u0002\u0012\n\u0002\u0003\u0002",
+    "\u0003\u0002\u0005\u0002\u0016\n\u0002\u0003\u0002\u0003\u0002\u0005",
+    "\u0002\u001a\n\u0002\u0007\u0002\u001c\n\u0002\f\u0002\u000e\u0002\u001f",
+    "\u000b\u0002\u0003\u0003\u0003\u0003\u0003\u0003\u0005\u0003$\n\u0003",
+    "\u0003\u0004\u0003\u0004\u0005\u0004(\n\u0004\u0003\u0004\u0003\u0004",
+    "\u0005\u0004,\n\u0004\u0003\u0004\u0003\u0004\u0003\u0005\u0003\u0005",
+    "\u0003\u0005\u0005\u00053\n\u0005\u0003\u0005\u0003\u0005\u0005\u0005",
+    "7\n\u0005\u0003\u0005\u0005\u0005:\n\u0005\u0003\u0005\u0003\u0005\u0005",
+    "\u0005>\n\u0005\u0003\u0005\u0007\u0005A\n\u0005\f\u0005\u000e\u0005",
+    "D\u000b\u0005\u0003\u0006\u0003\u0006\u0005\u0006H\n\u0006\u0003\u0006",
+    "\u0002\u0002\u0007\u0002\u0004\u0006\b\n\u0002\u0002\u0002S\u0002\f",
+    "\u0003\u0002\u0002\u0002\u0004#\u0003\u0002\u0002\u0002\u0006%\u0003",
+    "\u0002\u0002\u0002\b/\u0003\u0002\u0002\u0002\nG\u0003\u0002\u0002\u0002",
+    "\f\u000e\u0005\u0004\u0003\u0002\r\u000f\u0007\b\u0002\u0002\u000e\r",
+    "\u0003\u0002\u0002\u0002\u000e\u000f\u0003\u0002\u0002\u0002\u000f\u001d",
+    "\u0003\u0002\u0002\u0002\u0010\u0012\u0007\b\u0002\u0002\u0011\u0010",
+    "\u0003\u0002\u0002\u0002\u0011\u0012\u0003\u0002\u0002\u0002\u0012\u0013",
+    "\u0003\u0002\u0002\u0002\u0013\u0015\u0005\n\u0006\u0002\u0014\u0016",
+    "\u0007\b\u0002\u0002\u0015\u0014\u0003\u0002\u0002\u0002\u0015\u0016",
+    "\u0003\u0002\u0002\u0002\u0016\u0017\u0003\u0002\u0002\u0002\u0017\u0019",
+    "\u0005\u0004\u0003\u0002\u0018\u001a\u0007\b\u0002\u0002\u0019\u0018",
+    "\u0003\u0002\u0002\u0002\u0019\u001a\u0003\u0002\u0002\u0002\u001a\u001c",
+    "\u0003\u0002\u0002\u0002\u001b\u0011\u0003\u0002\u0002\u0002\u001c\u001f",
+    "\u0003\u0002\u0002\u0002\u001d\u001b\u0003\u0002\u0002\u0002\u001d\u001e",
+    "\u0003\u0002\u0002\u0002\u001e\u0003\u0003\u0002\u0002\u0002\u001f\u001d",
+    "\u0003\u0002\u0002\u0002 $\u0007\u0003\u0002\u0002!$\u0005\u0006\u0004",
+    "\u0002\"$\u0007\u0004\u0002\u0002# \u0003\u0002\u0002\u0002#!\u0003",
+    "\u0002\u0002\u0002#\"\u0003\u0002\u0002\u0002$\u0005\u0003\u0002\u0002",
+    "\u0002%\'\u0007\n\u0002\u0002&(\u0007\b\u0002\u0002\'&\u0003\u0002\u0002",
+    "\u0002\'(\u0003\u0002\u0002\u0002()\u0003\u0002\u0002\u0002)+\u0005",
+    "\b\u0005\u0002*,\u0007\b\u0002\u0002+*\u0003\u0002\u0002\u0002+,\u0003",
+    "\u0002\u0002\u0002,-\u0003\u0002\u0002\u0002-.\u0007\u000b\u0002\u0002",
+    ".\u0007\u0003\u0002\u0002\u0002/0\u0007\t\u0002\u000202\u0007\u0007",
+    "\u0002\u000213\u0007\b\u0002\u000221\u0003\u0002\u0002\u000223\u0003",
+    "\u0002\u0002\u000236\u0003\u0002\u0002\u000247\u0007\f\u0002\u00025",
+    "7\u0007\u0003\u0002\u000264\u0003\u0002\u0002\u000265\u0003\u0002\u0002",
+    "\u000279\u0003\u0002\u0002\u00028:\u0007\b\u0002\u000298\u0003\u0002",
+    "\u0002\u00029:\u0003\u0002\u0002\u0002:B\u0003\u0002\u0002\u0002;=\u0007",
+    "\u0005\u0002\u0002<>\u0007\b\u0002\u0002=<\u0003\u0002\u0002\u0002=",
+    ">\u0003\u0002\u0002\u0002>?\u0003\u0002\u0002\u0002?A\u0005\b\u0005",
+    "\u0002@;\u0003\u0002\u0002\u0002AD\u0003\u0002\u0002\u0002B@\u0003\u0002",
+    "\u0002\u0002BC\u0003\u0002\u0002\u0002C\t\u0003\u0002\u0002\u0002DB",
+    "\u0003\u0002\u0002\u0002EH\u0007\u0005\u0002\u0002FH\u0007\u0006\u0002",
+    "\u0002GE\u0003\u0002\u0002\u0002GF\u0003\u0002\u0002\u0002H\u000b\u0003",
+    "\u0002\u0002\u0002\u0010\u000e\u0011\u0015\u0019\u001d#\'+269=BG"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -52,10 +80,10 @@ var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new a
 
 var sharedContextCache = new antlr4.PredictionContextCache();
 
-var literalNames = [ 'null', 'null', 'null', 'null', 'null', 'null', 'null', 
-                     'null', "'['", "']'" ];
+var literalNames = [ null, null, null, null, null, null, null, null, "'['", 
+                     "']'" ];
 
-var symbolicNames = [ 'null', "NUMBER", "BOOLEAN", "LOGICAL_OPERATOR", "MATH_OPERATOR", 
+var symbolicNames = [ null, "NUMBER", "BOOLEAN", "LOGICAL_OPERATOR", "MATH_OPERATOR", 
                       "QUANTATIVE_OPERATOR", "WS", "KEY", "LEFT_BRACE", 
                       "RIGHT_BRACE", "VALUE" ];
 
@@ -96,6 +124,7 @@ RollupParser.RULE_token = 1;
 RollupParser.RULE_query = 2;
 RollupParser.RULE_innerquery = 3;
 RollupParser.RULE_logical_or_math_operator = 4;
+
 
 function SContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -175,6 +204,7 @@ RollupParser.prototype.s = function() {
         this.state = 10;
         this.token();
         this.state = 12;
+        this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,0,this._ctx);
         if(la_===1) {
             this.state = 11;
@@ -186,6 +216,7 @@ RollupParser.prototype.s = function() {
         _la = this._input.LA(1);
         while((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << RollupParser.LOGICAL_OPERATOR) | (1 << RollupParser.MATH_OPERATOR) | (1 << RollupParser.WS))) !== 0)) {
             this.state = 15;
+            this._errHandler.sync(this);
             _la = this._input.LA(1);
             if(_la===RollupParser.WS) {
                 this.state = 14;
@@ -195,6 +226,7 @@ RollupParser.prototype.s = function() {
             this.state = 17;
             localctx.cLogic = this.logical_or_math_operator();
             this.state = 19;
+            this._errHandler.sync(this);
             _la = this._input.LA(1);
             if(_la===RollupParser.WS) {
                 this.state = 18;
@@ -204,6 +236,7 @@ RollupParser.prototype.s = function() {
             this.state = 21;
             this.token();
             this.state = 23;
+            this._errHandler.sync(this);
             var la_ = this._interp.adaptivePredict(this._input,3,this._ctx);
             if(la_===1) {
                 this.state = 22;
@@ -227,6 +260,7 @@ RollupParser.prototype.s = function() {
     }
     return localctx;
 };
+
 
 function TokenContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -281,6 +315,7 @@ RollupParser.prototype.token = function() {
     this.enterRule(localctx, 2, RollupParser.RULE_token);
     try {
         this.state = 33;
+        this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case RollupParser.NUMBER:
             this.enterOuterAlt(localctx, 1);
@@ -313,6 +348,7 @@ RollupParser.prototype.token = function() {
     }
     return localctx;
 };
+
 
 function QueryContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -382,6 +418,7 @@ RollupParser.prototype.query = function() {
         this.state = 35;
         this.match(RollupParser.LEFT_BRACE);
         this.state = 37;
+        this._errHandler.sync(this);
         _la = this._input.LA(1);
         if(_la===RollupParser.WS) {
             this.state = 36;
@@ -391,6 +428,7 @@ RollupParser.prototype.query = function() {
         this.state = 39;
         localctx.cQuery = this.innerquery();
         this.state = 41;
+        this._errHandler.sync(this);
         _la = this._input.LA(1);
         if(_la===RollupParser.WS) {
             this.state = 40;
@@ -412,6 +450,7 @@ RollupParser.prototype.query = function() {
     }
     return localctx;
 };
+
 
 function InnerqueryContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -514,6 +553,7 @@ RollupParser.prototype.innerquery = function() {
         this.state = 46;
         localctx.cOperator = this.match(RollupParser.QUANTATIVE_OPERATOR);
         this.state = 48;
+        this._errHandler.sync(this);
         _la = this._input.LA(1);
         if(_la===RollupParser.WS) {
             this.state = 47;
@@ -521,6 +561,7 @@ RollupParser.prototype.innerquery = function() {
         }
 
         this.state = 52;
+        this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case RollupParser.VALUE:
             this.state = 50;
@@ -534,6 +575,7 @@ RollupParser.prototype.innerquery = function() {
             throw new antlr4.error.NoViableAltException(this);
         }
         this.state = 55;
+        this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,10,this._ctx);
         if(la_===1) {
             this.state = 54;
@@ -548,6 +590,7 @@ RollupParser.prototype.innerquery = function() {
                 this.state = 57;
                 localctx.cLogic = this.match(RollupParser.LOGICAL_OPERATOR);
                 this.state = 59;
+                this._errHandler.sync(this);
                 _la = this._input.LA(1);
                 if(_la===RollupParser.WS) {
                     this.state = 58;
@@ -575,6 +618,7 @@ RollupParser.prototype.innerquery = function() {
     }
     return localctx;
 };
+
 
 function Logical_or_math_operatorContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -625,6 +669,7 @@ RollupParser.prototype.logical_or_math_operator = function() {
     this.enterRule(localctx, 8, RollupParser.RULE_logical_or_math_operator);
     try {
         this.state = 69;
+        this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case RollupParser.LOGICAL_OPERATOR:
             this.enterOuterAlt(localctx, 1);

@@ -4,11 +4,11 @@
 	<groupId>org.cassproject</groupId>
 	<artifactId>cass</artifactId>
 	<packaging>war</packaging>
-	<version>1.3.4</version>
+	<version>1.3.12</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>3.0.10</ec-version>
+		<ec-version>3.0.12</ec-version>
 		<ew-version>5.16.3</ew-version>
 	</properties>
 
@@ -131,11 +131,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.eduworks</groupId>
-			<artifactId>ec.ui.framework</artifactId>
-			<version>${ec-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.eduworks</groupId>
 			<artifactId>forge</artifactId>
 			<version>${ec-version}</version>
 		</dependency>
@@ -193,7 +188,7 @@
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.4.31.v20200723</version>
+				<version>9.4.32.v20200930</version>
 				<configuration>
 					<httpConnector>
 						<port>80</port>
@@ -287,7 +282,7 @@
 							<cssSourceFiles></cssSourceFiles>
 							<jsSourceDir>.</jsSourceDir>
 							<jsSourceFiles>
-								<jsSourceFile>src/main/webapp/cass-editor/forge/forge.min.js</jsSourceFile>
+								<jsSourceFile>src/main/webapp/forge/forge.min.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/papaparse.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/FileSaver.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/xml2json.js</jsSourceFile>
@@ -331,7 +326,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>2.0.0</version>
+				<version>1.16</version>
 				<configuration>
 					<verbose>true</verbose>
 				</configuration>

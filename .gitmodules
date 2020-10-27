@@ -22,3 +22,8 @@
 	path = src/main/webapp/cass-viewer
 #	url = https://github.com/cassproject/cass-viewer.git
     url = ../cass-viewer.git
+
+[submodule "cass-align"]
+	path = src/main/webapp/cass-align
+#	url = https://github.com/cassproject/cass-align.git
+    url = ../cass-align.git

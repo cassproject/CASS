@@ -48,3 +48,7 @@ ecs-params\.yml
 nb-configuration\.xml
 
 pom\.xml\.versionsBackup
+
+data/
+
+*.7z

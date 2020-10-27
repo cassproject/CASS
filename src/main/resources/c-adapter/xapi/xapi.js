@@ -64,10 +64,11 @@ var personFromEmail = function (mbox) {
 
 var pkFromMbox = function (xapiPerson) {
     var mbox = getMbox.call(this, xapiPerson);
-    if (mbox == null) return;
+    if (mbox == null)
+        return null;
     var person = personFromEmail.call(this, mbox);
     if (person == null)
-        return;
+        return null;
     var pk = null;
     for (var i = 0; i < person.owner.length; i++)
         if (EcPk.fromPem(person.owner[i]).fingerprint() == person.getGuid())
@@ -90,6 +91,9 @@ var getAlignedCompetencies = function (objectId) {
 
 var xapiStatement = function (s) {
     if (s == null) return;
+    if (EcObject.isArray(s))
+        for (var i = 0;i < s.length;i++)
+            xapiStatement(s[i]);
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
     var negative = false;
@@ -111,10 +115,12 @@ var xapiStatement = function (s) {
     var actorPk = pkFromMbox.call(this, s.actor);
     if (actorPk == null) return;
     var authorityPk = pkFromMbox.call(this, s.authority);
+    if (authorityPk == null)
+        authorityPk = EcPpk.fromPem(xapiMePpk).toPk();
     if (authorityPk == null) return;
 
     if (s.object == null) return;
-    console.log(s.object.id);
+    
     var alignedCompetencies = getAlignedCompetencies.call(this, s.object.id);
     var alreadyAligned = {};
     for (var i = 0; i < alignedCompetencies.length; i++) {
@@ -168,7 +174,6 @@ var xapiLoop = function () {
     var results = xapiEndpoint.call(this, null, since);
     while (results.statements != null && results.statements.length > 0) {
         for (var i = 0; i < results.statements.length; i++) {
-            console.log(results.statements[i].id);
             xapiStatement.call(this, results.statements[i]);
         }
         fileSave(date(null, "yyyy-MM-dd'T'HH:mm:ssXXX"), sinceFilePath);
