@@ -1,8 +1,6 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Stable: 0.4.28 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=0.4)](https://travis-ci.org/cassproject/CASS)  
-Latest Unstable: 1.2.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?tag=1.2.3)](https://travis-ci.org/cassproject/CASS)  
 Development: master [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=master)](https://travis-ci.org/cassproject/CASS)
 
 [High level documentation](https://docs.cassproject.org)  
