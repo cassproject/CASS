@@ -33,7 +33,7 @@ skyrepoMigrate = function () {
         java.lang.Thread.sleep(1000);
         console.log(health);
     }
-    if (elasticState.version.number == "7.9.2" && elasticState.version.minimum_index_compatibility_version == "6.0.0-beta1")
+    if (elasticState.version.number.startsWith("7.") && elasticState.version.minimum_index_compatibility_version == "6.0.0-beta1")
     {
         var settings = httpGet(elasticEndpoint + "/_settings", true);
         var indices = EcObject.keys(settings);
@@ -226,7 +226,7 @@ skyrepoMigrate = function () {
             console.log(httpDelete(elasticEndpoint+"/.temp."+index.replace("https:..","").replace(":","."),true));
         }
     }
-    if (elasticState.version.number == "6.8.12" && elasticState.version.minimum_index_compatibility_version == "5.0.0")
+    if (elasticState.version.number.startsWith("6.") && elasticState.version.minimum_index_compatibility_version == "5.0.0")
     {
         var settings = httpGet(elasticEndpoint + "/_settings", true);
         var indices = EcObject.keys(settings);

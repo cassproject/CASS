@@ -603,8 +603,9 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
     };
     /**
      *  Returns the index of an object or value if the object or value exists in the array. Uses .equals if available.
+     * 
      *  @param {Array} a Array to check over.
-     *  @param {any} o Object to check for.
+     *  @param {any}   o Object to check for.
      *  @return Index of the result, -1 if the result isn't in the array.
      *  @static
      *  @method indexOf
@@ -675,18 +676,6 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
                 return true;
         }
         return false;
-    };
-}, {}, {});
-var EcBrowserDetection = function() {};
-EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
-    constructor.isIeOrEdge = function() {
-        if (window == null) 
-            return false;
-        if (window.navigator == null) 
-            return false;
-        if (window.navigator.appName == null) 
-            return false;
-        return window.navigator.appName == "Microsoft Internet Explorer" || (window.navigator.appName == "Netscape" && window.navigator.appVersion.indexOf("Edge") > -1);
     };
 }, {}, {});
 /**
@@ -968,6 +957,18 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             }
             success(o);
         };
+    };
+}, {}, {});
+var EcBrowserDetection = function() {};
+EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
+    constructor.isIeOrEdge = function() {
+        if (window == null) 
+            return false;
+        if (window.navigator == null) 
+            return false;
+        if (window.navigator.appName == null) 
+            return false;
+        return window.navigator.appName == "Microsoft Internet Explorer" || (window.navigator.appName == "Netscape" && window.navigator.appVersion.indexOf("Edge") > -1);
     };
 }, {}, {});
 var EcLocalStorage = function() {};

@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.39",
+        "version": "1.2.40",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -213,8 +213,8 @@
                 "CareerPathway": 1,
                 "CredentialAssertion": 1,
                 "IdentifierValue": 1,
-                "ConditionManifest": 1,
                 "AlignmentMap": 1,
+                "ConditionManifest": 1,
                 "VerificationServiceProfile": 1,
                 "RevokeAction": 1,
                 "AdvancedStandingAction": 1,
@@ -294,8 +294,8 @@
                 "SocialEvent": 1,
                 "LiteraryEvent": 1,
                 "DanceEvent": 1,
-                "DeliveryEvent": 1,
                 "UserInteraction": 1,
+                "DeliveryEvent": 1,
                 "PublicationEvent": 1,
                 "ScreeningEvent": 1,
                 "ChildrensEvent": 1,
@@ -391,8 +391,8 @@
                 "Question": 1,
                 "Dataset": 1,
                 "VisualArtwork": 1,
-                "TVSeries": 1,
                 "Article": 1,
+                "TVSeries": 1,
                 "MusicPlaylist": 1,
                 "Recipe": 1,
                 "MenuSection": 1,
@@ -440,12 +440,12 @@
                 "Aquarium": 1,
                 "Airport": 1,
                 "Beach": 1,
-                "ParkingFacility": 1,
                 "EventVenue": 1,
+                "ParkingFacility": 1,
                 "GovernmentBuilding": 1,
                 "Campground": 1,
-                "PlaceOfWorship": 1,
                 "MovieTheater": 1,
+                "PlaceOfWorship": 1,
                 "BusStop": 1,
                 "FireStation": 1,
                 "Bridge": 1,
@@ -550,8 +550,8 @@
                 "Pharmacy": 1,
                 "Physician": 1,
                 "GovernmentOffice": 1,
-                "RealEstateAgent": 1,
                 "SelfStorage": 1,
+                "RealEstateAgent": 1,
                 "FoodEstablishment": 1,
                 "TouristInformationCenter": 1,
                 "EmploymentAgency": 1,
@@ -603,8 +603,8 @@
                 "OrganizationRole": 1,
                 "ItemListOrderType": 1,
                 "DayOfWeek": 1,
-                "ReservationStatusType": 1,
                 "RestrictedDiet": 1,
+                "ReservationStatusType": 1,
                 "PaymentStatusType": 1,
                 "ActionStatusType": 1,
                 "MapCategoryType": 1,
@@ -1025,8 +1025,8 @@
                 "CareerPathway": 1,
                 "CredentialAssertion": 1,
                 "IdentifierValue": 1,
-                "ConditionManifest": 1,
                 "AlignmentMap": 1,
+                "ConditionManifest": 1,
                 "VerificationServiceProfile": 1,
                 "RevokeAction": 1,
                 "AdvancedStandingAction": 1,
@@ -1113,8 +1113,8 @@
                 "SocialEvent": 1,
                 "LiteraryEvent": 1,
                 "DanceEvent": 1,
-                "DeliveryEvent": 1,
                 "UserInteraction": 1,
+                "DeliveryEvent": 1,
                 "PublicationEvent": 1,
                 "ScreeningEvent": 1,
                 "ChildrensEvent": 1,
@@ -1210,8 +1210,8 @@
                 "Question": 1,
                 "Dataset": 1,
                 "VisualArtwork": 1,
-                "TVSeries": 1,
                 "Article": 1,
+                "TVSeries": 1,
                 "MusicPlaylist": 1,
                 "Recipe": 1,
                 "MenuSection": 1,
@@ -1259,12 +1259,12 @@
                 "Aquarium": 1,
                 "Airport": 1,
                 "Beach": 1,
-                "ParkingFacility": 1,
                 "EventVenue": 1,
+                "ParkingFacility": 1,
                 "GovernmentBuilding": 1,
                 "Campground": 1,
-                "PlaceOfWorship": 1,
                 "MovieTheater": 1,
+                "PlaceOfWorship": 1,
                 "BusStop": 1,
                 "FireStation": 1,
                 "Bridge": 1,
@@ -1369,8 +1369,8 @@
                 "Pharmacy": 1,
                 "Physician": 1,
                 "GovernmentOffice": 1,
-                "RealEstateAgent": 1,
                 "SelfStorage": 1,
+                "RealEstateAgent": 1,
                 "FoodEstablishment": 1,
                 "TouristInformationCenter": 1,
                 "EmploymentAgency": 1,
@@ -1422,8 +1422,8 @@
                 "OrganizationRole": 1,
                 "ItemListOrderType": 1,
                 "DayOfWeek": 1,
-                "ReservationStatusType": 1,
                 "RestrictedDiet": 1,
+                "ReservationStatusType": 1,
                 "PaymentStatusType": 1,
                 "ActionStatusType": 1,
                 "MapCategoryType": 1,
@@ -2155,7 +2155,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 632,
+            "line": 633,
             "description": "Object to hold a triple, used in graph.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2170,7 +2170,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 692,
+            "line": 681,
             "description": "Wrapper to handle all remote web service invocations.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2185,7 +2185,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 979,
+            "line": 980,
             "description": "A graph consisting of a set of vertices of type <code>V</code>\nset and a set of edges of type <code>E</code>.  Edges of this\ngraph type have exactly two endpoints; whether these endpoints\nmust be distinct depends on the implementation.\n<p>\nThis interface permits, but does not enforce, any of the following\ncommon variations of graphs:\n<ul>\n<li> directed and undirected edges\n<li> vertices and edges with attributes (for example, weighted edges)\n<li> vertices and edges of different types (for example, bipartite\nor multimodal graphs)\n<li> parallel edges (multiple edges which connect a single set of vertices)\n<li> representations as matrices or as adjacency lists or adjacency maps\n</ul>\nExtensions or implementations of this interface\nmay enforce or disallow any or all of these variations.\n<p>\n<p>Definitions (with respect to a given vertex <code>v</code>):\n<ul>\n<li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed\nfrom a neighbor of <code>v</code> to reach <code>v</code>\n<li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed\nfrom <code>v</code> to reach some neighbor of <code>v</code>\n<li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an\nincoming edge of <code>v</code>\n<li/><b>successor</b> of <code>v</code>: a vertex at the other end of an\noutgoing edge of <code>v</code>\n<li/>\n</ul>",
             "author": "Tom Buskirk (tom.buskirk@eduworks.com)",
             "extends": "Hypergraph"
@@ -2201,7 +2201,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1202,
+            "line": 1203,
             "description": "Object Helper Functions",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2216,7 +2216,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1238,
+            "line": 1239,
             "description": "Class with static methods to prevent unnecessary overhead with small operations that don't prevent drawing,\nbut to setTimeout on methods that slow down the browser sufficiently to interfere with drawing.\nUses a framerate timer to determine between the two."
         },
         "EcDirectedGraph": {
@@ -2230,7 +2230,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1322,
+            "line": 1323,
             "description": "A directed implementation of {{#crossLink \"Graph\"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.",
             "params": [
                 {
@@ -2256,7 +2256,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1634,
+            "line": 1635,
             "description": "Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.\nWill iterate over all items in an array and perform 'each(item,callback)'.\nEvery 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.\nWhen all callbacks have been called, 'after(array)' is called.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -3200,21 +3200,6 @@
             "author": "credentialengine.org",
             "extends": "identifier"
         },
-        "ConditionManifest": {
-            "name": "ConditionManifest",
-            "shortname": "ConditionManifest",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.credentialengine",
-            "namespace": "",
-            "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3724,
-            "description": "credentialengine.org/ConditionManifest\nSet of constraints, prerequisites, entry conditions, or requirements maintained at the organizational and/or sub-organizational level.\nThese conditions are intended to be referenced by external entities such as individual credentials in order to facilitate the process of their description and to reduce unnecessary duplication of data applicable across an array of entities.",
-            "author": "credentialengine.org"
-        },
         "AlignmentMap": {
             "name": "AlignmentMap",
             "shortname": "AlignmentMap",
@@ -3226,8 +3211,23 @@
             "module": "org.credentialengine",
             "namespace": "",
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3815,
+            "line": 3724,
             "description": "credentialengine.org/AlignmentMap\nAn entity comprised of a set of alignment or mapping assertions between two existing entities such as mapping a certificate providing advanced standing to a degree.\nAlignment maps provide the means for parties to assert sets of alignments between already existing entities created by themselves or other parties--e.g., a 3rd party mapping of a learning resource owned by one party to a credential owned by another; or, mapping a military occupational experience or Military Occupational Specialty (MOS code) as advanced standing to a course or credential.",
+            "author": "credentialengine.org"
+        },
+        "ConditionManifest": {
+            "name": "ConditionManifest",
+            "shortname": "ConditionManifest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.credentialengine",
+            "namespace": "",
+            "file": "src/main/js/cass/org.credentialengine.js",
+            "line": 3748,
+            "description": "credentialengine.org/ConditionManifest\nSet of constraints, prerequisites, entry conditions, or requirements maintained at the organizational and/or sub-organizational level.\nThese conditions are intended to be referenced by external entities such as individual credentials in order to facilitate the process of their description and to reduce unnecessary duplication of data applicable across an array of entities.",
             "author": "credentialengine.org"
         },
         "GeoCoordinates": {
@@ -4140,22 +4140,6 @@
             "author": "schema.org",
             "extends": "SchemaEvent"
         },
-        "DeliveryEvent": {
-            "name": "DeliveryEvent",
-            "shortname": "DeliveryEvent",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 2832,
-            "description": "Schema.org/DeliveryEvent\nAn event involving the delivery of an item.",
-            "author": "schema.org",
-            "extends": "SchemaEvent"
-        },
         "UserInteraction": {
             "name": "UserInteraction",
             "shortname": "UserInteraction",
@@ -4167,8 +4151,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 2885,
+            "line": 2832,
             "description": "Schema.org/UserInteraction\nUserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].",
+            "author": "schema.org",
+            "extends": "SchemaEvent"
+        },
+        "DeliveryEvent": {
+            "name": "DeliveryEvent",
+            "shortname": "DeliveryEvent",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 2852,
+            "description": "Schema.org/DeliveryEvent\nAn event involving the delivery of an item.",
             "author": "schema.org",
             "extends": "SchemaEvent"
         },
@@ -5692,22 +5692,6 @@
             "author": "schema.org",
             "extends": "CreativeWork"
         },
-        "TVSeries": {
-            "name": "TVSeries",
-            "shortname": "TVSeries",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8419,
-            "description": "Schema.org/TVSeries\nCreativeWorkSeries dedicated to TV broadcast and associated online delivery.",
-            "author": "schema.org",
-            "extends": "CreativeWork"
-        },
         "Article": {
             "name": "Article",
             "shortname": "Article",
@@ -5719,8 +5703,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8560,
+            "line": 8419,
             "description": "Schema.org/Article\nAn article, such as a news article or piece of investigative report. Newspapers and magazines have articles of many different types and this is intended to cover them all.\\n\\nSee also [blog post](http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html).",
+            "author": "schema.org",
+            "extends": "CreativeWork"
+        },
+        "TVSeries": {
+            "name": "TVSeries",
+            "shortname": "TVSeries",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8488,
+            "description": "Schema.org/TVSeries\nCreativeWorkSeries dedicated to TV broadcast and associated online delivery.",
             "author": "schema.org",
             "extends": "CreativeWork"
         },
@@ -6476,22 +6476,6 @@
             "author": "schema.org",
             "extends": "CivicStructure"
         },
-        "ParkingFacility": {
-            "name": "ParkingFacility",
-            "shortname": "ParkingFacility",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10745,
-            "description": "Schema.org/ParkingFacility\nA parking lot or other parking facility.",
-            "author": "schema.org",
-            "extends": "CivicStructure"
-        },
         "EventVenue": {
             "name": "EventVenue",
             "shortname": "EventVenue",
@@ -6503,8 +6487,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10765,
+            "line": 10745,
             "description": "Schema.org/EventVenue\nAn event venue.",
+            "author": "schema.org",
+            "extends": "CivicStructure"
+        },
+        "ParkingFacility": {
+            "name": "ParkingFacility",
+            "shortname": "ParkingFacility",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10765,
+            "description": "Schema.org/ParkingFacility\nA parking lot or other parking facility.",
             "author": "schema.org",
             "extends": "CivicStructure"
         },
@@ -6540,22 +6540,6 @@
             "author": "schema.org",
             "extends": "CivicStructure"
         },
-        "PlaceOfWorship": {
-            "name": "PlaceOfWorship",
-            "shortname": "PlaceOfWorship",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 10827,
-            "description": "Schema.org/PlaceOfWorship\nPlace of worship, such as a church, synagogue, or mosque.",
-            "author": "schema.org",
-            "extends": "CivicStructure"
-        },
         "MovieTheater": {
             "name": "MovieTheater",
             "shortname": "MovieTheater",
@@ -6567,8 +6551,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10847,
+            "line": 10827,
             "description": "Schema.org/MovieTheater\nA movie theater.",
+            "author": "schema.org",
+            "extends": "CivicStructure"
+        },
+        "PlaceOfWorship": {
+            "name": "PlaceOfWorship",
+            "shortname": "PlaceOfWorship",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 10856,
+            "description": "Schema.org/PlaceOfWorship\nPlace of worship, such as a church, synagogue, or mosque.",
             "author": "schema.org",
             "extends": "CivicStructure"
         },
@@ -8236,22 +8236,6 @@
             "author": "schema.org",
             "extends": "LocalBusiness"
         },
-        "RealEstateAgent": {
-            "name": "RealEstateAgent",
-            "shortname": "RealEstateAgent",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 13522,
-            "description": "Schema.org/RealEstateAgent\nA real-estate agent.",
-            "author": "schema.org",
-            "extends": "LocalBusiness"
-        },
         "SelfStorage": {
             "name": "SelfStorage",
             "shortname": "SelfStorage",
@@ -8263,8 +8247,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 13542,
+            "line": 13522,
             "description": "Schema.org/SelfStorage\nA self-storage facility.",
+            "author": "schema.org",
+            "extends": "LocalBusiness"
+        },
+        "RealEstateAgent": {
+            "name": "RealEstateAgent",
+            "shortname": "RealEstateAgent",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 13542,
+            "description": "Schema.org/RealEstateAgent\nA real-estate agent.",
             "author": "schema.org",
             "extends": "LocalBusiness"
         },
@@ -9084,22 +9084,6 @@
             "author": "schema.org",
             "extends": "Enumeration"
         },
-        "ReservationStatusType": {
-            "name": "ReservationStatusType",
-            "shortname": "ReservationStatusType",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "org.schema",
-            "namespace": "",
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 15594,
-            "description": "Schema.org/ReservationStatusType\nEnumerated status values for Reservation.",
-            "author": "schema.org",
-            "extends": "Enumeration"
-        },
         "RestrictedDiet": {
             "name": "RestrictedDiet",
             "shortname": "RestrictedDiet",
@@ -9111,8 +9095,24 @@
             "module": "org.schema",
             "namespace": "",
             "file": "src/main/js/cass/org.schema.js",
-            "line": 15614,
+            "line": 15594,
             "description": "Schema.org/RestrictedDiet\nA diet restricted to certain foods or preparations for cultural, religious, health or lifestyle reasons.",
+            "author": "schema.org",
+            "extends": "Enumeration"
+        },
+        "ReservationStatusType": {
+            "name": "ReservationStatusType",
+            "shortname": "ReservationStatusType",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.schema",
+            "namespace": "",
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 15614,
+            "description": "Schema.org/ReservationStatusType\nEnumerated status values for Reservation.",
             "author": "schema.org",
             "extends": "Enumeration"
         },
@@ -21306,7 +21306,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 641,
+            "line": 642,
             "description": "Source vertex.",
             "itemtype": "property",
             "name": "source",
@@ -21316,7 +21316,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 648,
+            "line": 649,
             "description": "Destination vertex.",
             "itemtype": "property",
             "name": "destination",
@@ -21326,7 +21326,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 655,
+            "line": 656,
             "description": "Object to hold in the edge.",
             "itemtype": "property",
             "name": "edge",
@@ -21336,7 +21336,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 662,
+            "line": 663,
             "description": "Returns true IFF sources, destinations, and edges match.",
             "params": [
                 {
@@ -21356,7 +21356,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 702,
+            "line": 691,
             "description": "Turn this property off to cause all remote web service calls to be\nsynchronous. Can be useful for test scripts, blocking calls, etc.",
             "itemtype": "property",
             "name": "async",
@@ -21367,7 +21367,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 711,
+            "line": 700,
             "description": "Timeout for AJAX requests",
             "itemtype": "property",
             "name": "async",
@@ -21378,7 +21378,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 719,
+            "line": 708,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "params": [
                 {
@@ -21415,7 +21415,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 737,
+            "line": 726,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "params": [
                 {
@@ -21452,7 +21452,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 755,
+            "line": 744,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest. Includes headers.",
             "params": [
                 {
@@ -21494,7 +21494,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 826,
+            "line": 815,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -21526,7 +21526,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 842,
+            "line": 831,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -21558,7 +21558,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 898,
+            "line": 887,
             "description": "DELETEs something at a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -21590,7 +21590,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1022,
+            "line": 1023,
             "description": "Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -21608,7 +21608,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1032,
+            "line": 1033,
             "description": "Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -21626,7 +21626,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1042,
+            "line": 1043,
             "description": "Returns a <code>Collection</code> view of the predecessors of <code>vertex</code>\nin this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of\n<code>v</code> and an incoming edge of <code>vertex</code>.",
             "params": [
                 {
@@ -21644,7 +21644,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1055,
+            "line": 1056,
             "description": "Returns a <code>Collection</code> view of the successors of <code>vertex</code>\nin this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of\n<code>v</code> and an outgoing edge of <code>vertex</code>.",
             "params": [
                 {
@@ -21662,7 +21662,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1068,
+            "line": 1069,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -21680,7 +21680,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1077,
+            "line": 1078,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -21698,7 +21698,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1086,
+            "line": 1087,
             "description": "Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getPredecessors().contains(v2)</code>.",
             "params": [
                 {
@@ -21720,7 +21720,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1096,
+            "line": 1097,
             "description": "Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getSuccessors().contains(v2)</code>.",
             "params": [
                 {
@@ -21742,7 +21742,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1106,
+            "line": 1107,
             "description": "Returns the number of predecessors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getPredecessors().size()</code>.",
             "params": [
                 {
@@ -21760,7 +21760,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1115,
+            "line": 1116,
             "description": "Returns the number of successors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getSuccessors().size()</code>.",
             "params": [
                 {
@@ -21778,7 +21778,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1124,
+            "line": 1125,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the source;\notherwise returns <code>null</code>.\nThe source of a directed edge <code>d</code> is defined to be the vertex for which\n<code>d</code> is an outgoing edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -21796,7 +21796,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1137,
+            "line": 1138,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the destination;\notherwise returns <code>null</code>.\nThe destination of a directed edge <code>d</code> is defined to be the vertex\nincident to <code>d</code> for which\n<code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -21814,7 +21814,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1151,
+            "line": 1152,
             "description": "Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.\nEquivalent to <code>getSource(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -21836,7 +21836,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1161,
+            "line": 1162,
             "description": "Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -21856,7 +21856,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1170,
+            "line": 1171,
             "description": "Adds edge <code>e</code> to this graph such that it connects\nvertex <code>v1</code> to <code>v2</code>.\nEquivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.\nIf this graph does not contain <code>v1</code>, <code>v2</code>,\nor both, implementations may choose to either silently add\nthe vertices to the graph or throw an <code>IllegalArgumentException</code>.\nIf this graph assigns edge types to its edges, the edge type of\n<code>e</code> will be the default for this graph.\nSee <code>Hypergraph.addEdge()</code> for a listing of possible reasons\nfor failure.",
             "params": [
                 {
@@ -21890,7 +21890,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1191,
+            "line": 1192,
             "description": "Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.\n(That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)",
             "params": [
                 {
@@ -21912,7 +21912,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1211,
+            "line": 1212,
             "description": "Returns true if the result is an object.",
             "params": [
                 {
@@ -21932,7 +21932,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1226,
+            "line": 1227,
             "description": "Returns keys on the object",
             "params": [
                 {
@@ -21952,7 +21952,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1256,
+            "line": 1257,
             "description": "Updates the framerate timer/counter.",
             "itemtype": "method",
             "name": "updateFrame",
@@ -21962,7 +21962,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1270,
+            "line": 1271,
             "description": "Invoke a method now or later based on whether some time has passed since we last drew the screen.",
             "params": [
                 {
@@ -21979,7 +21979,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1292,
+            "line": 1293,
             "description": "Invoke a method at some point in the future, allowing draw methods to occur periodically.",
             "params": [
                 {
@@ -21996,7 +21996,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1652,
+            "line": 1653,
             "description": "Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.",
             "itemtype": "property",
             "name": "counter",
@@ -22006,7 +22006,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1659,
+            "line": 1660,
             "description": "\"Each\" method. See class description.",
             "params": [
                 {
@@ -22033,7 +22033,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1678,
+            "line": 1679,
             "description": "\"Each\" method. Allows for replacing values in the array. See class description.",
             "params": [
                 {
@@ -22060,7 +22060,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1727,
+            "line": 1728,
             "description": "Stops any remaining objects from being iterated over, if they have not already. Will prevent 'after' from being called.",
             "itemtype": "method",
             "name": "stop",
@@ -22070,7 +22070,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1736,
+            "line": 1737,
             "description": "Stops any remaining objects from being iterated over, if they have not already. Will allow 'after' to be called.",
             "itemtype": "method",
             "name": "stop",
@@ -22080,7 +22080,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1745,
+            "line": 1746,
             "description": "Is preventing 'after' from being called?",
             "return": {
                 "description": "whether it is stopped."
@@ -31108,6 +31108,16 @@
         {
             "file": "src/main/js/cass/org.credentialengine.js",
             "line": 3740,
+            "description": "http://purl.org/ctdl/terms/hasStatement\nAlignment assertion belonging to the alignment map.",
+            "itemtype": "property",
+            "name": "hasStatement",
+            "type": "Statement",
+            "class": "AlignmentMap",
+            "module": "org.credentialengine"
+        },
+        {
+            "file": "src/main/js/cass/org.credentialengine.js",
+            "line": 3764,
             "description": "http://purl.org/ctdl/terms/conditionManifestOf\nOrganization maintaining the condition manifest.",
             "itemtype": "property",
             "name": "conditionManifestOf",
@@ -31117,7 +31127,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3747,
+            "line": 3771,
             "description": "http://purl.org/ctdl/terms/corequisite\nCredentials that must be pursued concurrently.\nIncludes dual (double) degrees that cannot be earned independently of each other.",
             "itemtype": "property",
             "name": "corequisite",
@@ -31127,7 +31137,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3755,
+            "line": 3779,
             "description": "http://purl.org/ctdl/terms/ctid\nGlobally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).\nThe CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.",
             "itemtype": "property",
             "name": "ctid",
@@ -31137,7 +31147,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3763,
+            "line": 3787,
             "description": "http://purl.org/ctdl/terms/description\nStatement, characterization or account of the entity.",
             "itemtype": "property",
             "name": "description",
@@ -31147,7 +31157,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3770,
+            "line": 3794,
             "description": "http://purl.org/ctdl/terms/entryCondition\nPrerequisites for entry into a credentialing program, a learning opportunity or an assessment including transcripts, records of previous experience, and lower-level learning opportunities.",
             "itemtype": "property",
             "name": "entryCondition",
@@ -31157,7 +31167,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3777,
+            "line": 3801,
             "description": "http://purl.org/ctdl/terms/name\nName or title of the entity.",
             "itemtype": "property",
             "name": "name",
@@ -31167,7 +31177,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3784,
+            "line": 3808,
             "description": "http://purl.org/ctdl/terms/recommends\nRecommended credential, learning opportunity or assessment.",
             "itemtype": "property",
             "name": "recommends",
@@ -31177,7 +31187,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3791,
+            "line": 3815,
             "description": "http://purl.org/ctdl/terms/renewal\nEntity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.\nGenerally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.",
             "itemtype": "property",
             "name": "renewal",
@@ -31187,7 +31197,7 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3799,
+            "line": 3823,
             "description": "http://purl.org/ctdl/terms/requires\nRequirement or set of requirements for this credential, learning opportunity, or assessment.",
             "itemtype": "property",
             "name": "requires",
@@ -31197,22 +31207,12 @@
         },
         {
             "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3806,
+            "line": 3830,
             "description": "http://purl.org/ctdl/terms/subjectWebpage\nThe webpage that describes this entity.\nThe web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.",
             "itemtype": "property",
             "name": "subjectWebpage",
             "type": "anyURI",
             "class": "ConditionManifest",
-            "module": "org.credentialengine"
-        },
-        {
-            "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3831,
-            "description": "http://purl.org/ctdl/terms/hasStatement\nAlignment assertion belonging to the alignment map.",
-            "itemtype": "property",
-            "name": "hasStatement",
-            "type": "Statement",
-            "class": "AlignmentMap",
             "module": "org.credentialengine"
         },
         {
@@ -54694,7 +54694,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 2852,
+            "line": 2872,
             "description": "Schema.org/hasDeliveryMethod\nMethod used for delivery or shipping.",
             "itemtype": "property",
             "name": "hasDeliveryMethod",
@@ -54704,7 +54704,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 2860,
+            "line": 2880,
             "description": "Schema.org/availableThrough\nAfter this date, the item will no longer be available for pickup.",
             "itemtype": "property",
             "name": "availableThrough",
@@ -54714,7 +54714,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 2868,
+            "line": 2888,
             "description": "Schema.org/availableFrom\nWhen the item is available for pickup from the store, locker, etc.",
             "itemtype": "property",
             "name": "availableFrom",
@@ -54724,7 +54724,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 2876,
+            "line": 2896,
             "description": "Schema.org/accessCode\nPassword, PIN, or access code needed for delivery (e.g. from a locker).",
             "itemtype": "property",
             "name": "accessCode",
@@ -59165,156 +59165,6 @@
         {
             "file": "src/main/js/cass/org.schema.js",
             "line": 8439,
-            "description": "Schema.org/seasons\nA season in a media series.",
-            "itemtype": "property",
-            "name": "seasons",
-            "type": "CreativeWorkSeason",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8447,
-            "description": "Schema.org/actor\nAn actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.",
-            "itemtype": "property",
-            "name": "actor",
-            "type": "Person",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8455,
-            "description": "Schema.org/numberOfEpisodes\nThe number of episodes in this season or series.",
-            "itemtype": "property",
-            "name": "numberOfEpisodes",
-            "type": "Integer",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8463,
-            "description": "Schema.org/trailer\nThe trailer of a movie or tv/radio series, season, episode, etc.",
-            "itemtype": "property",
-            "name": "trailer",
-            "type": "VideoObject",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8471,
-            "description": "Schema.org/season\nA season in a media series.",
-            "itemtype": "property",
-            "name": "season",
-            "type": "CreativeWorkSeason",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8479,
-            "description": "Schema.org/episodes\nAn episode of a TV/radio series or season.",
-            "itemtype": "property",
-            "name": "episodes",
-            "type": "Episode",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8487,
-            "description": "Schema.org/countryOfOrigin\nThe country of the principal offices of the production company or individual responsible for the movie or program.",
-            "itemtype": "property",
-            "name": "countryOfOrigin",
-            "type": "Country",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8495,
-            "description": "Schema.org/musicBy\nThe composer of the soundtrack.",
-            "itemtype": "property",
-            "name": "musicBy",
-            "type": "Person",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8503,
-            "description": "Schema.org/containsSeason\nA season that is part of the media series.",
-            "itemtype": "property",
-            "name": "containsSeason",
-            "type": "CreativeWorkSeason",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8511,
-            "description": "Schema.org/directors\nA director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.",
-            "itemtype": "property",
-            "name": "directors",
-            "type": "Person",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8519,
-            "description": "Schema.org/numberOfSeasons\nThe number of seasons in this series.",
-            "itemtype": "property",
-            "name": "numberOfSeasons",
-            "type": "Integer",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8527,
-            "description": "Schema.org/director\nA director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.",
-            "itemtype": "property",
-            "name": "director",
-            "type": "Person",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8535,
-            "description": "Schema.org/productionCompany\nThe production company or studio responsible for the item e.g. series, video game, episode etc.",
-            "itemtype": "property",
-            "name": "productionCompany",
-            "type": "Organization",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8543,
-            "description": "Schema.org/actors\nAn actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.",
-            "itemtype": "property",
-            "name": "actors",
-            "type": "Person",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8551,
-            "description": "Schema.org/episode\nAn episode of a tv, radio or game media within a series or season.",
-            "itemtype": "property",
-            "name": "episode",
-            "type": "Episode",
-            "class": "TVSeries",
-            "module": "org.schema"
-        },
-        {
-            "file": "src/main/js/cass/org.schema.js",
-            "line": 8580,
             "description": "Schema.org/pagination\nAny description of pages that is not separated into pageStart and pageEnd; for example, \"1-6, 9, 55\" or \"10-12, 46-49\".",
             "itemtype": "property",
             "name": "pagination",
@@ -59324,7 +59174,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8588,
+            "line": 8447,
             "description": "Schema.org/pageEnd\nThe page on which the work ends; for example \"138\" or \"xvi\".",
             "itemtype": "property",
             "name": "pageEnd",
@@ -59334,7 +59184,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8596,
+            "line": 8455,
             "description": "Schema.org/articleSection\nArticles may belong to one or more 'sections' in a magazine or newspaper, such as Sports, Lifestyle, etc.",
             "itemtype": "property",
             "name": "articleSection",
@@ -59344,7 +59194,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8604,
+            "line": 8463,
             "description": "Schema.org/articleBody\nThe actual body of the article.",
             "itemtype": "property",
             "name": "articleBody",
@@ -59354,7 +59204,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8612,
+            "line": 8471,
             "description": "Schema.org/pageStart\nThe page on which the work starts; for example \"135\" or \"xiii\".",
             "itemtype": "property",
             "name": "pageStart",
@@ -59364,12 +59214,162 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 8620,
+            "line": 8479,
             "description": "Schema.org/wordCount\nThe number of words in the text of the Article.",
             "itemtype": "property",
             "name": "wordCount",
             "type": "Integer",
             "class": "Article",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8508,
+            "description": "Schema.org/seasons\nA season in a media series.",
+            "itemtype": "property",
+            "name": "seasons",
+            "type": "CreativeWorkSeason",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8516,
+            "description": "Schema.org/actor\nAn actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.",
+            "itemtype": "property",
+            "name": "actor",
+            "type": "Person",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8524,
+            "description": "Schema.org/numberOfEpisodes\nThe number of episodes in this season or series.",
+            "itemtype": "property",
+            "name": "numberOfEpisodes",
+            "type": "Integer",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8532,
+            "description": "Schema.org/trailer\nThe trailer of a movie or tv/radio series, season, episode, etc.",
+            "itemtype": "property",
+            "name": "trailer",
+            "type": "VideoObject",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8540,
+            "description": "Schema.org/season\nA season in a media series.",
+            "itemtype": "property",
+            "name": "season",
+            "type": "CreativeWorkSeason",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8548,
+            "description": "Schema.org/episodes\nAn episode of a TV/radio series or season.",
+            "itemtype": "property",
+            "name": "episodes",
+            "type": "Episode",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8556,
+            "description": "Schema.org/countryOfOrigin\nThe country of the principal offices of the production company or individual responsible for the movie or program.",
+            "itemtype": "property",
+            "name": "countryOfOrigin",
+            "type": "Country",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8564,
+            "description": "Schema.org/musicBy\nThe composer of the soundtrack.",
+            "itemtype": "property",
+            "name": "musicBy",
+            "type": "Person",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8572,
+            "description": "Schema.org/containsSeason\nA season that is part of the media series.",
+            "itemtype": "property",
+            "name": "containsSeason",
+            "type": "CreativeWorkSeason",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8580,
+            "description": "Schema.org/directors\nA director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.",
+            "itemtype": "property",
+            "name": "directors",
+            "type": "Person",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8588,
+            "description": "Schema.org/numberOfSeasons\nThe number of seasons in this series.",
+            "itemtype": "property",
+            "name": "numberOfSeasons",
+            "type": "Integer",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8596,
+            "description": "Schema.org/director\nA director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.",
+            "itemtype": "property",
+            "name": "director",
+            "type": "Person",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8604,
+            "description": "Schema.org/productionCompany\nThe production company or studio responsible for the item e.g. series, video game, episode etc.",
+            "itemtype": "property",
+            "name": "productionCompany",
+            "type": "Organization",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8612,
+            "description": "Schema.org/actors\nAn actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.",
+            "itemtype": "property",
+            "name": "actors",
+            "type": "Person",
+            "class": "TVSeries",
+            "module": "org.schema"
+        },
+        {
+            "file": "src/main/js/cass/org.schema.js",
+            "line": 8620,
+            "description": "Schema.org/episode\nAn episode of a tv, radio or game media within a series or season.",
+            "itemtype": "property",
+            "name": "episode",
+            "type": "Episode",
+            "class": "TVSeries",
             "module": "org.schema"
         },
         {
@@ -60784,7 +60784,7 @@
         },
         {
             "file": "src/main/js/cass/org.schema.js",
-            "line": 10867,
+            "line": 10847,
             "description": "Schema.org/screenCount\nThe number of screens in the movie theater.",
             "itemtype": "property",
             "name": "screenCount",
@@ -65698,23 +65698,23 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1659"
+            "line": " src/main/js/cass/ec.base.js:1660"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1678"
+            "line": " src/main/js/cass/ec.base.js:1679"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1727"
+            "line": " src/main/js/cass/ec.base.js:1728"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1736"
+            "line": " src/main/js/cass/ec.base.js:1737"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1745"
+            "line": " src/main/js/cass/ec.base.js:1746"
         },
         {
             "message": "unknown tag: license",
@@ -66322,15 +66322,15 @@
         },
         {
             "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
-            "line": " src/main/js/cass/ec.base.js:1161"
+            "line": " src/main/js/cass/ec.base.js:1162"
         },
         {
             "message": "Missing item type\nInvoke a method now or later based on whether some time has passed since we last drew the screen.",
-            "line": " src/main/js/cass/ec.base.js:1270"
+            "line": " src/main/js/cass/ec.base.js:1271"
         },
         {
             "message": "Missing item type\nInvoke a method at some point in the future, allowing draw methods to occur periodically.",
-            "line": " src/main/js/cass/ec.base.js:1292"
+            "line": " src/main/js/cass/ec.base.js:1293"
         },
         {
             "message": "Missing item type\nA JavaScript implementation of the JSON-LD API.",
