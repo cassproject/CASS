@@ -50,7 +50,7 @@ Go to services, start elasticsearch-service-x64 and set it to start automaticall
 
 Docker images for standalone instances (based on Ubuntu) and distributed/scalable instances (based on Alpine Linux) can be found at:
 
-https://hub.docker.com/_/cassproject/
+https://hub.docker.com/r/cassproject/cass
 
 When using a Docker deployment of CaSS, there is an additional environment variable needed as of version 1.3.15.
 Make sure you have CASS_LOOPBACK set to your intended endpoint for the server (ex: "https://dev.cassproject.org/api/") and CASS_DOCKER_ENDPOINT set to "http://localhost/api/".
