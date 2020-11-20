@@ -91,7 +91,7 @@ var getAlignedCompetencies = function (objectId) {
 
 var xapiStatement = function (s) {
     if (s == null) return;
-    if (EcObject.isArray(s))
+    if (EcArray.isArray(s))
         for (var i = 0;i < s.length;i++)
             xapiStatement(s[i]);
     if (!EcObject.isObject(s)) return;
