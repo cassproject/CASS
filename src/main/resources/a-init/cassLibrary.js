@@ -91,7 +91,9 @@ var keyFor = function (filename) {
 
 function repoAutoDetect() {
     if (java.lang.System.getenv("CASS_LOOPBACK") != null)
-        repo.selectedServer = java.lang.System.getenv("CASS_LOOPBACK");
+        repo.init(java.lang.System.getenv("CASS_LOOPBACK"),function(){
+            console.log(EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
+        },console.error);
     else
         repo.autoDetectRepository();
 
