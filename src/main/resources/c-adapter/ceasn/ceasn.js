@@ -669,6 +669,37 @@ function cassConceptSchemeAsCeasn(framework) {
     return JSON.stringify(r, null, 2);
 }
 
+function createEachRelation(e, field, type, repo, ceo, id, cassRelations, toSave, i) {
+    var r = new EcAlignment();
+    r.generateId(repo.selectedServer);
+    if (ceo != null)
+        r.addOwner(ceo.ppk.toPk());
+    if (id != null)
+        r.addOwner(EcPk.fromPem(id));
+
+    r.relationType = type;
+    if (field == "ceasn:narrowAlignment") {
+        r.source = EcRemoteLinkedData.trimVersionFromUrl(e[field][i]);
+        r.target = EcRemoteLinkedData.trimVersionFromUrl(e.id);
+    }
+    else {
+        r.source = EcRemoteLinkedData.trimVersionFromUrl(e.id);
+        r.target = EcRemoteLinkedData.trimVersionFromUrl(e[field][i]);
+    }
+
+    cassRelations.push(r.shortId());
+    toSave.push(r);
+}
+
+function createRelations(e, field, type, repo, ceo, id, cassRelations, toSave) {
+    if (!EcArray.isArray(e[field])) {
+        e[field] = [e[field]];
+    }
+    for (var i = 0; i < e[field].length; i++) {
+        createEachRelation(e, field, type, repo, ceo, id, cassRelations, toSave, i);
+    }
+}
+
 function importCeFrameworkToCass(frameworkObj, competencyList) {
 
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
@@ -755,6 +786,30 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
             }
             c["schema:dateCreated"] = date;
         }
+        if (c["ceasn:broadAlignment"]) {
+            createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:narrowAlignment"]) {
+            createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["sameAs"]) {
+            createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:majorAlignment"]) {
+            createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:minorAlignment"]) {
+            createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:prerequisiteAlignment"]) {
+            createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        delete c["ceasn:broadAlignment"];
+        delete c["ceasn:narrowAlignment"];
+        delete c["sameAs"];
+        delete c["ceasn:majorAlignment"];
+        delete c["ceasn:minorAlignment"];
+        delete c["ceasn:prerequisiteAlignment"];
 
         if (owner != null)
             c.addOwner(EcPk.fromPem(owner));
