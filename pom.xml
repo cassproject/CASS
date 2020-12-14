@@ -9,7 +9,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ec-version>3.0.13</ec-version>
-		<ew-version>5.16.3</ew-version>
+		<ew-version>5.16.4</ew-version>
 	</properties>
 
 	<developers>
