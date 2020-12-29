@@ -68,7 +68,7 @@ To support open linked data, it is important that the objects created in CaSS ha
  * (Optional) Use a reverse proxy to control the endpoint closely.
 
 # Running Locally
-After cloning this repository, you can run CaSS locally with Jetty or Docker:
+After cloning this repository, you can run CaSS locally with Jetty or Docker. If using Jetty, make sure you have installed and started Elasticsearch.
 
     mvn jetty:run
 or
