@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -500,6 +500,29 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
             return rsaVerify(signature, pk.toPem(), text);
         }
         var s = forge.md.sha1.create();
+        s.update(forge.util.encodeUtf8(text), "utf8");
+        try {
+            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
+        }catch (ex) {
+            return false;
+        }
+    };
+    /**
+     *  Verifies the integrity of the provided text using a signature and a
+     *  public key. Uses SHA1 hash with a UTF8 decoding of the text.
+     * 
+     *  @param {EcPk}   pk Public key.
+     *  @param {string} text Text to verify.
+     *  @param {string} signature Base64 encoded signature.
+     *  @return True IFF the signature is valid.
+     *  @static
+     *  @method verify
+     */
+    constructor.verifySha256 = function(pk, text, signature) {
+        if ((typeof httpStatus) != "undefined") {
+            return rsaVerifySha256(signature, pk.toPem(), text);
+        }
+        var s = forge.md.sha256.create();
         s.update(forge.util.encodeUtf8(text), "utf8");
         try {
             return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
