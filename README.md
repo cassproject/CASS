@@ -52,6 +52,9 @@ Docker images for standalone instances (based on Ubuntu) and distributed/scalabl
 
 https://hub.docker.com/_/cassproject/
 
+When using a Docker deployment of CaSS, there is an additional environment variable needed as of version 1.3.15.
+Make sure you have CASS_LOOPBACK set to your intended endpoint for the server (ex: "https://dev.cassproject.org/api/") and CASS_DOCKER_ENDPOINT set to "http://localhost/api/".
+
 ## WAR (requires support)
 
 If a simple upgrade is required, replacing the WAR can often be the fastest method. This path is not recommended without significant knowledge.
