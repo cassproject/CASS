@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,374 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+
+if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
+    elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
+
 skyrepoMigrate = function () {
+    var elasticState = httpGet(elasticEndpoint + "/", true);
+    console.log("Current Elasticsearch Version: " + elasticState.version.number);
+    console.log("Current Minimum Index Compatibility Version: " + elasticState.version.minimum_index_compatibility_version);
+    console.log("Waiting for cluster health...");
+    var health = "red";
+    while (health != "yellow" && health != "green")
+    {
+        health = httpGet(elasticEndpoint + "/_cluster/health",true).status;
+        java.lang.Thread.sleep(1000);
+        console.log(health);
+    }
+    if (elasticState.version.number.startsWith("7.") && elasticState.version.minimum_index_compatibility_version == "6.0.0-beta1")
+    {
+        var settings = httpGet(elasticEndpoint + "/_settings", true);
+        var indices = EcObject.keys(settings);
+        for (var i = 0; i < indices.length; i++)
+        {
+            var index = indices[i];
+            console.log("Checking to see if " + index + " needs upgrading...");
+            if (index.startsWith("."))
+            {
+                continue;
+            }
+            if (settings[index].settings.index.version.created != "6081299")
+            {
+                continue;
+            }
+
+//            if (index.indexOf("https:") != -1)
+//            {
+//                var r2 = null;
+//                console.log(r2 = httpDelete(elasticEndpoint+"/"+index,true));
+//                continue;
+//            }
+            console.log("Reindexing " + index + " -> .temp."+index.replace("https:..","").replace(":","."));
+            if (index == "permanent")
+            {
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc)["enabled"] = false;
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                    console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("assertion"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "confidence":{type:"float"}
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("competency"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "ceasn:codedNotation":{
+                        type:"text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("conceptscheme"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "skos:hasTopConcept":{
+                        type:"text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else
+            {
+                var mapping = httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {"@version":{type:"long"}};
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            var r = null;
+            console.log(r = httpPost(JSON.stringify({
+                source:{index:index},
+                dest:{index:".temp."+index.replace("https:..","").replace(":","."),version_type:"external"}
+            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
+            if (r.error != null) continue;
+            console.log("Deleting " + index);
+            var r2 = null;
+            console.log(r2 = httpDelete(elasticEndpoint+"/"+index,true));
+            if (r2.error != null) continue;
+            if (r.total == 0) continue;
+            if (index == "permanent")
+            {
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc)["enabled"] = false;
+                var result = httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
+                    console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("competency"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "ceasn:codedNotation":{
+                        type:"text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("conceptscheme"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "skos:hasTopConcept":{
+                        type:"text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("assertion"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "confidence":{type:"float"}
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else
+            {
+                var mapping = httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true);
+                var mappings = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = doc;
+                (doc).properties = {"@version":{type:"long"}};
+                var result = httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            console.log("Reindexing .temp." + index.replace("https:..","").replace(":",".") + " -> "+index.replace("https:..","").replace(":","."));
+            console.log(r = httpPost(JSON.stringify({
+                source:{index:".temp."+index.replace("https:..","").replace(":",".")},
+                dest:{index:index.replace("https:..","").replace(":","."),version_type:"external"}
+            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
+            if (r.error != null) continue;
+            console.log("Deleting .temp." + index.replace("https:..","").replace(":","."));
+            console.log(httpDelete(elasticEndpoint+"/.temp."+index.replace("https:..","").replace(":","."),true));
+        }
+    }
+    if (elasticState.version.number.startsWith("6.") && elasticState.version.minimum_index_compatibility_version == "5.0.0")
+    {
+        var settings = httpGet(elasticEndpoint + "/_settings", true);
+        var indices = EcObject.keys(settings);
+        for (var i = 0; i < indices.length; i++)
+        {
+            var index = indices[i];
+            console.log("Checking to see if " + index + " needs upgrading...");
+            if (index.startsWith("."))
+            {
+                continue;
+            }
+            if (settings[index].settings.index.version.created != "5061299" && settings[index].settings.index.version.created != "5040099")
+            {
+                continue;
+            }
+            console.log("Reindexing " + index + " -> .temp."+index);
+            if (index == "permanent")
+            {
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)["permanent"] = doc;
+                (doc)["enabled"] = false;
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
+                    console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("assertion"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "confidence":{type:"float"}
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("competency"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "ceasn:codedNotation":{
+                        type:"text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else
+            {
+                var mapping = httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
+                (doc).properties = {"@version":{type:"long"}};
+                var result = httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            var r = null;
+            console.log(r = httpPost(JSON.stringify({
+                source:{index:index},
+                dest:{index:".temp."+index,version_type:"external"}
+            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
+            if (r.error != null) continue;
+            var r2 = null;
+            console.log(r2 = httpDelete(elasticEndpoint+"/"+index,true));
+            if (r2.error != null) continue;
+            if (r.total == 0) continue;
+            if (index == "permanent")
+            {
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)["permanent"] = doc;
+                (doc)["enabled"] = false;
+                var result = httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
+                    console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("competency"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/.temp." + index + "/_mapping", true);
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "ceasn:codedNotation":{
+                        type:"text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else if (index.endsWith("assertion"))
+            {
+                var mapping = httpGet(elasticEndpoint + "/.temp." + index + "/_mapping", true);
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
+                (doc).properties = {
+                    "@version":{type:"long"},
+                    "confidence":{type:"float"}
+                };
+                var result = httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            else
+            {
+                var mapping = httpGet(elasticEndpoint + "/.temp." + index + "/_mapping", true);
+                var mappings = new Object();
+                var permNoIndex = new Object();
+                var doc = new Object();
+                (mappings)["mappings"] = permNoIndex;
+                (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
+                (doc).properties = {"@version":{type:"long"}};
+                var result = httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true);
+                console.log(JSON.stringify(result));
+            }
+            console.log("Reindexing .temp." + index + " -> "+index);
+            console.log(r = httpPost(JSON.stringify({
+                source:{index:".temp."+index},
+                dest:{index:index,version_type:"external"}
+            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
+            if (r.error != null) continue;
+            console.log("Deleting .temp." + index);
+            console.log(httpDelete(elasticEndpoint+"/.temp."+index,true));
+        }
+    }
     if (!fileExists("skyrepo"))
         return;
     var settings = elasticMapping();
@@ -122,7 +489,7 @@ skyrepoBackup = function () {
                 else if (backup.indexed[key] == null)
                     backup.indexed[key] = hits[i]["_source"];
         }
-        results = httpGet(elasticEndpoint + "/_search/scroll?scroll=1m&scroll_id=" + scroll);
+        results = httpPost(JSON.stringify({scroll:"1m",scroll_id:scroll}),elasticEndpoint + "/_search/scroll", "application/json", "false");
     }
     return JSON.stringify(backup, null, 2);
 }

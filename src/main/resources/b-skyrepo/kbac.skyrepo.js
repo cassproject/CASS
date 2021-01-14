@@ -1,4 +1,10 @@
 var skyrepoDebug = false;
+var elasticSearchInfo = null;
+var elasticSearchVersion = function() {
+    if (elasticSearchInfo == null) 
+        elasticSearchInfo = httpGet(elasticEndpoint + "/", true);
+    return ((elasticSearchInfo)["version"])["number"];
+};
 var elasticEndpoint = "http://localhost:9200";
 var owner = function() {
     return "owner";
@@ -62,7 +68,9 @@ var signatureSheet = function() {
     if (stringFromDatastream != null) 
         try {
             sigSheet = sigSheet.concat(JSON.parse(stringFromDatastream));
-        }catch (ex) {}
+        }catch (ex) {
+            error("Missing or Malformed Signature.", 496);
+        }
     var hdrs = (headers).call(this);
     var camelcaseSignatureSheet = (hdrs)["signatureSheet"];
     var lowercaseSignatureSheet = (hdrs)["signaturesheet"];
@@ -132,10 +140,7 @@ var filterResults = function(o) {
         return ary;
     } else if (EcObject.isObject(o)) {
         var rld = new EcRemoteLinkedData((o)["@context"], (o)["@type"]);
-        rld.reader = (o)["reader"];
-        if (rld.reader == null || rld.reader.length == 0) {
-            rld.reader = (o)["@reader"];
-        }
+        rld.copyFrom(o);
         if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             var signatures = (signatureSheet).call(this);
             var foundSignature = false;
@@ -181,6 +186,9 @@ var inferTypeFromObj = function(o, atType) {
     fullType = fullType.replace("/", ".");
     fullType = fullType.replace("/", ".");
     fullType = fullType.replace("/", ".");
+    fullType = fullType.replace(":", ".");
+    fullType = fullType.replace(":", ".");
+    fullType = fullType.replace(":", ".");
     return fullType;
 };
 var inferTypeWithoutObj = function(atType) {
@@ -200,7 +208,10 @@ var putUrl = function(o, id, version, type) {
         versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/" + typeFromObj.toLowerCase();
-    url += "/" + typeFromObj;
+    if (elasticSearchVersion().startsWith("7.")) 
+        url += "/_doc";
+     else 
+        url += "/" + typeFromObj;
     url += "/" + urlEncode(id) + versionPart;
     if (skyrepoDebug) 
         console.log("Put:" + url);
@@ -217,7 +228,10 @@ var putPermanentUrl = function(o, id, version, type) {
         versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/permanent";
-    url += "/permanent";
+    if (elasticSearchVersion().startsWith("7.")) 
+        url += "/_doc";
+     else 
+        url += "/permanent";
     url += "/" + urlEncode(id) + "." + (version == null ? "" : version) + versionPart;
     if (skyrepoDebug) 
         console.log("PutPermanent:" + url);
@@ -234,20 +248,26 @@ var putPermanentBaseUrl = function(o, id, version, type) {
         versionPart = "?version=" + (version == null ? "" : version) + "&version_type=external&" + refreshPart;
     var url = elasticEndpoint;
     url += "/permanent";
-    url += "/permanent";
+    if (elasticSearchVersion().startsWith("7.")) 
+        url += "/_doc";
+     else 
+        url += "/permanent";
     url += "/" + urlEncode(id) + "." + versionPart;
     if (skyrepoDebug) 
         console.log("PutPermanentBase:" + url);
     return url;
 };
 var getUrl = function(index, id, version, type) {
-    var typeFromObj = inferTypeWithoutObj(type);
     var url = elasticEndpoint;
     url += "/" + index;
-    if (index == "permanent") 
+    if (elasticSearchVersion().startsWith("7.")) 
+        url += "/_doc";
+     else if (index == "permanent") 
         url += "/permanent";
-     else 
+     else {
+        var typeFromObj = inferTypeWithoutObj(type);
         url += "/" + typeFromObj;
+    }
     if (index == "permanent") 
         url += "/" + urlEncode(id) + "." + (version == null ? "" : version);
      else 
@@ -263,7 +283,10 @@ var deleteUrl = function(id, version, type) {
         refreshPart = "refresh=" + this.ctx.get("refresh");
     var url = elasticEndpoint;
     url += "/" + typeFromObj.toLowerCase();
-    url += "/" + typeFromObj;
+    if (elasticSearchVersion().startsWith("7.")) 
+        url += "/_doc";
+     else 
+        url += "/" + typeFromObj;
     url += "/" + urlEncode(id);
     url += "?" + refreshPart;
     if (skyrepoDebug) 
@@ -273,7 +296,10 @@ var deleteUrl = function(id, version, type) {
 var deletePermanentBaseUrl = function(id, version, type) {
     var url = elasticEndpoint;
     url += "/permanent";
-    url += "/permanent";
+    if (elasticSearchVersion().startsWith("7.")) 
+        url += "/_doc";
+     else 
+        url += "/permanent";
     url += "/" + urlEncode(id) + ".";
     if (skyrepoDebug) 
         console.log("DeletePermanentBase:" + url);
@@ -391,6 +417,15 @@ var skyrepoPutInternal = function(o, id, version, type, oldObj) {
         if (oldType != type && type != null) {
             skyrepoDeleteInternalIndex(id, null, oldType);
         }
+    }
+    var rld = new EcRemoteLinkedData(null, null);
+    rld.copyFrom(o);
+    if (rld.isAny(new EcRekeyRequest().getTypes())) {
+        var err = new EcRekeyRequest();
+        err.copyFrom(o);
+        if (err.verify()) 
+            err.addRekeyRequestToForwardingTable();
+        console.log(EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
     }
 };
 var skyRepoPutInternal = function(o, id, version, type) {
@@ -778,7 +813,10 @@ var endpointMultiGet = function() {
         var version = (parseParams)["version"];
         var p = new Object();
         (p)["_index"] = "permanent";
-        (p)["_type"] = "permanent";
+        if (elasticSearchVersion().startsWith("7.")) 
+            (p)["_type"] = "_doc";
+         else 
+            (p)["_type"] = "permanent";
         (p)["_id"] = id + "." + (version == null ? "" : version);
         docs.push(p);
     }

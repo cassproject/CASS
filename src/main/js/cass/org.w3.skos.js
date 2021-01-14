@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ Collection = stjs.extend(Collection, EcRemoteLinkedData, [], function(constructo
      *  @type N0e403dc85fe548d1b3d2f3d1ded36d20
      */
     prototype.member = null;
-}, {member: {name: "Array", arguments: ["Object"]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {member: {name: "Array", arguments: ["Object"]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, forwardingTable: "Object", atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  www.w3.org/2004/02/skos/core/ConceptScheme
  *  A set of concepts, optionally including statements about semantic relationships between those concepts.
@@ -84,7 +84,7 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
         a.push(ConceptScheme.TYPE_0_1);
         return a;
     };
-}, {hasTopConcept: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {hasTopConcept: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, forwardingTable: "Object", atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  www.w3.org/2004/02/skos/core/Concept
  *  An idea or notion; a unit of thought.
@@ -134,7 +134,7 @@ Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, pro
         a.push(Concept.TYPE_0_1);
         return a;
     };
-}, {topConceptOf: "ConceptScheme", semanticRelation: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {topConceptOf: "ConceptScheme", semanticRelation: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, forwardingTable: "Object", atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  www.w3.org/2004/02/skos/core/OrderedCollection
  *  An ordered collection of concepts, where both the grouping and the ordering are meaningful.
@@ -161,4 +161,4 @@ OrderedCollection = stjs.extend(OrderedCollection, Collection, [], function(cons
      *  @type List
      */
     prototype.memberList = null;
-}, {memberList: {name: "Array", arguments: ["Object"]}, member: {name: "Array", arguments: ["Object"]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {memberList: {name: "Array", arguments: ["Object"]}, member: {name: "Array", arguments: ["Object"]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, forwardingTable: "Object", atProperties: {name: "Array", arguments: [null]}}, {});
