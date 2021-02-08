@@ -21,7 +21,6 @@ services:
     environment:
       - TOMCAT_HTTP_PORT=80
       - CASS_LOOPBACK=http://localhost/api/
-      - CASS_DOCKER_ENDPOINT=http://localhost/api/
       - ELASTICSEARCH_ENDPOINT=http://elasticsearch:9200
     ulimits:
       memlock:

@@ -69,9 +69,6 @@ if (java.lang.System.getenv("CASS_LOOPBACK") != null)
 if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
     elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
 
-if (java.lang.System.getenv("CASS_DOCKER_ENDPOINT") != null)
-    repo.cassDockerEndpoint = java.lang.System.getenv("CASS_DOCKER_ENDPOINT");
-
 var thisEndpoint = function () {
     return repo.selectedServer;
 }
@@ -103,11 +100,7 @@ function repoAutoDetect() {
     if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
         elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
 
-    if (java.lang.System.getenv("CASS_DOCKER_ENDPOINT") != null)
-        repo.cassDockerEndpoint = java.lang.System.getenv("CASS_DOCKER_ENDPOINT");
-
     console.log("Loopback: " + repo.selectedServer);
-    console.log("Docker Endpoint: " + repo.cassDockerEndpoint);
     console.log("Elasticsearch Endpoint: " + elasticEndpoint);
     console.log("Text Encoding: " + java.lang.System.getProperty("file.encoding"));
     console.log("Text Encoding: " + java.nio.charset.Charset.defaultCharset().toString());
