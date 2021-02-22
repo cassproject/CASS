@@ -359,8 +359,16 @@ function cassFrameworkAsCeasn() {
             delete f[key];
         }
     }
+    var socList = f["socList"];
+    var naicsList = f["naicsList"];
 
     f = jsonLdCompact(f.toJson(), ctx);
+    if (socList) {
+        f["socList"] = socList;
+    }
+    if (naicsList) {
+        f["naicsList"] = naicsList;
+    }
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
     if (f["ceterms:ctid"] == null) {
@@ -459,7 +467,7 @@ function stripNonCe(f) {
                     f[k][key] = [f[k][key]];
             });
         }
-        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0)
+        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1)
         ;
         else
             delete f[k];
