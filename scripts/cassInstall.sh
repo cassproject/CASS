@@ -183,6 +183,7 @@ if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -nam
  du -s -h /var/lib/elasticsearch
  df -h
  read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ result=${result:-yes}
  if [ "$result" == "yes" ]
   then
   echo Now backing up to ~/es.6.tar.gz -- Please Wait...
@@ -193,7 +194,7 @@ if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -nam
   echo HAVE YOU STARTED CASS USING ELASTICSEARCH 6.x AND HAD IT FINISH ITS MIGRATION AND FULLY COME UP?
   echo IF YOU DO NOT, IT WILL NOT LOAD THE INDICES CREATED IN ELASTICSEARCH 5.x. NOTHING WILL APPEAR TO BE WORKING.
   echo TO REMEDY THIS IF IT HAPPENS, REMOVE ELASTICSEARCH 7.x, REMOVE THE APT SOURCE AND DOWNGRADE TO ELASTICSEARCH 6.x AND START CASS AND LET IT FINISH MIGRATING.
-  echo YOU ALSO SHOULD TAKE A BACKUP. (copy out the /var/lib/elasticsearch directory)
+  echo YOU ALSO SHOULD TAKE A BACKUP. Copy out the /var/lib/elasticsearch directory.
   read -p "DO YOU WANT TO CONTINUE WITH THE UPGRADE TO ELASTICSEARCH 7.x? [default=yes]" result
   result=${result:-yes}
   if [ "$result" == "yes" ]
@@ -216,6 +217,7 @@ if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -nam
  du -s -h /var/lib/elasticsearch
  df -h
  read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ result=${result:-yes}
  if [ "$result" == "yes" ]
   then
   echo Now backing up to ~/es.5.tar.gz -- Please Wait...
@@ -261,7 +263,7 @@ if [ "$platformFedora" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -nam
   echo HAVE YOU STARTED CASS USING ELASTICSEARCH 6.x AND HAD IT FINISH ITS MIGRATION AND FULLY COME UP?
   echo IF YOU DO NOT, IT WILL NOT LOAD THE INDICES CREATED IN ELASTICSEARCH 5.x. NOTHING WILL APPEAR TO BE WORKING.
   echo TO REMEDY THIS IF IT HAPPENS, REMOVE ELASTICSEARCH 7.x, REMOVE THE YUM SOURCE AND DOWNGRADE TO ELASTICSEARCH 6.x AND START CASS AND LET IT FINISH MIGRATING.
-  echo YOU ALSO SHOULD TAKE A BACKUP. (copy out the /var/lib/elasticsearch directory)
+  echo YOU ALSO SHOULD TAKE A BACKUP. Copy out the /var/lib/elasticsearch directory.
   read -p "DO YOU WANT TO CONTINUE WITH THE UPGRADE TO ELASTICSEARCH 7.x? [default=yes]" result
   result=${result:-yes}
   if [ "$result" == "yes" ]
