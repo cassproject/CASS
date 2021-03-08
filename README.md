@@ -1,8 +1,6 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Stable: 0.4.28 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=0.4)](https://travis-ci.org/cassproject/CASS)  
-Latest Unstable: 1.2.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?tag=1.2.3)](https://travis-ci.org/cassproject/CASS)  
 Development: master [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=master)](https://travis-ci.org/cassproject/CASS)
 
 [High level documentation](https://docs.cassproject.org)  
@@ -52,7 +50,7 @@ Go to services, start elasticsearch-service-x64 and set it to start automaticall
 
 Docker images for standalone instances (based on Ubuntu) and distributed/scalable instances (based on Alpine Linux) can be found at:
 
-https://hub.docker.com/_/cassproject/
+https://hub.docker.com/r/cassproject/cass
 
 ## WAR (requires support)
 
@@ -68,7 +66,7 @@ To support open linked data, it is important that the objects created in CaSS ha
  * (Optional) Use a reverse proxy to control the endpoint closely.
 
 # Running Locally
-After cloning this repository, you can run CaSS locally with Jetty or Docker:
+After cloning this repository, you can run CaSS locally with Jetty or Docker. If using Jetty, make sure you have installed and started Elasticsearch.
 
     mvn jetty:run
 or

@@ -276,8 +276,22 @@ function cassFrameworkAsCeasn() {
                 delete c[key];
             }
         }
+        var socList = c["socList"];
+        var naicsList = c["naicsList"];
+        var cipList = c["cipList"];
 
-        competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
+        c = jsonLdCompact(c.toJson(), ctx);
+        if (socList) {
+            c["socList"] = socList;
+        }
+        if (naicsList) {
+            c["naicsList"] = naicsList;
+        }
+        if (cipList) {
+            c["cipList"] = cipList;
+        }
+
+        competencies[allCompetencies[i]] = competencies[id] = c;
 
         if (competencies[id]["ceterms:ctid"] == null) {
             if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
@@ -359,8 +373,16 @@ function cassFrameworkAsCeasn() {
             delete f[key];
         }
     }
+    var socList = f["socList"];
+    var naicsList = f["naicsList"];
 
     f = jsonLdCompact(f.toJson(), ctx);
+    if (socList) {
+        f["socList"] = socList;
+    }
+    if (naicsList) {
+        f["naicsList"] = naicsList;
+    }
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
     if (f["ceterms:ctid"] == null) {
@@ -459,7 +481,7 @@ function stripNonCe(f) {
                     f[k][key] = [f[k][key]];
             });
         }
-        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0)
+        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1 || k.indexOf("cipList") != -1)
         ;
         else
             delete f[k];
@@ -786,6 +808,30 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
             }
             c["schema:dateCreated"] = date;
         }
+        if (c["ceasn:broadAlignment"]) {
+            createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:narrowAlignment"]) {
+            createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["sameAs"]) {
+            createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:majorAlignment"]) {
+            createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:minorAlignment"]) {
+            createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:prerequisiteAlignment"]) {
+            createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        delete c["ceasn:broadAlignment"];
+        delete c["ceasn:narrowAlignment"];
+        delete c["sameAs"];
+        delete c["ceasn:majorAlignment"];
+        delete c["ceasn:minorAlignment"];
+        delete c["ceasn:prerequisiteAlignment"];
 
         if (c["ceasn:broadAlignment"]) {
             createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
