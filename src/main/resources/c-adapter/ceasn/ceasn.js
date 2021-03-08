@@ -833,6 +833,31 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         delete c["ceasn:minorAlignment"];
         delete c["ceasn:prerequisiteAlignment"];
 
+        if (c["ceasn:broadAlignment"]) {
+            createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:narrowAlignment"]) {
+            createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["sameAs"]) {
+            createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:majorAlignment"]) {
+            createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:minorAlignment"]) {
+            createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        if (c["ceasn:prerequisiteAlignment"]) {
+            createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+        }
+        delete c["ceasn:broadAlignment"];
+        delete c["ceasn:narrowAlignment"];
+        delete c["sameAs"];
+        delete c["ceasn:majorAlignment"];
+        delete c["ceasn:minorAlignment"];
+        delete c["ceasn:prerequisiteAlignment"];
+
         if (owner != null)
             c.addOwner(EcPk.fromPem(owner));
 
