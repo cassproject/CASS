@@ -276,8 +276,22 @@ function cassFrameworkAsCeasn() {
                 delete c[key];
             }
         }
+        var socList = c["socList"];
+        var naicsList = c["naicsList"];
+        var cipList = c["cipList"];
 
-        competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
+        c = jsonLdCompact(c.toJson(), ctx);
+        if (socList) {
+            c["socList"] = socList;
+        }
+        if (naicsList) {
+            c["naicsList"] = naicsList;
+        }
+        if (cipList) {
+            c["cipList"] = cipList;
+        }
+
+        competencies[allCompetencies[i]] = competencies[id] = c;
 
         if (competencies[id]["ceterms:ctid"] == null) {
             if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
@@ -467,7 +481,7 @@ function stripNonCe(f) {
                     f[k][key] = [f[k][key]];
             });
         }
-        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1)
+        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1 || k.indexOf("cipList") != -1)
         ;
         else
             delete f[k];
