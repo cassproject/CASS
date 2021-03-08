@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 RUN apt-get update;apt-get install -qqy wget curl software-properties-common sudo gawk
 RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-ARG VERSION=1.3.14
+ARG VERSION=1.3.15
 RUN wget https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh
 RUN chmod +x cassInstall.sh
 RUN echo $VERSION && /cassInstall.sh $VERSION && rm -rf ~/.m2
