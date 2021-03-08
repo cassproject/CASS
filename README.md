@@ -50,7 +50,7 @@ Go to services, start elasticsearch-service-x64 and set it to start automaticall
 
 Docker images for standalone instances (based on Ubuntu) and distributed/scalable instances (based on Alpine Linux) can be found at:
 
-https://hub.docker.com/_/cassproject/
+https://hub.docker.com/r/cassproject/cass
 
 ## WAR (requires support)
 
