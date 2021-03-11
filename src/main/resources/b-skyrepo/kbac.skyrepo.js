@@ -140,10 +140,7 @@ var filterResults = function(o) {
         return ary;
     } else if (EcObject.isObject(o)) {
         var rld = new EcRemoteLinkedData((o)["@context"], (o)["@type"]);
-        rld.reader = (o)["reader"];
-        if (rld.reader == null || rld.reader.length == 0) {
-            rld.reader = (o)["@reader"];
-        }
+        rld.copyFrom(o);
         if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             var signatures = (signatureSheet).call(this);
             var foundSignature = false;
@@ -420,6 +417,15 @@ var skyrepoPutInternal = function(o, id, version, type, oldObj) {
         if (oldType != type && type != null) {
             skyrepoDeleteInternalIndex(id, null, oldType);
         }
+    }
+    var rld = new EcRemoteLinkedData(null, null);
+    rld.copyFrom(o);
+    if (rld.isAny(new EcRekeyRequest().getTypes())) {
+        var err = new EcRekeyRequest();
+        err.copyFrom(o);
+        if (err.verify()) 
+            err.addRekeyRequestToForwardingTable();
+        console.log(EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
     }
 };
 var skyRepoPutInternal = function(o, id, version, type) {

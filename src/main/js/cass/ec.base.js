@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -603,8 +603,9 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
     };
     /**
      *  Returns the index of an object or value if the object or value exists in the array. Uses .equals if available.
+     * 
      *  @param {Array} a Array to check over.
-     *  @param {any} o Object to check for.
+     *  @param {any}   o Object to check for.
      *  @return Index of the result, -1 if the result isn't in the array.
      *  @static
      *  @method indexOf
@@ -675,18 +676,6 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
                 return true;
         }
         return false;
-    };
-}, {}, {});
-var EcBrowserDetection = function() {};
-EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
-    constructor.isIeOrEdge = function() {
-        if (window == null) 
-            return false;
-        if (window.navigator == null) 
-            return false;
-        if (window.navigator.appName == null) 
-            return false;
-        return window.navigator.appName == "Microsoft Internet Explorer" || (window.navigator.appName == "Netscape" && window.navigator.appVersion.indexOf("Edge") > -1);
     };
 }, {}, {});
 /**
@@ -968,6 +957,18 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             }
             success(o);
         };
+    };
+}, {}, {});
+var EcBrowserDetection = function() {};
+EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
+    constructor.isIeOrEdge = function() {
+        if (window == null) 
+            return false;
+        if (window.navigator == null) 
+            return false;
+        if (window.navigator.appName == null) 
+            return false;
+        return window.navigator.appName == "Microsoft Internet Explorer" || (window.navigator.appName == "Netscape" && window.navigator.appVersion.indexOf("Edge") > -1);
     };
 }, {}, {});
 var EcLocalStorage = function() {};

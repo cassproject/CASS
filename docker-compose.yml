@@ -39,8 +39,8 @@ services:
     environment:
       - cluster.name=docker-cluster
       - node.name=node-1
-      - cluster.initial_master_nodes=node-1
       - cluster.max_shards_per_node=3000
+      - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
     ports:

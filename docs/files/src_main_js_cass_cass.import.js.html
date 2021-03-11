@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.3.12</em>
+            <em>API Docs for: 1.3.15</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -244,6 +244,7 @@
                                 <li><a href="../classes/DigitalDocumentPermission.html">DigitalDocumentPermission</a></li>
                                 <li><a href="../classes/DigitalDocumentPermissionType.html">DigitalDocumentPermissionType</a></li>
                                 <li><a href="../classes/Diploma.html">Diploma</a></li>
+                                <li><a href="../classes/Directory.html">Directory</a></li>
                                 <li><a href="../classes/DisagreeAction.html">DisagreeAction</a></li>
                                 <li><a href="../classes/DiscoverAction.html">DiscoverAction</a></li>
                                 <li><a href="../classes/DiscussionForumPosting.html">DiscussionForumPosting</a></li>
@@ -281,6 +282,7 @@
                                 <li><a href="../classes/EcContact.html">EcContact</a></li>
                                 <li><a href="../classes/EcCrypto.html">EcCrypto</a></li>
                                 <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
+                                <li><a href="../classes/EcDirectory.html">EcDirectory</a></li>
                                 <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
                                 <li><a href="../classes/EcFile.html">EcFile</a></li>
                                 <li><a href="../classes/EcFramework.html">EcFramework</a></li>
@@ -818,7 +820,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -2356,7 +2358,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
             success(frameworkCounter, competencyCounter);
         }, error: failure});
     };
-    constructor.importFrameworksAndCompetencies = function(repo, file, success, failure, ceo) {
+    constructor.importFrameworksAndCompetencies = function(repo, file, success, failure, ceo, endpoint) {
         if (file == null) {
             failure(&quot;No file to analyze&quot;);
             return;
@@ -2379,10 +2381,19 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                 if ((pretranslatedE)[&quot;@type&quot;] == &quot;ceasn:CompetencyFramework&quot;) {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    CTDLASNCSVImport.cleanUpTranslator(translator);
+                    CTDLASNCSVImport.cleanUpTranslator(translator, endpoint, repo);
                     translator.recast(&quot;https://schema.cassproject.org/0.4/ceasn2cass&quot;, &quot;https://schema.cassproject.org/0.4&quot;, function(e) {
                         var f = new EcFramework();
                         f.copyFrom(e);
+                        if (EcFramework.template != null) {
+                            for (var key in (EcFramework.template)) {
+                                if (key.equals(&quot;@owner&quot;)) {
+                                    (f)[&quot;owner&quot;] = (EcFramework.template)[key];
+                                } else {
+                                    (f)[key] = (EcFramework.template)[key];
+                                }
+                            }
+                        }
                         if ((e)[&quot;owner&quot;] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
@@ -2394,8 +2405,8 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                         if (EcFramework.template != null &amp;&amp; (EcFramework.template)[(&quot;schema:dateCreated&quot;)] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
-                        (frameworks)[f.id] = f;
-                        (frameworkRows)[f.id] = e;
+                        (frameworks)[f.shortId()] = f;
+                        (frameworkRows)[f.shortId()] = e;
                         (f)[&quot;ceasn:hasChild&quot;] = null;
                         (f)[&quot;ceasn:hasTopChild&quot;] = null;
                         frameworkArray.push(f);
@@ -2406,7 +2417,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                 } else if ((pretranslatedE)[&quot;@type&quot;] == &quot;ceasn:Competency&quot;) {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    CTDLASNCSVImport.cleanUpTranslator(translator);
+                    CTDLASNCSVImport.cleanUpTranslator(translator, endpoint, repo);
                     translator.recast(&quot;https://schema.cassproject.org/0.4/ceasn2cass&quot;, &quot;https://schema.cassproject.org/0.4&quot;, function(e) {
                         var f = new EcCompetency();
                         f.copyFrom(e);
@@ -2428,21 +2439,24 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                                 }
                             }
                             if (!done) {
-                                this.error(&quot;Could not find framework:&quot; + (e)[&quot;type&quot;]);
+                                failure(&quot;Could not find framework:&quot; + (e)[&quot;type&quot;]);
                                 return;
                             }
                             if (parent != null) {
                                 if ((parent)[&quot;type&quot;] == &quot;Framework&quot;) {
-                                    (e)[&quot;ceasn:isPartOf&quot;] = (parent)[&quot;id&quot;];
-                                    ((frameworks)[(parent)[&quot;id&quot;]]).competency.push(f.shortId());
+                                    (e)[&quot;ceasn:isPartOf&quot;] = EcRemoteLinkedData.trimVersionFromUrl((parent)[&quot;id&quot;]);
+                                    ((frameworks)[EcRemoteLinkedData.trimVersionFromUrl((parent)[&quot;id&quot;])]).competency.push(f.shortId());
                                 } else {
-                                    this.error(&quot;Object cannot trace to framework:&quot; + (e)[&quot;type&quot;]);
+                                    failure(&quot;Object cannot trace to framework:&quot; + (e)[&quot;type&quot;]);
                                     return;
                                 }
                             } else {
-                                this.error(&quot;Object has no framework:&quot; + (e)[&quot;type&quot;]);
+                                failure(&quot;Object has no framework:&quot; + (e)[&quot;type&quot;]);
                                 return;
                             }
+                        }
+                        if (EcCompetency.template != null &amp;&amp; (EcCompetency.template)[&quot;@owner&quot;] != null) {
+                            (f)[&quot;owner&quot;] = (EcCompetency.template)[&quot;@owner&quot;];
                         }
                         if ((e)[&quot;owner&quot;] == null) {
                             if (((frameworkRows)[(e)[&quot;ceasn:isPartOf&quot;]])[&quot;owner&quot;] != null) 
@@ -2461,25 +2475,25 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
                         if ((e)[&quot;ceasn:isChildOf&quot;] != null) {
-                            CTDLASNCSVImport.createEachRelation(e, &quot;ceasn:isChildOf&quot;, Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks, -1);
+                            CTDLASNCSVImport.createEachRelation(e, &quot;ceasn:isChildOf&quot;, Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks, -1, endpoint);
                         }
                         if ((e)[&quot;ceasn:broadAlignment&quot;] != null) {
-                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:broadAlignment&quot;, Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks);
+                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:broadAlignment&quot;, Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks, endpoint);
                         }
                         if ((e)[&quot;ceasn:narrowAlignment&quot;] != null) {
-                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:narrowAlignment&quot;, Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks);
+                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:narrowAlignment&quot;, Relation.NARROWS, repo, ceo, id, relations, relationById, frameworks, endpoint);
                         }
                         if ((e)[&quot;sameAs&quot;] != null) {
-                            CTDLASNCSVImport.createRelations(e, &quot;sameAs&quot;, Relation.IS_EQUIVALENT_TO, repo, ceo, id, relations, relationById, frameworks);
+                            CTDLASNCSVImport.createRelations(e, &quot;sameAs&quot;, Relation.IS_EQUIVALENT_TO, repo, ceo, id, relations, relationById, frameworks, endpoint);
                         }
                         if ((e)[&quot;ceasn:majorAlignment&quot;] != null) {
-                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:majorAlignment&quot;, &quot;majorRelated&quot;, repo, ceo, id, relations, relationById, frameworks);
+                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:majorAlignment&quot;, &quot;majorRelated&quot;, repo, ceo, id, relations, relationById, frameworks, endpoint);
                         }
                         if ((e)[&quot;ceasn:minorAlignment&quot;] != null) {
-                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:minorAlignment&quot;, &quot;minorRelated&quot;, repo, ceo, id, relations, relationById, frameworks);
+                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:minorAlignment&quot;, &quot;minorRelated&quot;, repo, ceo, id, relations, relationById, frameworks, endpoint);
                         }
                         if ((e)[&quot;ceasn:prerequisiteAlignment&quot;] != null) {
-                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:prerequisiteAlignment&quot;, Relation.REQUIRES, repo, ceo, id, relations, relationById, frameworks);
+                            CTDLASNCSVImport.createRelations(e, &quot;ceasn:prerequisiteAlignment&quot;, Relation.REQUIRES, repo, ceo, id, relations, relationById, frameworks, endpoint);
                         }
                         (f)[&quot;ceasn:isTopChildOf&quot;] = null;
                         (f)[&quot;ceasn:isChildOf&quot;] = null;
@@ -2492,14 +2506,14 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                         (f)[&quot;ceasn:prerequisiteAlignment&quot;] = null;
                         (f)[&quot;ceasn:hasChild&quot;] = null;
                         competencies.push(f);
-                        (competencyRows)[f.id] = e;
+                        (competencyRows)[f.shortId()] = e;
                         callback0();
                     }, failure);
                 } else if ((pretranslatedE)[&quot;@type&quot;] == null || (pretranslatedE)[&quot;@type&quot;] == &quot;&quot;) {
                     callback0();
                     return;
                 } else {
-                    this.error(&quot;Found unknown type:&quot; + (pretranslatedE)[&quot;@type&quot;]);
+                    failure(&quot;Found unknown type:&quot; + (pretranslatedE)[&quot;@type&quot;]);
                     callback0();
                     return;
                 }
@@ -2508,7 +2522,54 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
             });
         }, error: failure});
     };
-    constructor.cleanUpTranslator = function(translator) {
+    constructor.getIdFromCtid = function(ctid, endpoint, repo, context, type, key) {
+        if (key != &quot;id&quot;) {
+            if (key == &quot;ceasn:isPartOf&quot; || key == &quot;ceasn:isTopChildOf&quot;) {
+                if (type == &quot;Competency&quot;) {
+                    type = &quot;Framework&quot;;
+                } else if (type == &quot;Concept&quot;) {
+                    type = &quot;ConceptScheme&quot;;
+                }
+            } else {
+                if (type == &quot;Framework&quot;) {
+                    type = &quot;Competency&quot;;
+                } else if (type == &quot;ConceptScheme&quot;) {
+                    type = &quot;Concept&quot;;
+                }
+            }
+        }
+        if (endpoint != null) {
+            if (endpoint.indexOf(&quot;ce-&quot;) != -1) {
+                ctid = ctid.substring(3);
+            }
+            return endpoint + ctid;
+        } else {
+            ctid = ctid.substring(3);
+            var obj = new EcRemoteLinkedData(context, type);
+            obj.assignId(repo.selectedServer, ctid);
+            if (key == &quot;id&quot;) {
+                return obj.id;
+            } else {
+                return obj.shortId();
+            }
+        }
+    };
+    constructor.cleanUpTranslator = function(translator, endpoint, repo) {
+        var context = null;
+        var type = null;
+        if ((translator)[&quot;type&quot;] == &quot;ceasn:CompetencyFramework&quot;) {
+            context = &quot;https://schema.cassproject.org/0.4/&quot;;
+            type = &quot;Framework&quot;;
+        } else if ((translator)[&quot;type&quot;] == &quot;ceasn:Competency&quot;) {
+            context = &quot;https://schema.cassproject.org/0.4/&quot;;
+            type = &quot;Competency&quot;;
+        } else if ((translator)[&quot;type&quot;] == &quot;ceasn:ConceptScheme&quot;) {
+            context = &quot;https://schema.cassproject.org/0.4/skos/&quot;;
+            type = &quot;ConceptScheme&quot;;
+        } else if ((translator)[&quot;type&quot;] == &quot;ceasn:Concept&quot;) {
+            context = &quot;https://schema.cassproject.org/0.4/skos/&quot;;
+            type = &quot;Concept&quot;;
+        }
         for (var key in (translator)) {
             if ((translator)[key] == &quot;&quot;) {
                 (translator)[key] = null;
@@ -2526,6 +2587,16 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                                 (thisKey)[i] = thisVal;
                             }
                         }
+                    } else if ((thisKey).startsWith(&quot;ce-&quot;) &amp;&amp; key != &quot;ceterms:ctid&quot;) {
+                        var id = CTDLASNCSVImport.getIdFromCtid(thisKey, endpoint, repo, context, type, key);
+                        (translator)[key] = id;
+                    }
+                } else if (EcArray.isArray(thisKey)) {
+                    for (var i = 0; i &lt; (thisKey).length; i++) {
+                        if ((typeof (thisKey)[i]) == &quot;string&quot; &amp;&amp; ((thisKey)[i]).startsWith(&quot;ce-&quot;)) {
+                            var id = CTDLASNCSVImport.getIdFromCtid((thisKey)[i], endpoint, repo, context, type, key);
+                            (thisKey)[i] = id;
+                        }
                     }
                 }
                 if (key != key.trim()) {
@@ -2536,32 +2607,48 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
             }
         }
     };
-    constructor.createRelations = function(e, field, type, repo, ceo, id, relations, relationById, frameworks) {
+    constructor.createRelations = function(e, field, type, repo, ceo, id, relations, relationById, frameworks, endpoint) {
         if (!EcArray.isArray((e)[field])) {
             var makeArray = Array((e)[field]);
             (e)[field] = makeArray;
         }
         for (var i = 0; i &lt; ((e)[field]).length; i++) {
-            CTDLASNCSVImport.createEachRelation(e, field, type, repo, ceo, id, relations, relationById, frameworks, i);
+            CTDLASNCSVImport.createEachRelation(e, field, type, repo, ceo, id, relations, relationById, frameworks, i, endpoint);
         }
     };
-    constructor.createEachRelation = function(e, field, type, repo, ceo, id, relations, relationById, frameworks, i) {
+    constructor.createEachRelation = function(e, field, type, repo, ceo, id, relations, relationById, frameworks, i, endpoint) {
         var r = new EcAlignment();
-        r.generateId(repo.selectedServer);
+        if (endpoint != null) {
+            r.generateShortId(endpoint);
+        } else {
+            r.generateId(repo.selectedServer);
+        }
         if (ceo != null) 
             r.addOwner(ceo.ppk.toPk());
         if (id.ppk != null) 
             r.addOwner(id.ppk.toPk());
         r.relationType = type;
         if (field == &quot;ceasn:narrowAlignment&quot;) {
-            r.source = ((e)[field])[i];
-            r.target = (e)[&quot;id&quot;];
+            var sourceId = ((e)[field])[i];
+            if (sourceId.startsWith(&quot;ce-&quot;)) {
+                sourceId = CTDLASNCSVImport.getIdFromCtid(sourceId, endpoint, repo, &quot;https://schema.cassproject.org/0.4/&quot;, &quot;Competency&quot;, field);
+            }
+            r.source = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
+            r.target = EcRemoteLinkedData.trimVersionFromUrl((e)[&quot;id&quot;]);
         } else {
-            r.source = (e)[&quot;id&quot;];
+            r.source = EcRemoteLinkedData.trimVersionFromUrl((e)[&quot;id&quot;]);
             if (i != -1) {
-                r.target = ((e)[field])[i];
+                var targetId = ((e)[field])[i];
+                if (targetId.startsWith(&quot;ce-&quot;)) {
+                    targetId = CTDLASNCSVImport.getIdFromCtid(targetId, endpoint, repo, &quot;https://schema.cassproject.org/0.4/&quot;, &quot;Competency&quot;, field);
+                }
+                r.target = EcRemoteLinkedData.trimVersionFromUrl(targetId);
             } else {
-                r.target = ((e)[field]);
+                var targetId = ((e)[field]);
+                if (targetId.startsWith(&quot;ce-&quot;)) {
+                    targetId = CTDLASNCSVImport.getIdFromCtid(targetId, endpoint, repo, &quot;https://schema.cassproject.org/0.4/&quot;, &quot;Competency&quot;, field);
+                }
+                r.target = EcRemoteLinkedData.trimVersionFromUrl(targetId);
             }
         }
         relations.push(r);
@@ -2624,7 +2711,7 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
             success(conceptSchemeCounter, conceptCounter);
         }, error: failure});
     };
-    constructor.importFrameworksAndCompetencies = function(repo, file, success, failure, ceo) {
+    constructor.importFrameworksAndCompetencies = function(repo, file, success, failure, ceo, endpoint) {
         if (file == null) {
             failure(&quot;No file to analyze&quot;);
             return;
@@ -2642,7 +2729,7 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                 if ((pretranslatedE)[&quot;@type&quot;] == &quot;skos:ConceptScheme&quot;) {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    CTDLASNCSVImport.cleanUpTranslator(translator);
+                    CTDLASNCSVImport.cleanUpTranslator(translator, endpoint, repo);
                     if ((translator)[&quot;ceasn:name&quot;] != null) {
                         var name = (translator)[&quot;ceasn:name&quot;];
                         var nameWithLanguage = new Object();
@@ -2652,6 +2739,15 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                     translator.recast(&quot;https://schema.cassproject.org/0.4/ceasn2cassConcepts&quot;, &quot;https://schema.cassproject.org/0.4/skos&quot;, function(e) {
                         var f = new EcConceptScheme();
                         f.copyFrom(e);
+                        if (EcConceptScheme.template != null) {
+                            for (var key in (EcConceptScheme.template)) {
+                                if (key.equals(&quot;@owner&quot;)) {
+                                    (f)[&quot;owner&quot;] = (EcConceptScheme.template)[key];
+                                } else {
+                                    (f)[key] = (EcConceptScheme.template)[key];
+                                }
+                            }
+                        }
                         if ((e)[&quot;owner&quot;] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
@@ -2670,7 +2766,7 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                 } else if ((pretranslatedE)[&quot;@type&quot;] == &quot;skos:Concept&quot;) {
                     var translator = new EcLinkedData(null, null);
                     translator.copyFrom(pretranslatedE);
-                    CTDLASNCSVImport.cleanUpTranslator(translator);
+                    CTDLASNCSVImport.cleanUpTranslator(translator, endpoint, repo);
                     if ((translator)[&quot;skos:prefLabel&quot;] != null) {
                         var name = (translator)[&quot;skos:prefLabel&quot;];
                         var nameWithLanguage = new Object();
@@ -2683,6 +2779,9 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                         if ((e)[&quot;id&quot;] == null) {
                             callback0();
                             return;
+                        }
+                        if (EcConcept.template != null &amp;&amp; (EcConcept.template)[&quot;@owner&quot;] != null) {
+                            (f)[&quot;owner&quot;] = (EcConcept.template)[&quot;@owner&quot;];
                         }
                         if ((e)[&quot;owner&quot;] != null) {
                             var id = new EcIdentity();
