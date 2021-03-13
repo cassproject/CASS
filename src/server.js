@@ -692,7 +692,7 @@ var skyrepoPutInternal = async function(o, id, version, type, oldObj) {
     if (oldObj != null) {
         var oldType = inferTypeFromObj(oldObj, null);
         if (oldType != type && type != null && (version == null)) {
-            var perm = skyrepoGetPermanent.call(this, id, null, oldType);
+            var perm = await skyrepoGetPermanent.call(this, id, null, oldType);
             version = ((((perm)["_version"]) + 1));
         }
     }
@@ -704,7 +704,7 @@ var skyrepoPutInternal = async function(o, id, version, type, oldObj) {
     if (oldObj != null) {
         var oldType = inferTypeFromObj(oldObj, null);
         if (oldType != type && type != null) {
-            skyrepoDeleteInternalIndex.call(this,id, null, oldType);
+            await skyrepoDeleteInternalIndex.call(this,id, null, oldType);
         }
     }
     var rld = new EcRemoteLinkedData(null, null);
@@ -725,7 +725,7 @@ var skyrepoGetIndexInternal = async function(index, id, version, type) {
 };
 var skyrepoGetIndex = async function(id, version, type) {
     if (type !== undefined && type != null && type != "") {
-        var result = skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
+        var result = await skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
         return result;
     } else {
         var microSearchUrl = elasticEndpoint + "/_search?version&q=_id:" + id + "";
@@ -745,7 +745,7 @@ var skyrepoGetIndex = async function(id, version, type) {
     }
 };
 var skyrepoGetPermanent = async function(id, version, type) {
-    var result = skyrepoGetIndexInternal.call(this,"permanent", id, version, type);
+    var result = await skyrepoGetIndexInternal.call(this,"permanent", id, version, type);
     return result;
 };
 var skyrepoGetInternal = async function(id, version, type) {
@@ -785,7 +785,7 @@ var skyrepoGet = async function(parseParams) {
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
     var versions = (parseParams)["versions"];
-    return (skyrepoGetParsed).call(this, id, version, type, null, versions);
+    return await (skyrepoGetParsed).call(this, id, version, type, null, versions);
 };
 var skyrepoGetParsed = async function(id, version, type, versions) {
     var result = await (skyrepoGetInternal).call(this, id, version, type);
@@ -825,7 +825,7 @@ var skyrepoPut = async function(parseParams) {
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
-    return (skyrepoPutParsed).call(this, obj, id, version, type, null);
+    return await (skyrepoPutParsed).call(this, obj, id, version, type, null);
 };
 var skyrepoPutParsed = async function(o, id, version, type) {
     if (o == null) 
@@ -834,7 +834,7 @@ var skyrepoPutParsed = async function(o, id, version, type) {
     await skyrepoPutInternal.call(this,o, id, version, type, oldObj);
 };
 var validateSignatures = async function(id, version, type, errorMessage) {
-    var oldGet = (skyrepoGetInternal).call(this, id, version, type);
+    var oldGet = await (skyrepoGetInternal).call(this, id, version, type);
     if (oldGet == null) 
         return null;
     var oldObj = new EcRemoteLinkedData(null, null);
@@ -868,8 +868,8 @@ var skyrepoDeleteInternalPermanent = async function(id, version, type) {
 var skyrepoDelete = async function(id, version, type) {
     var oldObj = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
     if (oldObj != null) {
-        skyrepoDeleteInternalIndex(id, version, type);
-        skyrepoDeleteInternalPermanent(id, version, type);
+        await skyrepoDeleteInternalIndex(id, version, type);
+        await skyrepoDeleteInternalPermanent(id, version, type);
     } else {
         error("Can't find object to delete", 401);
     }
@@ -932,7 +932,7 @@ var searchUrl = function(urlRemainder, index_hint) {
     return url;
 };
 var skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_scores, index_hint) {
-    var searchParameters = (searchObj).call(this, q, start, size, sort, track_scores);
+    var searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
     if (skyrepoDebug) 
         console.log(JSON.stringify(searchParameters));
     var results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), "application/json", false, null, null, true);
@@ -1058,7 +1058,7 @@ var endpointData = async function() {
         start = 0;
     if (q !== undefined && q != null) {
         (beforeGet).call(this);
-        return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint));
+        return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint));
     }
     var methodType = this.params.methodType;
     var parseParams = (queryParse).call(this, urlRemainder, null);
@@ -1066,7 +1066,7 @@ var endpointData = async function() {
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
     if (methodType == "DELETE") {
-        var oldObj = (skyrepoDelete).call(this, id, version, type);
+        var oldObj = await (skyrepoDelete).call(this, id, version, type);
         if (oldObj == null) 
             return null;
         var cast = {};
@@ -1079,19 +1079,19 @@ var endpointData = async function() {
             o = JSON.parse(fileToString(o));
         if (o == null || o == "") {
             (beforeGet).call(this);
-            o = (skyrepoGetParsed).call(this, id, version, type, null, versions);
+            o = await (skyrepoGetParsed).call(this, id, version, type, null, versions);
             if (o == null) 
                 error("Object not found or you did not supply sufficient permissions to access the object.", 404);
             var expand = this.params.expand != null;
             o = (tryFormatOutput).call(this, o, expand, null);
             return o;
         }
-        (skyrepoPutParsed).call(this, o, id, version, type);
+        await (skyrepoPutParsed).call(this, o, id, version, type);
         (afterSave).call(this);
         return null;
     } else if (methodType == "GET") {
         (beforeGet).call(this);
-        var o = (skyrepoGetParsed).call(this, id, version, type, null, versions);
+        var o = await (skyrepoGetParsed).call(this, id, version, type, null, versions);
         if (o == null) 
             error("Object not found or you did not supply sufficient permissions to access the object.", 404);
         var expand = this.params.expand != null;
@@ -1158,7 +1158,7 @@ var endpointMultiPutEach = async function() {
     var type = ld.getDottedType();
     try {
         this.ctx.put("refresh", "false");
-        (skyrepoPutParsed).call(this, o, id, version, type);
+        await (skyrepoPutParsed).call(this, o, id, version, type);
         return o;
     }catch (ex) {
         debug(ex.getMessage());
@@ -1282,7 +1282,7 @@ var cachedSalts = {};
 var salts = function() {
     return JSON.stringify(cachedSalts);
 };
-var skyIdCreate = function() {
+var skyIdCreate = async function() {
     var id = null;
     var password = null;
     var credentials = null;
@@ -1309,19 +1309,19 @@ var skyIdCreate = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
-    var get = (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get != null) 
         get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
     if (get == null) 
-        (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
+        await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
      else 
         error("Cannot create, account already exists.", 422);
     return null;
 };
-var skyIdCommit = function() {
+var skyIdCommit = async function() {
     var id = null;
     var password = null;
     var token = null;
@@ -1358,16 +1358,16 @@ var skyIdCommit = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
-    var get = (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     if ((get)["token"] != token) 
         error("An error in synchronization has occurred. Please re-login and try again.", 403);
-    (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
+    await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
     return null;
 };
-var skyIdLogin = function() {
+var skyIdLogin = async function() {
     var id = null;
     var password = null;
     var credentials = null;
@@ -1392,7 +1392,7 @@ var skyIdLogin = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
-    var get = (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
@@ -1402,7 +1402,7 @@ var skyIdLogin = function() {
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(get), skyIdSecretKey, saltedId);
-    (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
+    await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
     delete (get)["password"];
     return JSON.stringify(get);
 };

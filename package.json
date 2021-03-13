@@ -30,9 +30,14 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "axios": "^0.21.1",
-    "cassproject": "^3.1.9",
+    "cassproject": "0.4.1",
     "express": "^4.17.1",
     "formidable": "^1.2.2",
+    "npm": "^7.6.3",
     "ws": "^7.4.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "pm2": "^4.5.5"
   }
 }
