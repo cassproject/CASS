@@ -1276,6 +1276,9 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         Papa.parse(file, {encoding: "UTF-8", complete: function(results) {
             var tabularData = (results)["data"];
             for (var i = 1; i < tabularData.length; i++) {
+                if (tabularData[i].length == 0 || (tabularData[i].length == 1 && (tabularData[i][0] == null || tabularData[i][0] == undefined || tabularData[i][0] == ""))) {
+                    continue;
+                }
                 var alignment = new EcAlignment();
                 var sourceKey = tabularData[i][sourceIndex];
                 var relationTypeKey = tabularData[i][relationTypeIndex];

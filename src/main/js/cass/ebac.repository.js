@@ -1037,7 +1037,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (p1 != null) {
                 if ((p1)["ping"] == "pong") {
                     if ((p1)["time"] != null) 
-                        me.timeOffset = (new Date().getTime()) - ((p1)["time"]);
+                        me.timeOffset = (((p1)["time"] - new Date().getTime()));
                     me.buildKeyForwardingTable(success, failure);
                 }
             }
@@ -1448,7 +1448,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (data.owner != null && data.owner.length == 0) {
             delete (data)["owner"];
         }
-        if (EcEncryptedValue.encryptOnSave(data.id, null)) {
+        if (EcEncryptedValue.encryptOnSave(data.id, null) && !data.isAny(new EcEncryptedValue().getTypes())) {
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcIdentityManager.sign(encrypted);
             EcRepository._saveWithoutSigning(encrypted, success, failure, repo);
@@ -1496,10 +1496,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var serialized = new Array();
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
-            if (EcEncryptedValue.encryptOnSave(d.id, null)) {
+            if (EcEncryptedValue.encryptOnSave(d.id, null) && !d.isAny(new EcEncryptedValue().getTypes())) {
                 var encrypted = EcEncryptedValue.toEncryptedValue(d, false);
                 EcIdentityManager.sign(encrypted);
                 data[i] = encrypted;
+                d = encrypted;
             } else {
                 EcIdentityManager.sign(d);
             }
@@ -1826,7 +1827,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method multiget
      */
     prototype.multiget = function(urls, success, failure) {
-        if (urls == null || urls.length == 0) {
+        if (urls == null) {
             if (failure != null) {
                 failure("");
             }
@@ -2276,7 +2277,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (p1 != null) {
                 if ((p1)["ping"] == "pong") {
                     if ((p1)["time"] != null) 
-                        me.timeOffset = (new Date().getTime()) - ((p1)["time"]);
+                        me.timeOffset = (((p1)["time"] - new Date().getTime()));
                     if (me.autoDetectFound == false) {
                         me.selectedServer = guess;
                         me.autoDetectFound = true;
@@ -2324,7 +2325,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (p1 != null) {
                 if ((p1)["ping"] == "pong") {
                     if ((p1)["time"] != null) 
-                        me.timeOffset = (new Date().getTime()) - ((p1)["time"]);
+                        me.timeOffset = (((p1)["time"] - new Date().getTime()));
                     me.selectedServer = guess;
                     me.autoDetectFound = true;
                 }
