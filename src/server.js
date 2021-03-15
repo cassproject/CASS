@@ -1,10 +1,9 @@
 const express = require('express');
-const fs = require('fs');
-const formidable = require('formidable');
 require("cassproject");
-const app = express();
-const axios = require('axios');
+const fs = require('fs');
+const app = global.app = express();
 const port = process.env.PORT || 80;
+require("./server/websocket.js");
 
 app.use(express.static('src/main/webapp'))
 
@@ -31,351 +30,19 @@ var repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";
 var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
-//LEVR shims
-let fileLoad = function(filepath){return fs.readFileSync(filepath);}
-let fileToString = function(file){
-    if (file === undefined || file == null) return null;
-    return file + "";
-}
-let fileSave = function(text,filepath){fs.writeFileSync(filepath,text);}
-let bindWebService = function(endpoint,callback){
-    let get = async function(req,res){
-        let ctx = {
-            get: function(field){return ctx[field];},        
-            put: function(field,value){ctx[field] = value;}
-        }
-        let ms = new Date().getTime();
-        try{
-            ctx.req = req;
-            ctx.res = res;
-            req.query.methodType = "GET";
-            req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
-            var result = await callback.call({
-                ctx:ctx,
-                params: req.query
-            });
-            if (typeof(result) == "string")
-            {
-                res.end(result);
-            }
-            else
-                res.end(); 
-        }
-        catch (ex)
-        {
-            if (ex.status !== undefined && ex.status != null)
-                res.status(ex.status);
-            else
-                res.status(500);
-            res.end(ex+"");
-            console.trace(ex);
-        }
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + new Date().getTime() - ms + " ms) GET " + JSON.stringify(req.query));
-    }    
-    let put = async function(req,res){
-        let ctx = {
-            get: function(field){return ctx[field];},        
-            put: function(field,value){ctx[field] = value;}
-        }
-        let ms = new Date().getTime();
-        try{
-            ctx.req = req;
-            ctx.res = res;
-            req.query.methodType = "PUT";
-            req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
-            var result = await callback.call({
-                ctx:ctx,
-                params: req.query
-            });
-            if (typeof(result) == "string")
-            {
-                res.end(result);
-            }
-            else
-                res.end(); 
-        }
-        catch (ex)
-        {
-            if (ex.status !== undefined && ex.status != null)
-                res.status(ex.status);
-            else
-                res.status(500);
-            res.end(ex+"");
-            console.trace(ex);
-        }        
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + new Date().getTime() - ms + " ms) " + JSON.stringify(req.query));
-    } 
-    let deleet = async function(req,res){
-        let ctx = {
-            get: function(field){return ctx[field];},        
-            put: function(field,value){ctx[field] = value;}
-        }
-        let ms = new Date().getTime();
-        try{
-            ctx.req = req;
-            ctx.res = res;
-            req.query.methodType = "DELETE";
-            req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
-            var result = await callback.call({
-                ctx:ctx,
-                params: req.query
-            });
-            if (typeof(result) == "string")
-            {
-                res.end(result);
-            }
-            else
-                res.end(); 
-        }
-        catch (ex)
-        {
-            if (ex.status !== undefined && ex.status != null)
-                res.status(ex.status);
-            else
-                res.status(500);
-            res.end(ex+"");
-            console.trace(ex);
-        }
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + new Date().getTime() - ms + " ms) " + JSON.stringify(req.query));
-    }
-    let post = async function(req,res){
-        let ctx = {
-            get: function(field){return ctx[field];},        
-            put: function(field,value){ctx[field] = value;}
-        }
-        let ms = new Date().getTime();
-        new formidable.IncomingForm().parse(req, async (err, fields, files) => {
-            try{
-                ctx.req = req;
-                ctx.res = res;
-                req.query.methodType = "POST";
-                req.query.urlRemainder = req.params[0];
-                console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
-                var result = await callback.call({
-                    ctx:ctx,
-                    params: req.query,
-                    dataStreams: fields
-                });
-                if (typeof(result) == "string")
-                {
-                    res.end(result);
-                }
-                else
-                    res.end(); 
-            }
-            catch (ex)
-            {
-                if (ex.status !== undefined && ex.status != null)
-                    res.status(ex.status);
-                else
-                    res.status(500);
-                res.end(ex+"");
-                console.trace(ex);
-            }
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
-        })
-    }
-    console.log("Binding endpoint: /api" + endpoint)
-    app.get('/api'+endpoint,get);
-    app.post('/api'+endpoint,post);
-    app.put('/api'+endpoint,put);
-    app.delete('/api'+endpoint,deleet);
-}
-let fileFromDatastream = function(dataStream){
-    if (this.dataStreams === undefined || this.dataStreams == null) return null;
-    if (this.dataStreams[dataStream] === undefined || this.dataStreams[dataStream] == null) return null;
-    return this.dataStreams[dataStream];
-};
-let headers = function(){return this.ctx.req.headers}
-let httpGet = async function(url)
-{    
-    try {
-        const response = await axios.get(url)
-        if (skyrepoDebug) console.log("get success: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        var resp = null;
-        if (error != null)
-            if (error.data != null)
-                resp = error.data;
-        if (skyrepoDebug) console.trace("get error");
-        if (skyrepoDebug) console.error(url);
-        if (resp != null)
-            console.error(resp);
-        else
-            console.error(error.response.statusText); 
-        return resp;
-    }
-}
-let httpDelete = async function(url)
-{    
-    try {
-        const response = await axios.delete(url)
-        if (skyrepoDebug) console.log("delete success: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        var resp = null;
-        if (error != null)
-            if (error.data != null)
-                resp = error.data;
-        if (skyrepoDebug) console.trace("delete error");
-        if (skyrepoDebug) console.error(url);
-        if (resp != null)
-            console.error(resp);
-        else
-            console.error(error.response.statusText);
-        return resp;
-    }
-}
-let httpPut = async function(data,url,contentType)
-{    
-    try {
-        const response = await axios.put(url,data,{
-            headers: {
-                'Content-Type':contentType
-            }
-        })
-        if (skyrepoDebug) console.log("put success: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        var resp = null;
-        if (error != null)
-            if (error.data != null)
-                resp = error.data;
-        if (skyrepoDebug) console.trace("put error");
-        if (skyrepoDebug) console.error(url);
-        if (resp != null)
-            console.error(resp);
-        else
-            console.error(error.response.statusText);
-        return resp;
-    }
-}
-let httpPost = async function(data, url, contentType, multipart,something,something2,simple){
-    try {
-        const response = await axios.post(url,data,{
-            headers: {
-                'Content-Type':contentType
-            }
-        })
-        if (skyrepoDebug) console.log("post success: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        var resp = null;
-        if (error != null)
-            if (error.data != null)
-                resp = error.data;
-        if (skyrepoDebug) console.trace("post error");
-        if (skyrepoDebug) console.error(url);
-        if (resp != null)
-            console.error(resp);
-        else
-            console.error(error.response.statusText);
-        return resp;
-    }
-}
-let error = function(errormessage,status){
-    errormessage.status = status;
-    console.trace(errormessage);
-    throw errormessage;
-}
-if (!String.prototype.startsWith) {
-	String.prototype.startsWith=function(start, from){
-		var f = from != null ? from : 0;
-		return this.substring(f, f + start.length) == start;
-	}
-}
-/** exception **/
-var Throwable = function(message, cause){
-	Error.call(this);
-	if(typeof Error.captureStackTrace === 'function'){
-		// nice way to capture the stack trace for chrome
-		Error.captureStackTrace(this, arguments.callee);
-	} else {
-		// alternate way to capture the stack trace for other browsers
-		try{
-			throw new Error();
-		}catch(e){
-			this.stack = e.stack;
-		}
-	}
-	if (typeof message === "string"){
-		this.detailMessage  = message;
-		this.message = message;
-		this.cause = cause;
-	} else {
-		this.cause = message;
-	}
-};
-stjs.extend(Throwable, Error, [], function(constructor, prototype){
-	prototype.detailMessage = null;
-	prototype.cause = null;
-	prototype.getMessage = function() {
-        return this.detailMessage;
-    };
+require("./server/shims/levr.js");
+require("./server/shims/stjs.js");
 
-	prototype.getLocalizedMessage = function() {
-        return this.getMessage();
-    };
-
-	prototype.getCause = function() {
-        return (this.cause==this ? null : this.cause);
-    };
-
-	prototype.toString = function() {
-	        var s = "Exception";//TODO should get the exception's type name here
-	        var message = this.getLocalizedMessage();
-	        return (message != null) ? (s + ": " + message) : s;
-	 };
-
-	 prototype.getStackTrace = function() {
-		 return this.stack;
-	 };
-
-	 prototype.printStackTrace = function(){
-		 console.error(this.getStackTrace());
-	 };
-}, {});
-
-var Exception = function(message, cause){
-	Throwable.call(this, message, cause);
-};
-stjs.extend(Exception, Throwable, [], function(constructor, prototype){
-}, {});
-
-var RuntimeException = function(message, cause){
-	Exception.call(this, message, cause);
-};
-stjs.extend(RuntimeException, Exception, [], function(constructor, prototype){
-}, {});
-
-stjs.JavalikeEquals = function(value){
-	if (value == null)
-		return false;
-	if (value.valueOf)
-		return this.valueOf() === value.valueOf();
-	return this === value;
-};
-
-stjs.JavalikeGetClass = function(){
-	return this.constructor;
-};
-
-/* String */
-if (!String.prototype.equals) {
-	String.prototype.equals=stjs.JavalikeEquals;
-}
 //~LEVR shims~
 
 //RS2 shims
-let afterSave = function(){
+let afterSave = function(o){
     //TODO: Websocket broadcast
+    wsBroadcast(EcRemoteLinkedData.trimVersionFromUrl(o["@id"]));
 }
-let afterSaveBulk = function(){
+let afterSaveBulk = function(ary){
     //TODO: Websocket broadcast
+    wsBroadcast(JSON.stringify(ary));
 }
 let beforeGet = function(){
     //TODO: xAPI polling (if enabled);
@@ -411,7 +78,7 @@ function repoAutoDetect() {
     console.log("Text Encoding: " + java.lang.System.getProperty("file.encoding"));
     console.log("Text Encoding: " + java.nio.charset.Charset.defaultCharset().toString());
 }
-var skyrepoDebug = false;
+global.skyrepoDebug = false;
 var elasticSearchInfo = null;
 var elasticSearchVersion = function() {
     return ((elasticSearchInfo)["version"])["number"];
@@ -1189,9 +856,7 @@ var endpointData = async function() {
         var oldObj = await (skyrepoDelete).call(this, id, version, type);
         if (oldObj == null) 
             return null;
-        var cast = {};
-        (cast)["obj"] = oldObj.toJson();
-        (afterSave).call(this, cast);
+        afterSave(oldObj.toJson());
         return null;
     } else if (methodType == "POST") {
         var o = (fileFromDatastream).call(this, "data", null);
@@ -1207,7 +872,7 @@ var endpointData = async function() {
             return o;
         }
         await (skyrepoPutParsed).call(this, o, id, version, type);
-        (afterSave).call(this);
+        afterSave(o);
         return null;
     } else if (methodType == "GET") {
         (beforeGet).call(this);
@@ -1261,8 +926,9 @@ var endpointMultiGet = async function() {
     if (ary != null) {
         var me = this;
         let forEachResults = await Promise.all(ary.map(function(hit){return endpointSingleGet.call({ctx:me.ctx,params:{obj:hit}})}));
-        for (var i = 0; i < forEachResults.length; i++) 
-            results.push(forEachResults[i]);
+        for (var i = 0; i < forEachResults.length; i++)
+            if (forEachResults[i] != null)
+                results.push(forEachResults[i]);
     }
     return JSON.stringify(results);
 };
@@ -1297,14 +963,12 @@ var endpointMultiPut = async function() {
                 results.push(forEachResults[i]);
     }
     await httpGet(elasticEndpoint + "/_all/_refresh", true);
-    var ids = new Array();
+    var ids = [];
     for (var i = 0; i < results.length; i++) {
         var o = results[i];
-        ids.push((o)["@id"]);
+        ids.push(EcRemoteLinkedData.trimVersionFromUrl((o)["@id"]));
     }
-    var params = {};
-    (params)["obj"] = JSON.stringify(ids);
-    (afterSaveBulk).call(null, params);
+    afterSaveBulk(ids);
     return JSON.stringify(results);
 };
 var endpointSingleGet = async function() {
