@@ -33,21 +33,24 @@ var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:92
 
 //LEVR shims
 let fileLoad = function(filepath){return fs.readFileSync(filepath);}
-let fileToString = function(file){return file + "";}
+let fileToString = function(file){
+    if (file === undefined || file == null) return null;
+    return file + "";
+}
 let fileSave = function(text,filepath){fs.writeFileSync(filepath,text);}
 let bindWebService = function(endpoint,callback){
-    let ctx = {
-        get: function(field){return ctx[field];},        
-        put: function(field,value){ctx[field] = value;}
-    }
     let get = async function(req,res){
+        let ctx = {
+            get: function(field){return ctx[field];},        
+            put: function(field,value){ctx[field] = value;}
+        }
         let ms = new Date().getTime();
         try{
             ctx.req = req;
             ctx.res = res;
             req.query.methodType = "GET";
             req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " Request: " + JSON.stringify(req.query));
+            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -61,20 +64,27 @@ let bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            res.status(500);
+            if (ex.status !== undefined && ex.status != null)
+                res.status(ex.status);
+            else
+                res.status(500);
             res.end(ex+"");
-            console.error(ex);
+            console.trace(ex);
         }
-        console.log("-----" + new Date() + " Response: (" + new Date().getTime() - ms + " ms) GET " + JSON.stringify(req.query));
+        console.log("-----" + new Date() + " "+endpoint+" Response: (" + new Date().getTime() - ms + " ms) GET " + JSON.stringify(req.query));
     }    
     let put = async function(req,res){
+        let ctx = {
+            get: function(field){return ctx[field];},        
+            put: function(field,value){ctx[field] = value;}
+        }
         let ms = new Date().getTime();
         try{
             ctx.req = req;
             ctx.res = res;
             req.query.methodType = "PUT";
             req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " Request: " + JSON.stringify(req.query));
+            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -88,20 +98,27 @@ let bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            res.status(500);
+            if (ex.status !== undefined && ex.status != null)
+                res.status(ex.status);
+            else
+                res.status(500);
             res.end(ex+"");
-            console.error(ex);
+            console.trace(ex);
         }        
-        console.log("-----" + new Date() + " Response: (" + new Date().getTime() - ms + " ms) " + JSON.stringify(req.query));
+        console.log("-----" + new Date() + " "+endpoint+" Response: (" + new Date().getTime() - ms + " ms) " + JSON.stringify(req.query));
     } 
     let deleet = async function(req,res){
+        let ctx = {
+            get: function(field){return ctx[field];},        
+            put: function(field,value){ctx[field] = value;}
+        }
         let ms = new Date().getTime();
         try{
             ctx.req = req;
             ctx.res = res;
             req.query.methodType = "DELETE";
             req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " Request: " + JSON.stringify(req.query));
+            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -115,13 +132,20 @@ let bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            res.status(500);
+            if (ex.status !== undefined && ex.status != null)
+                res.status(ex.status);
+            else
+                res.status(500);
             res.end(ex+"");
-            console.error(ex);
+            console.trace(ex);
         }
-        console.log("-----" + new Date() + " Response: (" + new Date().getTime() - ms + " ms) " + JSON.stringify(req.query));
+        console.log("-----" + new Date() + " "+endpoint+" Response: (" + new Date().getTime() - ms + " ms) " + JSON.stringify(req.query));
     }
     let post = async function(req,res){
+        let ctx = {
+            get: function(field){return ctx[field];},        
+            put: function(field,value){ctx[field] = value;}
+        }
         let ms = new Date().getTime();
         new formidable.IncomingForm().parse(req, async (err, fields, files) => {
             try{
@@ -129,7 +153,7 @@ let bindWebService = function(endpoint,callback){
                 ctx.res = res;
                 req.query.methodType = "POST";
                 req.query.urlRemainder = req.params[0];
-                console.log("-----" + new Date() + " Request: " + JSON.stringify(req.query));
+                console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
                 var result = await callback.call({
                     ctx:ctx,
                     params: req.query,
@@ -144,11 +168,14 @@ let bindWebService = function(endpoint,callback){
             }
             catch (ex)
             {
-                res.status(500);
+                if (ex.status !== undefined && ex.status != null)
+                    res.status(ex.status);
+                else
+                    res.status(500);
                 res.end(ex+"");
-                console.error(ex);
+                console.trace(ex);
             }
-        console.log("-----" + new Date() + " Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
+        console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
         })
     }
     console.log("Binding endpoint: /api" + endpoint)
@@ -157,25 +184,29 @@ let bindWebService = function(endpoint,callback){
     app.put('/api'+endpoint,put);
     app.delete('/api'+endpoint,deleet);
 }
-let fileFromDatastream = function(dataStream){return this.dataStreams[dataStream]}
+let fileFromDatastream = function(dataStream){
+    if (this.dataStreams === undefined || this.dataStreams == null) return null;
+    if (this.dataStreams[dataStream] === undefined || this.dataStreams[dataStream] == null) return null;
+    return this.dataStreams[dataStream];
+};
 let headers = function(){return this.ctx.req.headers}
 let httpGet = async function(url)
 {    
     try {
         const response = await axios.get(url)
-        console.log("get success: " + JSON.stringify(response.data));
+        if (skyrepoDebug) console.log("get success: " + JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         var resp = null;
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        console.trace("get error");
-        console.error(url);
+        if (skyrepoDebug) console.trace("get error");
+        if (skyrepoDebug) console.error(url);
         if (resp != null)
             console.error(resp);
         else
-            console.error(error.response.statusText);
+            console.error(error.response.statusText); 
         return resp;
     }
 }
@@ -183,15 +214,15 @@ let httpDelete = async function(url)
 {    
     try {
         const response = await axios.delete(url)
-        console.log("delete success: " + JSON.stringify(response.data));
+        if (skyrepoDebug) console.log("delete success: " + JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         var resp = null;
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        console.trace("delete error");
-        console.error(url);
+        if (skyrepoDebug) console.trace("delete error");
+        if (skyrepoDebug) console.error(url);
         if (resp != null)
             console.error(resp);
         else
@@ -207,15 +238,15 @@ let httpPut = async function(data,url,contentType)
                 'Content-Type':contentType
             }
         })
-        console.log("put success: " + JSON.stringify(response.data));
+        if (skyrepoDebug) console.log("put success: " + JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         var resp = null;
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        console.trace("put error");
-        console.error(url);
+        if (skyrepoDebug) console.trace("put error");
+        if (skyrepoDebug) console.error(url);
         if (resp != null)
             console.error(resp);
         else
@@ -230,15 +261,15 @@ let httpPost = async function(data, url, contentType, multipart,something,someth
                 'Content-Type':contentType
             }
         })
-        console.log("post success: " + JSON.stringify(response.data));
+        if (skyrepoDebug) console.log("post success: " + JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         var resp = null;
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        console.trace("post error");
-        console.error(url);
+        if (skyrepoDebug) console.trace("post error");
+        if (skyrepoDebug) console.error(url);
         if (resp != null)
             console.error(resp);
         else
@@ -246,16 +277,104 @@ let httpPost = async function(data, url, contentType, multipart,something,someth
         return resp;
     }
 }
+let error = function(errormessage,status){
+    errormessage.status = status;
+    console.trace(errormessage);
+    throw errormessage;
+}
 if (!String.prototype.startsWith) {
 	String.prototype.startsWith=function(start, from){
 		var f = from != null ? from : 0;
 		return this.substring(f, f + start.length) == start;
 	}
 }
+/** exception **/
+var Throwable = function(message, cause){
+	Error.call(this);
+	if(typeof Error.captureStackTrace === 'function'){
+		// nice way to capture the stack trace for chrome
+		Error.captureStackTrace(this, arguments.callee);
+	} else {
+		// alternate way to capture the stack trace for other browsers
+		try{
+			throw new Error();
+		}catch(e){
+			this.stack = e.stack;
+		}
+	}
+	if (typeof message === "string"){
+		this.detailMessage  = message;
+		this.message = message;
+		this.cause = cause;
+	} else {
+		this.cause = message;
+	}
+};
+stjs.extend(Throwable, Error, [], function(constructor, prototype){
+	prototype.detailMessage = null;
+	prototype.cause = null;
+	prototype.getMessage = function() {
+        return this.detailMessage;
+    };
+
+	prototype.getLocalizedMessage = function() {
+        return this.getMessage();
+    };
+
+	prototype.getCause = function() {
+        return (this.cause==this ? null : this.cause);
+    };
+
+	prototype.toString = function() {
+	        var s = "Exception";//TODO should get the exception's type name here
+	        var message = this.getLocalizedMessage();
+	        return (message != null) ? (s + ": " + message) : s;
+	 };
+
+	 prototype.getStackTrace = function() {
+		 return this.stack;
+	 };
+
+	 prototype.printStackTrace = function(){
+		 console.error(this.getStackTrace());
+	 };
+}, {});
+
+var Exception = function(message, cause){
+	Throwable.call(this, message, cause);
+};
+stjs.extend(Exception, Throwable, [], function(constructor, prototype){
+}, {});
+
+var RuntimeException = function(message, cause){
+	Exception.call(this, message, cause);
+};
+stjs.extend(RuntimeException, Exception, [], function(constructor, prototype){
+}, {});
+
+stjs.JavalikeEquals = function(value){
+	if (value == null)
+		return false;
+	if (value.valueOf)
+		return this.valueOf() === value.valueOf();
+	return this === value;
+};
+
+stjs.JavalikeGetClass = function(){
+	return this.constructor;
+};
+
+/* String */
+if (!String.prototype.equals) {
+	String.prototype.equals=stjs.JavalikeEquals;
+}
 //~LEVR shims~
 
 //RS2 shims
 let afterSave = function(){
+    //TODO: Websocket broadcast
+}
+let afterSaveBulk = function(){
     //TODO: Websocket broadcast
 }
 let beforeGet = function(){
@@ -292,7 +411,7 @@ function repoAutoDetect() {
     console.log("Text Encoding: " + java.lang.System.getProperty("file.encoding"));
     console.log("Text Encoding: " + java.nio.charset.Charset.defaultCharset().toString());
 }
-var skyrepoDebug = true;
+var skyrepoDebug = false;
 var elasticSearchInfo = null;
 var elasticSearchVersion = function() {
     return ((elasticSearchInfo)["version"])["number"];
@@ -351,12 +470,12 @@ var getTypeFromObject = function(o) {
 var signatureSheet = async function() {
     var sigSheet = null;
     sigSheet = this.ctx.get("signatureSheet");
-    if (sigSheet != null) 
+    if (sigSheet !== undefined && sigSheet != null) 
         return sigSheet;
-    sigSheet = new Array();
+    sigSheet = [];
     var fromDatastream = (fileFromDatastream).call(this, "signatureSheet", null);
     var stringFromDatastream = fileToString(fromDatastream);
-    if (stringFromDatastream != null) 
+    if (stringFromDatastream !== undefined && stringFromDatastream != null) 
         try {
             sigSheet = sigSheet.concat(JSON.parse(stringFromDatastream));
         }catch (ex) {
@@ -365,14 +484,14 @@ var signatureSheet = async function() {
     var hdrs = (headers).call(this);
     var camelcaseSignatureSheet = (hdrs)["signatureSheet"];
     var lowercaseSignatureSheet = (hdrs)["signaturesheet"];
-    if (camelcaseSignatureSheet != null) 
+    if (camelcaseSignatureSheet !== undefined && camelcaseSignatureSheet != null) 
         sigSheet = sigSheet.concat(JSON.parse(camelcaseSignatureSheet));
-    if (lowercaseSignatureSheet != null) 
+    if (lowercaseSignatureSheet !== undefined && lowercaseSignatureSheet != null) 
         sigSheet = sigSheet.concat(JSON.parse(lowercaseSignatureSheet));
     for (var i = 0; i < sigSheet.length; i++) {
         var signature = new EbacSignature();
         signature.copyFrom(sigSheet[i]);
-        if (signature == null) 
+        if (signature == null)
             error("Missing Signature.", 496);
         var validTypes = signature.getTypes();
         var foundType = false;
@@ -383,7 +502,7 @@ var signatureSheet = async function() {
             error("Invalid Signature Version.", 422);
         if (signature.expiry == null) 
             error("Missing expiry date.", 422);
-        var now = date(null, null, true);
+        var now = new Date().getTime();
         if (signature.expiry < now) 
             error("A Signature is Expired. My time is " + now + " and the signature expires at " + signature.expiry, 419);
         var signBytes = signature.signature;
@@ -515,7 +634,7 @@ var putPermanentUrl = function(o, id, version, type) {
     url += "/permanent";
     if (elasticSearchVersion().startsWith("7.")) 
         url += "/_doc";
-     else 
+    else 
         url += "/permanent";
     url += "/" + encodeURIComponent(id) + "." + (version === undefined || version == null ? "" : version) + versionPart;
     if (skyrepoDebug) 
@@ -681,7 +800,7 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
     var url = putPermanentBaseUrl.call(this,o, id, version, type);
     var out = await httpPost(data, url, "application/json", false, null, null, true);
     if (version != null) {
-        url = putPermanentUrl(o, id, version, type);
+        url = putPermanentUrl.call(this,o, id, version, type);
         out = await httpPost(data, url, "application/json", false, null, null, true);
     }
     if (skyrepoDebug) 
@@ -839,7 +958,7 @@ var validateSignatures = async function(id, version, type, errorMessage) {
         return null;
     var oldObj = new EcRemoteLinkedData(null, null);
     oldObj.copyFrom(oldGet);
-    if (oldObj.owner != null && oldObj.owner.length > 0) {
+    if (oldObj.owner !== undefined && oldObj.owner != null && oldObj.owner.length > 0) {
         var signatures = await (signatureSheet).call(this);
         var success = false;
         for (var i = 0; i < signatures.length; i++) {
@@ -868,8 +987,8 @@ var skyrepoDeleteInternalPermanent = async function(id, version, type) {
 var skyrepoDelete = async function(id, version, type) {
     var oldObj = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
     if (oldObj != null) {
-        await skyrepoDeleteInternalIndex(id, version, type);
-        await skyrepoDeleteInternalPermanent(id, version, type);
+        await skyrepoDeleteInternalIndex.call(this, id, version, type);
+        await skyrepoDeleteInternalPermanent.call(this, id, version, type);
     } else {
         error("Can't find object to delete", 401);
     }
@@ -963,9 +1082,11 @@ var skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_sco
         hit += id;
         hits[i] = hit;
     }
-    console.log(hits);
-    searchResults = Promise.all(hits.map(function(hit){return endpointSingleGet.call({params:{obj:hit}})}));
-    console.log(searchResults);
+    var me = this;
+    searchResults = await Promise.all(hits.map(function(hit){return endpointSingleGet.call({ctx:me.ctx,params:{obj:hit}})}));
+    for (var i = 0;i < searchResults.length;i++)
+        if (searchResults[i] == null)
+            searchResults.splice(i--,1);
     return searchResults;
 };
 var queryParse = function(urlRemainder) {
@@ -975,7 +1096,6 @@ var queryParse = function(urlRemainder) {
         error("No resource specified.", 404);
     var split = urlRemainder.split("/");
     var result = {};
-    console.log(split);
     if (split.length >= 1) 
         (result)["id"] = split[0];
     if (split.length >= 2) {
@@ -1139,7 +1259,8 @@ var endpointMultiGet = async function() {
     for (var i = 0; i < ary.length; i++) 
         ary[i] = (lookup)[ary[i]];
     if (ary != null) {
-        var forEachResults = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
+        var me = this;
+        let forEachResults = await Promise.all(ary.map(function(hit){return endpointSingleGet.call({ctx:me.ctx,params:{obj:hit}})}));
         for (var i = 0; i < forEachResults.length; i++) 
             results.push(forEachResults[i]);
     }
@@ -1147,7 +1268,7 @@ var endpointMultiGet = async function() {
 };
 var endpointMultiPutEach = async function() {
     var ld = new EcRemoteLinkedData(null, null);
-    var o = JSON.parse(this.params.obj);
+    var o = this.params.obj;
     ld.copyFrom(o);
     var id = null;
     if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServer) == -1) 
@@ -1169,7 +1290,8 @@ var endpointMultiPut = async function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
     var results = new Array();
     if (ary != null) {
-        var forEachResults = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointMultiPutEach"), true, true, false, true, false);
+        var me = this;
+        let forEachResults = await Promise.all(ary.map(function(hit){return endpointMultiPutEach.call({ctx:me.ctx,params:{obj:hit}})}));
         for (var i = 0; i < forEachResults.length; i++) 
             if (forEachResults[i] != null) 
                 results.push(forEachResults[i]);
@@ -1443,7 +1565,7 @@ var loadConfigurationFile = function(path, dflt) {
     skyIdPem = EcPpk.fromPem(loadConfigurationFile("skyId.pem", function() {
         return EcPpk.fromPem(rsaGenerate()).toPem();
     }));
-    bindWebService("/sky/id/salts", salts);
+    bindWebService("/sky/id/salts", salts)
     bindWebService("/sky/id/create", skyIdCreate);
     bindWebService("/sky/id/commit", skyIdCommit);
     bindWebService("/sky/id/login", skyIdLogin);
