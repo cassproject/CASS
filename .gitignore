@@ -52,3 +52,4 @@ pom\.xml\.versionsBackup
 data/
 
 *.7z
+.node-xmlhttprequest*

@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "nodemon src/server.js",
-    "run": "pm2 stop mnlapi-cass && pm2 start --name mnlapi-cass src/server.js --watch && pm2 logs",
+    "test": "nodemon src/main/server.js",
+    "run": "pm2 stop mnlapi-cass && pm2 start --name mnlapi-cass src/main/server.js --watch && pm2 logs",
     "logs": "pm2 logs",
     "stop": "pm2 stop all"
   },
@@ -29,12 +29,14 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
+    "@entryscape/rdfjson": "^2.3.0",
     "axios": "^0.21.1",
     "cassproject": "0.4.1",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
     "formidable": "^1.2.2",
     "npm": "^7.6.3",
+    "rdflib": "^2.2.0",
     "ws": "^7.4.4"
   },
   "devDependencies": {
