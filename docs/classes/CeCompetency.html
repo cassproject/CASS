@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/main/js/cass/ec.crypto.js - CASS Javascript Library</title>
+    <title>CeCompetency - CASS Javascript Library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -84,6 +84,7 @@
                                 <li><a href="../classes/AssessmentProfile.html">AssessmentProfile</a></li>
                                 <li><a href="../classes/AssignAction.html">AssignAction</a></li>
                                 <li><a href="../classes/AssociateDegree.html">AssociateDegree</a></li>
+                                <li><a href="../classes/Attitude.html">Attitude</a></li>
                                 <li><a href="../classes/Attorney.html">Attorney</a></li>
                                 <li><a href="../classes/Audience.html">Audience</a></li>
                                 <li><a href="../classes/AudioObject.html">AudioObject</a></li>
@@ -108,6 +109,7 @@
                                 <li><a href="../classes/BedAndBreakfast.html">BedAndBreakfast</a></li>
                                 <li><a href="../classes/BedDetails.html">BedDetails</a></li>
                                 <li><a href="../classes/BefriendAction.html">BefriendAction</a></li>
+                                <li><a href="../classes/Belief.html">Belief</a></li>
                                 <li><a href="../classes/BikeStore.html">BikeStore</a></li>
                                 <li><a href="../classes/Blog.html">Blog</a></li>
                                 <li><a href="../classes/BlogPosting.html">BlogPosting</a></li>
@@ -152,6 +154,8 @@
                                 <li><a href="../classes/Cemetery.html">Cemetery</a></li>
                                 <li><a href="../classes/Certificate.html">Certificate</a></li>
                                 <li><a href="../classes/Certification.html">Certification</a></li>
+                                <li><a href="../classes/CfdAssessment.html">CfdAssessment</a></li>
+                                <li><a href="../classes/CfdReference.html">CfdReference</a></li>
                                 <li><a href="../classes/CheckAction.html">CheckAction</a></li>
                                 <li><a href="../classes/CheckInAction.html">CheckInAction</a></li>
                                 <li><a href="../classes/CheckOutAction.html">CheckOutAction</a></li>
@@ -208,6 +212,7 @@
                                 <li><a href="../classes/Credential.html">Credential</a></li>
                                 <li><a href="../classes/CredentialAlignmentObject.html">CredentialAlignmentObject</a></li>
                                 <li><a href="../classes/CredentialAssertion.html">CredentialAssertion</a></li>
+                                <li><a href="../classes/CredentialCompetencyLocator.html">CredentialCompetencyLocator</a></li>
                                 <li><a href="../classes/CredentialFramework.html">CredentialFramework</a></li>
                                 <li><a href="../classes/CredentialingAction.html">CredentialingAction</a></li>
                                 <li><a href="../classes/CredentialOrganization.html">CredentialOrganization</a></li>
@@ -421,6 +426,7 @@
                                 <li><a href="../classes/JoinAction.html">JoinAction</a></li>
                                 <li><a href="../classes/JourneymanCertificate.html">JourneymanCertificate</a></li>
                                 <li><a href="../classes/JurisdictionProfile.html">JurisdictionProfile</a></li>
+                                <li><a href="../classes/Knowledge.html">Knowledge</a></li>
                                 <li><a href="../classes/LakeBodyOfWater.html">LakeBodyOfWater</a></li>
                                 <li><a href="../classes/Landform.html">Landform</a></li>
                                 <li><a href="../classes/LandmarksOrHistoricalBuildings.html">LandmarksOrHistoricalBuildings</a></li>
@@ -631,6 +637,7 @@
                                 <li><a href="../classes/RightsAction.html">RightsAction</a></li>
                                 <li><a href="../classes/RiverBodyOfWater.html">RiverBodyOfWater</a></li>
                                 <li><a href="../classes/Role.html">Role</a></li>
+                                <li><a href="../classes/Rollup.html">Rollup</a></li>
                                 <li><a href="../classes/RollupRule.html">RollupRule</a></li>
                                 <li><a href="../classes/RoofingContractor.html">RoofingContractor</a></li>
                                 <li><a href="../classes/Room.html">Room</a></li>
@@ -661,6 +668,7 @@
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
                                 <li><a href="../classes/SingleFamilyResidence.html">SingleFamilyResidence</a></li>
                                 <li><a href="../classes/SiteNavigationElement.html">SiteNavigationElement</a></li>
+                                <li><a href="../classes/Skill.html">Skill</a></li>
                                 <li><a href="../classes/SkiResort.html">SkiResort</a></li>
                                 <li><a href="../classes/SocialEvent.html">SocialEvent</a></li>
                                 <li><a href="../classes/SocialMediaPosting.html">SocialMediaPosting</a></li>
@@ -773,6 +781,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/com.eduworks.html">com.eduworks</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
@@ -812,1285 +821,1150 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/main/js/cass/ec.crypto.js</h1>
+<h1>CeCompetency Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/*-
- * --BEGIN_LICENSE--
- * Competency and Skills System
- * -----
- * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
- * -----
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * --END_LICENSE--
- */
-var CryptoKey = function() {};
-CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
-var AlgorithmIdentifier = function() {};
-AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constructor, prototype) {
-    prototype.name = null;
-    prototype.modulusLength = 0;
-    prototype.length = 0;
-    prototype.publicExponent = null;
-    prototype.hash = null;
-    prototype.iv = null;
-    prototype.counter = null;
-}, {iv: &quot;ArrayBuffer&quot;, counter: &quot;ArrayBuffer&quot;}, {});
-var jwk = function() {};
-jwk = stjs.extend(jwk, null, [], function(constructor, prototype) {
-    prototype.kty = null;
-    prototype.k = null;
-    prototype.alg = null;
-    prototype.ext = null;
-}, {}, {});
-/**
- *  Helper classes for dealing with RSA Public Keys.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcPk
- *  @module com.eduworks.ec
- */
-var EcPk = function() {};
-EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
-    constructor.cache = null;
-    prototype.pk = null;
-    prototype.defaultPem = null;
-    prototype.jwk = null;
-    prototype.key = null;
-    prototype.signKey = null;
-    /**
-     *  Decodes a PEM encoded SubjectPublicKeyInfo (PKCS#8) or RSAPublicKey (PKCS#1) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @param {string} pem PEM as a string.
-     *  @return {EcPk} Object used to perform public key operations.
-     *  @method fromPem
-     *  @static
-     */
-    constructor.fromPem = function(pem) {
-        var pk = (EcPk.cache)[pem];
-        if (pk != null) 
-            return pk;
-        pk = new EcPk();
-        try {
-            pk.pk = forge.pki.publicKeyFromPem(pem);
-        }catch (ex) {
-            return null;
-        }
-        (EcPk.cache)[pem] = pk;
-        return pk;
-    };
-    /**
-     *  Compares two public keys, and returns true if their PEM forms match.
-     * 
-     *  @param {EcPk} obj Object to compare to.
-     *  @return {boolean} True if the keys match.
-     *  @method equals
-     */
-    prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcPk)) 
-            return this.toPem().equals((obj).toPem());
-        return Object.prototype.equals.call(this, obj);
-    };
-    /**
-     *  Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @return {string} PEM encoded public key without whitespace.
-     *  @method toPem
-     */
-    prototype.toPem = function() {
-        if (this.defaultPem == null) 
-            this.defaultPem = forge.pki.publicKeyToPem(this.pk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
-        return this.defaultPem;
-    };
-    /**
-     *  Encodes the public key into a PEM encoded RSAPublicKey (PKCS#1) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @return {string} PEM encoded public key without whitespace.
-     *  @method toPkcs1Pem
-     */
-    prototype.toPkcs1Pem = function() {
-        return forge.pki.publicKeyToRSAPublicKeyPem(this.pk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
-    };
-    /**
-     *  Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @return {string} PEM encoded public key without whitespace.
-     *  @method toPkcs8Pem
-     */
-    prototype.toPkcs8Pem = function() {
-        return forge.pki.publicKeyToPem(this.pk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
-    };
-    prototype.toJwk = function() {
-        if (this.jwk == null) 
-            this.jwk = pemJwk.pem2jwk(forge.pki.publicKeyToPem(this.pk));
-        return this.jwk;
-    };
-    /**
-     *  Hashes the public key into an SSH compatible fingerprint.
-     * 
-     *  @return {string} Public key fingerprint.
-     *  @method fingerprint
-     */
-    prototype.fingerprint = function() {
-        var o = new Object();
-        (o)[&quot;encoding&quot;] = &quot;hex&quot;;
-        return forge.ssh.getPublicKeyFingerprint(this.pk, o);
-    };
-    prototype.verify = function(bytes, decode64) {
-        return this.pk.verify(bytes, decode64);
-    };
-}, {cache: &quot;Object&quot;, pk: &quot;forge.pk&quot;, jwk: &quot;Object&quot;, key: &quot;CryptoKey&quot;, signKey: &quot;CryptoKey&quot;}, {});
-(function() {
-    if (EcPk.cache == null) 
-        EcPk.cache = new Object();
-})();
-/**
- *  AES encryption tasks common across all variants of AES.
- *  @class EcAes
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- */
-var EcAes = function() {};
-EcAes = stjs.extend(EcAes, null, [], function(constructor, prototype) {
-    /**
-     *  Generates a random secret of length @i
-     *  @method newSecret
-     *  @static
-     *  @param {integer} i Length of secret
-     *  @return {string} String representing the new secret, encoded using Base64.
-     */
-    constructor.newSecret = function(i) {
-        return forge.util.encode64(forge.random.getBytesSync(i));
-    };
-    /**
-     *  Generates a random Initialization Vector of length @i
-     *  @method newIv
-     *  @static
-     *  @param {integer} i Length of initialization Vector
-     *  @return {string} String representing the new Initialization Vector, encoded using Base64.
-     */
-    constructor.newIv = function(i) {
-        return forge.util.encode64(forge.random.getBytesSync(i));
-    };
-}, {}, {});
-/**
- *  @author Fritz
- *  @class EcCrypto
- */
-var EcCrypto = function() {};
-EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
-    /**
-     *  Turn on (defualt off) caching of decrypted data.
-     *  @property caching
-     *  @type boolean
-     */
-    constructor.caching = false;
-    constructor.decryptionCache = new Object();
-    /**
-     *  Calculate MD5 hash of a string.
-     *  @param {String} s String to MD5
-     *  @return {String} MD5 hash
-     *  @static
-     *  @method md5
-     */
-    constructor.md5 = function(s) {
-        var m = forge.md.md5.create();
-        m.update(s);
-        return m.digest().toHex();
-    };
-    /**
-     *  Calculate SHA-256 hash of a string.
-     *  @param {String} s String to SHA-256
-     *  @return {String} SHA-256 hash
-     *  @static
-     *  @method sha256
-     */
-    constructor.sha256 = function(s) {
-        var m = forge.md.sha256.create();
-        m.update(s, &quot;utf8&quot;);
-        return m.digest().toHex();
-    };
-}, {decryptionCache: &quot;Object&quot;}, {});
-var EcAesParameters = function(iv) {
-    this.iv = forge.util.decode64(iv);
-};
-EcAesParameters = stjs.extend(EcAesParameters, null, [], function(constructor, prototype) {
-    prototype.iv = null;
-}, {iv: &quot;forge.payload&quot;}, {});
-var SubtleCrypto = function() {};
-SubtleCrypto = stjs.extend(SubtleCrypto, null, [], function(constructor, prototype) {
-    prototype.encrypt = function(algorithm, key, data) {
-        return null;
-    };
-    prototype.decrypt = function(algorithm, key, data) {
-        return null;
-    };
-    prototype.sign = function(algorithm, key, data) {
-        return null;
-    };
-    prototype.verify = function(algorithm, key, signature, data) {
-        return null;
-    };
-    prototype.generateKey = function(algorithm, extractable, keyUsages) {
-        return null;
-    };
-    prototype.deriveBits = function(algorithm, baseKey, length) {
-        return null;
-    };
-    prototype.importKey = function(format, keyData, algorithm, extractable, keyUsages) {
-        return null;
-    };
-}, {}, {});
-/**
- *  Helper classes for dealing with RSA Private Keys.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcPpk
- *  @module com.eduworks.ec
- */
-var EcPpk = function() {};
-EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
-    constructor.cache = null;
-    prototype.defaultPem = null;
-    prototype.jwk = null;
-    prototype.key = null;
-    prototype.signKey = null;
-    prototype.ppk = null;
-    prototype.defaultPk = null;
-    /**
-     *  Decodes a PEM encoded PrivateKeyInfo (PKCS#8) or RSAPrivateKey (PKCS#1) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @param {string} pem PEM as a string.
-     *  @return {EcPk} Object used to perform public key operations.
-     *  @method fromPem
-     *  @static
-     */
-    constructor.fromPem = function(pem) {
-        var pk = (EcPpk.cache)[pem];
-        if (pk != null) 
-            return pk;
-        pk = new EcPpk();
-        try {
-            pk.ppk = forge.pki.privateKeyFromPem(pem);
-        }catch (ex) {
-            return null;
-        }
-        (EcPpk.cache)[pem] = pk;
-        return pk;
-    };
-    /**
-     *  Generates an RSA Keypair using web workers.
-     * 
-     *  @param {function(EcPpk)} callback Method called when the keypair is generated.
-     *  @method generateKeyAsync
-     *  @static
-     */
-    constructor.generateKeyAsync = function(callback) {
-        var o = new Object();
-        (o)[&quot;workers&quot;] = -1;
-        forge.pki.rsa.generateKeyPair(o, function(err, keypair) {
-            var ppk = new EcPpk();
-            ppk.ppk = keypair.privateKey;
-            callback(ppk);
-        });
-    };
-    /**
-     *  Generates an RSA Keypair synchronously. Can take a while.
-     * 
-     *  @return {EcPpk} Public private keypair.
-     *  @method generateKey
-     *  @static
-     */
-    constructor.generateKey = function() {
-        var o = new Object();
-        (o)[&quot;workers&quot;] = -1;
-        var keypair = forge.pki.rsa.generateKeyPair(o, null);
-        var ppk = new EcPpk();
-        ppk.ppk = keypair.privateKey;
-        return ppk;
-    };
-    /**
-     *  Returns true iff the PEM forms of the public private keypair match.
-     *  Can also match against a public key if the public portion of the keypair match.
-     * 
-     *  @param {EcPpk|EcPk} Key to compare to.
-     *  @return boolean If they match.
-     *  @method equals
-     */
-    prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcPpk)) 
-            return this.toPem().equals((obj).toPem());
-        if (stjs.isInstanceOf(obj.constructor, EcPk)) 
-            return this.toPk().toPem().equals((obj).toPem());
-        return Object.prototype.equals.call(this, obj);
-    };
-    /**
-     *  Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @return {string} PEM encoded public key without whitespace.
-     *  @method toPem
-     */
-    prototype.toPem = function() {
-        if (this.defaultPem == null) 
-            this.defaultPem = forge.pki.privateKeyToPem(this.ppk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
-        return this.defaultPem;
-    };
-    /**
-     *  Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @return {string} PEM encoded public key without whitespace.
-     *  @method toPkcs1Pem
-     */
-    prototype.toPkcs1Pem = function() {
-        return forge.pki.privateKeyToPem(this.ppk).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
-    };
-    /**
-     *  Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.
-     *  (In case you were curious.)
-     * 
-     *  @return {string} PEM encoded public key without whitespace.
-     *  @method toPkcs8Pem
-     */
-    prototype.toPkcs8Pem = function() {
-        return forge.pki.privateKeyInfoToPem(forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk))).replaceAll(&quot;\r&quot;, &quot;&quot;).replaceAll(&quot;\n&quot;, &quot;&quot;);
-    };
-    prototype.toJwk = function() {
-        if (this.jwk == null) 
-            this.jwk = pemJwk.pem2jwk(forge.pki.privateKeyToPem(this.ppk));
-        return this.jwk;
-    };
-    prototype.toPkcs8 = function() {
-        return forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk));
-    };
-    /**
-     *  Extracts the public key portion from the public private keypair.
-     * 
-     *  @return {EcPk} Public Key Helper.
-     *  @method toPk
-     */
-    prototype.toPk = function() {
-        if (this.defaultPk != null) 
-            return this.defaultPk;
-        var pk = this.defaultPk = new EcPk();
-        pk.pk = forge.pki.rsa.setPublicKey(this.ppk.n, this.ppk.e);
-        return pk;
-    };
-    /**
-     *  Returns true if this PPK is in an array of PPKs.
-     * 
-     *  @param {Array&lt;EcPpk&gt;} ppks Array of ppks
-     *  @return true iff this PPK in ppks.
-     *  @method inArray
-     */
-    prototype.inArray = function(ppks) {
-        for (var i = 0; i &lt; ppks.length; i++) {
-            if (ppks[i].equals(this)) 
-                return true;
-        }
-        return false;
-    };
-}, {cache: &quot;Object&quot;, jwk: &quot;Object&quot;, key: &quot;CryptoKey&quot;, signKey: &quot;CryptoKey&quot;, ppk: &quot;forge.ppk&quot;, defaultPk: &quot;EcPk&quot;}, {});
-(function() {
-    if (EcPpk.cache == null) 
-        EcPpk.cache = new Object();
-})();
-/**
- *  Helper methods for performing RSA Encryption methods. Uses Optimal Asymmetric
- *  Encryption Padding (OAEP) encryption and decryption. Uses RSA SSA PKCS#1 v1.5
- *  (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.
- * 
- *  @author fritz.ray@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcRsaOaep
- */
-var EcRsaOaep = function() {};
-EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
-    /**
-     *  Encrypts a block of plaintext (no more than 256 bytes) with a public key
-     *  using RSA OAEP encryption. Returns a base64 encoded ciphertext.
-     * 
-     *  @param {EcPk}   pk Public Key.
-     *  @param {string} plaintext Plaintext. Does not perform encoding.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(pk, plaintext) {
-        if ((typeof httpStatus) != &quot;undefined&quot;) {
-            return rsaEncrypt(plaintext, pk.toPem());
-        }
-        return forge.util.encode64(pk.pk.encrypt(forge.util.encodeUtf8(plaintext), &quot;RSA-OAEP&quot;));
-    };
-    /**
-     *  Decrypts a block of ciphertext (no more than 256 bytes) with a private
-     *  key using RSA OAEP encryption. Returns a unencoded plaintext.
-     * 
-     *  @param {EcPpk}  ppk Public private keypair.
-     *  @param {string} ciphertext Ciphertext.
-     *  @return {string} Unencoded plaintext.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ppk, ciphertext) {
-        if (EcCrypto.caching) {
-            var cacheGet = null;
-            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
-            if (cacheGet != null) {
-                return cacheGet;
-            }
-        }
-        var result;
-        if ((typeof httpStatus) != &quot;undefined&quot;) {
-            result = rsaDecrypt(ciphertext, ppk.toPem());
-        } else {
-            result = forge.util.decodeUtf8(ppk.ppk.decrypt(forge.util.decode64(ciphertext), &quot;RSA-OAEP&quot;));
-        }
-        if (EcCrypto.caching) {
-            (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext] = result;
-        }
-        return result;
-    };
-    /**
-     *  Creates a signature for the provided text using the public private
-     *  keypair. May be verified with the public key. Uses SHA1 hash with a UTF8
-     *  decoding of the text. Returns base64 encoded signature.
-     * 
-     *  @param {EcPpk}  ppk Public private keypair.
-     *  @param {string} text Text to sign.
-     *  @return Base64 encoded signature.
-     *  @method sign
-     *  @static
-     */
-    constructor.sign = function(ppk, text) {
-        if ((typeof httpStatus) != &quot;undefined&quot;) {
-            return rsaSign(text, ppk.toPem());
-        }
-        var s = forge.md.sha1.create();
-        s.update(forge.util.encodeUtf8(text), &quot;utf8&quot;);
-        return forge.util.encode64(ppk.ppk.sign(s));
-    };
-    /**
-     *  Creates a signature for the provided text using the public private
-     *  keypair. May be verified with the public key. Uses SHA256 hash with a
-     *  UTF8 decoding of the text. Returns base64 encoded signature.
-     * 
-     *  @param {EcPpk}  ppk Public private keypair.
-     *  @param {string} text Text to sign.
-     *  @return Base64 encoded signature.
-     *  @method signSha256
-     *  @static
-     */
-    constructor.signSha256 = function(ppk, text) {
-        var s = forge.md.sha256.create();
-        s.update(forge.util.encodeUtf8(text), &quot;utf8&quot;);
-        return forge.util.encode64(ppk.ppk.sign(s));
-    };
-    /**
-     *  Verifies the integrity of the provided text using a signature and a
-     *  public key. Uses SHA1 hash with a UTF8 decoding of the text.
-     * 
-     *  @param {EcPk}   pk Public key.
-     *  @param {string} text Text to verify.
-     *  @param {string} signature Base64 encoded signature.
-     *  @return True IFF the signature is valid.
-     *  @static
-     *  @method verify
-     */
-    constructor.verify = function(pk, text, signature) {
-        if ((typeof httpStatus) != &quot;undefined&quot;) {
-            return rsaVerify(signature, pk.toPem(), text);
-        }
-        var s = forge.md.sha1.create();
-        s.update(forge.util.encodeUtf8(text), &quot;utf8&quot;);
-        try {
-            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
-        }catch (ex) {
-            return false;
-        }
-    };
-    /**
-     *  Verifies the integrity of the provided text using a signature and a
-     *  public key. Uses SHA1 hash with a UTF8 decoding of the text.
-     * 
-     *  @param {EcPk}   pk Public key.
-     *  @param {string} text Text to verify.
-     *  @param {string} signature Base64 encoded signature.
-     *  @return True IFF the signature is valid.
-     *  @static
-     *  @method verify
-     */
-    constructor.verifySha256 = function(pk, text, signature) {
-        if ((typeof httpStatus) != &quot;undefined&quot;) {
-            return rsaVerifySha256(signature, pk.toPem(), text);
-        }
-        var s = forge.md.sha256.create();
-        s.update(forge.util.encodeUtf8(text), &quot;utf8&quot;);
-        try {
-            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
-        }catch (ex) {
-            return false;
-        }
-    };
-}, {}, {});
-/**
- *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
- *  Output is encoded in base64 for easier handling.
- * 
- *  @author fritz.ray@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcAesCtr
- */
-var EcAesCtr = function() {};
-EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
-    /**
-     *  Encrypts plaintext using AES-256-CTR.
-     *  Plaintext is treated as as a sequence of bytes, does not perform UTF8 decoding.
-     *  Returns base64 encoded ciphertext.
-     * 
-     *  @param {string} plaintext Text to encrypt.
-     *  @param {string} secret Secret to use to encrypt.
-     *  @param {string} iv Initialization Vector to use to encrypt.
-     *  @return {string} Ciphertext encoded using base64.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(plaintext, secret, iv) {
-        if ((typeof httpStatus) != &quot;undefined&quot; &amp;&amp; forge.util.decode64(secret).length == 16 &amp;&amp; forge.util.decode64(iv).length == 16) 
-            return aesEncrypt(plaintext, iv, secret);
-        var c = forge.cipher.createCipher(&quot;AES-CTR&quot;, forge.util.decode64(secret));
-        c.start(new EcAesParameters(iv));
-        c.update(forge.util.createBuffer(forge.util.encodeUtf8(plaintext)));
-        c.finish();
-        var encrypted = c.output;
-        return forge.util.encode64(encrypted.bytes());
-    };
-    /**
-     *  Decrypts ciphertext using AES-256-CTR.
-     *  Ciphertext must be base64 encoded ciphertext.
-     *  Returns plaintext as a string (Sequence of bytes, no encoding).
-     * 
-     *  @param {string} ciphertext Ciphertext to decrypt.
-     *  @param {string} secret Secret to use to decrypt.
-     *  @param {string} iv Initialization Vector to use to decrypt.
-     *  @return {string} Plaintext with no encoding.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ciphertext, secret, iv) {
-        if (EcCrypto.caching) {
-            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
-            if (cacheGet != null) 
-                return cacheGet;
-        }
-        if ((typeof httpStatus) != &quot;undefined&quot; &amp;&amp; forge.util.decode64(secret).length == 16 &amp;&amp; forge.util.decode64(iv).length == 16) {
-            var result = aesDecrypt(ciphertext, iv, secret);
-            if (EcCrypto.caching) 
-                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = result;
-            return result;
-        }
-        var c = forge.cipher.createDecipher(&quot;AES-CTR&quot;, forge.util.decode64(secret));
-        c.start(new EcAesParameters(iv));
-        c.update(forge.util.createBuffer(forge.util.decode64(ciphertext)));
-        c.finish();
-        var decrypted = c.output;
-        if (EcCrypto.caching) 
-            (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(decrypted.data);
-        return forge.util.decodeUtf8(decrypted.data);
-    };
-}, {}, {});
-/**
- *  Asynchronous implementation of {{#crossLink
- *  &quot;EcRsaOaep&quot;}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcRsaOaepAsyncWorker
- *  @module com.eduworks.ec
- */
-var EcRsaOaepAsyncWorker = function() {};
-EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(constructor, prototype) {
-    constructor.rotator = 0;
-    constructor.w = null;
-    constructor.q1 = null;
-    constructor.q2 = null;
-    constructor.initWorker = function() {
-        if (window == null &amp;&amp; ((typeof self).equals(&quot;undefined&quot;)) || Worker == undefined || Worker == null) {
-            return;
-        }
-        if (!EcRemote.async) {
-            return;
-        }
-        if (EcRsaOaepAsyncWorker.w != null) {
-            return;
-        }
-        EcRsaOaepAsyncWorker.rotator = 0;
-        EcRsaOaepAsyncWorker.q1 = new Array();
-        EcRsaOaepAsyncWorker.q2 = new Array();
-        EcRsaOaepAsyncWorker.w = new Array();
-        for (var index = 0; index &lt; 8; index++) {
-            EcRsaOaepAsyncWorker.createWorker(index);
-        }
-    };
-    constructor.createWorker = function(index) {
-        EcRsaOaepAsyncWorker.q1.push(new Array());
-        EcRsaOaepAsyncWorker.q2.push(new Array());
-        var wkr;
-        if ((window)[&quot;scriptPath&quot;] != null) 
-            EcRsaOaepAsyncWorker.w.push(wkr = new Worker((window)[&quot;scriptPath&quot;] + &quot;forgeAsync.js&quot;));
-         else 
-            EcRsaOaepAsyncWorker.w.push(wkr = new Worker(&quot;forgeAsync.js&quot;));
-        wkr.onmessage = function(p1) {
-            var o = p1.data;
-            var success = EcRsaOaepAsyncWorker.q1[index].shift();
-            var failure = EcRsaOaepAsyncWorker.q2[index].shift();
-            if ((o)[&quot;error&quot;] != null) {
-                if (failure != null) 
-                    failure((o)[&quot;error&quot;]);
-            } else if (success != null) {
-                success((o)[&quot;result&quot;]);
-            }
-        };
-        wkr.onerror = function(p1) {
-            var success = EcRsaOaepAsyncWorker.q1[index].shift();
-            var failure = EcRsaOaepAsyncWorker.q2[index].shift();
-            if (failure != null) {
-                failure(p1.toString());
-            }
-        };
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/encrypt:method&quot;}}EcRsaOaep.encrypt{{/crossLink}}
-     * 
-     *  @param {EcPk}             pk Public Key to use to encrypt.
-     *  @param {string}           plaintext Plaintext to encrypt.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(pk, plaintext, success, failure) {
-        EcRsaOaepAsyncWorker.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsyncWorker.w == null) {
-            success(EcRsaOaep.encrypt(pk, plaintext));
-        } else {
-            var worker = EcRsaOaepAsyncWorker.rotator++;
-            EcRsaOaepAsyncWorker.rotator = EcRsaOaepAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)[&quot;pk&quot;] = pk.toPem();
-            (o)[&quot;text&quot;] = forge.util.encodeUtf8(plaintext);
-            (o)[&quot;cmd&quot;] = &quot;encryptRsaOaep&quot;;
-            EcRsaOaepAsyncWorker.q1[worker].push(success);
-            EcRsaOaepAsyncWorker.q2[worker].push(failure);
-            EcRsaOaepAsyncWorker.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/decrypt:method&quot;}}EcRsaOaep.decrypt{{/crossLink}}
-     * 
-     *  @param {EcPpk}            ppk Public private keypair to use to decrypt.
-     *  @param {string}           ciphertext Ciphertext to decrypt.
-     *  @param {function(string)} success Success method, result is unencoded
-     *                            plaintext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ppk, ciphertext, success, failure) {
-        if (EcCrypto.caching) {
-            var cacheGet = null;
-            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
-            if (cacheGet != null) {
-                success(cacheGet);
-                return;
-            }
-        }
-        EcRsaOaepAsyncWorker.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsyncWorker.w == null) {
-            success(EcRsaOaep.decrypt(ppk, ciphertext));
-        } else {
-            var worker = EcRsaOaepAsyncWorker.rotator++;
-            EcRsaOaepAsyncWorker.rotator = EcRsaOaepAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)[&quot;ppk&quot;] = ppk.toPem();
-            (o)[&quot;text&quot;] = ciphertext;
-            (o)[&quot;cmd&quot;] = &quot;decryptRsaOaep&quot;;
-            if (EcCrypto.caching) {
-                EcRsaOaepAsyncWorker.q1[worker].push(function(p1) {
-                    (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext] = forge.util.decodeUtf8(p1);
-                    success(forge.util.decodeUtf8(p1));
-                });
-            } else {
-                EcRsaOaepAsyncWorker.q1[worker].push(function(p1) {
-                    success(forge.util.decodeUtf8(p1));
-                });
-            }
-            EcRsaOaepAsyncWorker.q2[worker].push(failure);
-            EcRsaOaepAsyncWorker.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/sign:method&quot;}}EcRsaOaep.sign{{/crossLink}}
-     * 
-     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
-     *  @param {string}           text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method sign
-     *  @static
-     */
-    constructor.sign = function(ppk, text, success, failure) {
-        EcRsaOaepAsyncWorker.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsyncWorker.w == null) {
-            success(EcRsaOaep.sign(ppk, text));
-        } else {
-            var worker = EcRsaOaepAsyncWorker.rotator++;
-            EcRsaOaepAsyncWorker.rotator = EcRsaOaepAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)[&quot;ppk&quot;] = ppk.toPem();
-            (o)[&quot;text&quot;] = forge.util.encodeUtf8(text);
-            (o)[&quot;cmd&quot;] = &quot;signRsaOaep&quot;;
-            EcRsaOaepAsyncWorker.q1[worker].push(success);
-            EcRsaOaepAsyncWorker.q2[worker].push(failure);
-            EcRsaOaepAsyncWorker.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/signSha256:method&quot;}}EcRsaOaep.signSha256{{/crossLink}}
-     * 
-     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
-     *  @param {string}           text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method signSha256
-     *  @static
-     */
-    constructor.signSha256 = function(ppk, text, success, failure) {
-        EcRsaOaepAsyncWorker.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsyncWorker.w == null) {
-            success(EcRsaOaep.signSha256(ppk, text));
-        } else {
-            var worker = EcRsaOaepAsyncWorker.rotator++;
-            EcRsaOaepAsyncWorker.rotator = EcRsaOaepAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)[&quot;ppk&quot;] = ppk.toPem();
-            (o)[&quot;text&quot;] = forge.util.encodeUtf8(text);
-            (o)[&quot;cmd&quot;] = &quot;signSha256RsaOaep&quot;;
-            EcRsaOaepAsyncWorker.q1[worker].push(success);
-            EcRsaOaepAsyncWorker.q2[worker].push(failure);
-            EcRsaOaepAsyncWorker.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/verify:method&quot;}}EcRsaOaep.verify{{/crossLink}}
-     * 
-     *  @param {EcPk}              pk Public key to use to verify message.
-     *  @param {string}            text Text to use in verification.
-     *  @param {string}            signature Signature to use in verification.
-     *  @param {function(boolean)} success Success method, result is whether
-     *                             signature is valid.
-     *  @param {function(string)}  failure Failure method, parameter is error
-     *                             message.
-     *  @method verify
-     *  @static
-     */
-    constructor.verify = function(pk, text, signature, success, failure) {
-        EcRsaOaepAsyncWorker.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsyncWorker.w == null) {
-            success(EcRsaOaep.verify(pk, text, signature));
-        } else {
-            var worker = EcRsaOaepAsyncWorker.rotator++;
-            EcRsaOaepAsyncWorker.rotator = EcRsaOaepAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)[&quot;pk&quot;] = pk.toPem();
-            (o)[&quot;text&quot;] = forge.util.encodeUtf8(text);
-            (o)[&quot;signature&quot;] = signature;
-            (o)[&quot;cmd&quot;] = &quot;verifyRsaOaep&quot;;
-            EcRsaOaepAsyncWorker.q1[worker].push(success);
-            EcRsaOaepAsyncWorker.q2[worker].push(failure);
-            EcRsaOaepAsyncWorker.w[worker].postMessage(o);
-        }
-    };
-}, {w: {name: &quot;Array&quot;, arguments: [{name: &quot;Worker&quot;, arguments: [&quot;Object&quot;]}]}, q1: {name: &quot;Array&quot;, arguments: [{name: &quot;Array&quot;, arguments: [&quot;Callback1&quot;]}]}, q2: {name: &quot;Array&quot;, arguments: [{name: &quot;Array&quot;, arguments: [&quot;Callback1&quot;]}]}}, {});
-/**
- *  Asynchronous implementation of {{#crossLink
- *  &quot;EcAesCtr&quot;}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcAesCtrAsyncWorker
- *  @module com.eduworks.ec
- */
-var EcAesCtrAsyncWorker = function() {};
-EcAesCtrAsyncWorker = stjs.extend(EcAesCtrAsyncWorker, null, [], function(constructor, prototype) {
-    constructor.rotator = 0;
-    constructor.w = null;
-    constructor.q1 = null;
-    constructor.q2 = null;
-    constructor.initWorker = function() {
-        if (window == null &amp;&amp; ((typeof self).equals(&quot;undefined&quot;)) || Worker == undefined || Worker == null) {
-            return;
-        }
-        if (!EcRemote.async) {
-            return;
-        }
-        if (EcAesCtrAsyncWorker.w != null) {
-            return;
-        }
-        EcAesCtrAsyncWorker.rotator = 0;
-        EcAesCtrAsyncWorker.q1 = new Array();
-        EcAesCtrAsyncWorker.q2 = new Array();
-        EcAesCtrAsyncWorker.w = new Array();
-        for (var index = 0; index &lt; 8; index++) {
-            EcAesCtrAsyncWorker.createWorker(index);
-        }
-    };
-    constructor.createWorker = function(index) {
-        EcAesCtrAsyncWorker.q1.push(new Array());
-        EcAesCtrAsyncWorker.q2.push(new Array());
-        var wkr;
-        if ((window)[&quot;scriptPath&quot;] != null) 
-            EcAesCtrAsyncWorker.w.push(wkr = new Worker((window)[&quot;scriptPath&quot;] + &quot;forgeAsync.js&quot;));
-         else 
-            EcAesCtrAsyncWorker.w.push(wkr = new Worker(&quot;forgeAsync.js&quot;));
-        wkr.onmessage = function(p1) {
-            var o = p1.data;
-            var success = EcAesCtrAsyncWorker.q1[index].shift();
-            var failure = EcAesCtrAsyncWorker.q2[index].shift();
-            if ((o)[&quot;error&quot;] != null) {
-                if (failure != null) 
-                    failure((o)[&quot;error&quot;]);
-            } else if (success != null) {
-                success((o)[&quot;result&quot;]);
-            }
-        };
-        wkr.onerror = function(p1) {
-            var success = EcAesCtrAsyncWorker.q1[index].shift();
-            var failure = EcAesCtrAsyncWorker.q2[index].shift();
-            if (failure != null) {
-                failure(p1.toString());
-            }
-        };
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcAesCtr/encrypt:method&quot;}}EcAesCtr.encrypt{{/crossLink}}
-     * 
-     *  @param {string}           plaintext Text to encrypt.
-     *  @param {string}           secret Secret to use to encrypt.
-     *  @param {string}           iv Initialization Vector to use to encrypt.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(plaintext, secret, iv, success, failure) {
-        EcAesCtrAsyncWorker.initWorker();
-        if (!EcRemote.async || EcAesCtrAsyncWorker.w == null) {
-            success(EcAesCtr.encrypt(plaintext, secret, iv));
-        } else {
-            var worker = EcAesCtrAsyncWorker.rotator++;
-            EcAesCtrAsyncWorker.rotator = EcAesCtrAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)[&quot;secret&quot;] = secret;
-            (o)[&quot;iv&quot;] = iv;
-            (o)[&quot;text&quot;] = forge.util.encodeUtf8(plaintext);
-            (o)[&quot;cmd&quot;] = &quot;encryptAesCtr&quot;;
-            EcAesCtrAsyncWorker.q1[worker].push(success);
-            EcAesCtrAsyncWorker.q2[worker].push(failure);
-            EcAesCtrAsyncWorker.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcAesCtr/decrypt:method&quot;}}EcAesCtr.decrypt{{/crossLink}}
-     * 
-     *  @param {string}           ciphertext Text to decrypt.
-     *  @param {string}           secret Secret to use to decrypt.
-     *  @param {string}           iv Initialization Vector to use to decrypt.
-     *  @param {function(string)} success Success method, result is Plaintext
-     *                            with no encoding.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
-        if (EcCrypto.caching) {
-            var cacheGet = null;
-            cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
-            if (cacheGet != null) {
-                success(cacheGet);
-                return;
-            }
-        }
-        EcAesCtrAsyncWorker.initWorker();
-        if (!EcRemote.async || EcAesCtrAsyncWorker.w == null) {
-            success(EcAesCtr.decrypt(ciphertext, secret, iv));
-        } else {
-            var worker = EcAesCtrAsyncWorker.rotator++;
-            EcAesCtrAsyncWorker.rotator = EcAesCtrAsyncWorker.rotator % 8;
-            var o = new Object();
-            (o)[&quot;secret&quot;] = secret;
-            (o)[&quot;iv&quot;] = iv;
-            (o)[&quot;text&quot;] = ciphertext;
-            (o)[&quot;cmd&quot;] = &quot;decryptAesCtr&quot;;
-            if (EcCrypto.caching) {
-                EcAesCtrAsyncWorker.q1[worker].push(function(p1) {
-                    (EcCrypto.decryptionCache)[secret + iv + ciphertext] = forge.util.decodeUtf8(p1);
-                    success(forge.util.decodeUtf8(p1));
-                });
-            } else {
-                EcAesCtrAsyncWorker.q1[worker].push(function(p1) {
-                    success(forge.util.decodeUtf8(p1));
-                });
-            }
-            EcAesCtrAsyncWorker.q2[worker].push(failure);
-            EcAesCtrAsyncWorker.w[worker].postMessage(o);
-        }
-    };
-}, {w: {name: &quot;Array&quot;, arguments: [{name: &quot;Worker&quot;, arguments: [&quot;Object&quot;]}]}, q1: {name: &quot;Array&quot;, arguments: [{name: &quot;Array&quot;, arguments: [&quot;Callback1&quot;]}]}, q2: {name: &quot;Array&quot;, arguments: [{name: &quot;Array&quot;, arguments: [&quot;Callback1&quot;]}]}}, {});
-/**
- *  Async version of EcRsaOaep that uses browser extensions (window.crypto) to accomplish cryptography much faster.
- *  Falls back to EcRsaOaepAsyncWorker, if window.crypto is not available.
- *  @class EcRsaOaepAsync
- */
-var EcRsaOaepAsync = function() {};
-EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, prototype) {
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/encrypt:method&quot;}}EcRsaOaep.encrypt{{/crossLink}}
-     * 
-     *  @param {EcPk}             pk Public Key to use to encrypt.
-     *  @param {string}           plaintext Plaintext to encrypt.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(pk, plainText, success, failure) {
-        if (EcRemote.async == false) {
-            success(EcRsaOaep.encrypt(pk, plainText));
-            return;
-        }
-        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcRsaOaepAsyncWorker.encrypt(pk, plainText, success, failure);
-            return;
-        }
-        var keyUsages = new Array();
-        keyUsages.push(&quot;encrypt&quot;);
-        var algorithm = new Object();
-        algorithm.name = &quot;RSA-OAEP&quot;;
-        algorithm.hash = &quot;SHA-1&quot;;
-        if (pk.key == null) 
-            window.crypto.subtle.importKey(&quot;jwk&quot;, pk.toJwk(), algorithm, false, keyUsages).then(function(key) {
-                pk.key = key;
-                window.crypto.subtle.encrypt(algorithm, key, str2ab(forge.util.encodeUtf8(plainText))).then(function(p1) {
-                    success(base64.encode(p1));
-                }, failure);
-            }, failure);
-         else 
-            window.crypto.subtle.encrypt(algorithm, pk.key, str2ab(forge.util.encodeUtf8(plainText))).then(function(p1) {
-                success(base64.encode(p1));
-            }, failure);
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/decrypt:method&quot;}}EcRsaOaep.decrypt{{/crossLink}}
-     * 
-     *  @param {EcPpk}            ppk Public private keypair to use to decrypt.
-     *  @param {string}           ciphertext Ciphertext to decrypt.
-     *  @param {function(string)} success Success method, result is unencoded
-     *                            plaintext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ppk, cipherText, success, failure) {
-        if (EcCrypto.caching) {
-            var cacheGet = null;
-            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + cipherText];
-            if (cacheGet != null) {
-                success(cacheGet);
-                return;
-            }
-        }
-        if (EcRemote.async == false) {
-            success(EcRsaOaep.decrypt(ppk, cipherText));
-            return;
-        }
-        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcRsaOaepAsyncWorker.decrypt(ppk, cipherText, success, failure);
-            return;
-        }
-        var keyUsages = new Array();
-        keyUsages.push(&quot;decrypt&quot;);
-        var algorithm = new Object();
-        algorithm.name = &quot;RSA-OAEP&quot;;
-        algorithm.hash = &quot;SHA-1&quot;;
-        if (ppk.key == null) 
-            window.crypto.subtle.importKey(&quot;jwk&quot;, ppk.toJwk(), algorithm, false, keyUsages).then(function(key) {
-                ppk.key = key;
-                window.crypto.subtle.decrypt(algorithm, key, base64.decode(cipherText)).then(function(p1) {
-                    var result = forge.util.decodeUtf8(ab2str(p1));
-                    if (EcCrypto.caching) {
-                        (EcCrypto.decryptionCache)[ppk.toPem() + cipherText] = result;
-                    }
-                    success(result);
-                }, failure);
-            }, failure);
-         else 
-            window.crypto.subtle.decrypt(algorithm, ppk.key, base64.decode(cipherText)).then(function(p1) {
-                var result = forge.util.decodeUtf8(ab2str(p1));
-                if (EcCrypto.caching) {
-                    (EcCrypto.decryptionCache)[ppk.toPem() + cipherText] = result;
-                }
-                success(result);
-            }, failure);
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/sign:method&quot;}}EcRsaOaep.sign{{/crossLink}}
-     * 
-     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
-     *  @param {string}           text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method sign
-     *  @static
-     */
-    constructor.sign = function(ppk, text, success, failure) {
-        if (EcRemote.async == false) {
-            success(EcRsaOaep.sign(ppk, text));
-            return;
-        }
-        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcRsaOaepAsyncWorker.sign(ppk, text, success, failure);
-            return;
-        }
-        var keyUsages = new Array();
-        keyUsages.push(&quot;sign&quot;);
-        var algorithm = new Object();
-        algorithm.name = &quot;RSASSA-PKCS1-v1_5&quot;;
-        algorithm.hash = &quot;SHA-1&quot;;
-        if (ppk.signKey == null) 
-            window.crypto.subtle.importKey(&quot;jwk&quot;, ppk.toJwk(), algorithm, false, keyUsages).then(function(key) {
-                ppk.signKey = key;
-                window.crypto.subtle.sign(algorithm, key, str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
-                    success(base64.encode(p1));
-                }, failure);
-            }, failure);
-         else 
-            window.crypto.subtle.sign(algorithm, ppk.signKey, str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
-                success(base64.encode(p1));
-            }, failure);
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/signSha256:method&quot;}}EcRsaOaep.signSha256{{/crossLink}}
-     * 
-     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
-     *  @param {string}           text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method signSha256
-     *  @static
-     */
-    constructor.signSha256 = function(ppk, text, success, failure) {
-        if (EcRemote.async == false) {
-            success(EcRsaOaep.signSha256(ppk, text));
-            return;
-        }
-        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcRsaOaepAsyncWorker.sign(ppk, text, success, failure);
-            return;
-        }
-        var keyUsages = new Array();
-        keyUsages.push(&quot;sign&quot;);
-        var algorithm = new Object();
-        algorithm.name = &quot;RSASSA-PKCS1-v1_5&quot;;
-        algorithm.hash = &quot;SHA-256&quot;;
-        if (ppk.signKey == null) 
-            window.crypto.subtle.importKey(&quot;jwk&quot;, ppk.toJwk(), algorithm, false, keyUsages).then(function(key) {
-                ppk.signKey = key;
-                window.crypto.subtle.sign(algorithm, key, str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
-                    success(base64.encode(p1));
-                }, failure);
-            }, failure);
-         else 
-            window.crypto.subtle.sign(algorithm, ppk.signKey, str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
-                success(base64.encode(p1));
-            }, failure);
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcRsaOaep/verify:method&quot;}}EcRsaOaep.verify{{/crossLink}}
-     * 
-     *  @param {EcPk}              pk Public key to use to verify message.
-     *  @param {string}            text Text to use in verification.
-     *  @param {string}            signature Signature to use in verification.
-     *  @param {function(boolean)} success Success method, result is whether
-     *                             signature is valid.
-     *  @param {function(string)}  failure Failure method, parameter is error
-     *                             message.
-     *  @method verify
-     *  @static
-     */
-    constructor.verify = function(pk, text, signature, success, failure) {
-        if (EcRemote.async == false) {
-            success(EcRsaOaep.verify(pk, text, signature));
-            return;
-        }
-        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcRsaOaepAsyncWorker.verify(pk, text, signature, success, failure);
-            return;
-        }
-        var keyUsages = new Array();
-        keyUsages.push(&quot;verify&quot;);
-        var algorithm = new Object();
-        algorithm.name = &quot;RSASSA-PKCS1-v1_5&quot;;
-        algorithm.hash = &quot;SHA-1&quot;;
-        if (pk.signKey == null) 
-            window.crypto.subtle.importKey(&quot;jwk&quot;, pk.toJwk(), algorithm, false, keyUsages).then(function(key) {
-                pk.signKey = key;
-                window.crypto.subtle.verify(algorithm, key, base64.decode(signature), str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
-                    success(p1);
-                }, failure);
-            }, failure);
-         else 
-            window.crypto.subtle.verify(algorithm, pk.signKey, base64.decode(signature), str2ab(forge.util.encodeUtf8(text))).then(function(p1) {
-                success(p1);
-            }, failure);
-    };
-}, {}, {});
-/**
- *  Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.
- *  Falls back to EcAesCtrAsyncWorker, if window.crypto is not available.
- *  @class EcAesCtrAsync
- */
-var EcAesCtrAsync = function() {};
-EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcAesCtr/encrypt:method&quot;}}EcAesCtr.encrypt{{/crossLink}}
-     * 
-     *  @param {string}           plaintext Text to encrypt.
-     *  @param {string}           secret Secret to use to encrypt.
-     *  @param {string}           iv Initialization Vector to use to encrypt.
-     *  @param {function(string)} success Success method, result is Base64
-     *                            encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method encrypt
-     *  @static
-     */
-    constructor.encrypt = function(plaintext, secret, iv, success, failure) {
-        if (window == null || window.crypto == null || window.crypto.subtle == null) {
-            EcAesCtrAsyncWorker.encrypt(plaintext, secret, iv, success, failure);
-            return;
-        }
-        if (EcRemote.async == false) {
-            success(EcAesCtr.encrypt(plaintext, secret, iv));
-            return;
-        }
-        var keyUsages = new Array();
-        keyUsages.push(&quot;encrypt&quot;, &quot;decrypt&quot;);
-        var algorithm = new Object();
-        algorithm.name = &quot;AES-CTR&quot;;
-        algorithm.counter = base64.decode(iv);
-        algorithm.length = 128;
-        var data;
-        data = str2ab(plaintext);
-        window.crypto.subtle.importKey(&quot;raw&quot;, base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
-            var p = window.crypto.subtle.encrypt(algorithm, key, data);
-            p.then(function(p1) {
-                success(base64.encode(p1));
-            }, failure);
-        }, failure);
-    };
-    /**
-     *  Asynchronous form of {{#crossLink
-     *  &quot;EcAesCtr/decrypt:method&quot;}}EcAesCtr.decrypt{{/crossLink}}
-     * 
-     *  @param {string}           ciphertext Text to decrypt.
-     *  @param {string}           secret Secret to use to decrypt.
-     *  @param {string}           iv Initialization Vector to use to decrypt.
-     *  @param {function(string)} success Success method, result is Plaintext
-     *                            with no encoding.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *                            message.
-     *  @method decrypt
-     *  @static
-     */
-    constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
-        if (EcCrypto.caching) {
-            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
-            if (cacheGet != null) {
-                success(cacheGet);
-                return;
-            }
-        }
-        if (window.crypto == null || window.crypto.subtle == null) {
-            EcAesCtrAsyncWorker.decrypt(ciphertext, secret, iv, success, failure);
-            return;
-        }
-        if (EcRemote.async == false) {
-            success(EcAesCtr.decrypt(ciphertext, secret, iv));
-        }
-        var keyUsages = new Array();
-        keyUsages.push(&quot;encrypt&quot;, &quot;decrypt&quot;);
-        var algorithm = new Object();
-        algorithm.name = &quot;AES-CTR&quot;;
-        algorithm.counter = base64.decode(iv);
-        algorithm.length = 128;
-        var data;
-        data = base64.decode(ciphertext);
-        window.crypto.subtle.importKey(&quot;raw&quot;, base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
-            var p = window.crypto.subtle.decrypt(algorithm, key, data);
-            p.then(function(p1) {
-                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = ab2str(p1);
-                success(ab2str(p1));
-            }, failure);
-        }, failure);
-    };
-}, {}, {});
 
-    </pre>
+        <div class="foundat">
+            Defined in: <a href="../files/node_modules_cassproject_index.js.html#l8079"><code>node_modules\cassproject\index.js:8079</code></a>
+        </div>
+
+            Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
+
+</div>
+
+
+<div class="box intro">
+    <p><a href="http://credentialengine.org/Competency">credentialengine.org/Competency</a>
+Description of knowledge, skills, and/or abilities.</p>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_alignFrom">alignFrom</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_alignTo">alignTo</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_altCodedNotation">altCodedNotation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_author">author</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_broadAlignment">broadAlignment</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_codedNotation">codedNotation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_comment">comment</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_competencyCategory">competencyCategory</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_competencyText">competencyText</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_complexityLevel">complexityLevel</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_comprisedOf">comprisedOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_conceptKeyword">conceptKeyword</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_conceptTerm">conceptTerm</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_creator">creator</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_crossSubjectReference">crossSubjectReference</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_dateCreated">dateCreated</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_dateModified">dateModified</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_derivedFrom">derivedFrom</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_educationLevelType">educationLevelType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_exactAlignment">exactAlignment</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasChild">hasChild</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_inLanguage">inLanguage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isChildOf">isChildOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isPartOf">isPartOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isTopChildOf">isTopChildOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isVersionOf">isVersionOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_listID">listID</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_localSubject">localSubject</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_majorAlignment">majorAlignment</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_minorAlignment">minorAlignment</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_narrowAlignment">narrowAlignment</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_prerequisiteAlignment">prerequisiteAlignment</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_shouldIndex">shouldIndex</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_skillEmbodied">skillEmbodied</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_weight">weight</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_alignFrom" class="property item">
+    <h3 class="name"><code>alignFrom</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8094"><code>node_modules\cassproject\index.js:8094</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/alignFrom">http://purl.org/ctdlasn/terms/alignFrom</a>
+A competency framework or competency from which this competency framework or competency is aligned.
+An alignment is an assertion of some degree of equivalency between the subject and the object of the assertion.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_alignTo" class="property item">
+    <h3 class="name"><code>alignTo</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8102"><code>node_modules\cassproject\index.js:8102</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/alignTo">http://purl.org/ctdlasn/terms/alignTo</a>
+A competency framework or competency to which this competency framework or competency is aligned.
+An alignment is an assertion of some degree of equivalency between the subject and the object of the assertion.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_altCodedNotation" class="property item">
+    <h3 class="name"><code>altCodedNotation</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8110"><code>node_modules\cassproject\index.js:8110</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/altCodedNotation">http://purl.org/ctdlasn/terms/altCodedNotation</a>
+An alphanumeric notation or ID code identifying this competency in common use among end-users.
+Unlike the codedNotation property, the value for the altCodedNotation property need not be an official identifier created by the promulgating agency. It must be an identifier in common use among end-users of the competency. This property should be seldom used and only with a clear demonstration of need (i.e., in common use). For example, in the Common Core State Standards (Math) in the U.S., the official codedNotation of "CCSS.Math.Content.1.NBT.C.4" is abbreviated in common use by end-users to the unofficial altCodedNotation of "1.NBT.4".</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_author" class="property item">
+    <h3 class="name"><code>author</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8118"><code>node_modules\cassproject\index.js:8118</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/author">http://purl.org/ctdlasn/terms/author</a>
+A person or organization chiefly responsible for the intellectual or artistic content of this competency framework or competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_broadAlignment" class="property item">
+    <h3 class="name"><code>broadAlignment</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8125"><code>node_modules\cassproject\index.js:8125</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/broadAlignment">http://purl.org/ctdlasn/terms/broadAlignment</a>
+The referenced competency covers all of the relevant concepts in this competency as well as relevant concepts not found in this competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_codedNotation" class="property item">
+    <h3 class="name"><code>codedNotation</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8132"><code>node_modules\cassproject\index.js:8132</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/codedNotation">http://purl.org/ctdlasn/terms/codedNotation</a>
+An alphanumeric notation or ID code as defined by the promulgating body to identify this competency.
+This property should be used only for codes created by the promulgating body. For alternative competency notations in common use in the community of practice, but not endorsed by the promulgating body, the altCodedNotation property can be used (sparingly on clear evidence of common use and need).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_comment" class="property item">
+    <h3 class="name"><code>comment</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8140"><code>node_modules\cassproject\index.js:8140</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/comment">http://purl.org/ctdlasn/terms/comment</a>
+Supplemental text provided by the promulgating body that clarifies the nature, scope or use of this competency.
+Use this property when the text provides useful context for this competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_competencyCategory" class="property item">
+    <h3 class="name"><code>competencyCategory</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8148"><code>node_modules\cassproject\index.js:8148</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/competencyCategory">http://purl.org/ctdlasn/terms/competencyCategory</a>
+The textual label identifying the category of the competency as designated by the promulgating body.
+This property points to a class, not to instances of that class. For example, where two competencies in a competency framework have been identified respectively by the promulgating agency as "Strand: Rennaisance" and "Strand: Social history", the statementLabel for both these competencies is "Strand".</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_competencyText" class="property item">
+    <h3 class="name"><code>competencyText</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8156"><code>node_modules\cassproject\index.js:8156</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/competencyText">http://purl.org/ctdlasn/terms/competencyText</a>
+The text of the competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_complexityLevel" class="property item">
+    <h3 class="name"><code>complexityLevel</code></h3>
+    <span class="type"><a href="../classes/ProficiencyScale.html" class="crosslink">ProficiencyScale</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8163"><code>node_modules\cassproject\index.js:8163</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/complexityLevel">http://purl.org/ctdlasn/terms/complexityLevel</a>
+The expected performance level of a learner or professional as defined by a competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_comprisedOf" class="property item">
+    <h3 class="name"><code>comprisedOf</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8170"><code>node_modules\cassproject\index.js:8170</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/comprisedOf">http://purl.org/ctdlasn/terms/comprisedOf</a>
+This competency includes, comprehends or encompasses, in whole or in part, the meaning, nature or importance of the referenced competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_conceptKeyword" class="property item">
+    <h3 class="name"><code>conceptKeyword</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8177"><code>node_modules\cassproject\index.js:8177</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/conceptKeyword">http://purl.org/ctdlasn/terms/conceptKeyword</a>
+A word or phrase used by the promulgating agency to refine and differentiate individual competencies contextually.
+The conceptKeyword property is used in ASN-conforming data solely to denote the significant topicality of the competency using free-text keywords and phrases derived and assigned by the indexer, e.g., "George Washington", "Ayers Rock", etc.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_conceptTerm" class="property item">
+    <h3 class="name"><code>conceptTerm</code></h3>
+    <span class="type"><a href="../classes/Concept.html" class="crosslink">Concept</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8185"><code>node_modules\cassproject\index.js:8185</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/conceptTerm">http://purl.org/ctdlasn/terms/conceptTerm</a>
+A term drawn from a controlled vocabulary used by the promulgating agency to refine and differentiate individual competencies contextually.
+The conceptTerm property is used in ASN-conforming data solely to denote the topicality of the competency - e.g., "Pythagorean Theorem", "Trigonometric functions", "Forces and energy", "Scientific method", "Oral history" etc. The value of the conceptTerm property must be drawn from a controlled vocabulary where concepts have all been assigned URI - e.g., terms drawn from the Australia Schools Online Thesaurus (ScOT).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_creator" class="property item">
+    <h3 class="name"><code>creator</code></h3>
+    <span class="type"><a href="../classes/CredentialOrganization.html" class="crosslink">CredentialOrganization</a> | <a href="../classes/QACredentialOrganization.html" class="crosslink">QACredentialOrganization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8193"><code>node_modules\cassproject\index.js:8193</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/creator">http://purl.org/ctdlasn/terms/creator</a>
+An entity primarily responsible for making this competency framework or competency.
+The creator property is used with non-canonical statements created by a third party.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_crossSubjectReference" class="property item">
+    <h3 class="name"><code>crossSubjectReference</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8201"><code>node_modules\cassproject\index.js:8201</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/crossSubjectReference">http://purl.org/ctdlasn/terms/crossSubjectReference</a>
+A relationship between this competency and a competency in a separate competency framework.
+An interdisciplinary statement reference.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_dateCreated" class="property item">
+    <h3 class="name"><code>dateCreated</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8209"><code>node_modules\cassproject\index.js:8209</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/dateCreated">http://purl.org/ctdlasn/terms/dateCreated</a>
+Date of creation of this competency framework or competency.
+The dateCreated property is used for non-canonical statements created by a third party.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_dateModified" class="property item">
+    <h3 class="name"><code>dateModified</code></h3>
+    <span class="type">DateTime</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8217"><code>node_modules\cassproject\index.js:8217</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/dateModified">http://purl.org/ctdlasn/terms/dateModified</a>
+The date on which this framework or competency was most recently modified in some way.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_derivedFrom" class="property item">
+    <h3 class="name"><code>derivedFrom</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8224"><code>node_modules\cassproject\index.js:8224</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/derivedFrom">http://purl.org/ctdlasn/terms/derivedFrom</a>
+A third party version of the entity being reference that has been modified in meaning through editing, extension or refinement.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_educationLevelType" class="property item">
+    <h3 class="name"><code>educationLevelType</code></h3>
+    <span class="type"><a href="../classes/Concept.html" class="crosslink">Concept</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8231"><code>node_modules\cassproject\index.js:8231</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/educationLevelType">http://purl.org/ctdlasn/terms/educationLevelType</a>
+A general statement describing the education or training context. Alternatively, a more specific statement of the location of the audience in terms of its progression through an education or training context.
+Best practice is to use terms from the <a href="http://purl.org/ctdl/terms/AudienceLevel">http://purl.org/ctdl/terms/AudienceLevel</a> concept scheme.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_exactAlignment" class="property item">
+    <h3 class="name"><code>exactAlignment</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8239"><code>node_modules\cassproject\index.js:8239</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/exactAlignment">http://purl.org/ctdlasn/terms/exactAlignment</a>
+The relevant concepts in this competency and the referenced competency are coextensive.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasChild" class="property item">
+    <h3 class="name"><code>hasChild</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8246"><code>node_modules\cassproject\index.js:8246</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/hasChild">http://purl.org/ctdlasn/terms/hasChild</a>
+The referenced competency is lower in some arbitrary hierarchy than this competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8253"><code>node_modules\cassproject\index.js:8253</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/identifier">http://purl.org/ctdlasn/terms/identifier</a>
+An alternative URI by which this competency framework or competency is identified.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_inLanguage" class="property item">
+    <h3 class="name"><code>inLanguage</code></h3>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8260"><code>node_modules\cassproject\index.js:8260</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/inLanguage">http://purl.org/ctdlasn/terms/inLanguage</a>
+The primary language used in or by this competency framework or competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isChildOf" class="property item">
+    <h3 class="name"><code>isChildOf</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8267"><code>node_modules\cassproject\index.js:8267</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/isChildOf">http://purl.org/ctdlasn/terms/isChildOf</a>
+The referenced competency is higher in some arbitrary hierarchy than this competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isPartOf" class="property item">
+    <h3 class="name"><code>isPartOf</code></h3>
+    <span class="type"><a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8274"><code>node_modules\cassproject\index.js:8274</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/isPartOf">http://purl.org/ctdlasn/terms/isPartOf</a>
+Competency framework that this competency is a part of.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isTopChildOf" class="property item">
+    <h3 class="name"><code>isTopChildOf</code></h3>
+    <span class="type"><a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8281"><code>node_modules\cassproject\index.js:8281</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/isTopChildOf">http://purl.org/ctdlasn/terms/isTopChildOf</a>
+Indicates that this competency is at the top of some arbitrary hierarchy.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isVersionOf" class="property item">
+    <h3 class="name"><code>isVersionOf</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8288"><code>node_modules\cassproject\index.js:8288</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/isVersionOf">http://purl.org/ctdlasn/terms/isVersionOf</a>
+A related competency of which this competency is a version, edition, or adaptation.
+Changes in version imply substantive changes in content rather than differences in format.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_listID" class="property item">
+    <h3 class="name"><code>listID</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8296"><code>node_modules\cassproject\index.js:8296</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/listID">http://purl.org/ctdlasn/terms/listID</a>
+An alphanumeric string found in the source framework indicating the relative position of a competency in an ordered list of competencies such as "A", "B", or "a", "b", or "I", "II", or "1", "2".</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_localSubject" class="property item">
+    <h3 class="name"><code>localSubject</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8303"><code>node_modules\cassproject\index.js:8303</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/localSubject">http://purl.org/ctdlasn/terms/localSubject</a>
+The text string denoting the subject of the competency framework or competency as designated by the promulgating agency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_majorAlignment" class="property item">
+    <h3 class="name"><code>majorAlignment</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8310"><code>node_modules\cassproject\index.js:8310</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/majorAlignment">http://purl.org/ctdlasn/terms/majorAlignment</a>
+Major overlap of relevant concepts between the this competency and the referenced competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_minorAlignment" class="property item">
+    <h3 class="name"><code>minorAlignment</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8317"><code>node_modules\cassproject\index.js:8317</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/minorAlignment">http://purl.org/ctdlasn/terms/minorAlignment</a>
+Minor overlap of relevant concepts between this competency and the referenced competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_narrowAlignment" class="property item">
+    <h3 class="name"><code>narrowAlignment</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8324"><code>node_modules\cassproject\index.js:8324</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/narrowAlignment">http://purl.org/ctdlasn/terms/narrowAlignment</a>
+This competency covers all of the relevant concepts in the referenced competency as well as relevant concepts not found in the referenced competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_prerequisiteAlignment" class="property item">
+    <h3 class="name"><code>prerequisiteAlignment</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8331"><code>node_modules\cassproject\index.js:8331</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/prerequisiteAlignment">http://purl.org/ctdlasn/terms/prerequisiteAlignment</a>
+This competency is a prerequisite to the referenced competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_shouldIndex" class="property item">
+    <h3 class="name"><code>shouldIndex</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8338"><code>node_modules\cassproject\index.js:8338</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/shouldIndex">http://purl.org/ctdlasn/terms/shouldIndex</a>
+Indicates whether correlators should or should not assign the competency during correlation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_skillEmbodied" class="property item">
+    <h3 class="name"><code>skillEmbodied</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8345"><code>node_modules\cassproject\index.js:8345</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/skillEmbodied">http://purl.org/ctdlasn/terms/skillEmbodied</a>
+Cognitive, affective, and psychomotor skills directly or indirectly embodied in this competency.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_weight" class="property item">
+    <h3 class="name"><code>weight</code></h3>
+    <span class="type">Float</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l8352"><code>node_modules\cassproject\index.js:8352</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdlasn/terms/weight">http://purl.org/ctdlasn/terms/weight</a>
+An asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.
+Best practice is to assigned a decimal value weight between 0 and 1 that indicates the strength of the assertion, with 0 being weakest and 1 being strongest.</p>
+
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
 </div>
                     </div>
                 </div>

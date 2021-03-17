@@ -84,6 +84,7 @@
                                 <li><a href="../classes/AssessmentProfile.html">AssessmentProfile</a></li>
                                 <li><a href="../classes/AssignAction.html">AssignAction</a></li>
                                 <li><a href="../classes/AssociateDegree.html">AssociateDegree</a></li>
+                                <li><a href="../classes/Attitude.html">Attitude</a></li>
                                 <li><a href="../classes/Attorney.html">Attorney</a></li>
                                 <li><a href="../classes/Audience.html">Audience</a></li>
                                 <li><a href="../classes/AudioObject.html">AudioObject</a></li>
@@ -108,6 +109,7 @@
                                 <li><a href="../classes/BedAndBreakfast.html">BedAndBreakfast</a></li>
                                 <li><a href="../classes/BedDetails.html">BedDetails</a></li>
                                 <li><a href="../classes/BefriendAction.html">BefriendAction</a></li>
+                                <li><a href="../classes/Belief.html">Belief</a></li>
                                 <li><a href="../classes/BikeStore.html">BikeStore</a></li>
                                 <li><a href="../classes/Blog.html">Blog</a></li>
                                 <li><a href="../classes/BlogPosting.html">BlogPosting</a></li>
@@ -152,6 +154,8 @@
                                 <li><a href="../classes/Cemetery.html">Cemetery</a></li>
                                 <li><a href="../classes/Certificate.html">Certificate</a></li>
                                 <li><a href="../classes/Certification.html">Certification</a></li>
+                                <li><a href="../classes/CfdAssessment.html">CfdAssessment</a></li>
+                                <li><a href="../classes/CfdReference.html">CfdReference</a></li>
                                 <li><a href="../classes/CheckAction.html">CheckAction</a></li>
                                 <li><a href="../classes/CheckInAction.html">CheckInAction</a></li>
                                 <li><a href="../classes/CheckOutAction.html">CheckOutAction</a></li>
@@ -208,6 +212,7 @@
                                 <li><a href="../classes/Credential.html">Credential</a></li>
                                 <li><a href="../classes/CredentialAlignmentObject.html">CredentialAlignmentObject</a></li>
                                 <li><a href="../classes/CredentialAssertion.html">CredentialAssertion</a></li>
+                                <li><a href="../classes/CredentialCompetencyLocator.html">CredentialCompetencyLocator</a></li>
                                 <li><a href="../classes/CredentialFramework.html">CredentialFramework</a></li>
                                 <li><a href="../classes/CredentialingAction.html">CredentialingAction</a></li>
                                 <li><a href="../classes/CredentialOrganization.html">CredentialOrganization</a></li>
@@ -421,6 +426,7 @@
                                 <li><a href="../classes/JoinAction.html">JoinAction</a></li>
                                 <li><a href="../classes/JourneymanCertificate.html">JourneymanCertificate</a></li>
                                 <li><a href="../classes/JurisdictionProfile.html">JurisdictionProfile</a></li>
+                                <li><a href="../classes/Knowledge.html">Knowledge</a></li>
                                 <li><a href="../classes/LakeBodyOfWater.html">LakeBodyOfWater</a></li>
                                 <li><a href="../classes/Landform.html">Landform</a></li>
                                 <li><a href="../classes/LandmarksOrHistoricalBuildings.html">LandmarksOrHistoricalBuildings</a></li>
@@ -631,6 +637,7 @@
                                 <li><a href="../classes/RightsAction.html">RightsAction</a></li>
                                 <li><a href="../classes/RiverBodyOfWater.html">RiverBodyOfWater</a></li>
                                 <li><a href="../classes/Role.html">Role</a></li>
+                                <li><a href="../classes/Rollup.html">Rollup</a></li>
                                 <li><a href="../classes/RollupRule.html">RollupRule</a></li>
                                 <li><a href="../classes/RoofingContractor.html">RoofingContractor</a></li>
                                 <li><a href="../classes/Room.html">Room</a></li>
@@ -661,6 +668,7 @@
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
                                 <li><a href="../classes/SingleFamilyResidence.html">SingleFamilyResidence</a></li>
                                 <li><a href="../classes/SiteNavigationElement.html">SiteNavigationElement</a></li>
+                                <li><a href="../classes/Skill.html">Skill</a></li>
                                 <li><a href="../classes/SkiResort.html">SkiResort</a></li>
                                 <li><a href="../classes/SocialEvent.html">SocialEvent</a></li>
                                 <li><a href="../classes/SocialMediaPosting.html">SocialMediaPosting</a></li>
@@ -773,6 +781,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/com.eduworks.html">com.eduworks</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
@@ -817,7 +826,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_ebac.identity.js.html#l1278"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1278</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_index.js.html#l12366"><code>node_modules\cassproject\index.js:12366</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -869,6 +878,14 @@ and their data should be considered lost.
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_clear">clear</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_commit">commit</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_commit">commit</a>
 
                             </li>
@@ -889,7 +906,19 @@ and their data should be considered lost.
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_fetch">fetch</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isGlobal">isGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_sendCredentials">sendCredentials</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setDefaultIdentityManagementServer">setDefaultIdentityManagementServer</a>
 
                             </li>
                             <li class="index-item method">
@@ -944,7 +973,7 @@ and their data should be considered lost.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1474"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1474</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12562"><code>node_modules\cassproject\index.js:12562</code></a>
         </p>
 
 
@@ -1024,7 +1053,7 @@ Please clear username and password fields after this function is called.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1426"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1426</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12514"><code>node_modules\cassproject\index.js:12514</code></a>
         </p>
 
 
@@ -1033,6 +1062,37 @@ Please clear username and password fields after this function is called.
 
     <div class="description">
         <p>Wipes login data.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_clear" class="method item">
+    <h3 class="name"><code>clear</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l12806"><code>node_modules\cassproject\index.js:12806</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Wipes login data and logs you out.</p>
 
     </div>
 
@@ -1064,7 +1124,7 @@ Please clear username and password fields after this function is called.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1555"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1555</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12643"><code>node_modules\cassproject\index.js:12643</code></a>
         </p>
 
 
@@ -1075,6 +1135,72 @@ Please clear username and password fields after this function is called.
         <p>Commits credentials in EcIdentityManager to remote server.</p>
 <p>
 Will trigger pad generation and fail if the pad has not been specified.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_commit" class="method item">
+    <h3 class="name"><code>commit</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l13005"><code>node_modules\cassproject\index.js:13005</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Commits credentials in EcIdentityManager to remote server.</p>
+
     </div>
 
         <div class="params">
@@ -1149,7 +1275,7 @@ Will trigger pad generation and fail if the pad has not been specified.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1329"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1329</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12417"><code>node_modules\cassproject\index.js:12417</code></a>
         </p>
 
 
@@ -1283,7 +1409,7 @@ Will trigger pad generation and fail if the pad has not been specified.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1362"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1362</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12450"><code>node_modules\cassproject\index.js:12450</code></a>
         </p>
 
 
@@ -1351,7 +1477,7 @@ Will trigger pad generation and fail if the pad has not been specified.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1569"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1569</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12657"><code>node_modules\cassproject\index.js:12657</code></a>
         </p>
 
 
@@ -1425,7 +1551,7 @@ Will trigger pad generation and fail if the pad has not been specified.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1506"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1506</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12594"><code>node_modules\cassproject\index.js:12594</code></a>
         </p>
 
 
@@ -1471,6 +1597,119 @@ Requires login().
 
 
 </div>
+<div id="method_fetch" class="method item">
+    <h3 class="name"><code>fetch</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l12832"><code>node_modules\cassproject\index.js:12832</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Fetch credentials from server, invoking events based on login success or
+failure.</p>
+<p>
+Automatically populates EcIdentityManager.
+<p>
+Does not require startLogin().
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Object></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_isGlobal" class="method item">
+    <h3 class="name"><code>isGlobal</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l12790"><code>node_modules\cassproject\index.js:12790</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true if the identity manager is global. Returns false if the identity manager is local to the server.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>true if the identity manager is global.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_sendCredentials" class="method item">
     <h3 class="name"><code>sendCredentials</code></h3>
 
@@ -1498,7 +1737,7 @@ Requires login().
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1590"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1590</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12678"><code>node_modules\cassproject\index.js:12678</code></a>
         </p>
 
 
@@ -1574,7 +1813,7 @@ Requires login().
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1439"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1439</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12527"><code>node_modules\cassproject\index.js:12527</code></a>
         </p>
 
 
@@ -1597,6 +1836,60 @@ Requires login().
 
                     <div class="param-description">
                         <p>URL to remote identity management server.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setDefaultIdentityManagementServer" class="method item">
+    <h3 class="name"><code>setDefaultIdentityManagementServer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>server</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l12817"><code>node_modules\cassproject\index.js:12817</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Configure compatible remote identity management server.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">server</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Name of the remote identity management server.</p>
 
                     </div>
 
@@ -1631,7 +1924,7 @@ Requires login().
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1642"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1642</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12730"><code>node_modules\cassproject\index.js:12730</code></a>
         </p>
 
 
@@ -1698,7 +1991,7 @@ cards, not appending).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1450"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1450</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l12538"><code>node_modules\cassproject\index.js:12538</code></a>
         </p>
 
 

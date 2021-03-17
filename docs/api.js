@@ -47,6 +47,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "AssessmentProfile",
         "AssignAction",
         "AssociateDegree",
+        "Attitude",
         "Attorney",
         "Audience",
         "AudioObject",
@@ -71,6 +72,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "BedAndBreakfast",
         "BedDetails",
         "BefriendAction",
+        "Belief",
         "BikeStore",
         "Blog",
         "BlogPosting",
@@ -117,6 +119,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "Cemetery",
         "Certificate",
         "Certification",
+        "CfdAssessment",
+        "CfdReference",
         "CheckAction",
         "CheckInAction",
         "CheckOutAction",
@@ -173,6 +177,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Credential",
         "CredentialAlignmentObject",
         "CredentialAssertion",
+        "CredentialCompetencyLocator",
         "CredentialFramework",
         "CredentialOrganization",
         "CredentialPerson",
@@ -384,6 +389,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JoinAction",
         "JourneymanCertificate",
         "JurisdictionProfile",
+        "Knowledge",
         "LakeBodyOfWater",
         "Landform",
         "LandmarksOrHistoricalBuildings",
@@ -595,6 +601,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "RightsAction",
         "RiverBodyOfWater",
         "Role",
+        "Rollup",
         "RollupRule",
         "RoofingContractor",
         "Room",
@@ -625,6 +632,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "SingleFamilyResidence",
         "SiteNavigationElement",
         "SkiResort",
+        "Skill",
         "SocialEvent",
         "SocialMediaPosting",
         "SoftwareApplication",
@@ -734,6 +742,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Zoo"
     ],
     "modules": [
+        "com.eduworks",
         "com.eduworks.ec",
         "org.cassproject",
         "org.credentialengine",
@@ -743,19 +752,24 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "allModules": [
         {
+            "displayName": "com.eduworks",
+            "name": "com.eduworks",
+            "description": "Competency is Under construction.\n<p>\nWorking model of competency with CFD Attitude extension."
+        },
+        {
             "displayName": "com.eduworks.ec",
             "name": "com.eduworks.ec",
-            "description": "Location of strings that store the current namespace for general Eduworks Objects."
+            "description": "Contact Grant that is used to share your public key with another user"
         },
         {
             "displayName": "org.cassproject",
             "name": "org.cassproject",
-            "description": "Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for\npermission controls, signing, identifying and locating the object."
+            "description": "Processor used in determining all the competencies a for which a user has assertions.\nUtilizes EcFrameworkGraph"
         },
         {
             "displayName": "org.credentialengine",
             "name": "org.credentialengine",
-            "description": "credentialengine.org/CredentialingAction\nAction taken by an agent affecting the status of an object entity.\nSince an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action."
+            "description": "credentialengine.org/ApprenticeshipCertificate\nCredential earned through work-based learning and earn-and-learn models that meet standards and are applicable to industry trades and professions."
         },
         {
             "displayName": "org.json.ld",
@@ -765,7 +779,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "org.schema",
             "name": "org.schema",
-            "description": "Schema.org/Thing\nThe most generic type of item."
+            "description": "Schema.org/AccountingService\nAccountancy business.\\n\\nAs a [[LocalBusiness]] it can be described as a [[provider]] of one or more [[Service]]\\(s)."
         },
         {
             "displayName": "org.w3.skos",

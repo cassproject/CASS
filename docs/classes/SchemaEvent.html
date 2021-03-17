@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/main/js/cass/org.cassproject.schema.general.js - CASS Javascript Library</title>
+    <title>SchemaEvent - CASS Javascript Library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -84,6 +84,7 @@
                                 <li><a href="../classes/AssessmentProfile.html">AssessmentProfile</a></li>
                                 <li><a href="../classes/AssignAction.html">AssignAction</a></li>
                                 <li><a href="../classes/AssociateDegree.html">AssociateDegree</a></li>
+                                <li><a href="../classes/Attitude.html">Attitude</a></li>
                                 <li><a href="../classes/Attorney.html">Attorney</a></li>
                                 <li><a href="../classes/Audience.html">Audience</a></li>
                                 <li><a href="../classes/AudioObject.html">AudioObject</a></li>
@@ -108,6 +109,7 @@
                                 <li><a href="../classes/BedAndBreakfast.html">BedAndBreakfast</a></li>
                                 <li><a href="../classes/BedDetails.html">BedDetails</a></li>
                                 <li><a href="../classes/BefriendAction.html">BefriendAction</a></li>
+                                <li><a href="../classes/Belief.html">Belief</a></li>
                                 <li><a href="../classes/BikeStore.html">BikeStore</a></li>
                                 <li><a href="../classes/Blog.html">Blog</a></li>
                                 <li><a href="../classes/BlogPosting.html">BlogPosting</a></li>
@@ -152,6 +154,8 @@
                                 <li><a href="../classes/Cemetery.html">Cemetery</a></li>
                                 <li><a href="../classes/Certificate.html">Certificate</a></li>
                                 <li><a href="../classes/Certification.html">Certification</a></li>
+                                <li><a href="../classes/CfdAssessment.html">CfdAssessment</a></li>
+                                <li><a href="../classes/CfdReference.html">CfdReference</a></li>
                                 <li><a href="../classes/CheckAction.html">CheckAction</a></li>
                                 <li><a href="../classes/CheckInAction.html">CheckInAction</a></li>
                                 <li><a href="../classes/CheckOutAction.html">CheckOutAction</a></li>
@@ -208,6 +212,7 @@
                                 <li><a href="../classes/Credential.html">Credential</a></li>
                                 <li><a href="../classes/CredentialAlignmentObject.html">CredentialAlignmentObject</a></li>
                                 <li><a href="../classes/CredentialAssertion.html">CredentialAssertion</a></li>
+                                <li><a href="../classes/CredentialCompetencyLocator.html">CredentialCompetencyLocator</a></li>
                                 <li><a href="../classes/CredentialFramework.html">CredentialFramework</a></li>
                                 <li><a href="../classes/CredentialingAction.html">CredentialingAction</a></li>
                                 <li><a href="../classes/CredentialOrganization.html">CredentialOrganization</a></li>
@@ -421,6 +426,7 @@
                                 <li><a href="../classes/JoinAction.html">JoinAction</a></li>
                                 <li><a href="../classes/JourneymanCertificate.html">JourneymanCertificate</a></li>
                                 <li><a href="../classes/JurisdictionProfile.html">JurisdictionProfile</a></li>
+                                <li><a href="../classes/Knowledge.html">Knowledge</a></li>
                                 <li><a href="../classes/LakeBodyOfWater.html">LakeBodyOfWater</a></li>
                                 <li><a href="../classes/Landform.html">Landform</a></li>
                                 <li><a href="../classes/LandmarksOrHistoricalBuildings.html">LandmarksOrHistoricalBuildings</a></li>
@@ -631,6 +637,7 @@
                                 <li><a href="../classes/RightsAction.html">RightsAction</a></li>
                                 <li><a href="../classes/RiverBodyOfWater.html">RiverBodyOfWater</a></li>
                                 <li><a href="../classes/Role.html">Role</a></li>
+                                <li><a href="../classes/Rollup.html">Rollup</a></li>
                                 <li><a href="../classes/RollupRule.html">RollupRule</a></li>
                                 <li><a href="../classes/RoofingContractor.html">RoofingContractor</a></li>
                                 <li><a href="../classes/Room.html">Room</a></li>
@@ -661,6 +668,7 @@
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
                                 <li><a href="../classes/SingleFamilyResidence.html">SingleFamilyResidence</a></li>
                                 <li><a href="../classes/SiteNavigationElement.html">SiteNavigationElement</a></li>
+                                <li><a href="../classes/Skill.html">Skill</a></li>
                                 <li><a href="../classes/SkiResort.html">SkiResort</a></li>
                                 <li><a href="../classes/SocialEvent.html">SocialEvent</a></li>
                                 <li><a href="../classes/SocialMediaPosting.html">SocialMediaPosting</a></li>
@@ -773,6 +781,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/com.eduworks.html">com.eduworks</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
@@ -812,646 +821,1661 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/main/js/cass/org.cassproject.schema.general.js</h1>
+<h1>SchemaEvent Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/*-
- * --BEGIN_LICENSE--
- * Competency and Skills System
- * -----
- * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
- * -----
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * --END_LICENSE--
- */
-/**
- *  Location of strings that store the current namespace for EBAC/KBAC.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class Ebac
- *  @module org.cassproject
- */
-var Ebac = function() {};
-Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
-    constructor.context_0_1 = &quot;http://schema.eduworks.com/ebac/0.1&quot;;
-    constructor.context_0_2 = &quot;http://schema.eduworks.com/ebac/0.2&quot;;
-    constructor.context_0_3 = &quot;http://schema.cassproject.org/kbac/0.2&quot;;
-    constructor.context_0_4 = &quot;https://schema.cassproject.org/kbac/0.4&quot;;
-    /**
-     *  Current version of KBAC.
-     * 
-     *  @property context
-     *  @static
-     *  @type string (URL)
-     */
-    constructor.context = Ebac.context_0_4;
-}, {}, {});
-/**
- *  Location of strings that store the current namespace for general Eduworks Objects.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class General
- *  @module com.eduworks.ec
- */
-var General = function() {};
-General = stjs.extend(General, null, [], function(constructor, prototype) {
-    constructor.context_0_2 = &quot;http://schema.eduworks.com/general/0.2&quot;;
-    constructor.context_0_1 = &quot;http://schema.eduworks.com/general/0.1&quot;;
-    /**
-     *  The latest version of the Eduworks Object namespace.
-     * 
-     *  @property context
-     *  @static
-     *  @type {string}
-     */
-    constructor.context = &quot;http://schema.eduworks.com/general/0.2&quot;;
-}, {}, {});
-/**
- *  Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for
- *  permission controls, signing, identifying and locating the object.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcRemoteLinkedData
- *  @extends EcLinkedData
- *  @module org.cassproject
- */
-var EcRemoteLinkedData = /**
- *  Constructor for remote linked data object.
- * 
- *  @param {string} context JSON-LD Context.
- *  @param {string} type JSON-LD Type.
- *  @constructor
- */
-function(context, type) {
-    EcLinkedData.call(this, context, type);
-};
-EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(constructor, prototype) {
-    /**
-     *  PEM encoded public keys of the owner of the object. A repository, upon
-     *  receiving a write operation, will ensure either the data did not
-     *  previously exist, or that an owner has provided a signature authorizing
-     *  the replacement of the old data with the new data.
-     * 
-     *  @property owner
-     *  @type string[] (PEM)
-     */
-    prototype.owner = null;
-    /**
-     *  Signatures of the object. The signing method is as follows: Remove the
-     *  signature field. Encode the object and its fields in ascii-sort order
-     *  JSON-LD using a space-free, tab-free encoding. Sign the aforementioned
-     *  string.
-     * 
-     *  @property signature
-     *  @type string[] (Base64)
-     */
-    prototype.signature = null;
-    /**
-     *  URL/URI used to retrieve, store and identify the object.
-     * 
-     *  @property id
-     *  @type string (URL)
-     */
-    prototype.id = null;
-    prototype.equals = function(obj) {
-        return this.isId((obj).id);
-    };
-    /**
-     *  PEM encoded public keys of identities authorized to view the object. A
-     *  repository will ignore write operations from these identities, but will
-     *  allow them to read the object.
-     * 
-     *  @property reader
-     *  @type string[] (PEM)
-     */
-    prototype.reader = null;
-    /**
-     *  Removes the version information from an identifier.
-     *  Warning: Will remove identifier if the identifier is composed solely of digits!!!
-     * 
-     *  @param {string} id Slash delimited URL or path.
-     *  @return ID without version.
-     *  @method trimVersionFromUrl
-     *  @static
-     */
-    constructor.trimVersionFromUrl = function(id) {
-        if (id == null) 
-            return null;
-        if (id.indexOf(&quot;/api/data/&quot;) == -1 &amp;&amp; id.indexOf(&quot;/api/custom/data/&quot;) == -1) 
-            return id;
-        if (!id.substring(id.lastIndexOf(&quot;/&quot;)).matches(&quot;\\/[0-9]+&quot;)) 
-            return id;
-        var rawId = id.substring(0, id.lastIndexOf(&quot;/&quot;));
-        if (rawId.endsWith(&quot;/&quot;)) 
-            rawId = rawId.substring(0, rawId.length - 1);
-        return rawId;
-    };
-    /**
-     *  Will generate an identifier using the server URL provided (usually from
-     *  an EcRepository).
-     * 
-     *  @param {string} server Base URL of the server&#x27;s repository functionality.
-     *  @method generateId
-     */
-    prototype.generateId = function(server) {
-        this.id = server;
-        if (!this.id.endsWith(&quot;/&quot;) &amp;&amp; !this.id.endsWith(&quot;ce-&quot;)) 
-            this.id += &quot;/&quot;;
-        this.id += &quot;data/&quot;;
-        this.id += this.getDottedType();
-        this.id += &quot;/&quot;;
-        this.id += generateUUID();
-        this.id += &quot;/&quot;;
-        this.id += new Date().getTime();
-    };
-    /**
-     *  Will generate an short (non-versioned) identifier using the server URL provided (usually from
-     *  an EcRepository).
-     * 
-     *  @param {string} server Base URL of the server&#x27;s repository functionality.
-     *  @method generateShortId
-     */
-    prototype.generateShortId = function(server) {
-        this.id = server;
-        if (!this.id.endsWith(&quot;/&quot;) &amp;&amp; !this.id.endsWith(&quot;ce-&quot;)) 
-            this.id += &quot;/&quot;;
-        this.id += generateUUID();
-    };
-    prototype.getDottedType = function() {
-        return this.getFullType().replace(&quot;http://&quot;, &quot;&quot;).replace(&quot;https://&quot;, &quot;&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;);
-    };
-    /**
-     *  Will generate an identifier using the server URL provided (usually from
-     *  an EcRepository) and unique identifier.
-     * 
-     *  @param {string} server Base URL of the server&#x27;s repository functionality.
-     *  @param {string} uniqueIdentifier Canonical identifier. Must contain a letter or symbol.
-     *  @method assignId
-     */
-    prototype.assignId = function(server, uniqueIdentifier) {
-        this.id = server;
-        if (!this.id.endsWith(&quot;/&quot;)) 
-            this.id += &quot;/&quot;;
-        this.id += &quot;data/&quot;;
-        this.id += this.getDottedType();
-        this.id += &quot;/&quot;;
-        this.id += uniqueIdentifier;
-        this.id += &quot;/&quot;;
-        this.id += new Date().getTime();
-    };
-    /**
-     *  Will generate an identifier using the server URL provided (usually from
-     *  an EcRepository) and unique identifier.
-     * 
-     *  @param {string} server Base URL of the server&#x27;s repository functionality.
-     *  @param {string} uniqueIdentifier Canonical identifier. Must contain a letter or symbol.
-     *  @method assignId
-     */
-    constructor.veryShortId = function(server, uniqueIdentifier) {
-        var id;
-        id = server;
-        if (!id.endsWith(&quot;/&quot;)) 
-            id += &quot;/&quot;;
-        id += &quot;data/&quot;;
-        id += uniqueIdentifier;
-        return id;
-    };
-    /**
-     *  Will generate an identifier using the server URL provided (usually from
-     *  an EcRepository) and unique identifier.
-     * 
-     *  @param {string} server Base URL of the server&#x27;s repository functionality.
-     *  @param {string} uniqueIdentifier Canonical identifier. Must contain a letter or symbol.
-     *  @method assignId
-     */
-    prototype.assignIdAndVersion = function(server, uniqueIdentifier, version) {
-        this.id = server;
-        if (!this.id.endsWith(&quot;/&quot;)) 
-            this.id += &quot;/&quot;;
-        this.id += &quot;data/&quot;;
-        this.id += this.getDottedType();
-        this.id += &quot;/&quot;;
-        this.id += uniqueIdentifier;
-        this.id += &quot;/&quot;;
-        this.id += version;
-    };
-    /**
-     *  Determines if the object has an owner identified by pk.
-     *  Homogenizes the PEM strings for comparison.
-     *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
-     * 
-     *  @param {EcPk} pk Public Key of the owner.
-     *  @return {boolean} True if owner is represented by the PK, false otherwise.
-     *  @method hasOwner
-     */
-    prototype.hasOwner = function(pk) {
-        if (this.owner == null) 
-            return false;
-        var pkPem = pk.toPem();
-        for (var i = 0; i &lt; this.owner.length; i++) 
-            if (pkPem == EcPk.fromPem(this.owner[i]).toPem()) 
-                return true;
-        return false;
-    };
-    /**
-     *  Determines if the object has a reader identified by pk.
-     *  Homogenizes the PEM strings for comparison.
-     *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
-     * 
-     *  @param {EcPk} pk Public Key of the owner.
-     *  @return {boolean} True if owner is represented by the PK, false otherwise.
-     *  @method hasOwner
-     */
-    prototype.hasReader = function(pk) {
-        if (this.reader == null) 
-            return false;
-        var pkPem = pk.toPem();
-        for (var i = 0; i &lt; this.reader.length; i++) 
-            if (pkPem == EcPk.fromPem(this.reader[i]).toPem()) 
-                return true;
-        return false;
-    };
-    /**
-     *  Determines if the PK matches an owner or if the object is public.
-     *  Homogenizes the PEM strings for comparison.
-     *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
-     * 
-     *  @param {EcPk} pk Public Key of the owner.
-     *  @return {boolean} True if owner is represented by the PK, false otherwise.
-     *  @method canEdit
-     */
-    prototype.canEdit = function(pk) {
-        if (this.owner == null || this.owner.length == 0) 
-            return true;
-        return this.hasOwner(pk);
-    };
-    /**
-     *  Determines if the PK matches an owner or if the object is public.
-     *  Homogenizes the PEM strings for comparison.
-     *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
-     * 
-     *  @param {EcPk} pk Public Key of the owner.
-     *  @return {boolean} True if owner is represented by the PK, false otherwise.
-     *  @method canEdit
-     */
-    prototype.canEditAny = function(ids) {
-        if (this.owner == null || this.owner.length == 0) 
-            return true;
-        if (ids == null) 
-            return false;
-        for (var i = 0; i &lt; ids.length; i++) 
-            if (this.hasOwner(ids[i])) 
-                return true;
-        return false;
-    };
-    /**
-     *  Encodes the object in a form where it is ready to be signed.
-     *  This method is under long term review, and may change from version to version.
-     * 
-     *  @return ASCII-sort order encoded space-free and tab-free JSON-LD.
-     *  @method toSignableJson
-     */
-    prototype.toSignableJson = function() {
-        var d = JSON.parse(this.toJson());
-        if (this.type.indexOf(&quot;http://schema.eduworks.com/&quot;) != -1 &amp;&amp; this.type.indexOf(&quot;/0.1/&quot;) != -1) {
-            delete (d)[&quot;signature&quot;];
-            delete (d)[&quot;owner&quot;];
-            delete (d)[&quot;reader&quot;];
-            delete (d)[&quot;@signature&quot;];
-            delete (d)[&quot;@owner&quot;];
-            delete (d)[&quot;@reader&quot;];
-            delete (d)[&quot;@id&quot;];
-        } else {
-            delete (d)[&quot;signature&quot;];
-            delete (d)[&quot;@signature&quot;];
-            delete (d)[&quot;@id&quot;];
-        }
-        var e = new EcLinkedData(d.context, d.type);
-        e.copyFrom(d);
-        return e.toJson();
-    };
-    /**
-     *  Sign this object using a private key.
-     *  Does not check for ownership, objects signed with keys absent from owner or reader may be removed.
-     * 
-     *  @param {EcPpk} ppk Public private keypair.
-     *  @method signWith
-     */
-    prototype.signWith = function(ppk) {
-        var signableJson = this.toSignableJson();
-        var signed = EcRsaOaep.sign(ppk, signableJson);
-        if (this.signature != null) {
-            for (var i = 0; i &lt; this.signature.length; i++) 
-                if (this.signature[i] == signed) 
-                    return;
-        } else {
-            this.signature = new Array();
-        }
-        this.signature.push(signed);
-    };
-    /**
-     *  Verifies the object&#x27;s signatures.
-     * 
-     *  @return {boolean} true if all of the signatures could be verified, false if they could not
-     *  @method verify
-     */
-    prototype.verify = function() {
-        if (this.signature != null) {
-            for (var i = 0; i &lt; this.signature.length; ) {
-                var works = false;
-                var sig = this.signature[i];
-                if (this.owner != null) {
-                    for (var j = 0; j &lt; this.owner.length; j++) {
-                        var own = this.owner[j];
-                        var pk = EcPk.fromPem(own);
-                        var verify = false;
-                        try {
-                            verify = EcRsaOaep.verify(pk, this.toSignableJson(), sig);
-                        }catch (ex) {}
-                        if (verify) {
-                            works = true;
-                            break;
-                        }
-                    }
-                }
-                if (!works) 
-                    return false;
-                 else 
-                    i++;
-            }
-            if (this.signature.length == 0) 
-                return false;
-            return true;
-        }
-        return false;
-    };
-    /**
-     *  Adds an owner to the object, if the owner does not exist.
-     *  Note that this method invalidates all signatures.
-     * 
-     *  @param {EcPk} newOwner PK of the new owner.
-     *  @method addOwner
-     */
-    prototype.addOwner = function(newOwner) {
-        var pem = newOwner.toPem();
-        if (this.owner == null) 
-            this.owner = new Array();
-        for (var i = 0; i &lt; this.owner.length; i++) 
-            if (this.owner[i] == pem) 
-                return;
-        this.owner.push(pem);
-        this.signature = null;
-    };
-    /**
-     *  Removes an owner from the object, if the owner does exist.
-     *  Note that this method invalidates all signatures.
-     * 
-     *  @param {EcPk} oldOwner PK to remove.
-     *  @method removeOwner
-     */
-    prototype.removeOwner = function(oldOwner) {
-        var pem = oldOwner.toPem();
-        if (this.owner == null) 
-            this.owner = new Array();
-        for (var i = 0; i &lt; this.owner.length; i++) 
-            if (this.owner[i] == pem) 
-                this.owner.splice(i, 1);
-        this.signature = null;
-    };
-    /**
-     *  Adds a reader to the object, if the reader does not exist.
-     *  Note that this method invalidates all signatures.
-     * 
-     *  @param {EcPk} newReader PK of the new reader.
-     *  @method addReader
-     */
-    prototype.addReader = function(newReader) {
-        var pem = newReader.toPem();
-        if (this.reader == null) 
-            this.reader = new Array();
-        EcArray.setAdd(this.reader, pem);
-        this.signature = null;
-    };
-    /**
-     *  Removes a reader from the object, if the reader does exist.
-     *  Note that this method invalidates all signatures.
-     * 
-     *  @param {EcPk} oldReader PK of the old reader.
-     *  @method removeReader
-     */
-    prototype.removeReader = function(oldReader) {
-        var pem = oldReader.toPem();
-        if (this.reader == null) 
-            this.reader = new Array();
-        EcArray.setRemove(this.reader, pem);
-        this.signature = null;
-    };
-    /**
-     *  Determines if the object is not retrievable from a repository should it be written.
-     * 
-     *  @return {boolean} True if the object is NOT VALID for storage, false otherwise.
-     *  @method invalid
-     */
-    prototype.invalid = function() {
-        if (this.id == null) 
-            return true;
-        if (this.context == null) 
-            return true;
-        if (this.getFullType() == null) 
-            return true;
-        if (this.getFullType().indexOf(&quot;http://&quot;) == -1 &amp;&amp; this.getFullType().indexOf(&quot;https://&quot;) == -1) 
-            return true;
-        return false;
-    };
-    /**
-     *  Updates the ID timestamp of the object, for versioning purposes.
-     * 
-     *  @method updateTimestamp
-     */
-    prototype.updateTimestamp = function() {
-        if (this.getTimestamp() == null) 
-            return;
-        var rawId = this.id.substring(0, this.id.lastIndexOf(&quot;/&quot;));
-        if (rawId.endsWith(&quot;/&quot;) == false) 
-            rawId += &quot;/&quot;;
-        rawId += new Date().getTime();
-        this.id = rawId;
-    };
-    /**
-     *  Returns the ID timestamp of the object, for versioning purposes.
-     * 
-     *  @method getTimestamp
-     */
-    prototype.getTimestamp = function() {
-        var timestamp = this.id.substring(this.id.lastIndexOf(&quot;/&quot;) + 1);
-        if (timestamp.matches(&quot;[0-9]+&quot;)) {
-            return Integer.parseInt(timestamp);
-        } else {
-            return null;
-        }
-    };
-    /**
-     *  Returns true if the provided ID represents this object.
-     *  Use this, as version information can make direct comparison difficult.
-     * 
-     *  @param {string} id
-     *  @return {boolean} True if the provided ID represents this object.
-     *  @method isId
-     */
-    prototype.isId = function(id) {
-        return EcRemoteLinkedData.trimVersionFromUrl(this.id) == EcRemoteLinkedData.trimVersionFromUrl(id);
-    };
-    /**
-     *  Return the ID of this object without the version information.
-     *  Used to reference the latest version of an object.
-     * 
-     *  @return {string} ID of the latest version of this object.
-     *  @method shortId
-     */
-    prototype.shortId = function() {
-        return EcRemoteLinkedData.trimVersionFromUrl(this.id);
-    };
-    /**
-     *  Return the GUID portion of the short ID.
-     * 
-     *  @return {string} Guid of the linked data object.
-     *  @method getGuid
-     */
-    prototype.getGuid = function() {
-        var shortId = EcRemoteLinkedData.trimVersionFromUrl(this.id);
-        var parts = shortId.split(&quot;/&quot;);
-        return parts[parts.length - 1];
-    };
-    /**
-     *  Return the URL Base portion of the short ID.
-     * 
-     *  @return {string} Server Base URL of the linked data object.
-     *  @method getServerBaseUrl
-     */
-    prototype.getServerBaseUrl = function() {
-        var shortId = EcRemoteLinkedData.trimVersionFromUrl(this.id);
-        var parts = shortId.split(&quot;/&quot;);
-        return parts.slice(0, parts.indexOf(&quot;data&quot;)).join(&quot;/&quot;);
-    };
-    /**
-     *  Return a valid ElasticSearch search string that will retrieve all objects with this type.
-     * 
-     *  @return {string} ElasticSearch compatible search string.
-     *  @method getSearchStringByType
-     */
-    prototype.getSearchStringByType = function() {
-        var types = this.getTypes();
-        var result = &quot;&quot;;
-        for (var i = 0; i &lt; types.length; i++) {
-            if (i != 0) 
-                result += &quot; OR &quot;;
-            result += &quot;@type:\&quot;&quot; + types[i] + &quot;\&quot;&quot;;
-            var lastSlash = types[i].lastIndexOf(&quot;/&quot;);
-            result += &quot; OR (@context:\&quot;&quot; + types[i].substring(0, lastSlash + 1) + &quot;\&quot; AND @type:\&quot;&quot; + types[i].substring(lastSlash + 1) + &quot;\&quot;)&quot;;
-        }
-        for (var i = 0; i &lt; types.length; i++) {
-            if (result != &quot;&quot;) 
-                result += &quot; OR &quot;;
-            result += &quot;\\*encryptedType:\&quot;&quot; + types[i] + &quot;\&quot;&quot;;
-            var lastSlash = types[i].lastIndexOf(&quot;/&quot;);
-            result += &quot; OR (@context:\&quot;&quot; + Ebac.context + &quot;\&quot; AND \\*encryptedType:\&quot;&quot; + types[i].substring(lastSlash + 1) + &quot;\&quot;)&quot;;
-        }
-        return &quot;(&quot; + result + &quot;)&quot;;
-    };
-    prototype.asRdfXml = function(success, failure, signatureSheet) {
-        var fd = new FormData();
-        var id = this.id;
-        if (signatureSheet != null || signatureSheet != undefined) 
-            fd.append(&quot;signatureSheet&quot;, signatureSheet);
-        var headers = {};
-        headers[&quot;Accept&quot;] = &quot;application/rdf+xml&quot;;
-        EcRemote.postWithHeadersExpectingString(id, &quot;&quot;, fd, headers, success, failure);
-    };
-    prototype.asNQuads = function(success, failure, signatureSheet) {
-        var fd = new FormData();
-        var id = this.id;
-        if (signatureSheet != null || signatureSheet != undefined) 
-            fd.append(&quot;signatureSheet&quot;, signatureSheet);
-        var headers = {};
-        headers[&quot;Accept&quot;] = &quot;text/n4&quot;;
-        EcRemote.postWithHeadersExpectingString(id, &quot;&quot;, fd, headers, success, failure);
-    };
-    prototype.asTurtle = function(success, failure, signatureSheet) {
-        var fd = new FormData();
-        var id = this.id;
-        if (signatureSheet != null || signatureSheet != undefined) 
-            fd.append(&quot;signatureSheet&quot;, signatureSheet);
-        var headers = {};
-        headers[&quot;Accept&quot;] = &quot;text/turtle&quot;;
-        EcRemote.postWithHeadersExpectingString(id, &quot;&quot;, fd, headers, success, failure);
-    };
-    /**
-     *  Upgrades the object to the latest version, performing transforms and the like.
-     * 
-     *  @method upgrade
-     */
-    prototype.upgrade = function() {
-        var me = (this);
-        if (me[&quot;@owner&quot;] != null) {
-            me[&quot;owner&quot;] = me[&quot;@owner&quot;];
-        }
-        if (me[&quot;@reader&quot;] != null) {
-            me[&quot;reader&quot;] = me[&quot;@reader&quot;];
-        }
-        if (me[&quot;@signature&quot;] != null) {
-            me[&quot;signature&quot;] = me[&quot;@signature&quot;];
-        }
-        if (me[&quot;@encryptedType&quot;] != null) {
-            me[&quot;encryptedType&quot;] = me[&quot;@encryptedType&quot;];
-        }
-        if (me[&quot;@encryptedContext&quot;] != null) {
-            me[&quot;encryptedContext&quot;] = me[&quot;@encryptedContext&quot;];
-        }
-        this.handleForwarding();
-    };
-    constructor.forwardingTable = new Object();
-    prototype.handleForwarding = function() {
-        var me = (this);
-        if (this.owner != null) {
-            for (var i = 0; i &lt; this.owner.length; i++) {
-                var forwardTo = &quot;&quot;;
-                 while (forwardTo != null){
-                    var homogenizedPk = EcPk.fromPem(this.owner[i]).toPem();
-                    forwardTo = (EcRemoteLinkedData.forwardingTable)[homogenizedPk];
-                    if (forwardTo != null) 
-                        this.owner[i] = forwardTo;
-                }
-            }
-        }
-        if (this.reader != null) {
-            for (var i = 0; i &lt; this.reader.length; i++) {
-                var forwardTo = &quot;&quot;;
-                 while (forwardTo != null){
-                    var homogenizedPk = EcPk.fromPem(this.reader[i]).toPem();
-                    forwardTo = (EcRemoteLinkedData.forwardingTable)[homogenizedPk];
-                    if (forwardTo != null) 
-                        this.reader[i] = forwardTo;
-                }
-            }
-        }
-    };
-    constructor.forwardKey = function(oldKey, newKey) {
-        (EcRemoteLinkedData.forwardingTable)[oldKey] = newKey;
-    };
-}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+        <div class="extends">
+            Extends <a href="../classes/Thing.html" class="crosslink">Thing</a>
+        </div>
 
-    </pre>
+        <div class="foundat">
+            Defined in: <a href="../files/node_modules_cassproject_index.js.html#l22405"><code>node_modules\cassproject\index.js:22405</code></a>
+        </div>
+
+            Module: <a href="../modules/org.schema.html">org.schema</a>
+
+</div>
+
+
+<div class="box intro">
+    <p><a href="http://Schema.org/SchemaEvent">Schema.org/SchemaEvent</a>
+An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the [[offers]] property. Repeated events may be structured as separate SchemaEvent objects.</p>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
+                                <a href="#method_getDescription">getDescription</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_getName">getName</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_setDescription">setDescription</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_setName">setName</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_about">about</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_actor">actor</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_aggregateRating">aggregateRating</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_attendee">attendee</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_attendees">attendees</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_audience">audience</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_composer">composer</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_contributor">contributor</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_director">director</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_doorTime">doorTime</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_duration">duration</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_endDate">endDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_eventStatus">eventStatus</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_funder">funder</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_inLanguage">inLanguage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isAccessibleForFree">isAccessibleForFree</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_location">location</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_maximumAttendeeCapacity">maximumAttendeeCapacity</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_offers">offers</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_organizer">organizer</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_performer">performer</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_performers">performers</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_previousStartDate">previousStartDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_recordedIn">recordedIn</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_remainingAttendeeCapacity">remainingAttendeeCapacity</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_review">review</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_sponsor">sponsor</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_startDate">startDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_subEvent">subEvent</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_subEvents">subEvents</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_superEvent">superEvent</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_translator">translator</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_typicalAgeRange">typicalAgeRange</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_workFeatured">workFeatured</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_workPerformed">workPerformed</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_getDescription" class="method item inherited">
+    <h3 class="name"><code>getDescription</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#method_getDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10401"><code>node_modules\cassproject\index.js:10401</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the description of the thing</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>description of Thing</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getName" class="method item inherited">
+    <h3 class="name"><code>getName</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#method_getName">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10373"><code>node_modules\cassproject\index.js:10373</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the name of the thing</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>name of Thing</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setDescription" class="method item inherited">
+    <h3 class="name"><code>setDescription</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>description</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#method_setDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10422"><code>node_modules\cassproject\index.js:10422</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Method to set Thing description</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">description</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Description to set for its Thing</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setName" class="method item inherited">
+    <h3 class="name"><code>setName</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#method_setName">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10384"><code>node_modules\cassproject\index.js:10384</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Method to set Thing name</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Name to set for this Thing</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_about" class="property item">
+    <h3 class="name"><code>about</code></h3>
+    <span class="type"><a href="../classes/Thing.html" class="crosslink">Thing</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22425"><code>node_modules\cassproject\index.js:22425</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/about">Schema.org/about</a>
+The subject matter of the content.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_actor" class="property item">
+    <h3 class="name"><code>actor</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22466"><code>node_modules\cassproject\index.js:22466</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/actor">Schema.org/actor</a>
+An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10349"><code>node_modules\cassproject\index.js:10349</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/additionalType">Schema.org/additionalType</a>
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. <a href="http://Schema.org">Schema.org</a> tools may have only weaker understanding of extra types, in particular those defined externally.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_aggregateRating" class="property item">
+    <h3 class="name"><code>aggregateRating</code></h3>
+    <span class="type"><a href="../classes/AggregateRating.html" class="crosslink">AggregateRating</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22538"><code>node_modules\cassproject\index.js:22538</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/aggregateRating">Schema.org/aggregateRating</a>
+The overall rating, based on a collection of reviews or ratings, of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10333"><code>node_modules\cassproject\index.js:10333</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/alternateName">Schema.org/alternateName</a>
+An alias for the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_attendee" class="property item">
+    <h3 class="name"><code>attendee</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22570"><code>node_modules\cassproject\index.js:22570</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/attendee">Schema.org/attendee</a>
+A person or organization attending the event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_attendees" class="property item">
+    <h3 class="name"><code>attendees</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22530"><code>node_modules\cassproject\index.js:22530</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/attendees">Schema.org/attendees</a>
+A person attending the event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_audience" class="property item">
+    <h3 class="name"><code>audience</code></h3>
+    <span class="type"><a href="../classes/Audience.html" class="crosslink">Audience</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22450"><code>node_modules\cassproject\index.js:22450</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/audience">Schema.org/audience</a>
+An intended audience, i.e. a group for whom something was created.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_composer" class="property item">
+    <h3 class="name"><code>composer</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22682"><code>node_modules\cassproject\index.js:22682</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/composer">Schema.org/composer</a>
+The person or organization who wrote a composition, or who is the composer of a work performed at some event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_contributor" class="property item">
+    <h3 class="name"><code>contributor</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22498"><code>node_modules\cassproject\index.js:22498</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/contributor">Schema.org/contributor</a>
+A secondary contributor to the CreativeWork or SchemaEvent.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10317"><code>node_modules\cassproject\index.js:10317</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/description">Schema.org/description</a>
+A description of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_director" class="property item">
+    <h3 class="name"><code>director</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22602"><code>node_modules\cassproject\index.js:22602</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/director">Schema.org/director</a>
+A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10325"><code>node_modules\cassproject\index.js:10325</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/disambiguatingDescription">Schema.org/disambiguatingDescription</a>
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_doorTime" class="property item">
+    <h3 class="name"><code>doorTime</code></h3>
+    <span class="type">DateTime</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22490"><code>node_modules\cassproject\index.js:22490</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/doorTime">Schema.org/doorTime</a>
+The time admission will commence.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_duration" class="property item">
+    <h3 class="name"><code>duration</code></h3>
+    <span class="type"><a href="../classes/Duration.html" class="crosslink">Duration</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22618"><code>node_modules\cassproject\index.js:22618</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/duration">Schema.org/duration</a>
+The duration of the item (movie, audio recording, event, etc.) in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_endDate" class="property item">
+    <h3 class="name"><code>endDate</code></h3>
+    <span class="type">DateTime</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22482"><code>node_modules\cassproject\index.js:22482</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/endDate">Schema.org/endDate</a>
+The end date and time of the item (in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_eventStatus" class="property item">
+    <h3 class="name"><code>eventStatus</code></h3>
+    <span class="type"><a href="../classes/EventStatusType.html" class="crosslink">EventStatusType</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22586"><code>node_modules\cassproject\index.js:22586</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/eventStatus">Schema.org/eventStatus</a>
+An eventStatus of an event represents its status; particularly useful when an event is cancelled or rescheduled.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_funder" class="property item">
+    <h3 class="name"><code>funder</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22433"><code>node_modules\cassproject\index.js:22433</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/funder">Schema.org/funder</a>
+A person or organization that supports (sponsors) something through some kind of financial contribution.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Schema, URL | schema,Text | schema,PropertyValue</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10293"><code>node_modules\cassproject\index.js:10293</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/identifier">Schema.org/identifier</a>
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. <a href="http://Schema.org">Schema.org</a> provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See <a href="/docs/datamodel.html#identifierBg">background notes</a> for more details.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type">Schema, URL | schema,ImageObject</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10309"><code>node_modules\cassproject\index.js:10309</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/image">Schema.org/image</a>
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_inLanguage" class="property item">
+    <h3 class="name"><code>inLanguage</code></h3>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22634"><code>node_modules\cassproject\index.js:22634</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/inLanguage">Schema.org/inLanguage</a>
+The language of the content or performance or used in an action. Please use one of the language codes from the <a href="http://tools.ietf.org/html/bcp47">IETF BCP 47 standard</a>. See also [[availableLanguage]].</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isAccessibleForFree" class="property item">
+    <h3 class="name"><code>isAccessibleForFree</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22690"><code>node_modules\cassproject\index.js:22690</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isAccessibleForFree">Schema.org/isAccessibleForFree</a>
+A flag to signal that the publication is accessible for free.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_location" class="property item">
+    <h3 class="name"><code>location</code></h3>
+    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22666"><code>node_modules\cassproject\index.js:22666</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/location">Schema.org/location</a>
+The location of for example where the event is happening, an organization is located, or where an action takes place.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">Schema, URL | schema,CreativeWork</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10365"><code>node_modules\cassproject\index.js:10365</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/mainEntityOfPage">Schema.org/mainEntityOfPage</a>
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See <a href="/docs/datamodel.html#mainEntityBackground">background notes</a> for details.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_maximumAttendeeCapacity" class="property item">
+    <h3 class="name"><code>maximumAttendeeCapacity</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22506"><code>node_modules\cassproject\index.js:22506</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/maximumAttendeeCapacity">Schema.org/maximumAttendeeCapacity</a>
+The total number of individuals that may attend an event or venue.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10285"><code>node_modules\cassproject\index.js:10285</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/name">Schema.org/name</a>
+The name of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_offers" class="property item">
+    <h3 class="name"><code>offers</code></h3>
+    <span class="type"><a href="../classes/Offer.html" class="crosslink">Offer</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22562"><code>node_modules\cassproject\index.js:22562</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/offers">Schema.org/offers</a>
+An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_organizer" class="property item">
+    <h3 class="name"><code>organizer</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22522"><code>node_modules\cassproject\index.js:22522</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/organizer">Schema.org/organizer</a>
+An organizer of an SchemaEvent.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_performer" class="property item">
+    <h3 class="name"><code>performer</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22698"><code>node_modules\cassproject\index.js:22698</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/performer">Schema.org/performer</a>
+A performer at the event—for example, a presenter, musician, musical group or actor.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_performers" class="property item">
+    <h3 class="name"><code>performers</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22474"><code>node_modules\cassproject\index.js:22474</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/performers">Schema.org/performers</a>
+The main performer or performers of the event—for example, a presenter, musician, or actor.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10357"><code>node_modules\cassproject\index.js:10357</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/potentialAction">Schema.org/potentialAction</a>
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_previousStartDate" class="property item">
+    <h3 class="name"><code>previousStartDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22642"><code>node_modules\cassproject\index.js:22642</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/previousStartDate">Schema.org/previousStartDate</a>
+Used in conjunction with eventStatus for rescheduled or cancelled events. This property contains the previously scheduled start date. For rescheduled events, the startDate property should be used for the newly scheduled start date. In the (rare) case of an event that has been postponed and rescheduled multiple times, this field may be repeated.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_recordedIn" class="property item">
+    <h3 class="name"><code>recordedIn</code></h3>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22674"><code>node_modules\cassproject\index.js:22674</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/recordedIn">Schema.org/recordedIn</a>
+The CreativeWork that captured all or part of this SchemaEvent.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_remainingAttendeeCapacity" class="property item">
+    <h3 class="name"><code>remainingAttendeeCapacity</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22458"><code>node_modules\cassproject\index.js:22458</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/remainingAttendeeCapacity">Schema.org/remainingAttendeeCapacity</a>
+The number of attendee places for an event that remain unallocated.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_review" class="property item">
+    <h3 class="name"><code>review</code></h3>
+    <span class="type"><a href="../classes/Review.html" class="crosslink">Review</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22650"><code>node_modules\cassproject\index.js:22650</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/review">Schema.org/review</a>
+A review of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10341"><code>node_modules\cassproject\index.js:10341</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/sameAs">Schema.org/sameAs</a>
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sponsor" class="property item">
+    <h3 class="name"><code>sponsor</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22658"><code>node_modules\cassproject\index.js:22658</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/sponsor">Schema.org/sponsor</a>
+A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_startDate" class="property item">
+    <h3 class="name"><code>startDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22594"><code>node_modules\cassproject\index.js:22594</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/startDate">Schema.org/startDate</a>
+The start date and time of the item (in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subEvent" class="property item">
+    <h3 class="name"><code>subEvent</code></h3>
+    <span class="type"><a href="../classes/SchemaEvent.html" class="crosslink">SchemaEvent</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22546"><code>node_modules\cassproject\index.js:22546</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/subEvent">Schema.org/subEvent</a>
+An SchemaEvent that is part of this event. For example, a conference event includes many presentations, each of which is a subEvent of the conference.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subEvents" class="property item">
+    <h3 class="name"><code>subEvents</code></h3>
+    <span class="type"><a href="../classes/SchemaEvent.html" class="crosslink">SchemaEvent</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22554"><code>node_modules\cassproject\index.js:22554</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/subEvents">Schema.org/subEvents</a>
+Events that are a part of this event. For example, a conference event includes many presentations, each subEvents of the conference.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_superEvent" class="property item">
+    <h3 class="name"><code>superEvent</code></h3>
+    <span class="type"><a href="../classes/SchemaEvent.html" class="crosslink">SchemaEvent</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22610"><code>node_modules\cassproject\index.js:22610</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/superEvent">Schema.org/superEvent</a>
+An event that this event is a part of. For example, a collection of individual music performances might each have a music festival as their superEvent.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_translator" class="property item">
+    <h3 class="name"><code>translator</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22626"><code>node_modules\cassproject\index.js:22626</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/translator">Schema.org/translator</a>
+Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market, or that translates during some event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_typicalAgeRange" class="property item">
+    <h3 class="name"><code>typicalAgeRange</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22514"><code>node_modules\cassproject\index.js:22514</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/typicalAgeRange">Schema.org/typicalAgeRange</a>
+The typical expected age range, e.g. '7-9', '11-'.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_index.js.html#l10301"><code>node_modules\cassproject\index.js:10301</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/url">Schema.org/url</a>
+URL of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_workFeatured" class="property item">
+    <h3 class="name"><code>workFeatured</code></h3>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22441"><code>node_modules\cassproject\index.js:22441</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/workFeatured">Schema.org/workFeatured</a>
+A work featured in some event, e.g. exhibited in an ExhibitionEvent.
+Specific subproperties are available for workPerformed (e.g. a play), or a workPresented (a Movie at a ScreeningEvent).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_workPerformed" class="property item">
+    <h3 class="name"><code>workPerformed</code></h3>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l22578"><code>node_modules\cassproject\index.js:22578</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/workPerformed">Schema.org/workPerformed</a>
+A work performed in some event, for example a play performed in a TheaterEvent.</p>
+
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
 </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/main/js/cass/org.w3.skos.js - CASS Javascript Library</title>
+    <title>EcDirectory - CASS Javascript Library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -84,6 +84,7 @@
                                 <li><a href="../classes/AssessmentProfile.html">AssessmentProfile</a></li>
                                 <li><a href="../classes/AssignAction.html">AssignAction</a></li>
                                 <li><a href="../classes/AssociateDegree.html">AssociateDegree</a></li>
+                                <li><a href="../classes/Attitude.html">Attitude</a></li>
                                 <li><a href="../classes/Attorney.html">Attorney</a></li>
                                 <li><a href="../classes/Audience.html">Audience</a></li>
                                 <li><a href="../classes/AudioObject.html">AudioObject</a></li>
@@ -108,6 +109,7 @@
                                 <li><a href="../classes/BedAndBreakfast.html">BedAndBreakfast</a></li>
                                 <li><a href="../classes/BedDetails.html">BedDetails</a></li>
                                 <li><a href="../classes/BefriendAction.html">BefriendAction</a></li>
+                                <li><a href="../classes/Belief.html">Belief</a></li>
                                 <li><a href="../classes/BikeStore.html">BikeStore</a></li>
                                 <li><a href="../classes/Blog.html">Blog</a></li>
                                 <li><a href="../classes/BlogPosting.html">BlogPosting</a></li>
@@ -152,6 +154,8 @@
                                 <li><a href="../classes/Cemetery.html">Cemetery</a></li>
                                 <li><a href="../classes/Certificate.html">Certificate</a></li>
                                 <li><a href="../classes/Certification.html">Certification</a></li>
+                                <li><a href="../classes/CfdAssessment.html">CfdAssessment</a></li>
+                                <li><a href="../classes/CfdReference.html">CfdReference</a></li>
                                 <li><a href="../classes/CheckAction.html">CheckAction</a></li>
                                 <li><a href="../classes/CheckInAction.html">CheckInAction</a></li>
                                 <li><a href="../classes/CheckOutAction.html">CheckOutAction</a></li>
@@ -208,6 +212,7 @@
                                 <li><a href="../classes/Credential.html">Credential</a></li>
                                 <li><a href="../classes/CredentialAlignmentObject.html">CredentialAlignmentObject</a></li>
                                 <li><a href="../classes/CredentialAssertion.html">CredentialAssertion</a></li>
+                                <li><a href="../classes/CredentialCompetencyLocator.html">CredentialCompetencyLocator</a></li>
                                 <li><a href="../classes/CredentialFramework.html">CredentialFramework</a></li>
                                 <li><a href="../classes/CredentialingAction.html">CredentialingAction</a></li>
                                 <li><a href="../classes/CredentialOrganization.html">CredentialOrganization</a></li>
@@ -421,6 +426,7 @@
                                 <li><a href="../classes/JoinAction.html">JoinAction</a></li>
                                 <li><a href="../classes/JourneymanCertificate.html">JourneymanCertificate</a></li>
                                 <li><a href="../classes/JurisdictionProfile.html">JurisdictionProfile</a></li>
+                                <li><a href="../classes/Knowledge.html">Knowledge</a></li>
                                 <li><a href="../classes/LakeBodyOfWater.html">LakeBodyOfWater</a></li>
                                 <li><a href="../classes/Landform.html">Landform</a></li>
                                 <li><a href="../classes/LandmarksOrHistoricalBuildings.html">LandmarksOrHistoricalBuildings</a></li>
@@ -631,6 +637,7 @@
                                 <li><a href="../classes/RightsAction.html">RightsAction</a></li>
                                 <li><a href="../classes/RiverBodyOfWater.html">RiverBodyOfWater</a></li>
                                 <li><a href="../classes/Role.html">Role</a></li>
+                                <li><a href="../classes/Rollup.html">Rollup</a></li>
                                 <li><a href="../classes/RollupRule.html">RollupRule</a></li>
                                 <li><a href="../classes/RoofingContractor.html">RoofingContractor</a></li>
                                 <li><a href="../classes/Room.html">Room</a></li>
@@ -661,6 +668,7 @@
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
                                 <li><a href="../classes/SingleFamilyResidence.html">SingleFamilyResidence</a></li>
                                 <li><a href="../classes/SiteNavigationElement.html">SiteNavigationElement</a></li>
+                                <li><a href="../classes/Skill.html">Skill</a></li>
                                 <li><a href="../classes/SkiResort.html">SkiResort</a></li>
                                 <li><a href="../classes/SocialEvent.html">SocialEvent</a></li>
                                 <li><a href="../classes/SocialMediaPosting.html">SocialMediaPosting</a></li>
@@ -773,6 +781,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/com.eduworks.html">com.eduworks</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
@@ -812,176 +821,509 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/main/js/cass/org.w3.skos.js</h1>
+<h1>EcDirectory Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/*-
- * --BEGIN_LICENSE--
- * Competency and Skills System
- * -----
- * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
- * -----
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * --END_LICENSE--
- */
-/**
- *  www.w3.org/2004/02/skos/core/Collection
- *  A meaningful collection of concepts.
- *  Labelled collections can be used where you would like a set of concepts to be displayed under a &#x27;node label&#x27; in the hierarchy.
- *  @author w3.org
- *  @class Collection
- *  @module org.w3.skos
- */
-var Collection = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.4/skos/&quot;, &quot;Collection&quot;);
-};
-Collection = stjs.extend(Collection, EcRemoteLinkedData, [], function(constructor, prototype) {
-    /**
-     *  www.w3.org/2004/02/skos/core/member
-     *  Relates a collection to one of its members.
-     *  @property member
-     *  @type N0e403dc85fe548d1b3d2f3d1ded36d20
-     */
-    prototype.member = null;
-}, {member: {name: &quot;Array&quot;, arguments: [&quot;Object&quot;]}, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
-/**
- *  www.w3.org/2004/02/skos/core/ConceptScheme
- *  A set of concepts, optionally including statements about semantic relationships between those concepts.
- *  A concept scheme may be defined to include concepts from different sources.
- *  @author w3.org
- *  @class ConceptScheme
- *  @module org.w3.skos
- */
-var ConceptScheme = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.4/skos/&quot;, &quot;ConceptScheme&quot;);
-};
-ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = &quot;http://schema.cassproject.org/0.3/skos/ConceptScheme&quot;;
-    constructor.TYPE_0_2 = &quot;https://schema.cassproject.org/0.3/skos/ConceptScheme&quot;;
-    constructor.TYPE_0_3 = &quot;https://schema.cassproject.org/0.4/skos/ConceptScheme&quot;;
-    constructor.myType = ConceptScheme.TYPE_0_3;
-    /**
-     *  www.w3.org/2004/02/skos/core/hasTopConcept
-     *  Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.
-     *  @property hasTopConcept
-     *  @type Concept
-     */
-    prototype.hasTopConcept = null;
-    prototype.upgrade = function() {
-        EcRemoteLinkedData.prototype.upgrade.call(this);
-        if (ConceptScheme.TYPE_0_1.equals(this.getFullType())) {
-            this.setContextAndType(&quot;https://schema.cassproject.org/0.3/skos&quot;, ConceptScheme.TYPE_0_2);
-        }
-        if (ConceptScheme.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(&quot;https://schema.cassproject.org/0.4/skos&quot;, ConceptScheme.TYPE_0_3);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(ConceptScheme.TYPE_0_3);
-        a.push(ConceptScheme.TYPE_0_2);
-        a.push(ConceptScheme.TYPE_0_1);
-        return a;
-    };
-}, {hasTopConcept: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
-/**
- *  www.w3.org/2004/02/skos/core/Concept
- *  An idea or notion; a unit of thought.
- *  @author w3.org
- *  @class Concept
- *  @module org.w3.skos
- */
-var Concept = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.4/skos/&quot;, &quot;Concept&quot;);
-};
-Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = &quot;http://schema.cassproject.org/0.3/skos/Concept&quot;;
-    constructor.TYPE_0_2 = &quot;https://schema.cassproject.org/0.3/skos/Concept&quot;;
-    constructor.TYPE_0_3 = &quot;https://schema.cassproject.org/0.4/skos/Concept&quot;;
-    constructor.myType = Concept.TYPE_0_3;
-    /**
-     *  www.w3.org/2004/02/skos/core/topConceptOf
-     *  Relates a concept to the concept scheme that it is a top level concept of.
-     *  @property topConceptOf
-     *  @type ConceptScheme
-     */
-    prototype.topConceptOf = null;
-    /**
-     *  www.w3.org/2004/02/skos/core/semanticRelation
-     *  Links a concept to a concept related by meaning.
-     *  @property semanticRelation
-     *  @type Concept
-     */
-    prototype.semanticRelation = null;
-    prototype.upgrade = function() {
-        EcRemoteLinkedData.prototype.upgrade.call(this);
-        if (Concept.TYPE_0_1.equals(this.getFullType())) {
-            this.setContextAndType(&quot;https://schema.cassproject.org/0.3/skos&quot;, Concept.TYPE_0_2);
-        }
-        if (Concept.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(&quot;https://schema.cassproject.org/0.4/skos&quot;, Concept.TYPE_0_3);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(Concept.TYPE_0_3);
-        a.push(Concept.TYPE_0_2);
-        a.push(Concept.TYPE_0_1);
-        return a;
-    };
-}, {topConceptOf: &quot;ConceptScheme&quot;, semanticRelation: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
-/**
- *  www.w3.org/2004/02/skos/core/OrderedCollection
- *  An ordered collection of concepts, where both the grouping and the ordering are meaningful.
- *  Ordered collections can be used where you would like a set of concepts to be displayed in a specific order, and optionally under a &#x27;node label&#x27;.
- *  @author w3.org
- *  @class OrderedCollection
- *  @module org.w3.skos
- *  @extends Collection
- */
-var OrderedCollection = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    Collection.call(this);
-    this.context = &quot;https://schema.cassproject.org/0.4/skos/&quot;;
-    this.type = &quot;OrderedCollection&quot;;
-};
-OrderedCollection = stjs.extend(OrderedCollection, Collection, [], function(constructor, prototype) {
-    /**
-     *  www.w3.org/2004/02/skos/core/memberList
-     *  Relates an ordered collection to the RDF list containing its members.
-     *  @property memberList
-     *  @type List
-     */
-    prototype.memberList = null;
-}, {memberList: {name: &quot;Array&quot;, arguments: [&quot;Object&quot;]}, member: {name: &quot;Array&quot;, arguments: [&quot;Object&quot;]}, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 
-    </pre>
+        <div class="foundat">
+            Defined in: <a href="../files/node_modules_cassproject_index.js.html#l49659"><code>node_modules\cassproject\index.js:49659</code></a>
+        </div>
+
+            Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>Implementation of a Directory object with methods for interacting with CASS
+services on a server.</p>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method__delete">_delete</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getBlocking">getBlocking</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_save">save</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_search">search</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method__delete" class="method item">
+    <h3 class="name"><code>_delete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l49768"><code>node_modules\cassproject\index.js:49768</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Deletes this directory from the server specified by its ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if successfully deleted directory</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error occurs when deleting the directory</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_get" class="method item">
+    <h3 class="name"><code>get</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l49685"><code>node_modules\cassproject\index.js:49685</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves a directory from the server, specified by the ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the directory to retrieve</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<EcDirectory></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successfully retrieving the directory,
+returns the retrieved directory</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if an error occurs while retrieving the directory</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getBlocking" class="method item">
+    <h3 class="name"><code>getBlocking</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l49702"><code>node_modules\cassproject\index.js:49702</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves a directory from the server in a blocking fashion, specified by the ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the directory to retrieve</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<EcDirectory></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successfully retrieving the directory,
+returns the retrieved directory</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if an error occurs while retrieving the directory</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_save" class="method item">
+    <h3 class="name"><code>save</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l49742"><code>node_modules\cassproject\index.js:49742</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Saves this directory's details on the server specified by its ID or repo</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successfully saving the directory</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error occurs while saving the directory</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to save the item to</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_search" class="method item">
+    <h3 class="name"><code>search</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+                <li class="arg">
+                        <code>query</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+                <li class="arg">
+                        <code>paramObj</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l49719"><code>node_modules\cassproject\index.js:49719</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Searches the repository given for directories using the query passed in</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to search for directories</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">query</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Query string used to search for a directory</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Array<EcDirectory></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered when the search successfully returns,
+returns search results</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if an error occurs while searching</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">paramObj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Parameter object for search</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+
+
+    </div>
 </div>
                     </div>
                 </div>

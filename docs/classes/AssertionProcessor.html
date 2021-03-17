@@ -84,6 +84,7 @@
                                 <li><a href="../classes/AssessmentProfile.html">AssessmentProfile</a></li>
                                 <li><a href="../classes/AssignAction.html">AssignAction</a></li>
                                 <li><a href="../classes/AssociateDegree.html">AssociateDegree</a></li>
+                                <li><a href="../classes/Attitude.html">Attitude</a></li>
                                 <li><a href="../classes/Attorney.html">Attorney</a></li>
                                 <li><a href="../classes/Audience.html">Audience</a></li>
                                 <li><a href="../classes/AudioObject.html">AudioObject</a></li>
@@ -108,6 +109,7 @@
                                 <li><a href="../classes/BedAndBreakfast.html">BedAndBreakfast</a></li>
                                 <li><a href="../classes/BedDetails.html">BedDetails</a></li>
                                 <li><a href="../classes/BefriendAction.html">BefriendAction</a></li>
+                                <li><a href="../classes/Belief.html">Belief</a></li>
                                 <li><a href="../classes/BikeStore.html">BikeStore</a></li>
                                 <li><a href="../classes/Blog.html">Blog</a></li>
                                 <li><a href="../classes/BlogPosting.html">BlogPosting</a></li>
@@ -152,6 +154,8 @@
                                 <li><a href="../classes/Cemetery.html">Cemetery</a></li>
                                 <li><a href="../classes/Certificate.html">Certificate</a></li>
                                 <li><a href="../classes/Certification.html">Certification</a></li>
+                                <li><a href="../classes/CfdAssessment.html">CfdAssessment</a></li>
+                                <li><a href="../classes/CfdReference.html">CfdReference</a></li>
                                 <li><a href="../classes/CheckAction.html">CheckAction</a></li>
                                 <li><a href="../classes/CheckInAction.html">CheckInAction</a></li>
                                 <li><a href="../classes/CheckOutAction.html">CheckOutAction</a></li>
@@ -208,6 +212,7 @@
                                 <li><a href="../classes/Credential.html">Credential</a></li>
                                 <li><a href="../classes/CredentialAlignmentObject.html">CredentialAlignmentObject</a></li>
                                 <li><a href="../classes/CredentialAssertion.html">CredentialAssertion</a></li>
+                                <li><a href="../classes/CredentialCompetencyLocator.html">CredentialCompetencyLocator</a></li>
                                 <li><a href="../classes/CredentialFramework.html">CredentialFramework</a></li>
                                 <li><a href="../classes/CredentialingAction.html">CredentialingAction</a></li>
                                 <li><a href="../classes/CredentialOrganization.html">CredentialOrganization</a></li>
@@ -421,6 +426,7 @@
                                 <li><a href="../classes/JoinAction.html">JoinAction</a></li>
                                 <li><a href="../classes/JourneymanCertificate.html">JourneymanCertificate</a></li>
                                 <li><a href="../classes/JurisdictionProfile.html">JurisdictionProfile</a></li>
+                                <li><a href="../classes/Knowledge.html">Knowledge</a></li>
                                 <li><a href="../classes/LakeBodyOfWater.html">LakeBodyOfWater</a></li>
                                 <li><a href="../classes/Landform.html">Landform</a></li>
                                 <li><a href="../classes/LandmarksOrHistoricalBuildings.html">LandmarksOrHistoricalBuildings</a></li>
@@ -631,6 +637,7 @@
                                 <li><a href="../classes/RightsAction.html">RightsAction</a></li>
                                 <li><a href="../classes/RiverBodyOfWater.html">RiverBodyOfWater</a></li>
                                 <li><a href="../classes/Role.html">Role</a></li>
+                                <li><a href="../classes/Rollup.html">Rollup</a></li>
                                 <li><a href="../classes/RollupRule.html">RollupRule</a></li>
                                 <li><a href="../classes/RoofingContractor.html">RoofingContractor</a></li>
                                 <li><a href="../classes/Room.html">Room</a></li>
@@ -661,6 +668,7 @@
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
                                 <li><a href="../classes/SingleFamilyResidence.html">SingleFamilyResidence</a></li>
                                 <li><a href="../classes/SiteNavigationElement.html">SiteNavigationElement</a></li>
+                                <li><a href="../classes/Skill.html">Skill</a></li>
                                 <li><a href="../classes/SkiResort.html">SkiResort</a></li>
                                 <li><a href="../classes/SocialEvent.html">SocialEvent</a></li>
                                 <li><a href="../classes/SocialMediaPosting.html">SocialMediaPosting</a></li>
@@ -773,6 +781,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/com.eduworks.html">com.eduworks</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
@@ -817,7 +826,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_cass.rollup.js.html#l1999"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.rollup.js:1999</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_index.js.html#l59154"><code>node_modules\cassproject\index.js:59154</code></a>
         </div>
 
             Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
@@ -848,8 +857,31 @@ of individuals.</p>
 
                     <ul class="index-list methods">
                             <li class="index-item method">
+                                <a href="#method__delete">_delete</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getBlocking">getBlocking</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_has">has</a>
 
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_save">save</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_search">search</a>
+
+                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -861,6 +893,228 @@ of individuals.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method__delete" class="method item">
+    <h3 class="name"><code>_delete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l59878"><code>node_modules\cassproject\index.js:59878</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Deletes the institution from the server corresponding to its ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successfully deleting the institution</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                       Callback triggered if error while deleting institution</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_get" class="method item">
+    <h3 class="name"><code>get</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l59722"><code>node_modules\cassproject\index.js:59722</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves the institution specified with the ID from the server</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the institution to retrieve</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<ExtInstitution></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successfully retrieving the institution,
+returns the institution</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                               Callback triggered if error while retrieving institution</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getBlocking" class="method item">
+    <h3 class="name"><code>getBlocking</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l59766"><code>node_modules\cassproject\index.js:59766</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves a institution from the server synchronously, the call
+blocks until it is successful or an error occurs</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the institution to retrieve</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>ExtInstitution
+The institution retrieved</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_has" class="method item">
     <h3 class="name"><code>has</code></h3>
 
@@ -903,7 +1157,7 @@ of individuals.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_cass.rollup.js.html#l2034"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.rollup.js:2034</code></a>
+        <a href="../files/node_modules_cassproject_index.js.html#l59189"><code>node_modules\cassproject\index.js:59189</code></a>
         </p>
 
 
@@ -1012,6 +1266,224 @@ passwords, etc)</p>
                         <p>The method that is invoked when the
 assertion processor has failed.</p>
 
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_save" class="method item">
+    <h3 class="name"><code>save</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">ExtInstitution</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l59839"><code>node_modules\cassproject\index.js:59839</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Saves this institution on the server corresponding to its ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successfully saving the ExtInstitution</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                       Callback triggered if error while saving ExtInstitution</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">ExtInstitution</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_search" class="method item">
+    <h3 class="name"><code>search</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+                <li class="arg">
+                        <code>query</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[paramObj]</code>
+                </li>
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>size</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_index.js.html#l59802"><code>node_modules\cassproject\index.js:59802</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Searches the repository using the query and optional parameters provided</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to search using the query provided</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">query</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>The query to send to the search</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Array<ExtInstitution>></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successful search return</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                      Callback triggered if error searching</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[paramObj]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                      Parameters to include in the search</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">size</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
                     </div>
 
                 </li>
