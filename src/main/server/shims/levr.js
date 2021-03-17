@@ -288,6 +288,11 @@ global.randomString = function(len){
     return forge.random.getBytesSync(len);
 }
 
+if (global.rsaGenerate === undefined)
+global.rsaGenerate = function(len){
+    return EcPpk.generateKey().toPem();
+}
+
 if (global.jsonLdExpand === undefined)
 global.jsonLdExpand = function(json){
     return new Promise(function(resolve,reject){

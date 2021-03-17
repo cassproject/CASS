@@ -25,7 +25,7 @@ const app = global.app = express();
 const port = process.env.PORT || 80;
 require("./server/websocket.js");
 
-app.use(express.static('./webapp'))
+app.use(express.static('src/main/webapp/'))
 
 global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";
