@@ -10,7 +10,7 @@ image: maven:3.6.2
 
 cache:
     paths:
-    - .m2/repository
+    - node_modules
 
 stages:
    - build

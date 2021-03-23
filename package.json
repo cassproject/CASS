@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "nodemon src/main/server.js",
-    "run": "pm2 start --name cass src/main/server.js --watch && pm2 logs",
+    "run": "pm2 start ./pm2.config.js && pm2 logs",
     "logs": "pm2 logs",
     "stop": "pm2 stop all",
     "docs": "yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/"

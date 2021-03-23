@@ -140,6 +140,8 @@ var skyIdLogin = async function() {
     return JSON.stringify(get);
 };
 var loadConfigurationFile = function(path, dflt) {
+    if (fs.existsSync("etc") == false)
+        fs.mkdirSync("etc");
     if (fs.existsSync(path)) 
         return fileToString(fileLoad(path));
     if (fs.existsSync("etc/" + path)) 

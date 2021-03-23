@@ -161,6 +161,10 @@ global.bindWebService = function(endpoint,callback){
     app.post('/api'+endpoint,post);
     app.put('/api'+endpoint,put);
     app.delete('/api'+endpoint,deleet);
+    app.get('/cass/api'+endpoint,get);
+    app.post('/cass/api'+endpoint,post);
+    app.put('/cass/api'+endpoint,put);
+    app.delete('/cass/api'+endpoint,deleet);
 }
 
 if (global.fileFromDatastream === undefined)
