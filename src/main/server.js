@@ -31,7 +31,7 @@ global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
-global.skyrepoDebug = true;
+global.skyrepoDebug = false;
 global.thisEndpoint = function(){return repo.selectedServer;}
 global.repoEndpoint = function(){return repo.selectedServer;}
 
@@ -62,8 +62,8 @@ skyrepoMigrate(function(){
     app.listen(port, async () => {    
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
         console.log(`CaSS listening at http://localhost:${port}`);
-        let result = await httpGet('http://localhost/api/badge/assertion/e846b68a-f48f-48ff-bb36-c9f94bd7a3bc');
-        console.log("tests");
-        console.log(JSON.stringify(result,null,2));
+        // let result = await httpGet('http://localhost/api/badge/assertion/e846b68a-f48f-48ff-bb36-c9f94bd7a3bc');
+        // console.log("tests");
+        // console.log(JSON.stringify(result,null,2));
     });
 });

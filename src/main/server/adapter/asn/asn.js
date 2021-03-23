@@ -299,12 +299,11 @@ function importFrameworkToCass(frameworkObj, competencyList) {
     var relationshipMap = {};
     var parentMap = {};
 
-    EcRemote.async = false;
 
     for (var idx in competencyList) {
         var asnComp = competencyList[idx];
 
-        var compGuid = stringToHex(md5(asnComp["@id"]));
+        var compGuid = EcCrypto.md5(asnComp["@id"]);
         print(compGuid);
         var compVersion = date(null, null, true);
 
@@ -374,7 +373,7 @@ function importFrameworkToCass(frameworkObj, competencyList) {
     } // end for each competency in  competencyList
 
     if (frameworkObj != null) {
-        var guid = stringToHex(md5(frameworkObj["@id"]));
+        var guid = EcCrypto.md5(frameworkObj["@id"]);
         var version = date(null, null, true);
 
         frameworkObj["@context"] = asnToCassFrameworkContext;
@@ -466,7 +465,6 @@ function asnFrameworkToCass() {
  * @param context
  */
 function importJsonLdGraph(graph, context) {
-    EcRemote.async = false;
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
     var skosIdentity = new EcIdentity();

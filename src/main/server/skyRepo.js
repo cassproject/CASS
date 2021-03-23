@@ -883,7 +883,7 @@ var endpointMultiPutEach = async function() {
     ld.copyFrom(o);
     var id = null;
     if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServer) == -1) 
-        id = stringToHex(md5(ld.shortId()));
+        id = EcCrypto.md5(ld.shortId());
      else 
         id = ld.getGuid();
     var version = ld.getTimestamp();
@@ -893,7 +893,7 @@ var endpointMultiPutEach = async function() {
         await (skyrepoPutParsed).call(this, o, id, version, type);
         return o;
     }catch (ex) {
-        debug(ex.getMessage());
+        debug(ex);
     }
     return null;
 };

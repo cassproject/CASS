@@ -735,7 +735,6 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     ceasnIdentity.displayName = "CEASN Server Identity";
     EcIdentityManager.addIdentity(ceasnIdentity);
 
-    EcRemote.async = false;
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
 
@@ -870,7 +869,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     } // end for each competency in  competencyList
 
     if (frameworkObj != null) {
-        var guid = stringToHex(md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"])));
+        var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"]));
 
         frameworkObj["@context"] = "https://schema.cassproject.org/0.4/ceasn2cass";
         var expanded = await jsonLdExpand(JSON.stringify(frameworkObj));
@@ -927,28 +926,16 @@ async function ceasnFrameworkToCass() {
 
     var jsonLd, text;
 
-    var file = getFileFromPost.call(this);
-
-    if (file == undefined || file == null) {
-        error("Unable to find ASN to Convert");
-    } else if (file.length != undefined) {
-        var data = getFileFromPost.call(this, "data");
-        if (data != undefined && data != null) {
-            text = fileToString(data);
-        } else {
-            text = fileToString(file[0]);
-        }
-    } else {
-        text = fileToString(file);
-    }
-    if (text[0] != "{") {
-        text = text.slice(1);
-    }
-
+    var data = fileFromDatastream.call(this, "data");
+    if (data === undefined || data == null) 
+        data = fileFromDatastream.call(this, "file");
+    text = fileToString(data);
     try {
         jsonLd = JSON.parse(text);
     } catch (e) {
         debug("Not json.");
+        debug(e);
+        debug(text);
         jsonLd = rdfToJsonLd(text);
     }
 
@@ -994,3 +981,4 @@ async function ceasnEndpoint() {
 
 bindWebService("/ceasn/*", ceasnEndpoint);
 bindWebService("/ctdlasn/*", ceasnEndpoint);
+bindWebService("/ctdlasn", ceasnEndpoint);

@@ -166,7 +166,10 @@ global.bindWebService = function(endpoint,callback){
 if (global.fileFromDatastream === undefined)
 global.fileFromDatastream = function(dataStream){
     if (this.dataStreams === undefined || this.dataStreams == null) return null;
-    if (this.dataStreams[dataStream] === undefined || this.dataStreams[dataStream] == null) return null;
+    if ((dataStream === undefined||dataStream == null) && EcObject.keys(this.dataStreams).length == 1)
+        return this.dataStreams[EcObject.keys(this.dataStreams)[0]];
+    if (this.dataStreams[dataStream] === undefined || this.dataStreams[dataStream] == null) 
+        return null;
     return this.dataStreams[dataStream];
 };
 
@@ -266,7 +269,7 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        if (skyrepoDebug) console.trace("post error");
+        if (skyrepoDebug) console.trace("post error: " +error.response.status + ": "+ error.response.statusText);
         if (skyrepoDebug) console.error(url);
         if (skyrepoDebug) if (resp != null)
             console.error(resp);
