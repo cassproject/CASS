@@ -45,7 +45,7 @@ fi
 if [ "$platformFedora" -ne 0 ];
  then
 yum -y -q update
-fi
+fi 
 
 md5Local=`cat cassInstall.sh | md5sum`
 md5Remote=`curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh | md5sum`
@@ -513,18 +513,22 @@ yum -q -y install ntpdate
 ntpdate -s time.nist.gov
 fi
 
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
+ then
 echo -----
 echo Starting Tomcat...
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
- then
  service tomcat7 start
 fi
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
  then
+echo -----
+echo Starting Tomcat...
  service tomcat8 start
 fi
-if [ "$platformFedora" -ne 0 ];
+if [ ! -e "src/main/server.js" ] && [ "$platformFedora" -ne 0 ];
  then
+echo -----
+echo Starting Tomcat...
  service tomcat start
 fi
 
@@ -547,6 +551,13 @@ echo -----
 echo Starting HTTPD...
 service httpd stop
 service httpd start
+fi
+
+if [ ! -e "src/main/server.js" ];
+ then
+  npm run run
+  pm2 startup
+  pm2 save
 fi
 
 echo -----
