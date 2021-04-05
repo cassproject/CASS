@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.40",
+        "version": "1.2.41",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -28,6 +28,7 @@
             "name": "src/main/js/cass/cass.competency.js",
             "modules": {},
             "classes": {
+                "EcDirectory": 1,
                 "EcRollupRule": 1,
                 "EcAlignment": 1,
                 "EcLevel": 1,
@@ -139,6 +140,7 @@
                 "Competency": 1,
                 "Relation": 1,
                 "Framework": 1,
+                "Directory": 1,
                 "Level": 1,
                 "RollupRule": 1,
                 "Assertion": 1,
@@ -899,6 +901,7 @@
                 "EcRemoteLinkedData": 1,
                 "XapiConfig": 1,
                 "MoodleConfig": 1,
+                "EcDirectory": 1,
                 "EcRollupRule": 1,
                 "EcAlignment": 1,
                 "EcLevel": 1,
@@ -919,6 +922,7 @@
                 "Competency": 1,
                 "Relation": 1,
                 "Framework": 1,
+                "Directory": 1,
                 "Level": 1,
                 "RollupRule": 1,
                 "Assertion": 1,
@@ -942,7 +946,7 @@
             "description": "Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for\npermission controls, signing, identifying and locating the object.",
             "author": "devlin.junker@eduworks.com",
             "is_constructor": 1,
-            "extends": "RollupRule",
+            "extends": "Directory",
             "abstract": "",
             "static": 1
         },
@@ -1739,6 +1743,21 @@
             "description": "Object that holds the Moodle Adapter configuration values returned\nfrom the server and provides methods for saving new config values",
             "author": "devlin.junker@eduworks.com"
         },
+        "EcDirectory": {
+            "name": "EcDirectory",
+            "shortname": "EcDirectory",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 20,
+            "description": "Implementation of a Directory object with methods for interacting with CASS\nservices on a server.",
+            "author": "kristin.wood@eduworks.com"
+        },
         "EcRollupRule": {
             "name": "EcRollupRule",
             "shortname": "EcRollupRule",
@@ -1750,7 +1769,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 20,
+            "line": 143,
             "description": "Implementation of a Rollup Rule object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1765,7 +1784,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 143,
+            "line": 266,
             "description": "Implementation of an alignment object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com\n<p>\nTODO: Test case where an absent relation is in the framework."
         },
@@ -1780,7 +1799,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1247,
+            "line": 1370,
             "description": "Implementation of a Level object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1795,7 +1814,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1437,
+            "line": 1560,
             "description": "Implementation of a Competency object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1810,7 +1829,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1804,
+            "line": 1927,
             "description": "Implementation of a Framework object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1990,7 +2009,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 3906,
+            "line": 3921,
             "description": "Processor used in determining all the competencies a for which a user has assertions.\nUtilizes EcFrameworkGraph",
             "author": "tom.buskirk@eduworks.com"
         },
@@ -2005,7 +2024,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1579,
+            "line": 1669,
             "description": "Contact Grant that is used to share your public key with another user",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2020,7 +2039,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 146,
+            "line": 236,
             "description": "An identity is an alias that a person or system may own. It consists of a\nprivate key and a display name. Using the private key we may: 1. Perform all\noperations of a EcContact. 2. Decrypt messages using our private key. 3. Sign\nmessages, ensuring the recipient knows that we sent the message and it was\nnot altered.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2035,7 +2054,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 254,
+            "line": 344,
             "description": "Manages identities and contacts, provides hooks to respond to identity and\ncontact events, and builds signatures and signature sheets for authorizing\nmovement of data. Also provides helper functions for identity management and\nreads the users contacts on application start with a static constructor that\npulls them out of any temporary storage",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2050,7 +2069,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1188,
+            "line": 1278,
             "description": "Logs into and stores/retrieves credentials from a compatible remote server.\nPerforms anonymization of the user.\n<p>\nRequires initialization with server specific salts. Server specific salts\nprevent co-occurrence attacks, should credentials on one server be\ncompromised (intercepted in transit).\n<p>\nTransmits hashed username, hashed password, and encrypts credentials using\nthe hashed combination of the username and password. This prevents the system\nstoring the credentials from having any knowledge of the user.\n<p>\nPassword recovery is done by, when the password changes, creating a\ncryptographic pad (or perfect cipher) where one half is stored on the server,\nand the other half is stored with the user. Should the user lose this pad and\nforget their password, they are not able to recover or reset their password,\nand their data should be considered lost.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2110,7 +2129,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2500,
+            "line": 2555,
             "description": "Implementation of a file with methods for communicating with repository services",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2185,7 +2204,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 980,
+            "line": 1030,
             "description": "A graph consisting of a set of vertices of type <code>V</code>\nset and a set of edges of type <code>E</code>.  Edges of this\ngraph type have exactly two endpoints; whether these endpoints\nmust be distinct depends on the implementation.\n<p>\nThis interface permits, but does not enforce, any of the following\ncommon variations of graphs:\n<ul>\n<li> directed and undirected edges\n<li> vertices and edges with attributes (for example, weighted edges)\n<li> vertices and edges of different types (for example, bipartite\nor multimodal graphs)\n<li> parallel edges (multiple edges which connect a single set of vertices)\n<li> representations as matrices or as adjacency lists or adjacency maps\n</ul>\nExtensions or implementations of this interface\nmay enforce or disallow any or all of these variations.\n<p>\n<p>Definitions (with respect to a given vertex <code>v</code>):\n<ul>\n<li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed\nfrom a neighbor of <code>v</code> to reach <code>v</code>\n<li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed\nfrom <code>v</code> to reach some neighbor of <code>v</code>\n<li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an\nincoming edge of <code>v</code>\n<li/><b>successor</b> of <code>v</code>: a vertex at the other end of an\noutgoing edge of <code>v</code>\n<li/>\n</ul>",
             "author": "Tom Buskirk (tom.buskirk@eduworks.com)",
             "extends": "Hypergraph"
@@ -2201,7 +2220,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1203,
+            "line": 1253,
             "description": "Object Helper Functions",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2216,7 +2235,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1239,
+            "line": 1289,
             "description": "Class with static methods to prevent unnecessary overhead with small operations that don't prevent drawing,\nbut to setTimeout on methods that slow down the browser sufficiently to interfere with drawing.\nUses a framerate timer to determine between the two."
         },
         "EcDirectedGraph": {
@@ -2230,7 +2249,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1323,
+            "line": 1373,
             "description": "A directed implementation of {{#crossLink \"Graph\"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.",
             "params": [
                 {
@@ -2256,7 +2275,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1635,
+            "line": 1685,
             "description": "Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.\nWill iterate over all items in an array and perform 'each(item,callback)'.\nEvery 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.\nWhen all callbacks have been called, 'after(array)' is called.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2345,7 +2364,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 511,
+            "line": 534,
             "description": "Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.\nOutput is encoded in base64 for easier handling.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2360,7 +2379,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 577,
+            "line": 600,
             "description": "Asynchronous implementation of {{#crossLink\n\"EcRsaOaep\"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2375,7 +2394,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 801,
+            "line": 824,
             "description": "Asynchronous implementation of {{#crossLink\n\"EcAesCtr\"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2390,7 +2409,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 940,
+            "line": 963,
             "description": "Async version of EcRsaOaep that uses browser extensions (window.crypto) to accomplish cryptography much faster.\nFalls back to EcRsaOaepAsyncWorker, if window.crypto is not available."
         },
         "EcAesCtrAsync": {
@@ -2404,7 +2423,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1160,
+            "line": 1183,
             "description": "Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.\nFalls back to EcAesCtrAsyncWorker, if window.crypto is not available."
         },
         "Cass": {
@@ -2470,6 +2489,22 @@
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
         },
+        "Directory": {
+            "name": "Directory",
+            "shortname": "Directory",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/org.cassproject.schema.cass.js",
+            "line": 346,
+            "description": "A Directory is a collection of frameworks and resources.",
+            "author": "kristin.wood@eduworks.com",
+            "extends": "CreativeWork"
+        },
         "Level": {
             "name": "Level",
             "shortname": "Level",
@@ -2481,7 +2516,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 339,
+            "line": 371,
             "description": "When an individual's performance in a competency can be measured, a level specifies milestones that an individual can reach, creating fine-grained distinction between the proficient and the adept.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2497,7 +2532,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 413,
+            "line": 445,
             "description": "A segment of script that defines in a domain specific language how competence is transferred from one competency to another.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2513,7 +2548,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 471,
+            "line": 503,
             "description": "A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2529,7 +2564,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 776,
+            "line": 808,
             "description": "Container for storing assertions and the secrets used to decrypt those assertions.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -14865,7 +14900,150 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 35,
+            "line": 46,
+            "description": "Retrieves a directory from the server, specified by the ID",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the directory to retrieve",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after successfully retrieving the directory,\n                                returns the retrieved directory",
+                    "type": "Callback1<EcDirectory>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while retrieving the directory",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "memberof": "EcDirectory",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "class": "EcDirectory",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 63,
+            "description": "Retrieves a directory from the server in a blocking fashion, specified by the ID",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the directory to retrieve",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after successfully retrieving the directory,\n                                returns the retrieved directory",
+                    "type": "Callback1<EcDirectory>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while retrieving the directory",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "memberof": "EcDirectory",
+            "itemtype": "method",
+            "name": "getBlocking",
+            "static": 1,
+            "class": "EcDirectory",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 80,
+            "description": "Searches the repository given for directories using the query passed in",
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for directories",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "query",
+                    "description": "Query string used to search for a directory",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered when the search successfully returns,\n                                      returns search results",
+                    "type": "Callback1<Array<EcDirectory>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while searching",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "paramObj",
+                    "description": "Parameter object for search",
+                    "type": "Object"
+                }
+            ],
+            "memberof": "EcDirectory",
+            "itemtype": "method",
+            "name": "search",
+            "static": 1,
+            "class": "EcDirectory",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 103,
+            "description": "Saves this directory's details on the server specified by its ID or repo",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered after successfully saving the directory",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs while saving the directory",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "repo",
+                    "description": "Repository to save the item to",
+                    "type": "EcRepository"
+                }
+            ],
+            "memberof": "EcDirectory",
+            "itemtype": "method",
+            "name": "save",
+            "class": "EcDirectory",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 129,
+            "description": "Deletes this directory from the server specified by its ID",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered if successfully deleted directory",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs when deleting the directory",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "memberof": "EcDirectory",
+            "itemtype": "method",
+            "name": "_delete",
+            "class": "EcDirectory",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 158,
             "description": "Retrieves a rollup rule from the server",
             "params": [
                 {
@@ -14893,7 +15071,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 55,
+            "line": 178,
             "description": "Searches for levels with a string query",
             "params": [
                 {
@@ -14931,7 +15109,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 77,
+            "line": 200,
             "description": "Method for setting a rollup rule name",
             "params": [
                 {
@@ -14947,7 +15125,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 87,
+            "line": 210,
             "description": "Method for setting a rollup rule description",
             "params": [
                 {
@@ -14964,7 +15142,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 97,
+            "line": 220,
             "description": "Saves this rollup rules details on the server specified by its ID",
             "params": [
                 {
@@ -14986,7 +15164,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 129,
+            "line": 252,
             "description": "Deletes this rollup rule from the server specified by it's ID",
             "params": [
                 {
@@ -15008,7 +15186,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 165,
+            "line": 288,
             "description": "Retrieves the alignment specified with the ID from the server",
             "params": [
                 {
@@ -15037,7 +15215,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 182,
+            "line": 305,
             "description": "Retrieves an alignment from it's server synchronously, the call\nblocks until it is successful or an error occurs",
             "params": [
                 {
@@ -15058,7 +15236,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 197,
+            "line": 320,
             "description": "Searches the repository using the query and optional parameters provided",
             "params": [
                 {
@@ -15098,7 +15276,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 219,
+            "line": 342,
             "description": "Searches the repository for alignments with a specific ID in the source field",
             "params": [
                 {
@@ -15138,7 +15316,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 246,
+            "line": 369,
             "description": "Searches the repository for alignments with one of an array of IDs in the source field",
             "params": [
                 {
@@ -15178,7 +15356,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 282,
+            "line": 405,
             "description": "Searches the repository for alignments with a specific ID in the target field",
             "params": [
                 {
@@ -15218,7 +15396,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 309,
+            "line": 432,
             "description": "Setter for alignment name",
             "params": [
                 {
@@ -15235,7 +15413,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 320,
+            "line": 443,
             "description": "Setter for alignment description",
             "params": [
                 {
@@ -15252,7 +15430,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 331,
+            "line": 454,
             "description": "Saves this alignment details on the server corresponding to its ID",
             "params": [
                 {
@@ -15275,7 +15453,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 371,
+            "line": 494,
             "description": "Deletes the alignment from the server corresponding to its ID",
             "params": [
                 {
@@ -15298,14 +15476,14 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 385,
+            "line": 508,
             "description": "Created by fray on 11/29/17.",
             "class": "EcAlignment",
             "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 401,
+            "line": 524,
             "description": "Retrieves a concept scheme from the server, specified by the ID",
             "params": [
                 {
@@ -15333,7 +15511,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 418,
+            "line": 541,
             "description": "Retrieves a concept scheme from the server in a blocking fashion, specified by the ID",
             "params": [
                 {
@@ -15361,7 +15539,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 435,
+            "line": 558,
             "description": "Searches the repository given for concept schemes using the query passed in",
             "params": [
                 {
@@ -15399,14 +15577,14 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 459,
+            "line": 582,
             "description": "Created by fray on 11/29/17.",
             "class": "EcAlignment",
             "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 475,
+            "line": 598,
             "description": "Retrieves a concept from it's server asynchronously",
             "params": [
                 {
@@ -15434,7 +15612,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 492,
+            "line": 615,
             "description": "Retrieves a concept from it's server synchronously, the call\nblocks until it is successful or an error occurs",
             "params": [
                 {
@@ -15455,7 +15633,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 507,
+            "line": 630,
             "description": "Searches a repository for competencies that match the search query",
             "params": [
                 {
@@ -15492,7 +15670,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 530,
+            "line": 653,
             "description": "The sequence that assertions should be built as such: 1. Generate the ID. 2.\nAdd the owner. 3. Set the subject. 4. Set the agent. Further functions may be\ncalled afterwards in any order. WARNING: The modifications of ownership and\nreadership do not \"just work\".",
             "author": "fritz.ray@eduworks.com",
             "class": "EcAlignment",
@@ -15500,7 +15678,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 572,
+            "line": 695,
             "description": "Sets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
             "params": [
                 {
@@ -15513,7 +15691,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1262,
+            "line": 1385,
             "description": "Retrieves a level from the server specified by its ID",
             "params": [
                 {
@@ -15541,7 +15719,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1279,
+            "line": 1402,
             "description": "Retrieves a level from it's server synchronously, the call\nblocks until it is successful or an error occurs",
             "params": [
                 {
@@ -15562,7 +15740,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1294,
+            "line": 1417,
             "description": "Searches for levels with a string query",
             "params": [
                 {
@@ -15600,7 +15778,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1316,
+            "line": 1439,
             "description": "Searches for levels using a competency that the results must be related to",
             "params": [
                 {
@@ -15638,7 +15816,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1341,
+            "line": 1464,
             "description": "Adds a relationship between this level and a target level to define\nhow they correspond to one another",
             "params": [
                 {
@@ -15670,7 +15848,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1369,
+            "line": 1492,
             "description": "Method to set the name of this level",
             "params": [
                 {
@@ -15687,7 +15865,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1380,
+            "line": 1503,
             "description": "Method to set the description of the level",
             "params": [
                 {
@@ -15704,7 +15882,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1391,
+            "line": 1514,
             "description": "Saves this levels details to the server",
             "params": [
                 {
@@ -15726,7 +15904,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1423,
+            "line": 1546,
             "description": "Deletes the level from it's repository",
             "params": [
                 {
@@ -15748,7 +15926,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1466,
+            "line": 1589,
             "description": "Retrieves a competency from it's server asynchronously",
             "params": [
                 {
@@ -15776,7 +15954,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1483,
+            "line": 1606,
             "description": "Retrieves a competency from it's server synchronously, the call\nblocks until it is successful or an error occurs",
             "params": [
                 {
@@ -15797,7 +15975,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1498,
+            "line": 1621,
             "description": "Searches a repository for competencies that match the search query",
             "params": [
                 {
@@ -15834,7 +16012,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1520,
+            "line": 1643,
             "description": "Adds a new alignment on the server specified with this competency as its\nsource and the specified target competency",
             "params": [
                 {
@@ -15880,7 +16058,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1554,
+            "line": 1677,
             "description": "Searches the repository given for any relationships that contain this competency",
             "params": [
                 {
@@ -15912,7 +16090,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1571,
+            "line": 1694,
             "description": "Searches the repository given for any relationships that contain this competency",
             "params": [
                 {
@@ -15945,7 +16123,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1593,
+            "line": 1716,
             "description": "Adds a new level on the server specified for this competency.",
             "params": [
                 {
@@ -15990,7 +16168,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1626,
+            "line": 1749,
             "description": "Searches the repository given for any levels of this competency",
             "params": [
                 {
@@ -16022,7 +16200,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1648,
+            "line": 1771,
             "description": "Adds a new rollup rule on the server specified for this competency",
             "params": [
                 {
@@ -16067,7 +16245,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1682,
+            "line": 1805,
             "description": "Searches the repository given for any rollup rules of this competency",
             "params": [
                 {
@@ -16099,7 +16277,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1704,
+            "line": 1827,
             "description": "Method to set competency scope",
             "params": [
                 {
@@ -16116,7 +16294,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1715,
+            "line": 1838,
             "description": "Saves the competency details to the server",
             "params": [
                 {
@@ -16138,7 +16316,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1739,
+            "line": 1862,
             "description": "Deletes the competency from the server\n<p>\nTODO: Delete rollup rules?",
             "params": [
                 {
@@ -16165,7 +16343,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1833,
+            "line": 1956,
             "description": "Retrieves a framework from the server, specified by the ID",
             "params": [
                 {
@@ -16193,7 +16371,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1850,
+            "line": 1973,
             "description": "Retrieves a framework from the server in a blocking fashion, specified by the ID",
             "params": [
                 {
@@ -16221,7 +16399,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1867,
+            "line": 1990,
             "description": "Searches the repository given for frameworks using the query passed in",
             "params": [
                 {
@@ -16259,7 +16437,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1890,
+            "line": 2013,
             "description": "Adds the competency ID specified to the frameworks list of competency IDs",
             "params": [
                 {
@@ -16276,7 +16454,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1907,
+            "line": 2030,
             "description": "Removes a competency ID from the framework's list, also removes any\nlevels and relations associated with that competency\n<p>\nTODO: remove rollup rules? should we add flag to remove these extras",
             "params": [
                 {
@@ -16303,7 +16481,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1961,
+            "line": 2084,
             "description": "Helper method to remove relationships associated with a competency from this framework",
             "params": [
                 {
@@ -16337,7 +16515,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1992,
+            "line": 2115,
             "description": "Helper method to remove levels associated with a competency from this framework",
             "params": [
                 {
@@ -16371,7 +16549,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2023,
+            "line": 2146,
             "description": "Adds a relation ID to the framework's list of relations",
             "params": [
                 {
@@ -16388,7 +16566,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2040,
+            "line": 2163,
             "description": "Removes a relation ID from the framework's list of relations",
             "params": [
                 {
@@ -16405,7 +16583,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2056,
+            "line": 2179,
             "description": "Adds a level ID to the framework's list of levels",
             "params": [
                 {
@@ -16422,7 +16600,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2073,
+            "line": 2196,
             "description": "Removes a level ID from the framework's list of levels",
             "params": [
                 {
@@ -16439,7 +16617,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2089,
+            "line": 2212,
             "description": "Adds a rollup rule ID to the framework's list of rollup rules",
             "params": [
                 {
@@ -16456,7 +16634,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2106,
+            "line": 2229,
             "description": "Removes a rollup rule ID from the framework's list of rollup rules",
             "params": [
                 {
@@ -16473,7 +16651,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2122,
+            "line": 2245,
             "description": "Saves this frameworks details on the server specified by it's ID",
             "params": [
                 {
@@ -16495,7 +16673,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2146,
+            "line": 2269,
             "description": "Deletes this framework from the server specified by it's ID",
             "params": [
                 {
@@ -17813,7 +17991,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 2721,
+            "line": 2736,
             "description": "Helper method to populate the graph with assertion data, based on propagation rules implicit in the relations (see devs.cassproject.org, Relations). Does not draw conclusions. Must be able to decrypt 'negative' value.",
             "params": [
                 {
@@ -17837,7 +18015,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 2804,
+            "line": 2819,
             "description": "Fetches the Meta Competency (additional state information used to compute profiles or other data) for a competency.",
             "params": [
                 {
@@ -17857,21 +18035,97 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 4543,
+            "line": 4558,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
             "class": "ProfileProcessor",
             "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 4723,
+            "line": 4738,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
             "class": "ProfileProcessor",
             "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 47,
+            "line": 33,
+            "description": "The record used to request a rekey of a given public key",
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 46,
+            "description": "PEM encoded public key of the replacement (new) key",
+            "itemtype": "property",
+            "name": "rekeyPk",
+            "type": "string (PEM)",
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 52,
+            "description": "SHA256 signature of the rekey request",
+            "itemtype": "property",
+            "name": "rekeySignature",
+            "type": "string (SHA256 signature)",
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 58,
+            "description": "Generates the ID of the rekey request in the appropriate format\n \n{string} server      Base URL of the server's repository functionality.\n{EcPk}   oldKeyPk    The public key to replace",
+            "itemtype": "method",
+            "name": "generateRekeyRequestId",
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 68,
+            "description": "Adds a signature to the rekey request and finalizes before save\n \n{EcPpk}  oldKeyPpk   The old PPK",
+            "itemtype": "method",
+            "name": "generateRekeyRequestId",
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 77,
+            "description": "Generates and populates a rekey request with the given information\n \n{String} server  Base URL of the server's repository functionality.\n{EcPpk}  oldKey  The old PPK\n{EcPpk}  newKey  The new PPK",
+            "itemtype": "method",
+            "name": "generateRekeyRequest",
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 93,
+            "description": "Encodes the object in a form where it is ready to be signed.\nThis method is under long term review, and may change from version to version.",
+            "return": {
+                "description": "ASCII-sort order encoded space-free and tab-free JSON-LD."
+            },
+            "itemtype": "method",
+            "name": "toSignableJson",
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 107,
+            "description": "Verifies both the integrity of the rekey request and the signed nonce of the old key. Returns false if either of these fail.",
+            "return": {
+                "description": "True if the rekey request is valid and maintains its cryptographically integrity."
+            },
+            "class": "EcContact",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/ebac.identity.js",
+            "line": 137,
             "description": "Public Key of the contact",
             "itemtype": "property",
             "name": "pk",
@@ -17881,7 +18135,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 54,
+            "line": 144,
             "description": "Display Name of the contact",
             "itemtype": "property",
             "name": "displayName",
@@ -17891,7 +18145,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 61,
+            "line": 151,
             "description": "URL to the home server of the contact",
             "itemtype": "property",
             "name": "source",
@@ -17901,7 +18155,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 68,
+            "line": 158,
             "description": "Helper function to decrypt an encrypted contact (storable version of an contact)\ninto an contact",
             "params": [
                 {
@@ -17933,7 +18187,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 93,
+            "line": 183,
             "description": "Comparison method that checks if the key is the same as another EcContact",
             "params": [
                 {
@@ -17954,7 +18208,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 113,
+            "line": 203,
             "description": "Returns the URL to generic image that should be displayed for the contact",
             "return": {
                 "description": "URL of generic image file",
@@ -17968,7 +18222,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 124,
+            "line": 214,
             "description": "Helper function to encrypt a contact into an encrypted contact (storable\nversion of a contact)",
             "params": [
                 {
@@ -17989,7 +18243,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 163,
+            "line": 253,
             "description": "Private Key of this identity",
             "itemtype": "property",
             "name": "ppk",
@@ -17999,7 +18253,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 170,
+            "line": 260,
             "description": "Display name of this identity",
             "itemtype": "property",
             "name": "displayName",
@@ -18009,7 +18263,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 177,
+            "line": 267,
             "description": "String identifying where this identity came from",
             "itemtype": "property",
             "name": "displayName",
@@ -18019,7 +18273,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 184,
+            "line": 274,
             "description": "Helper function to decrypt a credential (storable version of an identity)\ninto an identity)",
             "params": [
                 {
@@ -18051,7 +18305,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 219,
+            "line": 309,
             "description": "Helper function to encrypt an identity into a credential (storable\nversion of an identity)",
             "params": [
                 {
@@ -18072,7 +18326,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 238,
+            "line": 328,
             "description": "Converts an identity to a contact.",
             "return": {
                 "description": "Contact object.",
@@ -18086,7 +18340,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 268,
+            "line": 358,
             "description": "The current user's owned identities (keys+displayName)",
             "itemtype": "property",
             "name": "ids",
@@ -18097,7 +18351,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 276,
+            "line": 366,
             "description": "Contacts (Keys that we do not own)",
             "itemtype": "property",
             "name": "contacts",
@@ -18108,7 +18362,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 284,
+            "line": 374,
             "description": "Identity change hook.",
             "itemtype": "property",
             "name": "onIdentityChanged",
@@ -18119,7 +18373,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 292,
+            "line": 382,
             "description": "Contacts change hook.",
             "itemtype": "property",
             "name": "onContactChanged",
@@ -18130,7 +18384,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 306,
+            "line": 396,
             "description": "Trigger for the onIdentityChanged hook",
             "params": [
                 {
@@ -18148,7 +18402,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 319,
+            "line": 409,
             "description": "Trigger for the onContactChanged hook",
             "params": [
                 {
@@ -18166,7 +18420,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 333,
+            "line": 423,
             "description": "Reads contact data from localstorage.",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -18177,7 +18431,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 365,
+            "line": 455,
             "description": "Writes contact data to localstorage.",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -18188,7 +18442,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 385,
+            "line": 475,
             "description": "Reads contact data from localstorage.",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -18199,7 +18453,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 417,
+            "line": 507,
             "description": "Writes contact data to localstorage.",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -18210,7 +18464,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 437,
+            "line": 527,
             "description": "Clears contacts from the local storage",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -18221,7 +18475,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 448,
+            "line": 538,
             "description": "Clears identities from the local storage",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -18232,7 +18486,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 459,
+            "line": 549,
             "description": "Adds an identity to the identity manager. Checks for duplicates. Triggers\nevents.",
             "params": [
                 {
@@ -18250,7 +18504,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 477,
+            "line": 567,
             "description": "Adds an identity to the identity manager. Checks for duplicates. Does not trigger\nevents.",
             "params": [
                 {
@@ -18268,7 +18522,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 494,
+            "line": 584,
             "description": "Adds a contact to the identity manager. Checks for duplicates. Triggers\nevents.",
             "params": [
                 {
@@ -18286,7 +18540,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 524,
+            "line": 614,
             "description": "Adds a contact to the identity manager. Checks for duplicates. Does not trigger\nevents.",
             "params": [
                 {
@@ -18304,7 +18558,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 551,
+            "line": 641,
             "description": "Create a signature sheet, authorizing movement of data outside of our\ncontrol.",
             "params": [
                 {
@@ -18336,7 +18590,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 581,
+            "line": 671,
             "description": "Asynchronous version of creating a signature sheet for a list of\nidentities",
             "params": [
                 {
@@ -18369,7 +18623,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 621,
+            "line": 711,
             "description": "Create a signature sheet for all identities, authorizing movement of data\noutside of our control.",
             "params": [
                 {
@@ -18396,7 +18650,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 658,
+            "line": 748,
             "description": "Asynchronous version of creating a signature sheet for all identities",
             "params": [
                 {
@@ -18424,7 +18678,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 711,
+            "line": 801,
             "description": "Create a signature for a specific identity, authorizing movement of data\noutside of our control.",
             "params": [
                 {
@@ -18456,7 +18710,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 732,
+            "line": 822,
             "description": "Asynchronously create a signature for a specific identity",
             "params": [
                 {
@@ -18488,7 +18742,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 755,
+            "line": 845,
             "description": "Get PPK from PK (if we have it)",
             "params": [
                 {
@@ -18510,7 +18764,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 773,
+            "line": 863,
             "description": "Get Contact from PK (if we have it)",
             "params": [
                 {
@@ -18532,7 +18786,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 790,
+            "line": 880,
             "description": "Get Identity from PK (if we have it)",
             "params": [
                 {
@@ -18554,7 +18808,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 807,
+            "line": 897,
             "description": "Sign a piece of data with all available keys that own that data.",
             "params": [
                 {
@@ -18572,14 +18826,14 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 874,
+            "line": 964,
             "description": "Created by fray on 5/9/17.",
             "class": "EcIdentityManager",
             "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 906,
+            "line": 996,
             "description": "Returns true if the identity manager is global. Returns false if the identity manager is local to the server.",
             "return": {
                 "description": "true if the identity manager is global.",
@@ -18593,7 +18847,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 922,
+            "line": 1012,
             "description": "Wipes login data and logs you out.",
             "memberof": "OAuth2FileBasedRemoteIdentityManager",
             "itemtype": "method",
@@ -18603,7 +18857,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 933,
+            "line": 1023,
             "description": "Configure compatible remote identity management server.",
             "params": [
                 {
@@ -18620,7 +18874,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 948,
+            "line": 1038,
             "description": "Fetch credentials from server, invoking events based on login success or\nfailure.\n<p>\nAutomatically populates EcIdentityManager.\n<p>\nDoes not require startLogin().",
             "params": [
                 {
@@ -18642,7 +18896,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1121,
+            "line": 1211,
             "description": "Commits credentials in EcIdentityManager to remote server.",
             "params": [
                 {
@@ -18664,7 +18918,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1228,
+            "line": 1318,
             "description": "Returns true if the identity manager is global. Returns false if the identity manager is local to the server.",
             "return": {
                 "description": "true if the identity manager is global.",
@@ -18676,7 +18930,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1239,
+            "line": 1329,
             "description": "Configure parameters of the remote login storage.",
             "params": [
                 {
@@ -18728,7 +18982,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1272,
+            "line": 1362,
             "description": "Configures parameters of the remote server by accessing configuration details via webservice",
             "params": [
                 {
@@ -18750,7 +19004,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1336,
+            "line": 1426,
             "description": "Wipes login data.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -18760,7 +19014,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1349,
+            "line": 1439,
             "description": "Configure compatible remote identity management server.",
             "params": [
                 {
@@ -18777,7 +19031,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1360,
+            "line": 1450,
             "description": "\"Log Into\" system, generating credentials. Does not actually remotely\naccess any machine.\n<p>\nPlease clear username and password fields after this function is called.",
             "params": [
                 {
@@ -18799,7 +19053,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1384,
+            "line": 1474,
             "description": "Change password of user in memory. Does not automatically commit new credentials.\n<p>\nPlease clear username and password fields after this function is called.",
             "params": [
                 {
@@ -18830,7 +19084,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1416,
+            "line": 1506,
             "description": "Fetch credentials from server, invoking events based on login success or\nfailure.\n<p>\nAutomatically populates EcIdentityManager.\n<p>\nRequires login().",
             "params": [
                 {
@@ -18852,7 +19106,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1465,
+            "line": 1555,
             "description": "Commits credentials in EcIdentityManager to remote server.\n<p>\nWill trigger pad generation and fail if the pad has not been specified.",
             "params": [
                 {
@@ -18874,7 +19128,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1479,
+            "line": 1569,
             "description": "Creates an account.\n<p>\nPlease note that the remote login server does not throw error messages if\nan account creation is blocked due to being a duplicate. This prevents\nlogin probing. This will always succeed (if the request is properly\nformed and makes it to the server).\n<p>\nWill trigger pad generation and fail if the pad has not been specified.",
             "params": [
                 {
@@ -18896,7 +19150,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1500,
+            "line": 1590,
             "description": "Sends the identity managers credentials to the service specified",
             "params": [
                 {
@@ -18922,7 +19176,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1552,
+            "line": 1642,
             "description": "Splices together passwords (in a fashion more like shuffling a deck of\ncards, not appending).",
             "params": [
                 {
@@ -18943,7 +19197,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1593,
+            "line": 1683,
             "description": "Verifies that the contact grant is valid",
             "return": {
                 "description": "true if valid, false if not",
@@ -19695,7 +19949,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1028,
+            "line": 1082,
             "description": "Gets a JSON-LD object from the place designated by the URI.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -19723,7 +19977,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1229,
+            "line": 1283,
             "description": "Retrieves a piece of data synchronously from the server, blocking until\nit is returned",
             "params": [
                 {
@@ -19745,7 +19999,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1297,
+            "line": 1351,
             "description": "Escapes a search query",
             "params": [
                 {
@@ -19767,7 +20021,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1332,
+            "line": 1386,
             "description": "Attempts to save a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19795,7 +20049,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1349,
+            "line": 1403,
             "description": "Attempts to save a piece of data. If the @id of the data is not of this server, will register the data to the server.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19823,7 +20077,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1366,
+            "line": 1420,
             "description": "Attempts to save a piece of data. Does some checks before saving to\nensure the data is valid. This version does not send a console warning,\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19851,7 +20105,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1406,
+            "line": 1460,
             "description": "Attempts to save many pieces of data. Does some checks before saving to\nensure the data is valid. This version does not send a console warning,\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19879,7 +20133,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1487,
+            "line": 1542,
             "description": "Attempts to save a piece of data without signing it.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19907,7 +20161,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1552,
+            "line": 1607,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19935,7 +20189,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1570,
+            "line": 1625,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19963,7 +20217,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1626,
+            "line": 1681,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19991,7 +20245,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1675,
+            "line": 1730,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20013,7 +20267,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1720,
+            "line": 1775,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20035,7 +20289,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1759,
+            "line": 1814,
             "description": "Returns an array of JSON-LD objects from the places designated by the given URIs.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20067,7 +20321,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1805,
+            "line": 1860,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20099,7 +20353,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1823,
+            "line": 1878,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20119,7 +20373,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1837,
+            "line": 1892,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20156,7 +20410,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1947,
+            "line": 2002,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20181,7 +20435,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2065,
+            "line": 2120,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20191,7 +20445,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2139,
+            "line": 2194,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20201,7 +20455,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2210,
+            "line": 2265,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20224,7 +20478,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2256,
+            "line": 2311,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20247,7 +20501,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2299,
+            "line": 2354,
             "description": "Lists all types visible to the current user in the repository\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20269,7 +20523,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2319,
+            "line": 2374,
             "description": "Backs up the skyrepo elasticsearch database to the server backup directory",
             "params": [
                 {
@@ -20296,7 +20550,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2331,
+            "line": 2386,
             "description": "Restores the skyrepo elasticsearch backup from the server backup directory",
             "params": [
                 {
@@ -20323,7 +20577,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2343,
+            "line": 2398,
             "description": "Wipes all data from the the skyrepo elasticsearch, can only be restored by using backup restore",
             "params": [
                 {
@@ -20350,7 +20604,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2355,
+            "line": 2410,
             "description": "Handles the search results in search by params, before returning them\nwith the callback passed into search method",
             "params": [
                 {
@@ -20383,7 +20637,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2393,
+            "line": 2448,
             "description": "Fetches the admin keys from the server to compare for check if current\nuser is an admin user",
             "params": [
                 {
@@ -20405,7 +20659,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2513,
+            "line": 2568,
             "description": "Factory method for creating a file with certain values",
             "params": [
                 {
@@ -20437,7 +20691,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2535,
+            "line": 2590,
             "description": "Retrieves a file from the server specified by it's ID",
             "params": [
                 {
@@ -20465,7 +20719,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2555,
+            "line": 2610,
             "description": "Searches the repository given for files that match the query passed in",
             "params": [
                 {
@@ -20502,7 +20756,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2578,
+            "line": 2633,
             "description": "Saves this file in the repository using the repository web services",
             "params": [
                 {
@@ -20524,7 +20778,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2599,
+            "line": 2654,
             "description": "Deletes the file from the repository using repository web services",
             "params": [
                 {
@@ -21494,7 +21748,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 815,
+            "line": 834,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -21526,7 +21780,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 831,
+            "line": 850,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -21558,7 +21812,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 887,
+            "line": 920,
             "description": "DELETEs something at a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -21590,7 +21844,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1023,
+            "line": 1073,
             "description": "Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -21608,7 +21862,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1033,
+            "line": 1083,
             "description": "Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -21626,7 +21880,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1043,
+            "line": 1093,
             "description": "Returns a <code>Collection</code> view of the predecessors of <code>vertex</code>\nin this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of\n<code>v</code> and an incoming edge of <code>vertex</code>.",
             "params": [
                 {
@@ -21644,7 +21898,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1056,
+            "line": 1106,
             "description": "Returns a <code>Collection</code> view of the successors of <code>vertex</code>\nin this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of\n<code>v</code> and an outgoing edge of <code>vertex</code>.",
             "params": [
                 {
@@ -21662,7 +21916,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1069,
+            "line": 1119,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -21680,7 +21934,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1078,
+            "line": 1128,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -21698,7 +21952,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1087,
+            "line": 1137,
             "description": "Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getPredecessors().contains(v2)</code>.",
             "params": [
                 {
@@ -21720,7 +21974,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1097,
+            "line": 1147,
             "description": "Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getSuccessors().contains(v2)</code>.",
             "params": [
                 {
@@ -21742,7 +21996,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1107,
+            "line": 1157,
             "description": "Returns the number of predecessors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getPredecessors().size()</code>.",
             "params": [
                 {
@@ -21760,7 +22014,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1116,
+            "line": 1166,
             "description": "Returns the number of successors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getSuccessors().size()</code>.",
             "params": [
                 {
@@ -21778,7 +22032,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1125,
+            "line": 1175,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the source;\notherwise returns <code>null</code>.\nThe source of a directed edge <code>d</code> is defined to be the vertex for which\n<code>d</code> is an outgoing edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -21796,7 +22050,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1138,
+            "line": 1188,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the destination;\notherwise returns <code>null</code>.\nThe destination of a directed edge <code>d</code> is defined to be the vertex\nincident to <code>d</code> for which\n<code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -21814,7 +22068,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1152,
+            "line": 1202,
             "description": "Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.\nEquivalent to <code>getSource(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -21836,7 +22090,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1162,
+            "line": 1212,
             "description": "Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -21856,7 +22110,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1171,
+            "line": 1221,
             "description": "Adds edge <code>e</code> to this graph such that it connects\nvertex <code>v1</code> to <code>v2</code>.\nEquivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.\nIf this graph does not contain <code>v1</code>, <code>v2</code>,\nor both, implementations may choose to either silently add\nthe vertices to the graph or throw an <code>IllegalArgumentException</code>.\nIf this graph assigns edge types to its edges, the edge type of\n<code>e</code> will be the default for this graph.\nSee <code>Hypergraph.addEdge()</code> for a listing of possible reasons\nfor failure.",
             "params": [
                 {
@@ -21890,7 +22144,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1192,
+            "line": 1242,
             "description": "Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.\n(That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)",
             "params": [
                 {
@@ -21912,7 +22166,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1212,
+            "line": 1262,
             "description": "Returns true if the result is an object.",
             "params": [
                 {
@@ -21932,7 +22186,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1227,
+            "line": 1277,
             "description": "Returns keys on the object",
             "params": [
                 {
@@ -21952,7 +22206,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1257,
+            "line": 1307,
             "description": "Updates the framerate timer/counter.",
             "itemtype": "method",
             "name": "updateFrame",
@@ -21962,7 +22216,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1271,
+            "line": 1321,
             "description": "Invoke a method now or later based on whether some time has passed since we last drew the screen.",
             "params": [
                 {
@@ -21979,7 +22233,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1293,
+            "line": 1343,
             "description": "Invoke a method at some point in the future, allowing draw methods to occur periodically.",
             "params": [
                 {
@@ -21996,7 +22250,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1653,
+            "line": 1703,
             "description": "Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.",
             "itemtype": "property",
             "name": "counter",
@@ -22006,7 +22260,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1660,
+            "line": 1710,
             "description": "\"Each\" method. See class description.",
             "params": [
                 {
@@ -22033,7 +22287,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1679,
+            "line": 1729,
             "description": "\"Each\" method. Allows for replacing values in the array. See class description.",
             "params": [
                 {
@@ -22060,7 +22314,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1728,
+            "line": 1778,
             "description": "Stops any remaining objects from being iterated over, if they have not already. Will prevent 'after' from being called.",
             "itemtype": "method",
             "name": "stop",
@@ -22070,7 +22324,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1737,
+            "line": 1787,
             "description": "Stops any remaining objects from being iterated over, if they have not already. Will allow 'after' to be called.",
             "itemtype": "method",
             "name": "stop",
@@ -22080,7 +22334,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1746,
+            "line": 1796,
             "description": "Is preventing 'after' from being called?",
             "return": {
                 "description": "whether it is stopped."
@@ -22550,7 +22804,37 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 521,
+            "line": 510,
+            "description": "Verifies the integrity of the provided text using a signature and a\npublic key. Uses SHA1 hash with a UTF8 decoding of the text.",
+            "params": [
+                {
+                    "name": "pk",
+                    "description": "Public key.",
+                    "type": "EcPk"
+                },
+                {
+                    "name": "text",
+                    "description": "Text to verify.",
+                    "type": "String"
+                },
+                {
+                    "name": "signature",
+                    "description": "Base64 encoded signature.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "True IFF the signature is valid."
+            },
+            "static": 1,
+            "itemtype": "method",
+            "name": "verify",
+            "class": "EcRsaOaep",
+            "module": "com.eduworks.ec"
+        },
+        {
+            "file": "src/main/js/cass/ec.crypto.js",
+            "line": 544,
             "description": "Encrypts plaintext using AES-256-CTR.\nPlaintext is treated as as a sequence of bytes, does not perform UTF8 decoding.\nReturns base64 encoded ciphertext.",
             "params": [
                 {
@@ -22581,7 +22865,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 543,
+            "line": 566,
             "description": "Decrypts ciphertext using AES-256-CTR.\nCiphertext must be base64 encoded ciphertext.\nReturns plaintext as a string (Sequence of bytes, no encoding).",
             "params": [
                 {
@@ -22612,7 +22896,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 636,
+            "line": 659,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/encrypt:method\"}}EcRsaOaep.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -22644,7 +22928,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 665,
+            "line": 688,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/decrypt:method\"}}EcRsaOaep.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -22676,7 +22960,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 711,
+            "line": 734,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/sign:method\"}}EcRsaOaep.sign{{/crossLink}}",
             "params": [
                 {
@@ -22708,7 +22992,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 740,
+            "line": 763,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/signSha256:method\"}}EcRsaOaep.signSha256{{/crossLink}}",
             "params": [
                 {
@@ -22740,7 +23024,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 769,
+            "line": 792,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/verify:method\"}}EcRsaOaep.verify{{/crossLink}}",
             "params": [
                 {
@@ -22777,7 +23061,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 860,
+            "line": 883,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/encrypt:method\"}}EcAesCtr.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -22814,7 +23098,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 891,
+            "line": 914,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/decrypt:method\"}}EcAesCtr.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -22851,7 +23135,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 947,
+            "line": 970,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/encrypt:method\"}}EcRsaOaep.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -22883,7 +23167,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 986,
+            "line": 1009,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/decrypt:method\"}}EcRsaOaep.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -22915,7 +23199,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1041,
+            "line": 1064,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/sign:method\"}}EcRsaOaep.sign{{/crossLink}}",
             "params": [
                 {
@@ -22947,7 +23231,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1080,
+            "line": 1103,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/signSha256:method\"}}EcRsaOaep.signSha256{{/crossLink}}",
             "params": [
                 {
@@ -22979,7 +23263,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1119,
+            "line": 1142,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/verify:method\"}}EcRsaOaep.verify{{/crossLink}}",
             "params": [
                 {
@@ -23016,7 +23300,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1167,
+            "line": 1190,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/encrypt:method\"}}EcAesCtr.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -23053,7 +23337,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 1205,
+            "line": 1228,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/decrypt:method\"}}EcAesCtr.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -25563,7 +25847,17 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 359,
+            "line": 307,
+            "description": "URL of the directory this framework is in.",
+            "itemtype": "property",
+            "name": "rollupRule",
+            "type": "string[]",
+            "class": "Framework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/org.cassproject.schema.cass.js",
+            "line": 391,
             "description": "Specifies the URL of the competency this level relates to.",
             "itemtype": "property",
             "name": "competency",
@@ -25573,7 +25867,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 366,
+            "line": 398,
             "description": "The title that one who holds this performance level may assume.",
             "itemtype": "property",
             "name": "title",
@@ -25583,7 +25877,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 373,
+            "line": 405,
             "description": "The performance characteristics required by this level in text form.\nFR - Represented by description.",
             "itemtype": "property",
             "name": "performance",
@@ -25593,7 +25887,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 432,
+            "line": 464,
             "description": "The rollup rule encoded as source code that is understandable to the assertion processor.",
             "itemtype": "property",
             "name": "rule",
@@ -25603,7 +25897,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 439,
+            "line": 471,
             "description": "Specifies the URL of the competency that the rollup rule pertains to.",
             "itemtype": "property",
             "name": "competency",
@@ -25613,7 +25907,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 492,
+            "line": 524,
             "description": "URL of the competency.",
             "itemtype": "property",
             "name": "competency",
@@ -25623,7 +25917,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 499,
+            "line": 531,
             "description": "URL of the framework within which the assertion is restricted.",
             "itemtype": "property",
             "name": "framework",
@@ -25633,7 +25927,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 506,
+            "line": 538,
             "description": "URL of the level, or null if 'held with no performance expectations'.",
             "itemtype": "property",
             "name": "level",
@@ -25643,7 +25937,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 513,
+            "line": 545,
             "description": "Confidence with which the assertion was made.\nConfidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.",
             "itemtype": "property",
             "name": "confidence",
@@ -25653,7 +25947,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 521,
+            "line": 553,
             "description": "Public Key in PEM format of the recipient of the assertion.",
             "itemtype": "property",
             "name": "subject",
@@ -25663,7 +25957,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 528,
+            "line": 560,
             "description": "Public Key in PEM format of the identity making the assertion.",
             "itemtype": "property",
             "name": "agent",
@@ -25673,7 +25967,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 535,
+            "line": 567,
             "description": "Encrypted evidence. May be a string, URL or schema.org/Thing.",
             "itemtype": "property",
             "name": "evidence",
@@ -25683,7 +25977,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 542,
+            "line": 574,
             "description": "Time that the assertion was made in milliseconds since the Unix Epoch.",
             "itemtype": "property",
             "name": "assertionDate",
@@ -25693,7 +25987,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 549,
+            "line": 581,
             "description": "Time that the assertion expires, specified in milliseconds since the Unix Epoch.",
             "itemtype": "property",
             "name": "expirationDate",
@@ -25703,7 +25997,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 556,
+            "line": 588,
             "description": "Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).",
             "itemtype": "property",
             "name": "decayFunction",
@@ -25713,7 +26007,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 563,
+            "line": 595,
             "description": "True if the assertion is a claim that the subject cannot demonstrate the competency.",
             "itemtype": "property",
             "name": "negative",
@@ -25723,7 +26017,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 573,
+            "line": 605,
             "description": "Sets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
             "params": [
                 {
@@ -25736,7 +26030,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 792,
+            "line": 824,
             "description": "List of assertions to pack in the envelope.",
             "itemtype": "property",
             "name": "assertion",
@@ -25746,7 +26040,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 799,
+            "line": 831,
             "description": "List of secrets found in assertions to the objects necessary to decrypt the assertion data.",
             "itemtype": "property",
             "name": "codebook",
@@ -25756,7 +26050,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 811,
+            "line": 843,
             "description": "Removes an assertion from the envelope",
             "params": [
                 {
@@ -25771,7 +26065,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 834,
+            "line": 866,
             "description": "Returns the assertion indexed at position @index.",
             "params": [
                 {
@@ -25789,7 +26083,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 852,
+            "line": 884,
             "description": "Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.",
             "params": [
                 {
@@ -25804,7 +26098,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 888,
+            "line": 920,
             "description": "Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.",
             "params": [
                 {
@@ -25827,7 +26121,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 970,
+            "line": 1002,
             "description": "Validates that all assertions have not been tampered with (are authentic).\nDoes not validate the sources of assertions.",
             "return": {
                 "description": "True IFF assertions are authentic."
@@ -64902,23 +65196,19 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:35"
+            "line": " src/main/js/cass/cass.competency.js:46"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:55"
+            "line": " src/main/js/cass/cass.competency.js:63"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:77"
+            "line": " src/main/js/cass/cass.competency.js:80"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:87"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:97"
+            "line": " src/main/js/cass/cass.competency.js:103"
         },
         {
             "message": "unknown tag: memberof",
@@ -64926,31 +65216,35 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:165"
+            "line": " src/main/js/cass/cass.competency.js:158"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:182"
+            "line": " src/main/js/cass/cass.competency.js:178"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:197"
+            "line": " src/main/js/cass/cass.competency.js:200"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:219"
+            "line": " src/main/js/cass/cass.competency.js:210"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:246"
+            "line": " src/main/js/cass/cass.competency.js:220"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:282"
+            "line": " src/main/js/cass/cass.competency.js:252"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:309"
+            "line": " src/main/js/cass/cass.competency.js:288"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:305"
         },
         {
             "message": "unknown tag: memberof",
@@ -64958,183 +65252,203 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:331"
+            "line": " src/main/js/cass/cass.competency.js:342"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:371"
+            "line": " src/main/js/cass/cass.competency.js:369"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:401"
+            "line": " src/main/js/cass/cass.competency.js:405"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:418"
+            "line": " src/main/js/cass/cass.competency.js:432"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:435"
+            "line": " src/main/js/cass/cass.competency.js:443"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:475"
+            "line": " src/main/js/cass/cass.competency.js:454"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:492"
+            "line": " src/main/js/cass/cass.competency.js:494"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:507"
+            "line": " src/main/js/cass/cass.competency.js:524"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1262"
+            "line": " src/main/js/cass/cass.competency.js:541"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1279"
+            "line": " src/main/js/cass/cass.competency.js:558"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1294"
+            "line": " src/main/js/cass/cass.competency.js:598"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1316"
+            "line": " src/main/js/cass/cass.competency.js:615"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1341"
+            "line": " src/main/js/cass/cass.competency.js:630"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1369"
+            "line": " src/main/js/cass/cass.competency.js:1385"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1380"
+            "line": " src/main/js/cass/cass.competency.js:1402"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1391"
+            "line": " src/main/js/cass/cass.competency.js:1417"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1423"
+            "line": " src/main/js/cass/cass.competency.js:1439"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1466"
+            "line": " src/main/js/cass/cass.competency.js:1464"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1483"
+            "line": " src/main/js/cass/cass.competency.js:1492"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1498"
+            "line": " src/main/js/cass/cass.competency.js:1503"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1520"
+            "line": " src/main/js/cass/cass.competency.js:1514"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1554"
+            "line": " src/main/js/cass/cass.competency.js:1546"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1571"
+            "line": " src/main/js/cass/cass.competency.js:1589"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1593"
+            "line": " src/main/js/cass/cass.competency.js:1606"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1626"
+            "line": " src/main/js/cass/cass.competency.js:1621"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1648"
+            "line": " src/main/js/cass/cass.competency.js:1643"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1682"
+            "line": " src/main/js/cass/cass.competency.js:1677"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1704"
+            "line": " src/main/js/cass/cass.competency.js:1694"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1715"
+            "line": " src/main/js/cass/cass.competency.js:1716"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1739"
+            "line": " src/main/js/cass/cass.competency.js:1749"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1833"
+            "line": " src/main/js/cass/cass.competency.js:1771"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1850"
+            "line": " src/main/js/cass/cass.competency.js:1805"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1867"
+            "line": " src/main/js/cass/cass.competency.js:1827"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1890"
+            "line": " src/main/js/cass/cass.competency.js:1838"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1907"
+            "line": " src/main/js/cass/cass.competency.js:1862"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1961"
+            "line": " src/main/js/cass/cass.competency.js:1956"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1992"
+            "line": " src/main/js/cass/cass.competency.js:1973"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2023"
+            "line": " src/main/js/cass/cass.competency.js:1990"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2040"
+            "line": " src/main/js/cass/cass.competency.js:2013"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2056"
+            "line": " src/main/js/cass/cass.competency.js:2030"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2073"
+            "line": " src/main/js/cass/cass.competency.js:2084"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2089"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2106"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2122"
+            "line": " src/main/js/cass/cass.competency.js:2115"
         },
         {
             "message": "unknown tag: memberof",
             "line": " src/main/js/cass/cass.competency.js:2146"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:2163"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:2179"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:2196"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:2212"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:2229"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:2245"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:2269"
         },
         {
             "message": "unknown tag: abstract",
@@ -65226,99 +65540,91 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.rollup.js:2804"
+            "line": " src/main/js/cass/cass.rollup.js:2819"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:68"
+            "line": " src/main/js/cass/ebac.identity.js:158"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:93"
+            "line": " src/main/js/cass/ebac.identity.js:183"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:113"
+            "line": " src/main/js/cass/ebac.identity.js:203"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:124"
+            "line": " src/main/js/cass/ebac.identity.js:214"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:184"
+            "line": " src/main/js/cass/ebac.identity.js:274"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:219"
+            "line": " src/main/js/cass/ebac.identity.js:309"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:238"
+            "line": " src/main/js/cass/ebac.identity.js:328"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:306"
+            "line": " src/main/js/cass/ebac.identity.js:396"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:319"
+            "line": " src/main/js/cass/ebac.identity.js:409"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:333"
+            "line": " src/main/js/cass/ebac.identity.js:423"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:365"
+            "line": " src/main/js/cass/ebac.identity.js:455"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:385"
+            "line": " src/main/js/cass/ebac.identity.js:475"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:417"
+            "line": " src/main/js/cass/ebac.identity.js:507"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:437"
+            "line": " src/main/js/cass/ebac.identity.js:527"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:448"
+            "line": " src/main/js/cass/ebac.identity.js:538"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:459"
+            "line": " src/main/js/cass/ebac.identity.js:549"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:477"
+            "line": " src/main/js/cass/ebac.identity.js:567"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:494"
+            "line": " src/main/js/cass/ebac.identity.js:584"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:524"
+            "line": " src/main/js/cass/ebac.identity.js:614"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:551"
+            "line": " src/main/js/cass/ebac.identity.js:641"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:581"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:621"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:658"
+            "line": " src/main/js/cass/ebac.identity.js:671"
         },
         {
             "message": "unknown tag: memberof",
@@ -65326,91 +65632,99 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:732"
+            "line": " src/main/js/cass/ebac.identity.js:748"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:755"
+            "line": " src/main/js/cass/ebac.identity.js:801"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:773"
+            "line": " src/main/js/cass/ebac.identity.js:822"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:790"
+            "line": " src/main/js/cass/ebac.identity.js:845"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:807"
+            "line": " src/main/js/cass/ebac.identity.js:863"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:906"
+            "line": " src/main/js/cass/ebac.identity.js:880"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:922"
+            "line": " src/main/js/cass/ebac.identity.js:897"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:933"
+            "line": " src/main/js/cass/ebac.identity.js:996"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:948"
+            "line": " src/main/js/cass/ebac.identity.js:1012"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1121"
+            "line": " src/main/js/cass/ebac.identity.js:1023"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1228"
+            "line": " src/main/js/cass/ebac.identity.js:1038"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1239"
+            "line": " src/main/js/cass/ebac.identity.js:1211"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1272"
+            "line": " src/main/js/cass/ebac.identity.js:1318"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1336"
+            "line": " src/main/js/cass/ebac.identity.js:1329"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1349"
+            "line": " src/main/js/cass/ebac.identity.js:1362"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1360"
+            "line": " src/main/js/cass/ebac.identity.js:1426"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1384"
+            "line": " src/main/js/cass/ebac.identity.js:1439"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1416"
+            "line": " src/main/js/cass/ebac.identity.js:1450"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1465"
+            "line": " src/main/js/cass/ebac.identity.js:1474"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1479"
+            "line": " src/main/js/cass/ebac.identity.js:1506"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1500"
+            "line": " src/main/js/cass/ebac.identity.js:1555"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1552"
+            "line": " src/main/js/cass/ebac.identity.js:1569"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/ebac.identity.js:1590"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/ebac.identity.js:1642"
         },
         {
             "message": "unknown tag: memberof",
@@ -65526,143 +65840,143 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1028"
+            "line": " src/main/js/cass/ebac.repository.js:1082"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1229"
+            "line": " src/main/js/cass/ebac.repository.js:1283"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1297"
+            "line": " src/main/js/cass/ebac.repository.js:1351"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1332"
+            "line": " src/main/js/cass/ebac.repository.js:1386"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1349"
+            "line": " src/main/js/cass/ebac.repository.js:1403"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1366"
+            "line": " src/main/js/cass/ebac.repository.js:1420"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1406"
+            "line": " src/main/js/cass/ebac.repository.js:1460"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1487"
+            "line": " src/main/js/cass/ebac.repository.js:1542"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1552"
+            "line": " src/main/js/cass/ebac.repository.js:1607"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1570"
+            "line": " src/main/js/cass/ebac.repository.js:1625"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1626"
+            "line": " src/main/js/cass/ebac.repository.js:1681"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1675"
+            "line": " src/main/js/cass/ebac.repository.js:1730"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1720"
+            "line": " src/main/js/cass/ebac.repository.js:1775"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1759"
+            "line": " src/main/js/cass/ebac.repository.js:1814"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1805"
+            "line": " src/main/js/cass/ebac.repository.js:1860"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1823"
+            "line": " src/main/js/cass/ebac.repository.js:1878"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1823"
+            "line": " src/main/js/cass/ebac.repository.js:1878"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1837"
+            "line": " src/main/js/cass/ebac.repository.js:1892"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1947"
+            "line": " src/main/js/cass/ebac.repository.js:2002"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1947"
+            "line": " src/main/js/cass/ebac.repository.js:2002"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2065"
+            "line": " src/main/js/cass/ebac.repository.js:2120"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2139"
+            "line": " src/main/js/cass/ebac.repository.js:2194"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2210"
+            "line": " src/main/js/cass/ebac.repository.js:2265"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2256"
+            "line": " src/main/js/cass/ebac.repository.js:2311"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2299"
+            "line": " src/main/js/cass/ebac.repository.js:2354"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2319"
+            "line": " src/main/js/cass/ebac.repository.js:2374"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2331"
+            "line": " src/main/js/cass/ebac.repository.js:2386"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2343"
+            "line": " src/main/js/cass/ebac.repository.js:2398"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2355"
+            "line": " src/main/js/cass/ebac.repository.js:2410"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2393"
+            "line": " src/main/js/cass/ebac.repository.js:2448"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2513"
+            "line": " src/main/js/cass/ebac.repository.js:2568"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2535"
+            "line": " src/main/js/cass/ebac.repository.js:2590"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2555"
+            "line": " src/main/js/cass/ebac.repository.js:2610"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2578"
+            "line": " src/main/js/cass/ebac.repository.js:2633"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2599"
+            "line": " src/main/js/cass/ebac.repository.js:2654"
         },
         {
             "message": "unknown tag: memberof",
@@ -65698,23 +66012,23 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1660"
+            "line": " src/main/js/cass/ec.base.js:1710"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1679"
+            "line": " src/main/js/cass/ec.base.js:1729"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1728"
+            "line": " src/main/js/cass/ec.base.js:1778"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1737"
+            "line": " src/main/js/cass/ec.base.js:1787"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ec.base.js:1746"
+            "line": " src/main/js/cass/ec.base.js:1796"
         },
         {
             "message": "unknown tag: license",
@@ -66262,19 +66576,19 @@
         },
         {
             "message": "Missing item type\nCreated by fray on 11/29/17.",
-            "line": " src/main/js/cass/cass.competency.js:385"
+            "line": " src/main/js/cass/cass.competency.js:508"
         },
         {
             "message": "Missing item type\nCreated by fray on 11/29/17.",
-            "line": " src/main/js/cass/cass.competency.js:459"
+            "line": " src/main/js/cass/cass.competency.js:582"
         },
         {
             "message": "Missing item type\nThe sequence that assertions should be built as such: 1. Generate the ID. 2.\nAdd the owner. 3. Set the subject. 4. Set the agent. Further functions may be\ncalled afterwards in any order. WARNING: The modifications of ownership and\nreadership do not \"just work\".",
-            "line": " src/main/js/cass/cass.competency.js:530"
+            "line": " src/main/js/cass/cass.competency.js:653"
         },
         {
             "message": "Missing item type\nSets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
-            "line": " src/main/js/cass/cass.competency.js:572"
+            "line": " src/main/js/cass/cass.competency.js:695"
         },
         {
             "message": "Missing item type\nReturns true if all sub packets have the false or unknown result.",
@@ -66294,27 +66608,35 @@
         },
         {
             "message": "Missing item type\nHelper method to populate the graph with assertion data, based on propagation rules implicit in the relations (see devs.cassproject.org, Relations). Does not draw conclusions. Must be able to decrypt 'negative' value.",
-            "line": " src/main/js/cass/cass.rollup.js:2721"
+            "line": " src/main/js/cass/cass.rollup.js:2736"
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:4543"
+            "line": " src/main/js/cass/cass.rollup.js:4558"
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:4723"
+            "line": " src/main/js/cass/cass.rollup.js:4738"
+        },
+        {
+            "message": "Missing item type\nThe record used to request a rekey of a given public key",
+            "line": " src/main/js/cass/ebac.identity.js:33"
+        },
+        {
+            "message": "Missing item type\nVerifies both the integrity of the rekey request and the signed nonce of the old key. Returns false if either of these fail.",
+            "line": " src/main/js/cass/ebac.identity.js:107"
         },
         {
             "message": "Missing item type\nCreated by fray on 5/9/17.",
-            "line": " src/main/js/cass/ebac.identity.js:874"
+            "line": " src/main/js/cass/ebac.identity.js:964"
         },
         {
             "message": "Missing item type\nReturns true if the identity manager is global. Returns false if the identity manager is local to the server.",
-            "line": " src/main/js/cass/ebac.identity.js:1228"
+            "line": " src/main/js/cass/ebac.identity.js:1318"
         },
         {
             "message": "Missing item type\nVerifies that the contact grant is valid",
-            "line": " src/main/js/cass/ebac.identity.js:1593"
+            "line": " src/main/js/cass/ebac.identity.js:1683"
         },
         {
             "message": "Missing item type\nReturns an ISO 8601 TimeDate String from a Date object.",
@@ -66322,15 +66644,15 @@
         },
         {
             "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
-            "line": " src/main/js/cass/ec.base.js:1162"
+            "line": " src/main/js/cass/ec.base.js:1212"
         },
         {
             "message": "Missing item type\nInvoke a method now or later based on whether some time has passed since we last drew the screen.",
-            "line": " src/main/js/cass/ec.base.js:1271"
+            "line": " src/main/js/cass/ec.base.js:1321"
         },
         {
             "message": "Missing item type\nInvoke a method at some point in the future, allowing draw methods to occur periodically.",
-            "line": " src/main/js/cass/ec.base.js:1293"
+            "line": " src/main/js/cass/ec.base.js:1343"
         },
         {
             "message": "Missing item type\nA JavaScript implementation of the JSON-LD API.",
@@ -66842,7 +67164,7 @@
         },
         {
             "message": "Missing item type\nSets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
-            "line": " src/main/js/cass/org.cassproject.schema.cass.js:573"
+            "line": " src/main/js/cass/org.cassproject.schema.cass.js:605"
         },
         {
             "message": "Missing item type\nIf `Buffer.TYPED_ARRAY_SUPPORT`:\n  === true    Use Uint8Array implementation (fastest)\n  === false   Print warning and recommend using `buffer` v4.x which has an Object\n              implementation (most compatible, even IE6)\n\nBrowsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,\nOpera 11.6+, iOS 4.2+.\n\nWe report that the browser does not support typed arrays if the are not subclassable\nusing __proto__. Firefox 4-29 lacks support for adding new properties to `Uint8Array`\n(See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438). IE 10 lacks support\nfor __proto__ and has a buggy typed array implementation.",

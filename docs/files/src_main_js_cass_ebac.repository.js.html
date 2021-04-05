@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.40</em>
+            <em>API Docs for: 1.2.41</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -244,6 +244,7 @@
                                 <li><a href="../classes/DigitalDocumentPermission.html">DigitalDocumentPermission</a></li>
                                 <li><a href="../classes/DigitalDocumentPermissionType.html">DigitalDocumentPermissionType</a></li>
                                 <li><a href="../classes/Diploma.html">Diploma</a></li>
+                                <li><a href="../classes/Directory.html">Directory</a></li>
                                 <li><a href="../classes/DisagreeAction.html">DisagreeAction</a></li>
                                 <li><a href="../classes/DiscoverAction.html">DiscoverAction</a></li>
                                 <li><a href="../classes/DiscussionForumPosting.html">DiscussionForumPosting</a></li>
@@ -281,6 +282,7 @@
                                 <li><a href="../classes/EcContact.html">EcContact</a></li>
                                 <li><a href="../classes/EcCrypto.html">EcCrypto</a></li>
                                 <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
+                                <li><a href="../classes/EcDirectory.html">EcDirectory</a></li>
                                 <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
                                 <li><a href="../classes/EcFile.html">EcFile</a></li>
                                 <li><a href="../classes/EcFramework.html">EcFramework</a></li>
@@ -818,7 +820,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -1746,7 +1748,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             });
         }, failure);
     };
-}, {encryptOnSaveMap: {name: &quot;Map&quot;, arguments: [null, null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {encryptOnSaveMap: {name: &quot;Map&quot;, arguments: [null, null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  A representation of a file.
  * 
@@ -1817,7 +1819,7 @@ GeneralFile = stjs.extend(GeneralFile, EcRemoteLinkedData, [], function(construc
         a.push(GeneralFile.TYPE_0_1);
         return a;
     };
-}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Repository object used to interact with the CASS Repository web services.
  *  Should be used for all CRUD and search operations
@@ -1841,6 +1843,60 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.selectedServer = null;
     prototype.autoDetectFound = false;
     prototype.timeOffset = 0;
+    prototype.init = function(selectedServer, success, failure) {
+        this.selectedServer = selectedServer;
+        this.negotiateTimeOffset(success, failure);
+    };
+    prototype.negotiateTimeOffset = function(success, failure) {
+        var oldTimeout = EcRemote.timeout;
+        EcRemote.timeout = 500;
+        var me = this;
+        var successCheck = function(p1) {
+            if (p1 != null) {
+                if ((p1)[&quot;ping&quot;] == &quot;pong&quot;) {
+                    if ((p1)[&quot;time&quot;] != null) 
+                        me.timeOffset = (((p1)[&quot;time&quot;] - new Date().getTime()));
+                    me.buildKeyForwardingTable(success, failure);
+                }
+            }
+        };
+        var failureCheck = function(p1) {
+            if (p1 != null) {
+                if (p1 != &quot;&quot;) {
+                    try {
+                        if (p1.indexOf(&quot;pong&quot;) != -1) 
+                            if ((p1)[&quot;time&quot;] != null) 
+                                me.timeOffset = (new Date().getTime()) - ((p1)[&quot;time&quot;]);
+                        me.buildKeyForwardingTable(success, failure);
+                    }catch (ex) {
+                        if (failure != null) 
+                            failure(ex);
+                    }
+                }
+            }
+        };
+        try {
+            EcRemote.getExpectingObject(this.selectedServer, &quot;ping&quot;, successCheck, failureCheck);
+        }catch (ex) {
+            if (failure != null) 
+                failure(ex.toString());
+        }
+        EcRemote.timeout = oldTimeout;
+    };
+    prototype.buildKeyForwardingTable = function(success, failure) {
+        var params = new Object();
+        (params)[&quot;size&quot;] = 10000;
+        EcRepository.searchAs(this, &quot;*&quot;, function() {
+            return new EcRekeyRequest();
+        }, function(array) {
+            var rekeyRequests = array;
+            for (var i = 0; i &lt; rekeyRequests.length; i++) {
+                rekeyRequests[i].addRekeyRequestToForwardingTable();
+            }
+            if (success != null) 
+                success();
+        }, failure, params);
+    };
     /**
      *  Gets a JSON-LD object from the place designated by the URI.
      *  &lt;p&gt;
@@ -2210,7 +2266,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (data.owner != null &amp;&amp; data.owner.length == 0) {
             delete (data)[&quot;owner&quot;];
         }
-        if (EcEncryptedValue.encryptOnSave(data.id, null)) {
+        if (EcEncryptedValue.encryptOnSave(data.id, null) &amp;&amp; !data.isAny(new EcEncryptedValue().getTypes())) {
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcIdentityManager.sign(encrypted);
             EcRepository._saveWithoutSigning(encrypted, success, failure, repo);
@@ -2258,10 +2314,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var serialized = new Array();
         for (var i = 0; i &lt; data.length; i++) {
             var d = data[i];
-            if (EcEncryptedValue.encryptOnSave(d.id, null)) {
+            if (EcEncryptedValue.encryptOnSave(d.id, null) &amp;&amp; !d.isAny(new EcEncryptedValue().getTypes())) {
                 var encrypted = EcEncryptedValue.toEncryptedValue(d, false);
                 EcIdentityManager.sign(encrypted);
                 data[i] = encrypted;
+                d = encrypted;
             } else {
                 EcIdentityManager.sign(d);
             }
@@ -2588,7 +2645,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method multiget
      */
     prototype.multiget = function(urls, success, failure) {
-        if (urls == null || urls.length == 0) {
+        if (urls == null) {
             if (failure != null) {
                 failure(&quot;&quot;);
             }
@@ -3038,7 +3095,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (p1 != null) {
                 if ((p1)[&quot;ping&quot;] == &quot;pong&quot;) {
                     if ((p1)[&quot;time&quot;] != null) 
-                        me.timeOffset = (new Date().getTime()) - ((p1)[&quot;time&quot;]);
+                        me.timeOffset = (((p1)[&quot;time&quot;] - new Date().getTime()));
                     if (me.autoDetectFound == false) {
                         me.selectedServer = guess;
                         me.autoDetectFound = true;
@@ -3086,7 +3143,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (p1 != null) {
                 if ((p1)[&quot;ping&quot;] == &quot;pong&quot;) {
                     if ((p1)[&quot;time&quot;] != null) 
-                        me.timeOffset = (new Date().getTime()) - ((p1)[&quot;time&quot;]);
+                        me.timeOffset = (((p1)[&quot;time&quot;] - new Date().getTime()));
                     me.selectedServer = guess;
                     me.autoDetectFound = true;
                 }
@@ -3425,7 +3482,7 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
     prototype._delete = function(repo, success, failure) {
         repo.constructor.DELETE(this, success, failure);
     };
-}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, forwardingTable: &quot;Object&quot;, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 
     </pre>
 </div>

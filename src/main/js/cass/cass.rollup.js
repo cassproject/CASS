@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2676,36 +2676,51 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
-        var precache = new Array();
-        if (framework.competency != null) {
-            precache = precache.concat(framework.competency);
-        }
-        if (framework.relation != null) {
-            precache = precache.concat(framework.relation);
-        }
-        repo.multiget(precache, function(data) {
-            var competencyTemplate = new EcCompetency();
-            var alignmentTemplate = new EcAlignment();
+        if (framework.competency == null) 
+            framework.competency = new Array();
+        if (framework.relation == null) 
+            framework.relation = new Array();
+        repo.multiget(framework.competency, function(data) {
             var eah = new EcAsyncHelper();
             eah.each(data, function(d, callback0) {
-                if (d.isAny(competencyTemplate.getTypes())) {
-                    EcCompetency.get(d.id, function(c) {
-                        me.addToMetaStateArray(me.getMetaStateCompetency(c), "framework", framework);
-                        me.addCompetency(c);
-                        callback0();
-                    }, callback0);
-                } else if (d.isAny(alignmentTemplate.getTypes())) {
-                    EcAlignment.get(d.id, function(alignment) {
-                        me.addRelation(alignment);
-                        me.addToMetaStateArray(me.getMetaStateAlignment(alignment), "framework", framework);
-                        callback0();
-                    }, callback0);
-                } else 
-                    callback0();
+                me.handleCacheElement(d, callback0, framework);
             }, function(strings) {
-                success();
+                repo.multiget(framework.relation, function(data) {
+                    var eah2 = new EcAsyncHelper();
+                    eah2.each(data, function(d2, callback2) {
+                        me.handleCacheElement(d2, callback2, framework);
+                    }, function(strings2) {
+                        success();
+                    });
+                }, failure);
             });
         }, failure);
+    };
+    prototype.handleCacheElement = function(d, callback0, framework) {
+        var competencyTemplate = new EcCompetency();
+        var alignmentTemplate = new EcAlignment();
+        var encryptedTemplate = new EcEncryptedValue();
+        var me = this;
+        if (d.isAny(encryptedTemplate.getTypes())) {
+            EcEncryptedValue.fromEncryptedValueAsync(d, function(ecRemoteLinkedData) {
+                me.handleCacheElement(ecRemoteLinkedData, callback0, framework);
+            }, callback0);
+            return;
+        }
+        if (d.isAny(competencyTemplate.getTypes())) {
+            EcCompetency.get(d.id, function(c) {
+                me.addToMetaStateArray(me.getMetaStateCompetency(c), "framework", framework);
+                me.addCompetency(c);
+                callback0();
+            }, callback0);
+        } else if (d.isAny(alignmentTemplate.getTypes())) {
+            EcAlignment.get(d.id, function(alignment) {
+                me.addRelation(alignment);
+                me.addToMetaStateArray(me.getMetaStateAlignment(alignment), "framework", framework);
+                callback0();
+            }, callback0);
+        } else 
+            callback0();
     };
     prototype.fetchFrameworkAlignments = function(framework) {
         var me = this;
@@ -2856,7 +2871,7 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             return false;
         if (this.containsEdge(alignment)) 
             return false;
-        var source = (this.competencyMap)[alignment.source];
+        var source = (this.competencyMap)[EcRemoteLinkedData.trimVersionFromUrl(alignment.source)];
         if (source == null && (this.dontTryAnyMore)[alignment.source] != null) 
             return false;
         if (source == null) 

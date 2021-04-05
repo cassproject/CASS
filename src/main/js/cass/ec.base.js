@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -770,20 +770,6 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         }
         url = EcRemote.upgradeHttpToHttps(url);
         var xhr = null;
-        if ((typeof httpStatus) == "undefined") {
-            xhr = new XMLHttpRequest();
-            xhr.open("POST", url, EcRemote.async);
-            var xhrx = xhr;
-            xhr.onreadystatechange = function() {
-                if (xhrx.readyState == 4 && xhrx.status == 200) {
-                    if (successCallback != null) 
-                        successCallback(xhrx.responseText);
-                } else if (xhrx.readyState == 4) {
-                    if (failureCallback != null) 
-                        failureCallback(xhrx.responseText);
-                }
-            };
-        }
         var theBoundary = null;
         if ((fd)["_streams"] != null) {
             var chunks = (fd)["_streams"];
@@ -797,10 +783,43 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             }
             all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
             theBoundary = (fd)["_boundary"];
-            if ((typeof httpStatus) == "undefined") 
-                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + (fd)["_boundary"]);
             fd = all;
         } else {}
+        if ((typeof isNodeJs) != "undefined" && EcRemote.async) {
+            if (headers == null) 
+                headers = new Object();
+            (headers)["Content-Type"] = "multipart/form-data; boundary=" + theBoundary;
+            var requestObject = new Object();
+            (requestObject)["method"] = "POST";
+            (requestObject)["url"] = url;
+            (requestObject)["headers"] = headers;
+            (requestObject)["body"] = fd;
+            request(requestObject, function(error, response, body) {
+                if (failureCallback != null && error != null) 
+                    failureCallback(error);
+                 else if (failureCallback != null && (response)["statusCode"] != 200) 
+                    failureCallback(body);
+                 else if (successCallback != null) 
+                    successCallback(body);
+            });
+            return;
+        }
+        if ((typeof httpStatus) == "undefined") {
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", url, EcRemote.async);
+            var xhrx = xhr;
+            xhr.onreadystatechange = function() {
+                if (xhrx.readyState == 4 && xhrx.status == 200) {
+                    if (successCallback != null) 
+                        successCallback(xhrx.responseText);
+                } else if (xhrx.readyState == 4) {
+                    if (failureCallback != null) 
+                        failureCallback(xhrx.responseText);
+                }
+            };
+            if (theBoundary != null) 
+                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + theBoundary);
+        }
         if (xhr != null) 
             if (EcRemote.async) 
                 (xhr)["timeout"] = EcRemote.timeout;
@@ -863,6 +882,20 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 }
             };
         }
+        if ((typeof isNodeJs) != "undefined" && EcRemote.async) {
+            var requestObject = new Object();
+            (requestObject)["method"] = "GET";
+            (requestObject)["url"] = url;
+            request(requestObject, function(error, response, body) {
+                if (failure != null && error != null) 
+                    failure(error);
+                 else if (failure != null && (response)["statusCode"] != 200) 
+                    failure(body);
+                 else if (success != null) 
+                    success(body);
+            });
+            return;
+        }
         if (xhr != null) {
             if (EcRemote.async) 
                 (xhr)["timeout"] = EcRemote.timeout;
@@ -913,6 +946,23 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                         failure(xhrx.responseText);
                 }
             };
+        }
+        if ((typeof isNodeJs) != "undefined" && EcRemote.async) {
+            var sso = new Object();
+            (sso)["signatureSheet"] = signatureSheet;
+            var requestObject = new Object();
+            (requestObject)["method"] = "DELETE";
+            (requestObject)["url"] = url;
+            (requestObject)["headers"] = sso;
+            request(requestObject, function(error, response, body) {
+                if (failure != null && error != null) 
+                    failure(error);
+                 else if (failure != null && (response)["statusCode"] != 200) 
+                    failure(body);
+                 else if (success != null) 
+                    success(body);
+            });
+            return;
         }
         if (xhr != null) {
             if (EcRemote.async) 

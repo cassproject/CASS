@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.40</em>
+            <em>API Docs for: 1.2.41</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -244,6 +244,7 @@
                                 <li><a href="../classes/DigitalDocumentPermission.html">DigitalDocumentPermission</a></li>
                                 <li><a href="../classes/DigitalDocumentPermissionType.html">DigitalDocumentPermissionType</a></li>
                                 <li><a href="../classes/Diploma.html">Diploma</a></li>
+                                <li><a href="../classes/Directory.html">Directory</a></li>
                                 <li><a href="../classes/DisagreeAction.html">DisagreeAction</a></li>
                                 <li><a href="../classes/DiscoverAction.html">DiscoverAction</a></li>
                                 <li><a href="../classes/DiscussionForumPosting.html">DiscussionForumPosting</a></li>
@@ -281,6 +282,7 @@
                                 <li><a href="../classes/EcContact.html">EcContact</a></li>
                                 <li><a href="../classes/EcCrypto.html">EcCrypto</a></li>
                                 <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
+                                <li><a href="../classes/EcDirectory.html">EcDirectory</a></li>
                                 <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
                                 <li><a href="../classes/EcFile.html">EcFile</a></li>
                                 <li><a href="../classes/EcFramework.html">EcFramework</a></li>
@@ -818,7 +820,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2020 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2021 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -1586,20 +1588,6 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         }
         url = EcRemote.upgradeHttpToHttps(url);
         var xhr = null;
-        if ((typeof httpStatus) == &quot;undefined&quot;) {
-            xhr = new XMLHttpRequest();
-            xhr.open(&quot;POST&quot;, url, EcRemote.async);
-            var xhrx = xhr;
-            xhr.onreadystatechange = function() {
-                if (xhrx.readyState == 4 &amp;&amp; xhrx.status == 200) {
-                    if (successCallback != null) 
-                        successCallback(xhrx.responseText);
-                } else if (xhrx.readyState == 4) {
-                    if (failureCallback != null) 
-                        failureCallback(xhrx.responseText);
-                }
-            };
-        }
         var theBoundary = null;
         if ((fd)[&quot;_streams&quot;] != null) {
             var chunks = (fd)[&quot;_streams&quot;];
@@ -1613,10 +1601,43 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             }
             all = all + &quot;\r\n\r\n--&quot; + (fd)[&quot;_boundary&quot;] + &quot;--&quot;;
             theBoundary = (fd)[&quot;_boundary&quot;];
-            if ((typeof httpStatus) == &quot;undefined&quot;) 
-                xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=&quot; + (fd)[&quot;_boundary&quot;]);
             fd = all;
         } else {}
+        if ((typeof isNodeJs) != &quot;undefined&quot; &amp;&amp; EcRemote.async) {
+            if (headers == null) 
+                headers = new Object();
+            (headers)[&quot;Content-Type&quot;] = &quot;multipart/form-data; boundary=&quot; + theBoundary;
+            var requestObject = new Object();
+            (requestObject)[&quot;method&quot;] = &quot;POST&quot;;
+            (requestObject)[&quot;url&quot;] = url;
+            (requestObject)[&quot;headers&quot;] = headers;
+            (requestObject)[&quot;body&quot;] = fd;
+            request(requestObject, function(error, response, body) {
+                if (failureCallback != null &amp;&amp; error != null) 
+                    failureCallback(error);
+                 else if (failureCallback != null &amp;&amp; (response)[&quot;statusCode&quot;] != 200) 
+                    failureCallback(body);
+                 else if (successCallback != null) 
+                    successCallback(body);
+            });
+            return;
+        }
+        if ((typeof httpStatus) == &quot;undefined&quot;) {
+            xhr = new XMLHttpRequest();
+            xhr.open(&quot;POST&quot;, url, EcRemote.async);
+            var xhrx = xhr;
+            xhr.onreadystatechange = function() {
+                if (xhrx.readyState == 4 &amp;&amp; xhrx.status == 200) {
+                    if (successCallback != null) 
+                        successCallback(xhrx.responseText);
+                } else if (xhrx.readyState == 4) {
+                    if (failureCallback != null) 
+                        failureCallback(xhrx.responseText);
+                }
+            };
+            if (theBoundary != null) 
+                xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=&quot; + theBoundary);
+        }
         if (xhr != null) 
             if (EcRemote.async) 
                 (xhr)[&quot;timeout&quot;] = EcRemote.timeout;
@@ -1679,6 +1700,20 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 }
             };
         }
+        if ((typeof isNodeJs) != &quot;undefined&quot; &amp;&amp; EcRemote.async) {
+            var requestObject = new Object();
+            (requestObject)[&quot;method&quot;] = &quot;GET&quot;;
+            (requestObject)[&quot;url&quot;] = url;
+            request(requestObject, function(error, response, body) {
+                if (failure != null &amp;&amp; error != null) 
+                    failure(error);
+                 else if (failure != null &amp;&amp; (response)[&quot;statusCode&quot;] != 200) 
+                    failure(body);
+                 else if (success != null) 
+                    success(body);
+            });
+            return;
+        }
         if (xhr != null) {
             if (EcRemote.async) 
                 (xhr)[&quot;timeout&quot;] = EcRemote.timeout;
@@ -1729,6 +1764,23 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                         failure(xhrx.responseText);
                 }
             };
+        }
+        if ((typeof isNodeJs) != &quot;undefined&quot; &amp;&amp; EcRemote.async) {
+            var sso = new Object();
+            (sso)[&quot;signatureSheet&quot;] = signatureSheet;
+            var requestObject = new Object();
+            (requestObject)[&quot;method&quot;] = &quot;DELETE&quot;;
+            (requestObject)[&quot;url&quot;] = url;
+            (requestObject)[&quot;headers&quot;] = sso;
+            request(requestObject, function(error, response, body) {
+                if (failure != null &amp;&amp; error != null) 
+                    failure(error);
+                 else if (failure != null &amp;&amp; (response)[&quot;statusCode&quot;] != 200) 
+                    failure(body);
+                 else if (success != null) 
+                    success(body);
+            });
+            return;
         }
         if (xhr != null) {
             if (EcRemote.async) 

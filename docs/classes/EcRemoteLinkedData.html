@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.40</em>
+            <em>API Docs for: 1.2.41</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -244,6 +244,7 @@
                                 <li><a href="../classes/DigitalDocumentPermission.html">DigitalDocumentPermission</a></li>
                                 <li><a href="../classes/DigitalDocumentPermissionType.html">DigitalDocumentPermissionType</a></li>
                                 <li><a href="../classes/Diploma.html">Diploma</a></li>
+                                <li><a href="../classes/Directory.html">Directory</a></li>
                                 <li><a href="../classes/DisagreeAction.html">DisagreeAction</a></li>
                                 <li><a href="../classes/DiscoverAction.html">DiscoverAction</a></li>
                                 <li><a href="../classes/DiscussionForumPosting.html">DiscussionForumPosting</a></li>
@@ -281,6 +282,7 @@
                                 <li><a href="../classes/EcContact.html">EcContact</a></li>
                                 <li><a href="../classes/EcCrypto.html">EcCrypto</a></li>
                                 <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
+                                <li><a href="../classes/EcDirectory.html">EcDirectory</a></li>
                                 <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
                                 <li><a href="../classes/EcFile.html">EcFile</a></li>
                                 <li><a href="../classes/EcFramework.html">EcFramework</a></li>
@@ -1164,6 +1166,75 @@ Note that this method invalidates all signatures.</p>
     <div class="meta">
                 <p>
                 Defined in
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l176"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:176</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Will generate an identifier using the server URL provided (usually from
+an EcRepository) and unique identifier.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">server</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Base URL of the server's repository functionality.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">uniqueIdentifier</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Canonical identifier. Must contain a letter or symbol.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_assignId" class="method item">
+    <h3 class="name"><code>assignId</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>server</code>
+                </li>
+                <li class="arg">
+                        <code>uniqueIdentifier</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
         <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l195"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:195</code></a>
         </p>
 
@@ -1234,75 +1305,6 @@ an EcRepository) and unique identifier.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l212"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:212</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Will generate an identifier using the server URL provided (usually from
-an EcRepository) and unique identifier.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">server</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Base URL of the server's repository functionality.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">uniqueIdentifier</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Canonical identifier. Must contain a letter or symbol.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_assignId" class="method item">
-    <h3 class="name"><code>assignId</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>server</code>
-                </li>
-                <li class="arg">
-                        <code>uniqueIdentifier</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l176"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:176</code></a>
         </p>
 
 
@@ -2001,7 +2003,7 @@ the type to be defined in @context.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l249"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:249</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l231"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:231</code></a>
         </p>
 
 
@@ -2009,7 +2011,7 @@ the type to be defined in @context.
     </div>
 
     <div class="description">
-        <p>Determines if the object has a reader identified by pk.
+        <p>Determines if the object has an owner identified by pk.
 Homogenizes the PEM strings for comparison.
 Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.</p>
 
@@ -2069,7 +2071,7 @@ Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certific
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l231"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:231</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l249"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:249</code></a>
         </p>
 
 
@@ -2077,7 +2079,7 @@ Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certific
     </div>
 
     <div class="description">
-        <p>Determines if the object has an owner identified by pk.
+        <p>Determines if the object has a reader identified by pk.
 Homogenizes the PEM strings for comparison.
 Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.</p>
 
