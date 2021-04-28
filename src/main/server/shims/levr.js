@@ -351,7 +351,7 @@ global.jsonLdToRdfXml = function(o){
     return new Promise(function(resolve,reject){
         let uri = JSON.parse(o)["@id"];
         let store = $rdf.graph();
-        $rdf.parse(o, store, "whatever", 'application/ld+json',function(err,str){
+        $rdf.parse(o, store, "whatever", 'application/ld+json',(err,str) => {
             resolve($rdf.serialize(null, str, '*', 'application/rdf+xml'));
         });
     });

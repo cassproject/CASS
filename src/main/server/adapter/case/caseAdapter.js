@@ -229,7 +229,7 @@ cfItems = async function (f, fw) {
     if (f["schema:identifier"] == null)
         f["schema:identifier"] = guid;
     if (f.toJson != null)
-        f = JSON.parse(f.toJson());
+        f = f.toJson();
     f["@context"] = "https://schema.cassproject.org/0.4/cass2case";
     f = jsonLdExpand(f);
     var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
