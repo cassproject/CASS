@@ -10,7 +10,7 @@ badgeSetup = function () {
     var identity = new EcIdentity();
     identity.ppk = EcPpk.fromPem(keyFor("adapter.openbadges.private"));
     identity.displayName = "OpenBadges Internal Identity";
-    EcIdentityManager.addIdentity(identity);
+    EcIdentityManager.default.addIdentity(identity);
 }
 
 badgeKey = function () {

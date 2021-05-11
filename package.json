@@ -7,15 +7,20 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "npm run test:deps & npm-run-all --parallel -r test:nodemon test:test",
+    "test": "npm run test:deps & npm run test:nodemon",
     "test:deps": "docker-compose up -d elasticsearch",
     "test:nodemon": "nodemon src/main/server.js",
-    "test:test": "wait-on http://localhost/api/ping & node node_modules/cassproject/test.js",
     "dev": "npm-run-all --parallel test:deps test:nodemon",
+    "mocha": "mocha --exit node_modules/cassproject/src/**/*.test.js && mocha --exit src/**/*.test.js",
+    "mochafast": "mocha --exit src/**/*.test.js",
+    "automocha": "nodemon --exec \"npm run mocha\"",
+    "automochafast": "nodemon --exec \"npm run mochafast\"",
     "run": "pm2 start ./pm2.config.js && pm2 logs",
     "logs": "pm2 logs",
     "stop": "pm2 stop all",
-    "docs": "yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/"
+    "docs": "yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/",
+    "buildRun:kill": "docker kill cass-test; docker rm cass-test",
+    "buildRun:ubuntu16": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --network=\"host\" --name cass-test cass-test"
   },
   "repository": {
     "type": "git",
@@ -48,15 +53,17 @@
   "dependencies": {
     "@entryscape/rdfjson": "^2.3.0",
     "axios": "^0.21.1",
-    "cassproject": "0.5.3",
+    "cassproject": "file:../cass-npm",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
     "formidable": "^1.2.2",
-    "npm": "^7.6.3",
+    "pure-uuid": "^1.6.2",
     "rdflib": "^2.2.0",
     "ws": "^7.4.4"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
     "pm2": "^4.5.5",

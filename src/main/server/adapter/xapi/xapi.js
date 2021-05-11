@@ -163,7 +163,7 @@ var xapiStatementListener = async function () {
 var ident = new EcIdentity();
 ident.displayName = "xAPI Adapter";
 ident.ppk = EcPpk.fromPem(xapiMePpk);
-EcIdentityManager.addIdentity(ident);
+EcIdentityManager.default.addIdentity(ident);
 xapiKey = function () {
     return ident.ppk.toPk().toPem();
 }
@@ -174,7 +174,7 @@ var xapiLoop = async function () {
     var ident = new EcIdentity();
     ident.displayName = "xAPI Adapter";
     ident.ppk = EcPpk.fromPem(xapiMePpk);
-    EcIdentityManager.addIdentity(ident);
+    EcIdentityManager.default.addIdentity(ident);
     var sinceFilePath = "etc/adapter.xapi.since.txt";
     var since = null;
     if (fileExists(sinceFilePath)) {

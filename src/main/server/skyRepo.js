@@ -526,7 +526,7 @@ var skyrepoGetParsed = async function(id, version, type, versions) {
     try {
         filtered = await (filterResults).call(this, result, null);
     }catch (ex) {
-        if (ex.getMessage() != "Signature Violation") 
+        if (ex.toString().indexOf("Signature Violation") != -1) 
              throw ex;
     }
     if (versions == "true") {}

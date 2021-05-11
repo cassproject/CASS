@@ -193,7 +193,7 @@ ingestCase = async function () {
     var caseIdentity = new EcIdentity();
     caseIdentity.ppk = EcPpk.fromPem(keyFor("adapter.case.private"));
     caseIdentity.displayName = "CASE Server Identity";
-    EcIdentityManager.addIdentity(caseIdentity);
+    EcIdentityManager.default.addIdentity(caseIdentity);
 
     var targetUrl = this.params.caseEndpoint;
     if (targetUrl.endsWith("/"))

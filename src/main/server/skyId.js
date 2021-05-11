@@ -40,7 +40,7 @@ var skyIdCreate = async function() {
     (payload)["password"] = saltedPassword;
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
     var signatureSheet = new Array();
-    signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
+    signatureSheet.push(EcIdentityManager.default.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
     var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get != null) 
@@ -89,7 +89,7 @@ var skyIdCommit = async function() {
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
     var signatureSheet = new Array();
-    signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
+    signatureSheet.push(EcIdentityManager.default.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
     var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
@@ -123,7 +123,7 @@ var skyIdLogin = async function() {
     var saltedPassword = forge.util.encode64(forge.pkcs5.pbkdf2(password, skyIdSalt, 10000, 64));
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
     var signatureSheet = new Array();
-    signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
+    signatureSheet.push(EcIdentityManager.default.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
     var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 

@@ -733,7 +733,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     var ceasnIdentity = new EcIdentity();
     ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
     ceasnIdentity.displayName = "CEASN Server Identity";
-    EcIdentityManager.addIdentity(ceasnIdentity);
+    EcIdentityManager.default.addIdentity(ceasnIdentity);
 
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);

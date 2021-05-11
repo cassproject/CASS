@@ -277,7 +277,7 @@ function importFrameworkToCass(frameworkObj, competencyList) {
     var asnIdentity = new EcIdentity();
     asnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.asn.private"));
     asnIdentity.displayName = "ASN Server Identity";
-    EcIdentityManager.addIdentity(asnIdentity);
+    EcIdentityManager.default.addIdentity(asnIdentity);
 
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
@@ -343,8 +343,8 @@ function importFrameworkToCass(frameworkObj, competencyList) {
         var c = new EcCompetency();
         c.copyFrom(compactedComp);
         c.addOwner(asnIdentity.ppk.toPk());
-        EcIdentityManager.sign(c);
-        this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(c.owner, 60000, c.id)));
+        EcIdentityManager.default.sign(c);
+        this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.default.signatureSheetFor(c.owner, 60000, c.id)));
         skyrepoPut.call(this, {
             obj: c.toJson(),
             type: c.getFullType().replace("http://", "").replace("https://", "").replaceAll("/", "."),
@@ -390,8 +390,8 @@ function importFrameworkToCass(frameworkObj, competencyList) {
         var f = new EcFramework();
         f.copyFrom(compacted);
         f.addOwner(asnIdentity.ppk.toPk());
-        EcIdentityManager.sign(f);
-        this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(f.owner, 60000, f.id)));
+        EcIdentityManager.default.sign(f);
+        this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.default.signatureSheetFor(f.owner, 60000, f.id)));
         skyrepoPut.call(this, {
             obj: f.toJson(),
             type: f.getFullType().replace("http://", "").replace("https://", "").replaceAll("/", "."),
@@ -470,7 +470,7 @@ function importJsonLdGraph(graph, context) {
     var skosIdentity = new EcIdentity();
     skosIdentity.ppk = EcPpk.fromPem(keyFor("adapter.skos.private"));
     skosIdentity.displayName = "SKOS Server Identity";
-    EcIdentityManager.addIdentity(skosIdentity);
+    EcIdentityManager.default.addIdentity(skosIdentity);
 
     var conceptSchemeGuid;
     var lang = null;
