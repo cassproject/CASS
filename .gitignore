@@ -55,3 +55,4 @@ data/
 
 *.7z
 .node-xmlhttprequest*
+*.log

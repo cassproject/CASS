@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "npm run test:deps && pm2 start ./pm2.test.js && npm run mocha && pm2 stop all",
+    "test": "npm run test:deps && pm2 start ./pm2.test.config.js && npm run mocha && pm2 stop all",
     "test:deps": "docker-compose up -d elasticsearch",
     "test:nodemon": "nodemon src/main/server.js",
     "test:logs": "pm2 logs --nostream --lines 1000",
