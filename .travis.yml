@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - 16
 before_install:
-  - sudo apt install -g npm -y
+  - sudo apt install npm -y
 script: "npm run test:deps && npm run test:sudostart && npm run mocha && npm run stop"
 sudo: required
 notifications:
