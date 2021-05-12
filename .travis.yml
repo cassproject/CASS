@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - 16
-script: "npm run test:deps && sudo pm2 start ./pm2.test.config.js && npm run mocha && pm2 stop all"
+script: "npm run test:deps && npm run test:sudostart && npm run mocha && npm run stop"
 sudo: required
 notifications:
   slack:
