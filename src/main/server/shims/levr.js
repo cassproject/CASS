@@ -273,12 +273,15 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        if (skyrepoDebug) console.trace("post error: " +error.response.status + ": "+ error.response.statusText);
-        if (skyrepoDebug) console.error(url);
-        if (skyrepoDebug) if (resp != null)
-            console.error(resp);
-        else
-            console.error(error.response.statusText);
+        if (skyrepoDebug) 
+            console.trace("post error: " +error.response.status + ": "+ error.response.statusText);
+        if (skyrepoDebug) 
+            console.error(url);
+        if (skyrepoDebug) 
+            if (resp != null)
+                console.error(resp);
+            else
+                console.error(error.response.statusText);
         return resp;
     }
 }
@@ -370,3 +373,4 @@ global.jsonLdToRdfJson = async function(o){
       const jsonrdf = graph.exportRDFJSON();
       return JSON.stringify(jsonrdf, null, 2);
 }
+

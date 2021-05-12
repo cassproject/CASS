@@ -104,7 +104,7 @@ if [ -e "src/main/server.js" ];
  then
 echo -----
 echo Node version of CaSS detected.
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 apt install -qqy nodejs build-essential
 node --version
 npm install

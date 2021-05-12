@@ -887,6 +887,8 @@ var endpointMultiPutEach = async function() {
      else 
         id = ld.getGuid();
     var version = ld.getTimestamp();
+    if (isNaN(version)) 
+        version = null;
     var type = ld.getDottedType();
     try {
         this.ctx.put("refresh", "false");

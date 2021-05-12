@@ -20,8 +20,11 @@
     "stop": "pm2 stop all",
     "docs": "yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/",
     "buildRun:kill": "docker kill cass-test; docker rm cass-test",
-    "buildRun:ubuntu16": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --network=\"host\" --name cass-test cass-test"
-  },
+    "buildRun:ubuntu16": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu20": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18:13to15": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . & docker run -p80:80 --name cass-test cass-test"
+  },                     
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cassproject/CASS.git"
@@ -53,7 +56,7 @@
   "dependencies": {
     "@entryscape/rdfjson": "^2.3.0",
     "axios": "^0.21.1",
-    "cassproject": "file:../cass-npm",
+    "cassproject": "0.5.12",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
     "formidable": "^1.2.2",

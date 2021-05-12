@@ -21,11 +21,17 @@
 const express = require('express');
 require("cassproject");
 const fs = require('fs');
+const baseUrl = process.env.CASS_BASE || null;
+let baseApp = null;
+if (baseUrl != null)
+    baseApp = express();
 const app = global.app = express();
 const port = process.env.PORT || 80;
 require("./server/websocket.js");
 
-app.use(express.static('src/main/webapp/'))
+if (baseApp != null)
+    app.use(baseUrl,baseApp);
+app.use(express.static('src/main/webapp/'));
 
 global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";
