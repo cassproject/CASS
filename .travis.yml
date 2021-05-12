@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - 16
 before_install:
-  - sudo apt install npm -y
+  - curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -;
 script: "npm run test:deps && npm run test:sudostart && npm run mocha && npm run stop"
 sudo: required
 notifications:
