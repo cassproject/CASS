@@ -9,7 +9,8 @@ module.exports = {
           env: {
             "CASS_LOOPBACK": "http://localhost/api/",
             "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
-            "PORT": "80"
+            "PORT": "8080",
+            "CASS_BASE": "/cass"
           }
         }
     ]
