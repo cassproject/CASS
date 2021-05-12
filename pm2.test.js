@@ -5,6 +5,7 @@ module.exports = {
           script: "./src/main/server.js",
           watch: true,
           instances: 1,
+          log_file: 'cass.log',
           env: {
             "CASS_LOOPBACK": "http://localhost/api/",
             "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
