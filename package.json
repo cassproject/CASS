@@ -7,11 +7,14 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "npm run test:deps & npm run test:nodemon",
+    "test": "npm run test:deps & pm2 start ./pm2.config.js & npm run mocha & pm2 stop all",
     "test:deps": "docker-compose up -d elasticsearch",
     "test:nodemon": "nodemon src/main/server.js",
-    "mocha": "mocha --exit node_modules/cassproject/src/**/*.test.js && mocha --exit src/**/*.test.js",
-    "mochafast": "mocha --exit src/**/*.test.js",
+    "dev": "npm run dev:deps & npm run dev:nodemon",
+    "dev:deps": "docker-compose up -d elasticsearch",
+    "dev:nodemon": "nodemon src/main/server.js",
+    "mocha": "mocha node_modules/cassproject/src/**/*.test.js && mocha src/**/*.test.js",
+    "mochafast": "mocha src/**/*.test.js",
     "automocha": "nodemon --exec \"npm run mocha\"",
     "automochafast": "nodemon --exec \"npm run mochafast\"",
     "run": "pm2 start ./pm2.config.js && pm2 logs",
