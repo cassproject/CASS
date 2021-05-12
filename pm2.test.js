@@ -3,7 +3,6 @@ module.exports = {
         {
           name: "CaSS",
           script: "./src/main/server.js",
-          watch: true,
           instances: 1,
           log_file: 'cass.log',
           env: {
