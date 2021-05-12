@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run test:deps && npm run test:start && npm run mocha && npm run stop",
     "test:start": "pm2 start ./pm2.test.config.js",
-    "test:sudostart": "sudo npm install -g pm2 && sudo pm2 start ./pm2.test.config.js",
+    "test:sudostart": "sudo pm2 start ./pm2.test.config.js",
     "test:deps": "docker-compose up -d elasticsearch",
     "test:nodemon": "nodemon src/main/server.js",
     "test:logs": "pm2 logs --nostream --lines 1000",
