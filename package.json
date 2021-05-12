@@ -7,10 +7,10 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "npm run test:deps & pm2 start ./pm2.config.js & npm run mocha & pm2 stop all",
+    "test": "npm run test:deps && pm2 start ./pm2.config.js && npm run mocha && pm2 stop all",
     "test:deps": "docker-compose up -d elasticsearch",
     "test:nodemon": "nodemon src/main/server.js",
-    "dev": "npm run dev:deps & npm run dev:nodemon",
+    "dev": "npm run dev:deps && npm run dev:nodemon",
     "dev:deps": "docker-compose up -d elasticsearch",
     "dev:nodemon": "nodemon src/main/server.js",
     "mocha": "mocha node_modules/cassproject/src/**/*.test.js && mocha src/**/*.test.js",
@@ -22,10 +22,10 @@
     "stop": "pm2 stop all",
     "docs": "yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/",
     "buildRun:kill": "docker kill cass-test; docker rm cass-test",
-    "buildRun:ubuntu16": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --name cass-test cass-test",
-    "buildRun:ubuntu18": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --name cass-test cass-test",
-    "buildRun:ubuntu20": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . & docker run -p80:80 --name cass-test cass-test",
-    "buildRun:ubuntu18:13to15": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . & docker run -p80:80 --name cass-test cass-test"
+    "buildRun:ubuntu16": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu20": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18:13to15": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . && docker run -p80:80 --name cass-test cass-test"
   },
   "repository": {
     "type": "git",
