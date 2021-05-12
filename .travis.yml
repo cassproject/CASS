@@ -5,7 +5,7 @@ before_install:
   - curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -;
   - sudo apt-get install -y nodejs
   - sudo npm install -g pm2
-script: "npm run test:deps && npm run test:sudostart && npm run mocha && npm run stop"
+script: "npm run test:deps && npm run test:sudostart && sleep 8 && npm run mocha && npm run stop"
 sudo: required
 notifications:
   slack:
