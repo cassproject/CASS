@@ -218,7 +218,7 @@ ingestCase = async function () {
             if (owner != null)
                 listToSave[j].addOwner(EcPk.fromPem(owner));
         }
-        repo.multiput(listToSave,function(results){},console.error);
+        await repo.multiput(listToSave,function(results){},console.error);
     }
     return JSON.stringify(dx, null, 2);
 }

@@ -1,9 +1,9 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Development: 0.5 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=0.5)](https://travis-ci.org/cassproject/CASS)
-Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)
-Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)
+Development: 0.5 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=0.5)](https://travis-ci.org/cassproject/CASS)  
+Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
+Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.2)](https://travis-ci.org/cassproject/CASS)
 
 [High level documentation](https://docs.cassproject.org)  

@@ -34,4 +34,8 @@ describe("CASE Adapter", function() {
     it('conversion to CASE', async () => {
         await axios.get("http://localhost/api/ims/case/v1p0/CFPackages/70d27b782c062d1280b240890141dcf6")
     }).timeout(10000);
+
+    it('ACT Collective Problem Solving import', async()=>{
+        await axios.get("http://localhost/api/ims/case/harvest?caseEndpoint=https://opensalt.net&dId=f0e7396a-7edd-11e9-86d4-23cb22a51e7e")
+    }).timeout(30000);
 });

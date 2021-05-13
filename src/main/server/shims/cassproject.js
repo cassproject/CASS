@@ -1,7 +1,7 @@
 let frameworkGet = async function(id){
     return new Promise(
         function(resolve,reject){
-            EcFramework.get(
+            return EcFramework.get(
                 id,
                 function(f){resolve(f);},
                 function(error){reject(error);}
@@ -12,7 +12,7 @@ let frameworkGet = async function(id){
 let frameworkSearch = async function(repo,query,params){
     return new Promise(
         function(resolve,reject){
-            EcFramework.search(
+            return EcFramework.search(
                 repo,
                 query,
                 function(fs){resolve(fs)},
@@ -25,7 +25,7 @@ let frameworkSearch = async function(repo,query,params){
 let competencyGet = async function(id){
     return new Promise(
         function(resolve,reject){
-            EcCompetency.get(
+            return EcCompetency.get(
                 id,
                 function(f){resolve(f);},
                 function(error){reject(error);}
@@ -36,7 +36,7 @@ let competencyGet = async function(id){
 let repositoryGet = async function(id){
     return new Promise(
         function(resolve,reject){
-            EcRepository.get(
+            return EcRepository.get(
                 id,
                 function(f){resolve(f);},
                 function(error){reject(error);}
@@ -47,7 +47,7 @@ let repositoryGet = async function(id){
 let repositorySearch = async function(repo,query,params){
     return new Promise(
         function(resolve,reject){
-            repo.searchWithParams(
+            return repo.searchWithParams(
                 repo,
                 query,
                 params,
@@ -61,7 +61,7 @@ let repositorySearch = async function(repo,query,params){
 let alignmentGet = async function(id){
     return new Promise(
         function(resolve,reject){
-            EcAlignment.get(
+            return EcAlignment.get(
                 id,
                 function(f){resolve(f);},
                 function(error){reject(error);}
@@ -73,7 +73,7 @@ let alignmentGet = async function(id){
 let conceptGet = async function(id){
     return new Promise(
         function(resolve,reject){
-            EcConcept.get(
+            return EcConcept.get(
                 id,
                 function(f){resolve(f);},
                 function(error){reject(error);}
@@ -85,7 +85,7 @@ let conceptGet = async function(id){
 let multiput = async function(repo,ary){
     return new Promise(
         function(resolve,reject){
-            repo.multiput(
+            return repo.multiput(
                 ary,
                 function(f){resolve(f);},
                 function(error){reject(error);}

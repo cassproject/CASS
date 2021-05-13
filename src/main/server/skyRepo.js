@@ -1,5 +1,6 @@
 
 
+const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
 const fs = require('fs');
 var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
@@ -127,7 +128,7 @@ var signatureSheet = async function() {
             owner = (signature)["@owner"];
         (signature)["@owner"] = owner;
         signature.owner = null;
-        if (!EcRsaOaep.verify(EcPk.fromPem(owner), signature.toJson(), signBytes)) 
+        if (!await EcRsaOaepAsync.verify(EcPk.fromPem(owner), signature.toJson(), signBytes)) 
             error("Invalid Signature Detected: " + signature.toJson(), 451);
         signature.owner = (signature)["@owner"];
         sigSheet[i] = signature;
@@ -571,7 +572,7 @@ var validateSignatures = async function(id, version, type, errorMessage) {
     var oldObj = new EcRemoteLinkedData(null, null);
     oldObj.copyFrom(oldGet);
     if (oldObj.owner !== undefined && oldObj.owner != null && oldObj.owner.length > 0) {
-        var signatures = await (signatureSheet).call(this);
+        var signatures = await ((signatureSheet).call(this));
         var success = false;
         for (var i = 0; i < signatures.length; i++) {
             var owner = signatures[i].owner;
@@ -895,7 +896,7 @@ var endpointMultiPutEach = async function() {
         await (skyrepoPutParsed).call(this, o, id, version, type);
         return o;
     }catch (ex) {
-        debug(ex);
+        //debug(ex);
     }
     return null;
 };
@@ -904,7 +905,7 @@ var endpointMultiPut = async function() {
     var results = new Array();
     if (ary != null) {
         var me = this;
-        let forEachResults = await Promise.all(ary.map(function(hit){return endpointMultiPutEach.call({ctx:me.ctx,params:{obj:hit}})}));
+        let forEachResults = await Promise.all(ary.map((hit)=>{return endpointMultiPutEach.call({ctx:this.ctx,dataStreams:this.dataStreams,params:{obj:hit}})}));
         for (var i = 0; i < forEachResults.length; i++) 
             if (forEachResults[i] != null) 
                 results.push(forEachResults[i]);

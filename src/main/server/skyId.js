@@ -40,14 +40,14 @@ var skyIdCreate = async function() {
     (payload)["password"] = saltedPassword;
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
     var signatureSheet = new Array();
-    signatureSheet.push(EcIdentityManager.default.createSignature(60000, null, skyIdPem));
+    signatureSheet.push(await EcIdentityManager.default.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
     var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get != null) 
-        get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
+        get = JSON.parse(await EcAesCtrAsync.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
-    encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
+    encryptedPayload.payload = await EcAesCtrAsync.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
     if (get == null) 
         await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
      else 
@@ -87,14 +87,14 @@ var skyIdCommit = async function() {
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
-    encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
+    encryptedPayload.payload = await EcAesCtrAsync.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
     var signatureSheet = new Array();
-    signatureSheet.push(EcIdentityManager.default.createSignature(60000, null, skyIdPem));
+    signatureSheet.push(await EcIdentityManager.default.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
     var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
-    get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
+    get = JSON.parse(await EcAesCtrAsync.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     if ((get)["token"] != token) 
         error("An error in synchronization has occurred. Please re-login and try again.", 403);
     await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
@@ -123,18 +123,18 @@ var skyIdLogin = async function() {
     var saltedPassword = forge.util.encode64(forge.pkcs5.pbkdf2(password, skyIdSalt, 10000, 64));
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
     var signatureSheet = new Array();
-    signatureSheet.push(EcIdentityManager.default.createSignature(60000, null, skyIdPem));
+    signatureSheet.push(await EcIdentityManager.default.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
     var get = await (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
-    get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
+    get = JSON.parse(await EcAesCtrAsync.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     if ((get)["password"] != saltedPassword) 
         error("Invalid password.", 403);
     (get)["token"] = randomString(20);
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
-    encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(get), skyIdSecretKey, saltedId);
+    encryptedPayload.payload = await EcAesCtrAsync.encrypt(JSON.stringify(get), skyIdSecretKey, saltedId);
     await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
     delete (get)["password"];
     return JSON.stringify(get);
