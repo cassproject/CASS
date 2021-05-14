@@ -97,6 +97,7 @@ fi
 
 echo -----
 echo Downloading CASS Repo...
+rm -rf CASS
 git clone --recurse-submodules https://github.com/cassproject/CASS -b $branch
 cd CASS
 
