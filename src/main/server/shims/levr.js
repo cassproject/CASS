@@ -157,14 +157,10 @@ global.bindWebService = function(endpoint,callback){
         })
     }
     console.log("Binding endpoint: /api" + endpoint)
-    app.get('/api'+endpoint,get);
-    app.post('/api'+endpoint,post);
-    app.put('/api'+endpoint,put);
-    app.delete('/api'+endpoint,deleet);
-    app.get('/cass/api'+endpoint,get);
-    app.post('/cass/api'+endpoint,post);
-    app.put('/cass/api'+endpoint,put);
-    app.delete('/cass/api'+endpoint,deleet);
+    app.get(baseUrl + '/api'+endpoint,get);
+    app.post(baseUrl + '/api'+endpoint,post);
+    app.put(baseUrl + '/api'+endpoint,put);
+    app.delete(baseUrl + '/api'+endpoint,deleet);
 }
 
 if (global.fileFromDatastream === undefined)
