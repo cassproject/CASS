@@ -20,15 +20,15 @@
     "mochafast": "mocha src/**/*.test.js",
     "automocha": "nodemon --exec \"npm run mocha\"",
     "automochafast": "nodemon --exec \"npm run mochafast\"",
-    "run": "pm2 start ./pm2.config.js && pm2 logs",
+    "run": "pm2 start ./pm2.config.js",
     "logs": "pm2 logs",
     "stop": "pm2 stop all",
     "docs": "npm install yuidocjs yuidoc-ember-cli-theme && yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/",
-    "buildRun:kill": "docker kill cass-test; docker rm cass-test",
-    "buildRun:ubuntu16": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
-    "buildRun:ubuntu18": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
-    "buildRun:ubuntu20": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
-    "buildRun:ubuntu18:13to15": "npm run buildRun:kill;docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . && docker run -p80:80 --name cass-test cass-test"
+    "buildRun:kill": "docker kill cass-test | exit 0 && docker rm cass-test | exit 0",
+    "buildRun:ubuntu16": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu20": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18:13to15": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . && docker run -p80:80 --name cass-test cass-test"
   },
   "repository": {
     "type": "git",
