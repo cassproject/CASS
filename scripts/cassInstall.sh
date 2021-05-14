@@ -553,7 +553,7 @@ service httpd stop
 service httpd start
 fi
 
-if [ ! -e "src/main/server.js" ];
+if [ -e "src/main/server.js" ];
  then
   npm run run
   pm2 startup
