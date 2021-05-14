@@ -21,12 +21,12 @@
 const express = require('express');
 require("cassproject");
 const fs = require('fs');
-const baseUrl = global.baseUrl = process.env.CASS_BASE || "/";
+const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
 const app = global.app = express();
 const port = process.env.PORT || 80;
-require(baseUrl,"./server/websocket.js");
+require("./server/websocket.js");
 
-app.use(express.static('src/main/webapp/'));
+app.use(baseUrl,express.static('src/main/webapp/'));
 
 global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";
@@ -62,7 +62,7 @@ require("./server/adapter/xapi/xapi.js");
 skyrepoMigrate(function(){
     app.listen(port, async () => {    
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
-        console.log(`CaSS listening at http://localhost:${port}`);
+        console.log(`CaSS listening at http://localhost:${port}${baseUrl}`);
         // let result = await httpGet('http://localhost/api/badge/assertion/e846b68a-f48f-48ff-bb36-c9f94bd7a3bc');
         // console.log("tests");
         // console.log(JSON.stringify(result,null,2));
