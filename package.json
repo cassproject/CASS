@@ -1,0 +1,81 @@
+{
+  "name": "cass",
+  "version": "0.5.0",
+  "description": "Competency and Skills System",
+  "main": "src/main/server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "npm run test:deps && npm run test:start && npm run mocha && npm run stop",
+    "test:start": "pm2 start ./pm2.test.config.js",
+    "test:sudostart": "sudo pm2 start ./pm2.test.config.js",
+    "test:deps": "docker-compose up -d elasticsearch",
+    "test:nodemon": "nodemon src/main/server.js",
+    "test:logs": "pm2 logs --nostream --lines 1000",
+    "dev": "npm run dev:deps && npm run dev:nodemon",
+    "dev:deps": "docker-compose up -d elasticsearch",
+    "dev:nodemon": "nodemon src/main/server.js",
+    "mocha": "mocha node_modules/cassproject/src/**/*.test.js && mocha src/**/*.test.js",
+    "mochafast": "mocha src/**/*.test.js",
+    "automocha": "nodemon --exec \"npm run mocha\"",
+    "automochafast": "nodemon --exec \"npm run mochafast\"",
+    "run": "pm2 start ./pm2.config.js",
+    "run:standalone": "pm2 start ./pm2.standalone.config.js",
+    "logs": "pm2 logs",
+    "stop": "pm2 stop all",
+    "docs": "npm install yuidocjs yuidoc-ember-cli-theme && yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/",
+    "buildRun:kill": "docker kill cass-test | exit 0 && docker rm cass-test | exit 0",
+    "buildRun:ubuntu16": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu20": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:ubuntu18:13to15": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:standalone": "npm run buildRun:kill && docker build --progress plain -f docker/standalone/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cassproject/CASS.git"
+  },
+  "keywords": [
+    "cass",
+    "competency",
+    "skills",
+    "cassproject"
+  ],
+  "author": "Eduworks Corporation <cass@eduworks.com> (http://cassproject.org)",
+  "contributors": [
+    "Ronald 'Fritz' Ray <fritz.ray@eduworks.com>",
+    "Thomas Buskirk <tom.buskirk@eduworks.com>",
+    "Devlin Junker (Retired) <devlin.junker@eduworks.com>",
+    "Debbie Brown <debbie.brown@eduworks.com>",
+    "Aaron Veden <aaron.veden@eduworks.com>",
+    "Elaine Kelsey <elaine.kelsey@eduworks.com>",
+    "Robby Goetschalckx (Retired) <robby.goetschalckx@eduworks.com>",
+    "Kristin Wood <kristin.wood@eduworks.com>",
+    "Aleita Train <aleita.train@eduworks.com>",
+    "Mile Divovic <mile.divovic@eduworks.com>"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cassproject/CASS/issues"
+  },
+  "homepage": "https://github.com/cassproject/CASS#readme",
+  "dependencies": {
+    "@entryscape/rdfjson": "^2.3.0",
+    "axios": "^0.21.1",
+    "cassproject": "0.5.14",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "formidable": "^1.2.2",
+    "pure-uuid": "^1.6.2",
+    "rdflib": "^2.2.0",
+    "ws": "^7.4.4"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "pm2": "^4.5.5"
+  }
+}

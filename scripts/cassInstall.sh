@@ -37,18 +37,19 @@ echo Updating Repositories...
 if [ "$platformDebian" -ne 0 ];
  then
  apt-get -qqy update
- apt-get -qqy install curl software-properties-common lsb-core sudo vim systemd gawk
+echo Installing Packages...
+ apt-get -qqy install curl software-properties-common lsb-core sudo vim systemd gawk wget
  platformVersion16=`lsb_release -r | grep 16.04 | wc -l`
  platformVersion18=`lsb_release -r | grep 18.04 | wc -l`
 fi
 if [ "$platformFedora" -ne 0 ];
  then
 yum -y -q update
-fi
+fi 
 
 md5Local=`cat cassInstall.sh | md5sum`
 md5Remote=`curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh | md5sum`
-if [ "$md5Local" != "$md5Remote" ]
+if [[ $- == *i* ]] && [ "$md5Local" != "$md5Remote" ];
  then
  echo -----
  read -p "Update script has changed. Update from Github? [default=yes]" result
@@ -74,13 +75,49 @@ echo Installing git...
 yum install -y -q git
 fi
 
-if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
+echo [ -z "$1" ] || [ -z "$CASS_VERSION" ];
+if [ -z "$1" ] && [ -z "$CASS_VERSION" ];
+ then
+echo -----
+echo Available Recommended Versions:
+
+git ls-remote http://github.com/cassproject/CASS | grep \\. | grep -v - | sed 's/refs\/heads\///g' | awk '{print $2}' | sort
+
+echo
+echo Experimental Version: master
+
+read -p "Version to install: " -i "master" branch
+else
+  if [ ! -z "$1" ]; then 
+      branch=$1
+  else 
+      branch=$CASS_VERSION
+  fi
+fi
+
+echo -----
+echo Downloading CASS Repo...
+rm -rf CASS
+git clone --recurse-submodules https://github.com/cassproject/CASS -b $branch
+cd CASS
+
+if [ -e "src/main/server.js" ];
+ then
+echo -----
+echo Node version of CaSS detected.
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+apt install -qqy nodejs build-essential
+node --version
+npm install
+fi
+
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
  then
 echo -----
 echo Installing Maven...
 apt-get -qqy install maven
 fi
-if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
+if [ ! -e "src/main/server.js" ] && [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
  then
 echo -----
 echo Installing Maven...
@@ -89,7 +126,7 @@ sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
 yum install -y -q apache-maven
 fi
 
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
 echo Installing Tomcat 7...
@@ -98,7 +135,7 @@ mkdir /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7
 fi
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ] && [ ! -e "/etc/init.d/tomcat8" ];
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ] && [ ! -e "/etc/init.d/tomcat8" ];
  then
 echo -----
 echo Installing Tomcat 8...
@@ -108,7 +145,7 @@ chown tomcat8:tomcat8 /var/lib/tomcat8/backup
 chown tomcat8:tomcat8 /var/lib/tomcat8
 fi
 
-if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
+if [ ! -e "src/main/server.js" ] && [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
 echo Installing Tomcat...
@@ -145,10 +182,10 @@ fi
 if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
-echo Downloading and installing ElasticSearch 5.x...
+echo Downloading and installing ElasticSearch 7.x...
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 apt-get -qqy install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-7.x.list
 apt-get -qqy update
 apt-get -qqy install elasticsearch
 update-rc.d elasticsearch defaults 95 10
@@ -158,11 +195,11 @@ fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
-echo Downloading and installing ElasticSearch 5.x...
+echo Downloading and installing ElasticSearch 7.x...
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
-echo "[elasticsearch-5.x]" >> /etc/yum.repos.d/elasticsearch.repo
-echo "name=Elasticsearch repository for 5.x packages" >> /etc/yum.repos.d/elasticsearch.repo
-echo "baseurl=https://artifacts.elastic.co/packages/5.x/yum" >> /etc/yum.repos.d/elasticsearch.repo
+echo "[elasticsearch-7.x]" >> /etc/yum.repos.d/elasticsearch.repo
+echo "name=Elasticsearch repository for 7.x packages" >> /etc/yum.repos.d/elasticsearch.repo
+echo "baseurl=https://artifacts.elastic.co/packages/7.x/yum" >> /etc/yum.repos.d/elasticsearch.repo
 echo "gpgcheck=1" >> /etc/yum.repos.d/elasticsearch.repo
 echo "gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch" >> /etc/yum.repos.d/elasticsearch.repo
 echo "enabled=1" >> /etc/yum.repos.d/elasticsearch.repo
@@ -342,42 +379,27 @@ echo Installing HTTPD...
 yum -q -y install httpd
 fi
 
-if [ -z "$1" ];
+if [ ! -e "src/main/server.js" ];
  then
-echo -----
-echo Available Recommended Versions:
-
-git ls-remote http://github.com/cassproject/CASS | grep \\. | grep -v - | sed 's/refs\/heads\///g' | awk '{print $2}' | sort
-
-echo
-echo Experimental Version: master
-
-read -p "Version to install: " -i "master" branch
- else
-branch=$1
+  echo -----
+  echo Compiling CASS...
+  mvn -q clean install
+  echo Deploying CASS...
+  if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
+  then
+  cp target/cass.war /var/lib/tomcat7/webapps
+  fi
+  if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+  then
+  cp target/cass.war /var/lib/tomcat8/webapps
+  fi
+  if [ "$platformFedora" -ne 0 ];
+  then
+  cp target/cass.war /usr/share/tomcat/webapps
+  fi
+  cd ..
+  rm -rf CASS
 fi
-
-echo -----
-echo Downloading CASS Repo...
-git clone --recurse-submodules https://github.com/cassproject/CASS -b $branch
-cd CASS
-echo Compiling CASS...
-mvn -q clean install
-echo Deploying CASS...
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
- then
- cp target/cass.war /var/lib/tomcat7/webapps
-fi
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
- then
- cp target/cass.war /var/lib/tomcat8/webapps
-fi
-if [ "$platformFedora" -ne 0 ];
- then
- cp target/cass.war /usr/share/tomcat/webapps
-fi
-cd ..
-rm -rf CASS
 
 if [ "$platformDebian" -ne 0 ];
  then
@@ -410,7 +432,7 @@ if [ "$platformDebian" -ne 0 ];
  a2enmod proxy_http ssl proxy_wstunnel
 fi
 
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
  then
  echo -----
  echo Configuring Tomcat...
@@ -426,7 +448,7 @@ if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
   echo "export CASS_LOOPBACK=$loopback" >> /usr/share/tomcat7/bin/setclasspath.sh
  fi
 fi
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
  then
  echo -----
  echo Configuring Tomcat...
@@ -492,18 +514,22 @@ yum -q -y install ntpdate
 ntpdate -s time.nist.gov
 fi
 
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
+ then
 echo -----
 echo Starting Tomcat...
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
- then
  service tomcat7 start
 fi
-if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+if [ ! -e "src/main/server.js" ] && [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
  then
+echo -----
+echo Starting Tomcat...
  service tomcat8 start
 fi
-if [ "$platformFedora" -ne 0 ];
+if [ ! -e "src/main/server.js" ] && [ "$platformFedora" -ne 0 ];
  then
+echo -----
+echo Starting Tomcat...
  service tomcat start
 fi
 
@@ -526,6 +552,13 @@ echo -----
 echo Starting HTTPD...
 service httpd stop
 service httpd start
+fi
+
+if [ -e "src/main/server.js" ];
+ then
+  npm run run
+  pm2 startup
+  pm2 save
 fi
 
 echo -----

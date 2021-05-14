@@ -7,7 +7,6 @@ services:
     container_name: apache2
     ports:
       - 80:80
-      - 8080:80
     restart: always
     depends_on:
       - cass
@@ -16,10 +15,8 @@ services:
   cass:
     build:
       context: .
-      dockerfile: docker/dev/tomcat-alpine/Dockerfile
     container_name: cass
     environment:
-      - TOMCAT_HTTP_PORT=80
       - CASS_LOOPBACK=http://localhost/api/
       - ELASTICSEARCH_ENDPOINT=http://elasticsearch:9200
     ulimits:
@@ -28,7 +25,7 @@ services:
         hard: -1
     volumes:
 #      - ./docker/distributed/tomcat-alpine/server.xml:/usr/local/tomcat/conf/server.xml
-      - etc:/usr/local/tomcat/etc/
+      - etc:/app/etc
     networks:
       - esnet
     depends_on:
