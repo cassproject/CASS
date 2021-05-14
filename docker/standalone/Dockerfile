@@ -7,7 +7,7 @@ RUN yum install -y nodejs git
 ENV CASS_VERSION=0.5
 RUN git clone --recurse-submodules -b ${CASS_VERSION} https://github.com/cassproject/CASS && \
 cd CASS && \
-npm i
+npm install
 
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
 RUN echo 'cluster.initial_master_nodes:' >> config/elasticsearch.yml
