@@ -4,9 +4,9 @@ module.exports = {
           name: "CaSS",
           script: "./src/main/server.js",
           watch: true,
-          ignore_watch: ["cass*.log"],
+          ignore_watch: ["/logs"],
           instances: 1,
-          log_file: 'cass.log',
+          log_file: '/logs/cass.log',
           env: {
             "CASS_LOOPBACK": "http://localhost/api/",
             "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
