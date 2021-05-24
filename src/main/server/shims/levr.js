@@ -6,6 +6,9 @@ const axios = require('axios');
 if (global.fileLoad === undefined)
 global.fileLoad = function(filepath){return fs.readFileSync(filepath);}
 
+if (global.fileExists === undefined)
+global.fileExists = function(filepath){return fs.existsSync(filepath);}
+
 if (global.fileToString === undefined)
 global.fileToString = function(file){
     if (file === undefined || file == null) return null;
@@ -285,7 +288,7 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
 if (global.error === undefined)
 global.error = function(errormessage,status){
     errormessage.status = status;
-    console.trace(errormessage);
+    console.error(errormessage);
     throw errormessage;
 }
 
