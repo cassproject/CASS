@@ -4,7 +4,8 @@ let frameworkGet = async function(id){
             return EcFramework.get(
                 id,
                 function(f){resolve(f);},
-                function(error){reject(error);}
+                function(error){reject(error);},
+                repo
             );
         }
     );
@@ -28,7 +29,8 @@ let competencyGet = async function(id){
             return EcCompetency.get(
                 id,
                 function(f){resolve(f);},
-                function(error){reject(error);}
+                function(error){reject(error);},
+                repo
             );
         }
     );
@@ -39,7 +41,8 @@ let repositoryGet = async function(id){
             return EcRepository.get(
                 id,
                 function(f){resolve(f);},
-                function(error){reject(error);}
+                function(error){reject(error);},
+                repo
             );
         }
     );
@@ -64,7 +67,8 @@ let alignmentGet = async function(id){
             return EcAlignment.get(
                 id,
                 function(f){resolve(f);},
-                function(error){reject(error);}
+                function(error){reject(error);},
+                repo
             );
         }
     );
@@ -76,7 +80,8 @@ let conceptGet = async function(id){
             return EcConcept.get(
                 id,
                 function(f){resolve(f);},
-                function(error){reject(error);}
+                function(error){reject(error);},
+                repo
             );
         }
     );

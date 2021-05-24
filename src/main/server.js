@@ -23,6 +23,8 @@ require("cassproject");
 const fs = require('fs');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
 const app = global.app = express();
+const cors = require('cors');
+app.use(cors());
 const port = process.env.PORT || 80;
 require("./server/websocket.js");
 
@@ -48,23 +50,19 @@ require('./server/skyRepo.js');
 require('./server/skyId.js');
 
 require("./server/adapter/asn/asn.js");
-//Tests remaining: CASE Validation suite
 require("./server/adapter/case/caseAdapter.js");
-//Tests remaining: CASE Export
 require("./server/adapter/case/caseIngest.js");
-//Tests remaining: Export complex frameworks, import frameworks, import concept schemes
 require("./server/adapter/ceasn/ceasn.js");
 //Tests remaining: Import concept schemes
 require("./server/adapter/jsonLd/jsonLd.js");
 require("./server/adapter/openbadges/openbadges.js");
 require("./server/adapter/xapi/xapi.js");
+require("./server/adapter/replicate/replicate.js");
 
 skyrepoMigrate(function(){
     app.listen(port, async () => {    
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
         console.log(`CaSS listening at http://localhost:${port}${baseUrl}`);
-        // let result = await httpGet('http://localhost/api/badge/assertion/e846b68a-f48f-48ff-bb36-c9f94bd7a3bc');
-        // console.log("tests");
-        // console.log(JSON.stringify(result,null,2));
+        global.replicate();
     });
 });
