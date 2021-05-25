@@ -4,7 +4,7 @@ VOLUME /usr/share/elasticsearch/data
 RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
 RUN yum install -y nodejs git
 
-ENV CASS_VERSION=0.5
+ARG CASS_VERSION=0.5
 RUN git clone --recurse-submodules -b ${CASS_VERSION} https://github.com/cassproject/CASS && \
 cd CASS && \
 npm install
