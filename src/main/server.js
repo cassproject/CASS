@@ -17,7 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
+let startupDt = new Date();
 const express = require('express');
 require("cassproject");
 const fs = require('fs');
@@ -64,5 +64,6 @@ skyrepoMigrate(function(){
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
         console.log(`CaSS listening at http://localhost:${port}${baseUrl}`);
         global.replicate();
+        console.log("Startup time " + (new Date().getTime() - startupDt.getTime()) + " ms");
     });
 });

@@ -50,6 +50,37 @@ To support open linked data, it is important that the objects created in CaSS ha
  * (Optional) Use a reverse proxy to control the endpoint closely.
 
 # Running Locally
-After cloning this repository (ensure you use git clone with --recurse-submodules!), you can run CaSS locally with Jetty or Docker:
+After cloning this repository (ensure you use git clone with --recurse-submodules!), you can run CaSS locally.
 
-    npm test
+Dependencies: Docker (will pull and run elasticsearch on port 9200)
+
+## Getting things up and running
+
+ * `git clone --recurse-submodules -b <branch> https://github.com/cassproject/CASS` - Get the code.
+ * `npm i` - Install dependencies.
+ * `npm run dev` - Starts server, restarts server on-save.
+
+## In a separate command line, if you want unit tests:
+
+ * `npm run automocha` - Runs both cass-npm and cass unit tests, runs them again on-save.
+ * `npm run automochafast` - Runs cass unit tests, runs them again on-save.
+ * `npm run mocha` - Runs cass-npm and cass unit tests.
+ * `npm run mochafast` - Runs cass unit tests.
+
+## Generating documentation
+Will be deposited in `/docs`
+
+ * `npm run docs`
+
+## Running in myriad environments (requires Docker)
+
+Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWindows, standalone, testReplication
+ * `npm run buildRun:<flavor>` - Wipes previous test container, builds and starts flavor container.
+ * `npm run buildRun:kill` - Stops the running container.
+
+## Running it like it's in prod
+
+ * `npm run run` - Starts PM2 on localhost:8080/cass (used by cassInstall.sh)
+ * `npm run run:standalone` - Starts PM2 on localhost/ (used by Docker installs)
+ * `npm run logs` - Tails logs.
+ * `npm run stop` - Stops all PM2 services.
