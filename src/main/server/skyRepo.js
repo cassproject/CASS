@@ -151,7 +151,7 @@ var filterResults = async function(o) {
             try {
                 result = await (filterResults).call(this, ary[i], null);
             }catch (ex) {
-                if (ex.getMessage() != "Signature Violation") 
+                if (ex != null && ex.toString().indexOf("Signature Violation") != -1)
                      throw ex;
             }
             if (result == null) {

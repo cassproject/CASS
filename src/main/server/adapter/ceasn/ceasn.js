@@ -697,7 +697,7 @@ async function cassConceptSchemeAsCeasn(framework) {
 
 function createEachRelation(e, field, type, repo, ceo, id, cassRelations, toSave, i) {
     var r = new EcAlignment();
-    r.generateId(repo.selectedServer);
+    r.generateId(process.env.CASS_EXTERNAL_ENDPOINT || repo.selectedServer);
     if (ceo != null)
         r.addOwner(ceo.ppk.toPk());
     if (id != null)

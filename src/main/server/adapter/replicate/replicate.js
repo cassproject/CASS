@@ -40,6 +40,13 @@ global.replicate = async function(last){
         },
         null,null,null,meIm
     ).catch(console.error);
+    if (data == null)
+    {
+        console.log("Failed to retrieve data. Resetting window and waiting a little bit.");
+        sizeWindow = 100;
+        setTimeout(replicate,10000);
+        return;
+    }
     console.log(data.length);
     let latest = replicateConfig().lastReplicated;
     for (let datum of data)
@@ -58,7 +65,7 @@ global.replicate = async function(last){
     } 
     console.log(new Date(latest));
     data = data.filter((x)=>x);
-    if (data == null || data.length == 0 || JSON.stringify(data) == JSON.stringify(last) && sizeWindow == 10000)
+    if (data == null || data.length == 0 && sizeWindow == 10000 || JSON.stringify(data) == JSON.stringify(last) && sizeWindow == 10000)
     {
         console.log("Completed initial replication. Installing websocket.");
         connectWebsocket();
