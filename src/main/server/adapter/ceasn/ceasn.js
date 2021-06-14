@@ -191,7 +191,7 @@ async function cassFrameworkAsCeasn() {
                 else
                     competencies[r.source]["ceasn:exactAlignment"].push(ceasnExportUriTransform(r.target));
         }
-        if (r.relationType == Relation.IS_RELATED_TO) {
+        if (r.relationType == "minorRelated") {
             EcArray.setRemove(f.competency, r.source);
             if (competencies[r.target] != null)
                 if (competencies[r.target]["ceasn:minorAlignment"] == null)
