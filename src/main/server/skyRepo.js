@@ -921,6 +921,7 @@ var endpointMultiPut = async function() {
                 console.log(JSON.stringify(result));
             permanentCreated = true;
         }
+        await ((signatureSheet).call(this));
         var me = this;
         let forEachResults = await Promise.all(ary.map((hit)=>{return endpointMultiPutEach.call({ctx:this.ctx,dataStreams:this.dataStreams,params:{obj:hit}})}));
         for (var i = 0; i < forEachResults.length; i++) 
