@@ -128,33 +128,39 @@ global.bindWebService = function(endpoint,callback){
             put: function(field,value){ctx[field] = value;}
         }
         let ms = new Date().getTime();
-        new formidable.IncomingForm().parse(req, async (err, fields, files) => {
-            try{
-                ctx.req = req;
-                ctx.res = res;
-                req.query.methodType = "POST";
-                req.query.urlRemainder = req.params[0];
-                console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)));
-                var result = await callback.call({
-                    ctx:ctx,
-                    params: req.query,
-                    dataStreams: fields
-                });
-                if (typeof(result) == "string")
-                {
-                    res.end(result);
-                }
-                else
-                    res.end(); 
-            }
-            catch (ex)
-            {
-                if (ex.status !== undefined && ex.status != null)
-                    res.status(ex.status);
-                else
-                    res.status(500);
-                res.end(ex+"");
+        new formidable.IncomingForm({maxFieldsSize:30000000}).parse(req, async (err, fields, files) => {
+            if (err) {
+                res.status(500);
+                res.end(err);
                 console.trace(ex);
+            } else {
+                try{
+                    ctx.req = req;
+                    ctx.res = res;
+                    req.query.methodType = "POST";
+                    req.query.urlRemainder = req.params[0];
+                    console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)));
+                    var result = await callback.call({
+                        ctx:ctx,
+                        params: req.query,
+                        dataStreams: fields
+                    });
+                    if (typeof(result) == "string")
+                    {
+                        res.end(result);
+                    }
+                    else
+                        res.end(); 
+                }
+                catch (ex)
+                {
+                    if (ex.status !== undefined && ex.status != null)
+                        res.status(ex.status);
+                    else
+                        res.status(500);
+                    res.end(ex+"");
+                    console.trace(ex);
+                }
             }
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
         })
