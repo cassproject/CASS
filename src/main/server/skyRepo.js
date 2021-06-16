@@ -904,6 +904,23 @@ var endpointMultiPut = async function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
     var results = new Array();
     if (ary != null) {
+        // The following is also in skyrepoPutInternalPermanent. Adding it here avoids trying to create the permanent index for each object in multiput.
+        if (permanentCreated != true) {
+            var mappings = {};
+            var permNoIndex = {};
+            var doc = {};
+            (mappings)["mappings"] = permNoIndex;
+            
+            if (elasticSearchVersion().startsWith("7.")) 
+                permNoIndex.enabled = false;
+            else
+                (permNoIndex)["permanent"] = doc;
+            (doc)["enabled"] = false;
+            var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
+            if (skyrepoDebug) 
+                console.log(JSON.stringify(result));
+            permanentCreated = true;
+        }
         var me = this;
         let forEachResults = await Promise.all(ary.map((hit)=>{return endpointMultiPutEach.call({ctx:this.ctx,dataStreams:this.dataStreams,params:{obj:hit}})}));
         for (var i = 0; i < forEachResults.length; i++) 
