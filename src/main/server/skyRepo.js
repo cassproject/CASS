@@ -1,5 +1,3 @@
-
-
 const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
 const fs = require('fs');
 var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
@@ -388,7 +386,11 @@ var skyrepoPutInternalIndex = async function(o, id, version, type) {
     }
     if (skyrepoDebug) 
         console.log(JSON.stringify(o));
-    return await httpPost(o, url, "application/json", false, null, null, true);
+    let response = null;
+    let failCount = 0;
+    while (response == null && failCount++ < 1000)
+        response = await httpPost(o, url, "application/json", false, null, null, true);
+    return response;
 };
 var permanentCreated = false;
 var skyrepoPutInternalPermanent = async function(o, id, version, type) {
@@ -411,14 +413,18 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
     var data = {};
     (data)["data"] = JSON.stringify(o);
     var url = putPermanentBaseUrl.call(this,o, id, version, type);
-    var out = await httpPost(data, url, "application/json", false, null, null, true);
+    let results = null;
+    let failCount = 0;
+    while (results == null && failCount++ < 1000)
+        results = await httpPost(data, url, "application/json", false, null, null, true);
     if (version != null) {
-        url = putPermanentUrl.call(this,o, id, version, type);
-        out = await httpPost(data, url, "application/json", false, null, null, true);
+        while (results == null && failCount++ < 1000)
+            results = putPermanentUrl.call(this,o, id, version, type);
+        results = await httpPost(data, url, "application/json", false, null, null, true);
     }
     if (skyrepoDebug) 
-        console.log(JSON.stringify(out));
-    return JSON.stringify(out);
+        console.log(JSON.stringify(results));
+    return JSON.stringify(results);
 };
 var skyrepoPutInternal = async function(o, id, version, type, oldObj) {
     if (oldObj != null) {
@@ -452,8 +458,11 @@ var skyrepoPutInternal = async function(o, id, version, type, oldObj) {
 var skyrepoGetIndexInternal = async function(index, id, version, type) {
     if (skyrepoDebug) 
         console.log("Fetching from " + index + " : " + type + " / " + id + " / " + version);
-    var result = await httpGet(getUrl.call(this,index, id, version, type), true);
-    return result;
+    let response = null;
+    let failCount = 0;
+    while (response == null && failCount++ < 1000)
+        response = await httpGet(getUrl.call(this,index, id, version, type), true);
+    return response;
 };
 var skyrepoGetIndex = async function(id, version, type) {
     if (type !== undefined && type != null && type != "") {
@@ -461,7 +470,10 @@ var skyrepoGetIndex = async function(id, version, type) {
         return result;
     } else {
         var microSearchUrl = elasticEndpoint + "/_search?version&q=_id:" + id + "";
-        var microSearch = await httpGet(microSearchUrl, true);
+        let microSearch = null;
+        let failCount = 0;
+        while (microSearch == null && failCount++ < 1000)
+            microSearch = await httpGet(microSearchUrl, true);
         if (skyrepoDebug) 
             console.log(microSearchUrl);
         if (microSearch == null) 
@@ -667,7 +679,11 @@ var skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_sco
     var searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
     if (skyrepoDebug) 
         console.log(JSON.stringify(searchParameters));
-    var results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), "application/json", false, null, null, true);
+    let results = null;
+    let failCount = 0;
+    while (results == null && failCount++ < 1000)
+        results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), "application/json", false, null, null, true);
+    
     if (skyrepoDebug) 
         console.log(JSON.stringify(results));
     if ((results)["error"] != null) {
@@ -696,12 +712,29 @@ var skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_sco
         hits[i] = hit;
     }
     var me = this;
-    searchResults = await Promise.all(hits.map(function(hit){return endpointSingleGet.call({ctx:me.ctx,params:{obj:hit}})}));
+    searchResults = [];
+    while (hits.length > 0)
+    {
+        console.log(hits.length + " left");
+        while (fetching > 100)
+            await new Promise(resolve => setTimeout(resolve, 100));
+        let myhits = hits.splice(0,100);
+        let myhitsLength = myhits.length;
+        fetching += myhitsLength;
+        try
+        {
+            searchResults = searchResults.concat(await Promise.all(myhits.map(function(hit){return endpointSingleGet.call({ctx:me.ctx,params:{obj:hit}})})));
+        }
+        finally{
+            fetching -= myhitsLength;
+        }
+    }
     for (var i = 0;i < searchResults.length;i++)
         if (searchResults[i] == null)
             searchResults.splice(i--,1);
     return searchResults;
 };
+let fetching = 0;
 global.queryParse = function(urlRemainder) {
     if (urlRemainder == null && this.params.urlRemainder != null) 
         urlRemainder = this.params.urlRemainder;
@@ -853,7 +886,10 @@ var endpointMultiGet = async function() {
         (p)["_id"] = id + "." + (version == null ? "" : version); 
         docs.push(p);
     }
-    var response = await httpPost(mget, elasticEndpoint + "/_mget", "application/json", false, null, null, true);
+    let response = null;
+    let failCount = 0;
+    while (response == null && failCount++ < 1000)
+        response = await httpPost(mget, elasticEndpoint + "/_mget", "application/json", false, null, null, true);
     var resultDocs = (response)["docs"];
     var results = new Array();
     if (resultDocs != null) {
@@ -948,6 +984,18 @@ var endpointSingleGet = async function() {
         return o;
     return null;
 };
+var endpointManyGet = async function(){
+    var manyParseParams = [];
+    for (let urlRemainder of this.param.objs)
+    {
+        var parseParams = (queryParse).call(this, urlRemainder, null);
+        manyParseParams.push(parseParams);
+    }    
+    var o = await (skyrepoManyGetParsed).call(this, manyParseParams);
+    if (o != null) 
+        return o;
+    return null;
+} 
 var skyRepoSearch = async function() {
     var q = this.params.q;
     var urlRemainder = this.params.urlRemainder;

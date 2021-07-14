@@ -12,7 +12,10 @@ module.exports = {
             "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
             "PORT": "8080",
             "CASS_BASE": "/cass"
-          }
+          },
+          args: [
+            "--max_old_space_size=512"
+          ]
         }
     ]
   }

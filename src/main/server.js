@@ -59,11 +59,16 @@ require("./server/adapter/openbadges/openbadges.js");
 require("./server/adapter/xapi/xapi.js");
 require("./server/adapter/replicate/replicate.js");
 
+let v8 = require("v8");
+
 skyrepoMigrate(function(){
     app.listen(port, async () => {    
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
         console.log(`CaSS listening at http://localhost:${port}${baseUrl}`);
         global.replicate();
         console.log("Startup time " + (new Date().getTime() - startupDt.getTime()) + " ms");
+        let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
+        console.log(`Total Heap Size ${totalHeapSizeInGB}GB`);
+
     });
 });
