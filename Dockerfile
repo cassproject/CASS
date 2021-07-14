@@ -1,6 +1,7 @@
 FROM node:16
 WORKDIR /app
 COPY package*.json ./
+COPY pm2.config.js ./
 RUN npm install
 COPY src src
-CMD [ "npm", "run", "run" ]
+CMD npm run run && npm run logs
