@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -65,14 +65,16 @@
   "dependencies": {
     "@entryscape/rdfjson": "^2.3.0",
     "axios": "^0.21.1",
-    "cassproject": "0.5.15",
+    "cassproject": "0.5.18",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
     "formidable": "^1.2.2",
     "pure-uuid": "^1.6.2",
     "rdflib": "^2.2.0",
-    "ws": "^7.4.4"
+    "ws": "^7.4.4",
+    "yuidoc-ember-cli-theme": "^1.0.4",
+    "yuidocjs": "^0.10.2"
   },
   "devDependencies": {
     "chai": "^4.3.4",

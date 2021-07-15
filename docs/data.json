@@ -2,18 +2,11 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "0.5.1",
+        "version": "0.5.2",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
     "files": {
-        "node_modules\\cassproject\\cypress\\plugins\\index.js": {
-            "name": "node_modules\\cassproject\\cypress\\plugins\\index.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "node_modules\\cassproject\\src\\com\\eduworks\\ec\\array\\EcArray.js": {
             "name": "node_modules\\cassproject\\src\\com\\eduworks\\ec\\array\\EcArray.js",
             "modules": {},
@@ -9472,13 +9465,6 @@
             "classes": {
                 "OrderedCollection": 1
             },
-            "fors": {},
-            "namespaces": {}
-        },
-        "node_modules\\cassproject\\.eslintrc.js": {
-            "name": "node_modules\\cassproject\\.eslintrc.js",
-            "modules": {},
-            "classes": {},
             "fors": {},
             "namespaces": {}
         }
@@ -26111,12 +26097,6 @@
     },
     "elements": {},
     "classitems": [
-        {
-            "file": "node_modules\\cassproject\\cypress\\plugins\\index.js",
-            "line": 15,
-            "type": "{Cypress.PluginConfig}",
-            "class": "EcArray"
-        },
         {
             "file": "node_modules\\cassproject\\src\\com\\eduworks\\ec\\array\\EcArray.js",
             "line": 11,
@@ -77491,30 +77471,6 @@
             "type": "List",
             "class": "OrderedCollection",
             "module": "org.w3.skos"
-        },
-        {
-            "file": "node_modules\\cassproject\\.eslintrc.js",
-            "line": 63,
-            "class": "",
-            "module": "org.w3.skos"
-        },
-        {
-            "file": "node_modules\\cassproject\\.eslintrc.js",
-            "line": 154,
-            "class": "",
-            "module": "org.w3.skos"
-        },
-        {
-            "file": "node_modules\\cassproject\\.eslintrc.js",
-            "line": 157,
-            "class": "",
-            "module": "org.w3.skos"
-        },
-        {
-            "file": "node_modules\\cassproject\\.eslintrc.js",
-            "line": 189,
-            "class": "",
-            "module": "org.w3.skos"
         }
     ],
     "warnings": [
@@ -78521,10 +78477,6 @@
         {
             "message": "unknown tag: memberof",
             "line": " node_modules\\cassproject\\src\\org\\w3\\skos\\EcConceptScheme.js:53"
-        },
-        {
-            "message": "Missing item type",
-            "line": " node_modules\\cassproject\\cypress\\plugins\\index.js:15"
         },
         {
             "message": "Missing item type\nHelper method to populate the graph with assertion data, based on propagation rules implicit in the relations (see devs.cassproject.org, Relations). Does not draw conclusions. Must be able to decrypt 'negative' value.",
@@ -83097,22 +83049,6 @@
         {
             "message": "Missing item type\nConstructor, automatically sets @context and @type.",
             "line": " node_modules\\cassproject\\src\\org\\w3\\skos\\OrderedCollection.js:11"
-        },
-        {
-            "message": "Missing item type",
-            "line": " node_modules\\cassproject\\.eslintrc.js:63"
-        },
-        {
-            "message": "Missing item type",
-            "line": " node_modules\\cassproject\\.eslintrc.js:154"
-        },
-        {
-            "message": "Missing item type",
-            "line": " node_modules\\cassproject\\.eslintrc.js:157"
-        },
-        {
-            "message": "Missing item type",
-            "line": " node_modules\\cassproject\\.eslintrc.js:189"
         }
     ]
 }
