@@ -27,6 +27,7 @@ describe("SkyID Adapter", function() {
     this.timeout(30000);
     let username = EcAes.newIv(6);
     let password = EcAes.newSecret(6);
+    let newPassword = EcAes.newSecret(6);
     let name = "Test User";
     let email = username + "@test.cassproject.org";
     let ident = null;
@@ -53,16 +54,15 @@ describe("SkyID Adapter", function() {
         rld.startLogin(username,password);
         let im = await rld.fetch();
         assert.equal(im.ids[0].ppk.toPem(),ident.ppk.toPem());
-        let newPassword = EcAes.newSecret(6);
         rld.changePassword(username,password,newPassword);
-        rld.commit(null,null,im);
+        await rld.commit(null,null,im);
     }).timeout(1000);
     
     it('load user', async () => {
         let rld = new EcRemoteIdentityManager();
         rld.server = "http://localhost/api/";
         await rld.configureFromServer(null,null);
-        rld.startLogin(username,password);
+        rld.startLogin(username,newPassword);
         let im = await rld.fetch();
         assert.equal(im.ids[0].ppk.toPem(),ident.ppk.toPem());
     }).timeout(1000);
