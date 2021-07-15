@@ -187,28 +187,38 @@ global.headers = function(){return this.ctx.req.headers}
 
 if (global.httpGet === undefined)
 global.httpGet = async function(url)
-{    
-    try {
-        const response = await axios.get(url)
-        if (skyrepoDebug) console.log("get success: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        var resp = null;
-        if (error != null)
-            if (error.data != null)
-                resp = error.data;
-        if (skyrepoDebug) console.trace("get error" + error);
-        if (skyrepoDebug) console.error(url);
-        if (skyrepoDebug) {if (resp != null)
-            console.error(resp);
-        else
-            if (error.response !== undefined && error.response.statusText !== undefined)
-                console.error(error.response.statusText); 
+{
+    let failCounter = 0;
+    while(failCounter < 1000)
+    {
+        try {
+            const response = await axios.get(url)
+            if (skyrepoDebug) console.log("get success: " + JSON.stringify(response.data));
+            return response.data;
+        } catch (error) {
+            var resp = null;
+            if (error != null)
+                if (error.data != null)
+                    resp = error.data;
+            if (skyrepoDebug) console.trace("get error: " + error);
+            if (skyrepoDebug) console.error(url);
+            if (skyrepoDebug) {
+                if (resp != null)
+                    console.error(resp);
+                else
+                    if (error.response !== undefined && error.response.statusText !== undefined)
+                        console.error(error.response.statusText); 
+                    else
+                        console.error(error.code);
+                console.error(resp);
+            }
+            if (error.response.status == 404 || error.response.status == 400)
+                return resp;
+            else if (error.response.status == 429)
+                ;
             else
-                console.error(error.code);
-            console.error(resp);
+                console.log(error);
         }
-        return resp;
     }
 }
 
@@ -265,29 +275,42 @@ global.httpPut = async function(data,url,contentType)
 
 if (global.httpPost === undefined)
 global.httpPost = async function(data, url, contentType, multipart,something,something2,simple){
-    try {
-        const response = await axios.post(url,data,{
-            headers: {
-                'Content-Type':contentType
+    let failCounter = 0;
+    while(failCounter < 1000)
+    {
+        try {
+            const response = await axios.post(url,data,{
+                headers: {
+                    'Content-Type':contentType
+                }
+            })
+            if (skyrepoDebug) console.log("post success: " + JSON.stringify(response.data));
+            return response.data;
+        } catch (error) {
+            var resp = null;
+            if (error != null)
+                if (error.data != null)
+                    resp = error.data;
+            if (skyrepoDebug) 
+                console.trace("post error: " +error.response.status + ": "+ error.response.statusText);
+            if (skyrepoDebug) 
+                console.error(url);
+            if (skyrepoDebug) 
+                if (resp != null)
+                    console.error(resp);
+                else
+                    console.error(error.response.statusText);
+            if (error.response.status == 404 || error.response.status == 409 || error.response.status == 400)
+            {
+                console.log(error.response);
+                console.log(error.responseText);
+                return resp;
             }
-        })
-        if (skyrepoDebug) console.log("post success: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        var resp = null;
-        if (error != null)
-            if (error.data != null)
-                resp = error.data;
-        if (skyrepoDebug) 
-            console.trace("post error: " +error.response.status + ": "+ error.response.statusText);
-        if (skyrepoDebug) 
-            console.error(url);
-        if (skyrepoDebug) 
-            if (resp != null)
-                console.error(resp);
+            else if (error.response.status == 429)
+                ;
             else
-                console.error(error.response.statusText);
-        return resp;
+                console.log(error);
+        }
     }
 }
 
@@ -369,7 +392,8 @@ global.jsonLdToRdfXml = function(o){
 require('module').Module._extensions['.js'] = function (module, filename) { 
   module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
 };
-const rdfjson = require('@entryscape/rdfjson')
+const rdfjson = require('@entryscape/rdfjson');
+const { response } = require('express');
 if (global.jsonLdToRdfJson === undefined)
 global.jsonLdToRdfJson = async function(o){
     let rdfxml = await jsonLdToRdfXml(o);
