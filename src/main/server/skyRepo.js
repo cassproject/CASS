@@ -1058,7 +1058,9 @@ var endpointManyGet = async function(){
     {
         var parseParams = (queryParse).call(this, urlRemainder, null);
         manyParseParams.push(parseParams);
-    }    
+    }
+    if (manyParseParams.length == 0)
+        return [];
     var o = await (skyrepoManyGetParsed).call(this, manyParseParams);
     if (o != null) 
         return o;

@@ -188,7 +188,8 @@ global.headers = function(){return this.ctx.req.headers}
 if (global.httpGet === undefined)
 global.httpGet = async function(url)
 {
-    while(true)
+    let failCounter = 0;
+    while(failCounter < 1000)
     {
         try {
             const response = await axios.get(url)
@@ -211,8 +212,10 @@ global.httpGet = async function(url)
                         console.error(error.code);
                 console.error(resp);
             }
-            if (error.response.status == 404)
+            if (error.response.status == 404 || error.response.status == 400)
                 return resp;
+            else if (error.response.status == 429)
+                ;
             else
                 console.log(error);
         }
@@ -272,8 +275,8 @@ global.httpPut = async function(data,url,contentType)
 
 if (global.httpPost === undefined)
 global.httpPost = async function(data, url, contentType, multipart,something,something2,simple){
-    
-    while(true)
+    let failCounter = 0;
+    while(failCounter < 1000)
     {
         try {
             const response = await axios.post(url,data,{
@@ -297,8 +300,14 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
                     console.error(resp);
                 else
                     console.error(error.response.statusText);
-            if (error.response.status == 404 || error.response.status == 409)
+            if (error.response.status == 404 || error.response.status == 409 || error.response.status == 400)
+            {
+                console.log(error.response);
+                console.log(error.responseText);
                 return resp;
+            }
+            else if (error.response.status == 429)
+                ;
             else
                 console.log(error);
         }
