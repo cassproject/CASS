@@ -39,7 +39,7 @@ services:
       - cluster.max_shards_per_node=3000
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms6g -Xmx6g"
     ports:
       - 9200:9200
     ulimits:

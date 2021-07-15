@@ -212,12 +212,15 @@ global.httpGet = async function(url)
                         console.error(error.code);
                 console.error(resp);
             }
-            if (error.response.status == 404 || error.response.status == 400)
-                return resp;
-            else if (error.response.status == 429)
-                ;
-            else
-                console.log(error);
+            if (error.response != null)
+            {
+                if (error.response.status == 404 || error.response.status == 400)
+                    return resp;
+                else if (error.response.status == 429)
+                    ;
+                else
+                    console.log(error);
+            }
         }
     }
 }
@@ -300,16 +303,20 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
                     console.error(resp);
                 else
                     console.error(error.response.statusText);
-            if (error.response.status == 404 || error.response.status == 409 || error.response.status == 400)
+                    
+            if (error.response != null)
             {
-                console.log(error.response);
-                console.log(error.responseText);
-                return resp;
+                if (error.response.status == 404 || error.response.status == 409 || error.response.status == 400)
+                {
+                    console.log(error.response);
+                    console.log(error.responseText);
+                    return resp;
+                }
+                else if (error.response.status == 429)
+                    ;
+                else
+                    console.log(error);
             }
-            else if (error.response.status == 429)
-                ;
-            else
-                console.log(error);
         }
     }
 }

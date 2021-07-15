@@ -15,7 +15,7 @@
     "test:logs": "pm2 logs --nostream --lines 1000",
     "dev": "npm run dev:deps && npm run dev:nodemon",
     "dev:deps": "docker-compose up -d elasticsearch",
-    "dev:nodemon": "nodemon --max-old-space-size=8192 --ignore etc src/main/server.js",
+    "dev:nodemon": "nodemon --max-old-space-size=512 --ignore etc src/main/server.js",
     "mocha": "wait-on http://localhost/api/ping && mocha --parallel node_modules/cassproject/src/**/*.test.js src/**/*.test.js",
     "mochafast": "wait-on http://localhost/api/ping && mocha src/**/*.test.js",
     "automocha": "nodemon --exec \"npm run mocha\"",
