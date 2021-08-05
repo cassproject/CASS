@@ -32,6 +32,7 @@ app.use(baseUrl,express.static('src/main/webapp/'));
 
 global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";
+repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
 global.skyrepoDebug = false;
@@ -65,10 +66,12 @@ skyrepoMigrate(function(){
     app.listen(port, async () => {    
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
         console.log(`CaSS listening at http://localhost:${port}${baseUrl}`);
+        console.log(`CaSS thinks it its endpoint is at ${repo.selectedServer}`);
+        if (repo.selectedServerProxy != null)
+            console.log(`CaSS talks to itself at ${repo.selectedServerProxy}`);
         global.replicate();
         console.log("Startup time " + (new Date().getTime() - startupDt.getTime()) + " ms");
         let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
         console.log(`Total Heap Size ${totalHeapSizeInGB}GB`);
-
     });
 });
