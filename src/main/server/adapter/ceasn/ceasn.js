@@ -1,5 +1,7 @@
 let loopback = require('../../shims/cassproject.js');
 
+const fsPromises = require('fs').promises;
+
 var asnContext = {
     "asn": "http://purl.org/asn/schema/core/",
     "asnPublicationStatus": "http://purl.org/asn/scheme/ASNPublicationStatus/",
@@ -960,8 +962,12 @@ async function ceasnFrameworkToCass() {
     var jsonLd, text;
 
     var data = fileFromDatastream.call(this, "data");
-    if (data === undefined || data == null) 
+    if (data === undefined || data == null) {
         data = fileFromDatastream.call(this, "file");
+        if (data) {
+            data = await fsPromises.readFile(data.path, {encoding: 'utf8'});
+        }
+    }
     text = fileToString(data);
     try {
         jsonLd = JSON.parse(text);
@@ -969,7 +975,8 @@ async function ceasnFrameworkToCass() {
         debug("Not json.");
         debug(e);
         debug(text);
-        jsonLd = rdfToJsonLd(text);
+        // rdfToJsonLd not defined anywhere
+        // jsonLd = rdfToJsonLd(text);
     }
 
     var frameworkObj = undefined;

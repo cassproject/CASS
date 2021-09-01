@@ -273,7 +273,7 @@ function fixScalars(jsonLd) {
 /**
  *
  */
-function importFrameworkToCass(frameworkObj, competencyList) {
+async function importFrameworkToCass(frameworkObj, competencyList) {
     var asnIdentity = new EcIdentity();
     asnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.asn.private"));
     asnIdentity.displayName = "ASN Server Identity";
@@ -334,9 +334,9 @@ function importFrameworkToCass(frameworkObj, competencyList) {
 
         newComp["@context"] = asnToCassCompetencyContext;
 
-        var expandedComp = jsonLdExpand(JSON.stringify(newComp));
+        var expandedComp = await jsonLdExpand(JSON.stringify(newComp));
 
-        var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
+        var compactedComp = await jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
 
         delete compactedComp["gemq:isChildOf"];
 
@@ -378,9 +378,9 @@ function importFrameworkToCass(frameworkObj, competencyList) {
 
         frameworkObj["@context"] = asnToCassFrameworkContext;
 
-        var expanded = jsonLdExpand(JSON.stringify(frameworkObj))[0];
+        var expanded = (await jsonLdExpand(JSON.stringify(frameworkObj)))[0];
 
-        var compacted = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
+        var compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
 
         delete compacted["gemq:hasChild"];
 
@@ -464,7 +464,10 @@ function asnFrameworkToCass() {
  * @param graph
  * @param context
  */
-function importJsonLdGraph(graph, context) {
+if (!global.importJsonLdGraph) {
+    global.importJsonLdGraph = importJsonLdGraph;
+}
+async function importJsonLdGraph(graph, context) {
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
     var skosIdentity = new EcIdentity();
@@ -478,6 +481,7 @@ function importJsonLdGraph(graph, context) {
 
     for (var idx in graph) {
         var graphObj = graph[idx];
+        var compacted;
 
         if (context != undefined) {
             if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json"
@@ -495,13 +499,12 @@ function importJsonLdGraph(graph, context) {
                 delete graphObj["dcterms:description"];
             }
 
-            var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
-            var compacted;
+            var expanded = (await jsonLdExpand(JSON.stringify(graphObj)))[0];
             if (graphObj["@type"].indexOf("Concept") != -1) {
-                compacted = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/skos/");
+                compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/skos/");
             }
             else {
-                compacted = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
+                compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
             }
         }
 

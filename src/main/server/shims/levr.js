@@ -135,6 +135,9 @@ global.bindWebService = function(endpoint,callback){
                 console.trace(ex);
             } else {
                 try{
+                    if (files && fields) {
+                        fields.file = files.file;
+                    }
                     ctx.req = req;
                     ctx.res = res;
                     req.query.methodType = "POST";

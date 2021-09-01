@@ -163,8 +163,8 @@ cfDocuments = async function (f) {
     f.context = "https://schema.cassproject.org/0.4/cass2case";
     if (f["schema:identifier"] == null)
         f["schema:identifier"] = guid;
-    f = jsonLdExpand(f.toJson());
-    var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f = await jsonLdExpand(f.toJson());
+    var f2 = await jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
@@ -231,8 +231,8 @@ cfItems = async function (f, fw) {
     if (f.toJson != null)
         f = f.toJson();
     f["@context"] = "https://schema.cassproject.org/0.4/cass2case";
-    f = jsonLdExpand(f);
-    var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f = await jsonLdExpand(f);
+    var f2 = await jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     if (f2.title != null)
@@ -279,8 +279,8 @@ cfItemAssociations = async function (f, fw) {
     var guid = f.getGuid();
     var shortId = f.shortId();
     f.context = "https://schema.cassproject.org/0.4/cass2case";
-    f = jsonLdExpand(f.toJson());
-    var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f = await jsonLdExpand(f.toJson());
+    var f2 = await jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
     f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;
     if (fw == null) {
         var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
