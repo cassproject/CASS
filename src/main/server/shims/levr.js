@@ -399,6 +399,26 @@ global.jsonLdToRdfXml = function(o){
     });
 }
 
+if (global.jsonLdToTurtle === undefined)
+global.jsonLdToTurtle = async function(o){
+    return (await toTurtleInternal(o));
+}
+
+toTurtleInternal = function(o) {
+    return new Promise(function(resolve,reject){
+        let store = $rdf.graph();
+        $rdf.parse(JSON.stringify(o), store, "whatever", 'application/ld+json',(err,str) => {
+            let result = ($rdf.serialize(null, str, '*', 'text/turtle'));
+            resolve(result);
+        });
+    });
+}
+
+if (global.jsonLdToNQuads === undefined)
+global.jsonLdToNQuads = async function(o){
+    return (await jsonld.toRDF(o, {format: 'application/n-quads'}));
+}
+
 //Shim to allow require of modules that are intended to be used to import.
 require('module').Module._extensions['.js'] = function (module, filename) { 
   module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
