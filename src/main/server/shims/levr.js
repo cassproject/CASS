@@ -392,9 +392,8 @@ const $rdf = require('rdflib');
 if (global.jsonLdToRdfXml === undefined)
 global.jsonLdToRdfXml = function(o){
     return new Promise(function(resolve,reject){
-        let uri = JSON.parse(o)["@id"];
         let store = $rdf.graph();
-        $rdf.parse(o, store, "whatever", 'application/ld+json',(err,str) => {
+        $rdf.parse(JSON.stringify(o), store, "whatever", 'application/ld+json',(err,str) => {
             resolve($rdf.serialize(null, str, '*', 'application/rdf+xml'));
         });
     });
@@ -409,9 +408,9 @@ const { response } = require('express');
 if (global.jsonLdToRdfJson === undefined)
 global.jsonLdToRdfJson = async function(o){
     let rdfxml = await jsonLdToRdfXml(o);
-      const { rdfxml2graph } = rdfjson.converters;
-      const graph = rdfxml2graph(rdfxml);
-      const jsonrdf = graph.exportRDFJSON();
-      return JSON.stringify(jsonrdf, null, 2);
+    const { rdfxml2graph } = rdfjson.converters;
+    const graph = rdfxml2graph(rdfxml);
+    const jsonrdf = graph.exportRDFJSON();
+    return JSON.stringify(jsonrdf, null, 2);
 }
 
