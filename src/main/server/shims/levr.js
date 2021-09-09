@@ -49,7 +49,7 @@ global.bindWebService = function(endpoint,callback){
                 res.status(ex.status);
             else
                 res.status(500);
-            res.end(ex+"");
+            res.end(ex.data ? ex.data : ex +"");
             console.trace(ex);
         }
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) GET " + JSON.stringify(req.query));
@@ -83,7 +83,7 @@ global.bindWebService = function(endpoint,callback){
                 res.status(ex.status);
             else
                 res.status(500);
-            res.end(ex+"");
+            res.end(ex.data ? ex.data : ex +"");
             console.trace(ex);
         }        
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
@@ -117,7 +117,7 @@ global.bindWebService = function(endpoint,callback){
                 res.status(ex.status);
             else
                 res.status(500);
-            res.end(ex+"");
+            res.end(ex.data ? ex.data : ex +"");
             console.trace(ex);
         }
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
@@ -161,7 +161,7 @@ global.bindWebService = function(endpoint,callback){
                         res.status(ex.status);
                     else
                         res.status(500);
-                    res.end(ex+"");
+                    res.end(ex.data ? ex.data : ex +"");
                     console.trace(ex);
                 }
             }
