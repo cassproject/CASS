@@ -326,9 +326,11 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
 
 if (global.error === undefined)
 global.error = function(errormessage,status){
-    errormessage.status = status;
-    console.error(errormessage);
-    throw errormessage;
+    let e = {};
+    e.data = errormessage;
+    e.status = status;
+    console.error(e);
+    throw e;
 }
 
 if (global.randomString === undefined)
