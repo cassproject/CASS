@@ -67,7 +67,7 @@
   "dependencies": {
     "@entryscape/rdfjson": "^2.3.0",
     "axios": "^0.21.1",
-    "cassproject": "0.5.19",
+    "cassproject": "0.5.22",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",

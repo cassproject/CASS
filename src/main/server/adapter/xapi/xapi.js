@@ -138,16 +138,16 @@ var xapiStatement = async function (s) {
         a.assignId(repo.selectedServer, EcCrypto.md5(s.id+alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
         a.addOwner(authorityPk);
-        a.setSubject(actorPk);
-        a.setAgent(authorityPk);
+        await a.setSubject(actorPk);
+        await a.setAgent(authorityPk);
         a.competency = alignedCompetencies[i].targetUrl;
         a.framework = alignedCompetencies[i].educationalFramework;
         if (alreadyAligned[a.competency + a.framework] == true)
             continue;
         alreadyAligned[a.competency + a.framework] = true;
-        a.setEvidence([JSON.stringify(s)]);
-        a.setAssertionDate(date(s.timestamp, null, true));
-        a.setNegative(negative);
+        await a.setEvidence([JSON.stringify(s)]);
+        await a.setAssertionDate(new Date(s.timestamp).getTime());
+        await a.setNegative(negative);
         a.confidence = scaled;
         EcRepository.save(a, console.log, console.error);
     }

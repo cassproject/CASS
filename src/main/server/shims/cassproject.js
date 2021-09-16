@@ -51,7 +51,6 @@ let repositorySearch = async function(repo,query,params){
     return new Promise(
         function(resolve,reject){
             return repo.searchWithParams(
-                repo,
                 query,
                 params,
                 function(f){},
