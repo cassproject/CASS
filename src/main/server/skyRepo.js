@@ -1,4 +1,5 @@
 const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
+const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
 const fs = require('fs');
 var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
@@ -150,7 +151,7 @@ var filterResults = async function(o) {
             try {
                 result = await (filterResults).call(this, ary[i], null);
             }catch (ex) {
-                if (ex != null && ex.toString().indexOf("Signature Violation") != -1)
+                if (ex != null && ex.toString().indexOf("Signature Violation") == -1)
                      throw ex;
             }
             if (result == null) {
@@ -172,7 +173,21 @@ var filterResults = async function(o) {
                     break;
                 }
             if (!foundSignature) 
-                 throw new RuntimeException("Signature Violation");
+                throw new RuntimeException("Signature Violation");
+            console.log("Something decryptable!");
+            if (this.ctx.req.eim != null)
+            {
+                console.log("We can decrypt it!");
+                try
+                {
+                    o = await EcEncryptedValue.fromEncryptedValue(rld,null,null,this.ctx.req.eim)
+                    o = JSON.parse(o.toJson());
+                    console.log("We decrypted it!");
+                }
+                catch (msg){
+                    console.log("We couldn't decrypt it, hope the client has better luck! -- " + msg);
+                }
+            }
         }
         var keys = EcObject.keys(o);
         for (var i = 0; i < keys.length; i++) {

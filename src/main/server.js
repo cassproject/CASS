@@ -24,14 +24,16 @@ const fs = require('fs');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
 const app = global.app = express();
 const cors = require('cors');
+const https = require('https');
 app.use(cors());
-const port = process.env.PORT || 80;
+const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
+const port = process.env.PORT || envHttps ? 443 : 80;
 require("./server/websocket.js");
 
 app.use(baseUrl,express.static('src/main/webapp/'));
 
 global.repo = new EcRepository();
-repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";
+repo.selectedServer = process.env.CASS_LOOPBACK || envHttps ? "https://localhost/api/" : "http://localhost/api";
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
@@ -63,9 +65,16 @@ require("./server/adapter/replicate/replicate.js");
 let v8 = require("v8");
 
 skyrepoMigrate(function(){
-    app.listen(port, async () => {    
+    var options = {
+        key: fs.readFileSync('cass.key'),
+        cert: fs.readFileSync('cass.crt'),
+        ca: global.ca = fs.readFileSync('ca.crt'), //client auth ca OR cert
+        requestCert: true,                   //new
+        rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false            //new
+    };
+    const after = async () => {    
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
-        console.log(`CaSS listening at http://localhost:${port}${baseUrl}`);
+        console.log(`CaSS listening at http${envHttps?'s':''}://localhost:${port}${baseUrl}`);
         console.log(`CaSS thinks it its endpoint is at ${repo.selectedServer}`);
         if (repo.selectedServerProxy != null)
             console.log(`CaSS talks to itself at ${repo.selectedServerProxy}`);
@@ -73,5 +82,12 @@ skyrepoMigrate(function(){
         console.log("Startup time " + (new Date().getTime() - startupDt.getTime()) + " ms");
         let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
         console.log(`Total Heap Size ${totalHeapSizeInGB}GB`);
-    });
+    };
+    if (envHttps)
+    {
+        https.createServer(options, app).listen(port, after);
+        https.globalAgent.options.rejectUnauthorized = false;
+    }
+    else
+        app.listen(port,after);
 });
