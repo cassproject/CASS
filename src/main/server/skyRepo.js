@@ -1,5 +1,6 @@
 const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
 const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
+const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/general/EcRemoteLinkedData');
 const fs = require('fs');
 var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
@@ -173,14 +174,16 @@ var filterResults = async function(o) {
                     break;
                 }
             if (!foundSignature) 
-                throw new RuntimeException("Signature Violation");
+                throw new Error("Signature Violation");
             console.log("Something decryptable!");
+            //Securing Proxy: Decrypt data that is 
             if (this.ctx.req.eim != null)
             {
                 console.log("We can decrypt it!");
                 try
                 {
                     o = await EcEncryptedValue.fromEncryptedValue(rld,null,null,this.ctx.req.eim)
+                    o["isEncrypted"] = true;
                     o = JSON.parse(o.toJson());
                     console.log("We decrypted it!");
                 }
@@ -443,6 +446,20 @@ var skyrepoPutInternal = async function(o, id, version, type, oldObj) {
             version = ((((perm)["_version"]) + 1));
         }
     }
+    //Securing Proxy: Sign data that is to be saved.
+    if (this.ctx.req.eim != null)
+    {
+        try
+        {
+            let erld = new EcRemoteLinkedData(null,null);
+            erld.copyFrom(o);
+            await this.ctx.req.eim.sign(erld);
+            o = JSON.parse(erld.toJson());
+        }
+        catch (msg){
+            console.trace(msg);
+        }
+    }
     var obj = await skyrepoPutInternalIndex.call(this,o, id, version, type);
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
@@ -650,6 +667,7 @@ var skyrepoManyGetParsed = async function(manyParseParams) {
     }catch (ex) {
         if (ex.toString().indexOf("Signature Violation") != -1) 
              throw ex;
+        console.trace(ex);
     }
     if (filtered == null) 
         return null;
@@ -1144,6 +1162,9 @@ var pingWithTime = function() {
     var o = {};
     (o)["ping"] = "pong";
     (o)["time"] = new Date().getTime();
+    //Securing Proxy: Return public key as part of init.
+    if (this.ctx.req.eim != null)
+        (o)["ssoPublicKey"] = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
     return JSON.stringify(o);
 };
 (function() {
