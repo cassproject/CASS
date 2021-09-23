@@ -90,15 +90,15 @@ var keyFor = function (filename) {
 }
 
 function repoAutoDetect() {
+    if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
+        elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
+
     if (java.lang.System.getenv("CASS_LOOPBACK") != null)
         repo.init(java.lang.System.getenv("CASS_LOOPBACK"),function(){
             console.log(EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
         },console.error);
     else
         repo.autoDetectRepository();
-
-    if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
-        elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
 
     console.log("Loopback: " + repo.selectedServer);
     console.log("Elasticsearch Endpoint: " + elasticEndpoint);
