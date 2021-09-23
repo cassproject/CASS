@@ -264,19 +264,6 @@
 							<overWriteSnapshots>true</overWriteSnapshots>
 						</configuration>
 					</execution>
-					<execution>
-						<id>unpack-js-server</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<includes>*skyrepo*.js</includes>
-							<outputDirectory>src/main/resources/b-skyrepo</outputDirectory>
-							<overWriteReleases>true</overWriteReleases>
-							<overWriteSnapshots>true</overWriteSnapshots>
-						</configuration>
-					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -288,13 +275,6 @@
 							<directory>src/main/js</directory>
 							<includes>
 								<include>**/*</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-						<fileset>
-							<directory>src/main/resources/b-skyrepo</directory>
-							<includes>
-								<include>*</include>
 							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>

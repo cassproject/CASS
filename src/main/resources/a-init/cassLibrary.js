@@ -88,13 +88,13 @@ var keyFor = function (filename) {
 }
 
 function repoAutoDetect() {
+    if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
+        elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
+
     if (java.lang.System.getenv("CASS_LOOPBACK") != null)
         repo.selectedServer = java.lang.System.getenv("CASS_LOOPBACK");
     else
         repo.autoDetectRepository();
-
-    if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
-        elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
 
     console.log("Loopback: " + repo.selectedServer);
     console.log("Elasticsearch Endpoint: " + elasticEndpoint);
