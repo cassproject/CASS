@@ -421,14 +421,14 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
     return JSON.stringify(results);
 };
 var skyrepoPutInternal = async function(o, id, version, type) {
-    //Securing Proxy: Sign data that is to be saved.
     let erld = new EcRemoteLinkedData(null,null);
     erld.copyFrom(o);
     if (erld.id != null)
     {
         var oldIndexRecords = await skyrepoGetIndexRecords(erld.shortId());
-        for (let oldIndexRecord of oldIndexRecords)
-            await skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
+        if (oldIndexRecords != null)
+            for (let oldIndexRecord of oldIndexRecords)
+                await skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
     }
     var obj = await skyrepoPutInternalIndex.call(this,o, id, version, type);
     if (skyrepoDebug) 
