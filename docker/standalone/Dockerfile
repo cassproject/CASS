@@ -1,8 +1,9 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
 
 VOLUME /usr/share/elasticsearch/data
+RUN yum clean all && yum update -y
 RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum install -y nodejs git
+RUN yum install -y nodejs-2:16.9.1-1nodesource.x86_64 git
 
 ARG CASS_VERSION=0.5
 RUN git clone --recurse-submodules -b ${CASS_VERSION} https://github.com/cassproject/CASS && \
