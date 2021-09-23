@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>BroadcastService Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Service.html" class="crosslink">Service</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l1"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l3"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1144,6 +1147,7 @@ A delivery service through which content is provided via broadcast over the air 
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -1151,11 +1155,1395 @@ A delivery service through which content is provided via broadcast over the air 
             <h2 class="off-left">Item Index</h2>
 
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_aggregateRating">aggregateRating</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_area">area</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_areaServed">areaServed</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_audience">audience</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_availableChannel">availableChannel</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_award">award</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_brand">brand</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_broadcastAffiliateOf">broadcastAffiliateOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_broadcastDisplayName">broadcastDisplayName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_broadcaster">broadcaster</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_broadcastFrequency">broadcastFrequency</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_broadcastTimezone">broadcastTimezone</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_broker">broker</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_callSign">callSign</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_category">category</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasBroadcastChannel">hasBroadcastChannel</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_hasOfferCatalog">hasOfferCatalog</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_hoursAvailable">hoursAvailable</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_inLanguage">inLanguage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_isRelatedTo">isRelatedTo</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_isSimilarTo">isSimilarTo</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_logo">logo</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_offers">offers</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_parentService">parentService</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_produces">produces</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_provider">provider</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_providerMobility">providerMobility</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_review">review</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_serviceArea">serviceArea</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_serviceAudience">serviceAudience</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_serviceOutput">serviceOutput</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_serviceType">serviceType</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_slogan">slogan</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_termsOfService">termsOfService</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_videoFormat">videoFormat</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
 
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_aggregateRating" class="property item inherited">
+    <h3 class="name"><code>aggregateRating</code></h3>
+    <span class="type"><a href="../classes/AggregateRating.html" class="crosslink">AggregateRating</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_aggregateRating">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l23"><code>node_modules\cassproject\src\org\schema\Service.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/aggregateRating
+The overall rating, based on a collection of reviews or ratings, of the item.
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
+    </div>
+
+
+
+</div>
+<div id="property_area" class="property item">
+    <h3 class="name"><code>area</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l77"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:77</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/area">Schema.org/area</a>
+The area within which users can expect to reach the broadcast service.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_areaServed" class="property item inherited">
+    <h3 class="name"><code>areaServed</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_areaServed">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l105"><code>node_modules\cassproject\src\org\schema\Service.js:105</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/areaServed
+The geographic area where a service or offered item is provided.
+    </div>
+
+
+
+</div>
+<div id="property_audience" class="property item inherited">
+    <h3 class="name"><code>audience</code></h3>
+    <span class="type"><a href="../classes/Audience.html" class="crosslink">Audience</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_audience">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l213"><code>node_modules\cassproject\src\org\schema\Service.js:213</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/audience
+An intended audience, i.e. a group for whom something was created.
+    </div>
+
+
+
+</div>
+<div id="property_availableChannel" class="property item inherited">
+    <h3 class="name"><code>availableChannel</code></h3>
+    <span class="type"><a href="../classes/ServiceChannel.html" class="crosslink">ServiceChannel</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_availableChannel">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l150"><code>node_modules\cassproject\src\org\schema\Service.js:150</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/availableChannel
+A means of accessing the service (e.g. a phone bank, a web site, a location, etc.).
+    </div>
+
+
+
+</div>
+<div id="property_award" class="property item inherited">
+    <h3 class="name"><code>award</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_award">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l78"><code>node_modules\cassproject\src\org\schema\Service.js:78</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/award
+An award won by or for this item.
+    </div>
+
+
+
+</div>
+<div id="property_brand" class="property item inherited">
+    <h3 class="name"><code>brand</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_brand">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l204"><code>node_modules\cassproject\src\org\schema\Service.js:204</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/brand
+The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.
+    </div>
+
+
+
+</div>
+<div id="property_broadcastAffiliateOf" class="property item">
+    <h3 class="name"><code>broadcastAffiliateOf</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l59"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:59</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/broadcastAffiliateOf">Schema.org/broadcastAffiliateOf</a>
+The media network(s) whose content is broadcast on this station.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_broadcastDisplayName" class="property item">
+    <h3 class="name"><code>broadcastDisplayName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l50"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/broadcastDisplayName">Schema.org/broadcastDisplayName</a>
+The name displayed in the channel guide. For many US affiliates, it is the network name.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_broadcaster" class="property item">
+    <h3 class="name"><code>broadcaster</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l86"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:86</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/broadcaster">Schema.org/broadcaster</a>
+The organization owning or operating the broadcast service.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_broadcastFrequency" class="property item">
+    <h3 class="name"><code>broadcastFrequency</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l23"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/broadcastFrequency">Schema.org/broadcastFrequency</a>
+The frequency used for over-the-air broadcasts. Numeric values or simple ranges e.g. 87-99. In addition a shortcut idiom is supported for frequences of AM and FM radio channels, e.g. "87 FM".</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_broadcastTimezone" class="property item">
+    <h3 class="name"><code>broadcastTimezone</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l68"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:68</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/broadcastTimezone">Schema.org/broadcastTimezone</a>
+The timezone in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> for which the service bases its broadcasts</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_broker" class="property item inherited">
+    <h3 class="name"><code>broker</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_broker">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l60"><code>node_modules\cassproject\src\org\schema\Service.js:60</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/broker
+An entity that arranges for an exchange between a buyer and a seller.  In most cases a broker never acquires or releases ownership of a product or service involved in an exchange.  If it is not clear whether an entity is a broker, seller, or buyer, the latter two terms are preferred.
+    </div>
+
+
+
+</div>
+<div id="property_callSign" class="property item">
+    <h3 class="name"><code>callSign</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l113"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:113</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/callSign">Schema.org/callSign</a>
+A <a href="https://en.wikipedia.org/wiki/Call_sign">callsign</a>, as used in broadcasting and radio communications to identify people, radio and TV stations, or vehicles.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_category" class="property item inherited">
+    <h3 class="name"><code>category</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_category">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l159"><code>node_modules\cassproject\src\org\schema\Service.js:159</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/category
+A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l30"><code>node_modules\cassproject\src\org\schema\Thing.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/description
+A description of the item.
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_hasBroadcastChannel" class="property item">
+    <h3 class="name"><code>hasBroadcastChannel</code></h3>
+    <span class="type"><a href="../classes/BroadcastChannel.html" class="crosslink">BroadcastChannel</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l104"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:104</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasBroadcastChannel">Schema.org/hasBroadcastChannel</a>
+A broadcast channel of a broadcast service.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasOfferCatalog" class="property item inherited">
+    <h3 class="name"><code>hasOfferCatalog</code></h3>
+    <span class="type"><a href="../classes/OfferCatalog.html" class="crosslink">OfferCatalog</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_hasOfferCatalog">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l123"><code>node_modules\cassproject\src\org\schema\Service.js:123</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/hasOfferCatalog
+Indicates an OfferCatalog listing for this Organization, Person, or Service.
+    </div>
+
+
+
+</div>
+<div id="property_hoursAvailable" class="property item inherited">
+    <h3 class="name"><code>hoursAvailable</code></h3>
+    <span class="type"><a href="../classes/OpeningHoursSpecification.html" class="crosslink">OpeningHoursSpecification</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_hoursAvailable">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l186"><code>node_modules\cassproject\src\org\schema\Service.js:186</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/hoursAvailable
+The hours during which this service or contact is available.
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l75"><code>node_modules\cassproject\src\org\schema\Thing.js:75</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+    </div>
+
+
+
+</div>
+<div id="property_inLanguage" class="property item">
+    <h3 class="name"><code>inLanguage</code></h3>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l95"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:95</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/inLanguage">Schema.org/inLanguage</a>
+The language of the content or performance or used in an action. Please use one of the language codes from the <a href="http://tools.ietf.org/html/bcp47">IETF BCP 47 standard</a>. See also [[availableLanguage]].</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isRelatedTo" class="property item inherited">
+    <h3 class="name"><code>isRelatedTo</code></h3>
+    <span class="type"><a href="../classes/Service.html" class="crosslink">Service</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_isRelatedTo">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l222"><code>node_modules\cassproject\src\org\schema\Service.js:222</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/isRelatedTo
+A pointer to another, somehow related product (or multiple products).
+    </div>
+
+
+
+</div>
+<div id="property_isSimilarTo" class="property item inherited">
+    <h3 class="name"><code>isSimilarTo</code></h3>
+    <span class="type"><a href="../classes/Service.html" class="crosslink">Service</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_isSimilarTo">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l41"><code>node_modules\cassproject\src\org\schema\Service.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/isSimilarTo
+A pointer to another, functionally similar product (or multiple products).
+    </div>
+
+
+
+</div>
+<div id="property_logo" class="property item inherited">
+    <h3 class="name"><code>logo</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_logo">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l141"><code>node_modules\cassproject\src\org\schema\Service.js:141</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/logo
+An associated logo.
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l94"><code>node_modules\cassproject\src\org\schema\Thing.js:94</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/name
+The name of the item.
+    </div>
+
+
+
+</div>
+<div id="property_offers" class="property item inherited">
+    <h3 class="name"><code>offers</code></h3>
+    <span class="type"><a href="../classes/Demand.html" class="crosslink">Demand</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_offers">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l50"><code>node_modules\cassproject\src\org\schema\Service.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/offers
+An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event. Use [[businessFunction]] to indicate the kind of transaction offered, i.e. sell, lease, etc. This property can also be used to describe a [[Demand]]. While this property is listed as expected on a number of common types, it can be used in others. In that case, using a second type, such as Product or a subtype of Product, can clarify the nature of the offer.
+    </div>
+
+
+
+</div>
+<div id="property_parentService" class="property item">
+    <h3 class="name"><code>parentService</code></h3>
+    <span class="type"><a href="../classes/BroadcastService.html" class="crosslink">BroadcastService</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l41"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/parentService">Schema.org/parentService</a>
+A broadcast service to which the broadcast service may belong to such as regional variations of a national channel.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_produces" class="property item inherited">
+    <h3 class="name"><code>produces</code></h3>
+    <span class="type"><a href="../classes/Thing.html" class="crosslink">Thing</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_produces">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l132"><code>node_modules\cassproject\src\org\schema\Service.js:132</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/produces
+The tangible thing generated by the service, e.g. a passport, permit, etc.
+    </div>
+
+
+
+</div>
+<div id="property_provider" class="property item inherited">
+    <h3 class="name"><code>provider</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_provider">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l87"><code>node_modules\cassproject\src\org\schema\Service.js:87</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/provider
+The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+    </div>
+
+
+
+</div>
+<div id="property_providerMobility" class="property item inherited">
+    <h3 class="name"><code>providerMobility</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_providerMobility">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l231"><code>node_modules\cassproject\src\org\schema\Service.js:231</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/providerMobility
+Indicates the mobility of a provided service (e.g. 'static', 'dynamic').
+    </div>
+
+
+
+</div>
+<div id="property_review" class="property item inherited">
+    <h3 class="name"><code>review</code></h3>
+    <span class="type"><a href="../classes/Review.html" class="crosslink">Review</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_review">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l96"><code>node_modules\cassproject\src\org\schema\Service.js:96</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/review
+A review of the item.
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l21"><code>node_modules\cassproject\src\org\schema\Thing.js:21</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+    </div>
+
+
+
+</div>
+<div id="property_serviceArea" class="property item inherited">
+    <h3 class="name"><code>serviceArea</code></h3>
+    <span class="type"><a href="../classes/GeoShape.html" class="crosslink">GeoShape</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_serviceArea">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l195"><code>node_modules\cassproject\src\org\schema\Service.js:195</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/serviceArea
+The geographic area where the service is provided.
+    </div>
+
+
+
+</div>
+<div id="property_serviceAudience" class="property item inherited">
+    <h3 class="name"><code>serviceAudience</code></h3>
+    <span class="type"><a href="../classes/Audience.html" class="crosslink">Audience</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_serviceAudience">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l114"><code>node_modules\cassproject\src\org\schema\Service.js:114</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/serviceAudience
+The audience eligible for this service.
+    </div>
+
+
+
+</div>
+<div id="property_serviceOutput" class="property item inherited">
+    <h3 class="name"><code>serviceOutput</code></h3>
+    <span class="type"><a href="../classes/Thing.html" class="crosslink">Thing</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_serviceOutput">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l32"><code>node_modules\cassproject\src\org\schema\Service.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/serviceOutput
+The tangible thing generated by the service, e.g. a passport, permit, etc.
+    </div>
+
+
+
+</div>
+<div id="property_serviceType" class="property item inherited">
+    <h3 class="name"><code>serviceType</code></h3>
+    <span class="type"><a href="../classes/GovernmentBenefitsType.html" class="crosslink">GovernmentBenefitsType</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_serviceType">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l168"><code>node_modules\cassproject\src\org\schema\Service.js:168</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/serviceType
+The type of service being offered, e.g. veterans' benefits, emergency relief, etc.
+    </div>
+
+
+
+</div>
+<div id="property_slogan" class="property item inherited">
+    <h3 class="name"><code>slogan</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_slogan">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l177"><code>node_modules\cassproject\src\org\schema\Service.js:177</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/slogan
+A slogan or motto associated with the item.
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
+<div id="property_termsOfService" class="property item inherited">
+    <h3 class="name"><code>termsOfService</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Service.html#property_termsOfService">Service</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Service.js.html#l69"><code>node_modules\cassproject\src\org\schema\Service.js:69</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/termsOfService
+Human-readable terms of service documentation.
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
+    </div>
+
+
+
+</div>
+<div id="property_videoFormat" class="property item">
+    <h3 class="name"><code>videoFormat</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_BroadcastService.js.html#l32"><code>node_modules\cassproject\src\org\schema\BroadcastService.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/videoFormat">Schema.org/videoFormat</a>
+The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).</p>
+
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

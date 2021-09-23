@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>Drug Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Substance.html" class="crosslink">Substance</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l1"><code>node_modules\cassproject\src\org\schema\Drug.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l3"><code>node_modules\cassproject\src\org\schema\Drug.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1144,6 +1147,7 @@ A chemical or biologic substance, used as a medical therapy, that has a physiolo
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -1151,11 +1155,1482 @@ A chemical or biologic substance, used as a medical therapy, that has a physiolo
             <h2 class="off-left">Item Index</h2>
 
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
+                                <a href="#property_activeIngredient">activeIngredient</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_administrationRoute">administrationRoute</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_alcoholWarning">alcoholWarning</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_availableStrength">availableStrength</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_breastfeedingWarning">breastfeedingWarning</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_clincalPharmacology">clincalPharmacology</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_clinicalPharmacology">clinicalPharmacology</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_code">code</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_dosageForm">dosageForm</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_doseSchedule">doseSchedule</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_drugClass">drugClass</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_drugUnit">drugUnit</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_foodWarning">foodWarning</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_guideline">guideline</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_includedInHealthInsurancePlan">includedInHealthInsurancePlan</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_interactingDrug">interactingDrug</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isAvailableGenerically">isAvailableGenerically</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isProprietary">isProprietary</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_labelDetails">labelDetails</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_legalStatus">legalStatus</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_manufacturer">manufacturer</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_maximumIntake">maximumIntake</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_mechanismOfAction">mechanismOfAction</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_medicineSystem">medicineSystem</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_nonProprietaryName">nonProprietaryName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_overdosage">overdosage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_pregnancyCategory">pregnancyCategory</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_pregnancyWarning">pregnancyWarning</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_prescribingInfo">prescribingInfo</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_prescriptionStatus">prescriptionStatus</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_proprietaryName">proprietaryName</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_recognizingAuthority">recognizingAuthority</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_relatedDrug">relatedDrug</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_relevantSpecialty">relevantSpecialty</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_rxcui">rxcui</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_study">study</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_warning">warning</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
 
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_activeIngredient" class="property item">
+    <h3 class="name"><code>activeIngredient</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/Substance.html#property_activeIngredient">
+                Substance
+            </a>
+            but overwritten in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l194"><code>node_modules\cassproject\src\org\schema\Drug.js:194</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/activeIngredient">Schema.org/activeIngredient</a>
+An active ingredient, typically chemical compounds and/or biologic substances.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_administrationRoute" class="property item">
+    <h3 class="name"><code>administrationRoute</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l203"><code>node_modules\cassproject\src\org\schema\Drug.js:203</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/administrationRoute">Schema.org/administrationRoute</a>
+A route by which this drug may be administered, e.g. 'oral'.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_alcoholWarning" class="property item">
+    <h3 class="name"><code>alcoholWarning</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l221"><code>node_modules\cassproject\src\org\schema\Drug.js:221</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/alcoholWarning">Schema.org/alcoholWarning</a>
+Any precaution, guidance, contraindication, etc. related to consumption of alcohol while taking this drug.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
+    </div>
+
+
+
+</div>
+<div id="property_availableStrength" class="property item">
+    <h3 class="name"><code>availableStrength</code></h3>
+    <span class="type"><a href="../classes/DrugStrength.html" class="crosslink">DrugStrength</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l266"><code>node_modules\cassproject\src\org\schema\Drug.js:266</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/availableStrength">Schema.org/availableStrength</a>
+An available dosage strength for the drug.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_breastfeedingWarning" class="property item">
+    <h3 class="name"><code>breastfeedingWarning</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l104"><code>node_modules\cassproject\src\org\schema\Drug.js:104</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/breastfeedingWarning">Schema.org/breastfeedingWarning</a>
+Any precaution, guidance, contraindication, etc. related to this drug's use by breastfeeding mothers.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_clincalPharmacology" class="property item">
+    <h3 class="name"><code>clincalPharmacology</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l149"><code>node_modules\cassproject\src\org\schema\Drug.js:149</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/clincalPharmacology">Schema.org/clincalPharmacology</a>
+Description of the absorption and elimination of drugs, including their concentration (pharmacokinetics, pK) and biological effects (pharmacodynamics, pD).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_clinicalPharmacology" class="property item">
+    <h3 class="name"><code>clinicalPharmacology</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l77"><code>node_modules\cassproject\src\org\schema\Drug.js:77</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/clinicalPharmacology">Schema.org/clinicalPharmacology</a>
+Description of the absorption and elimination of drugs, including their concentration (pharmacokinetics, pK) and biological effects (pharmacodynamics, pD).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_code" class="property item inherited">
+    <h3 class="name"><code>code</code></h3>
+    <span class="type"><a href="../classes/MedicalCode.html" class="crosslink">MedicalCode</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/MedicalEntity.html#property_code">MedicalEntity</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_MedicalEntity.js.html#l50"><code>node_modules\cassproject\src\org\schema\MedicalEntity.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/code
+A medical code for the entity, taken from a controlled vocabulary or ontology such as ICD-9, DiseasesDB, MeSH, SNOMED-CT, RxNorm, etc.
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l30"><code>node_modules\cassproject\src\org\schema\Thing.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/description
+A description of the item.
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_dosageForm" class="property item">
+    <h3 class="name"><code>dosageForm</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l239"><code>node_modules\cassproject\src\org\schema\Drug.js:239</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/dosageForm">Schema.org/dosageForm</a>
+A dosage form in which this drug/supplement is available, e.g. 'tablet', 'suspension', 'injection'.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_doseSchedule" class="property item">
+    <h3 class="name"><code>doseSchedule</code></h3>
+    <span class="type"><a href="../classes/DoseSchedule.html" class="crosslink">DoseSchedule</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l293"><code>node_modules\cassproject\src\org\schema\Drug.js:293</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/doseSchedule">Schema.org/doseSchedule</a>
+A dosing schedule for the drug for a given population, either observed, recommended, or maximum dose based on the type used.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_drugClass" class="property item">
+    <h3 class="name"><code>drugClass</code></h3>
+    <span class="type"><a href="../classes/DrugClass.html" class="crosslink">DrugClass</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l68"><code>node_modules\cassproject\src\org\schema\Drug.js:68</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/drugClass">Schema.org/drugClass</a>
+The class of drug this belongs to (e.g., statins).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_drugUnit" class="property item">
+    <h3 class="name"><code>drugUnit</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l257"><code>node_modules\cassproject\src\org\schema\Drug.js:257</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/drugUnit">Schema.org/drugUnit</a>
+The unit in which the drug is measured, e.g. '5 mg tablet'.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_foodWarning" class="property item">
+    <h3 class="name"><code>foodWarning</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l167"><code>node_modules\cassproject\src\org\schema\Drug.js:167</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/foodWarning">Schema.org/foodWarning</a>
+Any precaution, guidance, contraindication, etc. related to consumption of specific foods while taking this drug.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_guideline" class="property item inherited">
+    <h3 class="name"><code>guideline</code></h3>
+    <span class="type"><a href="../classes/MedicalGuideline.html" class="crosslink">MedicalGuideline</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/MedicalEntity.html#property_guideline">MedicalEntity</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_MedicalEntity.js.html#l23"><code>node_modules\cassproject\src\org\schema\MedicalEntity.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/guideline
+A medical guideline related to this entity.
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l75"><code>node_modules\cassproject\src\org\schema\Thing.js:75</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+    </div>
+
+
+
+</div>
+<div id="property_includedInHealthInsurancePlan" class="property item">
+    <h3 class="name"><code>includedInHealthInsurancePlan</code></h3>
+    <span class="type"><a href="../classes/HealthInsurancePlan.html" class="crosslink">HealthInsurancePlan</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l50"><code>node_modules\cassproject\src\org\schema\Drug.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/includedInHealthInsurancePlan">Schema.org/includedInHealthInsurancePlan</a>
+The insurance plans that cover this drug.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_interactingDrug" class="property item">
+    <h3 class="name"><code>interactingDrug</code></h3>
+    <span class="type"><a href="../classes/Drug.html" class="crosslink">Drug</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l140"><code>node_modules\cassproject\src\org\schema\Drug.js:140</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/interactingDrug">Schema.org/interactingDrug</a>
+Another drug that is known to interact with this drug in a way that impacts the effect of this drug or causes a risk to the patient. Note: disease interactions are typically captured as contraindications.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isAvailableGenerically" class="property item">
+    <h3 class="name"><code>isAvailableGenerically</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l176"><code>node_modules\cassproject\src\org\schema\Drug.js:176</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isAvailableGenerically">Schema.org/isAvailableGenerically</a>
+True if the drug is available in a generic form (regardless of name).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isProprietary" class="property item">
+    <h3 class="name"><code>isProprietary</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l41"><code>node_modules\cassproject\src\org\schema\Drug.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isProprietary">Schema.org/isProprietary</a>
+True if this item's name is a proprietary/brand name (vs. generic name).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_labelDetails" class="property item">
+    <h3 class="name"><code>labelDetails</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l122"><code>node_modules\cassproject\src\org\schema\Drug.js:122</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/labelDetails">Schema.org/labelDetails</a>
+Link to the drug's label details.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_legalStatus" class="property item">
+    <h3 class="name"><code>legalStatus</code></h3>
+    <span class="type"><a href="../classes/MedicalEnumeration.html" class="crosslink">MedicalEnumeration</a></span>
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/MedicalEntity.html#property_legalStatus">
+                MedicalEntity
+            </a>
+            but overwritten in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l95"><code>node_modules\cassproject\src\org\schema\Drug.js:95</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/legalStatus">Schema.org/legalStatus</a>
+The drug or supplement's legal status, including any controlled substance schedules that apply.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_manufacturer" class="property item">
+    <h3 class="name"><code>manufacturer</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l230"><code>node_modules\cassproject\src\org\schema\Drug.js:230</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/manufacturer">Schema.org/manufacturer</a>
+The manufacturer of the product.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_maximumIntake" class="property item">
+    <h3 class="name"><code>maximumIntake</code></h3>
+    <span class="type"><a href="../classes/MaximumDoseSchedule.html" class="crosslink">MaximumDoseSchedule</a></span>
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/Substance.html#property_maximumIntake">
+                Substance
+            </a>
+            but overwritten in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l59"><code>node_modules\cassproject\src\org\schema\Drug.js:59</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/maximumIntake">Schema.org/maximumIntake</a>
+Recommended intake of this supplement for a given population as defined by a specific recommending authority.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mechanismOfAction" class="property item">
+    <h3 class="name"><code>mechanismOfAction</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l23"><code>node_modules\cassproject\src\org\schema\Drug.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/mechanismOfAction">Schema.org/mechanismOfAction</a>
+The specific biochemical interaction through which this drug or supplement produces its pharmacological effect.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_medicineSystem" class="property item inherited">
+    <h3 class="name"><code>medicineSystem</code></h3>
+    <span class="type"><a href="../classes/MedicineSystem.html" class="crosslink">MedicineSystem</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/MedicalEntity.html#property_medicineSystem">MedicalEntity</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_MedicalEntity.js.html#l77"><code>node_modules\cassproject\src\org\schema\MedicalEntity.js:77</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/medicineSystem
+The system of medicine that includes this MedicalEntity, for example 'evidence-based', 'homeopathic', 'chiropractic', etc.
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l94"><code>node_modules\cassproject\src\org\schema\Thing.js:94</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/name
+The name of the item.
+    </div>
+
+
+
+</div>
+<div id="property_nonProprietaryName" class="property item">
+    <h3 class="name"><code>nonProprietaryName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l113"><code>node_modules\cassproject\src\org\schema\Drug.js:113</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/nonProprietaryName">Schema.org/nonProprietaryName</a>
+The generic name of this drug or supplement.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_overdosage" class="property item">
+    <h3 class="name"><code>overdosage</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l131"><code>node_modules\cassproject\src\org\schema\Drug.js:131</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/overdosage">Schema.org/overdosage</a>
+Any information related to overdose on a drug, including signs or symptoms, treatments, contact information for emergency response.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_pregnancyCategory" class="property item">
+    <h3 class="name"><code>pregnancyCategory</code></h3>
+    <span class="type"><a href="../classes/DrugPregnancyCategory.html" class="crosslink">DrugPregnancyCategory</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l32"><code>node_modules\cassproject\src\org\schema\Drug.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/pregnancyCategory">Schema.org/pregnancyCategory</a>
+Pregnancy category of this drug.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_pregnancyWarning" class="property item">
+    <h3 class="name"><code>pregnancyWarning</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l248"><code>node_modules\cassproject\src\org\schema\Drug.js:248</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/pregnancyWarning">Schema.org/pregnancyWarning</a>
+Any precaution, guidance, contraindication, etc. related to this drug's use during pregnancy.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_prescribingInfo" class="property item">
+    <h3 class="name"><code>prescribingInfo</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l275"><code>node_modules\cassproject\src\org\schema\Drug.js:275</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/prescribingInfo">Schema.org/prescribingInfo</a>
+Link to prescribing information for the drug.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_prescriptionStatus" class="property item">
+    <h3 class="name"><code>prescriptionStatus</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l284"><code>node_modules\cassproject\src\org\schema\Drug.js:284</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/prescriptionStatus">Schema.org/prescriptionStatus</a>
+Indicates the status of drug prescription eg. local catalogs classifications or whether the drug is available by prescription or over-the-counter, etc.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_proprietaryName" class="property item">
+    <h3 class="name"><code>proprietaryName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l185"><code>node_modules\cassproject\src\org\schema\Drug.js:185</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/proprietaryName">Schema.org/proprietaryName</a>
+Proprietary name given to the diet plan, typically by its originator or creator.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_recognizingAuthority" class="property item inherited">
+    <h3 class="name"><code>recognizingAuthority</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/MedicalEntity.html#property_recognizingAuthority">MedicalEntity</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_MedicalEntity.js.html#l32"><code>node_modules\cassproject\src\org\schema\MedicalEntity.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/recognizingAuthority
+If applicable, the organization that officially recognizes this entity as part of its endorsed system of medicine.
+    </div>
+
+
+
+</div>
+<div id="property_relatedDrug" class="property item">
+    <h3 class="name"><code>relatedDrug</code></h3>
+    <span class="type"><a href="../classes/Drug.html" class="crosslink">Drug</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l158"><code>node_modules\cassproject\src\org\schema\Drug.js:158</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/relatedDrug">Schema.org/relatedDrug</a>
+Any other drug related to this one, for example commonly-prescribed alternatives.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_relevantSpecialty" class="property item inherited">
+    <h3 class="name"><code>relevantSpecialty</code></h3>
+    <span class="type"><a href="../classes/MedicalSpecialty.html" class="crosslink">MedicalSpecialty</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/MedicalEntity.html#property_relevantSpecialty">MedicalEntity</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_MedicalEntity.js.html#l59"><code>node_modules\cassproject\src\org\schema\MedicalEntity.js:59</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/relevantSpecialty
+If applicable, a medical specialty in which this entity is relevant.
+    </div>
+
+
+
+</div>
+<div id="property_rxcui" class="property item">
+    <h3 class="name"><code>rxcui</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l86"><code>node_modules\cassproject\src\org\schema\Drug.js:86</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/rxcui">Schema.org/rxcui</a>
+The RxCUI drug identifier from RXNORM.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l21"><code>node_modules\cassproject\src\org\schema\Thing.js:21</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+    </div>
+
+
+
+</div>
+<div id="property_study" class="property item inherited">
+    <h3 class="name"><code>study</code></h3>
+    <span class="type"><a href="../classes/MedicalStudy.html" class="crosslink">MedicalStudy</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/MedicalEntity.html#property_study">MedicalEntity</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_MedicalEntity.js.html#l68"><code>node_modules\cassproject\src\org\schema\MedicalEntity.js:68</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/study
+A medical study or trial related to this entity.
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
+    </div>
+
+
+
+</div>
+<div id="property_warning" class="property item">
+    <h3 class="name"><code>warning</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Drug.js.html#l212"><code>node_modules\cassproject\src\org\schema\Drug.js:212</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/warning">Schema.org/warning</a>
+Any FDA or other warnings about the drug (text or URL).</p>
+
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

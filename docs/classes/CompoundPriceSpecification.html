@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>CompoundPriceSpecification Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/PriceSpecification.html" class="crosslink">PriceSpecification</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_CompoundPriceSpecification.js.html#l1"><code>node_modules\cassproject\src\org\schema\CompoundPriceSpecification.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_CompoundPriceSpecification.js.html#l3"><code>node_modules\cassproject\src\org\schema\CompoundPriceSpecification.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1144,6 +1147,7 @@ A compound price specification is one that bundles multiple prices that all appl
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -1151,11 +1155,690 @@ A compound price specification is one that bundles multiple prices that all appl
             <h2 class="off-left">Item Index</h2>
 
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_eligibleQuantity">eligibleQuantity</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_eligibleTransactionVolume">eligibleTransactionVolume</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_maxPrice">maxPrice</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_minPrice">minPrice</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_price">price</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_priceComponent">priceComponent</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_priceCurrency">priceCurrency</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_priceType">priceType</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_validFrom">validFrom</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_validThrough">validThrough</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_valueAddedTaxIncluded">valueAddedTaxIncluded</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
 
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l30"><code>node_modules\cassproject\src\org\schema\Thing.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/description
+A description of the item.
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_eligibleQuantity" class="property item inherited">
+    <h3 class="name"><code>eligibleQuantity</code></h3>
+    <span class="type"><a href="../classes/QuantitativeValue.html" class="crosslink">QuantitativeValue</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_eligibleQuantity">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l78"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:78</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/eligibleQuantity
+The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.
+    </div>
+
+
+
+</div>
+<div id="property_eligibleTransactionVolume" class="property item inherited">
+    <h3 class="name"><code>eligibleTransactionVolume</code></h3>
+    <span class="type"><a href="../classes/PriceSpecification.html" class="crosslink">PriceSpecification</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_eligibleTransactionVolume">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l69"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:69</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/eligibleTransactionVolume
+The transaction volume, in a monetary unit, for which the offer or price specification is valid, e.g. for indicating a minimal purchasing volume, to express free shipping above a certain order volume, or to limit the acceptance of credit cards to purchases to a certain minimal amount.
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l75"><code>node_modules\cassproject\src\org\schema\Thing.js:75</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_maxPrice" class="property item inherited">
+    <h3 class="name"><code>maxPrice</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_maxPrice">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l51"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:51</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/maxPrice
+The highest price if the price is a range.
+    </div>
+
+
+
+</div>
+<div id="property_minPrice" class="property item inherited">
+    <h3 class="name"><code>minPrice</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_minPrice">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l42"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:42</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/minPrice
+The lowest price if the price is a range.
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l94"><code>node_modules\cassproject\src\org\schema\Thing.js:94</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/name
+The name of the item.
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_price" class="property item inherited">
+    <h3 class="name"><code>price</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_price">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l32"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/price
+The offer price of a product, or of a price component when attached to PriceSpecification and its subtypes.\n\nUsage guidelines:\n\n* Use the [[priceCurrency]] property (with standard formats: [ISO 4217 currency format](http://en.wikipedia.org/wiki/ISO_4217) e.g. "USD"; [Ticker symbol](https://en.wikipedia.org/wiki/List_of_cryptocurrencies) for cryptocurrencies e.g. "BTC"; well known names for [Local Exchange Tradings Systems](https://en.wikipedia.org/wiki/Local_exchange_trading_system) (LETS) and other currency types e.g. "Ithaca HOUR") instead of including [ambiguous symbols](http://en.wikipedia.org/wiki/Dollar_sign#Currencies_that_use_the_dollar_or_peso_sign) such as '$' in the value.\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.\n* Note that both [RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/#using-the-content-attribute) and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.
+    </div>
+
+
+
+</div>
+<div id="property_priceComponent" class="property item">
+    <h3 class="name"><code>priceComponent</code></h3>
+    <span class="type"><a href="../classes/UnitPriceSpecification.html" class="crosslink">UnitPriceSpecification</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_CompoundPriceSpecification.js.html#l32"><code>node_modules\cassproject\src\org\schema\CompoundPriceSpecification.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/priceComponent">Schema.org/priceComponent</a>
+This property links to all [[UnitPriceSpecification]] nodes that apply in parallel for the [[CompoundPriceSpecification]] node.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_priceCurrency" class="property item inherited">
+    <h3 class="name"><code>priceCurrency</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_priceCurrency">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l60"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:60</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/priceCurrency
+The currency of the price, or a price component when attached to [[PriceSpecification]] and its subtypes.\n\nUse standard formats: [ISO 4217 currency format](http://en.wikipedia.org/wiki/ISO_4217) e.g. "USD"; [Ticker symbol](https://en.wikipedia.org/wiki/List_of_cryptocurrencies) for cryptocurrencies e.g. "BTC"; well known names for [Local Exchange Tradings Systems](https://en.wikipedia.org/wiki/Local_exchange_trading_system) (LETS) and other currency types e.g. "Ithaca HOUR".
+    </div>
+
+
+
+</div>
+<div id="property_priceType" class="property item">
+    <h3 class="name"><code>priceType</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_CompoundPriceSpecification.js.html#l23"><code>node_modules\cassproject\src\org\schema\CompoundPriceSpecification.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/priceType">Schema.org/priceType</a>
+Defines the type of a price specified for an offered product, for example a list price, a (temporary) sale price or a manufacturer suggested retail price. If multiple prices are specified for an offer the [[priceType]] property can be used to identify the type of each such specified price. The value of priceType can be specified as a value from enumeration PriceTypeEnumeration or as a free form text string for price types that are not already predefined in PriceTypeEnumeration.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l21"><code>node_modules\cassproject\src\org\schema\Thing.js:21</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
+    </div>
+
+
+
+</div>
+<div id="property_validFrom" class="property item inherited">
+    <h3 class="name"><code>validFrom</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_validFrom">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l23"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/validFrom
+The date when the item becomes valid.
+    </div>
+
+
+
+</div>
+<div id="property_validThrough" class="property item inherited">
+    <h3 class="name"><code>validThrough</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_validThrough">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l96"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:96</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/validThrough
+The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+    </div>
+
+
+
+</div>
+<div id="property_valueAddedTaxIncluded" class="property item inherited">
+    <h3 class="name"><code>valueAddedTaxIncluded</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/PriceSpecification.html#property_valueAddedTaxIncluded">PriceSpecification</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_PriceSpecification.js.html#l87"><code>node_modules\cassproject\src\org\schema\PriceSpecification.js:87</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/valueAddedTaxIncluded
+Specifies whether the applicable value-added tax (VAT) is included in the price specification or not.
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

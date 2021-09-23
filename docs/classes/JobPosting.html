@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>JobPosting Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Intangible.html" class="crosslink">Intangible</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l1"><code>node_modules\cassproject\src\org\schema\JobPosting.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l3"><code>node_modules\cassproject\src\org\schema\JobPosting.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1144,6 +1147,7 @@ A listing that describes a job opening in a certain organization.</p>
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -1151,11 +1155,1450 @@ A listing that describes a job opening in a certain organization.</p>
             <h2 class="off-left">Item Index</h2>
 
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_applicantLocationRequirements">applicantLocationRequirements</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_applicationContact">applicationContact</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_baseSalary">baseSalary</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_benefits">benefits</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_datePosted">datePosted</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_educationRequirements">educationRequirements</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_eligibilityToWorkRequirement">eligibilityToWorkRequirement</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_employerOverview">employerOverview</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_employmentType">employmentType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_employmentUnit">employmentUnit</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_estimatedSalary">estimatedSalary</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_experienceInPlaceOfEducation">experienceInPlaceOfEducation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_experienceRequirements">experienceRequirements</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hiringOrganization">hiringOrganization</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_incentiveCompensation">incentiveCompensation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_incentives">incentives</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_industry">industry</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_jobBenefits">jobBenefits</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_jobImmediateStart">jobImmediateStart</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_jobLocation">jobLocation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_jobLocationType">jobLocationType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_jobStartDate">jobStartDate</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_occupationalCategory">occupationalCategory</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_physicalRequirement">physicalRequirement</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_qualifications">qualifications</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_relevantOccupation">relevantOccupation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_responsibilities">responsibilities</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_salaryCurrency">salaryCurrency</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_securityClearanceRequirement">securityClearanceRequirement</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_sensoryRequirement">sensoryRequirement</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_skills">skills</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_specialCommitments">specialCommitments</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_title">title</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_totalJobOpenings">totalJobOpenings</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_validThrough">validThrough</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_workHours">workHours</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
 
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
+    </div>
+
+
+
+</div>
+<div id="property_applicantLocationRequirements" class="property item">
+    <h3 class="name"><code>applicantLocationRequirements</code></h3>
+    <span class="type"><a href="../classes/AdministrativeArea.html" class="crosslink">AdministrativeArea</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l167"><code>node_modules\cassproject\src\org\schema\JobPosting.js:167</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/applicantLocationRequirements">Schema.org/applicantLocationRequirements</a>
+The location(s) applicants can apply from. This is usually used for telecommuting jobs where the applicant does not need to be in a physical office. Note: This should not be used for citizenship or work visa requirements.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_applicationContact" class="property item">
+    <h3 class="name"><code>applicationContact</code></h3>
+    <span class="type"><a href="../classes/ContactPoint.html" class="crosslink">ContactPoint</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l23"><code>node_modules\cassproject\src\org\schema\JobPosting.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/applicationContact">Schema.org/applicationContact</a>
+Contact details for further information relevant to this job posting.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_baseSalary" class="property item">
+    <h3 class="name"><code>baseSalary</code></h3>
+    <span class="type"><a href="../classes/PriceSpecification.html" class="crosslink">PriceSpecification</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l303"><code>node_modules\cassproject\src\org\schema\JobPosting.js:303</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/baseSalary">Schema.org/baseSalary</a>
+The base salary of the job or of an employee in an EmployeeRole.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_benefits" class="property item">
+    <h3 class="name"><code>benefits</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l312"><code>node_modules\cassproject\src\org\schema\JobPosting.js:312</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/benefits">Schema.org/benefits</a>
+Description of benefits associated with the job.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_datePosted" class="property item">
+    <h3 class="name"><code>datePosted</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l222"><code>node_modules\cassproject\src\org\schema\JobPosting.js:222</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/datePosted">Schema.org/datePosted</a>
+Publication date of an online listing.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l30"><code>node_modules\cassproject\src\org\schema\Thing.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/description
+A description of the item.
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_educationRequirements" class="property item">
+    <h3 class="name"><code>educationRequirements</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l41"><code>node_modules\cassproject\src\org\schema\JobPosting.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/educationRequirements">Schema.org/educationRequirements</a>
+Educational background needed for the position or Occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_eligibilityToWorkRequirement" class="property item">
+    <h3 class="name"><code>eligibilityToWorkRequirement</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l321"><code>node_modules\cassproject\src\org\schema\JobPosting.js:321</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/eligibilityToWorkRequirement">Schema.org/eligibilityToWorkRequirement</a>
+The legal requirements such as citizenship, visa and other documentation required for an applicant to this job.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_employerOverview" class="property item">
+    <h3 class="name"><code>employerOverview</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l32"><code>node_modules\cassproject\src\org\schema\JobPosting.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/employerOverview">Schema.org/employerOverview</a>
+A description of the employer, career opportunities and work environment for this position.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_employmentType" class="property item">
+    <h3 class="name"><code>employmentType</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l68"><code>node_modules\cassproject\src\org\schema\JobPosting.js:68</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/employmentType">Schema.org/employmentType</a>
+Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_employmentUnit" class="property item">
+    <h3 class="name"><code>employmentUnit</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l122"><code>node_modules\cassproject\src\org\schema\JobPosting.js:122</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/employmentUnit">Schema.org/employmentUnit</a>
+Indicates the department, unit and/or facility where the employee reports and/or in which the job is to be performed.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_estimatedSalary" class="property item">
+    <h3 class="name"><code>estimatedSalary</code></h3>
+    <span class="type"><a href="../classes/MonetaryAmount.html" class="crosslink">MonetaryAmount</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l59"><code>node_modules\cassproject\src\org\schema\JobPosting.js:59</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/estimatedSalary">Schema.org/estimatedSalary</a>
+An estimated salary for a job posting or occupation, based on a variety of variables including, but not limited to industry, job title, and location. Estimated salaries  are often computed by outside organizations rather than the hiring organization, who may not have committed to the estimated value.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_experienceInPlaceOfEducation" class="property item">
+    <h3 class="name"><code>experienceInPlaceOfEducation</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l249"><code>node_modules\cassproject\src\org\schema\JobPosting.js:249</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/experienceInPlaceOfEducation">Schema.org/experienceInPlaceOfEducation</a>
+Indicates whether a [[JobPosting]] will accept experience (as indicated by [[OccupationalExperienceRequirements]]) in place of its formal educational qualifications (as indicated by [[educationRequirements]]). If true, indicates that satisfying one of these requirements is sufficient.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_experienceRequirements" class="property item">
+    <h3 class="name"><code>experienceRequirements</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l240"><code>node_modules\cassproject\src\org\schema\JobPosting.js:240</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/experienceRequirements">Schema.org/experienceRequirements</a>
+Description of skills and experience needed for the position or Occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hiringOrganization" class="property item">
+    <h3 class="name"><code>hiringOrganization</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l77"><code>node_modules\cassproject\src\org\schema\JobPosting.js:77</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hiringOrganization">Schema.org/hiringOrganization</a>
+Organization offering the job position.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l75"><code>node_modules\cassproject\src\org\schema\Thing.js:75</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+    </div>
+
+
+
+</div>
+<div id="property_incentiveCompensation" class="property item">
+    <h3 class="name"><code>incentiveCompensation</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l213"><code>node_modules\cassproject\src\org\schema\JobPosting.js:213</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/incentiveCompensation">Schema.org/incentiveCompensation</a>
+Description of bonus and commission compensation aspects of the job.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_incentives" class="property item">
+    <h3 class="name"><code>incentives</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l339"><code>node_modules\cassproject\src\org\schema\JobPosting.js:339</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/incentives">Schema.org/incentives</a>
+Description of bonus and commission compensation aspects of the job.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_industry" class="property item">
+    <h3 class="name"><code>industry</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l95"><code>node_modules\cassproject\src\org\schema\JobPosting.js:95</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/industry">Schema.org/industry</a>
+The industry associated with the job position.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_jobBenefits" class="property item">
+    <h3 class="name"><code>jobBenefits</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l149"><code>node_modules\cassproject\src\org\schema\JobPosting.js:149</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/jobBenefits">Schema.org/jobBenefits</a>
+Description of benefits associated with the job.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_jobImmediateStart" class="property item">
+    <h3 class="name"><code>jobImmediateStart</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l113"><code>node_modules\cassproject\src\org\schema\JobPosting.js:113</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/jobImmediateStart">Schema.org/jobImmediateStart</a>
+An indicator as to whether a position is available for an immediate start.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_jobLocation" class="property item">
+    <h3 class="name"><code>jobLocation</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l158"><code>node_modules\cassproject\src\org\schema\JobPosting.js:158</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/jobLocation">Schema.org/jobLocation</a>
+A (typically single) geographic location associated with the job position.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_jobLocationType" class="property item">
+    <h3 class="name"><code>jobLocationType</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l195"><code>node_modules\cassproject\src\org\schema\JobPosting.js:195</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/jobLocationType">Schema.org/jobLocationType</a>
+A description of the job location (e.g TELECOMMUTE for telecommute jobs).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_jobStartDate" class="property item">
+    <h3 class="name"><code>jobStartDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l104"><code>node_modules\cassproject\src\org\schema\JobPosting.js:104</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/jobStartDate">Schema.org/jobStartDate</a>
+The date on which a successful applicant for this job would be expected to start work. Choose a specific date in the future or use the jobImmediateStart property to indicate the position is to be filled as soon as possible.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l94"><code>node_modules\cassproject\src\org\schema\Thing.js:94</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/name
+The name of the item.
+    </div>
+
+
+
+</div>
+<div id="property_occupationalCategory" class="property item">
+    <h3 class="name"><code>occupationalCategory</code></h3>
+    <span class="type"><a href="../classes/CategoryCode.html" class="crosslink">CategoryCode</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l176"><code>node_modules\cassproject\src\org\schema\JobPosting.js:176</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/occupationalCategory">Schema.org/occupationalCategory</a>
+A category describing the job, preferably using a term from a taxonomy such as <a href="http://www.onetcenter.org/taxonomy.html">BLS O*NET-SOC</a>, <a href="https://www.ilo.org/public/english/bureau/stat/isco/isco08/">ISCO-08</a> or similar, with the property repeated for each applicable value. Ideally the taxonomy should be identified, and both the textual label and formal code for the category should be provided.\n
+Note: for historical reasons, any textual label and formal code provided as a literal may be assumed to be from O*NET-SOC.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_physicalRequirement" class="property item">
+    <h3 class="name"><code>physicalRequirement</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l231"><code>node_modules\cassproject\src\org\schema\JobPosting.js:231</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/physicalRequirement">Schema.org/physicalRequirement</a>
+A description of the types of physical activity associated with the job. Defined terms such as those in O*net may be used, but note that there is no way to specify the level of ability as well as its nature when using a defined term.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_qualifications" class="property item">
+    <h3 class="name"><code>qualifications</code></h3>
+    <span class="type"><a href="../classes/EducationalOccupationalCredential.html" class="crosslink">EducationalOccupationalCredential</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l186"><code>node_modules\cassproject\src\org\schema\JobPosting.js:186</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/qualifications">Schema.org/qualifications</a>
+Specific qualifications required for this role or Occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_relevantOccupation" class="property item">
+    <h3 class="name"><code>relevantOccupation</code></h3>
+    <span class="type"><a href="../classes/Occupation.html" class="crosslink">Occupation</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l204"><code>node_modules\cassproject\src\org\schema\JobPosting.js:204</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/relevantOccupation">Schema.org/relevantOccupation</a>
+The Occupation for the JobPosting.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_responsibilities" class="property item">
+    <h3 class="name"><code>responsibilities</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l140"><code>node_modules\cassproject\src\org\schema\JobPosting.js:140</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/responsibilities">Schema.org/responsibilities</a>
+Responsibilities associated with this role or Occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_salaryCurrency" class="property item">
+    <h3 class="name"><code>salaryCurrency</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l294"><code>node_modules\cassproject\src\org\schema\JobPosting.js:294</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/salaryCurrency">Schema.org/salaryCurrency</a>
+The currency (coded using <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> ) used for the main salary information in this job posting or for this employee.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l21"><code>node_modules\cassproject\src\org\schema\Thing.js:21</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+    </div>
+
+
+
+</div>
+<div id="property_securityClearanceRequirement" class="property item">
+    <h3 class="name"><code>securityClearanceRequirement</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l131"><code>node_modules\cassproject\src\org\schema\JobPosting.js:131</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/securityClearanceRequirement">Schema.org/securityClearanceRequirement</a>
+A description of any security clearance requirements of the job.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sensoryRequirement" class="property item">
+    <h3 class="name"><code>sensoryRequirement</code></h3>
+    <span class="type"><a href="../classes/DefinedTerm.html" class="crosslink">DefinedTerm</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l86"><code>node_modules\cassproject\src\org\schema\JobPosting.js:86</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/sensoryRequirement">Schema.org/sensoryRequirement</a>
+A description of any sensory requirements and levels necessary to function on the job, including hearing and vision. Defined terms such as those in O*net may be used, but note that there is no way to specify the level of ability as well as its nature when using a defined term.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_skills" class="property item">
+    <h3 class="name"><code>skills</code></h3>
+    <span class="type"><a href="../classes/DefinedTerm.html" class="crosslink">DefinedTerm</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l50"><code>node_modules\cassproject\src\org\schema\JobPosting.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/skills">Schema.org/skills</a>
+A statement of knowledge, skill, ability, task or any other assertion expressing a competency that is desired or required to fulfill this role or to work in this occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_specialCommitments" class="property item">
+    <h3 class="name"><code>specialCommitments</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l258"><code>node_modules\cassproject\src\org\schema\JobPosting.js:258</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/specialCommitments">Schema.org/specialCommitments</a>
+Any special commitments associated with this job posting. Valid entries include VeteranCommit, MilitarySpouseCommit, etc.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
+<div id="property_title" class="property item">
+    <h3 class="name"><code>title</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l276"><code>node_modules\cassproject\src\org\schema\JobPosting.js:276</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/title">Schema.org/title</a>
+The title of the job.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_totalJobOpenings" class="property item">
+    <h3 class="name"><code>totalJobOpenings</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l285"><code>node_modules\cassproject\src\org\schema\JobPosting.js:285</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/totalJobOpenings">Schema.org/totalJobOpenings</a>
+The number of positions open for this job posting. Use a positive integer. Do not use if the number of positions is unclear or not known.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
+    </div>
+
+
+
+</div>
+<div id="property_validThrough" class="property item">
+    <h3 class="name"><code>validThrough</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l330"><code>node_modules\cassproject\src\org\schema\JobPosting.js:330</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/validThrough">Schema.org/validThrough</a>
+The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_workHours" class="property item">
+    <h3 class="name"><code>workHours</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_JobPosting.js.html#l267"><code>node_modules\cassproject\src\org\schema\JobPosting.js:267</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/workHours">Schema.org/workHours</a>
+The typical working hours for this job (e.g. 1st shift, night shift, 8am-5pm).</p>
+
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

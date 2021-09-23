@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>Person Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Thing.html" class="crosslink">Thing</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l1"><code>node_modules\cassproject\src\org\schema\Person.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l3"><code>node_modules\cassproject\src\org\schema\Person.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1144,6 +1147,7 @@ A person (alive, dead, undead, or fictional).</p>
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -1151,11 +1155,2230 @@ A person (alive, dead, undead, or fictional).</p>
             <h2 class="off-left">Item Index</h2>
 
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_additionalName">additionalName</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_address">address</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_affiliation">affiliation</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_alumniOf">alumniOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_award">award</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_awards">awards</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_birthDate">birthDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_birthPlace">birthPlace</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_brand">brand</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_callSign">callSign</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_children">children</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_colleague">colleague</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_colleagues">colleagues</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_contactPoint">contactPoint</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_contactPoints">contactPoints</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_deathDate">deathDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_deathPlace">deathPlace</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_duns">duns</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_email">email</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_familyName">familyName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_faxNumber">faxNumber</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_follows">follows</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_funder">funder</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_gender">gender</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_givenName">givenName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_globalLocationNumber">globalLocationNumber</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasCredential">hasCredential</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasOccupation">hasOccupation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasOfferCatalog">hasOfferCatalog</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasPOS">hasPOS</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_height">height</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_homeLocation">homeLocation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_honorificPrefix">honorificPrefix</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_honorificSuffix">honorificSuffix</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_interactionStatistic">interactionStatistic</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isicV4">isicV4</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_jobTitle">jobTitle</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_knows">knows</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_knowsAbout">knowsAbout</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_knowsLanguage">knowsLanguage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_makesOffer">makesOffer</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_memberOf">memberOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_naics">naics</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_nationality">nationality</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_netWorth">netWorth</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_owns">owns</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_parent">parent</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_parents">parents</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_performerIn">performerIn</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_publishingPrinciples">publishingPrinciples</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_relatedTo">relatedTo</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_seeks">seeks</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_sibling">sibling</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_siblings">siblings</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_sponsor">sponsor</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_spouse">spouse</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_taxID">taxID</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_telephone">telephone</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_vatID">vatID</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_weight">weight</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_workLocation">workLocation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_worksFor">worksFor</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
 
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_additionalName" class="property item">
+    <h3 class="name"><code>additionalName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l410"><code>node_modules\cassproject\src\org\schema\Person.js:410</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/additionalName">Schema.org/additionalName</a>
+An additional name for a Person, can be used for a middle name.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_address" class="property item">
+    <h3 class="name"><code>address</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l68"><code>node_modules\cassproject\src\org\schema\Person.js:68</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/address">Schema.org/address</a>
+Physical address of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_affiliation" class="property item">
+    <h3 class="name"><code>affiliation</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l41"><code>node_modules\cassproject\src\org\schema\Person.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/affiliation">Schema.org/affiliation</a>
+An organization that this person is affiliated with. For example, a school/university, a club, or a team.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
+    </div>
+
+
+
+</div>
+<div id="property_alumniOf" class="property item">
+    <h3 class="name"><code>alumniOf</code></h3>
+    <span class="type"><a href="../classes/EducationalOrganization.html" class="crosslink">EducationalOrganization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l374"><code>node_modules\cassproject\src\org\schema\Person.js:374</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/alumniOf">Schema.org/alumniOf</a>
+An organization that the person is an alumni of.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_award" class="property item">
+    <h3 class="name"><code>award</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l266"><code>node_modules\cassproject\src\org\schema\Person.js:266</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/award">Schema.org/award</a>
+An award won by or for this item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_awards" class="property item">
+    <h3 class="name"><code>awards</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l548"><code>node_modules\cassproject\src\org\schema\Person.js:548</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/awards">Schema.org/awards</a>
+Awards won by or for this item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_birthDate" class="property item">
+    <h3 class="name"><code>birthDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l302"><code>node_modules\cassproject\src\org\schema\Person.js:302</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/birthDate">Schema.org/birthDate</a>
+Date of birth.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_birthPlace" class="property item">
+    <h3 class="name"><code>birthPlace</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l347"><code>node_modules\cassproject\src\org\schema\Person.js:347</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/birthPlace">Schema.org/birthPlace</a>
+The place where the person was born.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_brand" class="property item">
+    <h3 class="name"><code>brand</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l491"><code>node_modules\cassproject\src\org\schema\Person.js:491</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/brand">Schema.org/brand</a>
+The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_callSign" class="property item">
+    <h3 class="name"><code>callSign</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l557"><code>node_modules\cassproject\src\org\schema\Person.js:557</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/callSign">Schema.org/callSign</a>
+A <a href="https://en.wikipedia.org/wiki/Call_sign">callsign</a>, as used in broadcasting and radio communications to identify people, radio and TV stations, or vehicles.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_children" class="property item">
+    <h3 class="name"><code>children</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l311"><code>node_modules\cassproject\src\org\schema\Person.js:311</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/children">Schema.org/children</a>
+A child of the person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_colleague" class="property item">
+    <h3 class="name"><code>colleague</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l221"><code>node_modules\cassproject\src\org\schema\Person.js:221</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/colleague">Schema.org/colleague</a>
+A colleague of the person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_colleagues" class="property item">
+    <h3 class="name"><code>colleagues</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l365"><code>node_modules\cassproject\src\org\schema\Person.js:365</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/colleagues">Schema.org/colleagues</a>
+A colleague of the person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_contactPoint" class="property item">
+    <h3 class="name"><code>contactPoint</code></h3>
+    <span class="type"><a href="../classes/ContactPoint.html" class="crosslink">ContactPoint</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l104"><code>node_modules\cassproject\src\org\schema\Person.js:104</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/contactPoint">Schema.org/contactPoint</a>
+A contact point for a person or organization.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_contactPoints" class="property item">
+    <h3 class="name"><code>contactPoints</code></h3>
+    <span class="type"><a href="../classes/ContactPoint.html" class="crosslink">ContactPoint</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l230"><code>node_modules\cassproject\src\org\schema\Person.js:230</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/contactPoints">Schema.org/contactPoints</a>
+A contact point for a person or organization.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_deathDate" class="property item">
+    <h3 class="name"><code>deathDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l401"><code>node_modules\cassproject\src\org\schema\Person.js:401</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/deathDate">Schema.org/deathDate</a>
+Date of death.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_deathPlace" class="property item">
+    <h3 class="name"><code>deathPlace</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l455"><code>node_modules\cassproject\src\org\schema\Person.js:455</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/deathPlace">Schema.org/deathPlace</a>
+The place where the person died.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l30"><code>node_modules\cassproject\src\org\schema\Thing.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/description
+A description of the item.
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_duns" class="property item">
+    <h3 class="name"><code>duns</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l212"><code>node_modules\cassproject\src\org\schema\Person.js:212</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/duns">Schema.org/duns</a>
+The Dun &amp; Bradstreet DUNS number for identifying an organization or business person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_email" class="property item">
+    <h3 class="name"><code>email</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l320"><code>node_modules\cassproject\src\org\schema\Person.js:320</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/email">Schema.org/email</a>
+Email address.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_familyName" class="property item">
+    <h3 class="name"><code>familyName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l257"><code>node_modules\cassproject\src\org\schema\Person.js:257</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/familyName">Schema.org/familyName</a>
+Family name. In the U.S., the last name of a Person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_faxNumber" class="property item">
+    <h3 class="name"><code>faxNumber</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l419"><code>node_modules\cassproject\src\org\schema\Person.js:419</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/faxNumber">Schema.org/faxNumber</a>
+The fax number.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_follows" class="property item">
+    <h3 class="name"><code>follows</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l23"><code>node_modules\cassproject\src\org\schema\Person.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/follows">Schema.org/follows</a>
+The most generic uni-directional social relation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_funder" class="property item">
+    <h3 class="name"><code>funder</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l527"><code>node_modules\cassproject\src\org\schema\Person.js:527</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/funder">Schema.org/funder</a>
+A person or organization that supports (sponsors) something through some kind of financial contribution.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_gender" class="property item">
+    <h3 class="name"><code>gender</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l167"><code>node_modules\cassproject\src\org\schema\Person.js:167</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/gender">Schema.org/gender</a>
+Gender of something, typically a [[Person]], but possibly also fictional characters, animals, etc. While schema:Male and schema:Female may be used, text strings are also acceptable for people who do not identify as a binary gender. The [[gender]] property can also be used in an extended sense to cover e.g. the gender of sports teams. As with the gender of individuals, we do not try to enumerate all possibilities. A mixed-gender [[SportsTeam]] can be indicated with a text value of "Mixed".</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_givenName" class="property item">
+    <h3 class="name"><code>givenName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l194"><code>node_modules\cassproject\src\org\schema\Person.js:194</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/givenName">Schema.org/givenName</a>
+Given name. In the U.S., the first name of a Person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_globalLocationNumber" class="property item">
+    <h3 class="name"><code>globalLocationNumber</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l86"><code>node_modules\cassproject\src\org\schema\Person.js:86</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/globalLocationNumber">Schema.org/globalLocationNumber</a>
+The <a href="http://www.gs1.org/gln">Global Location Number</a> (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasCredential" class="property item">
+    <h3 class="name"><code>hasCredential</code></h3>
+    <span class="type"><a href="../classes/EducationalOccupationalCredential.html" class="crosslink">EducationalOccupationalCredential</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l464"><code>node_modules\cassproject\src\org\schema\Person.js:464</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasCredential">Schema.org/hasCredential</a>
+A credential awarded to the Person or Organization.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasOccupation" class="property item">
+    <h3 class="name"><code>hasOccupation</code></h3>
+    <span class="type"><a href="../classes/Occupation.html" class="crosslink">Occupation</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l131"><code>node_modules\cassproject\src\org\schema\Person.js:131</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasOccupation">Schema.org/hasOccupation</a>
+The Person's occupation. For past professions, use Role for expressing dates.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasOfferCatalog" class="property item">
+    <h3 class="name"><code>hasOfferCatalog</code></h3>
+    <span class="type"><a href="../classes/OfferCatalog.html" class="crosslink">OfferCatalog</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l293"><code>node_modules\cassproject\src\org\schema\Person.js:293</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasOfferCatalog">Schema.org/hasOfferCatalog</a>
+Indicates an OfferCatalog listing for this Organization, Person, or Service.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasPOS" class="property item">
+    <h3 class="name"><code>hasPOS</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l575"><code>node_modules\cassproject\src\org\schema\Person.js:575</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasPOS">Schema.org/hasPOS</a>
+Points-of-Sales operated by the organization or person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_height" class="property item">
+    <h3 class="name"><code>height</code></h3>
+    <span class="type"><a href="../classes/Distance.html" class="crosslink">Distance</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l50"><code>node_modules\cassproject\src\org\schema\Person.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/height">Schema.org/height</a>
+The height of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_homeLocation" class="property item">
+    <h3 class="name"><code>homeLocation</code></h3>
+    <span class="type"><a href="../classes/ContactPoint.html" class="crosslink">ContactPoint</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l158"><code>node_modules\cassproject\src\org\schema\Person.js:158</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/homeLocation">Schema.org/homeLocation</a>
+A contact location for a person's residence.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_honorificPrefix" class="property item">
+    <h3 class="name"><code>honorificPrefix</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l77"><code>node_modules\cassproject\src\org\schema\Person.js:77</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/honorificPrefix">Schema.org/honorificPrefix</a>
+An honorific prefix preceding a Person's name such as Dr/Mrs/Mr.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_honorificSuffix" class="property item">
+    <h3 class="name"><code>honorificSuffix</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l356"><code>node_modules\cassproject\src\org\schema\Person.js:356</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/honorificSuffix">Schema.org/honorificSuffix</a>
+An honorific suffix following a Person's name such as M.D. /PhD/MSCSW.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l75"><code>node_modules\cassproject\src\org\schema\Thing.js:75</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+    </div>
+
+
+
+</div>
+<div id="property_interactionStatistic" class="property item">
+    <h3 class="name"><code>interactionStatistic</code></h3>
+    <span class="type"><a href="../classes/InteractionCounter.html" class="crosslink">InteractionCounter</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l392"><code>node_modules\cassproject\src\org\schema\Person.js:392</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/interactionStatistic">Schema.org/interactionStatistic</a>
+The number of interactions for the CreativeWork using the WebSite or SoftwareApplication. The most specific child type of InteractionCounter should be used.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isicV4" class="property item">
+    <h3 class="name"><code>isicV4</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l248"><code>node_modules\cassproject\src\org\schema\Person.js:248</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isicV4">Schema.org/isicV4</a>
+The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_jobTitle" class="property item">
+    <h3 class="name"><code>jobTitle</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l113"><code>node_modules\cassproject\src\org\schema\Person.js:113</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/jobTitle">Schema.org/jobTitle</a>
+The job title of the person (for example, Financial Manager).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_knows" class="property item">
+    <h3 class="name"><code>knows</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l428"><code>node_modules\cassproject\src\org\schema\Person.js:428</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/knows">Schema.org/knows</a>
+The most generic bi-directional social/work relation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_knowsAbout" class="property item">
+    <h3 class="name"><code>knowsAbout</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l95"><code>node_modules\cassproject\src\org\schema\Person.js:95</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/knowsAbout">Schema.org/knowsAbout</a>
+Of a [[Person]], and less typically of an [[Organization]], to indicate a topic that is known about - suggesting possible expertise but not implying it. We do not distinguish skill levels here, or relate this to educational content, events, objectives or [[JobPosting]] descriptions.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_knowsLanguage" class="property item">
+    <h3 class="name"><code>knowsLanguage</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l122"><code>node_modules\cassproject\src\org\schema\Person.js:122</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/knowsLanguage">Schema.org/knowsLanguage</a>
+Of a [[Person]], and less typically of an [[Organization]], to indicate a known language. We do not distinguish skill levels or reading/writing/speaking/signing here. Use language codes from the <a href="http://tools.ietf.org/html/bcp47">IETF BCP 47 standard</a>.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_makesOffer" class="property item">
+    <h3 class="name"><code>makesOffer</code></h3>
+    <span class="type"><a href="../classes/Offer.html" class="crosslink">Offer</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l239"><code>node_modules\cassproject\src\org\schema\Person.js:239</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/makesOffer">Schema.org/makesOffer</a>
+A pointer to products or services offered by the organization or person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_memberOf" class="property item">
+    <h3 class="name"><code>memberOf</code></h3>
+    <span class="type"><a href="../classes/ProgramMembership.html" class="crosslink">ProgramMembership</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l437"><code>node_modules\cassproject\src\org\schema\Person.js:437</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/memberOf">Schema.org/memberOf</a>
+An Organization (or ProgramMembership) to which this Person or Organization belongs.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_naics" class="property item">
+    <h3 class="name"><code>naics</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l518"><code>node_modules\cassproject\src\org\schema\Person.js:518</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/naics">Schema.org/naics</a>
+The North American Industry Classification System (NAICS) code for a particular organization or business person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l94"><code>node_modules\cassproject\src\org\schema\Thing.js:94</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/name
+The name of the item.
+    </div>
+
+
+
+</div>
+<div id="property_nationality" class="property item">
+    <h3 class="name"><code>nationality</code></h3>
+    <span class="type"><a href="../classes/Country.html" class="crosslink">Country</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l509"><code>node_modules\cassproject\src\org\schema\Person.js:509</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/nationality">Schema.org/nationality</a>
+Nationality of the person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_netWorth" class="property item">
+    <h3 class="name"><code>netWorth</code></h3>
+    <span class="type"><a href="../classes/PriceSpecification.html" class="crosslink">PriceSpecification</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l275"><code>node_modules\cassproject\src\org\schema\Person.js:275</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/netWorth">Schema.org/netWorth</a>
+The total financial value of the person as calculated by subtracting assets from liabilities.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_owns" class="property item">
+    <h3 class="name"><code>owns</code></h3>
+    <span class="type"><a href="../classes/Product.html" class="crosslink">Product</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l383"><code>node_modules\cassproject\src\org\schema\Person.js:383</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/owns">Schema.org/owns</a>
+Products owned by the organization or person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_parent" class="property item">
+    <h3 class="name"><code>parent</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l566"><code>node_modules\cassproject\src\org\schema\Person.js:566</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/parent">Schema.org/parent</a>
+A parent of this person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_parents" class="property item">
+    <h3 class="name"><code>parents</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l473"><code>node_modules\cassproject\src\org\schema\Person.js:473</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/parents">Schema.org/parents</a>
+A parents of the person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_performerIn" class="property item">
+    <h3 class="name"><code>performerIn</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l140"><code>node_modules\cassproject\src\org\schema\Person.js:140</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/performerIn">Schema.org/performerIn</a>
+Event that this person is a performer or participant in.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_publishingPrinciples" class="property item">
+    <h3 class="name"><code>publishingPrinciples</code></h3>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l536"><code>node_modules\cassproject\src\org\schema\Person.js:536</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/publishingPrinciples">Schema.org/publishingPrinciples</a>
+The publishingPrinciples property indicates (typically via [[URL]]) a document describing the editorial principles of an [[Organization]] (or individual e.g. a [[Person]] writing a blog) that relate to their activities as a publisher, e.g. ethics or diversity policies. When applied to a [[CreativeWork]] (e.g. [[NewsArticle]]) the principles are those of the party primarily responsible for the creation of the [[CreativeWork]].</p>
+<p>While such policies are most typically expressed in natural language, sometimes related information (e.g. indicating a [[funder]]) can be expressed using <a href="http://schema.org">schema.org</a> terminology.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_relatedTo" class="property item">
+    <h3 class="name"><code>relatedTo</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l482"><code>node_modules\cassproject\src\org\schema\Person.js:482</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/relatedTo">Schema.org/relatedTo</a>
+The most generic familial relation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l21"><code>node_modules\cassproject\src\org\schema\Thing.js:21</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+    </div>
+
+
+
+</div>
+<div id="property_seeks" class="property item">
+    <h3 class="name"><code>seeks</code></h3>
+    <span class="type"><a href="../classes/Demand.html" class="crosslink">Demand</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l284"><code>node_modules\cassproject\src\org\schema\Person.js:284</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/seeks">Schema.org/seeks</a>
+A pointer to products or services sought by the organization or person (demand).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sibling" class="property item">
+    <h3 class="name"><code>sibling</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l446"><code>node_modules\cassproject\src\org\schema\Person.js:446</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/sibling">Schema.org/sibling</a>
+A sibling of the person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_siblings" class="property item">
+    <h3 class="name"><code>siblings</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l185"><code>node_modules\cassproject\src\org\schema\Person.js:185</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/siblings">Schema.org/siblings</a>
+A sibling of the person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sponsor" class="property item">
+    <h3 class="name"><code>sponsor</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l329"><code>node_modules\cassproject\src\org\schema\Person.js:329</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/sponsor">Schema.org/sponsor</a>
+A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_spouse" class="property item">
+    <h3 class="name"><code>spouse</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l176"><code>node_modules\cassproject\src\org\schema\Person.js:176</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/spouse">Schema.org/spouse</a>
+The person's spouse.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
+<div id="property_taxID" class="property item">
+    <h3 class="name"><code>taxID</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l500"><code>node_modules\cassproject\src\org\schema\Person.js:500</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/taxID">Schema.org/taxID</a>
+The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the CIF/NIF in Spain.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_telephone" class="property item">
+    <h3 class="name"><code>telephone</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l338"><code>node_modules\cassproject\src\org\schema\Person.js:338</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/telephone">Schema.org/telephone</a>
+The telephone number.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
+    </div>
+
+
+
+</div>
+<div id="property_vatID" class="property item">
+    <h3 class="name"><code>vatID</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l203"><code>node_modules\cassproject\src\org\schema\Person.js:203</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/vatID">Schema.org/vatID</a>
+The Value-added Tax ID of the organization or person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_weight" class="property item">
+    <h3 class="name"><code>weight</code></h3>
+    <span class="type"><a href="../classes/QuantitativeValue.html" class="crosslink">QuantitativeValue</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l149"><code>node_modules\cassproject\src\org\schema\Person.js:149</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/weight">Schema.org/weight</a>
+The weight of the product or person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_workLocation" class="property item">
+    <h3 class="name"><code>workLocation</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l32"><code>node_modules\cassproject\src\org\schema\Person.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/workLocation">Schema.org/workLocation</a>
+A contact location for a person's place of work.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_worksFor" class="property item">
+    <h3 class="name"><code>worksFor</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Person.js.html#l59"><code>node_modules\cassproject\src\org\schema\Person.js:59</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/worksFor">Schema.org/worksFor</a>
+Organizations that the person works for.</p>
+
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

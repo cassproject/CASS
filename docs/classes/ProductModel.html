@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>ProductModel Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Product.html" class="crosslink">Product</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_ProductModel.js.html#l1"><code>node_modules\cassproject\src\org\schema\ProductModel.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_ProductModel.js.html#l3"><code>node_modules\cassproject\src\org\schema\ProductModel.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1144,6 +1147,7 @@ A datasheet or vendor specification of a product (in the sense of a prototypical
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -1151,11 +1155,1782 @@ A datasheet or vendor specification of a product (in the sense of a prototypical
             <h2 class="off-left">Item Index</h2>
 
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalProperty">additionalProperty</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_aggregateRating">aggregateRating</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_audience">audience</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_award">award</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_awards">awards</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_brand">brand</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_category">category</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_color">color</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_depth">depth</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_gtin">gtin</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_gtin12">gtin12</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_gtin13">gtin13</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_gtin14">gtin14</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_gtin8">gtin8</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_hasEnergyConsumptionDetails">hasEnergyConsumptionDetails</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_hasMeasurement">hasMeasurement</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_hasMerchantReturnPolicy">hasMerchantReturnPolicy</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_hasProductReturnPolicy">hasProductReturnPolicy</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_height">height</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_inProductGroupWithID">inProductGroupWithID</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_isAccessoryOrSparePartFor">isAccessoryOrSparePartFor</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_isConsumableFor">isConsumableFor</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_isRelatedTo">isRelatedTo</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_isSimilarTo">isSimilarTo</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_isVariantOf">isVariantOf</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_itemCondition">itemCondition</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_logo">logo</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_manufacturer">manufacturer</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_material">material</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_model">model</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mpn">mpn</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_nsn">nsn</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_offers">offers</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_pattern">pattern</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_predecessorOf">predecessorOf</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_productID">productID</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_productionDate">productionDate</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_purchaseDate">purchaseDate</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_releaseDate">releaseDate</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_review">review</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_reviews">reviews</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_size">size</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sku">sku</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_slogan">slogan</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_successorOf">successorOf</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_weight">weight</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_width">width</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
 
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_additionalProperty" class="property item inherited">
+    <h3 class="name"><code>additionalProperty</code></h3>
+    <span class="type"><a href="../classes/PropertyValue.html" class="crosslink">PropertyValue</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_additionalProperty">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l214"><code>node_modules\cassproject\src\org\schema\Product.js:214</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/additionalProperty">Schema.org/additionalProperty</a>
+A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in <a href="http://schema.org">schema.org</a>.\n\nNote: Publishers should be aware that applications designed to use specific <a href="http://schema.org">schema.org</a> properties (e.g. schema:width, schema:color, schema:gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_aggregateRating" class="property item inherited">
+    <h3 class="name"><code>aggregateRating</code></h3>
+    <span class="type"><a href="../classes/AggregateRating.html" class="crosslink">AggregateRating</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_aggregateRating">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l41"><code>node_modules\cassproject\src\org\schema\Product.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/aggregateRating">Schema.org/aggregateRating</a>
+The overall rating, based on a collection of reviews or ratings, of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
+    </div>
+
+
+
+</div>
+<div id="property_audience" class="property item inherited">
+    <h3 class="name"><code>audience</code></h3>
+    <span class="type"><a href="../classes/Audience.html" class="crosslink">Audience</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_audience">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l404"><code>node_modules\cassproject\src\org\schema\Product.js:404</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/audience">Schema.org/audience</a>
+An intended audience, i.e. a group for whom something was created.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_award" class="property item inherited">
+    <h3 class="name"><code>award</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_award">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l159"><code>node_modules\cassproject\src\org\schema\Product.js:159</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/award">Schema.org/award</a>
+An award won by or for this item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_awards" class="property item inherited">
+    <h3 class="name"><code>awards</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_awards">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l395"><code>node_modules\cassproject\src\org\schema\Product.js:395</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/awards">Schema.org/awards</a>
+Awards won by or for this item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_brand" class="property item inherited">
+    <h3 class="name"><code>brand</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_brand">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l350"><code>node_modules\cassproject\src\org\schema\Product.js:350</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/brand">Schema.org/brand</a>
+The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_category" class="property item inherited">
+    <h3 class="name"><code>category</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_category">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l251"><code>node_modules\cassproject\src\org\schema\Product.js:251</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/category">Schema.org/category</a>
+A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_color" class="property item inherited">
+    <h3 class="name"><code>color</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_color">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l205"><code>node_modules\cassproject\src\org\schema\Product.js:205</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/color">Schema.org/color</a>
+The color of the product.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_depth" class="property item inherited">
+    <h3 class="name"><code>depth</code></h3>
+    <span class="type"><a href="../classes/Distance.html" class="crosslink">Distance</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_depth">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l68"><code>node_modules\cassproject\src\org\schema\Product.js:68</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/depth">Schema.org/depth</a>
+The depth of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l30"><code>node_modules\cassproject\src\org\schema\Thing.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/description
+A description of the item.
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_gtin" class="property item inherited">
+    <h3 class="name"><code>gtin</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_gtin">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l177"><code>node_modules\cassproject\src\org\schema\Product.js:177</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/gtin">Schema.org/gtin</a>
+A Global Trade Item Number (<a href="https://www.gs1.org/standards/id-keys/gtin">GTIN</a>). GTINs identify trade items, including products and services, using numeric identification codes. The [[gtin]] property generalizes the earlier [[gtin8]], [[gtin12]], [[gtin13]], and [[gtin14]] properties. The GS1 <a href="https://www.gs1.org/standards/Digital-Link/">digital link specifications</a> express GTINs as URLs. A correct [[gtin]] value should be a valid GTIN, which means that it should be an all-numeric string of either 8, 12, 13 or 14 digits, or a "GS1 Digital Link" URL based on such a string. The numeric component should also have a <a href="https://www.gs1.org/services/check-digit-calculator">valid GS1 check digit</a> and meet the other rules for valid GTINs. See also <a href="http://www.gs1.org/barcodes/technical/idkeys/gtin">GS1's GTIN Summary</a> and <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number">Wikipedia</a> for more details. Left-padding of the gtin values is not required or encouraged.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_gtin12" class="property item inherited">
+    <h3 class="name"><code>gtin12</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_gtin12">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l86"><code>node_modules\cassproject\src\org\schema\Product.js:86</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/gtin12">Schema.org/gtin12</a>
+The GTIN-12 code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See <a href="http://www.gs1.org/barcodes/technical/idkeys/gtin">GS1 GTIN Summary</a> for more details.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_gtin13" class="property item inherited">
+    <h3 class="name"><code>gtin13</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_gtin13">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l168"><code>node_modules\cassproject\src\org\schema\Product.js:168</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/gtin13">Schema.org/gtin13</a>
+The GTIN-13 code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceding zero. See <a href="http://www.gs1.org/barcodes/technical/idkeys/gtin">GS1 GTIN Summary</a> for more details.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_gtin14" class="property item inherited">
+    <h3 class="name"><code>gtin14</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_gtin14">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l314"><code>node_modules\cassproject\src\org\schema\Product.js:314</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/gtin14">Schema.org/gtin14</a>
+The GTIN-14 code of the product, or the product to which the offer refers. See <a href="http://www.gs1.org/barcodes/technical/idkeys/gtin">GS1 GTIN Summary</a> for more details.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_gtin8" class="property item inherited">
+    <h3 class="name"><code>gtin8</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_gtin8">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l359"><code>node_modules\cassproject\src\org\schema\Product.js:359</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/gtin8">Schema.org/gtin8</a>
+The GTIN-8 code of the product, or the product to which the offer refers. This code is also known as EAN/UCC-8 or 8-digit EAN. See <a href="http://www.gs1.org/barcodes/technical/idkeys/gtin">GS1 GTIN Summary</a> for more details.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasEnergyConsumptionDetails" class="property item inherited">
+    <h3 class="name"><code>hasEnergyConsumptionDetails</code></h3>
+    <span class="type"><a href="../classes/EnergyConsumptionDetails.html" class="crosslink">EnergyConsumptionDetails</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_hasEnergyConsumptionDetails">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l196"><code>node_modules\cassproject\src\org\schema\Product.js:196</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasEnergyConsumptionDetails">Schema.org/hasEnergyConsumptionDetails</a>
+Defines the energy efficiency Category (also known as "class" or "rating") for a product according to an international energy efficiency standard.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasMeasurement" class="property item inherited">
+    <h3 class="name"><code>hasMeasurement</code></h3>
+    <span class="type"><a href="../classes/QuantitativeValue.html" class="crosslink">QuantitativeValue</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_hasMeasurement">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l23"><code>node_modules\cassproject\src\org\schema\Product.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasMeasurement">Schema.org/hasMeasurement</a>
+A product measurement, for example the inseam of pants, the wheel size of a bicycle, or the gauge of a screw. Usually an exact measurement, but can also be a range of measurements for adjustable products, for example belts and ski bindings.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasMerchantReturnPolicy" class="property item inherited">
+    <h3 class="name"><code>hasMerchantReturnPolicy</code></h3>
+    <span class="type"><a href="../classes/MerchantReturnPolicy.html" class="crosslink">MerchantReturnPolicy</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_hasMerchantReturnPolicy">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l113"><code>node_modules\cassproject\src\org\schema\Product.js:113</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasMerchantReturnPolicy">Schema.org/hasMerchantReturnPolicy</a>
+Indicates a MerchantReturnPolicy that may be applicable.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasProductReturnPolicy" class="property item inherited">
+    <h3 class="name"><code>hasProductReturnPolicy</code></h3>
+    <span class="type"><a href="../classes/ProductReturnPolicy.html" class="crosslink">ProductReturnPolicy</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_hasProductReturnPolicy">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l50"><code>node_modules\cassproject\src\org\schema\Product.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasProductReturnPolicy">Schema.org/hasProductReturnPolicy</a>
+Indicates a ProductReturnPolicy that may be applicable.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_height" class="property item inherited">
+    <h3 class="name"><code>height</code></h3>
+    <span class="type"><a href="../classes/Distance.html" class="crosslink">Distance</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_height">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l77"><code>node_modules\cassproject\src\org\schema\Product.js:77</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/height">Schema.org/height</a>
+The height of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l75"><code>node_modules\cassproject\src\org\schema\Thing.js:75</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+    </div>
+
+
+
+</div>
+<div id="property_inProductGroupWithID" class="property item inherited">
+    <h3 class="name"><code>inProductGroupWithID</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_inProductGroupWithID">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l242"><code>node_modules\cassproject\src\org\schema\Product.js:242</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/inProductGroupWithID">Schema.org/inProductGroupWithID</a>
+Indicates the [[productGroupID]] for a [[ProductGroup]] that this product [[isVariantOf]].</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isAccessoryOrSparePartFor" class="property item inherited">
+    <h3 class="name"><code>isAccessoryOrSparePartFor</code></h3>
+    <span class="type"><a href="../classes/Product.html" class="crosslink">Product</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_isAccessoryOrSparePartFor">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l323"><code>node_modules\cassproject\src\org\schema\Product.js:323</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isAccessoryOrSparePartFor">Schema.org/isAccessoryOrSparePartFor</a>
+A pointer to another product (or multiple products) for which this product is an accessory or spare part.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isConsumableFor" class="property item inherited">
+    <h3 class="name"><code>isConsumableFor</code></h3>
+    <span class="type"><a href="../classes/Product.html" class="crosslink">Product</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_isConsumableFor">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l150"><code>node_modules\cassproject\src\org\schema\Product.js:150</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isConsumableFor">Schema.org/isConsumableFor</a>
+A pointer to another product (or multiple products) for which this product is a consumable.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isRelatedTo" class="property item inherited">
+    <h3 class="name"><code>isRelatedTo</code></h3>
+    <span class="type"><a href="../classes/Service.html" class="crosslink">Service</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_isRelatedTo">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l413"><code>node_modules\cassproject\src\org\schema\Product.js:413</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isRelatedTo">Schema.org/isRelatedTo</a>
+A pointer to another, somehow related product (or multiple products).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isSimilarTo" class="property item inherited">
+    <h3 class="name"><code>isSimilarTo</code></h3>
+    <span class="type"><a href="../classes/Service.html" class="crosslink">Service</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_isSimilarTo">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l95"><code>node_modules\cassproject\src\org\schema\Product.js:95</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isSimilarTo">Schema.org/isSimilarTo</a>
+A pointer to another, functionally similar product (or multiple products).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isVariantOf" class="property item">
+    <h3 class="name"><code>isVariantOf</code></h3>
+    <span class="type"><a href="../classes/ProductGroup.html" class="crosslink">ProductGroup</a></span>
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/Product.html#property_isVariantOf">
+                Product
+            </a>
+            but overwritten in
+        <a href="../files/node_modules_cassproject_src_org_schema_ProductModel.js.html#l23"><code>node_modules\cassproject\src\org\schema\ProductModel.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isVariantOf">Schema.org/isVariantOf</a>
+Indicates the kind of product that this is a variant of. In the case of [[ProductModel]], this is a pointer (from a ProductModel) to a base product from which this product is a variant. It is safe to infer that the variant inherits all product features from the base model, unless defined locally. This is not transitive. In the case of a [[ProductGroup]], the group description also serves as a template, representing a set of Products that vary on explicitly defined, specific dimensions only (so it defines both a set of variants, as well as which values distinguish amongst those variants). When used with [[ProductGroup]], this property can apply to any [[Product]] included in the group.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_itemCondition" class="property item inherited">
+    <h3 class="name"><code>itemCondition</code></h3>
+    <span class="type"><a href="../classes/OfferItemCondition.html" class="crosslink">OfferItemCondition</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_itemCondition">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l32"><code>node_modules\cassproject\src\org\schema\Product.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/itemCondition">Schema.org/itemCondition</a>
+A predefined value from OfferItemCondition or a textual description of the condition of the product or service, or the products or services included in the offer.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_logo" class="property item inherited">
+    <h3 class="name"><code>logo</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_logo">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l224"><code>node_modules\cassproject\src\org\schema\Product.js:224</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/logo">Schema.org/logo</a>
+An associated logo.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_manufacturer" class="property item inherited">
+    <h3 class="name"><code>manufacturer</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_manufacturer">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l332"><code>node_modules\cassproject\src\org\schema\Product.js:332</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/manufacturer">Schema.org/manufacturer</a>
+The manufacturer of the product.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_material" class="property item inherited">
+    <h3 class="name"><code>material</code></h3>
+    <span class="type"><a href="../classes/Product.html" class="crosslink">Product</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_material">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l377"><code>node_modules\cassproject\src\org\schema\Product.js:377</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/material">Schema.org/material</a>
+A material that something is made from, e.g. leather, wool, cotton, paper.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_model" class="property item inherited">
+    <h3 class="name"><code>model</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_model">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l341"><code>node_modules\cassproject\src\org\schema\Product.js:341</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/model">Schema.org/model</a>
+The model of the product. Use with the URL of a ProductModel or a textual representation of the model identifier. The URL of the ProductModel can be from an external source. It is recommended to additionally provide strong product identifiers via the gtin8/gtin13/gtin14 and mpn properties.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mpn" class="property item inherited">
+    <h3 class="name"><code>mpn</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_mpn">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l233"><code>node_modules\cassproject\src\org\schema\Product.js:233</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/mpn">Schema.org/mpn</a>
+The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l94"><code>node_modules\cassproject\src\org\schema\Thing.js:94</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/name
+The name of the item.
+    </div>
+
+
+
+</div>
+<div id="property_nsn" class="property item inherited">
+    <h3 class="name"><code>nsn</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_nsn">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l296"><code>node_modules\cassproject\src\org\schema\Product.js:296</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/nsn">Schema.org/nsn</a>
+Indicates the <a href="https://en.wikipedia.org/wiki/NATO_Stock_Number">NATO stock number</a> (nsn) of a [[Product]].</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_offers" class="property item inherited">
+    <h3 class="name"><code>offers</code></h3>
+    <span class="type"><a href="../classes/Demand.html" class="crosslink">Demand</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_offers">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l122"><code>node_modules\cassproject\src\org\schema\Product.js:122</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/offers">Schema.org/offers</a>
+An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event. Use [[businessFunction]] to indicate the kind of transaction offered, i.e. sell, lease, etc. This property can also be used to describe a [[Demand]]. While this property is listed as expected on a number of common types, it can be used in others. In that case, using a second type, such as Product or a subtype of Product, can clarify the nature of the offer.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_pattern" class="property item inherited">
+    <h3 class="name"><code>pattern</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_pattern">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l278"><code>node_modules\cassproject\src\org\schema\Product.js:278</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/pattern">Schema.org/pattern</a>
+A pattern that something has, for example 'polka dot', 'striped', 'Canadian flag'. Values are typically expressed as text, although links to controlled value schemes are also supported.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_predecessorOf" class="property item">
+    <h3 class="name"><code>predecessorOf</code></h3>
+    <span class="type"><a href="../classes/ProductModel.html" class="crosslink">ProductModel</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_ProductModel.js.html#l32"><code>node_modules\cassproject\src\org\schema\ProductModel.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/predecessorOf">Schema.org/predecessorOf</a>
+A pointer from a previous, often discontinued variant of the product to its newer variant.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_productID" class="property item inherited">
+    <h3 class="name"><code>productID</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_productID">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l422"><code>node_modules\cassproject\src\org\schema\Product.js:422</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/productID">Schema.org/productID</a>
+The product identifier, such as ISBN. For example: <code>meta itemprop="productID" content="isbn:123-456-789"</code>.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_productionDate" class="property item inherited">
+    <h3 class="name"><code>productionDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_productionDate">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l386"><code>node_modules\cassproject\src\org\schema\Product.js:386</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/productionDate">Schema.org/productionDate</a>
+The date of production of the item, e.g. vehicle.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_purchaseDate" class="property item inherited">
+    <h3 class="name"><code>purchaseDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_purchaseDate">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l305"><code>node_modules\cassproject\src\org\schema\Product.js:305</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/purchaseDate">Schema.org/purchaseDate</a>
+The date the item e.g. vehicle was purchased by the current owner.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_releaseDate" class="property item inherited">
+    <h3 class="name"><code>releaseDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_releaseDate">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l368"><code>node_modules\cassproject\src\org\schema\Product.js:368</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/releaseDate">Schema.org/releaseDate</a>
+The release date of a product or product model. This can be used to distinguish the exact variant of a product.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_review" class="property item inherited">
+    <h3 class="name"><code>review</code></h3>
+    <span class="type"><a href="../classes/Review.html" class="crosslink">Review</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_review">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l187"><code>node_modules\cassproject\src\org\schema\Product.js:187</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/review">Schema.org/review</a>
+A review of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_reviews" class="property item inherited">
+    <h3 class="name"><code>reviews</code></h3>
+    <span class="type"><a href="../classes/Review.html" class="crosslink">Review</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_reviews">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l141"><code>node_modules\cassproject\src\org\schema\Product.js:141</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/reviews">Schema.org/reviews</a>
+Review of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l21"><code>node_modules\cassproject\src\org\schema\Thing.js:21</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+    </div>
+
+
+
+</div>
+<div id="property_size" class="property item inherited">
+    <h3 class="name"><code>size</code></h3>
+    <span class="type"><a href="../classes/SizeSpecification.html" class="crosslink">SizeSpecification</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_size">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l59"><code>node_modules\cassproject\src\org\schema\Product.js:59</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/size">Schema.org/size</a>
+A standardized size of a product or creative work, specified either through a simple textual string (for example 'XL', '32Wx34L'), a  QuantitativeValue with a unitCode, or a comprehensive and structured [[SizeSpecification]]; in other cases, the [[width]], [[height]], [[depth]] and [[weight]] properties may be more applicable.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sku" class="property item inherited">
+    <h3 class="name"><code>sku</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_sku">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l287"><code>node_modules\cassproject\src\org\schema\Product.js:287</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/sku">Schema.org/sku</a>
+The Stock Keeping Unit (SKU), i.e. a merchant-specific identifier for a product or service, or the product to which the offer refers.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_slogan" class="property item inherited">
+    <h3 class="name"><code>slogan</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_slogan">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l269"><code>node_modules\cassproject\src\org\schema\Product.js:269</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/slogan">Schema.org/slogan</a>
+A slogan or motto associated with the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
+<div id="property_successorOf" class="property item">
+    <h3 class="name"><code>successorOf</code></h3>
+    <span class="type"><a href="../classes/ProductModel.html" class="crosslink">ProductModel</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_ProductModel.js.html#l41"><code>node_modules\cassproject\src\org\schema\ProductModel.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/successorOf">Schema.org/successorOf</a>
+A pointer from a newer variant of a product  to its previous, often discontinued predecessor.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
+    </div>
+
+
+
+</div>
+<div id="property_weight" class="property item inherited">
+    <h3 class="name"><code>weight</code></h3>
+    <span class="type"><a href="../classes/QuantitativeValue.html" class="crosslink">QuantitativeValue</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_weight">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l104"><code>node_modules\cassproject\src\org\schema\Product.js:104</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/weight">Schema.org/weight</a>
+The weight of the product or person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_width" class="property item inherited">
+    <h3 class="name"><code>width</code></h3>
+    <span class="type"><a href="../classes/QuantitativeValue.html" class="crosslink">QuantitativeValue</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Product.html#property_width">Product</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Product.js.html#l132"><code>node_modules\cassproject\src\org\schema\Product.js:132</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/width">Schema.org/width</a>
+The width of the item.</p>
+
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

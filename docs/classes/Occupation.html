@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>Occupation Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Intangible.html" class="crosslink">Intangible</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l1"><code>node_modules\cassproject\src\org\schema\Occupation.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l3"><code>node_modules\cassproject\src\org\schema\Occupation.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1155,9 +1158,17 @@ A profession, may involve prolonged training and/or a formal qualification.</p>
                 <div class="index-section properties">
                     <h3>Properties</h3>
 
-                    <ul class="index-list properties">
+                    <ul class="index-list properties extends">
                             <li class="index-item property">
                                 <a href="#property_abilityEmbodied">abilityEmbodied</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
 
                             </li>
                             <li class="index-item property">
@@ -1172,8 +1183,24 @@ A profession, may involve prolonged training and/or a formal qualification.</p>
                                 <a href="#property_ctid">ctid</a>
 
                             </li>
-                            <li class="index-item property">
+                            <li class="index-item property inherited">
                                 <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_educationRequirements">educationRequirements</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_estimatedSalary">estimatedSalary</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_experienceRequirements">experienceRequirements</a>
 
                             </li>
                             <li class="index-item property">
@@ -1188,8 +1215,12 @@ A profession, may involve prolonged training and/or a formal qualification.</p>
                                 <a href="#property_hasWorkRole">hasWorkRole</a>
 
                             </li>
-                            <li class="index-item property">
+                            <li class="index-item property inherited">
                                 <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
 
                             </li>
                             <li class="index-item property">
@@ -1208,15 +1239,39 @@ A profession, may involve prolonged training and/or a formal qualification.</p>
                                 <a href="#property_knowledgeEmbodied">knowledgeEmbodied</a>
 
                             </li>
-                            <li class="index-item property">
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
                                 <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_occupationalCategory">occupationalCategory</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_occupationLocation">occupationLocation</a>
 
                             </li>
                             <li class="index-item property">
                                 <a href="#property_occupationType">occupationType</a>
 
                             </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
                             <li class="index-item property">
+                                <a href="#property_qualifications">qualifications</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_responsibilities">responsibilities</a>
+
+                            </li>
+                            <li class="index-item property inherited">
                                 <a href="#property_sameAs">sameAs</a>
 
                             </li>
@@ -1225,7 +1280,19 @@ A profession, may involve prolonged training and/or a formal qualification.</p>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_skills">skills</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_subjectWebpage">subjectWebpage</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
 
                             </li>
                             <li class="index-item property">
@@ -1264,6 +1331,56 @@ A profession, may involve prolonged training and/or a formal qualification.</p>
         <p><a href="http://purl.org/ctdlasn/terms/abilityEmbodied">http://purl.org/ctdlasn/terms/abilityEmbodied</a>
 Enduring attributes of the individual that influence performance are embodied either directly or indirectly in this resource.</p>
 
+    </div>
+
+
+
+</div>
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
     </div>
 
 
@@ -1361,9 +1478,11 @@ The CTID is the equivalent of a version identifier for the resource. Different v
 
 
     <div class="meta">
-                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
-                <p>
-                Defined in
+            <p>Inherited from
+            <a href="../classes/Thing.html#property_description">
+                Thing
+            </a>
+            but overwritten in
         <a href="../files/node_modules_cassproject_src_org_credentialengine_Occupation.js.html#l67"><code>node_modules\cassproject\src\org\credentialengine\Occupation.js:67</code></a>
         </p>
 
@@ -1373,6 +1492,109 @@ The CTID is the equivalent of a version identifier for the resource. Different v
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
 Statement, characterization or account of the entity.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_educationRequirements" class="property item">
+    <h3 class="name"><code>educationRequirements</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l23"><code>node_modules\cassproject\src\org\schema\Occupation.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/educationRequirements">Schema.org/educationRequirements</a>
+Educational background needed for the position or Occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_estimatedSalary" class="property item">
+    <h3 class="name"><code>estimatedSalary</code></h3>
+    <span class="type"><a href="../classes/MonetaryAmount.html" class="crosslink">MonetaryAmount</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l41"><code>node_modules\cassproject\src\org\schema\Occupation.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/estimatedSalary">Schema.org/estimatedSalary</a>
+An estimated salary for a job posting or occupation, based on a variety of variables including, but not limited to industry, job title, and location. Estimated salaries  are often computed by outside organizations rather than the hiring organization, who may not have committed to the estimated value.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_experienceRequirements" class="property item">
+    <h3 class="name"><code>experienceRequirements</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l87"><code>node_modules\cassproject\src\org\schema\Occupation.js:87</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/experienceRequirements">Schema.org/experienceRequirements</a>
+Description of skills and experience needed for the position or Occupation.</p>
 
     </div>
 
@@ -1469,9 +1691,11 @@ Work Role related to this resource.</p>
 
 
     <div class="meta">
-                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
-                <p>
-                Defined in
+            <p>Inherited from
+            <a href="../classes/Thing.html#property_identifier">
+                Thing
+            </a>
+            but overwritten in
         <a href="../files/node_modules_cassproject_src_org_credentialengine_Occupation.js.html#l99"><code>node_modules\cassproject\src\org\credentialengine\Occupation.js:99</code></a>
         </p>
 
@@ -1482,6 +1706,31 @@ Work Role related to this resource.</p>
         <p><a href="http://purl.org/ctdl/terms/identifier">http://purl.org/ctdl/terms/identifier</a>
 Alphanumeric token that identifies this resource and information about the token's originating context or scheme.</p>
 
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
     </div>
 
 
@@ -1595,6 +1844,31 @@ Body of information embodied either directly or indirectly in this resource.</p>
 
 
 </div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
 <div id="property_name" class="property item">
     <h3 class="name"><code>name</code></h3>
     <span class="type">LangString</span>
@@ -1604,9 +1878,11 @@ Body of information embodied either directly or indirectly in this resource.</p>
 
 
     <div class="meta">
-                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
-                <p>
-                Defined in
+            <p>Inherited from
+            <a href="../classes/Thing.html#property_name">
+                Thing
+            </a>
+            but overwritten in
         <a href="../files/node_modules_cassproject_src_org_credentialengine_Occupation.js.html#l131"><code>node_modules\cassproject\src\org\credentialengine\Occupation.js:131</code></a>
         </p>
 
@@ -1616,6 +1892,59 @@ Body of information embodied either directly or indirectly in this resource.</p>
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/name">http://purl.org/ctdl/terms/name</a>
 Name or title of the resource.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_occupationalCategory" class="property item">
+    <h3 class="name"><code>occupationalCategory</code></h3>
+    <span class="type"><a href="../classes/CategoryCode.html" class="crosslink">CategoryCode</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l59"><code>node_modules\cassproject\src\org\schema\Occupation.js:59</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/occupationalCategory">Schema.org/occupationalCategory</a>
+A category describing the job, preferably using a term from a taxonomy such as <a href="http://www.onetcenter.org/taxonomy.html">BLS O*NET-SOC</a>, <a href="https://www.ilo.org/public/english/bureau/stat/isco/isco08/">ISCO-08</a> or similar, with the property repeated for each applicable value. Ideally the taxonomy should be identified, and both the textual label and formal code for the category should be provided.\n
+Note: for historical reasons, any textual label and formal code provided as a literal may be assumed to be from O*NET-SOC.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_occupationLocation" class="property item">
+    <h3 class="name"><code>occupationLocation</code></h3>
+    <span class="type"><a href="../classes/AdministrativeArea.html" class="crosslink">AdministrativeArea</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l69"><code>node_modules\cassproject\src\org\schema\Occupation.js:69</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/occupationLocation">Schema.org/occupationLocation</a>
+The region/country for which this occupational description is appropriate. Note that educational requirements and qualifications can vary between jurisdictions.</p>
 
     </div>
 
@@ -1649,6 +1978,83 @@ Type of occupation; select from an existing enumeration of such types.</p>
 
 
 </div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_qualifications" class="property item">
+    <h3 class="name"><code>qualifications</code></h3>
+    <span class="type"><a href="../classes/EducationalOccupationalCredential.html" class="crosslink">EducationalOccupationalCredential</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l78"><code>node_modules\cassproject\src\org\schema\Occupation.js:78</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/qualifications">Schema.org/qualifications</a>
+Specific qualifications required for this role or Occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_responsibilities" class="property item">
+    <h3 class="name"><code>responsibilities</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l50"><code>node_modules\cassproject\src\org\schema\Occupation.js:50</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/responsibilities">Schema.org/responsibilities</a>
+Responsibilities associated with this role or Occupation.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_sameAs" class="property item">
     <h3 class="name"><code>sameAs</code></h3>
     <span class="type">AnyURI</span>
@@ -1658,9 +2064,11 @@ Type of occupation; select from an existing enumeration of such types.</p>
 
 
     <div class="meta">
-                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
-                <p>
-                Defined in
+            <p>Inherited from
+            <a href="../classes/Thing.html#property_sameAs">
+                Thing
+            </a>
+            but overwritten in
         <a href="../files/node_modules_cassproject_src_org_credentialengine_Occupation.js.html#l147"><code>node_modules\cassproject\src\org\credentialengine\Occupation.js:147</code></a>
         </p>
 
@@ -1704,6 +2112,57 @@ Ability to apply knowledge and use know-how to complete tasks and solve problems
 
 
 </div>
+<div id="property_skills" class="property item">
+    <h3 class="name"><code>skills</code></h3>
+    <span class="type"><a href="../classes/DefinedTerm.html" class="crosslink">DefinedTerm</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Occupation.js.html#l32"><code>node_modules\cassproject\src\org\schema\Occupation.js:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/skills">Schema.org/skills</a>
+A statement of knowledge, skill, ability, task or any other assertion expressing a competency that is desired or required to fulfill this role or to work in this occupation.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
 <div id="property_subjectWebpage" class="property item">
     <h3 class="name"><code>subjectWebpage</code></h3>
     <span class="type">AnyURI</span>
@@ -1727,6 +2186,31 @@ Ability to apply knowledge and use know-how to complete tasks and solve problems
 Webpage that describes this entity.
 The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.</p>
 
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
     </div>
 
 

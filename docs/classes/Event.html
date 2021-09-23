@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.2</em>
+            <em>API Docs for: 0.5.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1123,9 +1123,12 @@
 <h1>Event Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Thing.html" class="crosslink">Thing</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l1"><code>node_modules\cassproject\src\org\schema\Event.js:1</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l3"><code>node_modules\cassproject\src\org\schema\Event.js:3</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1144,6 +1147,7 @@ An event happening at a certain time and location, such as a concert, lecture, o
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -1151,11 +1155,1545 @@ An event happening at a certain time and location, such as a concert, lecture, o
             <h2 class="off-left">Item Index</h2>
 
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_about">about</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_actor">actor</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_additionalType">additionalType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_aggregateRating">aggregateRating</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_alternateName">alternateName</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_attendee">attendee</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_attendees">attendees</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_audience">audience</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_composer">composer</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_contributor">contributor</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_description">description</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_director">director</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_doorTime">doorTime</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_duration">duration</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_endDate">endDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_eventAttendanceMode">eventAttendanceMode</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_eventSchedule">eventSchedule</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_eventStatus">eventStatus</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_funder">funder</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_identifier">identifier</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_image">image</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_inLanguage">inLanguage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isAccessibleForFree">isAccessibleForFree</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_location">location</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_maximumAttendeeCapacity">maximumAttendeeCapacity</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_maximumPhysicalAttendeeCapacity">maximumPhysicalAttendeeCapacity</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_maximumVirtualAttendeeCapacity">maximumVirtualAttendeeCapacity</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_offers">offers</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_organizer">organizer</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_performer">performer</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_performers">performers</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_previousStartDate">previousStartDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_recordedIn">recordedIn</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_remainingAttendeeCapacity">remainingAttendeeCapacity</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_review">review</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sameAs">sameAs</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_sponsor">sponsor</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_startDate">startDate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_subEvent">subEvent</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_subEvents">subEvents</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_subjectOf">subjectOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_superEvent">superEvent</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_translator">translator</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_typicalAgeRange">typicalAgeRange</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_url">url</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_workFeatured">workFeatured</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_workPerformed">workPerformed</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
 
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_about" class="property item">
+    <h3 class="name"><code>about</code></h3>
+    <span class="type"><a href="../classes/Thing.html" class="crosslink">Thing</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l255"><code>node_modules\cassproject\src\org\schema\Event.js:255</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/about">Schema.org/about</a>
+The subject matter of the content.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_actor" class="property item">
+    <h3 class="name"><code>actor</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l83"><code>node_modules\cassproject\src\org\schema\Event.js:83</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/actor">Schema.org/actor</a>
+An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_additionalType" class="property item inherited">
+    <h3 class="name"><code>additionalType</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_additionalType">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l66"><code>node_modules\cassproject\src\org\schema\Thing.js:66</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+    </div>
+
+
+
+</div>
+<div id="property_aggregateRating" class="property item">
+    <h3 class="name"><code>aggregateRating</code></h3>
+    <span class="type"><a href="../classes/AggregateRating.html" class="crosslink">AggregateRating</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l33"><code>node_modules\cassproject\src\org\schema\Event.js:33</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/aggregateRating">Schema.org/aggregateRating</a>
+The overall rating, based on a collection of reviews or ratings, of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_alternateName" class="property item inherited">
+    <h3 class="name"><code>alternateName</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_alternateName">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l85"><code>node_modules\cassproject\src\org\schema\Thing.js:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/alternateName
+An alias for the item.
+    </div>
+
+
+
+</div>
+<div id="property_attendee" class="property item">
+    <h3 class="name"><code>attendee</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l237"><code>node_modules\cassproject\src\org\schema\Event.js:237</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/attendee">Schema.org/attendee</a>
+A person or organization attending the event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_attendees" class="property item">
+    <h3 class="name"><code>attendees</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l65"><code>node_modules\cassproject\src\org\schema\Event.js:65</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/attendees">Schema.org/attendees</a>
+A person attending the event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_audience" class="property item">
+    <h3 class="name"><code>audience</code></h3>
+    <span class="type"><a href="../classes/Audience.html" class="crosslink">Audience</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l354"><code>node_modules\cassproject\src\org\schema\Event.js:354</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/audience">Schema.org/audience</a>
+An intended audience, i.e. a group for whom something was created.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_composer" class="property item">
+    <h3 class="name"><code>composer</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l291"><code>node_modules\cassproject\src\org\schema\Event.js:291</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/composer">Schema.org/composer</a>
+The person or organization who wrote a composition, or who is the composer of a work performed at some event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_contributor" class="property item">
+    <h3 class="name"><code>contributor</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l74"><code>node_modules\cassproject\src\org\schema\Event.js:74</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/contributor">Schema.org/contributor</a>
+A secondary contributor to the CreativeWork or Event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_description" class="property item inherited">
+    <h3 class="name"><code>description</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_description">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l30"><code>node_modules\cassproject\src\org\schema\Thing.js:30</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/description
+A description of the item.
+    </div>
+
+
+
+</div>
+<div id="property_director" class="property item">
+    <h3 class="name"><code>director</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l120"><code>node_modules\cassproject\src\org\schema\Event.js:120</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/director">Schema.org/director</a>
+A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_disambiguatingDescription" class="property item inherited">
+    <h3 class="name"><code>disambiguatingDescription</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_disambiguatingDescription">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l121"><code>node_modules\cassproject\src\org\schema\Thing.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+    </div>
+
+
+
+</div>
+<div id="property_doorTime" class="property item">
+    <h3 class="name"><code>doorTime</code></h3>
+    <span class="type">DateTime</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l318"><code>node_modules\cassproject\src\org\schema\Event.js:318</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/doorTime">Schema.org/doorTime</a>
+The time admission will commence.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_duration" class="property item">
+    <h3 class="name"><code>duration</code></h3>
+    <span class="type"><a href="../classes/Duration.html" class="crosslink">Duration</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l309"><code>node_modules\cassproject\src\org\schema\Event.js:309</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/duration">Schema.org/duration</a>
+The duration of the item (movie, audio recording, event, etc.) in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_endDate" class="property item">
+    <h3 class="name"><code>endDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l228"><code>node_modules\cassproject\src\org\schema\Event.js:228</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/endDate">Schema.org/endDate</a>
+The end date and time of the item (in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_eventAttendanceMode" class="property item">
+    <h3 class="name"><code>eventAttendanceMode</code></h3>
+    <span class="type"><a href="../classes/EventAttendanceModeEnumeration.html" class="crosslink">EventAttendanceModeEnumeration</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l282"><code>node_modules\cassproject\src\org\schema\Event.js:282</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/eventAttendanceMode">Schema.org/eventAttendanceMode</a>
+The eventAttendanceMode of an event indicates whether it occurs online, offline, or a mix.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_eventSchedule" class="property item">
+    <h3 class="name"><code>eventSchedule</code></h3>
+    <span class="type"><a href="../classes/Schedule.html" class="crosslink">Schedule</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l51"><code>node_modules\cassproject\src\org\schema\Event.js:51</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/eventSchedule">Schema.org/eventSchedule</a>
+Associates an [[Event]] with a [[Schedule]]. There are circumstances where it is preferable to share a schedule for a series of
+repeating events rather than data on the individual events themselves. For example, a website or application might prefer to publish a schedule for a weekly
+gym class rather than provide data on every event. A schedule could be processed by applications to add forthcoming events to a calendar. An [[Event]] that
+is associated with a [[Schedule]] using this property should not have [[startDate]] or [[endDate]] properties. These are instead defined within the associated
+[[Schedule]], this avoids any ambiguity for clients using the data. The property might have repeated values to specify different schedules, e.g. for different months
+or seasons.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_eventStatus" class="property item">
+    <h3 class="name"><code>eventStatus</code></h3>
+    <span class="type"><a href="../classes/EventStatusType.html" class="crosslink">EventStatusType</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l201"><code>node_modules\cassproject\src\org\schema\Event.js:201</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/eventStatus">Schema.org/eventStatus</a>
+An eventStatus of an event represents its status; particularly useful when an event is cancelled or rescheduled.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_funder" class="property item">
+    <h3 class="name"><code>funder</code></h3>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l327"><code>node_modules\cassproject\src\org\schema\Event.js:327</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/funder">Schema.org/funder</a>
+A person or organization that supports (sponsors) something through some kind of financial contribution.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifier" class="property item inherited">
+    <h3 class="name"><code>identifier</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l75"><code>node_modules\cassproject\src\org\schema\Thing.js:75</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+    </div>
+
+
+
+</div>
+<div id="property_image" class="property item inherited">
+    <h3 class="name"><code>image</code></h3>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_image">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l112"><code>node_modules\cassproject\src\org\schema\Thing.js:112</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+    </div>
+
+
+
+</div>
+<div id="property_inLanguage" class="property item">
+    <h3 class="name"><code>inLanguage</code></h3>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l264"><code>node_modules\cassproject\src\org\schema\Event.js:264</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/inLanguage">Schema.org/inLanguage</a>
+The language of the content or performance or used in an action. Please use one of the language codes from the <a href="http://tools.ietf.org/html/bcp47">IETF BCP 47 standard</a>. See also [[availableLanguage]].</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isAccessibleForFree" class="property item">
+    <h3 class="name"><code>isAccessibleForFree</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l183"><code>node_modules\cassproject\src\org\schema\Event.js:183</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/isAccessibleForFree">Schema.org/isAccessibleForFree</a>
+A flag to signal that the item, event, or place is accessible for free.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_location" class="property item">
+    <h3 class="name"><code>location</code></h3>
+    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l345"><code>node_modules\cassproject\src\org\schema\Event.js:345</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/location">Schema.org/location</a>
+The location of, for example, where an event is happening, where an organization is located, or where an action takes place.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mainEntityOfPage" class="property item inherited">
+    <h3 class="name"><code>mainEntityOfPage</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_mainEntityOfPage">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l57"><code>node_modules\cassproject\src\org\schema\Thing.js:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_maximumAttendeeCapacity" class="property item">
+    <h3 class="name"><code>maximumAttendeeCapacity</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l192"><code>node_modules\cassproject\src\org\schema\Event.js:192</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/maximumAttendeeCapacity">Schema.org/maximumAttendeeCapacity</a>
+The total number of individuals that may attend an event or venue.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_maximumPhysicalAttendeeCapacity" class="property item">
+    <h3 class="name"><code>maximumPhysicalAttendeeCapacity</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l210"><code>node_modules\cassproject\src\org\schema\Event.js:210</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/maximumPhysicalAttendeeCapacity">Schema.org/maximumPhysicalAttendeeCapacity</a>
+The maximum physical attendee capacity of an [[Event]] whose [[eventAttendanceMode]] is [[OfflineEventAttendanceMode]] (or the offline aspects, in the case of a [[MixedEventAttendanceMode]]).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_maximumVirtualAttendeeCapacity" class="property item">
+    <h3 class="name"><code>maximumVirtualAttendeeCapacity</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l363"><code>node_modules\cassproject\src\org\schema\Event.js:363</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/maximumVirtualAttendeeCapacity">Schema.org/maximumVirtualAttendeeCapacity</a>
+The maximum physical attendee capacity of an [[Event]] whose [[eventAttendanceMode]] is [[OnlineEventAttendanceMode]] (or the online aspects, in the case of a [[MixedEventAttendanceMode]]).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item inherited">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_name">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l94"><code>node_modules\cassproject\src\org\schema\Thing.js:94</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/name
+The name of the item.
+    </div>
+
+
+
+</div>
+<div id="property_offers" class="property item">
+    <h3 class="name"><code>offers</code></h3>
+    <span class="type"><a href="../classes/Demand.html" class="crosslink">Demand</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l101"><code>node_modules\cassproject\src\org\schema\Event.js:101</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/offers">Schema.org/offers</a>
+An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event. Use [[businessFunction]] to indicate the kind of transaction offered, i.e. sell, lease, etc. This property can also be used to describe a [[Demand]]. While this property is listed as expected on a number of common types, it can be used in others. In that case, using a second type, such as Product or a subtype of Product, can clarify the nature of the offer.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_organizer" class="property item">
+    <h3 class="name"><code>organizer</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l156"><code>node_modules\cassproject\src\org\schema\Event.js:156</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/organizer">Schema.org/organizer</a>
+An organizer of an Event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_performer" class="property item">
+    <h3 class="name"><code>performer</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l92"><code>node_modules\cassproject\src\org\schema\Event.js:92</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/performer">Schema.org/performer</a>
+A performer at the event—for example, a presenter, musician, musical group or actor.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_performers" class="property item">
+    <h3 class="name"><code>performers</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l300"><code>node_modules\cassproject\src\org\schema\Event.js:300</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/performers">Schema.org/performers</a>
+The main performer or performers of the event—for example, a presenter, musician, or actor.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_potentialAction" class="property item inherited">
+    <h3 class="name"><code>potentialAction</code></h3>
+    <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_potentialAction">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l48"><code>node_modules\cassproject\src\org\schema\Thing.js:48</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+    </div>
+
+
+
+</div>
+<div id="property_previousStartDate" class="property item">
+    <h3 class="name"><code>previousStartDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l129"><code>node_modules\cassproject\src\org\schema\Event.js:129</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/previousStartDate">Schema.org/previousStartDate</a>
+Used in conjunction with eventStatus for rescheduled or cancelled events. This property contains the previously scheduled start date. For rescheduled events, the startDate property should be used for the newly scheduled start date. In the (rare) case of an event that has been postponed and rescheduled multiple times, this field may be repeated.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_recordedIn" class="property item">
+    <h3 class="name"><code>recordedIn</code></h3>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l246"><code>node_modules\cassproject\src\org\schema\Event.js:246</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/recordedIn">Schema.org/recordedIn</a>
+The CreativeWork that captured all or part of this Event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_remainingAttendeeCapacity" class="property item">
+    <h3 class="name"><code>remainingAttendeeCapacity</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l336"><code>node_modules\cassproject\src\org\schema\Event.js:336</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/remainingAttendeeCapacity">Schema.org/remainingAttendeeCapacity</a>
+The number of attendee places for an event that remain unallocated.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_review" class="property item">
+    <h3 class="name"><code>review</code></h3>
+    <span class="type"><a href="../classes/Review.html" class="crosslink">Review</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l138"><code>node_modules\cassproject\src\org\schema\Event.js:138</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/review">Schema.org/review</a>
+A review of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_sameAs" class="property item inherited">
+    <h3 class="name"><code>sameAs</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_sameAs">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l21"><code>node_modules\cassproject\src\org\schema\Thing.js:21</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+    </div>
+
+
+
+</div>
+<div id="property_sponsor" class="property item">
+    <h3 class="name"><code>sponsor</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l174"><code>node_modules\cassproject\src\org\schema\Event.js:174</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/sponsor">Schema.org/sponsor</a>
+A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_startDate" class="property item">
+    <h3 class="name"><code>startDate</code></h3>
+    <span class="type">Date</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l111"><code>node_modules\cassproject\src\org\schema\Event.js:111</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/startDate">Schema.org/startDate</a>
+The start date and time of the item (in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subEvent" class="property item">
+    <h3 class="name"><code>subEvent</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l219"><code>node_modules\cassproject\src\org\schema\Event.js:219</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/subEvent">Schema.org/subEvent</a>
+An Event that is part of this event. For example, a conference event includes many presentations, each of which is a subEvent of the conference.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subEvents" class="property item">
+    <h3 class="name"><code>subEvents</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l165"><code>node_modules\cassproject\src\org\schema\Event.js:165</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/subEvents">Schema.org/subEvents</a>
+Events that are a part of this event. For example, a conference event includes many presentations, each subEvents of the conference.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_subjectOf" class="property item inherited">
+    <h3 class="name"><code>subjectOf</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_subjectOf">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l39"><code>node_modules\cassproject\src\org\schema\Thing.js:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/subjectOf
+A CreativeWork or Event about this Thing.
+    </div>
+
+
+
+</div>
+<div id="property_superEvent" class="property item">
+    <h3 class="name"><code>superEvent</code></h3>
+    <span class="type"><a href="../classes/Event.html" class="crosslink">Event</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l273"><code>node_modules\cassproject\src\org\schema\Event.js:273</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/superEvent">Schema.org/superEvent</a>
+An event that this event is a part of. For example, a collection of individual music performances might each have a music festival as their superEvent.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_translator" class="property item">
+    <h3 class="name"><code>translator</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l147"><code>node_modules\cassproject\src\org\schema\Event.js:147</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/translator">Schema.org/translator</a>
+Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market, or that translates during some event.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_typicalAgeRange" class="property item">
+    <h3 class="name"><code>typicalAgeRange</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l372"><code>node_modules\cassproject\src\org\schema\Event.js:372</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/typicalAgeRange">Schema.org/typicalAgeRange</a>
+The typical expected age range, e.g. '7-9', '11-'.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_url" class="property item inherited">
+    <h3 class="name"><code>url</code></h3>
+    <span class="type">URL</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/node_modules_cassproject_src_org_schema_Thing.js.html#l103"><code>node_modules\cassproject\src\org\schema\Thing.js:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        Schema.org/url
+URL of the item.
+    </div>
+
+
+
+</div>
+<div id="property_workFeatured" class="property item">
+    <h3 class="name"><code>workFeatured</code></h3>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l23"><code>node_modules\cassproject\src\org\schema\Event.js:23</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/workFeatured">Schema.org/workFeatured</a>
+A work featured in some event, e.g. exhibited in an ExhibitionEvent.
+Specific subproperties are available for workPerformed (e.g. a play), or a workPresented (a Movie at a ScreeningEvent).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_workPerformed" class="property item">
+    <h3 class="name"><code>workPerformed</code></h3>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_org_schema_Event.js.html#l42"><code>node_modules\cassproject\src\org\schema\Event.js:42</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/workPerformed">Schema.org/workPerformed</a>
+A work performed in some event, for example a play performed in a TheaterEvent.</p>
+
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>
