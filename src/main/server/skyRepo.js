@@ -175,17 +175,14 @@ var filterResults = async function(o) {
                 }
             if (!foundSignature) 
                 throw new Error("Signature Violation");
-            console.log("Something decryptable!");
             //Securing Proxy: Decrypt data that is 
             if (this.ctx.req.eim != null)
             {
-                console.log("We can decrypt it!");
                 try
                 {
                     o = await EcEncryptedValue.fromEncryptedValue(rld,null,null,this.ctx.req.eim)
                     o["isEncrypted"] = true;
                     o = JSON.parse(o.toJson());
-                    console.log("We decrypted it!");
                 }
                 catch (msg){
                     console.log("We couldn't decrypt it, hope the client has better luck! -- " + msg);
