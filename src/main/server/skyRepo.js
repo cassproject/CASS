@@ -438,21 +438,14 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
         console.log(JSON.stringify(results));
     return JSON.stringify(results);
 };
-var skyrepoPutInternal = async function(o, id, version, type, oldObj) {
-    if (oldObj != null) {
-        var oldType = inferTypeFromObj(oldObj, null);
-        if (oldType != type && type != null && (version == null)) {
-            var perm = await skyrepoGetPermanent.call(this, id, null, oldType);
-            version = ((((perm)["_version"]) + 1));
-        }
-    }
+var skyrepoPutInternal = async function(o, id, version, type) {
     //Securing Proxy: Sign data that is to be saved.
+    let erld = new EcRemoteLinkedData(null,null);
+    erld.copyFrom(o);
     if (this.ctx.req.eim != null)
     {
         try
         {
-            let erld = new EcRemoteLinkedData(null,null);
-            erld.copyFrom(o);
             await this.ctx.req.eim.sign(erld);
             o = JSON.parse(erld.toJson());
         }
@@ -460,17 +453,17 @@ var skyrepoPutInternal = async function(o, id, version, type, oldObj) {
             console.trace(msg);
         }
     }
+    if (erld.id != null)
+    {
+        var oldIndexRecords = await skyrepoGetIndexRecords(erld.shortId());
+        for (let oldIndexRecord of oldIndexRecords)
+            await skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
+    }
     var obj = await skyrepoPutInternalIndex.call(this,o, id, version, type);
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
     version = (obj)["_version"];
     await skyrepoPutInternalPermanent.call(this,o, id, version, type);
-    if (oldObj != null) {
-        var oldType = inferTypeFromObj(oldObj, null);
-        if (oldType != type && type != null) {
-            await skyrepoDeleteInternalIndex.call(this,id, null, oldType);
-        }
-    }
     var rld = new EcRemoteLinkedData(null, null);
     rld.copyFrom(o);
     if (rld.isAny(new EcRekeyRequest().getTypes())) {
@@ -531,6 +524,23 @@ var skyrepoGetIndexSearch = async function(id, version, type)
         return null;
     var hit = hits[0];
     return hit;
+}
+
+var skyrepoGetIndexRecords = async function(id)
+{
+    var microSearchUrl = elasticEndpoint + "/_search?version&q=@id:\"" + id + "\"";
+    let microSearch = await httpGet(microSearchUrl, true);
+    if (skyrepoDebug) 
+        console.log(microSearchUrl);
+    if (microSearch == null) 
+        return null;
+    var hitshits = (microSearch)["hits"];
+    if (hitshits == null) 
+        return null;
+    var hits = (hitshits)["hits"];
+    if (hits.length == 0) 
+        return null;
+    return hits;
 }
 
 var skyrepoGetIndex = async function(id, version, type) {
@@ -698,8 +708,8 @@ var skyrepoPut = async function(parseParams) {
 global.skyrepoPutParsed = async function(o, id, version, type) {
     if (o == null) 
         return;
-    var oldObj = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.", null, null);
-    await skyrepoPutInternal.call(this,o, id, version, type, oldObj);
+    await (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.", null, null);
+    await skyrepoPutInternal.call(this,o, id, version, type);
 };
 var validateSignatures = async function(id, version, type, errorMessage) {
     var oldGet = await (skyrepoGetInternal).call(this, id, version, type);
