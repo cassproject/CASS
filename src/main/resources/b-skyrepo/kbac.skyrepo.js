@@ -1,4 +1,4 @@
-var skyrepoDebug = false;
+var skyrepoDebug = true;
 var elasticSearchInfo = null;
 var elasticSearchVersion = function() {
     if (elasticSearchInfo == null) 
@@ -6,6 +6,7 @@ var elasticSearchVersion = function() {
     return ((elasticSearchInfo)["version"])["number"];
 };
 var elasticEndpoint = "http://localhost:9200";
+
 var owner = function() {
     return "owner";
 };
@@ -399,25 +400,25 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
         console.log(JSON.stringify(out));
     return JSON.stringify(out);
 };
-var skyrepoPutInternal = function(o, id, version, type, oldObj) {
-    if (oldObj != null) {
-        var oldType = inferTypeFromObj(oldObj, null);
-        if (oldType != type && type != null && (version == null)) {
-            var perm = skyrepoGetPermanent(id, null, oldType);
-            version = ((((perm)["_version"]) + 1));
+var skyrepoPutInternal = function(o, id, version, type) {
+    var erld = new EcRemoteLinkedData(null,null);
+    erld.copyFrom(o);
+    if (erld.id != null)
+    {
+        console.log(erld.shortId());
+        var oldIndexRecords = skyrepoGetIndexRecords.call(this,erld.shortId());
+        if (oldIndexRecords != null)
+        for (var oldIndexRecordIndex = 0;oldIndexRecordIndex < oldIndexRecords.length;oldIndexRecordIndex++)
+        {
+            var oldIndexRecord = oldIndexRecords[oldIndexRecordIndex];
+            skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
         }
     }
-    var obj = skyrepoPutInternalIndex(o, id, version, type);
+    var obj = skyrepoPutInternalIndex.call(this,o, id, version, type);
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
     version = (obj)["_version"];
-    skyrepoPutInternalPermanent(o, id, version, type);
-    if (oldObj != null) {
-        var oldType = inferTypeFromObj(oldObj, null);
-        if (oldType != type && type != null) {
-            skyrepoDeleteInternalIndex(id, null, oldType);
-        }
-    }
+    skyrepoPutInternalPermanent.call(this,o, id, version, type);
     var rld = new EcRemoteLinkedData(null, null);
     rld.copyFrom(o);
     if (rld.isAny(new EcRekeyRequest().getTypes())) {
@@ -428,8 +429,23 @@ var skyrepoPutInternal = function(o, id, version, type, oldObj) {
         console.log(EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
     }
 };
+var skyrepoGetIndexRecords = function(shortId) {
+    var searchParameters = (searchObj).call(this, "@id:\"" + shortId + "\"");
+    if (skyrepoDebug) 
+        console.log(JSON.stringify(searchParameters));
+    var microSearch = httpPost(searchParameters, searchUrl(null), "application/json", false, null, null, true);
+    if (microSearch == null) 
+        return null;
+    var hitshits = (microSearch)["hits"];
+    if (hitshits == null) 
+        return null;
+    var hits = (hitshits)["hits"];
+    if (hits.length == 0) 
+        return null;
+    return hits;
+};
 var skyRepoPutInternal = function(o, id, version, type) {
-    skyrepoPutInternal(o, id, version, type, null);
+    skyrepoPutInternal.call(this,o, id, version, type, null);
 };
 var skyrepoGetIndexInternal = function(index, id, version, type) {
     if (skyrepoDebug) 
@@ -545,7 +561,7 @@ var skyrepoPutParsed = function(o, id, version, type) {
     if (o == null) 
         return;
     var oldObj = (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.", null, null);
-    skyrepoPutInternal(o, id, version, type, oldObj);
+    skyrepoPutInternal.call(this,o, id, version, type, oldObj);
 };
 var validateSignatures = function(id, version, type, errorMessage) {
     var oldGet = (skyrepoGetInternal).call(this, id, version, type, null);
