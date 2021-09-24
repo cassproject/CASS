@@ -8,8 +8,6 @@ services:
     ports:
       - 80:80
     restart: always
-    depends_on:
-      - cass
     networks:
       - esnet
   cass:
@@ -87,6 +85,35 @@ services:
 #      - ./data:/usr/share/elasticsearch/data
 #    networks:
 #      - esnet
+  mysql-keycloak:
+    image: mysql:5.7
+    container_name: mysql-keycloak
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+    networks:
+      - esnet
+  keycloak:
+    image: jboss/keycloak
+    container_name: keycloak
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql-keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: cass
+      KEYCLOAK_PASSWORD: cass
+      KEYCLOAK_HOSTNAME: localhost
+      KEYCLOAK_HTTP_PORT: 80
+    depends_on:
+      - mysql-keycloak
+    networks:
+      - esnet
 volumes:
   etc:
     driver: local
