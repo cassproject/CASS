@@ -1,4 +1,4 @@
-var skyrepoDebug = true;
+var skyrepoDebug = false;
 var elasticSearchInfo = null;
 var elasticSearchVersion = function() {
     if (elasticSearchInfo == null) 
@@ -411,7 +411,7 @@ var skyrepoPutInternal = function(o, id, version, type) {
         for (var oldIndexRecordIndex = 0;oldIndexRecordIndex < oldIndexRecords.length;oldIndexRecordIndex++)
         {
             var oldIndexRecord = oldIndexRecords[oldIndexRecordIndex];
-            skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
+            skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._type == "_doc" ? oldIndexRecord._index : oldIndexRecord._type);
         }
     }
     var obj = skyrepoPutInternalIndex.call(this,o, id, version, type);
