@@ -139,9 +139,18 @@ var skyIdLogin = async function() {
     delete (get)["password"];
     return JSON.stringify(get);
 };
-var loadConfigurationFile = function(path, dflt) {
+global.loadConfigurationFile = function(path, dflt) {
     if (fs.existsSync("etc") == false)
         fs.mkdirSync("etc");
+    let pathParts = path.split("/");
+    pathParts.pop();
+    let cumulativePath = "etc/";
+    for (let path of pathParts)
+    {
+        cumulativePath += path + "/";
+        if (fs.existsSync(cumulativePath) == false)
+            fs.mkdirSync(cumulativePath);    
+    }
     if (fs.existsSync(path)) 
         return fileToString(fileLoad(path));
     if (fs.existsSync("etc/" + path)) 

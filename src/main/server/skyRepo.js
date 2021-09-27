@@ -1,4 +1,6 @@
 const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
+const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
+const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/general/EcRemoteLinkedData');
 const fs = require('fs');
 var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
@@ -150,7 +152,7 @@ var filterResults = async function(o) {
             try {
                 result = await (filterResults).call(this, ary[i], null);
             }catch (ex) {
-                if (ex != null && ex.toString().indexOf("Signature Violation") != -1)
+                if (ex != null && ex.toString().indexOf("Signature Violation") == -1)
                      throw ex;
             }
             if (result == null) {
@@ -172,7 +174,20 @@ var filterResults = async function(o) {
                     break;
                 }
             if (!foundSignature) 
-                 throw new RuntimeException("Signature Violation");
+                throw new Error("Signature Violation");
+            //Securing Proxy: Decrypt data that is 
+            if (this.ctx.req.eim != null)
+            {
+                try
+                {
+                    o = await EcEncryptedValue.fromEncryptedValue(rld,null,null,this.ctx.req.eim)
+                    o["isEncrypted"] = true;
+                    o = JSON.parse(o.toJson());
+                }
+                catch (msg){
+                    console.log("We couldn't decrypt it, hope the client has better luck! -- " + msg);
+                }
+            }
         }
         var keys = EcObject.keys(o);
         for (var i = 0; i < keys.length; i++) {
@@ -421,8 +436,20 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
     return JSON.stringify(results);
 };
 var skyrepoPutInternal = async function(o, id, version, type) {
+    //Securing Proxy: Sign data that is to be saved.
     let erld = new EcRemoteLinkedData(null,null);
     erld.copyFrom(o);
+    if (this.ctx.req.eim != null)
+    {
+        try
+        {
+            await this.ctx.req.eim.sign(erld);
+            o = JSON.parse(erld.toJson());
+        }
+        catch (msg){
+            console.trace(msg);
+        }
+    }
     if (erld.id != null)
     {
         var oldIndexRecords = await skyrepoGetIndexRecords(erld.shortId());
@@ -648,6 +675,7 @@ var skyrepoManyGetParsed = async function(manyParseParams) {
     }catch (ex) {
         if (ex.toString().indexOf("Signature Violation") != -1) 
              throw ex;
+        console.trace(ex);
     }
     if (filtered == null) 
         return null;
@@ -1142,6 +1170,9 @@ var pingWithTime = function() {
     var o = {};
     (o)["ping"] = "pong";
     (o)["time"] = new Date().getTime();
+    //Securing Proxy: Return public key as part of init.
+    if (this.ctx.req.eim != null)
+        (o)["ssoPublicKey"] = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
     return JSON.stringify(o);
 };
 (function() {
