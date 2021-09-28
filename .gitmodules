@@ -1,4 +1,4 @@
 [submodule "cass-editor"]
 	path = src/main/webapp
-#	url = https://github.com/cassproject/cass-editor.git
-	url = ../cass-editor.git
+	url = https://github.com/cassproject/cass-editor.git
+#	url = ../cass-editor.git 

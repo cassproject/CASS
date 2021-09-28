@@ -1173,6 +1173,12 @@ var pingWithTime = function() {
     //Securing Proxy: Return public key as part of init.
     if (this.ctx.req.eim != null)
         (o)["ssoPublicKey"] = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
+        
+    if (this.ctx.req.oidc != null)
+    {
+       (o)["ssoLogin"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/api/')+"login";
+       (o)["ssoLogout"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/api/')+"logout";
+    }
     return JSON.stringify(o);
 };
 (function() {

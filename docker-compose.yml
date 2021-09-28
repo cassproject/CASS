@@ -7,9 +7,8 @@ services:
     container_name: apache2
     ports:
       - 80:80
+      - 443:443
     restart: always
-    networks:
-      - esnet
   cass:
     build:
       context: .
@@ -95,11 +94,11 @@ services:
       MYSQL_DATABASE: keycloak
       MYSQL_USER: keycloak
       MYSQL_PASSWORD: password
-    networks:
-      - esnet
   keycloak:
     image: jboss/keycloak
     container_name: keycloak
+    ports:
+      - 8080:8080
     environment:
       DB_VENDOR: MYSQL
       DB_ADDR: mysql-keycloak
@@ -112,8 +111,6 @@ services:
       KEYCLOAK_HTTP_PORT: 80
     depends_on:
       - mysql-keycloak
-    networks:
-      - esnet
 volumes:
   etc:
     driver: local

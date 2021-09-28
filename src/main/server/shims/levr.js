@@ -173,50 +173,6 @@ global.bindWebService = function(endpoint,callback){
     app.delete(baseUrl + '/api' + endpoint,deleet);
 }
 
-app.use(async function (req, res, next) {
-   if (!req.client.authorized) {
-       //console.log('User is not Client Side Certificate authorized');
-       next();
-       return;
-   }
-   //examine the cert itself, and even validate based on that!
-   var cert = req.socket.getPeerCertificate();
-   if (cert.subject) {
-       if (cert.subject.emailAddress != null)
-       {
-           console.log(`Securing Proxy: Creating signature sheet for request from ${cert.subject.emailAddress}.`)
-           let eim = new EcIdentityManager();
-           let myKey = loadConfigurationFile("keys/"+cert.subject.emailAddress, () => {
-                return EcPpk.fromPem(rsaGenerate()).toPem();
-           });
-           let i = new EcIdentity();
-           i.displayName = cert.subject.CN;
-           i.ppk = EcPpk.fromPem(myKey);
-           eim.addIdentity(i);
-           let p = null;
-           try{
-               p = await EcPerson.getByPk(repo,i.ppk.toPk(),null,null,eim);
-           }catch(ex){
-                console.log("Could not find person.");
-           }
-           if (p == null)
-           {
-               console.log("Creating person.");
-               p = new EcPerson();
-               p.addOwner(i.ppk.toPk());
-               p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,i.ppk.toPk().fingerprint());
-               p.name = cert.subject.CN;
-               p.email = cert.subject.emailAddress;
-               await repo.saveTo(p);
-           }
-           let signatureSheet = await eim.signatureSheet(60000,repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy);
-           req.headers.signatureSheet = signatureSheet;
-           req.eim = eim;
-       } 
-   }
-   next();
-});
-
 if (global.fileFromDatastream === undefined)
 global.fileFromDatastream = function(dataStream){
     if (this.dataStreams === undefined || this.dataStreams == null) return null;

@@ -27,10 +27,8 @@ const cors = require('cors');
 const https = require('https');
 app.use(cors());
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
-const port = process.env.PORT || envHttps ? 443 : 80;
+const port = process.env.PORT || (envHttps ? 443 : 80);
 require("./server/websocket.js");
-
-app.use(baseUrl,express.static('src/main/webapp/'));
 
 global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || envHttps ? "https://localhost/api/" : "http://localhost/api";
@@ -41,6 +39,8 @@ global.skyrepoDebug = false;
 global.thisEndpoint = function(){return repo.selectedServer;}
 global.repoEndpoint = function(){return repo.selectedServer;}
 
+
+require("./server/shims/auth.js");
 require("./server/shims/levr.js");
 require("./server/shims/stjs.js");
 require("./server/shims/cassproject.js");
@@ -62,6 +62,8 @@ require("./server/adapter/openbadges/openbadges.js");
 require("./server/adapter/xapi/xapi.js");
 require("./server/adapter/replicate/replicate.js");
 
+app.use(baseUrl,express.static('src/main/webapp/'));
+
 let v8 = require("v8");
 
 skyrepoMigrate(function(){
@@ -69,7 +71,7 @@ skyrepoMigrate(function(){
         key: fs.readFileSync('cass.key'),
         cert: fs.readFileSync('cass.crt'),
         ca: global.ca = fs.readFileSync('ca.crt'), //client auth ca OR cert
-        requestCert: true,                   //new
+        requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,                   //new
         rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false            //new
     };
     const after = async () => {    
