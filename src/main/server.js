@@ -28,7 +28,6 @@ const https = require('https');
 app.use(cors());
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 const port = process.env.PORT || (envHttps ? 443 : 80);
-require("./server/websocket.js");
 
 global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || envHttps ? "https://localhost/api/" : "http://localhost/api";
@@ -63,6 +62,7 @@ require("./server/adapter/xapi/xapi.js");
 require("./server/adapter/replicate/replicate.js");
 
 app.use(baseUrl,express.static('src/main/webapp/'));
+app.use(baseUrl+"cass-editor/",express.static('src/main/webapp/'));
 
 let v8 = require("v8");
 
@@ -87,9 +87,10 @@ skyrepoMigrate(function(){
     };
     if (envHttps)
     {
-        https.createServer(options, app).listen(port, after);
+        global.server = https.createServer(options, app).listen(port, after);
         https.globalAgent.options.rejectUnauthorized = false;
     }
     else
-        app.listen(port,after);
+        global.server = app.listen(port,after);
+    require("./server/websocket.js");
 });

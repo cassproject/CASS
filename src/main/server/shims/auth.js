@@ -1,7 +1,7 @@
 
-const { auth } = require('express-openid-connect');
-if (process.env.OIDC_ENABLED || true)
+if (process.env.CASS_OIDC_ENABLED || false)
 {
+    const { auth } = require('express-openid-connect');
     app.use(
         auth({
             issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL || 'https://dev.keycloak.eduworks.com/auth/realms/test-realm/',
@@ -29,13 +29,43 @@ if (process.env.OIDC_ENABLED || true)
     });
 }
 
+if (process.env.CASS_JWT_ENABLED)
+{
+    var jwt = require('express-jwt');
+    app.use(
+        jwt({
+            secret: process.env.CASS_JWT_SECRET || 'cass',
+            algorithms: [process.env.CASS_JWT_ALGORITHM || 'HS256'],
+            credentialsRequired: false
+        })
+    );
+}
+
 app.use(async function (req, res, next) {
     let email = null;
     let identifier = null;
     let name = null;
+    if (req.user != null)
+    {
+        if (req.user.iat != null)
+        {
+            let secondsSinceEpoch = req.user.iat;
+            if (secondsSinceEpoch * 1000 + 600000 < new Date().getTime())
+            {
+                res.end("JWT token is expired.");
+                return;
+            }
+        }
+        if (req.user.name != null)
+            name = req.user.name;
+        if (req.user.email != null)
+            email = req.user.email;
+        if (req.user.identifier != null)
+            identifier = req.user.sub;
+    }
     if (req.oidc?.user != null)
     {
-        console.log(req.oidc.user);
+        //console.log(req.oidc.user);
         name = req.oidc.user.name;
         identifier = req.oidc.user.sub;
         email = req.oidc.user.email;

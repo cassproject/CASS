@@ -1,4 +1,4 @@
-var expressWs = require('express-ws')(app);
+var expressWs = require('express-ws')(global.app, global.server);
 let wses = [];
 app.ws('/ws/custom', function(ws, req) {
     wses.push(ws);
@@ -14,5 +14,9 @@ app.ws('/ws/custom', function(ws, req) {
 });
 global.wsBroadcast = function(s){
     for (let ws of wses)
+    try {
         ws.send(s);
+    } catch(err) {
+        console.trace(err);
+    }
 }

@@ -163,6 +163,7 @@ var filterResults = async function(o) {
         }
         return ary;
     } else if (EcObject.isObject(o)) {
+        delete o.decryptedSecret;
         var rld = new EcRemoteLinkedData((o)["@context"], (o)["@type"]);
         rld.copyFrom(o);
         if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
@@ -175,14 +176,17 @@ var filterResults = async function(o) {
                 }
             if (!foundSignature) 
                 throw new Error("Signature Violation");
-            //Securing Proxy: Decrypt data that is 
+            //Securing Proxy: Decrypt data that is being passed back via SSO.
             if (this.ctx.req.eim != null)
             {
                 try
                 {
-                    o = await EcEncryptedValue.fromEncryptedValue(rld,null,null,this.ctx.req.eim)
-                    o["isEncrypted"] = true;
-                    o = JSON.parse(o.toJson());
+                    if (isEncryptedType(rld))
+                    {                        
+                        var eev = new EcEncryptedValue();
+                        eev.copyFrom(o);
+                        o.decryptedSecret = await eev.decryptSecret(this.ctx.req.eim);
+                    }
                 }
                 catch (msg){
                     console.log("We couldn't decrypt it, hope the client has better luck! -- " + msg);
