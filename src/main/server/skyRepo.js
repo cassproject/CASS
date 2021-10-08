@@ -211,8 +211,8 @@ var skyrepoUrlType = function(o) {
     return getTypeFromObject(o);
 };
 var inferTypeFromObj = function(o, atType) {
-    if (atType != null) 
-        return atType;
+    // if (atType != null) 
+    //     return atType;
     var fullType = skyrepoUrlType(o);
     if (fullType == null) 
         return fullType;
@@ -454,18 +454,29 @@ var skyrepoPutInternal = async function(o, id, version, type) {
             console.trace(msg);
         }
     }
+    var oldPermanent = await skyrepoGetPermanent(id, version, type);
+    if (isNaN(version))
+        version = null;
+    let chosenVersion = version;
+    if (chosenVersion == null)
+    {
+        if (oldPermanent != null && oldPermanent["_version"] != null && !isNaN(oldPermanent["_version"]))
+            chosenVersion = oldPermanent["_version"]+1;
+        else
+            chosenVersion = 1;
+    }
+    var obj = await skyrepoPutInternalIndex.call(this,o, id, chosenVersion, type);
     if (erld.id != null)
     {
         var oldIndexRecords = await skyrepoGetIndexRecords(erld.shortId());
         if (oldIndexRecords != null)
             for (let oldIndexRecord of oldIndexRecords)
-                await skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
+                if (oldIndexRecord._id != obj._id || oldIndexRecord._index != obj._index)
+                    await skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
     }
-    var obj = await skyrepoPutInternalIndex.call(this,o, id, version, type);
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
-    version = (obj)["_version"];
-    await skyrepoPutInternalPermanent.call(this,o, id, version, type);
+    await skyrepoPutInternalPermanent.call(this,o, id, chosenVersion, type);
     var rld = new EcRemoteLinkedData(null, null);
     rld.copyFrom(o);
     if (rld.isAny(new EcRekeyRequest().getTypes())) {
@@ -530,7 +541,8 @@ var skyrepoGetIndexSearch = async function(id, version, type)
 
 var skyrepoGetIndexRecords = async function(id)
 {
-    var microSearchUrl = elasticEndpoint + "/_search?version&q=@id:\"" + id + "\"";
+    let hashId = EcCrypto.md5(id);
+    var microSearchUrl = elasticEndpoint + "/_search?version&q=@id:\"" + id + "\" OR @id:\"" + hashId + "\"";
     let microSearch = await httpGet(microSearchUrl, true);
     if (skyrepoDebug) 
         console.log(microSearchUrl);
@@ -710,7 +722,7 @@ var skyrepoPut = async function(parseParams) {
 global.skyrepoPutParsed = async function(o, id, version, type) {
     if (o == null) 
         return;
-    await (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.", null, null);
+    let oldPermanent = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.", null, null);
     await skyrepoPutInternal.call(this,o, id, version, type);
 };
 var validateSignatures = async function(id, version, type, errorMessage) {
