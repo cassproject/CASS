@@ -509,7 +509,7 @@ async function importJsonLdGraph(graph, context) {
         }
 
         var type = compacted["@type"]
-        var guid = EcCrypto.md5(compacted["@id"]);
+        var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(compacted["@id"]));
         var objToSave = compacted;
 
         if (type == "ConceptScheme") {
@@ -607,7 +607,7 @@ async function importJsonLdGraph(graph, context) {
             toSave.push(objToSave);
         }
     }
-    repo.multiput(toSave, function() {}, console.error);
+    await repo.multiput(toSave, function() {}, console.error);
     if (conceptSchemeGuid) {
         return repoEndpoint() + "data/" + conceptSchemeGuid;
     }
