@@ -60,6 +60,7 @@ require("./server/adapter/jsonLd/jsonLd.js");
 require("./server/adapter/openbadges/openbadges.js");
 require("./server/adapter/xapi/xapi.js");
 require("./server/adapter/replicate/replicate.js");
+require("./server/profile/coordinator.js")();
 
 app.use(baseUrl,express.static('src/main/webapp/'));
 app.use(baseUrl+"cass-editor/",express.static('src/main/webapp/'));
