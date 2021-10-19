@@ -26,7 +26,13 @@ let profileCalculator = async function(){
     let query_agent_ppk = this.ctx.req.eim.ids[0].ppk.toPem();
     let subject = await anythingToPem(subjectId);
     
-    const p = {subject: subjectId, frameworkId: frameworkId, query_agent: query_agent_ppk, flushCache: this.params.flushCache, params: this.params};
+    const p = {
+        subject: subjectId, 
+        frameworkId: frameworkId, 
+        query_agent: query_agent_ppk, 
+        flushCache: this.params.flushCache, 
+        params: this.params
+    };
 
     // Perform caching check and establish cache key
     p.cacheKey = `${framework.shortId()}|${subject}|${query_agent_pk}|general`;

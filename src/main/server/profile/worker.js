@@ -138,6 +138,7 @@ parentPort.on('message', async(param) => {
     }
 
     const p = new ProfileCalculator();
+    p.params = param.params;
 
     // Get necessary information on person from subject
     try {
