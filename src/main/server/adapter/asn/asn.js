@@ -42,7 +42,8 @@ async function cassFrameworkAsAsn() {
         }
         if (competency != null) {
             competency.context = "https://schema.cassproject.org/0.4/cass2asn";
-            return await jsonLdToRdfJson(competency.toJson());
+            competency = await jsonLdExpand(competency.toJson());
+            return await jsonLdToRdfJson(competency);
         }
     }
     if (framework == null)
@@ -79,7 +80,7 @@ async function cassFrameworkAsAsn() {
             var r = await loopback.alignmentGet(f.relation[i]);
             if (r.source == null || r.target == null) continue;
             if (r.relationType == Relation.NARROWS) {
-                EcArray.setRemove(f.competency, r.target);
+                EcArray.setRemove(f.competency, r.source);
 
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
@@ -161,12 +162,15 @@ async function cassFrameworkAsAsn() {
         c.context = "https://schema.cassproject.org/0.4/cass2asn";
         if (c.type == null) //Already done / referred to by another name.
             continue;
-        competencies[id] = JSON.parse(await jsonLdToRdfJson(c.toJson()))[id];
+        c = await jsonLdExpand(c.toJson());
+        competencies[id] = JSON.parse(await jsonLdToRdfJson(c))[id];
     }
 
     f.context = "https://schema.cassproject.org/0.4/cass2asn";
     delete f.relation;
-    competencies[f.id] = JSON.parse(await jsonLdToRdfJson(f.toJson()))[f.id];
+    let fid = f.id;
+    f = await jsonLdExpand(f.toJson());
+    competencies[fid] = JSON.parse(await jsonLdToRdfJson(f))[fid];
     return JSON.stringify(competencies, null, 2);
 }
 
