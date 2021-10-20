@@ -30,7 +30,7 @@ const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' 
 const port = process.env.PORT || (envHttps ? 443 : 80);
 
 global.repo = new EcRepository();
-repo.selectedServer = process.env.CASS_LOOPBACK || envHttps ? "https://localhost/api/" : "http://localhost/api";
+repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? "https://localhost/api/" : "http://localhost/api");
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
@@ -68,13 +68,6 @@ app.use(baseUrl+"cass-editor/",express.static('src/main/webapp/'));
 let v8 = require("v8");
 
 skyrepoMigrate(function(){
-    var options = {
-        key: fs.readFileSync('cass.key'),
-        cert: fs.readFileSync('cass.crt'),
-        ca: global.ca = fs.readFileSync('ca.crt'), //client auth ca OR cert
-        requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,                   //new
-        rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false            //new
-    };
     const after = async () => {    
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
         console.log(`CaSS listening at http${envHttps?'s':''}://localhost:${port}${baseUrl}`);
@@ -88,6 +81,13 @@ skyrepoMigrate(function(){
     };
     if (envHttps)
     {
+        var options = {
+            key: fs.readFileSync('cass.key'),
+            cert: fs.readFileSync('cass.crt'),
+            ca: global.ca = fs.readFileSync('ca.crt'), //client auth ca OR cert
+            requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,                   //new
+            rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false            //new
+        };
         global.server = https.createServer(options, app).listen(port, after);
         https.globalAgent.options.rejectUnauthorized = false;
     }

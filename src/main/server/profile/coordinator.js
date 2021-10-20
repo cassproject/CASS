@@ -24,6 +24,10 @@ let profileCalculator = async function(){
 
     let query_agent_pk = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
     let query_agent_ppk = this.ctx.req.eim.ids[0].ppk.toPem();
+    if (process.env.PROFILE_PPK != null)
+    {
+        query_agent_ppk = process.env.PROFILE_PPK;
+    }
     let subject = await anythingToPem(subjectId);
     
     const p = {
@@ -38,7 +42,7 @@ let profileCalculator = async function(){
     p.cacheKey = `${framework.shortId()}|${subject}|${query_agent_pk}|general`;
     if (this.params.flushCache == "true")
         delete profileInProgress[p.cacheKey];
-    else if (process.env.PROFILE_CACHE == "true")
+    else if (process.env.PROFILE_CACHE == "true") {
         if (profileInProgress[p.cacheKey] != null) { // Profile being computed elsewhere, delay
             if (new Date().getTime() - profileInProgress[p.cacheKey] < 60000) { // Proceed if it seems stuck
                 console.log("Blocked - Profile computing elsewhere");
@@ -46,6 +50,7 @@ let profileCalculator = async function(){
                 return;
             }
         }
+    }
 
     // Return the profile if it's already been computed
     const cached = profileCache[p.cacheKey];

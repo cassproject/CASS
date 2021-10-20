@@ -493,12 +493,14 @@ global.skyrepoMigrate = async function (after) {
 //     return JSON.stringify(log, null, 2);
 // }
 // bindWebService("/util/restore", skyrepoRestore);
-
+var skyIdSecret = ()=>{return loadConfigurationFile("skyId.secret", function() {
+    return randomString(2048);
+})}
 skyrepoPurge = async function () {
     if (this.params.secret != skyIdSecret())
         error("You must provide secret=`cat skyId.secret` to invoke purge.", 401);
     var log = [];
-    var settings = elasticMapping();
+    var settings = await httpGet(elasticEndpoint + "/_mapping", "application/json", null, true);
     var indices = EcObject.keys(settings);
     var types = [];
     for (var i = 0; i < indices.length; i++) {
