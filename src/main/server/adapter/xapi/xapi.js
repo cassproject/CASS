@@ -119,10 +119,31 @@ var xapiStatement = async function (s) {
             negative = false;
         else
             negative = true;
+    } else if (s.result.response == "Pass") {
+        var scaled = 1.0;
+        negative = false;
+    } else if (s.result.response == "Fail") {
+        var scaled = 1.0;
+        negative = true;
     } else
         return;
 
     var actorPk = await pkFromMbox.call(this, s.actor);
+    if (actorPk == null)
+    {
+        var ppk = await EcPpk.generateKey();
+        var person = new schema.Person();
+        person.assignId(repo.selectedServer,ppk.toPk().fingerprint());
+        person.addOwner(ppk.toPk());
+		var mb = getMbox.call(this, s.actor).replace("mailto:","");
+		if (mb.indexOf("@") == -1)
+			person.identifier = mb;
+		else
+			person.email = mb;
+        person.name = s.actor.name;
+        await EcRepository.save(person,console.log,console.error);
+        actorPk = ppk.toPk();
+    }
     if (actorPk == null) return;
     var authorityPk = await pkFromMbox.call(this, s.authority);
     if (authorityPk == null)
@@ -154,10 +175,18 @@ var xapiStatement = async function (s) {
 }
 
 var xapiStatementListener = async function () {
-    var data = fileFromDatastream.call(this);
-    data = fileToString(data.get(0));
-    data = JSON.parse(data);
-    await xapiStatement(data);
+    for (let val in this.dataStreams)
+        await xapiStatement(this.dataStreams[val]);
+    // var data = fileFromDatastream.call(this);
+    // if (data == null)
+    // {
+    // }
+    // else
+    // {
+    //     data = fileToString(data.get(0));
+    //     data = JSON.parse(data);
+    //     await xapiStatement(data);
+    // }
 }
 
 var ident = new EcIdentity();
