@@ -763,6 +763,124 @@ function createRelations(e, field, type, repo, ceo, id, cassRelations, toSave) {
     }
 }
 
+async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cassRelationships, cassCompetencies, ceasnIdentity, repo, owner) {
+    return new Promise(async (resolve) => {
+        try {
+            var canonicalId = asnComp["@id"];
+
+            var childComps = asnComp["ceasn:hasChild"];
+            if (childComps != null && childComps.length != null) {
+                for (var i = 0; i < childComps.length; i++) {
+                    var r = new EcAlignment();
+                    r.source = EcRemoteLinkedData.trimVersionFromUrl(childComps[i]);
+                    r.target = EcRemoteLinkedData.trimVersionFromUrl(canonicalId);
+                    r.relationType = Relation.NARROWS;
+                    r.generateId(repoEndpoint());
+                    r.addOwner(ceasnIdentity.ppk.toPk());
+
+                    if (owner != null)
+                        r.addOwner(EcPk.fromPem(owner));
+
+                    if (relationshipMap[r.source + r.target] != true) {
+                        relationshipMap[r.source + r.target] = true;
+                        listToSave.push(r);
+                        cassRelationships.push(r.shortId());
+                        cassCompetencies.push(r.source);
+                    }
+                }
+            }
+
+            var newComp = JSON.parse(JSON.stringify(asnComp));
+            delete newComp["ceasn:hasChild"];
+
+            newComp["@context"] = "https://schema.cassproject.org/0.4/ceasn2cass";
+            var expandedComp = await jsonLdExpand(JSON.stringify(newComp));
+            var compactedComp = await jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
+
+            delete compactedComp["ceasn:isChildOf"];
+            delete compactedComp["ceasn:hasChild"];
+            delete compactedComp["ceasn:isPartOf"];
+
+            var c = new EcCompetency();
+            c.copyFrom(compactedComp);
+            c.addOwner(ceasnIdentity.ppk.toPk());
+
+            if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
+                var timestamp;
+                var date;
+                if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                    timestamp = null;
+                } else {
+                    timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
+                }
+                if (timestamp != null) {
+                    date = new Date(parseInt(timestamp)).toISOString();
+                } else {
+                    date = new Date().toISOString();
+                }
+                c["schema:dateCreated"] = date;
+            }
+            if (c["ceasn:broadAlignment"]) {
+                createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:narrowAlignment"]) {
+                createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["sameAs"]) {
+                createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:majorAlignment"]) {
+                createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:minorAlignment"]) {
+                createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:prerequisiteAlignment"]) {
+                createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            delete c["ceasn:broadAlignment"];
+            delete c["ceasn:narrowAlignment"];
+            delete c["sameAs"];
+            delete c["ceasn:majorAlignment"];
+            delete c["ceasn:minorAlignment"];
+            delete c["ceasn:prerequisiteAlignment"];
+
+            if (c["ceasn:broadAlignment"]) {
+                createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:narrowAlignment"]) {
+                createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["sameAs"]) {
+                createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:majorAlignment"]) {
+                createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:minorAlignment"]) {
+                createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:prerequisiteAlignment"]) {
+                createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            delete c["ceasn:broadAlignment"];
+            delete c["ceasn:narrowAlignment"];
+            delete c["sameAs"];
+            delete c["ceasn:majorAlignment"];
+            delete c["ceasn:minorAlignment"];
+            delete c["ceasn:prerequisiteAlignment"];
+
+            if (owner != null)
+                c.addOwner(EcPk.fromPem(owner));
+            listToSave.push(c);
+            resolve();
+        } catch(err) {
+            console.log(err);
+            resolve();
+        }
+    });
+}
+
 async function importCeFrameworkToCass(frameworkObj, competencyList) {
     const nodeDocumentLoader = jsonld.documentLoaders.node();
     const cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4")),true);
@@ -802,7 +920,6 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     var cassCompetencies = [];
     var cassRelationships = [];
     var relationshipMap = {};
-    var parentMap = {};
 
     if (frameworkObj != null) {
         var topChild = frameworkObj["ceasn:hasTopChild"] ? frameworkObj["ceasn:hasTopChild"] : frameworkObj["ceasn:hasChild"];
@@ -814,120 +931,9 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     }
 
     var listToSave = [];
-
-    for (var idx in competencyList) {
-        var asnComp = competencyList[idx];
-
-        var canonicalId = asnComp["@id"];
-
-        var childComps = asnComp["ceasn:hasChild"];
-        if (childComps != null && childComps.length != null) {
-            for (var i = 0; i < childComps.length; i++) {
-                var r = new EcAlignment();
-                r.source = EcRemoteLinkedData.trimVersionFromUrl(childComps[i]);
-                r.target = EcRemoteLinkedData.trimVersionFromUrl(canonicalId);
-                r.relationType = Relation.NARROWS;
-                r.generateId(repoEndpoint());
-                r.addOwner(ceasnIdentity.ppk.toPk());
-
-                if (owner != null)
-                    r.addOwner(EcPk.fromPem(owner));
-
-                if (relationshipMap[r.source + r.target] != true) {
-                    relationshipMap[r.source + r.target] = true;
-                    listToSave.push(r);
-                    cassRelationships.push(r.shortId());
-                    cassCompetencies.push(r.source);
-                }
-            }
-        }
-
-        var newComp = JSON.parse(JSON.stringify(asnComp));
-        delete newComp["ceasn:hasChild"];
-
-        newComp["@context"] = "https://schema.cassproject.org/0.4/ceasn2cass";
-        var expandedComp = await jsonLdExpand(JSON.stringify(newComp));
-        var compactedComp = await jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
-
-        delete compactedComp["ceasn:isChildOf"];
-        delete compactedComp["ceasn:hasChild"];
-        delete compactedComp["ceasn:isPartOf"];
-
-        var c = new EcCompetency();
-        c.copyFrom(compactedComp);
-        c.addOwner(ceasnIdentity.ppk.toPk());
-
-        if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
-            var timestamp;
-            var date;
-            if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
-                timestamp = null;
-            } else {
-                timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
-            }
-            if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
-            } else {
-                date = new Date().toISOString();
-            }
-            c["schema:dateCreated"] = date;
-        }
-        if (c["ceasn:broadAlignment"]) {
-            createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:narrowAlignment"]) {
-            createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["sameAs"]) {
-            createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:majorAlignment"]) {
-            createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:minorAlignment"]) {
-            createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:prerequisiteAlignment"]) {
-            createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        delete c["ceasn:broadAlignment"];
-        delete c["ceasn:narrowAlignment"];
-        delete c["sameAs"];
-        delete c["ceasn:majorAlignment"];
-        delete c["ceasn:minorAlignment"];
-        delete c["ceasn:prerequisiteAlignment"];
-
-        if (c["ceasn:broadAlignment"]) {
-            createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:narrowAlignment"]) {
-            createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["sameAs"]) {
-            createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:majorAlignment"]) {
-            createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:minorAlignment"]) {
-            createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        if (c["ceasn:prerequisiteAlignment"]) {
-            createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
-        }
-        delete c["ceasn:broadAlignment"];
-        delete c["ceasn:narrowAlignment"];
-        delete c["sameAs"];
-        delete c["ceasn:majorAlignment"];
-        delete c["ceasn:minorAlignment"];
-        delete c["ceasn:prerequisiteAlignment"];
-
-        if (owner != null)
-            c.addOwner(EcPk.fromPem(owner));
-
-        listToSave.push(c);
-
-    } // end for each competency in  competencyList
+    for (let idx = 0; idx < competencyList.length; idx+=100) {
+        await Promise.all(competencyList.slice(idx, idx+100).map((comp) => importCompetencyPromise(comp, relationshipMap, listToSave, cassRelationships, cassCompetencies, ceasnIdentity, repo, owner)));
+    }
 
     if (frameworkObj != null) {
         var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"]));
@@ -984,7 +990,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
 }
 
 async function ceasnFrameworkToCass() {
-
+    EcRepository.caching = true;
     var jsonLd, text;
 
     var data = fileFromDatastream.call(this, "data");
