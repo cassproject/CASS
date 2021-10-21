@@ -55,8 +55,116 @@ async function ceasnExportUriTransform(uri, frameworkUri) {
     return ceasnExportUriPrefix + uuid;
 }
 
+async function competencyPromise(compId, competencies, allCompetencies, f, ctx) {
+    return new Promise(async (resolve) => {
+        try {
+            var c = competencies[compId];
+            if (c == null) resolve();
+            if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] != null)
+                c["ceasn:hasChild"]["@list"].sort(function (a, b) {
+                    return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
+                });
+            delete competencies[compId];
+            var id = c.id;
+            c.context = "https://schema.cassproject.org/0.4/cass2ceasn";
+            c["ceasn:isPartOf"] = await ceasnExportUriTransform(f.id);
+            if (c["ceasn:isChildOf"] == null) {
+                c["ceasn:isTopChildOf"] = await ceasnExportUriTransform(f.id);
+                if (f["ceasn:hasTopChild"] == null)
+                    f["ceasn:hasTopChild"] = {
+                        "@list": []
+                    };
+                f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c.id));
+            }
+            f.competency.push(await ceasnExportUriTransform(c.id));
+            if (c.name == null || c.name == "")
+                if (c.description != null && c.description != "") {
+                    c.name = c.description;
+                    delete c.description;
+                }
+            if (c.type == null) //Already done / referred to by another name.
+                resolve();
+            var guid = c.getGuid();
+            var uuid = new UUID(3, "nil", c.shortId()).format();
+
+            //If schema:identifier is not a URI, remove from translation
+            if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
+                delete c["schema:identifier"];
+            } else if (c["schema:identifier"] != null) {
+                if (!EcArray.isArray(c["schema:identifier"])) {
+                    c["schema:identifier"] = [c["schema:identifier"]];
+                }
+                for (var k = c["schema:identifier"].length - 1; k >= 0; k--) {
+                    if (c["schema:identifier"][k].indexOf("http") == -1) {
+                        c["schema:identifier"].splice(k, 1);
+                    }
+                }
+            }
+            delete c["schema:inLanguage"];
+
+            //Remove fields that are only whitespace
+            for (var key in c) {
+                if (typeof c[key] == "string" && c[key].trim().length == 0) {
+                    delete c[key];
+                }
+            }
+            var socList = c["socList"];
+            var naicsList = c["naicsList"];
+            var cipList = c["cipList"];
+
+            c = await jsonLdCompact(c.toJson(), ctx);
+            if (socList) {
+                c["socList"] = socList;
+            }
+            if (naicsList) {
+                c["naicsList"] = naicsList;
+            }
+            if (cipList) {
+                c["cipList"] = cipList;
+            }
+
+            competencies[compId] = competencies[id] = c;
+
+            if (competencies[id]["ceterms:ctid"] == null) {
+                if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+                    competencies[id]["ceterms:ctid"] = guid;
+                else
+                    competencies[id]["ceterms:ctid"] = uuid;
+            }
+            if (competencies[id]["ceterms:ctid"].indexOf("ce-") != 0)
+                competencies[id]["ceterms:ctid"] = "ce-" + competencies[id]["ceterms:ctid"];
+            if (competencies[id]["ceasn:name"] != null) {
+                competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
+                delete competencies[id]["ceasn:name"];
+            }
+            if (competencies[id]["ceasn:description"] != null) {
+                competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
+                delete competencies[id]["ceasn:description"];
+            }
+            if (c["schema:educationalAlignment"] != null) { 
+                if (!EcArray.isArray(c["schema:educationalAlignment"])) { 
+                    competencies[id]["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"]; 
+                } 
+                else { 
+                    competencies[id]["ceasn:educationLevelType"] = []; 
+                    for (var j = 0; j < c["schema:educationalAlignment"].length; j++) { 
+                        competencies[id]["ceasn:educationLevelType"].push(c["schema:educationalAlignment"][j]["schema:targetName"]); 
+                    } 
+                } 
+            } 
+            delete competencies[id]["@context"];
+            competencies[id] = stripNonCe(competencies[id]);
+            resolve();
+        } catch(err) {
+            console.log(err);
+            resolve();
+        }
+    });
+}
+
 async function cassFrameworkAsCeasn() {
     EcRepository.cache = new Object();
+    EcRepository.caching = true;
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
     var query = queryParse.call(this);
@@ -240,103 +348,8 @@ async function cassFrameworkAsCeasn() {
 
     var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
     f.competency = [];
-    for (var i = 0; i < allCompetencies.length; i++) {
-        var c = competencies[allCompetencies[i]];
-        if (c == null) continue;
-        if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] != null)
-            c["ceasn:hasChild"]["@list"].sort(function (a, b) {
-                return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
-            });
-        delete competencies[allCompetencies[i]];
-        var id = c.id;
-        c.context = "https://schema.cassproject.org/0.4/cass2ceasn";
-        c["ceasn:isPartOf"] = await ceasnExportUriTransform(f.id);
-        if (c["ceasn:isChildOf"] == null) {
-            c["ceasn:isTopChildOf"] = await ceasnExportUriTransform(f.id);
-            if (f["ceasn:hasTopChild"] == null)
-                f["ceasn:hasTopChild"] = {
-                    "@list": []
-                };
-            f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c.id));
-        }
-        f.competency.push(await ceasnExportUriTransform(c.id));
-        if (c.name == null || c.name == "")
-            if (c.description != null && c.description != "") {
-                c.name = c.description;
-                delete c.description;
-            }
-        if (c.type == null) //Already done / referred to by another name.
-            continue;
-        var guid = c.getGuid();
-        var uuid = new UUID(3, "nil", c.shortId()).format();
-
-        //If schema:identifier is not a URI, remove from translation
-        if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
-            delete c["schema:identifier"];
-        } else if (c["schema:identifier"] != null) {
-            if (!EcArray.isArray(c["schema:identifier"])) {
-                c["schema:identifier"] = [c["schema:identifier"]];
-            }
-            for (var k = c["schema:identifier"].length - 1; k >= 0; k--) {
-                if (c["schema:identifier"][k].indexOf("http") == -1) {
-                    c["schema:identifier"].splice(k, 1);
-                }
-            }
-        }
-        delete c["schema:inLanguage"];
-
-        //Remove fields that are only whitespace
-        for (var key in c) {
-            if (typeof c[key] == "string" && c[key].trim().length == 0) {
-                delete c[key];
-            }
-        }
-        var socList = c["socList"];
-        var naicsList = c["naicsList"];
-        var cipList = c["cipList"];
-
-        c = await jsonLdCompact(c.toJson(), ctx);
-        if (socList) {
-            c["socList"] = socList;
-        }
-        if (naicsList) {
-            c["naicsList"] = naicsList;
-        }
-        if (cipList) {
-            c["cipList"] = cipList;
-        }
-
-        competencies[allCompetencies[i]] = competencies[id] = c;
-
-        if (competencies[id]["ceterms:ctid"] == null) {
-            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-                competencies[id]["ceterms:ctid"] = guid;
-            else
-                competencies[id]["ceterms:ctid"] = uuid;
-        }
-        if (competencies[id]["ceterms:ctid"].indexOf("ce-") != 0)
-            competencies[id]["ceterms:ctid"] = "ce-" + competencies[id]["ceterms:ctid"];
-        if (competencies[id]["ceasn:name"] != null) {
-            competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
-            delete competencies[id]["ceasn:name"];
-        }
-        if (competencies[id]["ceasn:description"] != null) {
-            competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
-            delete competencies[id]["ceasn:description"];
-        }
-        if (c["schema:educationalAlignment"] != null) { 
-            if (!EcArray.isArray(c["schema:educationalAlignment"])) { 
-                competencies[id]["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"]; 
-            } 
-            else { 
-                competencies[id]["ceasn:educationLevelType"] = []; 
-                for (var j = 0; j < c["schema:educationalAlignment"].length; j++) { 
-                    competencies[id]["ceasn:educationLevelType"].push(c["schema:educationalAlignment"][j]["schema:targetName"]); 
-                } 
-            } 
-        } 
-        delete competencies[id]["@context"];
-        competencies[id] = stripNonCe(competencies[id]);
+    for (let i = 0; i < allCompetencies.length; i+=100) {
+        await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyPromise(id, competencies, allCompetencies, f, ctx)));
     }
 
     f.context = "https://schema.cassproject.org/0.4/cass2ceasn";
