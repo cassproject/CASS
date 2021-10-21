@@ -564,7 +564,65 @@ function conceptArrays(object) {
     return orderFields(object);
 }
 
+async function conceptPromise(obj, concepts, cs, ctx) {
+    return new Promise(async (resolve) => {
+        try {
+            var c = concepts[obj];
+            delete concepts[obj];
+            if (c != null && c.id != null) {
+                var id = c.id;
+                concepts[id] = c;
+                delete concepts[id]["owner"];
+                delete concepts[id]["signature"];
+                delete concepts[id]["skos:inLanguage"];
+
+                c.context = "https://schema.cassproject.org/0.4/cass2ceasnConcepts";
+                if (c.id != await ceasnExportUriTransform(c.id)) {
+                    if (c["skos:exactMatch"] != null)
+                        if (EcArray.isArray(c["skos:exactMatch"])) {
+                            c["skos:exactMatch"].push(c.id);
+                        }
+                    else {
+                        c["skos:exactMatch"] = [c["skos:exactMatch"], c.id];
+                    } else
+                        c["skos:exactMatch"] = [c.id];
+                }
+                c.id = await ceasnExportUriTransform(c.id);
+                c["skos:inScheme"] = await ceasnExportUriTransform(cs.id);
+                if (c["skos:topConceptOf"] != null) {
+                    c["skos:topConceptOf"] = await ceasnExportUriTransform(cs.id);
+                }
+                if (c.type == null) //Already done / referred to by another name.
+                    resolve();
+                var guid = c.getGuid();
+                var uuid = new UUID(3, "nil", c.shortId()).format();
+                concepts[obj] = concepts[id] = await jsonLdCompact(c.toJson(), ctx);
+
+                if (concepts[id]["ceterms:ctid"] == null) {
+                    if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+                        concepts[id]["ceterms:ctid"] = guid;
+                    } else {
+                        concepts[id]["ceterms:ctid"] = uuid;
+                    }
+                }
+
+                if (concepts[id]["ceterms:ctid"].indexOf("ce-") != 0) {
+                    concepts[id]["ceterms:ctid"] = "ce-" + concepts[id]["ceterms:ctid"];
+                }
+                delete concepts[id]["@context"];
+
+                concepts[id] = conceptArrays(concepts[id]);
+            }
+            resolve();
+        } catch(err) {
+            console.log(err);
+            resolve();
+        }
+    });
+}
+
 async function cassConceptSchemeAsCeasn(framework) {
+    EcRepository.caching = true;
     if (framework == null)
         error("Concept Scheme not found.", 404);
 
@@ -572,8 +630,8 @@ async function cassConceptSchemeAsCeasn(framework) {
     cs.copyFrom(framework);
     if (cs["skos:hasTopConcept"] == null) {
         cs["skos:hasTopConcept"] = [];
-        repo.precache(cs["skos:hasTopConcept"], function() {});
     }
+    repo.precache(cs["skos:hasTopConcept"], function() {});
 
     var concepts = {};
     var allConcepts = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
@@ -604,53 +662,8 @@ async function cassConceptSchemeAsCeasn(framework) {
 
     var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
 
-    for (var i = 0; i < allConcepts.length; i++) {
-        var c = concepts[allConcepts[i]];
-        delete concepts[allConcepts[i]];
-        if (c != null && c.id != null) {
-            var id = c.id;
-            concepts[id] = c;
-            delete concepts[id]["owner"];
-            delete concepts[id]["signature"];
-            delete concepts[id]["skos:inLanguage"];
-
-            c.context = "https://schema.cassproject.org/0.4/cass2ceasnConcepts";
-            if (c.id != await ceasnExportUriTransform(c.id)) {
-                if (c["skos:exactMatch"] != null)
-                    if (EcArray.isArray(c["skos:exactMatch"])) {
-                        c["skos:exactMatch"].push(c.id);
-                    }
-                else {
-                    c["skos:exactMatch"] = [c["skos:exactMatch"], c.id];
-                } else
-                    c["skos:exactMatch"] = [c.id];
-            }
-            c.id = await ceasnExportUriTransform(c.id);
-            c["skos:inScheme"] = await ceasnExportUriTransform(cs.id);
-            if (c["skos:topConceptOf"] != null) {
-                c["skos:topConceptOf"] = await ceasnExportUriTransform(cs.id);
-            }
-            if (c.type == null) //Already done / referred to by another name.
-                continue;
-            var guid = c.getGuid();
-            var uuid = new UUID(3, "nil", c.shortId()).format();
-            concepts[allConcepts[i]] = concepts[id] = await jsonLdCompact(c.toJson(), ctx);
-
-            if (concepts[id]["ceterms:ctid"] == null) {
-                if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
-                    concepts[id]["ceterms:ctid"] = guid;
-                } else {
-                    concepts[id]["ceterms:ctid"] = uuid;
-                }
-            }
-
-            if (concepts[id]["ceterms:ctid"].indexOf("ce-") != 0) {
-                concepts[id]["ceterms:ctid"] = "ce-" + concepts[id]["ceterms:ctid"];
-            }
-            delete concepts[id]["@context"];
-
-            concepts[id] = conceptArrays(concepts[id]);
-        }
+    for (let i = 0; i < allConcepts.length; i+=100) {
+        await Promise.all(allConcepts.slice(i, i+100).map((id) => conceptPromise(id, concepts, cs, ctx)));
     }
 
     cs.context = "https://schema.cassproject.org/0.4/cass2ceasnConcepts";

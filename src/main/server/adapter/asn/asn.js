@@ -471,7 +471,141 @@ function asnFrameworkToCass() {
 if (!global.importJsonLdGraph) {
     global.importJsonLdGraph = importJsonLdGraph;
 }
+
+async function importConceptPromise(graphObj, conceptSchemeGuid, context, skosIdentity, owner, toSave) {
+    return new Promise(async (resolve) => {
+        try {
+            var compacted;
+
+            if (context != undefined) {
+                if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json"
+                    || context == "https://credreg.net/ctdlasn/schema/context/json" || context == "https://credreg.net/ctdl/schema/context/json") {
+                    context = "https://schema.cassproject.org/0.4/ceasn2cassConcepts";
+                }
+                if (context["schema"] == undefined) {
+                    context["schema"] = "http://schema.org";
+                }
+
+                graphObj["@context"] = context;
+
+                if (graphObj["rdfs:comment"] != null && graphObj["rdfs:comment"] !== undefined) {
+                    delete graphObj["dct:description"];
+                    delete graphObj["dcterms:description"];
+                }
+
+                var expanded = (await jsonLdExpand(JSON.stringify(graphObj)))[0];
+                if (graphObj["@type"].indexOf("Concept") != -1) {
+                    compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/skos/");
+                }
+                else {
+                    compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
+                }
+            }
+
+            var type = compacted["@type"]
+            var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(compacted["@id"]));
+            var objToSave = compacted;
+
+            if (type == "ConceptScheme") {
+                conceptSchemeGuid[0] = guid;
+                objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                objToSave = new EcConceptScheme();
+                objToSave.copyFrom(compacted);
+                objToSave.addOwner(skosIdentity.ppk.toPk());
+                if (owner != null)
+                    objToSave.addOwner(EcPk.fromPem(owner));
+
+                if (objToSave["dcterms:language"] == null || objToSave["dcterms:language"] === undefined) {
+                    if (EcConceptScheme.template != null && EcConceptScheme.template["dcterms:language"] != null) {
+                        objToSave["dcterms:language"] = EcConceptScheme.template["dcterms:language"];
+                    }
+                    else {
+                        objToSave["dcterms:language"] = "en";
+                    }
+                }
+
+                if (objToSave["skos:hasTopConcept"] != null && !EcArray.isArray(objToSave["skos:hasTopConcept"])) {
+                    objToSave["skos:hasTopConcept"] = [objToSave["skos:hasTopConcept"]];
+                }
+
+                if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
+                    var timestamp;
+                    var date;
+                    if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                        timestamp = null;
+                    }
+                    else {
+                        timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
+                    }
+                    if (timestamp != null) {
+                        date = new Date(parseInt(timestamp)).toISOString();
+                    }
+                    else {
+                        date = new Date().toISOString();
+                    }
+                    objToSave["schema:dateCreated"] = date;
+                }
+                toSave.push(objToSave);
+            }
+            else if (type == "Concept") {
+                objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                objToSave = new EcConcept();
+                objToSave.copyFrom(compacted);
+                objToSave.addOwner(skosIdentity.ppk.toPk());
+                if (owner != null)
+                    objToSave.addOwner(EcPk.fromPem(owner));
+
+                if (objToSave["skos:narrower"] != null && !EcArray.isArray(objToSave["skos:narrower"])) {
+                    objToSave["skos:narrower"] = [objToSave["skos:narrower"]];
+                }
+                if (objToSave["skos:broader"] != null && !EcArray.isArray(objToSave["skos:broader"])) {
+                    objToSave["skos:broader"] = [objToSave["skos:broader"]];
+                }
+                if (objToSave["skos:broadMatch"] != null && !EcArray.isArray(objToSave["skos:broadMatch"])) {
+                    objToSave["skos:broadMatch"] = [objToSave["skos:broadMatch"]];
+                }
+                if (objToSave["skos:closeMatch"] != null && !EcArray.isArray(objToSave["skos:closeMatch"])) {
+                    objToSave["skos:closeMatch"] = [objToSave["skos:closeMatch"]];
+                }
+                if (objToSave["skos:exactMatch"] != null && !EcArray.isArray(objToSave["skos:exactMatch"])) {
+                    objToSave["skos:exactMatch"] = [objToSave["skos:exactMatch"]];
+                }
+                if (objToSave["skos:narrowMatch"] != null && !EcArray.isArray(objToSave["skos:narrowMatch"])) {
+                    objToSave["skos:narrowMatch"] = [objToSave["skos:narrowMatch"]];
+                }
+                if (objToSave["skos:related"] != null && !EcArray.isArray(objToSave["skos:related"])) {
+                    objToSave["skos:related"] = [objToSave["skos:related"]];
+                }
+
+                if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
+                    var timestamp;
+                    var date;
+                    if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                        timestamp = null;
+                    }
+                    else {
+                        timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
+                    }
+                    if (timestamp != null) {
+                        date = new Date(parseInt(timestamp)).toISOString();
+                    }
+                    else {
+                        date = new Date().toISOString();
+                    }
+                    objToSave["schema:dateCreated"] = date;
+                }
+                toSave.push(objToSave);
+            }
+            resolve();
+        } catch(err) {
+            console.log(err);
+            resolve();
+        }
+    });
+}
+
 async function importJsonLdGraph(graph, context) {
+    EcRepository.caching = true;
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
     var skosIdentity = new EcIdentity();
@@ -479,141 +613,15 @@ async function importJsonLdGraph(graph, context) {
     skosIdentity.displayName = "SKOS Server Identity";
     EcIdentityManager.default.addIdentity(skosIdentity);
 
-    var conceptSchemeGuid;
-    var lang = null;
+    var conceptSchemeGuid = [];
     var toSave = [];
 
-    for (var idx in graph) {
-        var graphObj = graph[idx];
-        var compacted;
-
-        if (context != undefined) {
-            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json"
-                || context == "https://credreg.net/ctdlasn/schema/context/json" || context == "https://credreg.net/ctdl/schema/context/json") {
-                context = "https://schema.cassproject.org/0.4/ceasn2cassConcepts";
-            }
-            if (context["schema"] == undefined) {
-                context["schema"] = "http://schema.org";
-            }
-
-            graphObj["@context"] = context;
-
-            if (graphObj["rdfs:comment"] != null && graphObj["rdfs:comment"] !== undefined) {
-                delete graphObj["dct:description"];
-                delete graphObj["dcterms:description"];
-            }
-
-            var expanded = (await jsonLdExpand(JSON.stringify(graphObj)))[0];
-            if (graphObj["@type"].indexOf("Concept") != -1) {
-                compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/skos/");
-            }
-            else {
-                compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
-            }
-        }
-
-        var type = compacted["@type"]
-        var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(compacted["@id"]));
-        var objToSave = compacted;
-
-        if (type == "ConceptScheme") {
-            conceptSchemeGuid = guid;
-            objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
-            objToSave = new EcConceptScheme();
-            objToSave.copyFrom(compacted);
-            objToSave.addOwner(skosIdentity.ppk.toPk());
-            if (owner != null)
-                objToSave.addOwner(EcPk.fromPem(owner));
-
-            if (objToSave["dcterms:language"] == null || objToSave["dcterms:language"] === undefined) {
-                if (EcConceptScheme.template != null && EcConceptScheme.template["dcterms:language"] != null) {
-                    objToSave["dcterms:language"] = EcConceptScheme.template["dcterms:language"];
-                }
-                else {
-                    objToSave["dcterms:language"] = "en";
-                }
-            }
-            else {
-                lang = objToSave["dcterms:language"];
-            }
-
-            if (objToSave["skos:hasTopConcept"] != null && !EcArray.isArray(objToSave["skos:hasTopConcept"])) {
-                objToSave["skos:hasTopConcept"] = [objToSave["skos:hasTopConcept"]];
-            }
-
-            if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
-                var timestamp;
-                var date;
-                if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
-                    timestamp = null;
-                }
-                else {
-                    timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
-                }
-                if (timestamp != null) {
-                    date = new Date(parseInt(timestamp)).toISOString();
-                }
-                else {
-                    date = new Date().toISOString();
-                }
-                objToSave["schema:dateCreated"] = date;
-            }
-            toSave.push(objToSave);
-        }
-        else if (type == "Concept") {
-            objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
-            objToSave = new EcConcept();
-            objToSave.copyFrom(compacted);
-            objToSave.addOwner(skosIdentity.ppk.toPk());
-            if (owner != null)
-                objToSave.addOwner(EcPk.fromPem(owner));
-
-            if (objToSave["skos:narrower"] != null && !EcArray.isArray(objToSave["skos:narrower"])) {
-                objToSave["skos:narrower"] = [objToSave["skos:narrower"]];
-            }
-            if (objToSave["skos:broader"] != null && !EcArray.isArray(objToSave["skos:broader"])) {
-                objToSave["skos:broader"] = [objToSave["skos:broader"]];
-            }
-            if (objToSave["skos:broadMatch"] != null && !EcArray.isArray(objToSave["skos:broadMatch"])) {
-                objToSave["skos:broadMatch"] = [objToSave["skos:broadMatch"]];
-            }
-            if (objToSave["skos:closeMatch"] != null && !EcArray.isArray(objToSave["skos:closeMatch"])) {
-                objToSave["skos:closeMatch"] = [objToSave["skos:closeMatch"]];
-            }
-            if (objToSave["skos:exactMatch"] != null && !EcArray.isArray(objToSave["skos:exactMatch"])) {
-                objToSave["skos:exactMatch"] = [objToSave["skos:exactMatch"]];
-            }
-            if (objToSave["skos:narrowMatch"] != null && !EcArray.isArray(objToSave["skos:narrowMatch"])) {
-                objToSave["skos:narrowMatch"] = [objToSave["skos:narrowMatch"]];
-            }
-            if (objToSave["skos:related"] != null && !EcArray.isArray(objToSave["skos:related"])) {
-                objToSave["skos:related"] = [objToSave["skos:related"]];
-            }
-
-            if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
-                var timestamp;
-                var date;
-                if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
-                    timestamp = null;
-                }
-                else {
-                    timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
-                }
-                if (timestamp != null) {
-                    date = new Date(parseInt(timestamp)).toISOString();
-                }
-                else {
-                    date = new Date().toISOString();
-                }
-                objToSave["schema:dateCreated"] = date;
-            }
-
-            toSave.push(objToSave);
-        }
+    for (let i = 0; i < graph.length; i+=100) {
+        await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeGuid, context, skosIdentity, owner, toSave)));
     }
     await repo.multiput(toSave, function() {}, console.error);
     if (conceptSchemeGuid) {
-        return repoEndpoint() + "data/" + conceptSchemeGuid;
+        return repoEndpoint() + "data/" + conceptSchemeGuid[0];
     }
 }
 
