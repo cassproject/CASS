@@ -19,15 +19,22 @@ let profileCalculator = async function(){
     if (framework == null)
         error("Framework not identified or does not exist.", 400);
 
-    if (this.ctx.req.eim == null || this.ctx.req.eim.ids[0] == null)
-        error("Server is not acting on behalf of a user, and has no ability to access data.", 400);
-
-    let query_agent_pk = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
-    let query_agent_ppk = this.ctx.req.eim.ids[0].ppk.toPem();
+    let query_agent_pk = null;
+    let query_agent_ppk = null;
+    if (this.ctx.req.eim != null && this.ctx.req.eim.ids[0] != null)
+    {
+        query_agent_pk = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
+        query_agent_ppk = this.ctx.req.eim.ids[0].ppk.toPem();
+    }
     if (process.env.PROFILE_PPK != null)
     {
         query_agent_ppk = process.env.PROFILE_PPK;
+        query_agent_pk = EcPpk.fromPem(query_agent_ppk).toPk().toPem();
     }
+
+    if (query_agent_ppk == null)
+        error("Server is not acting on behalf of a user, and has no ability to access data.", 400);
+
     let subject = await anythingToPem(subjectId);
     
     const p = {
@@ -39,7 +46,7 @@ let profileCalculator = async function(){
     };
 
     // Perform caching check and establish cache key
-    p.cacheKey = `${framework.shortId()}|${subject}|${query_agent_pk}|general`;
+    p.cacheKey = `${framework.shortId()}|${subject}|${query_agent_pk}|${EcCrypto.md5(JSON.stringify(p.params))}|general`;
     if (this.params.flushCache == "true")
         delete profileInProgress[p.cacheKey];
     else if (process.env.PROFILE_CACHE == "true") {

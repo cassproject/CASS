@@ -104,7 +104,7 @@ let processAssertions = async function(){
                     let agentPerson;
                     let evidence;
 
-                    if (
+                    if (expirationDate != null && 
                         // Ignore an expired assertion
                         new Date().getTime() > expirationDate ||
                         // Ignore assertions not about the person for this profile
