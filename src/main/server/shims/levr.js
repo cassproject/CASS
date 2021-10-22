@@ -127,11 +127,11 @@ global.bindWebService = function(endpoint,callback){
             put: function(field,value){ctx[field] = value;}
         }
         let ms = new Date().getTime();
-        new formidable.IncomingForm({maxFieldsSize:30000000}).parse(req, async (err, fields, files) => {
+        new formidable.IncomingForm({maxFieldsSize:52428800}).parse(req, async (err, fields, files) => {
             if (err) {
                 res.status(500);
-                res.end(err);
-                console.trace(ex);
+                console.trace(err);
+                res.end(err.toString());
             } else {
                 try{
                     if (files && fields) {
