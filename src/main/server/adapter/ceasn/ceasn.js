@@ -403,6 +403,7 @@ async function cassFrameworkAsCeasn() {
     }
     var socList = f["socList"];
     var naicsList = f["naicsList"];
+    var cipList = f["cipList"];
 
     f = await jsonLdCompact(f.toJson(), ctx);
     if (socList) {
@@ -410,6 +411,9 @@ async function cassFrameworkAsCeasn() {
     }
     if (naicsList) {
         f["naicsList"] = naicsList;
+    }
+    if (cipList) {
+        f["cipList"] = cipList;
     }
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
@@ -509,7 +513,7 @@ function stripNonCe(f) {
                     f[k][key] = [f[k][key]];
             });
         }
-        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1 || k.indexOf("cipList") != -1)
+        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("asn:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1 || k.indexOf("cipList") != -1)
         ;
         else
             delete f[k];
