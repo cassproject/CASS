@@ -5,8 +5,8 @@ RUN yum clean all && yum update -y
 RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
 RUN yum install -y nodejs-2:16.9.1-1nodesource.x86_64 git
 
-ARG CASS_VERSION=error
-RUN git clone --recurse-submodules -b ${CASS_VERSION} https://github.com/cassproject/CASS && \
+ARG DOCKER_TAG=error
+RUN git clone --recurse-submodules -b ${DOCKER_TAG} https://github.com/cassproject/CASS && \
 cd CASS && \
 npm install
 
