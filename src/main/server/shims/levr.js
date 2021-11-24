@@ -135,7 +135,8 @@ global.bindWebService = function(endpoint,callback){
             } else {
                 try{
                     if (files && fields) {
-                        fields.file = files.file;
+                        for (let file in files)
+                            fields[file] = fs.readFileSync(files[file].path)+"";
                     }
                     ctx.req = req;
                     ctx.res = res;
@@ -165,7 +166,7 @@ global.bindWebService = function(endpoint,callback){
             }
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
         };
-        new formidable.parse({maxFieldsSize:52428800}).parse(req, formParse);
+        new formidable({maxFieldsSize:52428800}).parse(req, formParse);
     }
     console.log("Binding endpoint: /api" + endpoint)
     app.get(baseUrl + '/api' + endpoint,get);
