@@ -6,9 +6,7 @@ RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
 RUN yum install -y nodejs-2:16.9.1-1nodesource.x86_64 git
 
 ARG DOCKER_TAG=error
-RUN git clone --recurse-submodules -b ${DOCKER_TAG} https://github.com/cassproject/CASS && \
-cd CASS && \
-npm install
+RUN npm install
 
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
 RUN echo 'cluster.initial_master_nodes:' >> config/elasticsearch.yml
