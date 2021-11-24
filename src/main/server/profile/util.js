@@ -1,25 +1,29 @@
-module.exports = {
+
 /** Will NOT return null, but may throw errors. */
-anythingToPem: async(subject) => {
+let anythingToPem = global.anythingToPem = async(subject) => {
     if (typeof subject === "string" && subject.startsWith("-----BEGIN")) {
         return subject;
     }
 
     return anythingToPerson(subject).then(person => {
         if (person == null) throw new exports.NotFoundError();
+        if (EcArray.isArray(person))
+            return person.map((p)=>p.owner[0]);
         return person.owner[0];
     }).catch(e => {
         throw e;
     });
-},
-anythingToPerson: async(subject) => {
+};
+
+let anythingToPerson = global.anythingToPerson = async(subject) => {
     // No/Invalid subject?
     if (subject == null) throw new exports.ParseError();
 
     let result;
-
+    if (EcArray.isArray(subject))
+        result = await Promise.all(subject.map(anythingToPerson));
     // Subject is URL?
-    if (typeof subject === "string" && subject.startsWith("http")) {
+    else if (typeof subject === "string" && subject.startsWith("http")) {
         const url = subject;
         let person;
         try {
@@ -75,4 +79,8 @@ anythingToPerson: async(subject) => {
 
     throw new exports.ParseError();
 }
+module.exports = {
+/** Will NOT return null, but may throw errors. */
+anythingToPem: anythingToPem,
+anythingToPerson: anythingToPerson
 }

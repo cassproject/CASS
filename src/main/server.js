@@ -62,6 +62,12 @@ require("./server/adapter/xapi/xapi.js");
 require("./server/adapter/replicate/replicate.js");
 require("./server/profile/coordinator.js")();
 
+let glob = require('glob');
+let path = require('path');
+glob.sync( './server/cartridge/*.js' ).forEach( function( file ) {
+    require( path.resolve( file ) );
+});
+
 app.use(baseUrl,express.static('src/main/webapp/'));
 app.use(baseUrl+"cass-editor/",express.static('src/main/webapp/'));
 

@@ -66,6 +66,7 @@ let initialized = false;
 
 let glob = require('glob');
 let path = require('path');
+const EcPk = require("cassproject/src/com/eduworks/ec/crypto/EcPk");
 
 let ProfileCalculator = require(path.resolve(glob.sync( 'src/main/server/profile/calculator.js' )[0]));
 
@@ -82,6 +83,7 @@ parentPort.on('message', async(param) => {
     EcIdentityManager.default.clearIdentities();
     if (param.flushCache == "true")
     {
+        console.log("Flushing cache.");
         EcRepository.cache = {};
         allFrameworks = [];
         profileFrameworks = {};
@@ -142,19 +144,16 @@ parentPort.on('message', async(param) => {
 
     // Get necessary information on person from subject
     try {
-        if (subject.startsWith("http"))
-            p.person = await EcPerson.get(subject);
-        else if (subject.startsWith("-----"))
-            p.person = await EcPerson.getByPk(repo, EcPk.fromPem(subject)).catch(() => {});   
-        if (p.person == null) {
-            let people = await EcPerson.search(repo,`owner:"${subject}"`, {});
-            people = people.filter((p) => p.owner[0] == subject);
-            if (people.length > 0) p.person = people[0];
-            if (people.length > 1) console.log("Looking for person, found people! " + people.length);
-        }
-        p.pem = p.person.owner[0];
-        p.pk = EcPk.fromPem(p.pem);
-        p.fingerprint = p.pk.fingerprint();
+        p.person = await global.anythingToPerson(subject);
+        p.pem = await global.anythingToPem(subject);
+        if (EcArray.isArray(p.pem))
+            p.pk = p.pem.map((p)=>EcPk.fromPem(p));
+        else
+            p.pk = EcPk.fromPem(p.pem);
+        if (EcArray.isArray(p.pk))
+            p.fingerprint = p.pk.map((p)=>p.fingerprint());
+        else
+            p.fingerprint = p.pk.fingerprint();
     } catch (e) {
         console.trace(e);
         return;

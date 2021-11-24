@@ -127,7 +127,7 @@ global.bindWebService = function(endpoint,callback){
             put: function(field,value){ctx[field] = value;}
         }
         let ms = new Date().getTime();
-        new formidable.IncomingForm({maxFieldsSize:52428800}).parse(req, async (err, fields, files) => {
+        let formParse = async (err, fields, files) => {
             if (err) {
                 res.status(500);
                 console.trace(err);
@@ -164,7 +164,8 @@ global.bindWebService = function(endpoint,callback){
                 }
             }
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
-        })
+        };
+        new formidable.parse({maxFieldsSize:52428800}).parse(req, formParse);
     }
     console.log("Binding endpoint: /api" + endpoint)
     app.get(baseUrl + '/api' + endpoint,get);

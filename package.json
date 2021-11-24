@@ -30,6 +30,7 @@
     "run:proxy": "pm2 start ./pm2.proxy.config.js",
     "run:test": "pm2 start ./pm2.test.config.js",
     "logs": "pm2 logs",
+    "status": "pm2 l",
     "stop": "pm2 stop all",
     "docs": "npm install yuidocjs yuidoc-ember-cli-theme && yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/",
     "build:test": "docker build --progress plain -f docker/test/Dockerfile -t cass-test .",
