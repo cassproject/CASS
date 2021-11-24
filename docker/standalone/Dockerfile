@@ -5,8 +5,13 @@ RUN yum clean all && yum update -y
 RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
 RUN yum install -y nodejs-2:16.9.1-1nodesource.x86_64 git
 
-ARG DOCKER_TAG=error
-RUN npm install
+RUN mkdir CASS
+COPY src CASS/src
+COPY package.json CASS/package.json
+COPY pm2.standalone.config.js CASS/pm2.standalone.config.js
+COPY copyright.txt CASS/copyright.txt
+COPY LICENSE CASS/LICENSE
+RUN cd CASS && npm install
 
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
 RUN echo 'cluster.initial_master_nodes:' >> config/elasticsearch.yml
