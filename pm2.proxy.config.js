@@ -11,8 +11,8 @@ module.exports = {
             "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
             "PORT": "80"
           },
-          args: [
-            "--max_old_space_size=512"
+          node_args: [
+            "--max-old-space-size=512"
           ]
         }
     ]

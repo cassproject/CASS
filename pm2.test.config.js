@@ -7,8 +7,8 @@ module.exports = {
           log_file: '/logs/cass.log',
           env: {
           },
-          args: [
-            "--max_old_space_size=512"
+          node_args: [
+            "--max-old-space-size=512"
           ]
         }
     ]
