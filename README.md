@@ -84,3 +84,6 @@ Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWind
  * `npm run run:standalone` - Starts PM2 on localhost/ (used by Docker installs)
  * `npm run logs` - Tails logs.
  * `npm run stop` - Stops all PM2 services.
+
+## A note on Elasticsearch and 0.5
+Due to the performance improvements in the 0.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
