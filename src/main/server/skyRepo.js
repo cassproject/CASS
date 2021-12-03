@@ -1084,11 +1084,12 @@ var endpointMultiPut = async function() {
             permanentCreated = true;
         }
         await ((signatureSheet).call(this));
-        var me = this;
-        let forEachResults = await Promise.all(ary.map((hit)=>{return endpointMultiPutEach.call({ctx:this.ctx,dataStreams:this.dataStreams,params:{obj:hit}})}));
-        for (var i = 0; i < forEachResults.length; i++) 
-            if (forEachResults[i] != null) 
-                results.push(forEachResults[i]);
+        for (let idx = 0; idx < ary.length; idx+=100) {
+            let forEachResults = await Promise.all(ary.slice(idx, idx+100).map((hit)=>{return endpointMultiPutEach.call({ctx:this.ctx,dataStreams:this.dataStreams,params:{obj:hit}})}));
+            for (var i = 0; i < forEachResults.length; i++) 
+                if (forEachResults[i] != null) 
+                    results.push(forEachResults[i]);
+        }
     }
     await httpGet(elasticEndpoint + "/_all/_refresh", true);
     var ids = [];
