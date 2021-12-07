@@ -2,34 +2,17 @@ variables:
   DEV_USERNAME: deployment
   QA_USERNAME: deployment
   T3_USERNAME: deploymentcass
-  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-#   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
-image: maven:3.6.2
+image: node:16
 
 cache:
     paths:
     - node_modules
 
 stages:
-   - build
    - deploy
 
 ### BUILDS
-
-buildDev:
-  stage: build
-  only:
-    - dev
-  before_script:
-  - git submodule sync --recursive
-  - git submodule update --init --recursive    
-  script:
-  # - LAST_TAG=$(git describe --tags)
-  - mvn install
-  artifacts:
-    paths:
-    - ./target/cass.war
 
 buildQA:
   stage: build
@@ -84,7 +67,10 @@ deployDev:
    - ssh-add "$DEV_PRIVATE_KEY" > /dev/null
 
    ## Build commands
-   - scp -P22 -r ./target/cass.war $DEV_USERNAME@$DEV_SERVER_IP:/srv/deployer/
+   - cd $CI_PROJECT_DIR
+   - scp -P22 -r src $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
+   - scp -P22 -r package*.json $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
+   - scp -P22 -r pm2.config.js $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
 
 deployQA:
   stage: deploy
