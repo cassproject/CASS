@@ -1303,7 +1303,188 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
         listToSave.push(f);
 
         await loopback.multiput(repo,listToSave);
-        return repoEndpoint() + "data/" + guid;
+        return f.shortId();
+    } // end if frameworkObj != null
+}
+
+async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRelationships, ceasnIdentity, repo, owner) {
+    return new Promise(async (resolve) => {
+        try {
+            var newComp = JSON.parse(JSON.stringify(asnComp));
+
+            let frameworks = await EcFramework.search(repo, 'competency:"' + EcRemoteLinkedData.trimVersionFromUrl(newComp.id) + '" AND NOT subType:Collection');
+            if (frameworks && frameworks.length > 0) {
+                resolve();
+                return;
+            }
+
+            newComp["@context"] = "https://schema.cassproject.org/0.4/ceasn2cass";
+            var expandedComp = await jsonLdExpand(JSON.stringify(newComp));
+            var compactedComp = await jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
+
+            delete compactedComp["ceasn:isChildOf"];
+            delete compactedComp["ceasn:hasChild"];
+            delete compactedComp["ceasn:isPartOf"];
+
+            var c = new EcCompetency();
+            c.copyFrom(compactedComp);
+            c.addOwner(ceasnIdentity.ppk.toPk());
+
+            if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
+                var timestamp;
+                var date;
+                if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                    timestamp = null;
+                } else {
+                    timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
+                }
+                if (timestamp != null) {
+                    date = new Date(parseInt(timestamp)).toISOString();
+                } else {
+                    date = new Date().toISOString();
+                }
+                c["schema:dateCreated"] = date;
+            }
+            if (c["ceasn:broadAlignment"]) {
+                createRelations(c, "ceasn:broadAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:narrowAlignment"]) {
+                createRelations(c, "ceasn:narrowAlignment", "narrows", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["sameAs"]) {
+                createRelations(c, "sameAs", "isEquivalentTo", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:majorAlignment"]) {
+                createRelations(e, "ceasn:majorAlignment", "majorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:minorAlignment"]) {
+                createRelations(c, "ceasn:minorAlignment", "minorRelated", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            if (c["ceasn:prerequisiteAlignment"]) {
+                createRelations(c, "ceasn:prerequisiteAlignment", "requires", repo, ceasnIdentity, owner, cassRelationships, listToSave);
+            }
+            delete c["ceasn:broadAlignment"];
+            delete c["ceasn:narrowAlignment"];
+            delete c["sameAs"];
+            delete c["ceasn:majorAlignment"];
+            delete c["ceasn:minorAlignment"];
+            delete c["ceasn:prerequisiteAlignment"];
+
+            if (owner != null)
+                c.addOwner(EcPk.fromPem(owner));
+            listToSave.push(c);
+            resolve();
+        } catch(err) {
+            console.log(err);
+            resolve();
+        }
+    });
+}
+
+async function importCeCollectionToCass(frameworkObj, competencyList) {
+    const nodeDocumentLoader = jsonld.documentLoaders.node();
+    const cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4")),true);
+    const ceasn2cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/ceasn2cass")),true);
+
+    const customLoader = (url, callback) => {
+        if(url === "https://schema.cassproject.org/0.4") {
+            return callback(null, {
+            contextUrl: null, // this is for a context via a link header
+            document: cassContext, // this is the actual document that was loaded
+            documentUrl: url // this is the actual context URL after redirects
+            });
+        }
+        if(url === "https://schema.cassproject.org/0.4/ceasn2cass") {
+            return callback(null, {
+            contextUrl: null, // this is for a context via a link header
+            document: ceasn2cassContext, // this is the actual document that was loaded
+            documentUrl: url // this is the actual context URL after redirects
+            });
+        }
+        // call the default documentLoader
+        nodeDocumentLoader(url, callback);
+    };
+
+    jsonld.documentLoader = customLoader;
+
+    var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
+
+    var ceasnIdentity = new EcIdentity();
+    ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
+    ceasnIdentity.displayName = "CEASN Server Identity";
+    EcIdentityManager.default.addIdentity(ceasnIdentity);
+
+    if (false && repoEndpoint().contains("localhost"))
+        error("Endpoint Configuration is not set.", 500);
+
+    var cassCompetencies = [];
+    var cassRelationships = [];
+    var relationshipMap = {};
+
+    if (frameworkObj != null) {
+        var topChild = frameworkObj["ceterms:hasMember"];
+        if (topChild != null && topChild.length != null) {
+            for (var i = 0; i < topChild.length; i++) {
+                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(topChild[i]));
+            }
+        }
+    }
+
+    var listToSave = [];
+    for (let idx = 0; idx < competencyList.length; idx+=100) {
+        await Promise.all(competencyList.slice(idx, idx+100).map((comp) => importCompetencyToCollectionPromise(comp, listToSave, cassRelationships, ceasnIdentity, repo, owner)));
+    }
+
+    if (frameworkObj != null) {
+        var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"]));
+
+        frameworkObj["@context"] = "https://schema.cassproject.org/0.4/ceasn2cass";
+        console.log('before expand');
+        console.log(frameworkObj);
+        var expanded = await jsonLdExpand(JSON.stringify(frameworkObj));
+        console.log('expanded');
+        console.log(expanded);
+        var compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4");
+        console.log('compacted');
+        console.log(compacted);
+
+        delete compacted["ceasn:hasChild"];
+        delete compacted["ceasn:hasTopChild"];
+
+        compacted["competency"] = cassCompetencies;
+        delete compacted['ceterms:hasMember'];
+        compacted["relation"] = cassRelationships;
+        compacted["@type"] = "Framework";
+        compacted.subType = "Collection";
+
+        var f = new EcFramework();
+        f.copyFrom(compacted);
+        f.addOwner(ceasnIdentity.ppk.toPk());
+
+        if (owner != null)
+            f.addOwner(EcPk.fromPem(owner));
+
+        if (f["schema:dateCreated"] == null || f["schema:dateCreated"] === undefined) {
+            var timestamp;
+            var date;
+            if (!f.id.substring(f.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                timestamp = null;
+            } else {
+                timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
+            }
+            if (timestamp != null) {
+                date = new Date(parseInt(timestamp)).toISOString();
+            } else {
+                date = new Date().toISOString();
+            }
+            f["schema:dateCreated"] = date;
+        }
+
+        listToSave.push(f);
+
+        await loopback.multiput(repo,listToSave);
+        console.log(listToSave);
+        return f.shortId();
     } // end if frameworkObj != null
 }
 
@@ -1314,7 +1495,7 @@ async function ceasnFrameworkToCass() {
     var data = fileFromDatastream.call(this, "data");
     if (data === undefined || data == null) {
         data = fileFromDatastream.call(this, "file");
-        if (data) {
+        if (data && data.path) {
             data = await fsPromises.readFile(data.path, {encoding: 'utf8'});
         }
     }
@@ -1330,6 +1511,7 @@ async function ceasnFrameworkToCass() {
     }
 
     var frameworkObj = undefined;
+    var collectionObj = undefined;
     var competencyList = [];
 
     if (jsonLd["@graph"] != undefined && jsonLd["@graph"] != "") {
@@ -1341,14 +1523,19 @@ async function ceasnFrameworkToCass() {
             if (graphObj["@type"] == "ceasn:CompetencyFramework") {
                 graphObj["@context"] = jsonLd["@context"];
                 frameworkObj = graphObj;
+            } else if (graphObj["@type"] == "ceterms:Collection") {
+                graphObj["@context"] = jsonLd["@context"];
+                collectionObj = graphObj;
             } else if (graphObj["@type"] == "ceasn:Competency") { //&& graphObj["asn:statementLabel"] != undefined && (graphObj["asn:statementLabel"] == "Competency" || graphObj["asn:statementLabel"]["@value"] == "Competency")){
                 graphObj["@context"] = jsonLd["@context"];
                 competencyList.push(graphObj);
             }
         }
 
-        if (frameworkObj == undefined && competencyList.length != Object.keys(graph).length) {
+        if (frameworkObj == undefined && collectionObj == undefined && competencyList.length != Object.keys(graph).length) {
             return await importJsonLdGraph.call(this, graph, jsonLd["@context"]);
+        } else if (collectionObj) {
+            return await importCeCollectionToCass.call(this, collectionObj, competencyList);
         } else {
             return await importCeFrameworkToCass.call(this, frameworkObj, competencyList);
         }
