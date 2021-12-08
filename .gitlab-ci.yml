@@ -42,7 +42,7 @@ deployDev:
    - scp -P22 -r src $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
    - scp -P22 -r package*.json $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
    - scp -P22 -r pm2.config.js $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
-   - ssh $DEV_USERNAME@$DEV_SERVER_IP "cd /srv/node && npm run stop && npm install && npm run start"
+   - ssh $DEV_USERNAME@$DEV_SERVER_IP "cd /srv/node && npm install && npm run stop && npm run start"
 
 deployQA:
   stage: deploy
