@@ -38,9 +38,11 @@ deployDev:
 
    ## Build commands
    - cd $CI_PROJECT_DIR
+   - sed -i 's/http:\/\/localhost:8080/https:\/\/dev.api.cassproject.org/g' ./pm2.config.js
    - scp -P22 -r src $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
    - scp -P22 -r package*.json $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
    - scp -P22 -r pm2.config.js $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
+   - ssh $DEV_USERNAME@$DEV_SERVER_IP "cd /srv/node && npm run stop && npm install && npm run start"
 
 deployQA:
   stage: deploy
