@@ -70,10 +70,10 @@ deployQA:
    ## Build commands
    - cd $CI_PROJECT_DIR
    - sed -i 's/http:\/\/localhost:8080/https:\/\/qa.api.cassproject.org/g' ./pm2.config.js
-   - scp -P22 -r src $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
-   - scp -P22 -r package*.json $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
-   - scp -P22 -r pm2.config.js $DEV_USERNAME@$DEV_SERVER_IP:/srv/node
-   - ssh $DEV_USERNAME@$DEV_SERVER_IP "cd /srv/node && npm install && npm run stop && npm run run"
+   - scp -P22 -r src $QA_USERNAME@$QA_SERVER_IP:/srv/node
+   - scp -P22 -r package*.json $QA_USERNAME@$QA_SERVER_IP:/srv/node
+   - scp -P22 -r pm2.config.js $QA_USERNAME@$QA_SERVER_IP:/srv/node
+   - ssh $QA_USERNAME@$QA_SERVER_IP "cd /srv/node && npm install && npm run stop && npm run run"
 
 deployT3:
   stage: deploy
