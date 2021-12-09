@@ -24,7 +24,7 @@ cfGetFramework = async function (f) {
         if (f == null || f["@type"] == null || !f["@type"].contains("ramework"))
             f = null;
         if (f == null && this.params.id != null)
-            f = await loopback.frameworkGet(urlDecode(this.params.id));
+            f = await loopback.frameworkGet(decodeURIComponent(this.params.id));
         if (f == null)
             f = await loopback.frameworkGet(query.id);
         if (f == null) {

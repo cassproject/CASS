@@ -179,8 +179,8 @@ async function cassFrameworkAsCeasn() {
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
         framework = null;
-    if (framework == null && urlDecode(this.params.id) != null)
-        framework = await loopback.frameworkGet(urlDecode(this.params.id));
+    if (framework == null && this.params.id != null)
+        framework = await loopback.frameworkGet(decodeURIComponent(this.params.id));
     if (framework == null && this.params.urlRemainder != null) {
         var id = repoEndpoint() + "data" + this.params.urlRemainder;
         framework = await loopback.frameworkGet(id);
@@ -188,8 +188,8 @@ async function cassFrameworkAsCeasn() {
     var competency = null;
     if (framework == null) {
         competency = await skyrepoGet.call(this, query);
-        if (competency == null && urlDecode(this.params.id) != null)
-            competency = await loopback.competencyGet(urlDecode(this.params.id));
+        if (competency == null && this.params.id != null)
+            competency = await loopback.competencyGet(decodeURIComponent(this.params.id));
         else if (competency != null) {
             var c = new EcCompetency();
             c.copyFrom(competency);
