@@ -177,14 +177,15 @@ async function cassFrameworkAsCeasn() {
     if (framework != null && framework.subType === "Collection") {
         return await cassFrameworkAsCeasnCollection(framework);
     }
-    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
-        framework = null;
-    if (framework == null && this.params.id != null)
+    if (framework == null && this.params.id != null) {
         framework = await loopback.frameworkGet(decodeURIComponent(this.params.id));
+    }
     if (framework == null && this.params.urlRemainder != null) {
         var id = repoEndpoint() + "data" + this.params.urlRemainder;
         framework = await loopback.frameworkGet(id);
     }
+    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
+        framework = null;
     var competency = null;
     if (framework == null) {
         competency = await skyrepoGet.call(this, query);
@@ -200,14 +201,16 @@ async function cassFrameworkAsCeasn() {
             competency = await loopback.competencyGet(id);
         }
         if (competency != null) {
-            EcFramework.search(repo, "competency:\"" + competency.shortId() + "\"", function (frameworks) {
-                if (frameworks.length == 0) {
-                    error("Individual competencies are not permitted to be represented in CEASN outside of a framework. See https://github.com/CredentialEngine/CompetencyFrameworks/issues/43 for more details.", 404);
-                }
-                framework = frameworks[0];
-            }, function (error) {
+            let frameworks = [];
+            try {
+                frameworks = await EcFramework.search(repo, "competency:\"" + competency.shortId() + "\"");
+            } catch(error) {
                 error("Framework search failed.");
-            });
+            }
+            if (frameworks.length == 0) {
+                error("Individual competencies are not permitted to be represented in CEASN outside of a framework. See https://github.com/CredentialEngine/CompetencyFrameworks/issues/43 for more details.", 404);
+            }
+            framework = frameworks[0];
         }
     }
     if (framework == null)
