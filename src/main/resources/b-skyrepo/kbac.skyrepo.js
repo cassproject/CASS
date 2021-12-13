@@ -177,8 +177,8 @@ var elasticSettings = function() {
     return httpGet(elasticEndpoint + "/_settings", true);
 };
 var inferTypeFromObj = function(o, atType) {
-    if (atType != null) 
-        return atType;
+    // if (atType != null) 
+    //     return atType;
     var fullType = skyrepoUrlType(o);
     if (fullType == null) 
         return fullType;
@@ -403,6 +403,18 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
 var skyrepoPutInternal = function(o, id, version, type) {
     var erld = new EcRemoteLinkedData(null,null);
     erld.copyFrom(o);
+    var oldPermanent = skyrepoGetPermanent(id, version, type);
+    if (isNaN(version))
+        version = null;
+    var chosenVersion = version;
+    if (chosenVersion == null)
+    {
+        if (oldPermanent != null && oldPermanent["_version"] != null && !isNaN(oldPermanent["_version"]))
+            chosenVersion = oldPermanent["_version"]+1;
+        else
+            chosenVersion = 1;
+    }
+    var obj = skyrepoPutInternalIndex.call(this,o, id, chosenVersion, type);
     if (erld.id != null)
     {
         console.log(erld.shortId());
@@ -411,14 +423,14 @@ var skyrepoPutInternal = function(o, id, version, type) {
         for (var oldIndexRecordIndex = 0;oldIndexRecordIndex < oldIndexRecords.length;oldIndexRecordIndex++)
         {
             var oldIndexRecord = oldIndexRecords[oldIndexRecordIndex];
-            skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._type == "_doc" ? oldIndexRecord._index : oldIndexRecord._type);
+            if (oldIndexRecord._id != obj._id || oldIndexRecord._index != obj._index) {
+                skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._type == "_doc" ? oldIndexRecord._index : oldIndexRecord._type);
+            }
         }
     }
-    var obj = skyrepoPutInternalIndex.call(this,o, id, version, type);
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
-    version = (obj)["_version"];
-    skyrepoPutInternalPermanent.call(this,o, id, version, type);
+    skyrepoPutInternalPermanent.call(this,o, id, chosenVersion, type);
     var rld = new EcRemoteLinkedData(null, null);
     rld.copyFrom(o);
     if (rld.isAny(new EcRekeyRequest().getTypes())) {
@@ -430,7 +442,8 @@ var skyrepoPutInternal = function(o, id, version, type) {
     }
 };
 var skyrepoGetIndexRecords = function(shortId) {
-    var searchParameters = (searchObj).call(this, "@id:\"" + shortId + "\"");
+    var hashId = EcCrypto.md5(shortId);
+    var searchParameters = (searchObj).call(this, "@id:\"" + shortId + "\" OR @id:\"" + hashId + "\"");
     if (skyrepoDebug) 
         console.log(JSON.stringify(searchParameters));
     var microSearch = httpPost(searchParameters, searchUrl(null), "application/json", false, null, null, true);
