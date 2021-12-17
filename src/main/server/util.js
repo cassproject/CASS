@@ -54,7 +54,7 @@ global.skyrepoMigrate = async function (after) {
             {
                 continue;
             }
-            if (settings[index].settings.index.version.created != "6081299")
+            if (settings[index].settings.index.version.created != "6081299" && settings[index].settings.index.version.created != "6082199")
             {
                 continue;
             }
@@ -133,10 +133,16 @@ global.skyrepoMigrate = async function (after) {
             else
             {
                 var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true);
+                var setting = await httpGet(elasticEndpoint + "/" + index + "/_settings", true);
+                var fields = setting[index].settings?.index?.mapping?.total_fields.limit;
+                if (!fields) {
+                    fields = 1000;
+                }
                 var mappings = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = doc;
                 (doc).properties = {"@version":{type:"long"}};
+                mappings["settings"] = {"index.mapping.total_fields.limit": fields};
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
                 console.log(JSON.stringify(result));
             }
@@ -218,10 +224,16 @@ global.skyrepoMigrate = async function (after) {
             else
             {
                 var mapping = await httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true);
+                var setting = await httpGet(elasticEndpoint + "/.temp." + index + "/_settings", true);
+                var fields = setting[".temp." + index].settings?.index?.mapping?.total_fields.limit;
+                if (!fields) {
+                    fields = 1000;
+                }
                 var mappings = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = doc;
                 (doc).properties = {"@version":{type:"long"}};
+                mappings["settings"] = {"index.mapping.total_fields.limit": fields};
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
                 console.log(JSON.stringify(result));
             }
@@ -247,7 +259,7 @@ global.skyrepoMigrate = async function (after) {
             {
                 continue;
             }
-            if (settings[index].settings.index.version.created != "5061299" && settings[index].settings.index.version.created != "5040099")
+            if (settings[index].settings.index.version.created != "5061299" && settings[index].settings.index.version.created != "5061699" && settings[index].settings.index.version.created != "5040099")
             {
                 continue;
             }
