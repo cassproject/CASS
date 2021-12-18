@@ -83,7 +83,8 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = doc;
                 (doc).properties = {
                     "@version":{type:"long"},
-                    "confidence":{type:"float"}
+                    "confidence":{type:"float"},
+                    "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
                 console.log(JSON.stringify(result));
@@ -216,7 +217,8 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = doc;
                 (doc).properties = {
                     "@version":{type:"long"},
-                    "confidence":{type:"float"}
+                    "confidence":{type:"float"},
+                    "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
                 console.log(JSON.stringify(result));
@@ -282,12 +284,13 @@ global.skyrepoMigrate = async function (after) {
                 var permNoIndex = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = permNoIndex;
-                if ((mapping[index].mappings)[0]) {
+                if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 }
                 (doc).properties = {
                     "@version":{type:"long"},
-                    "confidence":{type:"float"}
+                    "confidence":{type:"float"},
+                    "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
                 console.log(JSON.stringify(result));
@@ -299,7 +302,7 @@ global.skyrepoMigrate = async function (after) {
                 var permNoIndex = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = permNoIndex;
-                if ((mapping[index].mappings)[0]) {
+                if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 } else if (index.indexOf('encryptedvalue') !== -1) {
                     let substring = index.substring(0, index.lastIndexOf('.') + 1);
@@ -332,7 +335,7 @@ global.skyrepoMigrate = async function (after) {
                 var permNoIndex = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = permNoIndex;
-                if ((mapping[index].mappings)[0]) {
+                if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 }
                 (doc).properties = {"@version":{type:"long"}};
@@ -368,7 +371,7 @@ global.skyrepoMigrate = async function (after) {
                 var permNoIndex = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = permNoIndex;
-                if ((mapping[".temp."+index].mappings)[0]) {
+                if (EcObject.keys(mapping[".temp."+index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
                 }
                 (doc).properties = {
@@ -393,12 +396,13 @@ global.skyrepoMigrate = async function (after) {
                 var permNoIndex = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = permNoIndex;
-                if ((mapping[".temp."+index].mappings)[0]) {
+                if (EcObject.keys(mapping[".temp."+index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
                 }
                 (doc).properties = {
                     "@version":{type:"long"},
-                    "confidence":{type:"float"}
+                    "confidence":{type:"float"},
+                    "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true);
                 console.log(JSON.stringify(result));
@@ -415,7 +419,7 @@ global.skyrepoMigrate = async function (after) {
                 var permNoIndex = new Object();
                 var doc = new Object();
                 (mappings)["mappings"] = permNoIndex;
-                if ((mapping[".temp."+index].mappings)[0]) {
+                if (EcObject.keys(mapping[".temp."+index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
                 }
                 (doc).properties = {"@version":{type:"long"}};
