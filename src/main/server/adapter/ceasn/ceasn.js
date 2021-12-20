@@ -1207,23 +1207,23 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     const cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4")),true);
     const ceasn2cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/ceasn2cass")),true);
 
-    const customLoader = (url, callback) => {
+    const customLoader = async (url) => {
         if(url === "https://schema.cassproject.org/0.4") {
-            return callback(null, {
-            contextUrl: null, // this is for a context via a link header
-            document: cassContext, // this is the actual document that was loaded
-            documentUrl: url // this is the actual context URL after redirects
-            });
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: cassContext, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
         }
         if(url === "https://schema.cassproject.org/0.4/ceasn2cass") {
-            return callback(null, {
-            contextUrl: null, // this is for a context via a link header
-            document: ceasn2cassContext, // this is the actual document that was loaded
-            documentUrl: url // this is the actual context URL after redirects
-            });
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: ceasn2cassContext, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
         }
         // call the default documentLoader
-        nodeDocumentLoader(url, callback);
+        nodeDocumentLoader(url);
     };
 
     jsonld.documentLoader = customLoader;
@@ -1389,23 +1389,23 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
     const cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4")),true);
     const ceasn2cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/ceasn2cass")),true);
 
-    const customLoader = (url, callback) => {
+    const customLoader = async (url) => {
         if(url === "https://schema.cassproject.org/0.4") {
-            return callback(null, {
-            contextUrl: null, // this is for a context via a link header
-            document: cassContext, // this is the actual document that was loaded
-            documentUrl: url // this is the actual context URL after redirects
-            });
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: cassContext, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
         }
         if(url === "https://schema.cassproject.org/0.4/ceasn2cass") {
-            return callback(null, {
-            contextUrl: null, // this is for a context via a link header
-            document: ceasn2cassContext, // this is the actual document that was loaded
-            documentUrl: url // this is the actual context URL after redirects
-            });
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: ceasn2cassContext, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
         }
         // call the default documentLoader
-        nodeDocumentLoader(url, callback);
+        nodeDocumentLoader(url);
     };
 
     jsonld.documentLoader = customLoader;

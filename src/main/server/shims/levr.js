@@ -346,29 +346,29 @@ global.rsaGenerate = function(len){
 
 if (global.jsonLdExpand === undefined)
 global.jsonLdExpand = function(json){
-    return new Promise(function(resolve,reject){
-        jsonld.expand(JSON.parse(json), new Object(), function(error, actual) {
-            if (error != null) {
-                reject((error)["message"]);
-                return;
-            }
+    return new Promise(async function(resolve,reject){
+        try {
+            let actual = await jsonld.expand(JSON.parse(json));
             resolve(actual);
-        });
+        } catch (error) {
+            reject((error)["message"]);
+                    return;
+        }
     });
 }
 
 if (global.jsonLdCompact === undefined)
 global.jsonLdCompact = function(actual,finalTargetContext){
-    return new Promise(function(resolve,reject){
+    return new Promise(async function(resolve,reject){
         try{finalTargetContext = JSON.parse(finalTargetContext)}catch(ex){}
-        jsonld.compact(JSON.parse(actual), finalTargetContext, new Object(), function(s, o, o2) {
-            if (s != null) {
-                reject(s);
-                return;
-            }            
+        try {
+            let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
             (o)["@context"] = finalTargetContext;
             resolve(o);
-        });
+        } catch (s) {
+            reject(s);
+            return;
+        }
     });
 }
 
