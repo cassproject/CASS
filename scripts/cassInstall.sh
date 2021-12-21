@@ -554,13 +554,13 @@ service httpd stop
 service httpd start
 fi
 
-if [ -d "/var/lib/tomcat7/etc"] && [! -d "etc"];
+if [ -d "/var/lib/tomcat7/etc" ] && [ ! -d "etc" ];
  then
  mkdir etc
  cp -R /var/lib/tomcat7/etc etc
 fi
 
-if [ -d "/var/lib/tomcat8/etc"] && [! -d "etc"];
+if [ -d "/var/lib/tomcat8/etc" ] && [ ! -d "etc" ];
  then
  mkdir etc
  cp -R /var/lib/tomcat8/etc etc
