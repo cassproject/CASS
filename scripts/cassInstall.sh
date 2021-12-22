@@ -568,7 +568,7 @@ fi
 
 if [ -e "src/main/server.js" ];
  then
-  npm run run
+  npm run run:cassbase
   pm2 startup
   pm2 save
 fi

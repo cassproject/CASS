@@ -29,6 +29,7 @@
     "run:standalone": "pm2 start ./pm2.standalone.config.js",
     "run:proxy": "pm2 start ./pm2.proxy.config.js",
     "run:test": "pm2 start ./pm2.test.config.js",
+    "run:cassbase": "pm2 start ./pm2.cassbase.config.js",
     "logs": "pm2 logs",
     "status": "pm2 l",
     "stop": "pm2 stop all",
