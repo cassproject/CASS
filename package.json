@@ -89,7 +89,7 @@
     "node-worker-threads-pool": "^1.5.1",
     "pure-uuid": "^1.6.2",
     "rdflib": "^2.2.0",
-    "ws": "^7.4.4",
+    "ws": "^7.4.6",
     "yuidoc-ember-cli-theme": "^1.0.4",
     "yuidocjs": "^0.10.2"
   },
