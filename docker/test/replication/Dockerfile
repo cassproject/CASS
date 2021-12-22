@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.16.2
 
 VOLUME /usr/share/elasticsearch/data
 RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -

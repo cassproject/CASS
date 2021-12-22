@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Development: 0.5 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=0.5)](https://travis-ci.org/cassproject/CASS)  
+Release Candidate: 0.5.6 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=0.5)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.2)](https://travis-ci.org/cassproject/CASS)
@@ -87,3 +87,12 @@ Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWind
 
 ## A note on Elasticsearch and 0.5
 Due to the performance improvements in the 0.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
+
+## Release Process
+ * `npm run test`
+ * Update package.json and update version number.
+ * Update src/main/webapp to point at the appropriate gh-pages commit.
+ * Update CHANGELOG.md
+ * Update README.md
+ * Commit with release notes.
+ * 
