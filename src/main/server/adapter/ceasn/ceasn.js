@@ -1223,7 +1223,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
             };
         }
         // call the default documentLoader
-        nodeDocumentLoader(url);
+        return await nodeDocumentLoader(url);
     };
 
     jsonld.documentLoader = customLoader;
@@ -1405,7 +1405,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
             };
         }
         // call the default documentLoader
-        nodeDocumentLoader(url);
+        return await nodeDocumentLoader(url);
     };
 
     jsonld.documentLoader = customLoader;

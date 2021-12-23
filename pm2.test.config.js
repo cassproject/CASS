@@ -8,7 +8,7 @@ module.exports = {
           env: {
           },
           node_args: [
-            "--max-old-space-size=512"
+            "--max-old-space-size=1024"
           ]
         }
     ]

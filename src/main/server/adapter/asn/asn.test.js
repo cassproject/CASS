@@ -33,5 +33,5 @@ describe("ASN Adapter", function() {
 
     it('conversion to ASN', async () => {
         await axios.get("http://localhost/api/asn/70d27b782c062d1280b240890141dcf6")
-    }).timeout(10000);
+    }).timeout(30000);
 });
