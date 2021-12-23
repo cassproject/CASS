@@ -1125,7 +1125,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpk.js.html#l4"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpk.js:4</code></a>
+            Defined in: <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l5"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:5</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -1159,6 +1159,15 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_equals">equals</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fromPem">fromPem</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_fromPem">fromPem</a>
 
                                     <span class="flag static">static</span>
@@ -1178,6 +1187,14 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_inArray">inArray</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toPem">toPem</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_toPem">toPem</a>
 
                             </li>
@@ -1186,7 +1203,19 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_toPk">toPk</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_toPkcs1Pem">toPkcs1Pem</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toPkcs1Pem">toPkcs1Pem</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toPkcs8Pem">toPkcs8Pem</a>
 
                             </li>
                             <li class="index-item method">
@@ -1269,6 +1298,72 @@ Can also match against a public key if the public portion of the keypair match.<
 
 
 </div>
+<div id="method_equals" class="method item">
+    <h3 class="name"><code>equals</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>Key</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l36"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:36</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true iff the PEM forms of the public private keypair match.
+Can also match against a public key if the public portion of the keypair match.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">Key</code>
+                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a> | <a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>to compare to.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>boolean If they match.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_fromPem" class="method item">
     <h3 class="name"><code>fromPem</code></h3>
 
@@ -1295,6 +1390,74 @@ Can also match against a public key if the public portion of the keypair match.<
                 <p>
                 Defined in
         <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpk.js.html#l19"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpk.js:19</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Decodes a PEM encoded PrivateKeyInfo (PKCS#8) or RSAPrivateKey (PKCS#1) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pem</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>PEM as a string.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>:
+                    <p>Object used to perform public key operations.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_fromPem" class="method item">
+    <h3 class="name"><code>fromPem</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pem</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l21"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:21</code></a>
         </p>
 
 
@@ -1501,6 +1664,71 @@ Can also match against a public key if the public portion of the keypair match.<
 
 
 </div>
+<div id="method_inArray" class="method item">
+    <h3 class="name"><code>inArray</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ppks</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l96"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:96</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true if this PPK is in an array of PPKs.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ppks</code>
+                        <span class="type">Array<EcPpk></span>
+
+
+                    <div class="param-description">
+                        <p>Array of ppks</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>true iff this PPK in ppks.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_toPem" class="method item">
     <h3 class="name"><code>toPem</code></h3>
 
@@ -1520,6 +1748,50 @@ Can also match against a public key if the public portion of the keypair match.<
                 <p>
                 Defined in
         <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpk.js.html#l92"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpk.js:92</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>PEM encoded public key without whitespace.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toPem" class="method item">
+    <h3 class="name"><code>toPem</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l51"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:51</code></a>
         </p>
 
 
@@ -1588,6 +1860,49 @@ Can also match against a public key if the public portion of the keypair match.<
 
 
 </div>
+<div id="method_toPk" class="method item">
+    <h3 class="name"><code>toPk</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l87"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:87</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Extracts the public key portion from the public private keypair.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>:
+                    <p>Public Key Helper.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_toPkcs1Pem" class="method item">
     <h3 class="name"><code>toPkcs1Pem</code></h3>
 
@@ -1632,6 +1947,50 @@ Can also match against a public key if the public portion of the keypair match.<
 
 
 </div>
+<div id="method_toPkcs1Pem" class="method item">
+    <h3 class="name"><code>toPkcs1Pem</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l61"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:61</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>PEM encoded public key without whitespace.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_toPkcs8Pem" class="method item">
     <h3 class="name"><code>toPkcs8Pem</code></h3>
 
@@ -1651,6 +2010,50 @@ Can also match against a public key if the public portion of the keypair match.<
                 <p>
                 Defined in
         <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpk.js.html#l120"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpk.js:120</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>PEM encoded public key without whitespace.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toPkcs8Pem" class="method item">
+    <h3 class="name"><code>toPkcs8Pem</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/node_modules_cassproject_src_com_eduworks_ec_crypto_EcPpkFacade.js.html#l71"><code>node_modules\cassproject\src\com\eduworks\ec\crypto\EcPpkFacade.js:71</code></a>
         </p>
 
 

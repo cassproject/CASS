@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -60,15 +60,15 @@
   "author": "Eduworks Corporation <cass@eduworks.com> (http://cassproject.org)",
   "contributors": [
     "Ronald 'Fritz' Ray <fritz.ray@eduworks.com>",
-    "Thomas Buskirk <tom.buskirk@eduworks.com>",
-    "Devlin Junker (Retired) <devlin.junker@eduworks.com>",
-    "Debbie Brown <debbie.brown@eduworks.com>",
-    "Aaron Veden <aaron.veden@eduworks.com>",
-    "Elaine Kelsey <elaine.kelsey@eduworks.com>",
-    "Robby Goetschalckx (Retired) <robby.goetschalckx@eduworks.com>",
     "Kristin Wood <kristin.wood@eduworks.com>",
-    "Aleita Train <aleita.train@eduworks.com>",
-    "Mile Divovic <mile.divovic@eduworks.com>"
+    "Mile Divovic <mile.divovic@eduworks.com>",
+    "Debbie Brown <debbie.brown@eduworks.com>",
+    "Elaine Kelsey <elaine.kelsey@eduworks.com>",
+    "Thomas Buskirk (Departed) <tom.buskirk@eduworks.com>",
+    "Devlin Junker (Retired) <devlin.junker@eduworks.com>",
+    "Aaron Veden (Retired) <aaron.veden@eduworks.com>",
+    "Robby Goetschalckx (Retired) <robby.goetschalckx@eduworks.com>",
+    "Aleita Train (Retired) <aleita.train@eduworks.com>"
   ],
   "license": "Apache-2.0",
   "bugs": {
