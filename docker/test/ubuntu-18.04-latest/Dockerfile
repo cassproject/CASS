@@ -9,6 +9,6 @@ RUN ./cassInstall.sh
 COPY . CASS
 RUN cd CASS && git pull origin && npm i
 
-CMD cd CASS && service apache2 start && service elasticsearch start && npm run run && npm run logs
+CMD cd CASS && service apache2 start && service elasticsearch start && npm run run:cassbase && npm run logs
 VOLUME ["/var/lib/tomcat8/etc","/var/log/tomcat8","/var/log/elasticsearch","/var/lib/elasticsearch","/etc/default","/etc/apache2/"]
 EXPOSE 80
