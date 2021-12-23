@@ -1,9 +1,7 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.16.2
 
-VOLUME /usr/share/elasticsearch/data
-RUN yum clean all && yum update -y
-RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum install -y nodejs-2:16.9.1-1nodesource.x86_64 git
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git
 
 ENV CASS_VERSION=0.5
 COPY src CASS/src
