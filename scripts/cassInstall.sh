@@ -242,6 +242,7 @@ if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -nam
    apt-get -qqy update
    apt-get -qqy install elasticsearch
    update-rc.d elasticsearch defaults 95 10
+   chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
   fi
  fi
 fi
@@ -266,6 +267,7 @@ if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -nam
   apt-get -qqy update
   apt-get -qqy install elasticsearch
   update-rc.d elasticsearch defaults 95 10
+  chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
  fi
 fi
 if [ "$platformDebian" -ne 0 ] && [ -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]

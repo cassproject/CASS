@@ -54,7 +54,7 @@ global.skyrepoMigrate = async function (after) {
             {
                 continue;
             }
-            if (settings[index].settings.index.version.created != "6081299" && settings[index].settings.index.version.created != "6082199")
+            if (settings[index].settings.index.version.created != "6081299" && settings[index].settings.index.version.created != "6082199" && settings[index].settings.index.version.created != "6082299")
             {
                 continue;
             }
