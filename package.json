@@ -21,7 +21,7 @@
     "dev:oidcdeps": "docker-compose up --build -d elasticsearch mysql-keycloak keycloak",
     "dev:oidc": "npm run dev:oidcdeps && export CASS_OIDC_ENABLED=true|| set CASS_OIDC_ENABLED=true&& npm run dev:nodemon",
     "dev:nodemon": "nodemon --max-old-space-size=512 --ignore etc src/main/server.js",
-    "mocha": "wait-on http://localhost/api/ping && mocha --parallel node_modules/cassproject/src/**/*.test.js src/**/*.test.js",
+    "mocha": "wait-on http://localhost/api/ping && mocha node_modules/cassproject/src/**/*.test.js src/**/*.test.js",
     "mochafast": "wait-on http://localhost/api/ping && mocha src/**/*.test.js",
     "automocha": "nodemon --exec \"npm run mocha\"",
     "automochafast": "nodemon --exec \"npm run mochafast\"",
