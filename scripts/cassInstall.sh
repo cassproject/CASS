@@ -556,21 +556,20 @@ fi
 
 if [ -d "/var/lib/tomcat7/etc" ] && [ ! -d "etc" ];
  then
- mkdir etc
- cp -R /var/lib/tomcat7/etc etc
+ cp -R /var/lib/tomcat7/etc .
 fi
 
 if [ -d "/var/lib/tomcat8/etc" ] && [ ! -d "etc" ];
  then
- mkdir etc
- cp -R /var/lib/tomcat8/etc etc
+ cp -R /var/lib/tomcat8/etc .
 fi
 
 if [ -e "src/main/server.js" ];
  then
   npm run run:cassbase
-  pm2 startup
-  pm2 save
+  npm run rotatelogs
+  # pm2 startup
+  # pm2 save
 fi
 
 echo -----

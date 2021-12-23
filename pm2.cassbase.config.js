@@ -4,7 +4,7 @@ module.exports = {
           name: "CaSS",
           script: "./src/main/server.js",
           watch: true,
-          ignore_watch: ["logs"],
+          ignore_watch: ["logs", "node_modules"],
           instances: 1,
           log_file: 'logs/cass.log',
           env: {
