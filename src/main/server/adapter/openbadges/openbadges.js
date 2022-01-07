@@ -132,7 +132,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
         fingerprint = query.id;
     }
 
-    var competencyAlignment = new AlignmentObject();
+    var competencyAlignment = new schema.AlignmentObject();
     competencyAlignment.alignmentType = "requires";
     competencyAlignment.targetUrl = competency.id;
     competencyAlignment.targetName = competency.name;
