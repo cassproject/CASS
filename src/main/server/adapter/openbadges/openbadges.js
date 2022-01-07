@@ -193,7 +193,7 @@ badgeAssertion = async function () {
     var evidences = [];
     for (var i = 0; i < a.getEvidenceCount(); i++)
     {
-        var evidence = a.getEvidence(i);
+        var evidence = await a.getEvidence(i);
         if (evidence.toLowerCase().startsWith("http"))
                 evidences.push(evidence);
         else if (EcObject.isObject(evidence))
@@ -211,8 +211,8 @@ badgeAssertion = async function () {
         "evidence": evidences,
 "narrative": "This individual was claimed to have demonstrated this competency.",
         "image": "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
-        "issuedOn": new Date(a.getAssertionDate()).toISOString(),
-        "expires": new Date(a.getExpirationDate()).toISOString(),
+        "issuedOn": new Date(await a.getAssertionDate()).toISOString(),
+        "expires": new Date(await a.getExpirationDate()).toISOString(),
         "badge": clazz.id,
         "verification": {
             "type": "HostedBadge"
