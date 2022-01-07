@@ -174,10 +174,10 @@ badgeAssertion = async function () {
     var a = new EcAssertion();
     a.copyFrom(assertion);
 
-    var subject = a.getSubject();
+    var subject = await a.getSubject();
     if (subject == null)
         error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's readers.", 401);
-    var agent = a.getAgent();
+    var agent = await a.getAgent();
     if (agent == null)
         error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's readers.", 401);
     subject = JSON.parse(await badgeSubject(subject.fingerprint()));
@@ -240,7 +240,7 @@ openbadgeCheckId = async function(){
     if (a.subject["@reader"] && !EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
         return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
-	var subject = a.getSubject();
+	var subject = await a.getSubject();
 	if (subject == null)
 		return debug("Badge not generated for assertion: No subject found.");
     var person = await badgeGetPerson.call(this, subject.fingerprint());
