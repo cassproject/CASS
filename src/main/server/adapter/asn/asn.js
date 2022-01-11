@@ -24,6 +24,7 @@ async function cassFrameworkAsAsn() {
         error("Endpoint Configuration is not set.", 500);
     var query = queryParse.call(this);
     var framework = null;
+    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2asnTerms")),true));
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
@@ -41,7 +42,16 @@ async function cassFrameworkAsAsn() {
             competency = c;
         }
         if (competency != null) {
-            competency.context = "https://schema.cassproject.org/0.4/cass2asn";
+            competency.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2asn.json";
+            for (let each in competency) {
+                if (terms[each]) {
+                    competency[terms[each]] = competency[each];
+                    delete competency[each];
+                }
+                if (each === "type") {
+                    competency[each] = "asn:Statement";
+                }
+            }
             competency = await jsonLdExpand(competency.toJson());
             return await jsonLdToRdfJson(competency);
         }
@@ -159,16 +169,34 @@ async function cassFrameworkAsAsn() {
         delete competencies[allCompetencies[i]];
         if (c == null) continue;
         var id = c.id;
-        c.context = "https://schema.cassproject.org/0.4/cass2asn";
+        c.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2asn.json";
         if (c.type == null) //Already done / referred to by another name.
             continue;
+        for (let each in c) {
+            if (terms[each]) {
+                c[terms[each]] = c[each];
+                delete c[each];
+            }
+            if (each === "type") {
+                c[each] = "asn:Statement";
+            }
+        }
         c = await jsonLdExpand(c.toJson());
         competencies[id] = JSON.parse(await jsonLdToRdfJson(c))[id];
     }
 
-    f.context = "https://schema.cassproject.org/0.4/cass2asn";
+    f.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2asn.json";
     delete f.relation;
     let fid = f.id;
+    for (let each in f) {
+        if (terms[each]) {
+        f[terms[each]] = f[each];
+            delete f[each];
+        }
+        if (each === "type") {
+            f[each] = "asn:StandardDocument";
+        }
+    }
     f = await jsonLdExpand(f.toJson());
     competencies[fid] = JSON.parse(await jsonLdToRdfJson(f))[fid];
     return JSON.stringify(competencies, null, 2);
@@ -472,15 +500,22 @@ if (!global.importJsonLdGraph) {
     global.importJsonLdGraph = importJsonLdGraph;
 }
 
-async function importConceptPromise(graphObj, conceptSchemeGuid, context, skosIdentity, owner, toSave) {
+async function importConceptPromise(graphObj, conceptSchemeId, context, skosIdentity, owner, toSave) {
     return new Promise(async (resolve) => {
         try {
             var compacted;
 
             if (context != undefined) {
+                const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassConceptsTerms")),true));
                 if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json"
                     || context == "https://credreg.net/ctdlasn/schema/context/json" || context == "https://credreg.net/ctdl/schema/context/json") {
-                    context = "https://schema.cassproject.org/0.4/ceasn2cassConcepts";
+                    context = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassConcepts.json";
+                    for (let each in graphObj) {
+                        if (terms[each]) {
+                            graphObj[terms[each]] = graphObj[each];
+                            delete graphObj[each];
+                        }
+                    }
                 }
                 if (context["schema"] == undefined) {
                     context["schema"] = "http://schema.org";
@@ -503,14 +538,14 @@ async function importConceptPromise(graphObj, conceptSchemeGuid, context, skosId
             }
 
             var type = compacted["@type"]
-            var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(compacted["@id"]));
             var objToSave = compacted;
 
-            if (type == "ConceptScheme") {
-                conceptSchemeGuid[0] = guid;
+            if (type == "skos:ConceptScheme") {
+                objToSave["@type"] = "ConceptScheme";
                 objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
                 objToSave = new EcConceptScheme();
                 objToSave.copyFrom(compacted);
+                conceptSchemeId.push(objToSave.shortId());
                 objToSave.addOwner(skosIdentity.ppk.toPk());
                 if (owner != null)
                     objToSave.addOwner(EcPk.fromPem(owner));
@@ -547,7 +582,8 @@ async function importConceptPromise(graphObj, conceptSchemeGuid, context, skosId
                 }
                 toSave.push(objToSave);
             }
-            else if (type == "Concept") {
+            else if (type == "skos:Concept") {
+                objToSave["@type"] = "Concept";
                 objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
                 objToSave = new EcConcept();
                 objToSave.copyFrom(compacted);
@@ -613,15 +649,15 @@ async function importJsonLdGraph(graph, context) {
     skosIdentity.displayName = "SKOS Server Identity";
     EcIdentityManager.default.addIdentity(skosIdentity);
 
-    var conceptSchemeGuid = [];
+    var conceptSchemeId = [];
     var toSave = [];
 
     for (let i = 0; i < graph.length; i+=100) {
-        await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeGuid, context, skosIdentity, owner, toSave)));
+        await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeId, context, skosIdentity, owner, toSave)));
     }
     await repo.multiput(toSave, function() {}, console.error);
-    if (conceptSchemeGuid) {
-        return repoEndpoint() + "data/" + conceptSchemeGuid[0];
+    if (conceptSchemeId) {
+        return conceptSchemeId[0];
     }
 }
 

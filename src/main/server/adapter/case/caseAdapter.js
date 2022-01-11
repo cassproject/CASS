@@ -75,13 +75,14 @@ cfGetCompetency = async function (c) {
             EcCompetency.search(repo, "@id:" + query.id, function (success) {
                 result = success;
             }, console.log);
-            if (result.length > 0) {
+            if (result && result.length > 0) {
                 competency = new EcCompetency();
                 competency.copyFrom(result[0]);
             }
         }
-        if (competency == null)
+        if (competency == null) {
             cfError(404,"failure","error","Competency not found.","uuid","unknownobject");
+        }
         var c = new EcCompetency();
         c.copyFrom(competency);
     }
@@ -115,6 +116,9 @@ cfClean = function (o) {
     for (var key in o) {
         if (key.contains("/"))
             delete o[key];
+        if (key.contains("cass:")) {
+            delete o[key];
+        }
         if (key.contains("case:")) {
             o[key.replace("case:", "")] = o[key];
             delete o[key];
@@ -140,7 +144,7 @@ cfClean = function (o) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfDocuments = async function (f) {
+cfDocuments = async function (f, terms) {
     f = await cfGetFramework.call(this, f);
     if (f == null) {
         var aggResults = [];
@@ -149,7 +153,7 @@ cfDocuments = async function (f) {
         if (frameworks == null)
             error("Could not reach repository", 500);
         for (var i = 0;i < frameworks.length;i++) {
-            var fw = await cfDocuments.call(me,frameworks[i]);
+            var fw = await cfDocuments.call(me,frameworks[i], terms);
             if (fw != null)
             aggResults.push(JSON.parse(fw));
         }
@@ -160,16 +164,22 @@ cfDocuments = async function (f) {
     var guid = f.getGuid();
     if (guid.startsWith("ce-"))
         guid = guid.substring(3);
-    f.context = "https://schema.cassproject.org/0.4/cass2case";
     if (f["schema:identifier"] == null)
         f["schema:identifier"] = guid;
-    f = await jsonLdExpand(f.toJson());
-    var f2 = await jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    for (let each in f) {
+        if (terms[each]) {
+            f[terms[each]] = f[each];
+            delete f[each];
+        }
+        if (each === "type" || each === "@type") {
+            f[each] = "case:CFDocument";
+        }
+    }
+    let f2 = cfClean(f);
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     f2.uri = thisEndpoint() + "ims/case/v1p0/CFDocuments/" + guid;
-    f2 = cfClean(f2);
     f2.CFPackageURI = {
         title: name,
         identifier: guid,
@@ -218,7 +228,7 @@ cfConcepts = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItems = async function (f, fw) {
+cfItems = async function (f, fw, terms) {
     var query = queryParse.call(this);
     f = await cfGetCompetency.call(this, f);
     result = {};
@@ -230,9 +240,21 @@ cfItems = async function (f, fw) {
         f["schema:identifier"] = guid;
     if (f.toJson != null)
         f = f.toJson();
-    f["@context"] = "https://schema.cassproject.org/0.4/cass2case";
-    f = await jsonLdExpand(f);
-    var f2 = await jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    try {
+        f = JSON.parse(f);
+    } catch(e) {
+        console.log(e);
+    }
+    for (let each in f) {
+        if (terms[each]) {
+            f[terms[each]] = f[each];
+            delete f[each];
+        }
+        if (each === "type" || each === "@type") {
+            f[each] = "case:CFItem";
+        }
+    }
+    let f2 = cfClean(f);
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     if (f2.title != null)
@@ -257,9 +279,9 @@ cfItems = async function (f, fw) {
     }
     else
         parent = [fw];
-    f2.CFDocumentURI.uri = JSON.parse(await cfDocuments.call(this, parent[0])).uri;
+    f2.CFDocumentURI.uri = JSON.parse(await cfDocuments.call(this, parent[0], terms)).uri;
     f2.CFDocumentURI.title = parent[0].name;
-    f2.CFDocumentURI.identifier = JSON.parse(await cfDocuments.call(this, parent[0])).identifier;
+    f2.CFDocumentURI.identifier = JSON.parse(await cfDocuments.call(this, parent[0], terms)).identifier;
     f2 = cfClean(f2);
     return JSON.stringify(f2, null, 2);
 }
@@ -271,16 +293,23 @@ cfItems = async function (f, fw) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItemAssociations = async function (f, fw) {
+cfItemAssociations = async function (f, fw, terms) {
     var query = queryParse.call(this);
     f = await cfGetAlignment.call(this, f);
     result = {};
     var timestamp = f.getTimestamp();
     var guid = f.getGuid();
     var shortId = f.shortId();
-    f.context = "https://schema.cassproject.org/0.4/cass2case";
-    f = await jsonLdExpand(f.toJson());
-    var f2 = await jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    for (let each in f) {
+        if (terms[each]) {
+            f[terms[each]] = f[each];
+            delete f[each];
+        }
+        if (each === "type" || each === "@type") {
+            f[each] = "case:CFAssociation";
+        }
+    }
+    let f2 = f;
     f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;
     if (fw == null) {
         var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
@@ -293,32 +322,31 @@ cfItemAssociations = async function (f, fw) {
     else
         parent = [fw];
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
-    // console.log(JSON.stringify(f2,null,2));
     f2.associationType = {"isEquivalentTo": "exactMatchOf", "narrows": "isChildOf"}[f2["case:relationType"]];
     delete f2["case:relationType"];
     if (f2["case:destinationNodeURI"] == null) return null;
     if (f2["case:originNodeURI"] == null) return null;
-    if (f2["case:destinationNodeURI"].id == fw.id)
+    if (f2["case:destinationNodeURI"] == fw.id)
         return null;
-    var destNode = await cfGetCompetency.call(this, f2["case:destinationNodeURI"].id);
-    var sourceNode = await cfGetCompetency.call(this, f2["case:originNodeURI"].id);
+    var destNode = await cfGetCompetency.call(this, f2["case:destinationNodeURI"]);
+    var sourceNode = await cfGetCompetency.call(this, f2["case:originNodeURI"]);
     if (destNode == null) return null;
     if (sourceNode == null) return null;
     delete f2["case:destinationNodeURI"];
     delete f2["case:originNodeURI"];
     f2.destinationNodeURI = {};
     f2.destinationNodeURI.title = destNode.name;
-    f2.destinationNodeURI.uri = JSON.parse(await cfItems.call(this, destNode, fw)).uri;
-    f2.destinationNodeURI.identifier = JSON.parse(await cfItems.call(this, destNode, fw)).identifier;
+    f2.destinationNodeURI.uri = JSON.parse(await cfItems.call(this, destNode, fw, terms)).uri;
+    f2.destinationNodeURI.identifier = JSON.parse(await cfItems.call(this, destNode, fw, terms)).identifier;
     f2.originNodeURI = {};
     f2.originNodeURI.title = sourceNode.name;
-    f2.originNodeURI.uri = JSON.parse(await cfItems.call(this, sourceNode, fw)).uri;
-    f2.originNodeURI.identifier = JSON.parse(await cfItems.call(this, sourceNode, fw)).identifier;
+    f2.originNodeURI.uri = JSON.parse(await cfItems.call(this, sourceNode, fw, terms)).uri;
+    f2.originNodeURI.identifier = JSON.parse(await cfItems.call(this, sourceNode, fw, terms)).identifier;
     f2.CFDocumentURI = {};
-    f2.CFDocumentURI.uri = JSON.parse(await cfDocuments.call(this, parent[0])).uri;
+    f2.CFDocumentURI.uri = JSON.parse(await cfDocuments.call(this, parent[0], terms)).uri;
     f2.CFDocumentURI.title = parent[0].name;
-    f2.CFDocumentURI.identifier = JSON.parse(await cfDocuments.call(this, parent[0])).identifier;
-    f2.lastChangeDateTime = date(timestamp, "yyyy-MM-dd'T'HH:mm:ssXXX");
+    f2.CFDocumentURI.identifier = JSON.parse(await cfDocuments.call(this, parent[0], terms)).identifier;
+    f2.lastChangeDateTime = new Date(timestamp).toISOString();
     f2.identifier = guid;
     f2 = cfClean(f2);
     return JSON.stringify(f2, null, 2);
@@ -370,16 +398,17 @@ cfPackages = async function (f) {
         toPrecache = toPrecache.concat(f.relation);
     }
     repo.precache(toPrecache, function (results) {});
+    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2caseTerms")),true));
 
     result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
-    result.CFDocument = JSON.parse(await cfDocuments.call(this, f));
+    result.CFDocument = JSON.parse(await cfDocuments.call(this, f, terms));
     delete result.CFDocument["@context"];
     result.CFItems = [];
     if (f.competency != null)
         for (var i = 0; i < f.competency.length; i++) {
             var c = await loopback.competencyGet(f.competency[i]);
             if (c != null)
-                c = JSON.parse(await cfItems.call(this, c, f));
+                c = JSON.parse(await cfItems.call(this, c, f, terms));
             if (c != null) {
                 delete c["@context"];
                 result.CFItems.push(c);
@@ -390,7 +419,7 @@ cfPackages = async function (f) {
         for (var i = 0; i < f.relation.length; i++) {
             var a = await loopback.alignmentGet(f.relation[i]);
             if (a != null)
-                a = JSON.parse(await cfItemAssociations.call(this, a, f));
+                a = JSON.parse(await cfItemAssociations.call(this, a, f, terms));
             if (a != null) {
                 delete a["@context"];
                 result.CFAssociations.push(a);
