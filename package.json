@@ -77,7 +77,7 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "axios": "^0.21.1",
-    "cassproject": "^0.5.28",
+    "cassproject": "^0.5.29",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-jwt": "^6.1.0",
