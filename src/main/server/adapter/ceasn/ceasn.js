@@ -788,6 +788,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
     f.competency = [];
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")),true));
+    const collectionTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollectionTerms")),true));
     for (let i = 0; i < allCompetencies.length; i+=100) {
         await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyInCollectionPromise(id, competencies, allCompetencies, f, ctx, terms)));
     }
@@ -813,12 +814,12 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var cipList = f["cipList"];
 
     for (let each in f) {
-        if (terms[each]) {
-            f[terms[each]] = f[each];
+        if (collectionTerms[each]) {
+            f[collectionTerms[each]] = f[each];
             delete f[each];
         }
         if (each === "type") {
-            f[each] = "ceasn:Collection";
+            f[each] = "ceterms:Collection";
         }
     }
 
@@ -1477,7 +1478,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
     const nodeDocumentLoader = jsonld.documentLoaders.node();
     const cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4")),true);
     const ceasn2cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json")),true);
-    const ceasn2cassTerms = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassTerms")),true);
+    const ceasn2cassTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassTerms")),true));
 
     const customLoader = async (url) => {
         if(url === "https://schema.cassproject.org/0.4") {
