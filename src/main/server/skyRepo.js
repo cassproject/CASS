@@ -893,8 +893,6 @@ var tryFormatOutput = function(o, expand) {
             return JSON.stringify(o);
     if (accept == "text/n4" || accept == "application/rdf+n4") 
         return jsonLdToNQuads(o);
-    if (accept == "application/rdf+json") 
-        return jsonLdToRdfJson(o);
     if (accept == "application/rdf+xml") 
         return jsonLdToRdfXml(o);
     if (accept == "application/x-turtle" || accept == "text/turtle") 

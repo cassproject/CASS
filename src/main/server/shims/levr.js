@@ -392,9 +392,10 @@ global.jsonLdCompact = function(actual,finalTargetContext){
 const $rdf = require('rdflib');
 if (global.jsonLdToRdfXml === undefined)
 global.jsonLdToRdfXml = function(o){
-    return new Promise(function(resolve,reject){
+    return new Promise(async function(resolve,reject){
+        let rdf = await jsonld.toRDF(o, {format: 'application/n-quads'});
         let store = $rdf.graph();
-        $rdf.parse(JSON.stringify(o), store, "whatever", 'application/ld+json',(err,str) => {
+        $rdf.parse(rdf, store, "whatever", 'application/n-quads',(err,str) => {
             resolve($rdf.serialize(null, str, '*', 'application/rdf+xml'));
         });
     });
@@ -406,9 +407,10 @@ global.jsonLdToTurtle = async function(o){
 }
 
 toTurtleInternal = function(o) {
-    return new Promise(function(resolve,reject){
+    return new Promise(async function(resolve,reject){
+        let rdf = await jsonld.toRDF(o, {format: 'application/n-quads'});
         let store = $rdf.graph();
-        $rdf.parse(JSON.stringify(o), store, "whatever", 'application/ld+json',(err,str) => {
+        $rdf.parse(rdf, store, "whatever", 'application/n-quads',(err,str) => {
             let result = ($rdf.serialize(null, str, '*', 'text/turtle'));
             resolve(result);
         });
@@ -424,14 +426,3 @@ global.jsonLdToNQuads = async function(o){
 require('module').Module._extensions['.js'] = function (module, filename) { 
   module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
 };
-const rdfjson = require('@entryscape/rdfjson');
-const { response } = require('express');
-if (global.jsonLdToRdfJson === undefined)
-global.jsonLdToRdfJson = async function(o){
-    let rdfxml = await jsonLdToRdfXml(o);
-    const { rdfxml2graph } = rdfjson.converters;
-    const graph = rdfxml2graph(rdfxml);
-    const jsonrdf = graph.exportRDFJSON();
-    return JSON.stringify(jsonrdf, null, 2);
-}
-
