@@ -106,7 +106,14 @@ if [ -e "src/main/server.js" ];
 echo -----
 echo Node version of CaSS detected.
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+if [ "$platformDebian" -ne 0 ]
+ then
 apt install -qqy nodejs build-essential
+fi
+if [ "$platformFedora" -ne 0 ]
+ then
+yum install -y -q nodejs
+fi
 node --version
 npm install
 fi
@@ -205,6 +212,7 @@ echo "gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch" >> /etc/yum.rep
 echo "enabled=1" >> /etc/yum.repos.d/elasticsearch.repo
 echo "autorefresh=1" >> /etc/yum.repos.d/elasticsearch.repo
 echo "type=rpm-md" >> /etc/yum.repos.d/elasticsearch.repo
+dnf clean all
 yum install elasticsearch
 chkconfig --add elasticsearch
 chkconfig elasticsearch on
@@ -498,6 +506,7 @@ if [ "$platformFedora" -ne 0 ];
 	echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/httpd/conf/httpd.conf
 
 	fi
+  /usr/sbin/setsebool httpd_can_network_connect 1
 fi
 
 if [ "$platformDebian" -ne 0 ];
@@ -512,7 +521,7 @@ if [ "$platformFedora" -ne 0 ];
  then
 echo -----
 echo Synchronizing Time with NIST...
-yum -q -y install ntpdate
+yum -q -y install ntpsec
 ntpdate -s time.nist.gov
 fi
 

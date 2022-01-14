@@ -1,4 +1,4 @@
-var caseToCassSchema = "https://schema.cassproject.org/0.4/case2cass";
+var caseToCassSchema = "https://schema.cassproject.org/0.4";
 var testCase = false;
 
 var caseInterface = {
@@ -76,7 +76,7 @@ getTimestamp = function(object) {
     }
 };
 
-convertCFDocumentToFramework = async function (document) {
+convertCFDocumentToFramework = async function (document, terms) {
     var f = new EcFramework();
     f.assignId(document.identifier);
     if (document.subjectURI != null)
@@ -85,10 +85,14 @@ convertCFDocumentToFramework = async function (document) {
             document.subjectURI[j]["@type"] = "reference";
             document.subjectURI[j]["schema:alignmentType"] = "educationalSubject";
         }
-    document["@type"] = "CFDocument";
+    document["@type"] = "Framework";
     document["@context"] = caseToCassSchema;
-    document = await jsonLdExpand(JSON.stringify(document));
-    document = await jsonLdCompact(JSON.stringify(document), cassContext);
+    for (let each in document) {
+        if (terms[each]) {
+            document[terms[each]] = document[each];
+            delete document[each];
+        }
+    }
     f.copyFrom(document);
     if ((f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined)
         && EcFramework.template != null && EcFramework.template["schema:inLanguage"] != null) {
@@ -100,26 +104,30 @@ convertCFDocumentToFramework = async function (document) {
     return f;
 }
 
-convertCFAssociationIntoRelation = async function (a) {
-    a["@type"] = "CFAssociation";
+convertCFAssociationIntoRelation = async function (a, terms) {
+    a["@type"] = "Relation";
     a["@context"] = caseToCassSchema;
     a.originNodeURI = a.originNodeURI.uri;
     a.destinationNodeURI = a.destinationNodeURI.uri;
     delete a.CFDocumentURI;
-    a = await jsonLdExpand(JSON.stringify(a));
-    a = await jsonLdCompact(JSON.stringify(a), cassContext);
-    a.relationType = {
+    for (let each in a) {
+        if (terms[each]) {
+            a[terms[each]] = a[each];
+            delete a[each];
+        }
+    }
+    a["cass:relationType"] = {
         "exactMatchOf": Relation.IS_EQUIVALENT_TO,
         "isChildOf": Relation.NARROWS
-    }[a.relationType];
+    }[a["cass:relationType"]];
     a = stripCassNamespace(a);
     var r = new EcAlignment();
     r.copyFrom(a);
     return r;
 }
 
-convertCFItemIntoCompetency = async function (a) {
-    a["@type"] = "CFItem";
+convertCFItemIntoCompetency = async function (a, terms) {
+    a["@type"] = "Competency";
     a["@context"] = caseToCassSchema;
     delete a.CFDocumentURI;
     if (a.educationLevel != null)
@@ -132,8 +140,12 @@ convertCFItemIntoCompetency = async function (a) {
                     "schema:targetName": a.educationLevel[i]
                 };
         }
-    a = await jsonLdExpand(JSON.stringify(a));
-    a = await jsonLdCompact(JSON.stringify(a), cassContext);
+    for (let each in a) {
+        if (terms[each]) {
+            a[terms[each]] = a[each];
+            delete a[each];
+        }
+    }
     var r = new EcCompetency();
     r.copyFrom(a);
     if (EcCompetency.template != null && EcCompetency.template["schema:dateCreated"] != null) {
@@ -143,14 +155,14 @@ convertCFItemIntoCompetency = async function (a) {
 }
 
 //Returns array of objects to save.
-embedCFPackageIntoFramework = async function(f,document){
+embedCFPackageIntoFramework = async function(f,document, terms){
 	var p = await caseInterface.CFPackages.call(this,document.CFPackageURI.identifier);
 	var results = [f];
 	var i = 0;
 	if (p.CFAssociations != null)
 	for (i = 0;i < p.CFAssociations.length;i++)
 	{
-		var relation = await convertCFAssociationIntoRelation(p.CFAssociations[i]);
+		var relation = await convertCFAssociationIntoRelation(p.CFAssociations[i], terms);
 		results.push(relation);
         p.CFAssociations[i] = relation.id;
 	}
@@ -158,7 +170,7 @@ embedCFPackageIntoFramework = async function(f,document){
     if (p.CFItems != null)
 	for (i = 0;i < p.CFItems.length;i++)
 	{
-		var competency = await convertCFItemIntoCompetency(p.CFItems[i]);
+		var competency = await convertCFItemIntoCompetency(p.CFItems[i], terms);
 		results.push(competency);
         p.CFItems[i] = competency.id;
 	}
@@ -188,6 +200,7 @@ ingestCase = async function () {
         return await testSuiteCase.call(this);
     }
     cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/",true,{"Accept":"application/json"}))["@context"]);
+    let terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/case2cassTerms",true))));
     var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
 
     var caseIdentity = new EcIdentity();
@@ -211,8 +224,8 @@ ingestCase = async function () {
     var dx;
     for (var i = 0; i < documents.CFDocuments.length; i++) {
         var document = documents.CFDocuments[i];
-        var f = await convertCFDocumentToFramework(document);
-        var listToSave = await embedCFPackageIntoFramework.call(this,f, document);
+        var f = await convertCFDocumentToFramework(document, terms);
+        var listToSave = await embedCFPackageIntoFramework.call(this,f, document, terms);
         for (var j = 0; j < listToSave.length; j++) {
             listToSave[j].addOwner(caseIdentity.ppk.toPk());
             if (owner != null)

@@ -132,7 +132,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
         fingerprint = query.id;
     }
 
-    var competencyAlignment = new AlignmentObject();
+    var competencyAlignment = new schema.AlignmentObject();
     competencyAlignment.alignmentType = "requires";
     competencyAlignment.targetUrl = competency.id;
     competencyAlignment.targetName = competency.name;
@@ -174,10 +174,10 @@ badgeAssertion = async function () {
     var a = new EcAssertion();
     a.copyFrom(assertion);
 
-    var subject = a.getSubject();
+    var subject = await a.getSubject();
     if (subject == null)
         error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's readers.", 401);
-    var agent = a.getAgent();
+    var agent = await a.getAgent();
     if (agent == null)
         error("Not authorized to perform this operation. Add the key found at /badge/pk to the assertion's readers.", 401);
     subject = JSON.parse(await badgeSubject(subject.fingerprint()));
@@ -193,7 +193,7 @@ badgeAssertion = async function () {
     var evidences = [];
     for (var i = 0; i < a.getEvidenceCount(); i++)
     {
-        var evidence = a.getEvidence(i);
+        var evidence = await a.getEvidence(i);
         if (evidence.toLowerCase().startsWith("http"))
                 evidences.push(evidence);
         else if (EcObject.isObject(evidence))
@@ -211,8 +211,8 @@ badgeAssertion = async function () {
         "evidence": evidences,
 "narrative": "This individual was claimed to have demonstrated this competency.",
         "image": "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
-        "issuedOn": new Date(a.getAssertionDate()).toISOString(),
-        "expires": new Date(a.getExpirationDate()).toISOString(),
+        "issuedOn": new Date(await a.getAssertionDate()).toISOString(),
+        "expires": new Date(await a.getExpirationDate()).toISOString(),
         "badge": clazz.id,
         "verification": {
             "type": "HostedBadge"
@@ -240,7 +240,7 @@ openbadgeCheckId = async function(){
     if (a.subject["@reader"] && !EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
         return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
-	var subject = a.getSubject();
+	var subject = await a.getSubject();
 	if (subject == null)
 		return debug("Badge not generated for assertion: No subject found.");
     var person = await badgeGetPerson.call(this, subject.fingerprint());
