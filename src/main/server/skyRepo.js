@@ -964,7 +964,7 @@ var endpointData = async function() {
         var oldObj = await (skyrepoDelete).call(this, id, version, type);
         if (oldObj == null) 
             return null;
-        afterSave(oldObj.toJson());
+        afterSave(JSON.parse(oldObj.toJson()));
         return null;
     } else if (methodType == "POST") {
         var o = (fileFromDatastream).call(this, "data", null);
