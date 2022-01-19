@@ -189,13 +189,13 @@ if (global.headers === undefined)
 global.headers = function(){return this.ctx.req.headers}
 
 if (global.httpGet === undefined)
-global.httpGet = async function(url)
+global.httpGet = async function(url, flag, headers)
 {
     let failCounter = 0;
     while(failCounter < 1000)
     {
         try {
-            const response = await axios.get(url)
+            const response = await axios.get(url, {headers: headers});
             if (skyrepoDebug) console.log("get success: " + JSON.stringify(response.data));
             return response.data;
         } catch (error) {
