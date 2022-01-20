@@ -198,6 +198,7 @@ xapiKey = function () {
 }
 bindWebService("/xapi/pk", xapiKey);
 bindWebService("/xapi/statement", xapiStatementListener);
+bindWebService("/xapi/statements", xapiStatementListener);
 
 var xapiLoop = async function () {
     var ident = new EcIdentity();
