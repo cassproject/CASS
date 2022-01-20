@@ -211,7 +211,7 @@ var xapiLoop = async function () {
         since = fileToString(since);
     }
     var results = await xapiEndpoint.call(this, null, since);
-    while (results.statements != null && results.statements.length > 0) {
+    while (results != null && results.statements != null && results.statements.length > 0) {
         for (var i = 0; i < results.statements.length; i++) {
             await xapiStatement.call(this, results.statements[i]);
         }
