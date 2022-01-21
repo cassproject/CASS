@@ -309,16 +309,18 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
                     
             if (error.response != null)
             {
-                if (error.response.status == 404 || error.response.status == 409 || error.response.status == 400)
-                {
+                if (error.response.status === 409) {
+                    console.log(error.response);
+                    return 409;
+                } else if (error.response.status == 404 || error.response.status == 400) {
                     console.log(error.response);
                     console.log(error.responseText);
                     return resp;
-                }
-                else if (error.response.status == 429)
+                } else if (error.response.status == 429) {
                     ;
-                else
+                } else {
                     console.log(error);
+                }
             }
         }
     }
