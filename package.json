@@ -18,7 +18,7 @@
     "dev:clientSideCertificates": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& export REQUEST_CLIENT_SIDE_CERTIFICATE=true|| set REQUEST_CLIENT_SIDE_CERTIFICATE=true&& npm run dev:nodemon",
     "dev:jwt": "npm run dev:deps && export CASS_JWT_ENABLED=true|| set CASS_JWT_ENABLED=true&& npm run dev:nodemon",
     "dev:deps": "docker-compose up -d elasticsearch",
-    "dev:oidcdeps": "docker-compose up --build -d elasticsearch mysql-keycloak keycloak",
+    "dev:oidcdeps": "docker-compose up --build -d elasticsearch",
     "dev:oidc": "npm run dev:oidcdeps && export CASS_OIDC_ENABLED=true|| set CASS_OIDC_ENABLED=true&& npm run dev:nodemon",
     "dev:nodemon": "nodemon --max-old-space-size=512 --ignore etc src/main/server.js",
     "mocha": "wait-on http://localhost/api/ping && mocha node_modules/cassproject/src/**/*.test.js src/**/*.test.js",
