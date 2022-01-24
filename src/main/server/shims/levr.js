@@ -189,13 +189,13 @@ if (global.headers === undefined)
 global.headers = function(){return this.ctx.req.headers}
 
 if (global.httpGet === undefined)
-global.httpGet = async function(url)
+global.httpGet = async function(url, flag, headers)
 {
     let failCounter = 0;
     while(failCounter < 1000)
     {
         try {
-            const response = await axios.get(url)
+            const response = await axios.get(url, {headers: headers});
             if (skyrepoDebug) console.log("get success: " + JSON.stringify(response.data));
             return response.data;
         } catch (error) {
@@ -309,16 +309,18 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
                     
             if (error.response != null)
             {
-                if (error.response.status == 404 || error.response.status == 409 || error.response.status == 400)
-                {
+                if (error.response.status === 409) {
+                    console.log(error.response);
+                    return 409;
+                } else if (error.response.status == 404 || error.response.status == 400) {
                     console.log(error.response);
                     console.log(error.responseText);
                     return resp;
-                }
-                else if (error.response.status == 429)
+                } else if (error.response.status == 429) {
                     ;
-                else
+                } else {
                     console.log(error);
+                }
             }
         }
     }

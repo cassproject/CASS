@@ -431,6 +431,9 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
     (data)["data"] = JSON.stringify(o);
     var url = putPermanentBaseUrl.call(this,o, id, version, type);
     let results = await httpPost(data, url, "application/json", false, null, null, true);
+    if (results === 409) {
+        return JSON.stringify(results);
+    }
     if (version != null) {
         url = putPermanentUrl.call(this,o, id, version, type);
         results = await httpPost(data, url, "application/json", false, null, null, true);
@@ -443,7 +446,7 @@ var skyrepoPutInternal = async function(o, id, version, type) {
     //Securing Proxy: Sign data that is to be saved.
     let erld = new EcRemoteLinkedData(null,null);
     erld.copyFrom(o);
-    if (this.ctx.req.eim != null)
+    if (this.ctx && this.ctx.req && this.ctx.req.eim != null)
     {
         try
         {
@@ -476,7 +479,10 @@ var skyrepoPutInternal = async function(o, id, version, type) {
     }
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
-    await skyrepoPutInternalPermanent.call(this,o, id, chosenVersion, type);
+    let status = await skyrepoPutInternalPermanent.call(this,o, id, chosenVersion, type);
+    if (status === '409') {
+        await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
+    }
     var rld = new EcRemoteLinkedData(null, null);
     rld.copyFrom(o);
     if (rld.isAny(new EcRekeyRequest().getTypes())) {
@@ -962,7 +968,7 @@ var endpointData = async function() {
         var oldObj = await (skyrepoDelete).call(this, id, version, type);
         if (oldObj == null) 
             return null;
-        afterSave(oldObj.toJson());
+        afterSave(JSON.parse(oldObj.toJson()));
         return null;
     } else if (methodType == "POST") {
         var o = (fileFromDatastream).call(this, "data", null);

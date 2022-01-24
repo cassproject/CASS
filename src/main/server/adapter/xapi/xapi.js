@@ -16,16 +16,25 @@ var xapiConfig = function () {
 }
 var xapiConfigAutoExecute = xapiConfig;
 
-var xapiEndpoint = function (more, since) {
-    var endpoint = xapiConfig.call(this).xapiEndpoint + "statements?format=exact&limit=0";
+var xapiEndpoint = async function (more, since, config) {
+    var endpoint;
+    if (config) {
+        endpoint = config.xapiEndpoint + "statements?format=exact&limit=0";
+    } else {
+        endpoint = xapiConfig.call(this).xapiEndpoint + "statements?format=exact&limit=0";
+    }
     if (since != null)
-        endpoint = xapiConfig.call(this).xapiEndpoint + "statements?format=exact&limit=0&since=" + since;
+        endpoint += "&since=" + since;
     if (more != null)
-        endpoint = xapiConfig.call(this).xapiEndpoint + more;
+        endpoint += more;
     var headers = {};
-    headers["Authorization"] = xapiConfig.call(this).xapiAuth;
+    if (config) {
+        headers["Authorization"] = config.xapiAuth;
+    } else {
+        headers["Authorization"] = xapiConfig.call(this).xapiAuth;
+    }
     headers["X-Experience-API-Version"] = "1.0.1";
-    return httpGet(endpoint,false, headers);
+    return await httpGet(endpoint,false, headers);
 }
 bindWebService("/xapi/endpoint", xapiEndpoint);
 
@@ -198,6 +207,21 @@ xapiKey = function () {
 }
 bindWebService("/xapi/pk", xapiKey);
 bindWebService("/xapi/statement", xapiStatementListener);
+bindWebService("/xapi/statements", xapiStatementListener);
+
+var xapiLoopEach = async function(since, config, sinceFilePath) {
+    var results = await xapiEndpoint.call(this, null, since, config);
+    while (results != null && results.statements != null && results.statements.length > 0) {
+        for (var i = 0; i < results.statements.length; i++) {
+            await xapiStatement.call(this, results.statements[i]);
+        }
+        fileSave(new Date().toISOString(), sinceFilePath);
+        if (results.more != null && results.more != "")
+            results = await xapiEndpoint.call(this, results.more, null, config);
+        else
+            results = {};
+    }
+}
 
 var xapiLoop = async function () {
     var ident = new EcIdentity();
@@ -206,20 +230,22 @@ var xapiLoop = async function () {
     EcIdentityManager.default.addIdentity(ident);
     var sinceFilePath = "etc/adapter.xapi.since.txt";
     var since = null;
+    let config = [];
+    for (let key in process.env) {
+        if (key.startsWith("XAPI_CONFIG_")) {
+            config.push(JSON.parse(process.env[key]));
+        }
+    }
     if (fileExists(sinceFilePath)) {
         since = fileLoad(sinceFilePath);
         since = fileToString(since);
     }
-    var results = xapiEndpoint.call(this, null, since);
-    while (results.statements != null && results.statements.length > 0) {
-        for (var i = 0; i < results.statements.length; i++) {
-            await xapiStatement.call(this, results.statements[i]);
-        }
-        fileSave(date(null, "yyyy-MM-dd'T'HH:mm:ssXXX"), sinceFilePath);
-        if (results.more != null && results.more != "")
-            results = xapiEndpoint.call(this, results.more, null);
-        else
-            results = {};
+    for (let each in config) {
+        await xapiLoopEach.call(this, since, config[each], sinceFilePath);
     }
+    if (!config || config.length === 0) {
+        await xapiLoopEach.call(this, since, null, sinceFilePath);
+    }
+    
 }
 bindWebService("/xapi/tick", xapiLoop);
