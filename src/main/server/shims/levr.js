@@ -310,7 +310,6 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
             if (error.response != null)
             {
                 if (error.response.status === 409) {
-                    console.log(error.response);
                     return 409;
                 } else if (error.response.status == 404 || error.response.status == 400) {
                     console.log(error.response);

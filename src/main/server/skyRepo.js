@@ -1,3 +1,4 @@
+const EcArray = require('cassproject/src/com/eduworks/ec/array/EcArray');
 const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
 const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
 const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/general/EcRemoteLinkedData');
@@ -442,7 +443,7 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
         console.log(JSON.stringify(results));
     return JSON.stringify(results);
 };
-var skyrepoPutInternal = async function(o, id, version, type) {
+var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, version, type) {
     //Securing Proxy: Sign data that is to be saved.
     let erld = new EcRemoteLinkedData(null,null);
     erld.copyFrom(o);
@@ -479,9 +480,20 @@ var skyrepoPutInternal = async function(o, id, version, type) {
     }
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
-    let status = await skyrepoPutInternalPermanent.call(this,o, id, chosenVersion, type);
-    if (status === '409') {
-        await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
+    let permanentIds = [id];
+    if (erld.id != null && erld.getGuid() != null)
+        permanentIds.push(erld.getGuid())
+    if (erld.id != null && erld.shortId() != null)
+        permanentIds.push(EcCrypto.md5(erld.shortId()));
+    EcArray.removeDuplicates(permanentIds);
+    for (let permId of permanentIds)
+    {
+        let status = await skyrepoPutInternalPermanent.call(this,o, permId, chosenVersion, type);
+        if (status === '409') {
+            console.log("409, version is: " + chosenVersion);
+            await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
+            break;
+        }
     }
     var rld = new EcRemoteLinkedData(null, null);
     rld.copyFrom(o);
@@ -765,9 +777,16 @@ var skyrepoDeleteInternalPermanent = async function(id, version, type) {
 };
 var skyrepoDelete = async function(id, version, type) {
     var oldObj = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
+    let permanentIds = [id];
+    if (oldObj.id != null && oldObj.getGuid() != null)
+        permanentIds.push(oldObj.getGuid())
+    if (oldObj.id != null && oldObj.shortId() != null)
+        permanentIds.push(EcCrypto.md5(oldObj.shortId()));
+    EcArray.removeDuplicates(permanentIds);
     if (oldObj != null) {
         await skyrepoDeleteInternalIndex.call(this, id, version, type);
-        await skyrepoDeleteInternalPermanent.call(this, id, version, type);
+        for (let permId of permanentIds)
+            await skyrepoDeleteInternalPermanent.call(this, permId, version, type);
     } else {
         error("Can't find object to delete", 401);
     }
