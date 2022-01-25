@@ -166,7 +166,7 @@ global.bindWebService = function(endpoint,callback){
             }
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
         };
-        new formidable({maxFieldsSize:52428800}).parse(req, formParse);
+        formidable({maxFieldsSize:52428800}).parse(req, formParse);
     }
     console.log("Binding endpoint: /api" + endpoint)
     app.get(baseUrl + '/api' + endpoint,get);

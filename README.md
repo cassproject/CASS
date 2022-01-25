@@ -89,10 +89,11 @@ Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWind
 Due to the performance improvements in the 0.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
 
 ## Release Process
- * `npm run test`
- * Update package.json and update version number.
+ * Review dependencies, autocomplete version numbers
+ * Delete package-lock.json and node_modules, `npm install`
+ * `npm test` - Must not fail any tests.
+ * Increment version number in package.json
  * Update src/main/webapp to point at the appropriate gh-pages commit.
  * Update CHANGELOG.md
  * Update README.md
  * Commit with release notes.
- * 
