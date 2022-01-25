@@ -95,9 +95,15 @@ else
   fi
 fi
 
+if [ -e "CASS" ];
+ then
+  echo -----
+  echo Moving CASS out of the way.
+  mv CASS CASS.backup.upgrade.to.$branch
+fi
+
 echo -----
 echo Downloading CASS Repo...
-rm -rf CASS
 git clone --recurse-submodules https://github.com/cassproject/CASS -b $branch
 cd CASS
 
@@ -575,8 +581,16 @@ if [ -d "/var/lib/tomcat8/etc" ] && [ ! -d "etc" ];
  cp -R /var/lib/tomcat8/etc .
 fi
 
+if [ -e "../CASS.backup.upgrade.to.$branch" ];
+ then
+  echo -----
+  echo Copying previous version etc folder to current version.
+  cp -r ../CASS.backup.upgrade.to.$branch/etc etc
+fi
+
 if [ -e "src/main/server.js" ];
  then
+  mkdir logs
   npm run run:cassbase
   npm run rotatelogs
   # pm2 startup
