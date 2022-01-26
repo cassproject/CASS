@@ -593,8 +593,7 @@ if [ -e "src/main/server.js" ];
   mkdir logs
   npm run run:cassbase
   npm run rotatelogs
-  # pm2 startup
-  # pm2 save
+  npm run save
 fi
 
 echo -----
