@@ -30,6 +30,8 @@
     "run:proxy": "pm2 start ./pm2.proxy.config.js",
     "run:test": "pm2 start ./pm2.test.config.js",
     "run:cassbase": "pm2 start ./pm2.cassbase.config.js",
+    "pm2startup": "pm2 startup",
+    "pm2save": "pm2 save",
     "logs": "pm2 logs",
     "rotatelogs": "pm2 install pm2-logrotate",
     "status": "pm2 l",

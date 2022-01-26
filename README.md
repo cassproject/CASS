@@ -80,10 +80,13 @@ Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWind
 
 ## Running it like it's in prod
 
- * `npm run run` - Starts PM2 on localhost:8080/cass (used by cassInstall.sh)
+ * `npm run run:cassbase` - Starts PM2 on localhost:8080/cass (used by cassInstall.sh)
  * `npm run run:standalone` - Starts PM2 on localhost/ (used by Docker installs)
+ * `npm run run` - Starts PM2 on localhost:8080/
  * `npm run logs` - Tails logs.
  * `npm run stop` - Stops all PM2 services.
+
+ To get the process to restart when your linux machine restarts, run `npm run pm2startup`, run the command the process tells you to, and run `npm run pm2save`. For Windows, an additional library is needed to configure this.
 
 ## A note on Elasticsearch and 0.5
 Due to the performance improvements in the 0.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
