@@ -1216,8 +1216,8 @@ var pingWithTime = function() {
         
     if (this.ctx.req.oidc != null)
     {
-       (o)["ssoLogin"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/api/')+"login";
-       (o)["ssoLogout"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/api/')+"logout";
+       (o)["ssoLogin"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/')+"api/login";
+       (o)["ssoLogout"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/')+"api/logout";
     }
     return JSON.stringify(o);
 };

@@ -27,6 +27,7 @@
     "automochafast": "nodemon --exec \"npm run mochafast\"",
     "run": "pm2 start ./pm2.config.js",
     "run:standalone": "pm2 start ./pm2.standalone.config.js",
+    "run:google": "pm2 start ./pm2.google.config.js",
     "run:proxy": "pm2 start ./pm2.proxy.config.js",
     "run:test": "pm2 start ./pm2.test.config.js",
     "run:cassbase": "pm2 start ./pm2.cassbase.config.js",

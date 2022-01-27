@@ -1,6 +1,12 @@
-
+console.log(process.env.CASS_OIDC_ENABLED);
 if (process.env.CASS_OIDC_ENABLED || false)
 {
+    if (global.baseUrl != "")
+    {
+        console.error("BASE URL is " + global.baseURL + " and this can cause problems with callbacks from SSO providers.");
+        console.error("You may need to modify your reverse proxy (if you have one) to match up callbacks.");
+        console.error("If you use the cass installer script, this requires taking /cass out of the Apache2 redirect.");
+    }
     const { auth } = require('express-openid-connect');
     app.use(
         auth({
@@ -8,13 +14,14 @@ if (process.env.CASS_OIDC_ENABLED || false)
             baseURL: process.env.CASS_OIDC_BASE_URL || 'http://localhost/',
             clientID: process.env.CASS_OIDC_CLIENT_ID || 'cass',
             secret: process.env.CASS_OIDC_SECRET || 'a71b92d4-336e-4664-bc05-2226f76b4042',
+	        routes:{callback:global.baseUrl + "/callback"},
             authorizationParams: {
                 scope: 'openid profile email'
             },
             authRequired: false
         })
     );
-    app.get('/api/login', (req, res) => {
+    app.get(global.baseUrl + '/api/login', (req, res) => {
         res.oidc.login({
             returnTo: req.query.redirectUrl || '/',
             authorizationParams: {
@@ -22,7 +29,7 @@ if (process.env.CASS_OIDC_ENABLED || false)
             }
         });
     });
-    app.get('/api/logout', (req, res) => {
+    app.get(global.baseUrl + '/api/logout', (req, res) => {
         res.oidc.logout({
             returnTo: req.query.redirectUrl || '/'
         });

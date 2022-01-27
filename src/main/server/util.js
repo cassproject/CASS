@@ -443,7 +443,7 @@ global.skyrepoMigrate = async function (after) {
 skyrepoReindex = async function () {
     if (this.params.debug != null)
         skyrepoDebug = true;
-    if (this.params.secret != skyIdSecret())
+    if (this.params.secret.trim() !== skyIdSecret().trim())
         error("You must provide secret=`cat skyId.secret` to invoke reindex.", 401);
 
     var firstQueryPost = {
