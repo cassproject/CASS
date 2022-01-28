@@ -586,6 +586,7 @@ if [ -e "../CASS.backup.upgrade.to.$branch" ];
   echo -----
   echo Copying previous version etc folder to current version.
   cp -r ../CASS.backup.upgrade.to.$branch/etc etc
+  cp -r ../CASS.backup.upgrade.to.$branch/*.config.js .
 fi
 
 if [ -e "src/main/server.js" ];
