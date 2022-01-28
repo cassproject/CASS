@@ -49,7 +49,7 @@ fi
 
 md5Local=`cat cassInstall.sh | md5sum`
 md5Remote=`curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh | md5sum`
-if [[ $- == *i* ]] && [ "$md5Local" != "$md5Remote" ];
+if [ "$md5Local" != "$md5Remote" ];
  then
  echo -----
  read -p "Update script has changed. Update from Github? [default=yes]" result
