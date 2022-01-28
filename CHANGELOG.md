@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.9
+* Better support for Google and Microsoft SSO.
+* Updated editor.
+
 ## 0.5.7
 * Support domain name changes, database exchanges, and multi-tenancy in a more performant fashion.
 * Fixed bugs around re-importing deleted data and versioning.
