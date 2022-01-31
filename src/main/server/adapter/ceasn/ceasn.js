@@ -418,6 +418,7 @@ async function cassFrameworkAsCeasn() {
             delete f[key];
         }
     }
+    delete f["ceterms:ownedBy"];
     var socList = f["socList"];
     var naicsList = f["naicsList"];
     var cipList = f["cipList"];
@@ -534,7 +535,7 @@ function stripNonCe(f) {
                                                                                                         if (EcArray.isArray(f[k]) == false)
                                                                                                             f[k] = [f[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
-        if (k === "ceasn:publisherName" || k === "ceasn:conceptKeyword" || k === "ceasn:comment") {
+        if (k === "ceasn:publisherName" || k === "ceasn:conceptKeyword" || k === "ceasn:comment" || k === "ceterms:keyword") {
             Object.keys(f[k]).forEach(function (key) {
                 if (EcArray.isArray(f[k][key]) == false)
                     f[k][key] = [f[k][key]];
@@ -809,6 +810,8 @@ async function cassFrameworkAsCeasnCollection(framework) {
             delete f[key];
         }
     }
+    delete f["ceasn:publisher"];
+    delete f["ceasn:publisherName"];
     var socList = f["socList"];
     var naicsList = f["naicsList"];
     var cipList = f["cipList"];
