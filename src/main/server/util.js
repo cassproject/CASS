@@ -157,7 +157,7 @@ global.skyrepoMigrate = async function (after) {
             var r2 = null;
             console.log(r2 = await httpDelete(elasticEndpoint+"/"+index,true));
             if (r2.error != null) continue;
-            if (r.total == 0) continue;
+            //if (r.total == 0) continue;
             if (index == "permanent")
             {
                 var mappings = new Object();
@@ -352,7 +352,7 @@ global.skyrepoMigrate = async function (after) {
             var r2 = null;
             console.log(r2 = await httpDelete(elasticEndpoint+"/"+index,true));
             if (r2.error != null) continue;
-            if (r.total == 0) continue;
+            //if (r.total == 0) continue;
             if (index == "permanent")
             {
                 var mappings = new Object();
