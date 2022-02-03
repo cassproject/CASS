@@ -17,6 +17,9 @@ services:
       # - CASS_OIDC_CLIENT_ID=cass # name of your keycloak client
       # - CASS_OIDC_SECRET=M2nn59wDxkwUZ9SVEVAJADYnUeKP78vU # secret from your keycloak client
       # - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
+      # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
+      # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
+      # - CASS_BANNER_BACKGROUND_COLOR=yellow # valid css color value for background color of banner
     ulimits:
       memlock:
         soft: -1

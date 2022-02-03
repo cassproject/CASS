@@ -1219,6 +1219,12 @@ var pingWithTime = function() {
        (o)["ssoLogin"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/')+"api/login";
        (o)["ssoLogout"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/')+"api/logout";
     }
+    // Add banner info if set in env vars
+    (o)["banner"] = {
+        message: process.env.CASS_BANNER_MESSAGE, // string
+        color: process.env.CASS_BANNER_TEXT_COLOR, // valid css color value
+        background: process.env.CASS_BANNER_BACKGROUND_COLOR // valid css color value
+    }
     return JSON.stringify(o);
 };
 (function() {
