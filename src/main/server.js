@@ -99,5 +99,8 @@ skyrepoMigrate(function(){
     }
     else
         global.server = app.listen(port,after);
+    server.on('connection', function(socket) {
+        socket.setKeepAlive(true);
+    })
     require("./server/websocket.js");
 });
