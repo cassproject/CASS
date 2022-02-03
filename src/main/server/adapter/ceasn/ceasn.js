@@ -35,7 +35,7 @@ async function ceasnExportUriTransform(uri, frameworkUri) {
     if (uri.startsWith(ceasnExportUriPrefix))
         return uri;
     try {
-        var found = await loopback.repositoryGet(uri);
+        var found = await EcRepository.get(uri, null, null, repo);
         if (!found) {
             return uri;
         }
@@ -188,11 +188,11 @@ async function cassFrameworkAsCeasn() {
         return await cassFrameworkAsCeasnCollection(framework);
     }
     if (framework == null && this.params.id != null) {
-        framework = await loopback.frameworkGet(decodeURIComponent(this.params.id));
+        framework = await EcFramework.get(decodeURIComponent(this.params.id), null, null, repo);
     }
     if (framework == null && this.params.urlRemainder != null) {
         var id = repoEndpoint() + "data" + this.params.urlRemainder;
-        framework = await loopback.frameworkGet(id);
+        framework = await EcFramework.get(id, null, null, repo);
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
         framework = null;
@@ -200,7 +200,7 @@ async function cassFrameworkAsCeasn() {
     if (framework == null) {
         competency = await skyrepoGet.call(this, query);
         if (competency == null && this.params.id != null)
-            competency = await loopback.competencyGet(decodeURIComponent(this.params.id));
+            competency = await EcCompetency.get(decodeURIComponent(this.params.id), null, null, repo);
         else if (competency != null) {
             var c = new EcCompetency();
             c.copyFrom(competency);
@@ -208,7 +208,7 @@ async function cassFrameworkAsCeasn() {
         }
         if (competency == null && this.params.urlRemainder != null) {
             var id = repoEndpoint() + "data" + this.params.urlRemainder;
-            competency = await loopback.competencyGet(id);
+            competency = await EcCompetency.get(id, null, null, repo);
         }
         if (competency != null) {
             let frameworks = [];
@@ -243,14 +243,14 @@ async function cassFrameworkAsCeasn() {
     var competencies = {};
 
     for (var i = 0; i < f.competency.length; i++) {
-        var c = await loopback.competencyGet(f.competency[i]);
+        var c = await EcCompetency.get(f.competency[i], null, null, repo);
         if (c != null) {
             competencies[f.competency[i]] = competencies[c.id] = c;
         }
     }
 
     for (var i = 0; i < f.relation.length; i++) {
-        var r = await loopback.alignmentGet(f.relation[i]);
+        var r = await EcAlignment.get(f.relation[i], null, null, repo);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
@@ -693,14 +693,14 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var competencies = {};
 
     for (var i = 0; i < f.competency.length; i++) {
-        var c = await loopback.competencyGet(f.competency[i]);
+        var c = await EcCompetency.get(f.competency[i], null, null, repo);
         if (c != null) {
             competencies[f.competency[i]] = competencies[c.id] = c;
         }
     }
 
     for (var i = 0; i < f.relation.length; i++) {
-        var r = await loopback.alignmentGet(f.relation[i]);
+        var r = await EcAlignment.get(f.relation[i], null, null, repo);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
@@ -1013,14 +1013,14 @@ async function cassConceptSchemeAsCeasn(framework) {
     var allConcepts = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
 
     for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
-        var c = await loopback.conceptGet(cs["skos:hasTopConcept"][i]);
+        var c = await EcConcept.get(cs["skos:hasTopConcept"][i], null, null, repo);
         if (c != null) {
             concepts[cs["skos:hasTopConcept"][i]] = concepts[c.id] = c;
             if (c["skos:narrower"]) {
                 async function getSubConcepts(c) {
                     repo.precache(c["skos:narrower"], function() {});
                     for (var j = 0; j < c["skos:narrower"].length; j++) {
-                        var subC = await loopback.conceptGet(c["skos:narrower"][j]);
+                        var subC = await EcConcept.get(c["skos:narrower"][j], null, null, repo);
                         if (subC != null) {
                             concepts[subC.id] = subC;
                             allConcepts.push(subC.id);
