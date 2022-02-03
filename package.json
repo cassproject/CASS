@@ -80,7 +80,7 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "axios": "^0.25.0",
-    "cassproject": "^0.5.32",
+    "cassproject": "^0.5.33",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-jwt": "^6.1.0",
