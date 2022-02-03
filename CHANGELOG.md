@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.10
+* Updated editor.
+* Fixed some bugs with data migration.
+* Added banner with environment variables: CASS_BANNER_MESSAGE, CASS_BANNER_TEXT_COLOR, CASS_BANNER_BACKGROUND_COLOR
+* Updated elasticsearch version.
+
 ## 0.5.9
 * Better support for Google and Microsoft SSO.
 * Updated editor.

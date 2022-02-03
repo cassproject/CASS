@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -84,7 +84,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-jwt": "^6.1.0",
-    "express-openid-connect": "^2.5.2",
+    "express-openid-connect": "^2.6.0",
     "express-ws": "^5.0.2",
     "formidable": "^2.0.1",
     "jsonld": "^5.2.0",
