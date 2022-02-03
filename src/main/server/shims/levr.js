@@ -44,11 +44,11 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            if (ex.status !== undefined && ex.status != null)
+            if (ex && ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else
                 res.status(500);
-            res.end(ex.data ? ex.data : ex +"");
+            res.end(ex && ex.data ? ex.data : ex +"");
             console.trace(ex);
         }
         console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) GET " + JSON.stringify(req.query));
