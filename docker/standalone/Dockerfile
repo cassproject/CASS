@@ -14,6 +14,8 @@ RUN cd CASS && npm install
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
 RUN echo 'cluster.initial_master_nodes:' >> config/elasticsearch.yml
 RUN echo '  - cass-a' >> config/elasticsearch.yml
+RUN echo '-Xms4g' >> jvm.options
+RUN echo '-Xmx4g' >> jvm.options
 EXPOSE 80
 VOLUME ["/usr/share/elasticsearch/data","/usr/share/elasticsearch/CASS/etc","/usr/share/elasticsearch/CASS/logs"]
 ENTRYPOINT /usr/local/bin/docker-entrypoint.sh & (cd CASS && npm run run:standalone && npm run logs)
