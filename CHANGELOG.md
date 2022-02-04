@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.0
+* Updated elasticsearch standalone memory consumption.
+* Incremented to 1.5
+
 ## 0.5.10
 * Updated editor.
 * Fixed some bugs with data migration.

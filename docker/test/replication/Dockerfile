@@ -3,7 +3,7 @@ FROM docker.elastic.co/elasticsearch/elasticsearch:7.16.2
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git
 
-ENV CASS_VERSION=0.5
+ENV CASS_VERSION=1.5
 COPY src CASS/src
 COPY package.json CASS/package.json
 COPY *.js CASS/

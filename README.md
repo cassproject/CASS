@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Release Candidate: 0.5.10 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=0.5)](https://travis-ci.org/cassproject/CASS)  
+Release Candidate: 1.5.0 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.2)](https://travis-ci.org/cassproject/CASS)
@@ -88,14 +88,16 @@ Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWind
 
  To get the process to restart when your linux machine restarts, run `npm run pm2startup`, run the command the process tells you to, and run `npm run pm2save`. For Windows, an additional library is needed to configure this.
 
-## A note on Elasticsearch and 0.5
-Due to the performance improvements in the 0.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
+## A note on Elasticsearch and 1.5
+Due to the performance improvements in the 1.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
 
 ## Release Process
  * Review dependencies, autocomplete version numbers
+ * Increment version number in package.json
+ * Update documentation, `npm run docs`
+ * Delete yuidoc elements from devDependencies in package.json
  * Delete package-lock.json and node_modules, `npm install`
  * `npm test` - Must not fail any tests.
- * Increment version number in package.json
  * Update src/main/webapp to point at the appropriate gh-pages commit.
  * Update CHANGELOG.md
  * Update README.md
