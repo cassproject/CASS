@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.2
+* Update editor.
+* Update CaSS library.
+
 ## 1.5.0
 * Updated elasticsearch standalone memory consumption.
 * Incremented to 1.5

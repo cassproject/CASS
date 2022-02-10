@@ -93,7 +93,7 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
 
 ## Release Process
  * Review dependencies, autocomplete version numbers
- * Increment version number in package.json
+ * Increment version number in package.json and yuidoc.json
  * Update documentation, `npm run docs`
  * Delete yuidoc elements from devDependencies in package.json
  * Delete package-lock.json and node_modules, `npm install`

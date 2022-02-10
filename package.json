@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
