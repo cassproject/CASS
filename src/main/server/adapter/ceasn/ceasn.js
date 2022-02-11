@@ -348,6 +348,28 @@ async function cassFrameworkAsCeasn() {
                 else
                     competencies[r.source]["ceasn:minorAlignment"].push(await ceasnExportUriTransform(r.target));
         }
+        if (r.relationType == "majorRelated") {
+            EcArray.setRemove(f.competency, r.source);
+            if (competencies[r.target] != null)
+                if (competencies[r.target]["ceasn:majorAlignment"] == null)
+                    competencies[r.target]["ceasn:majorAlignment"] = [];
+
+            if (competencies[r.source] != null)
+                if (competencies[r.source]["ceasn:majorAlignment"] == null)
+                    competencies[r.source]["ceasn:majorAlignment"] = [];
+
+            if (competencies[r.target] != null)
+                if (competencies[r.source] != null)
+                    competencies[r.target]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(competencies[r.source].id));
+                else
+                    competencies[r.target]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(r.source));
+
+            if (competencies[r.source] != null)
+                if (competencies[r.target] != null)
+                    competencies[r.source]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(competencies[r.target].id));
+                else
+                    competencies[r.source]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(r.target));
+        }
         if (r.relationType == Relation.REQUIRES) {
             EcArray.setRemove(f.competency, r.source);
             if (competencies[r.source] != null)
@@ -771,6 +793,28 @@ async function cassFrameworkAsCeasnCollection(framework) {
                     competencies[r.source]["ceasn:minorAlignment"].push(await ceasnExportUriTransform(competencies[r.target].id));
                 else
                     competencies[r.source]["ceasn:minorAlignment"].push(await ceasnExportUriTransform(r.target));
+        }
+        if (r.relationType == "majorRelated") {
+            EcArray.setRemove(f.competency, r.source);
+            if (competencies[r.target] != null)
+                if (competencies[r.target]["ceasn:majorAlignment"] == null)
+                    competencies[r.target]["ceasn:majorAlignment"] = [];
+
+            if (competencies[r.source] != null)
+                if (competencies[r.source]["ceasn:majorAlignment"] == null)
+                    competencies[r.source]["ceasn:majorAlignment"] = [];
+
+            if (competencies[r.target] != null)
+                if (competencies[r.source] != null)
+                    competencies[r.target]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(competencies[r.source].id));
+                else
+                    competencies[r.target]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(r.source));
+
+            if (competencies[r.source] != null)
+                if (competencies[r.target] != null)
+                    competencies[r.source]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(competencies[r.target].id));
+                else
+                    competencies[r.source]["ceasn:majorAlignment"].push(await ceasnExportUriTransform(r.target));
         }
         if (r.relationType == Relation.REQUIRES) {
             EcArray.setRemove(f.competency, r.source);
