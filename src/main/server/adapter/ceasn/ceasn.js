@@ -834,8 +834,8 @@ async function cassFrameworkAsCeasnCollection(framework) {
     f.competency = [];
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")),true));
     const collectionTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollectionTerms")),true));
-    for (let i = 0; i < allCompetencies.length; i+=100) {
-        await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyInCollectionPromise(id, competencies, allCompetencies, f, ctx, terms)));
+    for (let i = 0; i < allCompetencies.length; i+=15) {
+        await Promise.all(allCompetencies.slice(i, i+15).map((id) => competencyInCollectionPromise(id, competencies, allCompetencies, f, ctx, terms)));
     }
 
     f.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json";
