@@ -37,6 +37,12 @@ global.bindWebService = function(endpoint,callback){
             });
             if (typeof(result) == "string")
             {
+                try {
+                    JSON.parse(result);
+                    res.setHeader("Content-Type", "application/json; charset=utf-8");
+                } catch(e) {
+                    // not JSON
+                }
                 res.end(result);
             }
             else
