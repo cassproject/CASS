@@ -583,7 +583,7 @@ function orderFields(object) {
     return object;
 }
 
-async function competencyInCollectionPromise(compId, competencies, allCompetencies, f, ctx, terms) {
+async function competencyInCollectionPromise(compId, competencies, allCompetencies, f, terms) {
     return new Promise(async (resolve) => {
         try {
             var c = competencies[compId];
@@ -644,7 +644,7 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
                 }
             }
 
-            c = await jsonLdCompact(c.toJson(), ctx);
+            c = await jsonLdCompact(c.toJson(), "https://credreg.net/ctdlasn/schema/context/json");
             if (socList) {
                 c["socList"] = socList;
             }
@@ -697,6 +697,41 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
 async function cassFrameworkAsCeasnCollection(framework) {
     EcRepository.cache = new Object();
     EcRepository.caching = true;
+
+    const nodeDocumentLoader = jsonld.documentLoaders.node();
+    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")),true));
+    const collectionTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollectionTerms")),true));
+    var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
+    const collectionContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json"))["@context"],true);
+    const cass2ceasn = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json"))["@context"], true);
+
+    const customLoader = async (url) => {
+        if(url === "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json") {
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: collectionContext, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
+        }
+        if(url === "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json") {
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: cass2ceasn, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
+        }
+        if(url === "https://credreg.net/ctdlasn/schema/context/json") {
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: ctx, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
+        }
+        // call the default documentLoader
+        return await nodeDocumentLoader(url);
+    };
+
+    jsonld.documentLoader = customLoader;
 
     var f = new EcFramework();
     f.copyFrom(framework);
@@ -830,12 +865,10 @@ async function cassFrameworkAsCeasnCollection(framework) {
         }
     }
 
-    var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
     f.competency = [];
-    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")),true));
-    const collectionTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollectionTerms")),true));
-    for (let i = 0; i < allCompetencies.length; i+=15) {
-        await Promise.all(allCompetencies.slice(i, i+15).map((id) => competencyInCollectionPromise(id, competencies, allCompetencies, f, ctx, terms)));
+    
+    for (let i = 0; i < allCompetencies.length; i+=10) {
+        await Promise.all(allCompetencies.slice(i, i+10).map((id) => competencyInCollectionPromise(id, competencies, allCompetencies, f, terms)));
     }
 
     f.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json";
@@ -870,7 +903,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
         }
     }
 
-    f = await jsonLdCompact(f.toJson(), JSON.stringify((await httpGet("https://credreg.net/ctdl/schema/context/json"))["@context"],true));
+    f = await jsonLdCompact(f.toJson(), "https://credreg.net/ctdlasn/schema/context/json");
     if (socList) {
         f["socList"] = socList;
     }
