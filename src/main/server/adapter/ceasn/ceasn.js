@@ -704,6 +704,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
     const collectionContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json"))["@context"],true);
     const cass2ceasn = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json"))["@context"], true);
+    const cetermsctx = JSON.stringify((await httpGet("https://credreg.net/ctdl/schema/context/json"))["@context"], true);
 
     const customLoader = async (url) => {
         if(url === "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json") {
@@ -724,6 +725,13 @@ async function cassFrameworkAsCeasnCollection(framework) {
             return {
                 contextUrl: null, // this is for a context via a link header
                 document: ctx, // this is the actual document that was loaded
+                documentUrl: url // this is the actual context URL after redirects
+            };
+        }
+        if(url === "https://credreg.net/ctdl/schema/context/json") {
+            return {
+                contextUrl: null, // this is for a context via a link header
+                document: cetermsctx, // this is the actual document that was loaded
                 documentUrl: url // this is the actual context URL after redirects
             };
         }
@@ -903,7 +911,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
         }
     }
 
-    f = await jsonLdCompact(f.toJson(), "https://credreg.net/ctdlasn/schema/context/json");
+    f = await jsonLdCompact(f.toJson(), "https://credreg.net/ctdl/schema/context/json");
     if (socList) {
         f["socList"] = socList;
     }
