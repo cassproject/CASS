@@ -64,7 +64,7 @@ require("./server/profile/coordinator.js")();
 
 let glob = require('glob');
 let path = require('path');
-glob.sync( './server/cartridge/*.js' ).forEach( function( file ) {
+glob.sync( './src/main/server/cartridge/*.js' ).forEach( function( file ) {
     require( path.resolve( file ) );
 });
 
