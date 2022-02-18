@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.3
+* Update editor and CaSS library.
+* Fix some bugs with CTDL-ASN JSON-LD exports
+* Fix path for cartridges
+* Set UTF-8 character encoding in response for JSON get requests
+
 ## 1.5.2
 * Update editor.
 * Update CaSS library.
