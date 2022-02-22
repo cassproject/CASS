@@ -119,7 +119,8 @@ var signatureSheet = async function() {
             error("Missing expiry date.", 422);
         var now = new Date().getTime();
         if (signature.expiry < now) 
-            error("A Signature is Expired. My time is " + now + " and the signature expires at " + signature.expiry, 419);
+            if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) //Used to replay replication / database log files without "just jamming the data in"
+                error("A Signature is Expired. My time is " + now + " and the signature expires at " + signature.expiry, 419);
         var signBytes = signature.signature;
         if (signBytes == null) 
             signBytes = (signature)["@signature"];
@@ -491,7 +492,8 @@ var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
         let status = await skyrepoPutInternalPermanent.call(this,o, permId, chosenVersion, type);
         if (status === '409') {
             console.log("409, version is: " + chosenVersion);
-            await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
+            if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) //Used to replay replication / database log files without "just jamming the data in"
+                await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
             break;
         }
     }
