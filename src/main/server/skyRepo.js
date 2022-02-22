@@ -775,7 +775,7 @@ var skyrepoDeleteInternalPermanent = async function(id, version, type) {
     var url = deletePermanentBaseUrl(id, version, type);
     return await httpDelete(url, null, true);
 };
-var skyrepoDelete = async function(id, version, type) {
+global.skyrepoDelete = async function(id, version, type) {
     var oldObj = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
     let permanentIds = [id];
     if (oldObj.id != null && oldObj.getGuid() != null)
