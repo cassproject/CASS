@@ -1106,7 +1106,7 @@ async function cassConceptSchemeAsCeasn(framework) {
             delete cs[each];
         }
         if (each === "type") {
-            cs[each] = "ceasn:ConceptScheme";
+            cs[each] = "skos:ConceptScheme";
         }
     }
     cs = await jsonLdCompact(cs.toJson(), ctx);
