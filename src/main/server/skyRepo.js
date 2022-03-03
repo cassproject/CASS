@@ -492,6 +492,12 @@ var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
         let status = await skyrepoPutInternalPermanent.call(this,o, permId, chosenVersion, type);
         if (status === '409') {
             console.log("409, version is: " + chosenVersion);
+            let current = await skyrepoGetPermanent.call(this,permId,null,type);
+            if (current._version > chosenVersion)
+            {
+                chosenVersion = current._version;
+                console.log("Updated to " + chosenVersion);
+            }
             if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) //Used to replay replication / database log files without "just jamming the data in"
                 await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
             break;
