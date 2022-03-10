@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -37,7 +37,7 @@
     "rotatelogs": "pm2 install pm2-logrotate",
     "status": "pm2 l",
     "stop": "pm2 stop all",
-    "docs": "npm install yuidocjs yuidoc-ember-cli-theme && yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/",
+    "docs": "npm install yuidocjs yuidoc-ember-cli-theme && yuidoc -c yuidoc.json -o docs -e .js node_modules/cassproject/ && npm remove yuidocjs yuidoc-ember-cli-theme",
     "build:test": "docker build --progress plain -f docker/test/Dockerfile -t cass-test .",
     "buildRun:kill": "docker kill cass-test | exit 0 && docker rm cass-test | exit 0",
     "buildRun:ubuntu16": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
@@ -80,7 +80,7 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "axios": "^0.26.0",
-    "cassproject": "^1.5.2",
+    "cassproject": "^1.5.3",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-jwt": "^6.1.0",

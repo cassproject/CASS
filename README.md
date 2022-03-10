@@ -95,8 +95,7 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Review dependencies, autocomplete version numbers
  * Increment version number in package.json and yuidoc.json
  * Update documentation, `npm run docs`
- * Delete yuidoc elements from devDependencies in package.json
- * Delete package-lock.json and node_modules, `npm install`
+ * `npm install`
  * `npm test` - Must not fail any tests.
  * Update src/main/webapp to point at the appropriate gh-pages commit.
  * Update CHANGELOG.md

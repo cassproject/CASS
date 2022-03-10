@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.5.4
+* Update editor and CaSS library
+* Improvements to cartridges
+* Added Dockerfile with node base
+* Sanctioned replay
+* Fix a bug with concept scheme type in CTDL-ASN export
+
 ## 1.5.3
 * Update editor and CaSS library.
 * Fix some bugs with CTDL-ASN JSON-LD exports
