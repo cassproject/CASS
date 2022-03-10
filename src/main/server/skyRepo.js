@@ -493,7 +493,7 @@ var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
         if (status === '409') {
             console.log("409, version is: " + chosenVersion);
             let current = await skyrepoGetPermanent.call(this,permId,null,type);
-            if (current._version > chosenVersion)
+            if (current && current._version > chosenVersion)
             {
                 chosenVersion = current._version;
                 console.log("Updated to " + chosenVersion);
