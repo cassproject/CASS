@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.5
+* HTTP/2 support
+
 ## 1.5.4
 * Update editor and CaSS library
 * Improvements to cartridges
