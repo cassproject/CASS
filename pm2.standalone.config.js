@@ -7,8 +7,7 @@ module.exports = {
           log_file: '/logs/cass.log',
           env: {
             "CASS_LOOPBACK": "http://localhost/api/",
-            "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
-            "PORT": "80"
+            "ELASTICSEARCH_ENDPOINT": "http://localhost:9200"
           },
           node_args: [
             "--max-old-space-size=512"
