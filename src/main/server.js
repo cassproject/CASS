@@ -19,10 +19,17 @@
  */
 let startupDt = new Date();
 const express = require('express');
+const http2Express = require('http2-express-bridge');
+const http2 = require('http2');
 require("cassproject");
 const fs = require('fs');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
-const app = global.app = express();
+const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
+let app;
+if (envHttp2)
+    app = global.app = http2Express(express);
+else
+    app = global.app = express();
 const cors = require('cors');
 const https = require('https');
 app.use(cors());
@@ -91,13 +98,20 @@ skyrepoMigrate(function(){
             cert: fs.readFileSync('cass.crt'),
             ca: global.ca = fs.readFileSync('ca.crt'), //client auth ca OR cert
             requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,                   //new
-            rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false            //new
+            rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false,            //new
+            allowHTTP1: true
         };
-        global.server = https.createServer(options, app).listen(port, after);
+        if (envHttp2)
+            global.server = http2.createSecureServer(options, app).listen(port, after);
+        else
+            global.server = https.createServer(options, app).listen(port, after);
         https.globalAgent.options.rejectUnauthorized = false;
     }
     else
+    {
         global.server = app.listen(port,after);
+    }
+
     server.on('connection', function(socket) {
         socket.setKeepAlive(true);
     })

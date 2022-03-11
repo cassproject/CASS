@@ -87,6 +87,8 @@
     "express-openid-connect": "^2.6.0",
     "express-ws": "^5.0.2",
     "formidable": "^2.0.1",
+    "http2": "^3.3.7",
+    "http2-express-bridge": "^1.0.7",
     "jsonld": "^5.2.0",
     "node-object-hash": "^2.3.10",
     "node-worker-threads-pool": "^1.5.1",
