@@ -1,3 +1,4 @@
+const EcPerson = require("cassproject/src/org/schema/EcPerson");
 
 /** Will NOT return null, but may throw errors. */
 let anythingToPem = global.anythingToPem = async(subject) => {
@@ -43,7 +44,7 @@ let anythingToPerson = global.anythingToPerson = async(subject) => {
         try {
             person = await EcPerson.getByPk(repo, EcPk.fromPem(subject)).catch(() => {});
             if (person == null) {
-                people = await cass.personSearch(`owner:"${subject}"`, {});
+                people = await EcPerson.search(repo,`owner:"${subject}"`);
                 people = people.filter((p) => p.owner[0] == subject);
                 if (people.length > 0) person = people[0];
                 if (people.length > 1) console.log("Looking for person, found people! " + people.length);
@@ -62,8 +63,9 @@ let anythingToPerson = global.anythingToPerson = async(subject) => {
         // Subject is an Email or Username
         let people;
         try {
-            people = await cass.personSearch(`email:"${subject}" OR username:"${subject}"`, {});
+            people = await EcPerson.search(repo,`email:"${subject}" OR username:"${subject}"`);
         } catch (e) {
+            console.trace(e);
             throw new exports.UnknownError(e.message);
         }
         if (people == null || people.length === 0) throw new exports.NotFoundError();

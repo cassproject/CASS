@@ -37,8 +37,15 @@
 //         Once all relevant information is retrieved, we'll repeatedly iterate over each edge to update information
 //         inside each meta-vertex based on how the edges' Relations (EcAlignments) relate to goals & assertions
 
-require("cassproject");
 const https = require('https');
+
+const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
+let app;
+if (!envHttp2)
+{
+    global.axios = require("axios"); //Pre-empt http2 use.
+}
+require("cassproject");
 global.hasher = require('node-object-hash');
 
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
@@ -51,8 +58,8 @@ if (envHttps)
 }
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 
-EcRepository.caching = true;
-EcRepository.cachingSearch = true;
+// EcRepository.caching = true;
+// EcRepository.cachingSearch = true;
 EcCrypto.caching = true;
 
 const PRECACHE_ALL_FRAMEWORKS = true;

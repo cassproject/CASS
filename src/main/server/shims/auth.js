@@ -118,6 +118,7 @@ app.use(async function (req, res, next) {
         let signatureSheet = await eim.signatureSheet(60000,repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy);
         req.headers.signatureSheet = signatureSheet;
         req.eim = eim;
+        console.log(`Securing Proxy: Created signature sheet for request from ${email}.`)
     }
     next();
 });

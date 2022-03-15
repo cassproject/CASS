@@ -19,19 +19,24 @@
  */
 let startupDt = new Date();
 const express = require('express');
+const https = require('https');
 const http2Express = require('http2-express-bridge');
 const http2 = require('http2');
-require("cassproject");
-const fs = require('fs');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
 const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
 let app;
 if (envHttp2)
+{
     app = global.app = http2Express(express);
+}
 else
+{
+    global.axios = require("axios"); //Pre-empt http2 use.
     app = global.app = express();
+}
+require("cassproject");
+const fs = require('fs');
 const cors = require('cors');
-const https = require('https');
 app.use(cors());
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 const port = process.env.PORT || (envHttps ? 443 : 80);
@@ -105,7 +110,11 @@ skyrepoMigrate(function(){
             global.server = http2.createSecureServer(options, app).listen(port, after);
         else
             global.server = https.createServer(options, app).listen(port, after);
-        https.globalAgent.options.rejectUnauthorized = false;
+        if (process.env.HTTPS_REJECT_UNAUTHORIZED == 'false')
+        {
+            console.log("Ignoring Unauthorized / Self-Signed HTTPS Certificates. This should only be used in testing mode or in an internal network.")
+            process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+        }
     }
     else
     {
