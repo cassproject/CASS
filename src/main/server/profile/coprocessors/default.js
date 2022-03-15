@@ -19,6 +19,7 @@ let fetchAssertions = async function(){
                 return null;
             }));
             console.log(`Relevant assertion count: (${prevCount} -> ${assertions.length})`);
+            assertions = assertions.filter((x)=>(x));
             assertions.sort((a, b)=>{
                 return b.id.localeCompare(a.id);
             });
