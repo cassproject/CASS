@@ -160,6 +160,8 @@ var xapiStatement = async function (s) {
     if (authorityPk == null) return;
 
     if (s.object == null) return;
+
+    await saveCreativeWork(s.object); // Save this activity object in CASS
     
     var alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id);
     var alreadyAligned = {};
@@ -196,6 +198,26 @@ var xapiStatementListener = async function () {
     //     data = JSON.parse(data);
     //     await xapiStatement(data);
     // }
+}
+
+var saveCreativeWork = async function(activityObj) {
+    // TODO: this is a lot of querying, optimize
+    // If this activity already exists in CaSS, don't add it again
+    let existingCreativeWork = await getCreativeWork(activityObj.id);
+    if (existingCreativeWork.length > 0)
+        return;
+
+    let cw = new EcCreativeWork();
+    cw.url = activityObj.id;
+    cw.name = activityObj.definition.name;
+    cw.additionalType = activityObj.definition.type;
+    cw.keywords = "xapi";
+    cw.assignId(repo.selectedServer, EcCrypto.md5(activityObj.id))
+    EcRepository.save(cw, console.log, console.error);
+}
+
+var getCreativeWork = async function(id) {
+    return await loopback.repositorySearch(repo,"@type:CreativeWork AND url:\"" + id + "\"",{});
 }
 
 var ident = new EcIdentity();
