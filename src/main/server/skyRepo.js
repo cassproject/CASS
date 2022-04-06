@@ -1233,6 +1233,10 @@ var pingWithTime = function() {
         color: process.env.CASS_BANNER_TEXT_COLOR, // valid css color value
         background: process.env.CASS_BANNER_BACKGROUND_COLOR // valid css color value
     }
+    // Add default plugins if set in env vars
+    if (process.env.DEFAULT_PLUGINS) {
+        (o).plugins = process.env.DEFAULT_PLUGINS;
+    }
     return JSON.stringify(o);
 };
 (function() {
