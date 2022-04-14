@@ -1,14 +1,14 @@
 version: '3'
 services:
   cass:
-    image: cassproject/cass:0.5.8
+    image: cassproject/cass:1.5.6
     container_name: cass
     networks:
       - esnet
     ports:
       - 80:80
     environment:
-      - CASS_LOOPBACK=http://cass/api/
+      - CASS_LOOPBACK=http://localhost/api/
       - ELASTICSEARCH_ENDPOINT=http://elasticsearch:9200
       - PORT=80
       # - CASS_OIDC_ENABLED=true # turns on open id login
