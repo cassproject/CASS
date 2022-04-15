@@ -24,7 +24,7 @@ const fs = require('fs');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
 const app = global.app = express();
 const cors = require('cors');
-const https = require('https');
+const spdy = require('spdy');
 app.use(cors());
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 const port = process.env.PORT || (envHttps ? 443 : 80);
@@ -93,7 +93,7 @@ skyrepoMigrate(function(){
             requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,                   //new
             rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false            //new
         };
-        global.server = https.createServer(options, app).listen(port, after);
+        global.server = spdy.createServer(options, app).listen(port, after);
         https.globalAgent.options.rejectUnauthorized = false;
     }
     else
