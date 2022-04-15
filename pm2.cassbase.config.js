@@ -11,7 +11,8 @@ module.exports = {
             "CASS_LOOPBACK": "http://localhost/api/",
             "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
             "PORT": "8080",
-            "CASS_BASE": "/cass"
+            "CASS_BASE": "/cass",
+            "HTTP2": "false"
           },
           node_args: [
             "--max-old-space-size=512"
