@@ -20,19 +20,13 @@
 let startupDt = new Date();
 const express = require('express');
 const https = require('https');
-const http2Express = require('http2-express-bridge');
-const http2 = require('http2');
+const spdy = require('spdy');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
 const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
-let app;
-if (envHttp2)
-{
-    app = global.app = http2Express(express);
-}
-else
+let app = global.app = express();
+if (!envHttp2)
 {
     global.axios = require("axios"); //Pre-empt http2 use.
-    app = global.app = express();
 }
 require("cassproject");
 const fs = require('fs');
@@ -106,9 +100,9 @@ skyrepoMigrate(function(){
             rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false,            //new
             allowHTTP1: true
         };
-        if (envHttp2)
-            global.server = http2.createSecureServer(options, app).listen(port, after);
-        else
+        if (envHttp2) {
+            global.server = spdy.createServer(options, app).listen(port, after);
+        } else
             global.server = https.createServer(options, app).listen(port, after);
         if (process.env.HTTPS_REJECT_UNAUTHORIZED == 'false')
         {

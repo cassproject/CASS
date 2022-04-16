@@ -93,6 +93,7 @@
     "node-worker-threads-pool": "^1.5.1",
     "pure-uuid": "^1.6.2",
     "rdflib": "^2.2.19",
+    "spdy": "^4.0.2",
     "ws": "^8.5.0"
   },
   "devDependencies": {
