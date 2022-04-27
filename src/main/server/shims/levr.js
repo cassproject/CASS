@@ -141,8 +141,9 @@ global.bindWebService = function(endpoint,callback){
             } else {
                 try{
                     if (files && fields) {
-                        for (let file in files)
-                            fields[file] = fs.readFileSync(files[file].path)+"";
+                        for (let file in files) {
+                            fields[file] = fs.readFileSync(files[file].path || files[file].filepath)+"";
+                        }
                     }
                     ctx.req = req;
                     ctx.res = res;
