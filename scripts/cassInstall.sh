@@ -440,8 +440,8 @@ if [ "$platformDebian" -ne 0 ];
   awk -i inplace -v rmv="ProxyPass / http://localhost:8080/cass/" '!index($0,rmv)' /etc/apache2/sites-enabled/000-default.conf
   awk -i inplace -v rmv="ProxyPassReverse  /  http://localhost:8080/cass/" '!index($0,rmv)' /etc/apache2/sites-enabled/000-default.conf
   echo "ProxyRequests Off" >> /etc/apache2/sites-enabled/000-default.conf
-  echo "ProxyPass /ws ws://localhost:8080/cass/ws" >> /etc/apache2/sites-enabled/000-default.conf
-  echo "ProxyPassReverse  /ws  ws://localhost:8080/cass/ws" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPass /ws ws://localhost:8080/ws" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPassReverse  /ws  ws://localhost:8080/ws" >> /etc/apache2/sites-enabled/000-default.conf
   echo "ProxyPass / http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
   echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
  fi
