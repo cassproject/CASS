@@ -58,8 +58,8 @@ if (envHttps)
 }
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 
-// EcRepository.caching = true;
-// EcRepository.cachingSearch = true;
+EcRepository.caching = true;
+EcRepository.cachingSearch = true;
 EcCrypto.caching = true;
 
 const PRECACHE_ALL_FRAMEWORKS = true;
@@ -77,6 +77,7 @@ const EcPk = require("cassproject/src/com/eduworks/ec/crypto/EcPk");
 
 let ProfileCalculator = require(path.resolve(glob.sync( 'src/main/server/profile/calculator.js' )[0]));
 
+global.lastFlush = Date.now();
 // Main thread will pass the data you need through this event listener.
 parentPort.on('message', async(param) => {
     const subject = param.subject;
@@ -88,12 +89,18 @@ parentPort.on('message', async(param) => {
         if (EcIdentityManager.default.ids[0].ppk.toPem() == query_agent);
             userChanged = false;
     EcIdentityManager.default.clearIdentities();
+    if (param.lastFlush != global.lastFlush)
+    {
+        global.lastFlush = param.lastFlush;
+        console.log("Flushing cache (cause: new Assertions).");
+        EcRepository.cache = {};
+    }
     if (param.flushCache == "true")
     {
         console.log("Flushing cache.");
         EcRepository.cache = {};
-        allFrameworks = [];
-        profileFrameworks = {};
+        allFrameworks = global.allFrameworks = [];
+        profileFrameworks = global.profileFrameworks = {};
     }
     if (userChanged)
     {

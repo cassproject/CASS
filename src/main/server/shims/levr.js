@@ -199,7 +199,7 @@ if (global.httpGet === undefined)
 global.httpGet = async function(url, flag, headers)
 {
     let failCounter = 0;
-    while(failCounter < 1000)
+    while(failCounter++ < 1000)
     {
         try {
             const response = await axios.get(url, {headers: headers});
@@ -289,7 +289,7 @@ global.httpPut = async function(data,url,contentType)
 if (global.httpPost === undefined)
 global.httpPost = async function(data, url, contentType, multipart,something,something2,simple){
     let failCounter = 0;
-    while(failCounter < 1000)
+    while(failCounter++ < 1000)
     {
         try {
             const response = await axios.post(url,data,{

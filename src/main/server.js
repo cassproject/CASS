@@ -92,12 +92,13 @@ skyrepoMigrate(function(){
     };
     if (envHttps)
     {
+        global.ca = fs.readFileSync('ca.crt');
         var options = {
             key: fs.readFileSync('cass.key'),
             cert: fs.readFileSync('cass.crt'),
-            ca: global.ca = fs.readFileSync('ca.crt'), //client auth ca OR cert
-            requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,                   //new
-            rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false,            //new
+            ca: global.ca, //client auth ca OR cert
+            requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,   
+            rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false,      
             allowHTTP1: true
         };
         if (envHttp2) {

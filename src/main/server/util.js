@@ -35,7 +35,7 @@ global.skyrepoMigrate = async function (after) {
     console.log("Current Minimum Index Compatibility Version: " + elasticState.version.minimum_index_compatibility_version);
     var health = "red";
     health = (await httpGet(elasticEndpoint + "/_cluster/health",true)).status;
-    while (health != "yellow" && health != "green")
+    if (health != "yellow" && health != "green")
     {
         console.log("Waiting for cluster health...");
         console.log(health);

@@ -77,7 +77,7 @@ async function importJsonLd(){
 				competencyList.push(graphObj);
 			}
 
-			graph.push[graphObj];
+			graph.push(graphObj);
 		}
 	}
 

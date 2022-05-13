@@ -49,6 +49,7 @@ let profileCalculator = async function(){
         frameworkId: frameworkId, 
         query_agent: query_agent_ppk, 
         flushCache: this.params.flushCache, 
+        lastFlush: lastFlush,
         params: this.params
     };
 
@@ -98,12 +99,17 @@ let profileCalculator = async function(){
 
 bindWebService("/profile/latest", profileCalculator);
 
+let lastFlush = Date.now();
 let workerData = {};
 module.exports = async ()=>{
     pool = new StaticPool({
-        size: 4,
+        size: 1,
         task: filePath,
         shareEnv: true,
         workerData: workerData
     });
+    global.profileFlush = ()=>{
+        lastFlush = Date.now();
+        profileCache = global.profileCache = {};
+    }
 };

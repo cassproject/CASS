@@ -8,23 +8,23 @@ async function detectLoginRecordRegressions()
 	for (var hit of encryptedValues.data.hits.hits)
 	{
 		let vmax = hit._version;
-		//console.log('http://localhost:9200/permanent/permanent/'+encodeURIComponent(hit._id)+'.');
 		try{
+			let fullObject = null;
 			if (elasticVersion.version.number.startsWith("7."))
-				var fullObject = await axios.get('http://localhost:9200/permanent/_doc/'+encodeURIComponent(hit._id)+'.');
+				fullObject = await axios.get('http://localhost:9200/permanent/_doc/'+encodeURIComponent(hit._id)+'.');
 			else
-				var fullObject = await axios.get('http://localhost:9200/permanent/permanent/'+encodeURIComponent(hit._id)+'.');
+				fullObject = await axios.get('http://localhost:9200/permanent/permanent/'+encodeURIComponent(hit._id)+'.');
 			output.push(fullObject.data); 
 			let latestLen = JSON.stringify(fullObject.data).length;
 			for (let i = 1;i <= vmax;i++)
 			{
-				//console.log('http://localhost:9200/permanent/permanent/'+encodeURIComponent(hit._id)+'.'+i);
+				let fullObject2 = null;
 				if (elasticVersion.version.number.startsWith("7."))
-					var fullObject = await axios.get('http://localhost:9200/permanent/_doc/'+encodeURIComponent(hit._id)+'.'+i);
+					fullObject2 = await axios.get('http://localhost:9200/permanent/_doc/'+encodeURIComponent(hit._id)+'.'+i);
 				else
-					var fullObject = await axios.get('http://localhost:9200/permanent/permanent/'+encodeURIComponent(hit._id)+'.'+i);
-				output.push(fullObject.data); 
-				if (latestLen+200 < JSON.stringify(fullObject.data).length)
+					fullObject2 = await axios.get('http://localhost:9200/permanent/permanent/'+encodeURIComponent(hit._id)+'.'+i);
+				output.push(fullObject2.data); 
+				if (latestLen+200 < JSON.stringify(fullObject2.data).length)
 				{
 					console.log('http://localhost:9200/permanent/permanent/'+encodeURIComponent(hit._id)+'.'+i);
 					console.log("Latest record length: " + (latestLen+200) + " < this version: " + JSON.stringify(fullObject.data).length)
@@ -38,6 +38,7 @@ async function detectLoginRecordRegressions()
 			//console.error(ex);
 		}
 	}
+	console.log(output);
 } 
 
 detectLoginRecordRegressions();
