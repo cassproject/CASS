@@ -1,10 +1,14 @@
 # Change Log
 
+## 1.5.8
+* Updates to editor and CaSS library
+* Updated HTTP/2 Negotiation
+* Updated some Websocket negotiation
+
 ## 1.5.6
 * Fixed HTTP/2 Negotiation
 * Updates to editor and CaSS library
 * Docker deployment limited to 4gb of memory instead of 50% of memory.
-* 
 
 ## 1.5.5
 * HTTP/2 support
