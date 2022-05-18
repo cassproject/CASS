@@ -150,7 +150,7 @@ global.bindWebService = function(endpoint,callback){
                     ctx.res = res;
                     req.query.methodType = "POST";
                     req.query.urlRemainder = req.params[0];
-                    console.log("-----" + new Date() + " "+endpoint+ " " + req.httpVersion + " Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)));
+                    console.log("-----" + new Date() + " "+endpoint+ " " + (req.isSpdy ? "spdy" : req.httpVersion) + " Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)));
                     var result = await callback.call({
                         ctx:ctx,
                         params: req.query,
