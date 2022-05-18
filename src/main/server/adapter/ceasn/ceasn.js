@@ -100,7 +100,6 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
                     }
                 }
             }
-            delete c["schema:inLanguage"];
 
             //Remove fields that are only whitespace
             for (var key in c) {
@@ -132,6 +131,9 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
             if (cipList) {
                 c["cipList"] = cipList;
             }
+
+            if (c["ceasn:inLanguage"] == null)
+                c["ceasn:inLanguage"] = "en";
 
             competencies[compId] = competencies[id] = c;
 
