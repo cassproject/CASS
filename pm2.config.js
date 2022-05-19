@@ -10,7 +10,8 @@ module.exports = {
           env: {
             "CASS_LOOPBACK": "http://localhost:8080/api/",
             "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
-            "PORT": "8080"
+            "PORT": "8080",
+            "HTTP2": false
           },
           node_args: [
             "--max-old-space-size=512"
