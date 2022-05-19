@@ -96,7 +96,9 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Increment version number in package.json
  * Increment elasticsearch version number to latest minor/revision in docker/standalone/DockerFile
  * `npm install`
- * `npm test` - Must not fail any tests.
+ * `npm run testWithCoverage`
+ * In another command window, `npm run test:mocha` - Must not fail any tests.
+ * In the command window running testWithCoverage, `ctrl+c`. Record the output of the code coverage for the tests in codeCoverage.md.
  * Update src/main/webapp to point at the appropriate gh-pages commit.
  * Update CHANGELOG.md
  * Update README.md

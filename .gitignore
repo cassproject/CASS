@@ -58,3 +58,4 @@ data/
 *.log
 
 .vscode/
+.nyc_output
