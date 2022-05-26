@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run test:deps && npm run test:start && npm run mocha && npm run stop",
-    "testWithCoverage": "npm run test:deps && nyc --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run test:start",
+    "testWithCoverage": "npm run test:deps && nyc --reporter=lcov --reporter=text --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run test:start",
     "test:mocha": "nyc npm run mocha",
     "test:start": "node src/main/server.js",
     "test:sudostart": "sudo pm2 start ./pm2.test.config.js",
@@ -81,10 +81,10 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "axios": "^0.27.2",
-    "cassproject": "^1.5.8",
+    "cassproject": "^1.5.9",
     "cors": "^2.8.5",
     "express": "^4.18.1",
-    "express-jwt": "^7.7.1",
+    "express-jwt": "^7.7.2",
     "express-openid-connect": "^2.7.2",
     "express-ws": "^5.0.2",
     "formidable": "^2.0.1",
@@ -96,7 +96,7 @@
     "pure-uuid": "^1.6.2",
     "rdflib": "^2.2.19",
     "spdy": "^4.0.2",
-    "ws": "^8.6.0"
+    "ws": "^8.7.0"
   },
   "devDependencies": {
     "chai": "^4.3.6",

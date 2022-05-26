@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.9
+* Updates to login in editor.
+* Updates to library.
+
 ## 1.5.8
 * Updates to editor and CaSS library
 * Updated HTTP/2 Negotiation
