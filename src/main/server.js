@@ -44,12 +44,13 @@ global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost
 global.skyrepoDebug = false;
 global.thisEndpoint = function(){return repo.selectedServer;}
 global.repoEndpoint = function(){return repo.selectedServer;}
-
-
+require('./server/shims/jobs.js');
+require("./server/shims/mailer.js");
 require("./server/shims/auth.js");
 require("./server/shims/levr.js");
 require("./server/shims/stjs.js");
 require("./server/shims/cassproject.js");
+
 
 //Tests remaining: Upgrade from elasticsearch 5.x to 6.x to 7.x
 require("./server/util.js");
