@@ -1,6 +1,7 @@
 const fs = require('fs');
 const os = require('os');
-const formidable = require('formidable');
+const busboy = require('busboy');
+const getStream = require('get-stream');
 
 //LEVR shims
 if (global.fileLoad === undefined)
@@ -131,26 +132,28 @@ global.bindWebService = function(endpoint,callback){
     let post = async function(req,res){
         let ctx = {
             get: function(field){return ctx[field];},        
-            put: function(field,value){ctx[field] = value;}
+            put: function(field,value){ctx[field] = value;},
+            req: req,
+            res: res
         }
         let ms = new Date().getTime();
-        let formParse = async (err, fields, files) => {
-            if (err) {
-                res.status(500);
-                console.trace(err);
-                res.end(err.toString());
-            } else {
+        try{
+            const bb = busboy({ headers: req.headers,limits:{parts:100,fieldSize:52428800,fileSize:52428800}});
+            req.query.methodType = "POST";
+            req.query.urlRemainder = req.params[0];
+            let fields = {};
+            bb.on('file', (name, file, info) => {
+                const { filename, encoding, mimeType } = info;
+                fields[name || filename] = getStream(file);
+            });
+            bb.on('field', (name, val, info) => {
+                fields[name] = val;
+            });
+            bb.on('close',async ()=>{
                 try{
-                    if (files && fields) {
-                        for (let file in files) {
-                            fields[file] = fs.readFileSync(files[file].path || files[file].filepath)+"";
-                        }
-                    }
-                    ctx.req = req;
-                    ctx.res = res;
-                    req.query.methodType = "POST";
-                    req.query.urlRemainder = req.params[0];
                     console.log("-----" + new Date() + " "+endpoint+ " " + (req.isSpdy ? "spdy" : req.httpVersion) + " Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)));
+                    for (let key in fields)
+                        fields[key] = await fields[key];
                     var result = await callback.call({
                         ctx:ctx,
                         params: req.query,
@@ -162,7 +165,7 @@ global.bindWebService = function(endpoint,callback){
                     }
                     else
                         res.end(); 
-                }
+                    console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));  }
                 catch (ex)
                 {
                     if (ex.status !== undefined && ex.status != null)
@@ -171,13 +174,18 @@ global.bindWebService = function(endpoint,callback){
                         res.status(500);
                     res.end(ex.data ? ex.data : ex +"");
                 }
-            }
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
-        };
-        formidable({
-            uploadDir: os.tmpdir(),
-            maxFieldsSize:52428800
-        }).parse(req, formParse);
+            });
+            req.pipe(bb);
+        }
+        catch (ex)
+        {
+            if (ex.status !== undefined && ex.status != null)
+                res.status(ex.status);
+            else
+                res.status(500);
+            res.end(ex.data ? ex.data : ex +"");
+        }
+        
     }
     console.log("Binding endpoint: /api" + endpoint)
     app.get(baseUrl + '/api' + endpoint,get);
