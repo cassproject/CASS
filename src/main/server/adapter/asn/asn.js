@@ -656,7 +656,7 @@ async function importJsonLdGraph(graph, context) {
         await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeId, context, skosIdentity, owner, toSave)));
     }
     await repo.multiput(toSave, function() {}, (error) => {
-        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportJsonLdGraph", error);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportJsonLdGraphError", error);
     });
     if (conceptSchemeId) {
         return conceptSchemeId[0];

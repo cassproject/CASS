@@ -1235,7 +1235,12 @@ var pingWithTime = function() {
         message: process.env.CASS_BANNER_MESSAGE, // string
         color: process.env.CASS_BANNER_TEXT_COLOR, // valid css color value
         background: process.env.CASS_BANNER_BACKGROUND_COLOR // valid css color value
-    }
+    };
+    // Add MOTD info if set in env vars
+    (o).motd = {
+        title: process.env.MOTD_TITLE,
+        message: process.env.MOTD_MESSAGE
+    };
     // Add default plugins if set in env vars
     if (process.env.DEFAULT_PLUGINS) {
         (o).plugins = process.env.DEFAULT_PLUGINS;
