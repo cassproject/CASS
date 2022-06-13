@@ -60,7 +60,7 @@ let profileCalculator = async function(){
     else if (process.env.PROFILE_CACHE == "true") {
         if (profileInProgress[p.cacheKey] != null) { // Profile being computed elsewhere, delay
             if (new Date().getTime() - profileInProgress[p.cacheKey] < 60000) { // Proceed if it seems stuck
-                console.log("Blocked - Profile computing elsewhere");
+                global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Blocked - Profile computing elsewhere");
                 await setTimeout(() => profileCalculator.call(this), 100);
                 return;
             }
@@ -71,7 +71,7 @@ let profileCalculator = async function(){
     const cached = profileCache[p.cacheKey];
     if (cached != null && (this.params.flushCache !== "true" && (process.env.PROFILE_CACHE == "true" || this.params.cache == "true"))) {
         cached.msSpeed = new Date().getTime() - p.timer;
-        console.log("Cache hit - Profile already computed");
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
         return JSON.stringify(cached);
     }
 

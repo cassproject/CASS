@@ -39,35 +39,36 @@ global.replicate = async function(last){
             } ])
         },
         null,null,null,meIm
-    ).catch(console.error);
+    ).catch((error) => {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "Replicate", error);
+    });
     if (data == null)
     {
-        console.log("Failed to retrieve data. Resetting window and waiting a little bit.");
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "Replicate", "Failed to retrieve data. Resetting window and waiting a little bit.");
         sizeWindow = 100;
         setTimeout(replicate,10000);
         return;
     }
-    console.log(data.length);
+    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "Replicate", data.length);
     let latest = replicateConfig().lastReplicated;
     for (let datum of data)
     {
         if (datum.id == null)
-            console.log(JSON.stringify(datum,null,2));
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "Replicate", JSON.stringify(datum,null,2));
         else {
             try{
                 latest = Math.max(latest,datum.getTimestamp());
             } catch (ex){
                 EcArray.setRemove(data,datum);
-                console.log(JSON.stringify(datum,null,2));
-                console.trace(ex);
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "Replicate", JSON.stringify(datum,null,2), ex);
             }
         }
-    } 
-    console.log(new Date(latest));
+    }
+    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "Replicate", new Date(latest));
     data = data.filter((x)=>x);
     if (data == null || data.length == 0 && sizeWindow == 10000 || JSON.stringify(data) == JSON.stringify(last) && sizeWindow == 10000)
     {
-        console.log("Completed initial replication. Installing websocket.");
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "Replicate", "Completed initial replication. Installing websocket.");
         connectWebsocket();
         return;
     }
@@ -76,15 +77,15 @@ global.replicate = async function(last){
         if (replConfig.lastReplicated == latest)
         {
             sizeWindow = Math.min(sizeWindow*8,10000);
-            console.log("Replication failed to create progress. Increasing size window.");
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "Replicate", "Replication failed to create progress. Increasing size window.");
         }
         replConfig.lastReplicated = latest;
-        console.log("Replication timestamp saved: " + new Date(replConfig.lastReplicated));
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "Replicate", `Replication timestamp saved: ${new Date(replConfig.lastReplicated)}`);
         fileSave(JSON.stringify(replConfig),replicateConfigFilePath);
         replicate(data);
     } catch(e)
     {
-        console.trace(e);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "Replicate", e);
     }    
 }
 
@@ -94,9 +95,9 @@ function connectWebsocket(){
     const ws = new WebSocket(wsEndpoint);
 
     ws.on('open', () => {
-        console.log("Replication Websocket established to " + wsEndpoint);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "ReplicateWsOpen", `Replication Websocket established to ${wsEndpoint}`);
         replConfig.lastReplicated = new Date().getTime();
-        console.log("Replication timestamp saved: " + new Date(replConfig.lastReplicated));
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "ReplicateWsOpen", `Replication timestamp saved: ${new Date(replConfig.lastReplicated)}`);
         fileSave(JSON.stringify(replConfig),replicateConfigFilePath);
     });
 
@@ -107,16 +108,16 @@ function connectWebsocket(){
         }
         else
             ary = [data];
-        console.log("Replicating: " + ary)
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "ReplicateWsMsg", `Replicating: ${ary}`);
         let updates = await global.replicateRepo.multiget(ary,null,null,meIm);
         repo.multiput(updates,null,null,meIm);
         replConfig.lastReplicated = new Date().getTime();
-        console.log("Replication timestamp saved: " + new Date(replConfig.lastReplicated));
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "ReplicateWsMsg", `Replication timestamp saved: ${new Date(replConfig.lastReplicated)}`);
         fileSave(JSON.stringify(replConfig),replicateConfigFilePath);
     });
 
     ws.on('close', () => {
-        console.log("Replication Websocket closed to " + wsEndpoint);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "ReplicateWsClosed", `Replication Websocket closed to ${wsEndpoint}`);
         reconnectMs = Math.max(reconnectMs*2,60000);
         setTimeout(connectWebsocket,reconnectMs)
     });

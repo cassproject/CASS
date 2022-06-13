@@ -75,6 +75,8 @@ let glob = require('glob');
 let path = require('path');
 const EcPk = require("cassproject/src/com/eduworks/ec/crypto/EcPk");
 
+global.auditLogger = require(path.resolve(glob.sync( 'src/main/server/shims/auditLogger.js' )[0]));
+
 let ProfileCalculator = require(path.resolve(glob.sync( 'src/main/server/profile/calculator.js' )[0]));
 
 global.lastFlush = Date.now();
@@ -92,12 +94,12 @@ parentPort.on('message', async(param) => {
     if (param.lastFlush != global.lastFlush)
     {
         global.lastFlush = param.lastFlush;
-        console.log("Flushing cache (cause: new Assertions).");
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", "Flushing cache (cause: new Assertions).");
         EcRepository.cache = {};
     }
     if (param.flushCache == "true")
     {
-        console.log("Flushing cache.");
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", "Flushing cache.");
         EcRepository.cache = {};
         allFrameworks = global.allFrameworks = [];
         profileFrameworks = global.profileFrameworks = {};
@@ -145,12 +147,12 @@ parentPort.on('message', async(param) => {
             }
         }
         workerData = null;
-        console.log("cache updated with " + cacheInsertCounter + " items");
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", `cache updated with ${cacheInsertCounter} items`);
     }
     if (allFrameworks.length == 0)
     {
         allFrameworks = await EcFramework.search(repo,"*",null,null,{size:10000});
-        console.log("Profile Calculator: Fetched " + allFrameworks.length + " frameworks for determining network effects.");
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", `Profile Calculator: Fetched ${allFrameworks.length} frameworks for determining network effects.`);
     }
 
     const p = new ProfileCalculator();
@@ -169,7 +171,7 @@ parentPort.on('message', async(param) => {
         else
             p.fingerprint = p.pk.fingerprint();
     } catch (e) {
-        console.trace(e);
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "WorkerMessage", e);
         return;
     }
 
@@ -178,7 +180,7 @@ parentPort.on('message', async(param) => {
     try {
         p.framework = await EcFramework.get(frameworkId);
     } catch (e) {
-        console.trace(e);
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "WorkerMessage", e);
         throw e;
     }
 
@@ -188,7 +190,7 @@ parentPort.on('message', async(param) => {
         // FR: Somewhere sometimes there's a promise being put in this data structure.
         parentPort.postMessage(JSON.parse(JSON.stringify(profile)));
     } catch (ex) {
-        console.trace(ex);
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "WorkerMessage", e);
         parentPort.postMessage({error: ex});
         throw ex;
     }

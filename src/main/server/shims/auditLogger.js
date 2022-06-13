@@ -1,0 +1,141 @@
+
+const SyslogFacility = {
+    USER: 1, //user 
+    DAEMON: 3, //daemon - anything that runs in the background like jobs
+    AUTH: 4, //auth - anything that deals with authentication or authorization
+    FTP: 11, //ftp - transferring files in and out of the server
+    NETWORK: 16, //local0 - network traffic related like HTTP POST, GET, and DELETE
+    STORAGE: 17, //local1 - things like DBs
+    STANDARD: 18 //local2 - anything that doesn't fit into other categories most likely goes here
+  
+    //theses are open still, syslog format says that we can go from 16-23 for custom 
+    //facility ids and still be in spec
+    // OPEN1, //local3
+    // OPEN2, //local4
+    // OPEN3, //local5
+    // OPEN4, //local6
+    // OPEN5 //local7
+}
+
+const LogCategory = {
+    SYSTEM: "sys",
+    AUTH: "auth",
+    MESSAGE: "msg",
+    FILE_SYSTEM: "fs",
+    NETWORK: "net",
+    STORAGE: "stor",
+    ADAPTER: "adap",
+    PROFILE: "prof"
+}
+
+const Severity = {
+    EMERGENCY: 0, // system isn't working
+    ALERT: 1, // system needs attention
+    CRITICAL: 2, // code path has failed
+    ERROR: 3, // code path has failed, but can recover
+    WARNING: 4, // unusual conditions
+    NOTICE: 5, // normal but unlikely
+    INFO: 6, // normal
+    DEBUG: 7 // extra information
+}
+
+const InverseSeverity = {
+    0: "EMERGENCY",
+    1: "ALERT",
+    2: "CRITICAL",
+    3: "ERROR",
+    4: "WARNING",
+    5: "NOTICE",
+    6: "INFO",
+    7: "DEBUG"
+}
+
+let logBuffers = [];
+let timeoutHandler;
+
+
+
+let flush = function() {
+    if (logBuffers.length > 0) {
+        console.log(logBuffers.join("\n"));
+        logBuffers = [];
+        if (timeoutHandler) {
+            clearTimeout(timeoutHandler);
+            timeoutHandler = undefined;
+        }
+    }
+}
+
+let syslogFormat = function(facility, severity, timestamp, msgID, data) {
+    // RFC 3164
+    return `<${(SyslogFacility.USER * 8) + severity}>${timestamp.toISOString()} ${global.repo.selectedServer} ${facility + msgID.trim().substr(0, 27)} ${data}`;
+}
+
+/* 
+   * @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
+   */
+let report = function(system, severity, message, ...data) {
+    if (filterLogs(system, severity, message)) {
+        const msg = syslogFormat(system, severity, new Date(), message, JSON.stringify(data));
+        logBuffers.push(msg);
+    }
+    if (logBuffers.length > 1000)
+        flush();
+    else {
+        if (!timeoutHandler)
+            timeoutHandler = setTimeout(flush, 5000);
+    }
+}
+
+let filteredCategories = {};
+let filteredSeverities = {};
+let filteredMessages = {};
+if (process.env.LOG_FILTERED_CATEGORIES) {
+    try {
+        let arr = process.env.LOG_FILTERED_CATEGORIES.split(',');
+        for (let str of arr) {
+            filteredCategories[str.trim().toLowerCase()] = 1;
+        }
+    } catch (e) {
+        report(LogCategory.SYSTEM, Severity.ERROR, "AuditLogCategoriesError", e);
+    }
+}
+
+if (process.env.LOG_FILTERED_SEVERITIES) {
+    try {
+        let arr = process.env.LOG_FILTERED_SEVERITIES.split(',');
+        for (let str of arr) {
+            filteredSeverities[str.trim().toUpperCase()] = 1;
+        }
+    } catch (e) {
+        report(LogCategory.SYSTEM, Severity.ERROR, "AuditLogSeveritiesError", e);
+    }
+}
+
+if (process.env.LOG_FILTERED_MESSAGES) {
+    try {
+        let arr = process.env.LOG_FILTERED_MESSAGES.split(',');
+        for (let str of arr) {
+            filteredMessages[str.trim()] = 1;
+        }
+    } catch (e) {
+        report(LogCategory.SYSTEM, Severity.ERROR, "AuditLogMessagesError", e);
+    }
+}
+
+let filterLogs = function(system, severity, message) {
+    if (filteredCategories[system])
+        return false;
+    if (filteredSeverities[InverseSeverity[severity]])
+        return false;
+    if (filteredMessages[message])
+        return false;
+    return true;
+}
+
+module.exports = {
+    report,
+    flush,
+    LogCategory,
+    Severity
+}

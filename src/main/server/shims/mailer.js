@@ -27,13 +27,12 @@ let sendMail = async function(from, subject, text, html) {
                 html: html, // html body
             });
         } catch (e) {
-            console.error(e);
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CassMailerError", e);
         }
     } else {
-        console.error('Mailer is not configured.');
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, "CassMailerConfig", "Mailer is not configured.");
     }
 }
-
 
 module.exports = {
     sendMail

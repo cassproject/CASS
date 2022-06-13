@@ -12,7 +12,7 @@ let diskSpaceJob = new CronJob(
                 await sendMail(`CaSS Server`, 'Disk Space Warning', `The CaSS Server at ${process.env.CASS_LOOPBACK} has reached ${capacity}% of disk capacity.`);
             }
         } catch (e) {
-            console.error(e);
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CassDiskSpaceJobError", e);
         }
     },
     null,

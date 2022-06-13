@@ -59,19 +59,19 @@ module.exports = class ProfileCalculator {
     log(msg) {
         const ms = new Date().getTime() - this.timer;
         const msTotal = new Date().getTime() - this.timerTotal;
-        if (TRACE_SOURCE) console.log(
+        if (TRACE_SOURCE) global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator",
             `${blue}${this.fingerprint}${reset}\n` +
             `${orange}${this.framework.getName()}${reset}\n` +
             `${gray}(${ms}ms)${reset}\n`
-        );
+        )
         this.timer = new Date().getTime();
-        console.log(new Date() + ": " + msg + " (" + ms + " ms step, " + msTotal + " ms total)");
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator", `${msg} (${ms} ms step, ${msTotal} ms total)`);
     }
 
     /** Prints an error to the console, but doesn't stop execution. */
     err(msg, e) {
-        console.error(`${red}WARNING:${reset} ${msg}`);
-        if (e != null) console.error(e);
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "Calculator", `${red}WARNING:${reset} ${msg}`);
+        if (e != null) global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "Calculator", e);
     }
 
     // Calculate the profile
@@ -179,7 +179,7 @@ module.exports = class ProfileCalculator {
                 await repo.saveTo(storedProfile);
                 this.log("Saved!");
             } else
-                console.log(len);
+                global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculate", len);
         }
         return result;
     }
@@ -214,7 +214,7 @@ module.exports = class ProfileCalculator {
                 // Debugging info
                 for (const result of results) {
                     if (result.status === "rejected")
-                        console.error(`ERROR: ${result.reason}`);
+                        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "InsertOutsideFrameworks", result.reason);
                 }
 
                 this.log(`Finished pass - ${frameworkLoadedCount} => ${frameworksAdded.length}`);
@@ -255,7 +255,7 @@ module.exports = class ProfileCalculator {
             }
 
             // Check if any outside competencies were found
-            if (numOutsideComps === 2) return console.error("An edge in the graph contains no inside competency");
+            if (numOutsideComps === 2) return global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "HandleEdge", "An edge in the graph contains no inside competency");
             if (numOutsideComps === 0) return;
             // Search for framework(s) attached to outside competency
             let outsideFrameworks = [];
@@ -289,7 +289,7 @@ module.exports = class ProfileCalculator {
                 const ofName = outsideFramework.getName();
                 const ocName = outsideComp.getName();
                 const icName = insideComp.getName();
-                console.log(`Found outside framework ${ofName}, because of ${ocName}, connected to ${icName}`);
+                global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "HandleEdge", `Found outside framework ${ofName}, because of ${ocName}, connected to ${icName}`);
 
                 // Add framework's competencies as vertices and alignments as edges
                 const promise = g.addFramework(
@@ -298,12 +298,14 @@ module.exports = class ProfileCalculator {
                     _, _
                 ).then(
                     () => {
-                        console.log(`Outside framework added - ${ofName}`);
+                        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "HandleEdge", `Outside framework added - ${ofName}`);
                         // This property will be directly included in resulting profile
                         ms.relatedFrameworks = [];
                         outsideFrameworks.forEach(e => ms.relatedFrameworks.push(e.shortId()));
                     }
-                ).catch(console.error);
+                ).catch((e) => {
+                    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "HandleEdge", e);
+                });
 
                 promises.push(promise);
             }

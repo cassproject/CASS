@@ -31,7 +31,7 @@ global.bindWebService = function(endpoint,callback){
             ctx.res = res;
             req.query.methodType = "GET";
             req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpGetStart", `${endpoint} Request: ${JSON.stringify(req.query)}`);
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -51,14 +51,14 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpGetError", `${endpoint} Request: ${JSON.stringify(req.query)}`);
             if (ex && ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else
                 res.status(500);
             res.end(ex && ex.data ? ex.data : ex +"");
-            console.trace(ex);
         }
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) GET " + JSON.stringify(req.query));
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpGetSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`);
     }    
     let put = async function(req,res){
         let ctx = {
@@ -71,7 +71,7 @@ global.bindWebService = function(endpoint,callback){
             ctx.res = res;
             req.query.methodType = "PUT";
             req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPutStart", `${endpoint} Request: ${JSON.stringify(req.query)}`);
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -85,14 +85,14 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPutError", `${endpoint} Request: ${JSON.stringify(req.query)}`);
             if (ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else
                 res.status(500);
             res.end(ex.data ? ex.data : ex +"");
-            console.trace(ex);
         }        
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPutSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`);
     } 
     let deleet = async function(req,res){
         let ctx = {
@@ -105,7 +105,7 @@ global.bindWebService = function(endpoint,callback){
             ctx.res = res;
             req.query.methodType = "DELETE";
             req.query.urlRemainder = req.params[0];
-            console.log("-----" + new Date() + " "+endpoint+" Request: " + JSON.stringify(req.query));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpDeleteStart", `${endpoint} Request: ${JSON.stringify(req.query)}`);
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -119,14 +119,14 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpDeleteError", `${endpoint} Request: ${JSON.stringify(req.query)}`);
             if (ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else
                 res.status(500);
             res.end(ex.data ? ex.data : ex +"");
-            console.trace(ex);
         }
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpDeleteSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`);
     }
     let post = async function(req,res){
         let ctx = {
@@ -137,7 +137,7 @@ global.bindWebService = function(endpoint,callback){
         let formParse = async (err, fields, files) => {
             if (err) {
                 res.status(500);
-                console.trace(err);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpFormParseErr", err);
                 res.end(err.toString());
             } else {
                 try{
@@ -150,7 +150,7 @@ global.bindWebService = function(endpoint,callback){
                     ctx.res = res;
                     req.query.methodType = "POST";
                     req.query.urlRemainder = req.params[0];
-                    console.log("-----" + new Date() + " "+endpoint+ " " + (req.isSpdy ? "spdy" : req.httpVersion) + " Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)));
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPostStart", `${endpoint} ${(req.isSpdy ? "spdy" : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`);
                     var result = await callback.call({
                         ctx:ctx,
                         params: req.query,
@@ -165,6 +165,7 @@ global.bindWebService = function(endpoint,callback){
                 }
                 catch (ex)
                 {
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPostError", `${endpoint} ${(req.isSpdy ? "spdy" : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`);
                     if (ex.status !== undefined && ex.status != null)
                         res.status(ex.status);
                     else
@@ -172,14 +173,14 @@ global.bindWebService = function(endpoint,callback){
                     res.end(ex.data ? ex.data : ex +"");
                 }
             }
-        console.log("-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPostSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`);
         };
         formidable({
             uploadDir: os.tmpdir(),
             maxFieldsSize:52428800
         }).parse(req, formParse);
     }
-    console.log("Binding endpoint: /api" + endpoint)
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassBindEndpoint", `Binding endpoint: /api${endpoint}`);
     app.get(baseUrl + '/api' + endpoint,get);
     app.post(baseUrl + '/api' + endpoint,post);
     app.put(baseUrl + '/api' + endpoint,put);
@@ -207,33 +208,32 @@ global.httpGet = async function(url, flag, headers)
     {
         try {
             const response = await axios.get(url, {headers: headers});
-            if (skyrepoDebug) console.log("get success: " + JSON.stringify(response.data));
+            if (skyrepoDebug)
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpGetSuccess", "get success: " + JSON.stringify(response.data));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpGetSuccess", response.request.socket.remoteAddress, url);
             return response.data;
         } catch (error) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpGetError", error.response.request.socket.remoteAddress, url, error);
             var resp = null;
             if (error != null)
                 if (error.data != null)
                     resp = error.data;
-            if (skyrepoDebug) console.trace("get error: " + error);
-            if (skyrepoDebug) console.error(url);
+            if (skyrepoDebug)
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpGetError", "get error: " + error, url);    
             if (skyrepoDebug) {
                 if (resp != null)
-                    console.error(resp);
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpGetError", resp);  
                 else
                     if (error.response !== undefined && error.response.statusText !== undefined)
-                        console.error(error.response.statusText); 
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpGetError", error.response.statusText);  
                     else
-                        console.error(error.code);
-                console.error(resp);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpGetError", error.code);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpGetError", resp); 
             }
             if (error.response != null)
             {
                 if (error.response.status == 404 || error.response.status == 400)
                     return resp;
-                else if (error.response.status == 429)
-                    ;
-                else
-                    console.log(error);
             }
         }
     }
@@ -247,19 +247,20 @@ global.httpDelete = async function(url)
 {    
     try {
         const response = await axios.delete(url)
-        if (skyrepoDebug) console.log("delete success: " + JSON.stringify(response.data));
+        if (skyrepoDebug)
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpDeleteSuccess", "delete success: " + JSON.stringify(response.data)); 
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpDeleteSuccess", response.request.socket.remoteAddress, url);
         return response.data;
     } catch (error) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpDeleteError", error.response.request.socket.remoteAddress, url, error);
         var resp = null;
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        if (skyrepoDebug) console.trace("delete error");
-        if (skyrepoDebug) console.error(url);
+        if (skyrepoDebug)
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpDeleteError", "delete error", url);
         if (skyrepoDebug) if (resp != null)
-            console.error(resp);
-        else
-            console.error(error.response.statusText);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpDeleteError", resp);
         return resp;
     }
 }
@@ -273,19 +274,20 @@ global.httpPut = async function(data,url,contentType)
                 'Content-Type':contentType
             }
         })
-        if (skyrepoDebug) console.log("put success: " + JSON.stringify(response.data));
+        if (skyrepoDebug)
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpPutSuccess", "put success: " + JSON.stringify(response.data)); 
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPutSuccess", response.request.socket.remoteAddress, url);
         return response.data;
     } catch (error) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPutError", error.response.request.socket.remoteAddress, url, error);
         var resp = null;
         if (error != null)
             if (error.data != null)
                 resp = error.data;
-        if (skyrepoDebug) console.trace("put error");
-        if (skyrepoDebug) console.error(url);
+        if (skyrepoDebug)
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpPutError", "put error", url);
         if (skyrepoDebug) if (resp != null)
-            console.error(resp);
-        else
-            console.error(error.response.statusText);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpPutError", resp);
         return resp;
     }
 }
@@ -301,35 +303,30 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
                     'Content-Type':contentType
                 }
             })
-            if (skyrepoDebug) console.log("post success: " + JSON.stringify(response.data));
+            if (skyrepoDebug)
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpPostSuccess", "post success: " + JSON.stringify(response.data)); 
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPostSuccess", response.request.socket.remoteAddress, url);
             return response.data;
         } catch (error) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPostError", error.response.request.socket.remoteAddress, url, error);
             var resp = null;
             if (error != null)
                 if (error.data != null)
                     resp = error.data;
-            if (skyrepoDebug) 
-                console.trace("post error: " +error.response.status + ": "+ error.response.statusText);
-            if (skyrepoDebug) 
-                console.error(url);
+            if (skyrepoDebug)
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpPostError", "post error: " +error.response.status + ": "+ error.response.statusText, url);
             if (skyrepoDebug) 
                 if (resp != null)
-                    console.error(resp);
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpPostError", resp);
                 else
-                    console.error(error.response.statusText);
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpPostError", error.response.statusText);
                     
             if (error.response != null)
             {
                 if (error.response.status === 409) {
                     return 409;
                 } else if (error.response.status == 404 || error.response.status == 400) {
-                    console.log(error.response);
-                    console.log(error.responseText);
                     return resp;
-                } else if (error.response.status == 429) {
-                    ;
-                } else {
-                    console.log(error);
                 }
             }
         }
@@ -342,7 +339,7 @@ global.error = function(errormessage,status){
     e.data = errormessage;
     e.status = status;
     e.stack = new Error().stack;
-    console.error(e);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CassError", e);
     throw e;
 }
 
@@ -384,21 +381,21 @@ global.jsonLdCompact = function(actual,finalTargetContext){
     });
 }
 
-        // jsonld.expand(json, new Object(), function(error, actual) {
-        //     if (error != null) {
-        //         failure((error)["message"]);
-        //         return;
-        //     }
-        //     jsonld.compact(actual, finalTargetContext, new Object(), function(s, o, o2) {
-        //         if (s != null) {
-        //             failure(s);
-        //             return;
-        //         }
-        //         me.copyFrom(o);
-        //         (me)["@context"] = finalTargetContext;
-        //         success(me);
-        //     });
-        // });
+    // jsonld.expand(json, new Object(), function(error, actual) {
+    //     if (error != null) {
+    //         failure((error)["message"]);
+    //         return;
+    //     }
+    //     jsonld.compact(actual, finalTargetContext, new Object(), function(s, o, o2) {
+    //         if (s != null) {
+    //             failure(s);
+    //             return;
+    //         }
+    //         me.copyFrom(o);
+    //         (me)["@context"] = finalTargetContext;
+    //         success(me);
+    //     });
+    // });
 
 
 const $rdf = require('rdflib');

@@ -231,7 +231,9 @@ ingestCase = async function () {
             if (owner != null)
                 listToSave[j].addOwner(EcPk.fromPem(owner));
         }
-        await repo.multiput(listToSave,function(results){},console.error);
+        await repo.multiput(listToSave,function(results){},(error) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CaseIngestCaseError", error);
+        });
     }
     return JSON.stringify(dx, null, 2);
 }

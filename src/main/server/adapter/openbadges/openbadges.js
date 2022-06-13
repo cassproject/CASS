@@ -127,7 +127,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
         competency = await loopback.competencyGet(competencyId);
     else {
         var query = queryParse.call(this);
-        console.log(query);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "BadgeClass", query);
         competency = await loopback.competencyGet(repoEndpoint() + "data/" + query.type);
         fingerprint = query.id;
     }

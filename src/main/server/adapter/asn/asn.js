@@ -634,7 +634,7 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
             }
             resolve();
         } catch(err) {
-            console.log(err);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportConceptError", err);
             resolve();
         }
     });
@@ -655,7 +655,9 @@ async function importJsonLdGraph(graph, context) {
     for (let i = 0; i < graph.length; i+=100) {
         await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeId, context, skosIdentity, owner, toSave)));
     }
-    await repo.multiput(toSave, function() {}, console.error);
+    await repo.multiput(toSave, function() {}, (error) => {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportJsonLdGraph", error);
+    });
     if (conceptSchemeId) {
         return conceptSchemeId[0];
     }

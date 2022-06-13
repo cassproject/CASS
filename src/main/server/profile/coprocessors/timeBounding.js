@@ -10,7 +10,7 @@ let fetchAssertions = async function(){
     if (startDate == null && endDate == null) 
         return;
     this.cache = false;
-    console.log("We are time bounding, turning off caching.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassFetchAssertions", "We are time bounding, turning off caching.");
 }
 let insertResources = async function(){
 }
@@ -24,7 +24,7 @@ let processAssertions = async function(){
         endDate = new Date(parseInt(params.endDate));
     if (startDate == null && endDate == null) 
         return;
-    console.log("Here I am doing additional processing over assertions and removing those that are before " + startDate + " or after " + endDate + ".");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassProcessAssertions", `Here I am doing additional processing over assertions and removing those that are before ${startDate} or after ${endDate}.`);
     for (const metaVertexId in this.g.metaVerticies) {
         const metaVertex = this.g.metaVerticies[metaVertexId];
         if (metaVertex.positiveAssertion != null)
@@ -33,12 +33,12 @@ let processAssertions = async function(){
                 let assertionDate = await metaVertex.positiveAssertion[index].getAssertionDate();
                 if (startDate != null && assertionDate < startDate.getTime())
                 {
-                    console.log("Removing assertion where " + assertionDate + " < (startDate)" + startDate.getTime());
+                    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassProcessAssertions", `Removing assertion where ${assertionDate} < (startDate)${startDate.getTime()}`);
                     metaVertex.positiveAssertion.splice(index--,1);
                 }
                 else if (endDate != null && endDate.getTime() < assertionDate)
                 {
-                    console.log("Removing assertion where (endDate)" + endDate.getTime() + " < " + assertionDate);
+                    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassProcessAssertions", `Removing assertion where (endDate) ${endDate.getTime()} < ${assertionDate}`);
                     metaVertex.positiveAssertion.splice(index--,1);
                 }
             }
@@ -48,12 +48,12 @@ let processAssertions = async function(){
                 let assertionDate = await metaVertex.negativeAssertion[index].getAssertionDate();
                 if (startDate != null && assertionDate < startDate.getTime())
                 {
-                    console.log("Removing assertion where " + assertionDate + " < (startDate)" + startDate.getTime());
+                    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassProcessAssertions", `Removing assertion where ${assertionDate} < (startDate)${startDate.getTime()}`);
                     metaVertex.negativeAssertion.splice(index--,1);
                 }
                 else if (endDate != null && endDate.getTime() < assertionDate)
                 {
-                    console.log("Removing assertion where (endDate)" + endDate.getTime() + " < " + assertionDate);
+                    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassProcessAssertions", `Removing assertion where ${(endDate) + endDate.getTime()} < ${assertionDate}`);
                     metaVertex.negativeAssertion.splice(index--,1);
                 }
             }

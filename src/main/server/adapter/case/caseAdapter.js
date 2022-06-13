@@ -243,7 +243,7 @@ cfItems = async function (f, fw, terms) {
     try {
         f = JSON.parse(f);
     } catch(e) {
-        console.log(e);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CaseCfItemsParseError", e);
     }
     for (let each in f) {
         if (terms[each]) {

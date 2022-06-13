@@ -63,7 +63,7 @@ var personFromEmail = async function (mbox) {
             if (people.length == 1)
                 person = people[0];
             else if (people.length > 1)
-                console.error("Cannot generate xAPI statements for " + mbox + " -- too many people with that email.");
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiPersonFromEmail", `Cannot generate xAPI statements for ${mbox} -- too many people with that email.`);
         }
     }
     else
@@ -74,7 +74,7 @@ var personFromEmail = async function (mbox) {
             if (people.length == 1)
                 person = people[0];
             else if (people.length > 1)
-                console.error("Cannot generate xAPI statements for " + mbox + " -- too many people with that identifier.");
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiPersonFromEmail", `Cannot generate xAPI statements for ${mbox} -- too many people with that identifier.`);
         }
     }
     return person;
@@ -150,7 +150,11 @@ var xapiStatement = async function (s) {
 		else
 			person.email = mb;
         person.name = s.actor.name;
-        await EcRepository.save(person,console.log,console.error);
+        await EcRepository.save(person, (msg) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson", msg);
+        }, (error) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSavePerson", error);
+        });
         actorPk = ppk.toPk();
     }
     if (actorPk == null) return;
@@ -179,7 +183,11 @@ var xapiStatement = async function (s) {
         await a.setAssertionDate(new Date(s.timestamp).getTime());
         await a.setNegative(negative);
         a.confidence = scaled;
-        EcRepository.save(a, console.log, console.error);
+        EcRepository.save(a, (msg) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSaveAssertion", msg);
+        }, (error) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSaveAssertion", error);
+        });
     }
 }
 
