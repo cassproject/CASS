@@ -245,5 +245,8 @@ getDocuments = async function () {
     return JSON.stringify(results);
 }
 
-bindWebService("/ims/case/harvest", ingestCase);
-bindWebService("/ims/case/getDocs", getDocuments);
+if (!global.disabledAdapters['case']) {
+    bindWebService("/ims/case/harvest", ingestCase);
+    bindWebService("/ims/case/getDocs", getDocuments);
+}
+

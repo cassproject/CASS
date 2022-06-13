@@ -1706,7 +1706,8 @@ async function ceasnEndpoint() {
         error("Not Yet Implemented.", "405");
     return "Not Yet Implemented";
 }
-
-bindWebService("/ceasn/*", ceasnEndpoint);
-bindWebService("/ctdlasn/*", ceasnEndpoint);
-bindWebService("/ctdlasn", ceasnEndpoint);
+if (!global.disabledAdapters['ceasn']) {
+    bindWebService("/ceasn/*", ceasnEndpoint);
+    bindWebService("/ctdlasn/*", ceasnEndpoint);
+    bindWebService("/ctdlasn", ceasnEndpoint);
+}

@@ -674,7 +674,10 @@ function asnEndpoint() {
     }
 }
 
-bindWebService("/asn/*", asnEndpoint);
+if (!global.disabledAdapters['asn']) {
+    bindWebService("/asn/*", asnEndpoint);
+}
+
 
 
 //function test(){

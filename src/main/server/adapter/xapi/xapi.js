@@ -36,7 +36,7 @@ var xapiEndpoint = async function (more, since, config) {
     headers["X-Experience-API-Version"] = "1.0.1";
     return await httpGet(endpoint,false, headers);
 }
-bindWebService("/xapi/endpoint", xapiEndpoint);
+
 
 var getMbox = function (agentObject) {
     if (agentObject == null)
@@ -213,9 +213,7 @@ EcIdentityManager.default.addIdentity(ident);
 xapiKey = function () {
     return ident.ppk.toPk().toPem();
 }
-bindWebService("/xapi/pk", xapiKey);
-bindWebService("/xapi/statement", xapiStatementListener);
-bindWebService("/xapi/statements", xapiStatementListener);
+
 
 var xapiLoopEach = async function(since, config, sinceFilePath) {
     var results = await xapiEndpoint.call(this, null, since, config);
@@ -256,4 +254,11 @@ var xapiLoop = async function () {
     }
     
 }
-bindWebService("/xapi/tick", xapiLoop);
+
+if (!global.disabledAdapters['xapi']) {
+    bindWebService("/xapi/tick", xapiLoop);
+    bindWebService("/xapi/pk", xapiKey);
+    bindWebService("/xapi/statement", xapiStatementListener);
+    bindWebService("/xapi/statements", xapiStatementListener);
+    bindWebService("/xapi/endpoint", xapiEndpoint);
+}

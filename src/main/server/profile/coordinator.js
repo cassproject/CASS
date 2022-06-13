@@ -97,7 +97,10 @@ let profileCalculator = async function(){
     }
 }
 
-bindWebService("/profile/latest", profileCalculator);
+if (!global.disabledAdapters['profile']) {
+    bindWebService("/profile/latest", profileCalculator);
+}
+
 
 let lastFlush = Date.now();
 let workerData = {};

@@ -88,4 +88,6 @@ async function importJsonLd(){
 	}
 }
 
-bindWebService("/jsonld", importJsonLd);
+if (!global.disabledAdapters['jsonld']) {
+	bindWebService("/jsonld", importJsonLd);
+}

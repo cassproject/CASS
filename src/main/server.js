@@ -46,6 +46,14 @@ global.thisEndpoint = function(){return repo.selectedServer;}
 global.repoEndpoint = function(){return repo.selectedServer;}
 global.auditLogger = require('./server/shims/auditLogger.js');
 
+global.disabledAdapters = {};
+if (process.env.DISABLED_ADAPTERS) {
+    let arr = process.env.DISABLED_ADAPTERS.split(',');
+    for (let str of arr) {
+        global.disabledAdapters[str.trim()] = 1;
+    }
+}
+
 require('./server/shims/jobs.js');
 require("./server/shims/mailer.js");
 require("./server/shims/auth.js");

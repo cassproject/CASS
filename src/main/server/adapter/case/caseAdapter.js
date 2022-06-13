@@ -452,14 +452,16 @@ cfSubjects = async function () {
     error("Not yet implemented.", 501)
 }
 
-bindWebService("/ims/case/v1p0/CFDocuments", cfDocuments);
-bindWebService("/ims/case/v1p0/CFAssociations", cfAssociations);
-bindWebService("/ims/case/v1p0/CFAssociationGroupings", cfAssociationGroupings);
-bindWebService("/ims/case/v1p0/CFConcepts", cfConcepts);
-bindWebService("/ims/case/v1p0/CFItems", cfItems);
-bindWebService("/ims/case/v1p0/CFItemAssociations", cfItemAssociations);
-bindWebService("/ims/case/v1p0/CFItemTypes", cfItemTypes);
-bindWebService("/ims/case/v1p0/CFLicenses", cfLicenses);
-bindWebService("/ims/case/v1p0/CFPackages/*", cfPackages);
-bindWebService("/ims/case/v1p0/CFRubrics", cfRubrics);
-bindWebService("/ims/case/v1p0/CFSubjects", cfSubjects);
+if (!global.disabledAdapters['case']) {
+    bindWebService("/ims/case/v1p0/CFDocuments", cfDocuments);
+    bindWebService("/ims/case/v1p0/CFAssociations", cfAssociations);
+    bindWebService("/ims/case/v1p0/CFAssociationGroupings", cfAssociationGroupings);
+    bindWebService("/ims/case/v1p0/CFConcepts", cfConcepts);
+    bindWebService("/ims/case/v1p0/CFItems", cfItems);
+    bindWebService("/ims/case/v1p0/CFItemAssociations", cfItemAssociations);
+    bindWebService("/ims/case/v1p0/CFItemTypes", cfItemTypes);
+    bindWebService("/ims/case/v1p0/CFLicenses", cfLicenses);
+    bindWebService("/ims/case/v1p0/CFPackages/*", cfPackages);
+    bindWebService("/ims/case/v1p0/CFRubrics", cfRubrics);
+    bindWebService("/ims/case/v1p0/CFSubjects", cfSubjects);
+}
