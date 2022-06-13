@@ -137,6 +137,10 @@ skyrepoMigrate(function(){
         global.server = app.listen(port,after);
     }
 
+    if (typeof process.env.MAX_CONNECTIONS !== 'undefined') {
+        global.server.maxConnections = parseInt(process.env.MAX_CONNECTIONS);
+    }
+
     server.on('connection', function(socket) {
         socket.setKeepAlive(true);
     })
