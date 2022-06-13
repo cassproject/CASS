@@ -132,11 +132,14 @@ var skyIdLogin = async function() {
     if ((get)["password"] != saltedPassword) 
         error("Invalid password.", 403);
     (get)["token"] = randomString(20);
+    var lastLogin = (get)["lastLogin"] || Date.now();
+    (get)["lastLogin"] = Date.now(); // Save current time as lastLogin
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = await EcAesCtrAsync.encrypt(JSON.stringify(get), skyIdSecretKey, saltedId);
     await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
     delete (get)["password"];
+    (get)["lastLogin"] = lastLogin;
     return JSON.stringify(get);
 };
 global.loadConfigurationFile = function(path, dflt) {
