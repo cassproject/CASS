@@ -81,6 +81,7 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "axios": "^0.27.2",
+    "busboy": "^1.6.0",
     "cassproject": "^1.5.9",
     "check-disk-space": "^3.3.0",
     "cors": "^2.8.5",
@@ -89,7 +90,6 @@
     "express-jwt": "^7.7.2",
     "express-openid-connect": "^2.7.2",
     "express-ws": "^5.0.2",
-    "formidable": "^2.0.1",
     "http2": "^3.3.7",
     "http2-express-bridge": "^1.0.7",
     "jsonld": "^5.2.0",
