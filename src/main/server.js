@@ -62,6 +62,7 @@ require("./server/adapter/asn/asn.js");
 require("./server/adapter/case/caseAdapter.js");
 require("./server/adapter/case/caseIngest.js");
 require("./server/adapter/ceasn/ceasn.js");
+require("./server/adapter/scd/scd.js");
 //Tests remaining: Import concept schemes
 require("./server/adapter/jsonLd/jsonLd.js");
 require("./server/adapter/openbadges/openbadges.js");
