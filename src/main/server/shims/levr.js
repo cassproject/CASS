@@ -223,7 +223,7 @@ global.httpGet = async function(url, flag, headers)
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpGetSuccess", response.request.socket.remoteAddress, url);
             return response.data;
         } catch (error) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpGetError", error.response.request.socket.remoteAddress, url, error);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpGetError", error && error.response ? error.response.request.socket.remoteAddress : '', url, error);
             var resp = null;
             if (error != null)
                 if (error.data != null)
@@ -262,7 +262,7 @@ global.httpDelete = async function(url)
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpDeleteSuccess", response.request.socket.remoteAddress, url);
         return response.data;
     } catch (error) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpDeleteError", error.response.request.socket.remoteAddress, url, error);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpDeleteError", error && error.response ? error.response.request.socket.remoteAddress : '', url, error);
         var resp = null;
         if (error != null)
             if (error.data != null)
@@ -289,7 +289,7 @@ global.httpPut = async function(data,url,contentType)
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPutSuccess", response.request.socket.remoteAddress, url);
         return response.data;
     } catch (error) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPutError", error.response.request.socket.remoteAddress, url, error);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPutError", error && error.response ? error.response.request.socket.remoteAddress: '', url, error);
         var resp = null;
         if (error != null)
             if (error.data != null)
@@ -318,7 +318,7 @@ global.httpPost = async function(data, url, contentType, multipart,something,som
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPostSuccess", response.request.socket.remoteAddress, url);
             return response.data;
         } catch (error) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPostError", error.response.request.socket.remoteAddress, url, error);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPostError", error && error.response ? error.response.request.socket.remoteAddress : '', url, error);
             var resp = null;
             if (error != null)
                 if (error.data != null)

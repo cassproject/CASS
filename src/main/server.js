@@ -29,6 +29,7 @@ if (!envHttp2)
 {
     global.axios = require("axios"); //Pre-empt http2 use.
 }
+global.auditLogger = require('./server/shims/auditLogger.js');
 require("cassproject");
 const fs = require('fs');
 const cors = require('cors');
@@ -44,7 +45,7 @@ global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost
 global.skyrepoDebug = false;
 global.thisEndpoint = function(){return repo.selectedServer;}
 global.repoEndpoint = function(){return repo.selectedServer;}
-global.auditLogger = require('./server/shims/auditLogger.js');
+
 
 global.disabledAdapters = {};
 if (process.env.DISABLED_ADAPTERS) {
@@ -86,10 +87,12 @@ app.use(baseUrl+"cass-editor/",express.static('src/main/webapp/'));
 let v8 = require("v8");
 let glob = require('glob');
 let path = require('path');
+const sendMail = require('./server/shims/mailer.js').sendMail;
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', async (err) => {
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, "uncaughtException", err.stack);
     global.auditLogger.flush();
+    await sendMail(`CaSS Server`, 'Uncaught Exception', `The CaSS Server at ${process.env.CASS_LOOPBACK} experienced an uncaught exception: ${err.stack}`);
 });
   
 process.on('exit', () => {

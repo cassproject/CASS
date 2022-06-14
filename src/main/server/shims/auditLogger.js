@@ -52,6 +52,7 @@ const InverseSeverity = {
 
 let logBuffers = [];
 let timeoutHandler;
+let previousHash = '';
 
 
 
@@ -66,9 +67,17 @@ let flush = function() {
     }
 }
 
+let hash = function(msg) {
+    let concat = previousHash + msg;
+    let newHash = EcCrypto.md5(concat);
+    previousHash = newHash;
+    return `${msg} ${newHash}`;
+}
+
 let syslogFormat = function(facility, severity, timestamp, msgID, data) {
     // RFC 3164
-    return `<${(SyslogFacility.USER * 8) + severity}>${timestamp.toISOString()} ${global.repo.selectedServer} ${facility + msgID.trim().substr(0, 27)} ${data}`;
+    let msg = hash(`<${(SyslogFacility.USER * 8) + severity}>${timestamp.toISOString()} ${global.repo.selectedServer} ${facility + msgID.trim().substr(0, 27)} ${data}`);
+    return msg;
 }
 
 /* 
