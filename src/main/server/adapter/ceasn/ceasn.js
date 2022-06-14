@@ -168,7 +168,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
             competencies[id] = stripNonCe(competencies[id]);
             resolve();
         } catch(err) {
-            console.log(err);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CeasnCompetencyError", err);
             resolve();
         }
     });
@@ -690,7 +690,7 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
             competencies[id] = stripNonCe(competencies[id]);
             resolve();
         } catch(err) {
-            console.log(err);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnCompetencyCollection", err);
             resolve();
         }
     });
@@ -1042,7 +1042,7 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
             }
             resolve();
         } catch(err) {
-            console.log(err);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnConcept", err);
             resolve();
         }
     });
@@ -1321,7 +1321,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
             listToSave.push(c);
             resolve();
         } catch(err) {
-            console.log(err);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CeasnImportCompetency", err);
             resolve();
         }
     });
@@ -1522,7 +1522,7 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
             listToSave.push(c);
             resolve();
         } catch(err) {
-            console.log(err);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CeasnImportCollection", err);
             resolve();
         }
     });
@@ -1634,7 +1634,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
         listToSave.push(f);
 
         await loopback.multiput(repo,listToSave);
-        console.log(listToSave);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnImportCollection", listToSave);
         return f.shortId();
     } // end if frameworkObj != null
 }
@@ -1706,7 +1706,8 @@ async function ceasnEndpoint() {
         error("Not Yet Implemented.", "405");
     return "Not Yet Implemented";
 }
-
-bindWebService("/ceasn/*", ceasnEndpoint);
-bindWebService("/ctdlasn/*", ceasnEndpoint);
-bindWebService("/ctdlasn", ceasnEndpoint);
+if (!global.disabledAdapters['ceasn']) {
+    bindWebService("/ceasn/*", ceasnEndpoint);
+    bindWebService("/ctdlasn/*", ceasnEndpoint);
+    bindWebService("/ctdlasn", ceasnEndpoint);
+}

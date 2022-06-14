@@ -35,16 +35,19 @@ global.keyFor = function (filename) {
 function repoAutoDetect() {
     if (process.env.CASS_LOOPBACK != null)
         repo.init(process.env.CASS_LOOPBACK,function(){
-            console.log(EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
-        },console.error);
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassRepoInit", EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
+        }, (error) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CassRepoInitError", error);
+        });
     else
         repo.autoDetectRepository();
-
-    console.log("Loopback: " + repo.selectedServer);
-    console.log("Loopback Proxy: " + repo.selectedServerProxy);
-    console.log("Elasticsearch Endpoint: " + elasticEndpoint);
-    console.log("Text Encoding: " + java.lang.System.getProperty("file.encoding"));
-    console.log("Text Encoding: " + java.nio.charset.Charset.defaultCharset().toString());
+    
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassRepoAutoDetect",
+        "Loopback: " + repo.selectedServer,
+        "Loopback Proxy: " + repo.selectedServerProxy,
+        "Elasticsearch Endpoint: " + elasticEndpoint,
+        "Text Encoding: " + java.lang.System.getProperty("file.encoding"),
+        "Text Encoding: " + java.nio.charset.Charset.defaultCharset().toString());
 }
 var elasticSearchVersion = function() {
     return ((elasticSearchInfo)["version"])["number"];
@@ -191,7 +194,7 @@ var filterResults = async function(o) {
                     }
                 }
                 catch (msg){
-                    console.log("We couldn't decrypt it, hope the client has better luck! -- " + msg);
+                    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CassDecryptError", "We couldn't decrypt it, hope the client has better luck! -- " + msg);
                 }
             }
         }
@@ -250,8 +253,8 @@ var putUrl = function(o, id, version, type) {
     else 
         url += "/" + typeFromObj;
     url += "/" + encodeURIComponent(id) + versionPart;
-    if (skyrepoDebug) 
-        console.log("Put:" + url);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, "SkyrepoPutUrl", "Put:" + url);
     return url;
 };
 var putPermanentUrl = function(o, id, version, type) {
@@ -270,8 +273,8 @@ var putPermanentUrl = function(o, id, version, type) {
     else 
         url += "/permanent";
     url += "/" + encodeURIComponent(id) + "." + (version === undefined || version == null ? "" : version) + versionPart;
-    if (skyrepoDebug) 
-        console.log("PutPermanent:" + url);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, "SkyrepoPutPermanentUrl", "PutPermanent:" + url);
     return url;
 };
 var putPermanentBaseUrl = function(o, id, version, type) {
@@ -290,8 +293,8 @@ var putPermanentBaseUrl = function(o, id, version, type) {
      else 
         url += "/permanent";
     url += "/" + encodeURIComponent(id) + "." + versionPart;
-    if (skyrepoDebug) 
-        console.log("PutPermanentBase:" + url);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, "SkyrepoPutPermanentBaseUrl", "PutPermanentBase:" + url);
     return url;
 };
 var getUrl = function(index, id, version, type) {
@@ -309,8 +312,8 @@ var getUrl = function(index, id, version, type) {
         url += "/" + encodeURIComponent(id) + "." + (version === undefined || version == null ? "" : version);
      else 
         url += "/" + encodeURIComponent(id);
-    if (skyrepoDebug) 
-        console.log("Get:" + url);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, "SkyrepoGetUrl", "Get:" + url);
     return url;
 };
 var deleteUrl = function(id, version, type) {
@@ -326,8 +329,8 @@ var deleteUrl = function(id, version, type) {
         url += "/" + typeFromObj;
     url += "/" + encodeURIComponent(id);
     url += "?" + refreshPart;
-    if (skyrepoDebug) 
-        console.log("Delete:" + url);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, "SkyrepoDeleteUrl", "Delete:" + url);
     return url;
 };
 var deletePermanentBaseUrl = function(id, version, type) {
@@ -338,8 +341,8 @@ var deletePermanentBaseUrl = function(id, version, type) {
      else 
         url += "/permanent";
     url += "/" + encodeURIComponent(id) + ".";
-    if (skyrepoDebug) 
-        console.log("DeletePermanentBase:" + url);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, "SkyrepoDeletePermBase", "DeletePermanentBase:" + url);
     return url;
 };
 var skyrepoPutInternalTypeCheck = function(typeChecked, o, type) {
@@ -406,8 +409,8 @@ var skyrepoPutInternalIndex = async function(o, id, version, type) {
         delete (o)["payload"];
         delete (o)["secret"];
     }
-    if (skyrepoDebug) 
-        console.log(JSON.stringify(o));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepoPutInternalIndex", JSON.stringify(o));
     let response = await httpPost(o, url, "application/json", false, null, null, true);
     return response;
 };
@@ -425,8 +428,8 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
             (permNoIndex)["permanent"] = doc;
         (doc)["enabled"] = false;
         var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
-        if (skyrepoDebug) 
-            console.log(JSON.stringify(result));
+        if (skyrepoDebug)
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepoPutInternalPerm", JSON.stringify(result));
         permanentCreated = true;
     }
     var data = {};
@@ -440,8 +443,8 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
         url = putPermanentUrl.call(this,o, id, version, type);
         results = await httpPost(data, url, "application/json", false, null, null, true);
     }
-    if (skyrepoDebug) 
-        console.log(JSON.stringify(results));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepoPutInternalPerm", JSON.stringify(results));
     return JSON.stringify(results);
 };
 var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, version, type) {
@@ -456,7 +459,7 @@ var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
             o = JSON.parse(erld.toJson());
         }
         catch (msg){
-            console.trace(msg);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "SkyrepoPutInternalError", msg);
         }
     }
     var oldPermanent = await skyrepoGetPermanent(id, version, type);
@@ -479,8 +482,8 @@ var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
                 if (oldIndexRecord._id != obj._id || oldIndexRecord._index != obj._index)
                     await skyrepoDeleteInternalIndex.call(this,oldIndexRecord._id, null, oldIndexRecord._index);
     }
-    if (skyrepoDebug) 
-        console.log(JSON.stringify(obj));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepoPutInternal", JSON.stringify(obj));
     let permanentIds = [id];
     if (erld.id != null && erld.getGuid() != null)
         permanentIds.push(erld.getGuid())
@@ -491,12 +494,12 @@ var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
     {
         let status = await skyrepoPutInternalPermanent.call(this,o, permId, chosenVersion, type);
         if (status === '409') {
-            console.log("409, version is: " + chosenVersion);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepoPutInternal", "409, version is: " + chosenVersion);
             let current = await skyrepoGetPermanent.call(this,permId,null,type);
             if (current && current._version > chosenVersion)
             {
                 chosenVersion = current._version;
-                console.log("Updated to " + chosenVersion);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepoPutInternal", "Updated to " + chosenVersion);
             }
             if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) //Used to replay replication / database log files without "just jamming the data in"
                 await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
@@ -510,19 +513,19 @@ var skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
         err.copyFrom(o);
         if (err.verify()) 
             err.addRekeyRequestToForwardingTable();
-        console.log(EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepoPutInternal", EcObject.keys(EcRemoteLinkedData.forwardingTable).length + " records now in forwarding table.");
     }
 };
 var skyrepoGetIndexInternal = async function(index, id, version, type) {
-    if (skyrepoDebug) 
-        console.log("Fetching from " + index + " : " + type + " / " + id + " / " + version);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepGetIndexInternal", "Fetching from " + index + " : " + type + " / " + id + " / " + version);
     let response = await httpGet(getUrl.call(this,index, id, version, type), true);
     return response;
 };
 
 var skyrepoManyGetIndexInternal = async function(index, manyParseParams) {
-    if (skyrepoDebug) 
-        console.log("Fetching from " + index + " : " + manyParseParams);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepManyGetIndexInternal", "Fetching from " + index + " : " + manyParseParams);
 
     let ary = manyParseParams;
     var mget = {};
@@ -551,8 +554,8 @@ var skyrepoGetIndexSearch = async function(id, version, type)
 {
     var microSearchUrl = elasticEndpoint + "/_search?version&q=_id:" + id + "";
     let microSearch = await httpGet(microSearchUrl, true);
-    if (skyrepoDebug) 
-        console.log(microSearchUrl);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepGetIndexSearch", microSearchUrl);
     if (microSearch == null) 
         return null;
     var hitshits = (microSearch)["hits"];
@@ -570,8 +573,8 @@ var skyrepoGetIndexRecords = async function(id)
     let hashId = EcCrypto.md5(id);
     var microSearchUrl = elasticEndpoint + "/_search?version&q=@id:\"" + id + "\" OR @id:\"" + hashId + "\"";
     let microSearch = await httpGet(microSearchUrl, true);
-    if (skyrepoDebug) 
-        console.log(microSearchUrl);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepGetIndexRecords", microSearchUrl);
     if (microSearch == null) 
         return null;
     var hitshits = (microSearch)["hits"];
@@ -621,8 +624,8 @@ global.skyrepoGetInternal = async function(id, version, type) {
         return null;
     if ((result)["found"] == true) 
         return JSON.parse(((result)["_source"])["data"]);
-    if (skyrepoDebug) 
-        console.log("Failed to find " + type + "/" + id + "/" + version + " -- trying degraded form from search index.");
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepGetInternal", "Failed to find " + type + "/" + id + "/" + version + " -- trying degraded form from search index.");
     result = await (skyrepoGetIndex).call(this, id, version, type);
     if (result == null) 
         return null;
@@ -653,8 +656,8 @@ global.skyrepoManyGetInternal = async function(manyParseParams) {
         }
     }
 
-    if (skyrepoDebug && notFoundInPermanent.length > 0) 
-        console.log("Failed to find " + manyParseParams + " -- trying degraded form from search index.");
+    if (skyrepoDebug && notFoundInPermanent.length > 0)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepManyGetInternal", "Failed to find " + manyParseParams + " -- trying degraded form from search index.");
 
     response = await (skyrepoManyGetIndex).call(this, notFoundInPermanent);
     resultDocs = (response)["docs"];
@@ -679,10 +682,10 @@ global.skyrepoGet = async function(parseParams) {
         (parseParams)["version"] = this.params.version;
         (parseParams)["versions"] = this.params.versions;
     }
-    if (skyrepoDebug) 
-        console.log(JSON.stringify(parseParams));
-    if (skyrepoDebug) 
-        console.log(JSON.stringify(this.params.obj));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepGet", JSON.stringify(parseParams));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepGet", JSON.stringify(this.params.obj));
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
@@ -717,7 +720,7 @@ var skyrepoManyGetParsed = async function(manyParseParams) {
     }catch (ex) {
         if (ex.toString().indexOf("Signature Violation") != -1) 
              throw ex;
-        console.trace(ex);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "SkyrepManyGetParsedError", ex);
     }
     if (filtered == null) 
         return null;
@@ -731,10 +734,10 @@ var skyrepoPut = async function(parseParams) {
         (parseParams)["version"] = this.params.version;
         (parseParams)["obj"] = this.params.obj;
     }
-    if (skyrepoDebug) 
-        console.log("put pp:" + JSON.stringify(parseParams));
-    if (skyrepoDebug) 
-        console.log("put obj:" + JSON.stringify(this.params.obj));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepPut", "put pp:" + JSON.stringify(parseParams));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepPut", "put obj:" + JSON.stringify(this.params.obj));
     if (parseParams == null && EcObject.isObject(this.params.obj)) 
         parseParams = this.params.obj;
     var obj = (parseParams)["obj"];
@@ -852,18 +855,18 @@ var searchUrl = function(urlRemainder, index_hint) {
     if (!url.endsWith("/")) 
         url += "/";
     url += "_search";
-    if (skyrepoDebug) 
-        console.log(url);
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, "SkyrepSearchUrl", url);
     return url;
 };
 var skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_scores, index_hint) {
     var searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
-    if (skyrepoDebug) 
-        console.log(JSON.stringify(searchParameters));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepSearch", JSON.stringify(searchParameters));
     let results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), "application/json", false, null, null, true);
     
-    if (skyrepoDebug) 
-        console.log(JSON.stringify(results));
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepSearch", JSON.stringify(results));
     if ((results)["error"] != null) {
         var root_cause = ((results)["error"])["root_cause"];
         if (root_cause.length > 0) {
@@ -1110,8 +1113,8 @@ var endpointMultiPut = async function() {
                 (permNoIndex)["permanent"] = doc;
             (doc)["enabled"] = false;
             var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
-            if (skyrepoDebug) 
-                console.log(JSON.stringify(result));
+            if (skyrepoDebug)
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepEndpointMultiput", JSON.stringify(result));
             permanentCreated = true;
         }
         await ((signatureSheet).call(this));
@@ -1232,7 +1235,12 @@ var pingWithTime = function() {
         message: process.env.CASS_BANNER_MESSAGE, // string
         color: process.env.CASS_BANNER_TEXT_COLOR, // valid css color value
         background: process.env.CASS_BANNER_BACKGROUND_COLOR // valid css color value
-    }
+    };
+    // Add MOTD info if set in env vars
+    (o).motd = {
+        title: process.env.MOTD_TITLE,
+        message: process.env.MOTD_MESSAGE
+    };
     // Add default plugins if set in env vars
     if (process.env.DEFAULT_PLUGINS) {
         (o).plugins = process.env.DEFAULT_PLUGINS;

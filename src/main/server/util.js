@@ -27,18 +27,17 @@ global.skyrepoMigrate = async function (after) {
     var elasticState = await httpGet(elasticEndpoint + "/", true);
     if (elasticState == null)
     {
-        console.log("Waiting for Elasticsearch to appear at "+elasticEndpoint+"...");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Waiting for Elasticsearch to appear at "+elasticEndpoint+"...");
         setTimeout(function(){skyrepoMigrate(after)},1000);
         return;
     }
-    console.log("Current Elasticsearch Version: " + elasticState.version.number);
-    console.log("Current Minimum Index Compatibility Version: " + elasticState.version.minimum_index_compatibility_version);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Current Elasticsearch Version: " + elasticState.version.number);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Current Minimum Index Compatibility Version: " + elasticState.version.minimum_index_compatibility_version);
     var health = "red";
     health = (await httpGet(elasticEndpoint + "/_cluster/health",true)).status;
     if (health != "yellow" && health != "green")
     {
-        console.log("Waiting for cluster health...");
-        console.log(health);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Waiting for cluster health...", health);
         setTimeout(function(){skyrepoMigrate(after)},1000);
         return;
     }
@@ -49,7 +48,7 @@ global.skyrepoMigrate = async function (after) {
         for (var i = 0; i < indices.length; i++)
         {
             var index = indices[i];
-            console.log("Checking to see if " + index + " needs upgrading...");
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Checking to see if " + index + " needs upgrading...");
             if (index.startsWith("."))
             {
                 continue;
@@ -65,7 +64,7 @@ global.skyrepoMigrate = async function (after) {
 //                console.log(r2 = httpDelete(elasticEndpoint+"/"+index,true));
 //                continue;
 //            }
-            console.log("Reindexing " + index + " -> .temp."+index.replace("https:..","").replace(":","."));
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing " + index + " -> .temp."+index.replace("https:..","").replace(":","."));
             if (index == "permanent")
             {
                 var mappings = new Object();
@@ -73,7 +72,7 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = doc;
                 (doc)["enabled"] = false;
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                    console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
             {
@@ -87,7 +86,7 @@ global.skyrepoMigrate = async function (after) {
                     "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
             {
@@ -108,7 +107,7 @@ global.skyrepoMigrate = async function (after) {
                     }
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("conceptscheme"))
             {
@@ -129,7 +128,7 @@ global.skyrepoMigrate = async function (after) {
                     }
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
             {
@@ -145,17 +144,17 @@ global.skyrepoMigrate = async function (after) {
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             var r = null;
-            console.log(r = await httpPost(JSON.stringify({
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
                 source:{index:index},
                 dest:{index:".temp."+index.replace("https:..","").replace(":","."),version_type:"external"}
             }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
             if (r.error != null) continue;
-            console.log("Deleting " + index);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Deleting " + index);
             var r2 = null;
-            console.log(r2 = await httpDelete(elasticEndpoint+"/"+index,true));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r2 = await httpDelete(elasticEndpoint+"/"+index,true));
             if (r2.error != null) continue;
             //if (r.total == 0) continue;
             if (index == "permanent")
@@ -165,7 +164,7 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = doc;
                 (doc)["enabled"] = false;
                 var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
-                    console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
             {
@@ -186,7 +185,7 @@ global.skyrepoMigrate = async function (after) {
                     }
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("conceptscheme"))
             {
@@ -207,7 +206,7 @@ global.skyrepoMigrate = async function (after) {
                     }
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
             {
@@ -221,7 +220,7 @@ global.skyrepoMigrate = async function (after) {
                     "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
             {
@@ -237,16 +236,16 @@ global.skyrepoMigrate = async function (after) {
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
-            console.log("Reindexing .temp." + index.replace("https:..","").replace(":",".") + " -> "+index.replace("https:..","").replace(":","."));
-            console.log(r = await httpPost(JSON.stringify({
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing .temp." + index.replace("https:..","").replace(":",".") + " -> "+index.replace("https:..","").replace(":","."));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
                 source:{index:".temp."+index.replace("https:..","").replace(":",".")},
                 dest:{index:index.replace("https:..","").replace(":","."),version_type:"external"}
             }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
             if (r.error != null) continue;
-            console.log("Deleting .temp." + index.replace("https:..","").replace(":","."));
-            console.log(await httpDelete(elasticEndpoint+"/.temp."+index.replace("https:..","").replace(":","."),true));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Deleting .temp." + index.replace("https:..","").replace(":","."));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", await httpDelete(elasticEndpoint+"/.temp."+index.replace("https:..","").replace(":","."),true));
         }
     }
     if (elasticState.version.number.startsWith("6.") && elasticState.version.minimum_index_compatibility_version == "5.0.0")
@@ -256,7 +255,7 @@ global.skyrepoMigrate = async function (after) {
         for (var i = 0; i < indices.length; i++)
         {
             var index = indices[i];
-            console.log("Checking to see if " + index + " needs upgrading...");
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Checking to see if " + index + " needs upgrading...");
             if (index.startsWith("."))
             {
                 continue;
@@ -265,7 +264,7 @@ global.skyrepoMigrate = async function (after) {
             {
                 continue;
             }
-            console.log("Reindexing " + index + " -> .temp."+index);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing " + index + " -> .temp."+index);
             if (index == "permanent")
             {
                 var mappings = new Object();
@@ -275,7 +274,7 @@ global.skyrepoMigrate = async function (after) {
                 (permNoIndex)["permanent"] = doc;
                 (doc)["enabled"] = false;
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
-                    console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
             {
@@ -293,7 +292,7 @@ global.skyrepoMigrate = async function (after) {
                     "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
             {
@@ -321,7 +320,7 @@ global.skyrepoMigrate = async function (after) {
                     }
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
             {
@@ -341,16 +340,16 @@ global.skyrepoMigrate = async function (after) {
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
                 var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             var r = null;
-            console.log(r = await httpPost(JSON.stringify({
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
                 source:{index:index},
                 dest:{index:".temp."+index,version_type:"external"}
             }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
             if (r.error != null) continue;
             var r2 = null;
-            console.log(r2 = await httpDelete(elasticEndpoint+"/"+index,true));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r2 = await httpDelete(elasticEndpoint+"/"+index,true));
             if (r2.error != null) continue;
             //if (r.total == 0) continue;
             if (index == "permanent")
@@ -362,7 +361,7 @@ global.skyrepoMigrate = async function (after) {
                 (permNoIndex)["permanent"] = doc;
                 (doc)["enabled"] = false;
                 var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true);
-                    console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
             {
@@ -387,7 +386,7 @@ global.skyrepoMigrate = async function (after) {
                     }
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
             {
@@ -405,7 +404,7 @@ global.skyrepoMigrate = async function (after) {
                     "assertionDateDecrypted":{type:"long"}
                 };
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
             {
@@ -425,16 +424,16 @@ global.skyrepoMigrate = async function (after) {
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
                 var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true);
-                console.log(JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
-            console.log("Reindexing .temp." + index + " -> "+index);
-            console.log(r = await httpPost(JSON.stringify({
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing .temp." + index + " -> "+index);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
                 source:{index:".temp."+index},
                 dest:{index:index,version_type:"external"}
             }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
             if (r.error != null) continue;
-            console.log("Deleting .temp." + index);
-            console.log(await httpDelete(elasticEndpoint+"/.temp."+index,true));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Deleting .temp." + index);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", await httpDelete(elasticEndpoint+"/.temp."+index,true));
         }
     }
     after();
@@ -468,13 +467,13 @@ skyrepoReindex = async function () {
 			let id = hit._id;
             if(id.indexOf(".") == id.length-1) {
                 if (++counter % 1000 == 0)
-                    console.log("Reindexed " + counter + " records.");
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepReindex", "Reindexed " + counter + " records.");
                 await skyrepoPutInternal.call(this,JSON.parse(hit["_source"].data), hit["_id"].replace("." + hit["_version"], "").replace(/\.$/, ""), null, hit["_type"]);
             }
         }
         results = await httpGet(elasticEndpoint + "/_search/scroll?scroll=1m&scroll_id=" + scroll);
     }
-    console.log("Reindexed " + counter + " records.");
+    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepReindex", "Reindexed " + counter + " records.");
     if (this.params.debug != null)
         skyrepoDebug = false;
 }

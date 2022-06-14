@@ -1,6 +1,6 @@
 //Each of these is being called such that using 'this' refers to the profileProcessor.
 let fetchAssertions = async function(){
-    console.log("Here I am fetching assertions.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerFetchAssertions", "Here I am fetching any additional assertions.");
     return await EcAssertion.search(
         repo,
         // Note: Searches don't work well for encrypted data. This may return irrelevant data, or fail to return
@@ -15,7 +15,7 @@ let fetchAssertions = async function(){
                     return a;
                 return null;
             }));
-            console.log(`Relevant assertion count: (${prevCount} -> ${assertions.length})`);
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
             assertions.sort((a, b)=>{
                 return b.id.localeCompare(a.id);
             });
@@ -34,7 +34,7 @@ let insertResources = async function(){
     let bigSearchString = "";
     let countdown = [...this.g.verticies];
 
-    console.log("Here I am associating resources with each vertex, accessing my learning object repository (or XI)");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerInsertResources", "Here I am associating additional resources with each vertex, accessing my learning object repository (or XI)");
     while (countdown.length > 0) {
         let first = true;
         for (const vertex of countdown.splice(0, 100)) {
@@ -57,7 +57,7 @@ let insertResources = async function(){
             }
 
         if (results == null) continue;
-        console.log("Searching for alignments, " + results.length + " found.");
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerInsertResources", `Searching for alignments, ${results.length} found.`);
 
         for (let i = 0; i < results.length; i++) {
             const resource = results[i];
@@ -79,7 +79,7 @@ let insertResources = async function(){
 let processAssertions = async function(){
     const allPromises = [];
 
-    console.log("Here I am processing over assertions and removing any ones I don't like.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerProcessAssertions", "Here I am doing additional processing over assertions and removing any ones I don't like.");
     for (const metaVertexId in this.g.metaVerticies) {
         const metaVertex = this.g.metaVerticies[metaVertexId];
 
@@ -114,7 +114,7 @@ let processAssertions = async function(){
                     try {
                         agentPerson = await util.anythingToPerson(agent.toPem());
                     } catch (e) {
-                        return this.err("Unhandled exception while converting an assertion's agent to person", e);
+                        return global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "ExplainerProcessAssertions", "Unhandled exception while converting an assertion's agent to person", e);
                     }
 
                     if (a.evidence != null) {
@@ -122,7 +122,7 @@ let processAssertions = async function(){
                             evidence = await a.getEvidences();
                         } catch (e) {
                             // TODO Please make it so getEvidences() does not throw errors in the CaSS library
-                            this.log(`Error decrypting evidence for assertion ${a.shortId()}`);
+                            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "ExplainerProcessAssertions", `Error decrypting evidence for assertion ${a.shortId()}`, e);
                         }
                     }
 
@@ -151,12 +151,12 @@ let processAssertions = async function(){
     return Promise.allSettled(allPromises).then(results => {
         for (const result of results) {
             if (result.status === "rejected")
-                console.error(`ERROR: ${result.reason}`);
+                global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "ExplainerProcessAssertions", result.reason);
         }
     });
 }
 let postProcessStart = async function(vertices,topLevelVertices, inEdges){
-    console.log("Here I am starting the post process, the stage of computing results.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessStart", "Here I am additionally starting the post process, the stage of computing results.");
 }  
 let postProcessEachVertex = function(vertex,vertices,topLevelVertices,inEdges){
     if (inEdges.equivalent == null)
@@ -167,7 +167,7 @@ let postProcessEachVertex = function(vertex,vertices,topLevelVertices,inEdges){
     topLevelVertices[vertex.id] = meta; // All vertices go in here (these will be filtered later)
     vertices[vertex.id] = meta;
 
-    console.log("Here I am initializing and computing initial vertex data that will populate my 'metavertex' and creating my state object.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessEachVertex", "Here I am additionally initializing and computing initial vertex data that will populate my 'metavertex' and creating my state object.");
 
     meta.name = vertex.getName().trim();
     meta.id = vertex.shortId();
@@ -188,7 +188,7 @@ let postProcessEachEdge = function(edge,vertices,topLevelVertices,inEdges){
     const src = vtxSrc.state;
     const dst = vtxDst.state;
 
-    console.log("Here I am iterating over edges initially, initializing any edge properties, modifying the vertices, and constructing hierarchy based on my chosen relation types.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessEachEdge", "Here I am additionally iterating over edges initially, initializing any edge properties, modifying the vertices, and constructing hierarchy based on my chosen relation types.");
     if (relationType === "narrows") {
         // Src NARROWS Dst -> Src is a child of Dst
         const child = src;
@@ -220,7 +220,7 @@ let postProcessEachEdgeRepeating = function(edge,vertices,topLevelVertices,inEdg
     if (vtxSrc == null || vtxDst == null) return;
     const relationType = edge.edge.relationType;
 
-    console.log("Here I am iterating over edges repeatedly until the data stabilizes, computing any edge properties or modifying the vertices.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessEachEdgeRepeating", "Here I am additionally iterating over edges repeatedly until the data stabilizes, computing any edge properties or modifying the vertices.");
     if (relationType === "narrows") {
         const child = vtxSrc.state;
         const parent = vtxDst.state;
@@ -228,7 +228,7 @@ let postProcessEachEdgeRepeating = function(edge,vertices,topLevelVertices,inEdg
 }
 let postProcessEachVertexRepeating = function(vertex,vertices,topLevelVertices,inEdges){ 
     const ms = this.g.getMetaStateCompetency(vertex);
-    console.log("Here I am computing any vertex properties that are dependent on my neighbors repeatedly until the data stabilizes. My neighbors are organized by relation in inEdges.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessEachVertexRepeating", "Here I am additionally computing any vertex properties that are dependent on my neighbors repeatedly until the data stabilizes. My neighbors are organized by relation in inEdges.");
 
     if (inEdges.narrows[vertex.id] != null) {
         for (const thisVertex of inEdges.narrows[vertex.id]) {
@@ -236,7 +236,7 @@ let postProcessEachVertexRepeating = function(vertex,vertices,topLevelVertices,i
             if (vtx == null) continue;
             const v = vtx.state;
             const m = ms.state;
-            console.log("Here I am making changes to the vertices based on the narrows relation.");
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessEachVertexRepeating", "Here I am making changes to the vertices based on the narrows relation.");
         }
     }
 
@@ -246,14 +246,14 @@ let postProcessEachVertexRepeating = function(vertex,vertices,topLevelVertices,i
             if (vtx == null) continue;
             const v = vtx.state;
             const m = ms.state;
-            console.log("Here I am making changes to the vertices based on the equivalent relation.");
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessEachVertexRepeating", "Here I am making changes to the vertices based on the equivalent relation.");
         }
     }
 }
 let postProcessProfileBefore = function(profile,vertices,topLevelVertices,inEdges){
-    console.log("Here I am initializing any variables on the profile object that will be the result of this object.")
-    console.log("All the top level elements (represented as trees) will be attached to the profile.children object seen here:");
-    console.log(profile);
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessProfileBefore", "Here I am additionally initializing any variables on the profile object that will be the result of this object.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessProfileBefore", "All the top level elements (represented as trees) will be attached to the profile.children object seen here:");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessProfileBefore", profile);
 }
 let postProcessProfileEachElement = function(obj,inEdges,vertices,visited){
     if (visited == null) 
@@ -262,7 +262,7 @@ let postProcessProfileEachElement = function(obj,inEdges,vertices,visited){
         return {};
     EcArray.setAdd(visited, obj.id);
 
-    console.log("Here I am calculating the leading edge changes to the profile elements.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessProfileEachElement", "Here I am additionally calculating the leading edge changes to the profile elements.");
 
     let result = {};
 
@@ -287,11 +287,11 @@ let postProcessProfileEachElement = function(obj,inEdges,vertices,visited){
         }
     }
 
-    console.log("Here I am calculating the falling edge changes to the profile elements and saving data to the {obj.state}.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessProfileEachElement", "Here I am additonally calculating the falling edge changes to the profile elements and saving data to the {obj.state}.");
     return result;
 }    
 let postProcessProfileAfter = function(o, profile){
-    console.log("Here I am putting any finishing touches or annotations on the profile object.");
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ExplainerPostProcessProfileAfter", "Here I am additionally putting any finishing touches or annotations on the profile object.");
 }
 
 //The functions above occur in the order of the functions listed below.
