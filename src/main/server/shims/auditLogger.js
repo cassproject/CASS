@@ -1,3 +1,4 @@
+const sendMail = require('./mailer.js').sendMail;
 
 const SyslogFacility = {
     USER: 1, //user 
@@ -57,13 +58,17 @@ let previousHash = '';
 
 
 let flush = function() {
-    if (logBuffers.length > 0) {
-        console.log(logBuffers.join("\n"));
-        logBuffers = [];
-        if (timeoutHandler) {
-            clearTimeout(timeoutHandler);
-            timeoutHandler = undefined;
+    try {
+        if (logBuffers.length > 0) {
+            console.log(logBuffers.join("\n"));
+            logBuffers = [];
+            if (timeoutHandler) {
+                clearTimeout(timeoutHandler);
+                timeoutHandler = undefined;
+            }
         }
+    } catch (e) {
+        sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
     }
 }
 
@@ -84,15 +89,19 @@ let syslogFormat = function(facility, severity, timestamp, msgID, data) {
    * @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
    */
 let report = function(system, severity, message, ...data) {
-    if (filterLogs(system, severity, message)) {
-        const msg = syslogFormat(system, severity, new Date(), message, JSON.stringify(data));
-        logBuffers.push(msg);
-    }
-    if (logBuffers.length > 1000)
-        flush();
-    else {
-        if (!timeoutHandler)
-            timeoutHandler = setTimeout(flush, 5000);
+    try {
+        if (filterLogs(system, severity, message)) {
+            const msg = syslogFormat(system, severity, new Date(), message, JSON.stringify(data));
+            logBuffers.push(msg);
+        }
+        if (logBuffers.length > 1000)
+            flush();
+        else {
+            if (!timeoutHandler)
+                timeoutHandler = setTimeout(flush, 5000);
+        }
+    } catch (e) {
+        sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
     }
 }
 
