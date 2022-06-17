@@ -3,7 +3,6 @@ const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaep
 const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
 const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/general/EcRemoteLinkedData');
 const fs = require('fs');
-var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
 //RS2 shims
 let afterSave = function(o){

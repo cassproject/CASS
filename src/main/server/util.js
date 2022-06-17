@@ -21,7 +21,6 @@
 require("./shims/levr.js");
 require("./shims/stjs.js");
 
-var elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
 global.skyrepoMigrate = async function (after) {
     var elasticState = await httpGet(elasticEndpoint + "/", true, global.elasticHeaders());

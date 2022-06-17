@@ -39,6 +39,7 @@ const port = process.env.PORT || (envHttps ? 443 : 80);
 global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? "https://localhost/api/" : "http://localhost/api");
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
+
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
 
 global.skyrepoDebug = false;
