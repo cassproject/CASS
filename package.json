@@ -28,7 +28,6 @@
     "automocha": "nodemon --exec \"npm run mocha\"",
     "automochafast": "nodemon --exec \"npm run mochafast\"",
     "run": "pm2 start ./pm2.config.js",
-    "run:fips": "pm2 start ./pm2.fips.config.js",
     "run:standalone": "pm2 start ./pm2.standalone.config.js",
     "run:google": "pm2 start ./pm2.google.config.js",
     "run:proxy": "pm2 start ./pm2.proxy.config.js",

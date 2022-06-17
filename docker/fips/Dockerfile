@@ -14,7 +14,6 @@ ENV OPENSSL_ENABLE_MD5_VERIFY=true
 ENV OPENSSL_CONF=/usr/local/ssl/openssl.cnf
 ENV OPENSSL_MODULES=/usr/local/ssl/lib64/ossl-modules
 ENV LD_LIBRARY_PATH=/usr/local/ssl/lib64
-ENV CASS_LOOPBACK=http://127.0.0.1/api/
 ENV HTTP2=false
 ENV FIPS=true
 
@@ -29,6 +28,7 @@ RUN mkdir CASS
 COPY package.json CASS/package.json
 RUN cd CASS && npm install && cd ..
 COPY src CASS/src
+COPY etc CASS/etc
 COPY ca.crt CASS/ca.crt
 COPY cass.crt CASS/cass.crt
 COPY cass.key CASS/cass.key
