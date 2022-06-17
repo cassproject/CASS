@@ -1,0 +1,32 @@
+version: '3'
+services:
+  cass:
+    image: cassproject/cass:1.5.6
+    container_name: cass
+    networks:
+      - esnet
+    ports:
+      - 80:80
+    environment:
+      - CASS_LOOPBACK=http://localhost/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch:9200
+      - PORT=80
+      # - CASS_OIDC_ENABLED=true # turns on open id login
+      # - CASS_OIDC_ISSUER_BASE_URL=http://keycloak:8080/auth/realms/master/ # point at your keycloak realm
+      # - CASS_OIDC_CLIENT_ID=cass # name of your keycloak client
+      # - CASS_OIDC_SECRET=M2nn59wDxkwUZ9SVEVAJADYnUeKP78vU # secret from your keycloak client
+      # - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - etc:/usr/share/elasticsearch/CASS/etc
+      - data:/usr/share/elasticsearch/data
+volumes:
+  etc:
+    driver: local
+  data:
+    driver: local
+networks:
+  esnet:

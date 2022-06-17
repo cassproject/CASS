@@ -253,10 +253,10 @@ if (global.debug === undefined)
 global.debug = console.debug;
 
 if (global.httpDelete === undefined)
-global.httpDelete = async function(url)
+global.httpDelete = async function(url,headers)
 {    
     try {
-        const response = await axios.delete(url)
+        const response = await axios.delete(url, {headers: headers})
         if (skyrepoDebug)
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "CassHttpDeleteSuccess", "delete success: " + JSON.stringify(response.data)); 
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpDeleteSuccess", response.request.socket.remoteAddress, url);
@@ -276,12 +276,13 @@ global.httpDelete = async function(url)
 }
 
 if (global.httpPut === undefined)
-global.httpPut = async function(data,url,contentType)
+global.httpPut = async function(data,url,contentType,headers)
 {    
     try {
         const response = await axios.put(url,data,{
             headers: {
-                'Content-Type':contentType
+                'Content-Type':contentType,
+                ...headers
             }
         })
         if (skyrepoDebug)
@@ -303,14 +304,15 @@ global.httpPut = async function(data,url,contentType)
 }
 
 if (global.httpPost === undefined)
-global.httpPost = async function(data, url, contentType, multipart,something,something2,simple){
+global.httpPost = async function(data, url, contentType, multipart,something,something2,simple,headers){
     let failCounter = 0;
     while(failCounter++ < 1000)
     {
         try {
             const response = await axios.post(url,data,{
                 headers: {
-                    'Content-Type':contentType
+                    'Content-Type':contentType,
+                    ...headers
                 }
             })
             if (skyrepoDebug)

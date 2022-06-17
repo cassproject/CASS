@@ -24,7 +24,6 @@ const spdy = require('spdy');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || "";
 const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
 let app = global.app = express();
-console.log(envHttp2);
 if (!envHttp2)
 {
     global.axios = require("axios"); //Pre-empt http2 use.
@@ -101,7 +100,7 @@ process.on('exit', () => {
 });
 
 skyrepoMigrate(function(){
-    const after = async () => {    
+    const after = async () => {       
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassListening", `CaSS listening at http${envHttps?'s':''}://localhost:${port}${baseUrl}`);
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassEndpoint", `CaSS thinks it its endpoint is at ${repo.selectedServer}`);
