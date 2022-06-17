@@ -393,21 +393,21 @@ global.jsonLdCompact = function(actual,finalTargetContext){
     });
 }
 
-    // jsonld.expand(json, new Object(), function(error, actual) {
-    //     if (error != null) {
-    //         failure((error)["message"]);
-    //         return;
-    //     }
-    //     jsonld.compact(actual, finalTargetContext, new Object(), function(s, o, o2) {
-    //         if (s != null) {
-    //             failure(s);
-    //             return;
-    //         }
-    //         me.copyFrom(o);
-    //         (me)["@context"] = finalTargetContext;
-    //         success(me);
-    //     });
-    // });
+        // jsonld.expand(json, new Object(), function(error, actual) {
+        //     if (error != null) {
+        //         failure((error)["message"]);
+        //         return;
+        //     }
+        //     jsonld.compact(actual, finalTargetContext, new Object(), function(s, o, o2) {
+        //         if (s != null) {
+        //             failure(s);
+        //             return;
+        //         }
+        //         me.copyFrom(o);
+        //         (me)["@context"] = finalTargetContext;
+        //         success(me);
+        //     });
+        // });
 
 
 const $rdf = require('rdflib');
