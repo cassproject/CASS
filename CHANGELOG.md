@@ -1,5 +1,22 @@
 # Change Log
 
+## 1.5.10
+* Beginning support for Elasticsearch 8 and Elastic Cloud
+* Support for Azure Container based deployment (via docker-compose)
+* Compatibility with FIPS (needs FIPS enabled environment)
+* Now reports last login time/date.
+* Logs destination IP of remote systems.
+* Introduced logging system. (will turn to JSON log messages soon)
+* Introduced MOTD via MOTD_TITLE and MOTD_MESSAGE environment variables.
+* Can now disable various logging messages via environment variables: LOG_FILTERED_CATEGORIES, LOG_FILTERED_SEVERITIES and LOG_FILTERED_MESSAGES.
+* Can now disable various adapters via environment variable: DISABLED_ADAPTERS=xapi,asn,ceasn,case,jsonld,badge,profile are the inital list.
+* Can now restrict the number of concurrent connections via MAX_CONNECTIONS environment variable.
+* Can now cryptographically ensure log messages have not been tampered with via a rolling checksum that is signed by the server.
+* Can now send warning emails when resources are low, via configuring SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and SMTP_RECIPIENTS.
+* If emails are enabled, sends emails upon system crash or uncaught exceptions.
+* Added Classification and Markings terms that are not encrypted when objects are secured.
+* Now provides a message when you log out.
+
 ## 1.5.9
 * Updates to login in editor.
 * Updates to library.
