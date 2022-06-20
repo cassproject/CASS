@@ -91,9 +91,10 @@ let path = require('path');
 const sendMail = require('./server/shims/mailer.js').sendMail;
 
 process.on('uncaughtException', async (err) => {
+    await sendMail(`CaSS Server`, 'Uncaught Exception', `The CaSS Server at ${process.env.CASS_LOOPBACK} experienced an uncaught exception: ${err.stack}`);
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, "uncaughtException", err.stack);
     global.auditLogger.flush();
-    await sendMail(`CaSS Server`, 'Uncaught Exception', `The CaSS Server at ${process.env.CASS_LOOPBACK} experienced an uncaught exception: ${err.stack}`);
+    process.exit(1);
 });
   
 process.on('exit', () => {
