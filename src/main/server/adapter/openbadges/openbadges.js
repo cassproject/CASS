@@ -16,7 +16,7 @@ badgeSetup = function () {
 badgeKey = function () {
     return EcPpk.fromPem(keyFor("adapter.openbadges.private")).toPk().toPem();
 }
-bindWebService("/badge/pk", badgeKey);
+
 
 badgeGetPerson = async function (fingerprint) {
     var person = await loopback.repositoryGet(repoEndpoint() + "data/" + fingerprint);
@@ -127,7 +127,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
         competency = await loopback.competencyGet(competencyId);
     else {
         var query = queryParse.call(this);
-        console.log(query);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "BadgeClass", query);
         competency = await loopback.competencyGet(repoEndpoint() + "data/" + query.type);
         fingerprint = query.id;
     }
@@ -257,9 +257,12 @@ openbadgeCheckId = async function(){
 	});
 }
 
-bindWebService("/badge/profile/*", badgeProfile);
-bindWebService("/badge/cryptographicKey/*", badgeCryptographicKey);
-bindWebService("/badge/class/*", badgeClass);
-bindWebService("/badge/assertion/*", badgeAssertion);
+if (!global.disabledAdapters['badge']) {
+    bindWebService("/badge/pk", badgeKey);
+    bindWebService("/badge/profile/*", badgeProfile);
+    bindWebService("/badge/cryptographicKey/*", badgeCryptographicKey);
+    bindWebService("/badge/class/*", badgeClass);
+    bindWebService("/badge/assertion/*", badgeAssertion);
+}
 
 

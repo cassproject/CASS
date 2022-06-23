@@ -1,11 +1,8 @@
-console.log(process.env.CASS_OIDC_ENABLED);
 if (process.env.CASS_OIDC_ENABLED || false)
 {
     if (global.baseUrl != "")
     {
-        console.error("BASE URL is " + global.baseURL + " and this can cause problems with callbacks from SSO providers.");
-        console.error("You may need to modify your reverse proxy (if you have one) to match up callbacks.");
-        console.error("If you use the cass installer script, this requires taking /cass out of the Apache2 redirect.");
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassAuthBaseUrl", `BASE URL is ${global.baseURL} and this can cause problems with callbacks from SSO providers. You may need to modify your reverse proxy (if you have one) to match up callbacks. If you use the cass installer script, this requires taking /cass out of the Apache2 redirect.`);
     }
     const { auth } = require('express-openid-connect');
     app.use(
@@ -72,16 +69,14 @@ app.use(async function (req, res, next) {
     }
     if (req.oidc?.user != null)
     {
-        //console.log(req.oidc.user);
         name = req.oidc.user.name;
         identifier = req.oidc.user.sub;
         email = req.oidc.user.email;
         if (email == null)
-            console.log("OIDC token does not have email address.");
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassOidcMissEmail", "OIDC token does not have email address.");
     }
     if (req.client?.authorized) {
         let cert = req.socket.getPeerCertificate();
-        //console.log(cert);
         if (cert.subject != null)
         {
             email = cert.subject.emailAddress;
@@ -90,7 +85,7 @@ app.use(async function (req, res, next) {
     }
     if (email != null)
     {
-        console.log(`Securing Proxy: Creating signature sheet for request from ${email}.`)
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthSigSheetCreating", `Securing Proxy: Creating signature sheet for request from ${email}.`);
         let eim = new EcIdentityManager();
         let myKey = loadConfigurationFile("keys/"+email, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
@@ -103,11 +98,11 @@ app.use(async function (req, res, next) {
         try{
             p = await EcPerson.getByPk(repo,i.ppk.toPk(),null,null,eim);
         }catch(ex){
-            console.log("Could not find person.");
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthPersonNotFound", "Could not find person.");
         }
         if (p == null)
         {
-            console.log("Creating person.");
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthCreatingPerson", "Creating person.");
             p = new EcPerson();
             p.addOwner(i.ppk.toPk());
             p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,i.ppk.toPk().fingerprint());
@@ -118,7 +113,7 @@ app.use(async function (req, res, next) {
         let signatureSheet = await eim.signatureSheet(60000,repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy);
         req.headers.signatureSheet = signatureSheet;
         req.eim = eim;
-        console.log(`Securing Proxy: Created signature sheet for request from ${email}.`)
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassSigSheetCreated", `Securing Proxy: Created signature sheet for request from ${email}.`);
     }
     next();
 });

@@ -47,10 +47,10 @@ let anythingToPerson = global.anythingToPerson = async(subject) => {
                 people = await EcPerson.search(repo,`owner:"${subject}"`);
                 people = people.filter((p) => p.owner[0] == subject);
                 if (people.length > 0) person = people[0];
-                if (people.length > 1) console.log("Looking for person, found people! " + people.length);
+                if (people.length > 1) global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "AnythingToPerson", `Looking for person, found people! ${people.length}`);
             }
         } catch (e) {
-            console.trace(e);
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "AnythingToPerson", e);
             if (e instanceof TypeError) {
                 throw new exports.ParseError();
             } else throw new exports.UnknownError(e.message);
@@ -65,7 +65,7 @@ let anythingToPerson = global.anythingToPerson = async(subject) => {
         try {
             people = await EcPerson.search(repo,`email:"${subject}" OR username:"${subject}"`);
         } catch (e) {
-            console.trace(e);
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "AnythingToPerson", e);
             throw new exports.UnknownError(e.message);
         }
         if (people == null || people.length === 0) throw new exports.NotFoundError();
