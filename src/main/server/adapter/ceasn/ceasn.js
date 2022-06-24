@@ -59,24 +59,16 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
     return new Promise(async (resolve) => {
         try {
             var c = competencies[compId];
-            if (c == null) resolve();
+            if (c == null) resolve(c);
             if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] != null)
                 c["ceasn:hasChild"]["@list"].sort(function (a, b) {
                     return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
                 });
-            delete competencies[compId];
-            var id = c.id;
             c.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json";
             c["ceasn:isPartOf"] = await ceasnExportUriTransform(f.id);
             if (c["ceasn:isChildOf"] == null) {
                 c["ceasn:isTopChildOf"] = await ceasnExportUriTransform(f.id);
-                if (f["ceasn:hasTopChild"] == null)
-                    f["ceasn:hasTopChild"] = {
-                        "@list": []
-                    };
-                f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c.id));
             }
-            f.competency.push(await ceasnExportUriTransform(c.id));
             if (c.name == null || c.name == "")
                 if (c.description != null && c.description != "") {
                     c.name = c.description;
@@ -135,41 +127,39 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
             if (c["ceasn:inLanguage"] == null)
                 c["ceasn:inLanguage"] = "en";
 
-            competencies[compId] = competencies[id] = c;
-
-            if (competencies[id]["ceterms:ctid"] == null) {
+            if (c["ceterms:ctid"] == null) {
                 if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-                    competencies[id]["ceterms:ctid"] = guid;
+                    c["ceterms:ctid"] = guid;
                 else
-                    competencies[id]["ceterms:ctid"] = uuid;
+                    c["ceterms:ctid"] = uuid;
             }
-            if (competencies[id]["ceterms:ctid"].indexOf("ce-") != 0)
-                competencies[id]["ceterms:ctid"] = "ce-" + competencies[id]["ceterms:ctid"];
-            if (competencies[id]["ceasn:name"] != null) {
-                competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
-                delete competencies[id]["ceasn:name"];
+            if (c["ceterms:ctid"].indexOf("ce-") != 0)
+                c["ceterms:ctid"] = "ce-" + c["ceterms:ctid"];
+            if (c["ceasn:name"] != null) {
+                c["ceasn:competencyText"] = c["ceasn:name"];
+                delete c["ceasn:name"];
             }
-            if (competencies[id]["ceasn:description"] != null) {
-                competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
-                delete competencies[id]["ceasn:description"];
+            if (c["ceasn:description"] != null) {
+                c["ceasn:comment"] = c["ceasn:description"];
+                delete c["ceasn:description"];
             }
             if (c["schema:educationalAlignment"] != null) { 
                 if (!EcArray.isArray(c["schema:educationalAlignment"])) { 
-                    competencies[id]["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"]; 
+                    c["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"]; 
                 } 
                 else { 
-                    competencies[id]["ceasn:educationLevelType"] = []; 
+                    c["ceasn:educationLevelType"] = []; 
                     for (var j = 0; j < c["schema:educationalAlignment"].length; j++) { 
-                        competencies[id]["ceasn:educationLevelType"].push(c["schema:educationalAlignment"][j]["schema:targetName"]); 
+                        c["ceasn:educationLevelType"].push(c["schema:educationalAlignment"][j]["schema:targetName"]); 
                     } 
                 } 
             } 
-            delete competencies[id]["@context"];
-            competencies[id] = stripNonCe(competencies[id]);
-            resolve();
+            delete c["@context"];
+            c = stripNonCe(c);
+            resolve(c);
         } catch(err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CeasnCompetencyError", err);
-            resolve();
+            resolve(c);
         }
     });
 }
@@ -389,10 +379,25 @@ async function cassFrameworkAsCeasn() {
     var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")),true));
     f.competency = [];
+    let mappedCompetencies = [];
     for (let i = 0; i < allCompetencies.length; i+=100) {
         await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyPromise(id, competencies, allCompetencies, f, ctx, terms)));
+        let batch = await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyPromise(id, competencies, allCompetencies, f, ctx, terms)));
+        mappedCompetencies.push(... batch); 
     }
-
+    competencies = mappedCompetencies.slice(0);
+    if (f["ceasn:hasTopChild"] == null) {
+        f["ceasn:hasTopChild"] = {
+            "@list": []
+        };
+    }
+    for (let i = 0; i < competencies.length; i++) {
+        let c = competencies[i];
+        if (c["ceasn:isChildOf"] == null) {
+            f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
+        }
+        f.competency.push(await ceasnExportUriTransform(c["@id"]));
+    }
     f.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json";
     delete f.relation;
 
