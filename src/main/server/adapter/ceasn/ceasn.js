@@ -385,15 +385,13 @@ async function cassFrameworkAsCeasn() {
         let batch = await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyPromise(id, competencies, allCompetencies, f, ctx, terms)));
         mappedCompetencies.push(... batch); 
     }
-    console.log(mappedCompetencies);
     competencies = mappedCompetencies.slice(0);
     if (f["ceasn:hasTopChild"] == null) {
         f["ceasn:hasTopChild"] = {
             "@list": []
         };
     }
-    for (let i = 0; i < competencies.length; i++) {
-        let c = competencies[i];
+    for (let c of competencies) {
         if (c["ceasn:isChildOf"] == null) {
             f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
         }
