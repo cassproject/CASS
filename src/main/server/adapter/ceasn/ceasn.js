@@ -29,6 +29,7 @@ var ceasnExportUriPrefixGraph = null;
 
 let UUID = require('pure-uuid');
 
+
 async function ceasnExportUriTransform(uri, frameworkUri) {
     if (ceasnExportUriPrefix == null)
         return uri;
@@ -381,7 +382,6 @@ async function cassFrameworkAsCeasn() {
     f.competency = [];
     let mappedCompetencies = [];
     for (let i = 0; i < allCompetencies.length; i+=100) {
-        await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyPromise(id, competencies, allCompetencies, f, ctx, terms)));
         let batch = await Promise.all(allCompetencies.slice(i, i+100).map((id) => competencyPromise(id, competencies, allCompetencies, f, ctx, terms)));
         mappedCompetencies.push(... batch); 
     }
@@ -391,8 +391,7 @@ async function cassFrameworkAsCeasn() {
             "@list": []
         };
     }
-    for (let i = 0; i < competencies.length; i++) {
-        let c = competencies[i];
+    for (let c of competencies) {
         if (c["ceasn:isChildOf"] == null) {
             f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
         }

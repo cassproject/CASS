@@ -16,6 +16,8 @@ let transporter = nodemailer.createTransport({
     },
 });
 
+let mailerNotConfigured = false;
+
 let sendMail = async function(from, subject, text, html) {
     if (host && user && pass && recipients) {
         try {
@@ -30,7 +32,10 @@ let sendMail = async function(from, subject, text, html) {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CassMailerError", e);
         }
     } else {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, "CassMailerConfig", "Mailer is not configured.");
+        if (!mailerNotConfigured) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, "CassMailerConfig", "Mailer is not configured.");
+            mailerNotConfigured = true;
+        }
     }
 }
 
