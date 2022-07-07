@@ -117,6 +117,15 @@ var signatureSheet = async function() {
         signature.copyFrom(sigSheet[i]);
         if (signature == null)
             error("Missing Signature.", 496);
+        
+        var owner = signature.owner;
+        if (owner == null) 
+            owner = (signature)["@owner"];
+        (signature)["@owner"] = owner;
+        signature.owner = null;
+        let pk = EcPk.fromPem(owner);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassIdentity", pk.fingerprint());
+
         var validTypes = signature.getTypes();
         var foundType = false;
         for (var j = 0; j < validTypes.length; j++) 
@@ -135,12 +144,7 @@ var signatureSheet = async function() {
             signBytes = (signature)["@signature"];
         signature.signature = null;
         (signature)["@signature"] = null;
-        var owner = signature.owner;
-        if (owner == null) 
-            owner = (signature)["@owner"];
-        (signature)["@owner"] = owner;
-        signature.owner = null;
-        if (!await EcRsaOaepAsync.verify(EcPk.fromPem(owner), signature.toJson(), signBytes)) 
+        if (!await EcRsaOaepAsync.verify(pk, signature.toJson(), signBytes)) 
             error("Invalid Signature Detected: " + signature.toJson(), 451);
         signature.owner = (signature)["@owner"];
         sigSheet[i] = signature;

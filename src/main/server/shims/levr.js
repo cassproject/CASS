@@ -32,7 +32,7 @@ global.bindWebService = function(endpoint,callback){
             ctx.res = res;
             req.query.methodType = "GET";
             req.query.urlRemainder = req.params[0];
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpGetStart", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpGetStart", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -52,14 +52,14 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpGetError", ex, `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpGetError", ex, `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
             if (ex && ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else
                 res.status(500);
             res.end(ex && ex.data ? ex.data : ex +"");
         }
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpGetSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, req.headers);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpGetSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, req.headers);
     }    
     let put = async function(req,res){
         let ctx = {
@@ -72,7 +72,7 @@ global.bindWebService = function(endpoint,callback){
             ctx.res = res;
             req.query.methodType = "PUT";
             req.query.urlRemainder = req.params[0];
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpPutStart", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPutStart", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -86,14 +86,14 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpPutError", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPutError", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
             if (ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else
                 res.status(500);
             res.end(ex.data ? ex.data : ex +"");
         }        
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpPutSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, req.headers);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPutSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, req.headers);
     } 
     let deleet = async function(req,res){
         let ctx = {
@@ -106,7 +106,7 @@ global.bindWebService = function(endpoint,callback){
             ctx.res = res;
             req.query.methodType = "DELETE";
             req.query.urlRemainder = req.params[0];
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpDeleteStart", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpDeleteStart", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
             var result = await callback.call({
                 ctx:ctx,
                 params: req.query
@@ -120,14 +120,14 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpDeleteError", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpDeleteError", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
             if (ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else
                 res.status(500);
             res.end(ex.data ? ex.data : ex +"");
         }
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpDeleteSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, req.headers);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpDeleteSuccess", `${endpoint} Response: (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, req.headers);
     }
     let post = async function(req,res){
         let ctx = {
@@ -151,7 +151,7 @@ global.bindWebService = function(endpoint,callback){
             });
             bb.on('close',async ()=>{
                 try{
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpPostStart", "-----" + new Date() + " "+endpoint+ " " + (req.isSpdy ? "spdy" : req.httpVersion) + " Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)), req.headers, fields["signatureSheet"]);
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPostStart", endpoint+ " " + (req.isSpdy ? "spdy" : req.httpVersion) + " Request: " + JSON.stringify(req.query) + " - Parts: " + JSON.stringify(EcObject.keys(fields)), req.headers);
                     for (let key in fields)
                         fields[key] = await fields[key];
                     var result = await callback.call({
@@ -165,11 +165,11 @@ global.bindWebService = function(endpoint,callback){
                     }
                     else
                         res.end();
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpPostSuccess", "-----" + new Date() + " "+endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query), req.headers, fields["signatureSheet"]);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPostSuccess", endpoint+" Response: (" + (new Date().getTime() - ms) + " ms) " + JSON.stringify(req.query), req.headers);
                 }
                 catch (ex)
                 {
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpPostError", `${endpoint} ${(req.isSpdy ? "spdy" : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, req.headers, fields["signatureSheet"]);
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPostError", `${endpoint} ${(req.isSpdy ? "spdy" : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, req.headers);
                     if (ex.status !== undefined && ex.status != null)
                         res.status(ex.status);
                     else
@@ -181,7 +181,7 @@ global.bindWebService = function(endpoint,callback){
         }
         catch (ex)
         {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, "CassHttpPostError", ex);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassHttpPostError", ex);
             if (ex.status !== undefined && ex.status != null)
                 res.status(ex.status);
             else

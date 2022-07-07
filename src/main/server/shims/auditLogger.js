@@ -1,3 +1,5 @@
+const EcArray = require('cassproject/src/com/eduworks/ec/array/EcArray');
+
 const sendMail = require('./mailer.js').sendMail;
 
 const SyslogFacility = {
@@ -111,7 +113,10 @@ let report = function(system, severity, message, ...data) {
         if (data.length == 1)
             data = data[0];
         if (severity <= 6)
+        {
+            if (EcArray.isArray(data)) data = JSON.stringify(data);
             console.log(new Date(),system,InverseSeverity[severity],"",message.substr(0,13),"\t:",data);
+        }
     }
 }
 
