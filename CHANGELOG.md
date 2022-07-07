@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.5.13
+* Uncaught exceptions now cause a system exit and pm2 to restart
+* Fixed order of CEASN export
+* Signature sheet identities are now logged
+* Environment variable DISABLED_EDITOR now turns off the cass-editor
+* Updated editor
+* Updated library
+
 ## 1.5.10
 * Beginning support for Elasticsearch 8 and Elastic Cloud
 * Support for Azure Container based deployment (via docker-compose)
