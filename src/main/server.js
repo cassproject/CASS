@@ -82,8 +82,11 @@ require("./server/adapter/xapi/xapi.js");
 require("./server/adapter/replicate/replicate.js");
 require("./server/profile/coordinator.js")();
 
-app.use(baseUrl,express.static('src/main/webapp/'));
-app.use(baseUrl+"cass-editor/",express.static('src/main/webapp/'));
+if (process.env.DISABLED_EDITOR != "true")
+{
+    app.use(baseUrl,express.static('src/main/webapp/'));
+    app.use(baseUrl+"cass-editor/",express.static('src/main/webapp/'));
+}
 
 let v8 = require("v8");
 let glob = require('glob');
