@@ -65,11 +65,13 @@
   "author": "Eduworks Corporation <cass@eduworks.com> (http://cassproject.org)",
   "contributors": [
     "Ronald 'Fritz' Ray <fritz.ray@eduworks.com>",
-    "Kristin Wood <kristin.wood@eduworks.com>",
     "Mile Divovic <mile.divovic@eduworks.com>",
     "Debbie Brown <debbie.brown@eduworks.com>",
     "Elaine Kelsey <elaine.kelsey@eduworks.com>",
+    "Kari Glover <kari.glover@eduworks.com>",
+    "Tyler Landowski <tyler.landowski@eduworks.com>",
     "Thomas Buskirk (Departed) <tom.buskirk@eduworks.com>",
+    "Kristin Wood (Retired) <kristin.wood@eduworks.com>",
     "Devlin Junker (Retired) <devlin.junker@eduworks.com>",
     "Aaron Veden (Retired) <aaron.veden@eduworks.com>",
     "Robby Goetschalckx (Retired) <robby.goetschalckx@eduworks.com>",
@@ -83,7 +85,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.12",
+    "cassproject": "^1.5.13",
     "check-disk-space": "^3.3.0",
     "cors": "^2.8.5",
     "cron": "^2.0.0",
