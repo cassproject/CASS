@@ -37,18 +37,20 @@ const Severity = {
     WARNING: 4, // unusual conditions
     NOTICE: 5, // normal but unlikely
     INFO: 6, // normal
-    DEBUG: 7 // extra information
+    DEBUG: 7, // extra information
+    NETWORK: 8, // traffic information
 }
 
 const InverseSeverity = {
     0: "EMERGENCY",
-    1: "ALERT",
-    2: "CRITICAL",
-    3: "ERROR",
-    4: "WARNING",
-    5: "NOTICE",
-    6: "INFO",
-    7: "DEBUG"
+    1: "ALERT    ",
+    2: "CRITICAL ",
+    3: "ERROR    ",
+    4: "WARNING  ",
+    5: "NOTICE   ",
+    6: "INFO     ",
+    7: "DEBUG    ",
+    8: "NETWORK  "
 }
 
 let logBuffers = [];
@@ -89,9 +91,10 @@ let syslogFormat = function(facility, severity, timestamp, msgID, data) {
    * @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
    */
 let report = function(system, severity, message, ...data) {
+    if (process.env.PRODUCTION == "true")
     try {
         if (filterLogs(system, severity, message)) {
-            const msg = syslogFormat(system, severity, new Date(), message, JSON.stringify(data));
+            const msg = JSON.stringify({date:new Date(), message, data,system, severity});
             logBuffers.push(msg);
         }
         if (logBuffers.length > 1000)
@@ -102,6 +105,13 @@ let report = function(system, severity, message, ...data) {
         }
     } catch (e) {
         sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
+    }
+    else
+    {
+        if (data.length == 1)
+            data = data[0];
+        if (severity <= 6)
+            console.log(new Date(),system,InverseSeverity[severity],"",message.substr(0,13),"\t:",data);
     }
 }
 
