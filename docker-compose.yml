@@ -20,6 +20,7 @@ services:
       # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
       # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
       # - CASS_BANNER_BACKGROUND_COLOR=yellow # valid css color value for background color of banner
+      # - NO_PUBLIC=true # Whether the instance should limit resource creation to logged-in users
     ulimits:
       memlock:
         soft: -1
