@@ -37,7 +37,7 @@ const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' 
 const port = process.env.PORT || (envHttps ? 443 : 80);
 
 global.repo = new EcRepository();
-repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? "https://localhost/api/" : "http://localhost/api");
+repo.selectedServer = (process.env.CASS_LOOPBACK || (envHttps ? "https://localhost" : "http://localhost")) + "/api";
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
@@ -62,30 +62,9 @@ require("./server/shims/levr.js");
 require("./server/shims/stjs.js");
 require("./server/shims/cassproject.js");
 
-app.post(global.baseUrl + '/api/data/*', (req, res, next) => {
-
-    let allowPublicPosting = !process.env.NO_PUBLIC;
-    if (allowPublicPosting)
-        next();
-
-    let userAuthorized = false;
-
-    userAuthorized |= req.user != null;
-    userAuthorized |= req.oidc?.user != null;
-    userAuthorized |= req.client?.authorized;
-
-    if (userAuthorized)
-        next();
-    else
-        res.status(403).send(`Forbidden, this instance does not allow public resource creation.`);
-});
-
-
 //Tests remaining: Upgrade from elasticsearch 5.x to 6.x to 7.x
 require("./server/util.js");
-
 require('./server/skyRepo.js');
-
 require('./server/skyId.js');
 
 require("./server/adapter/asn/asn.js");
