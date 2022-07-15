@@ -366,7 +366,7 @@ var languages = null;
 var flattenLangstrings = function(o) {
     if (languages == null) {
         languages = {};
-        var ary = languageStrings;
+        let ary = languageStrings;
         for (var i = 0; i < ary.length; i++) 
             (languages)[ary[i]] = "yes";
     }
@@ -767,15 +767,16 @@ global.skyrepoPutParsed = async function(o, id, version, type) {
         return;
 
     let initialObj = o;
-    let oldPermanent = await (validateSignatures).call(this, id, version, type, initialObj, "Only an owner of an object may change it.");
+    
+    await (validateSignatures).call(this, id, version, type, initialObj, "Only an owner of an object may change it.");
     await skyrepoPutInternal.call(this,o, id, version, type);
 };
 var validateSignatures = async function(id, version, type, initialObj, errorMessage) {
 
-    var signatures = await ((signatureSheet).call(this));
+    let signatures = await ((signatureSheet).call(this));
     let ownershipRequired = global.blockPublicCreation;
 
-    var storedObj = await (skyrepoGetInternal).call(this, id, version, type);
+    let storedObj = await (skyrepoGetInternal).call(this, id, version, type);
     if (storedObj == null) {
 
         if (!ownershipRequired)
@@ -785,7 +786,7 @@ var validateSignatures = async function(id, version, type, initialObj, errorMess
         if (!objWasProvided)
             error("Forbidden, this instance does not allow public resource creation.  Could not determine initial object.", 403);
 
-        var initialObjWrapped = new EcRemoteLinkedData(null, null);
+        let initialObjWrapped = new EcRemoteLinkedData(null, null);
         initialObjWrapped.copyFrom(initialObj);
 
         let alreadyHasOwnership = await ((validateOwners).call(this, initialObjWrapped, signatures));
@@ -795,7 +796,7 @@ var validateSignatures = async function(id, version, type, initialObj, errorMess
         return null;
     }
     
-    var clonedObj = new EcRemoteLinkedData(null, null);
+    let clonedObj = new EcRemoteLinkedData(null, null);
     clonedObj.copyFrom(storedObj);
 
     let objectOwners = clonedObj.owner;
@@ -809,10 +810,10 @@ var validateSignatures = async function(id, version, type, initialObj, errorMess
     return clonedObj;
 };
 
-var validateOwners = async function(obj, signatures) {
+async function validateOwners(obj, signatures) {
 
-    for (var i = 0; i < signatures.length; i++) {
-        var owner = signatures[i].owner;
+    for (let i = 0; i < signatures.length; i++) {
+        let owner = signatures[i].owner;
         if (owner == null) {
             owner = (signatures[i])["@owner"];
         }
@@ -833,7 +834,7 @@ var skyrepoDeleteInternalPermanent = async function(id, version, type) {
     return await httpDelete(url, null, true, elasticHeaders());
 };
 global.skyrepoDelete = async function(id, version, type) {
-    var oldObj = await (validateSignatures).call(this, id, version, type, null, "Only an owner of an object may delete it.");
+    let oldObj = await (validateSignatures).call(this, id, version, type, null, "Only an owner of an object may delete it.");
     let permanentIds = [id];
     if (oldObj.id != null && oldObj.getGuid() != null)
         permanentIds.push(oldObj.getGuid())
