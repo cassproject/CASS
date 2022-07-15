@@ -1,4 +1,5 @@
 const EcArray = require('cassproject/src/com/eduworks/ec/array/EcArray');
+const EcPk = require('cassproject/src/com/eduworks/ec/crypto/EcPk');
 const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
 const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
 const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/general/EcRemoteLinkedData');
@@ -764,48 +765,65 @@ var skyrepoPut = async function(parseParams) {
 global.skyrepoPutParsed = async function(o, id, version, type) {
     if (o == null) 
         return;
-    let oldPermanent = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.", null, null);
+
+    let initialObj = o;
+    let oldPermanent = await (validateSignatures).call(this, id, version, type, initialObj, "Only an owner of an object may change it.");
     await skyrepoPutInternal.call(this,o, id, version, type);
 };
-var validateSignatures = async function(id, version, type, errorMessage) {
+var validateSignatures = async function(id, version, type, initialObj, errorMessage) {
 
     var signatures = await ((signatureSheet).call(this));
-    let signaturesPresent = signatures.length > 0;
-    let signaturesRequired = !!process.env.NO_PUBLIC;
+    let ownershipRequired = global.blockPublicCreation;
 
-    var oldGet = await (skyrepoGetInternal).call(this, id, version, type);
-    if (oldGet == null) {
-        if (signaturesRequired && !signaturesPresent)
-            error("Forbidden, this instance does not allow public resource creation.  No signatures detected on requested object", 403);
-        else
+    var storedObj = await (skyrepoGetInternal).call(this, id, version, type);
+    if (storedObj == null) {
+
+        if (!ownershipRequired)
             return null;
+        
+        let objWasProvided = initialObj != undefined;
+        if (!objWasProvided)
+            error("Forbidden, this instance does not allow public resource creation.  Could not determine initial object.", 403);
+
+        var initialObjWrapped = new EcRemoteLinkedData(null, null);
+        initialObjWrapped.copyFrom(initialObj);
+
+        let alreadyHasOwnership = await ((validateOwners).call(this, initialObjWrapped, signatures));
+        if (!alreadyHasOwnership)
+            error("Forbidden, this instance does not allow public resource creation.  Could not determine initial object ownership.", 403);
+        
+        return null;
     }
     
-    var oldObj = new EcRemoteLinkedData(null, null);
-    oldObj.copyFrom(oldGet);
+    var clonedObj = new EcRemoteLinkedData(null, null);
+    clonedObj.copyFrom(storedObj);
 
-    let hasOwners = oldObj.owner !== undefined && oldObj.owner != null && oldObj.owner.length > 0;
-
-    if (blockPublicCreation && (!hasOwners || !signaturesPresent))
-        error("Forbidden, this instance does not allow public resource creation.  No user associated with this request, please log in.", 403);
-
+    let objectOwners = clonedObj.owner;
+    let hasOwners = objectOwners !== undefined && objectOwners != null && objectOwners.length > 0;
     if (hasOwners) {
-        var success = false;
-        for (var i = 0; i < signatures.length; i++) {
-            var owner = signatures[i].owner;
-            if (owner == null) {
-                owner = (signatures[i])["@owner"];
-            }
-            if (oldObj.hasOwner(EcPk.fromPem(owner))) {
-                success = true;
-                break;
-            }
-        }
-        if (!success) 
+        let validOwners = await ((validateOwners).call(this, clonedObj, signatures));
+        if (!validOwners)
             error(errorMessage, 401);
     }
-    return oldObj;
+
+    return clonedObj;
 };
+
+var validateOwners = async function(obj, signatures) {
+
+    for (var i = 0; i < signatures.length; i++) {
+        var owner = signatures[i].owner;
+        if (owner == null) {
+            owner = (signatures[i])["@owner"];
+        }
+        if (obj.hasOwner(EcPk.fromPem(owner))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 var skyrepoDeleteInternalIndex = async function(id, version, type) {
     var url = deleteUrl.call(this, id, version, type);
     return await httpDelete(url, null, true, elasticHeaders());
@@ -815,7 +833,7 @@ var skyrepoDeleteInternalPermanent = async function(id, version, type) {
     return await httpDelete(url, null, true, elasticHeaders());
 };
 global.skyrepoDelete = async function(id, version, type) {
-    var oldObj = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
+    var oldObj = await (validateSignatures).call(this, id, version, type, null, "Only an owner of an object may delete it.");
     let permanentIds = [id];
     if (oldObj.id != null && oldObj.getGuid() != null)
         permanentIds.push(oldObj.getGuid())

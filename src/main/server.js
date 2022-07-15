@@ -46,6 +46,8 @@ global.skyrepoDebug = false;
 global.thisEndpoint = function(){return repo.selectedServer;}
 global.repoEndpoint = function(){return repo.selectedServer;}
 
+global.blockPublicCreation = !!process.env.NO_PUBLIC;
+
 
 global.disabledAdapters = {};
 if (process.env.DISABLED_ADAPTERS) {

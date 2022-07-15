@@ -108,8 +108,14 @@ app.use(async function (req, res, next) {
             p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,i.ppk.toPk().fingerprint());
             p.name = name;
             p.email = email;
-            await repo.saveTo(p);
+
+            let ownershipRequired = global.blockPublicCreation;
+            if (ownershipRequired)
+                await repo.saveTo(p, null, null, eim);
+            else
+                await repo.saveTo(p);
         }
+
         let signatureSheet = await eim.signatureSheet(60000,repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy);
         req.headers.signatureSheet = signatureSheet;
         req.eim = eim;
