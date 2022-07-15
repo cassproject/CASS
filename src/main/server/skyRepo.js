@@ -810,7 +810,7 @@ var validateSignatures = async function(id, version, type, initialObj, errorMess
     return clonedObj;
 };
 
-async function validateOwners(obj, signatures) {
+const validateOwners = async(obj, signatures) => {
 
     for (let i = 0; i < signatures.length; i++) {
         let owner = signatures[i].owner;
