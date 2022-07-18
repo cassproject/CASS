@@ -773,7 +773,6 @@ global.skyrepoPutParsed = async function(o, id, version, type) {
 };
 var validateSignatures = async function(id, version, type, initialObj, errorMessage) {
 
-    let signatures = await ((signatureSheet).call(this));
     let ownershipRequired = global.blockPublicCreation;
 
     let storedObj = await (skyrepoGetInternal).call(this, id, version, type);
@@ -789,6 +788,7 @@ var validateSignatures = async function(id, version, type, initialObj, errorMess
         let initialObjWrapped = new EcRemoteLinkedData(null, null);
         initialObjWrapped.copyFrom(initialObj);
 
+        let signatures = await ((signatureSheet).call(this));
         let alreadyHasOwnership = await ((validateOwners).call(this, initialObjWrapped, signatures));
         if (!alreadyHasOwnership)
             error("Forbidden, this instance does not allow public resource creation.  Could not determine initial object ownership.", 403);
@@ -802,6 +802,7 @@ var validateSignatures = async function(id, version, type, initialObj, errorMess
     let objectOwners = clonedObj.owner;
     let hasOwners = objectOwners !== undefined && objectOwners != null && objectOwners.length > 0;
     if (hasOwners) {
+        let signatures = await ((signatureSheet).call(this));
         let validOwners = await ((validateOwners).call(this, clonedObj, signatures));
         if (!validOwners)
             error(errorMessage, 401);
@@ -835,6 +836,10 @@ var skyrepoDeleteInternalPermanent = async function(id, version, type) {
 };
 global.skyrepoDelete = async function(id, version, type) {
     let oldObj = await (validateSignatures).call(this, id, version, type, null, "Only an owner of an object may delete it.");
+    if (oldObj == null) {
+        error("Can't find object to delete", 401);
+    }
+
     let permanentIds = [id];
     if (oldObj.id != null && oldObj.getGuid() != null)
         permanentIds.push(oldObj.getGuid())
