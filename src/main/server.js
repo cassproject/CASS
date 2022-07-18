@@ -37,7 +37,7 @@ const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' 
 const port = process.env.PORT || (envHttps ? 443 : 80);
 
 global.repo = new EcRepository();
-repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? "https://localhost/api/" : "http://localhost/api");
+repo.selectedServer = (process.env.CASS_LOOPBACK || (envHttps ? "https://localhost" : "http://localhost")) + "/api";
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200";
@@ -45,6 +45,8 @@ global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || "http://localhost
 global.skyrepoDebug = false;
 global.thisEndpoint = function(){return repo.selectedServer;}
 global.repoEndpoint = function(){return repo.selectedServer;}
+
+global.blockPublicCreation = !!process.env.NO_PUBLIC;
 
 
 global.disabledAdapters = {};
@@ -62,12 +64,9 @@ require("./server/shims/levr.js");
 require("./server/shims/stjs.js");
 require("./server/shims/cassproject.js");
 
-
 //Tests remaining: Upgrade from elasticsearch 5.x to 6.x to 7.x
 require("./server/util.js");
-
 require('./server/skyRepo.js');
-
 require('./server/skyId.js');
 
 require("./server/adapter/asn/asn.js");
