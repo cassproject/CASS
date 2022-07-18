@@ -771,7 +771,8 @@ global.skyrepoPutParsed = async function(o, id, version, type) {
     await (validateSignatures).call(this, id, version, type, initialObj, "Only an owner of an object may change it.");
     await skyrepoPutInternal.call(this,o, id, version, type);
 };
-var validateSignatures = async function(id, version, type, initialObj, errorMessage) {
+
+const validateSignatures = async function(id, version, type, initialObj, errorMessage) {
 
     let ownershipRequired = global.blockPublicCreation;
 
@@ -813,10 +814,10 @@ var validateSignatures = async function(id, version, type, initialObj, errorMess
 
 const validateOwners = async(obj, signatures) => {
 
-    for (let i = 0; i < signatures.length; i++) {
-        let owner = signatures[i].owner;
+    for (let signature of signatures) {
+        let owner = signature.owner;
         if (owner == null) {
-            owner = (signatures[i])["@owner"];
+            owner = (signature)["@owner"];
         }
         if (obj.hasOwner(EcPk.fromPem(owner))) {
             return true;
