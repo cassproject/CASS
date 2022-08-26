@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.14
+* Updated editor
+* Fixed elastic headers issue (only affects permissioned Elastic)
+
 ## 1.5.13
 * Uncaught exceptions now cause a system exit and pm2 to restart
 * Fixed order of CEASN export
