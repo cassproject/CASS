@@ -105,7 +105,7 @@ process.on('exit', () => {
 
 skyrepoMigrate(function(){
     const after = async () => {       
-        global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true);
+        global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true, global.elasticHeaders());
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassListening", `CaSS listening at http${envHttps?'s':''}://localhost:${port}${baseUrl}`);
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassEndpoint", `CaSS thinks it its endpoint is at ${repo.selectedServer}`);
         if (repo.selectedServerProxy != null)
