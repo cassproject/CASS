@@ -95,6 +95,7 @@
     "express-ws": "^5.0.2",
     "http2": "^3.3.7",
     "http2-express-bridge": "^1.0.7",
+    "jose": "2.0.6",
     "jsonld": "^5.2.0",
     "node-object-hash": "^2.3.10",
     "node-worker-threads-pool": "^1.5.1",
