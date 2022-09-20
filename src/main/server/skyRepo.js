@@ -8768,24 +8768,26 @@ var validateSignatures = async function(id, version, type, errorMessage) {
 };
 var skyrepoDeleteInternalIndex = async function(id, version, type) {
     var url = deleteUrl.call(this, id, version, type);
-    return await httpDelete(url, null, true, elasticHeaders());
+    return await httpDelete(url, elasticHeaders());
 };
 var skyrepoDeleteInternalPermanent = async function(id, version, type) {
     var url = deletePermanentBaseUrl(id, version, type);
-    return await httpDelete(url, null, true, elasticHeaders());
+    return await httpDelete(url, elasticHeaders());
 };
 global.skyrepoDelete = async function(id, version, type) {
     var oldObj = await (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
-    let permanentIds = [id];
+    let ids = [id];
     if (oldObj.id != null && oldObj.getGuid() != null)
-        permanentIds.push(oldObj.getGuid())
+        ids.push(oldObj.getGuid())
     if (oldObj.id != null && oldObj.shortId() != null)
-        permanentIds.push(EcCrypto.md5(oldObj.shortId()));
-    EcArray.removeDuplicates(permanentIds);
+        ids.push(EcCrypto.md5(oldObj.shortId()));
+    EcArray.removeDuplicates(ids);
     if (oldObj != null) {
-        await skyrepoDeleteInternalIndex.call(this, id, version, type);
-        for (let permId of permanentIds)
-            await skyrepoDeleteInternalPermanent.call(this, permId, version, type);
+        for (let id of ids)
+        {
+            await skyrepoDeleteInternalIndex.call(this, id, version, type);
+            await skyrepoDeleteInternalPermanent.call(this, id, version, type);
+        }
     } else {
         error("Can't find object to delete", 401);
     }
