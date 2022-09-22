@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.5.15
+* Updated editor
+* Updated cassproject library to 1.5.15
+* Updated Docker elasticsearch image to 8.x.x -- Should not cause issues but be wary.
+* Updated Docker Node version to 18 -- Should not cause issues but be wary.
+* Security related library updates - jose 2.0.5 pinned to -> 2.0.6
+* Delete operations now work with Elastic Cloud and authenticated requests.
+* FIPS compatible version pinned to Node 18.3
+
+
 ## 1.5.14
 * Updated editor
 * Fixed elastic headers issue (only affects permissioned Elastic)

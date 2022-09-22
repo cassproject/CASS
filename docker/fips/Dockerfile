@@ -1,13 +1,13 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.4.2
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git build-essential checkinstall zlib1g-dev wget libssl-dev curl clang
 
 RUN openssl version
-RUN cd /usr/local/src && wget https://www.openssl.org/source/openssl-3.0.3.tar.gz && tar xvf openssl-3.0.3.tar.gz && cd openssl-3.0.3 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips linux-x86_64 && make -j8 > make.log && make install > makeinstall.log && make install_ssldirs > makeinstallssldirs.log && make install_fips > makeinstallfips.log && cd /
+RUN cd /usr/local/src && wget https://www.openssl.org/source/openssl-3.0.5.tar.gz && tar xvf openssl-3.0.5.tar.gz && cd openssl-3.0.5 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips linux-x86_64 && make -j8 > make.log && make install > makeinstall.log && make install_ssldirs > makeinstallssldirs.log && make install_fips > makeinstallfips.log && cd /
 RUN openssl version
 
-RUN git clone https://github.com/nodejs/node.git -b v18.x
+RUN git clone https://github.com/nodejs/node.git -b v18.3.0
 RUN cd node && export OPENSSL_ENABLE_MD5_VERIFY=true && export OPENSSL_CONF=/usr/local/ssl/openssl.cnf && export OPENSSL_MODULES=/usr/local/ssl/lib64/ossl-modules && ./configure --shared-openssl --shared-openssl-libpath=/usr/local/ssl/lib64 --shared-openssl-includes=/usr/local/ssl/include --shared-openssl-libname=crypto,ssl --openssl-is-fips > configure.log && export LD_LIBRARY_PATH=/usr/local/ssl/lib64 && make -j8 > make.log && make install > makeinstall.log && cd ..
 
 ENV OPENSSL_ENABLE_MD5_VERIFY=true

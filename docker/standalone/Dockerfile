@@ -1,6 +1,6 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.5
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.4.2
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git
 
 RUN mkdir CASS
@@ -19,6 +19,9 @@ RUN echo 'cluster.initial_master_nodes:' >> config/elasticsearch.yml
 RUN echo '  - cass-a' >> config/elasticsearch.yml
 RUN echo '-Xms4g' >> config/jvm.options
 RUN echo '-Xmx4g' >> config/jvm.options
+ENV xpack.security.enabled=false
+ENV xpack.security.http.ssl.enabled=false
+ENV xpack.security.transport.ssl.enabled=false
 EXPOSE 80
 VOLUME ["/usr/share/elasticsearch/data","/usr/share/elasticsearch/CASS/etc","/usr/share/elasticsearch/CASS/logs"]
 ENTRYPOINT /usr/local/bin/docker-entrypoint.sh & (cd CASS && npm run run:standalone && npm run logs)
