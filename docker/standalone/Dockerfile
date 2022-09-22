@@ -1,5 +1,6 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:8.4.2
 
+USER root
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git
 
@@ -24,4 +25,11 @@ ENV xpack.security.http.ssl.enabled=false
 ENV xpack.security.transport.ssl.enabled=false
 EXPOSE 80
 VOLUME ["/usr/share/elasticsearch/data","/usr/share/elasticsearch/CASS/etc","/usr/share/elasticsearch/CASS/logs"]
-ENTRYPOINT /usr/local/bin/docker-entrypoint.sh & (cd CASS && npm run run:standalone && npm run logs)
+
+RUN mkdir /logs
+RUN mkdir CASS/etc
+RUN mkdir CASS/logs
+RUN chown -R elasticsearch:root CASS /logs
+
+USER elasticsearch:root
+ENTRYPOINT (cd CASS && npm run run:standalone && npm run logs) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh

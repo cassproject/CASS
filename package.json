@@ -46,7 +46,7 @@
     "buildRun:ubuntu20": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:ubuntu18:13to15": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:standaloneWindowsFips": "npm run buildRun:kill && docker build --progress plain -f docker/fips/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
-    "buildRun:standaloneWindows": "npm run buildRun:kill && docker build --progress plain -f docker/standalone/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
+    "buildRun:standaloneTest": "npm run buildRun:kill && docker build --progress plain -f docker/standalone/Dockerfile -t cass-test . && docker run -p80:80 -p9200:9200 --name cass-test cass-test",
     "buildRun:standalone": "npm run buildRun:kill && docker build --progress plain -f docker/standalone/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:test": "npm run buildRun:kill && docker build --progress plain -f docker/test/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:testReplication": "npm run buildRun:kill && docker build --progress plain -f docker/test/replication/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",

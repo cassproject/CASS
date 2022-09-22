@@ -102,5 +102,7 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Update src/main/webapp to point at the appropriate gh-pages commit.
  * Update CHANGELOG.md
  * Update README.md
+ * Run `npm run buildrun:standaloneTest` to ensure the container can build.
+ * In another command window, `npm run test:mocha` - Must not fail any tests.
  * Commit with release notes.
  * Tag commit with version number.

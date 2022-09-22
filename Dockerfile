@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18
 WORKDIR /app
 COPY package*.json ./
 COPY pm2.test.config.js ./pm2.config.js
