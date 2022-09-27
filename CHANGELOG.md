@@ -9,7 +9,6 @@
 * Delete operations now work with Elastic Cloud and authenticated requests.
 * FIPS compatible version pinned to Node 18.3
 
-
 ## 1.5.14
 * Updated editor
 * Fixed elastic headers issue (only affects permissioned Elastic)
