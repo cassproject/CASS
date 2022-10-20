@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.16
+* Updated editor
+* Updated cassproject library to 1.5.16
+* Updated Docker elasticsearch image to 8.4.3
+* Improved websocket performance, especially with many clients.
+
 ## 1.5.15
 * Updated editor
 * Updated cassproject library to 1.5.15

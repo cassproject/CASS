@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.4.2
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.4.3
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
