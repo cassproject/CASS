@@ -158,7 +158,13 @@ global.loadConfigurationFile = function(path, dflt) {
         return fileToString(fileLoad(path));
     if (fs.existsSync("etc/" + path)) 
         return fileToString(fileLoad("etc/" + path));
-    fileSave(dflt(), "etc/" + path);
+    if (dflt == null) 
+        return null;
+    let def = dflt();
+    if (def != null)
+        fileSave(def, "etc/" + path);
+    else
+        return null;
     return fileToString(fileLoad("etc/" + path));
 };
 (function() {
