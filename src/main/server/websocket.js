@@ -12,7 +12,7 @@ app.ws('/ws/custom', function(ws, req) {
             }
     });
 });
-global.wsBroadcast = function(s){
+global.wsBroadcast = async(s) => {
     for (let ws of wses)
     try {
         ws.send(s);
