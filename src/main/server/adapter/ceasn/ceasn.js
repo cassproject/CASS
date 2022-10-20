@@ -174,6 +174,9 @@ async function cassFrameworkAsCeasn() {
     var framework = null;
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
+    if (framework != null && framework["@type"] != null && framework["@type"].contains("oncept") && framework.subType === "Progression") {
+        return await cassConceptSchemeAsCeasnProgression(framework);
+    }
     if (framework != null && framework["@type"] != null && framework["@type"].contains("oncept")) {
         return await cassConceptSchemeAsCeasn(framework);
     }
@@ -1052,6 +1055,61 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
     });
 }
 
+async function levelPromise(obj, levels, cs, ctx, terms) {
+    return new Promise(async (resolve) => {
+        try {
+            var c = levels[obj];
+            delete levels[obj];
+            if (c != null && c.id != null) {
+                var id = c.id;
+                levels[id] = c;
+                delete levels[id]["owner"];
+                delete levels[id]["signature"];
+                delete levels[id]["skos:inLanguage"];
+
+                c.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnProgressions.json";
+                c.id = await ceasnExportUriTransform(c.id);
+                if (c["skos:topConceptOf"] != null) {
+                    c["skos:topConceptOf"] = await ceasnExportUriTransform(cs.id);
+                }
+                if (c.type == null) //Already done / referred to by another name.
+                    resolve();
+                var guid = c.getGuid();
+                var uuid = new UUID(3, "nil", c.shortId()).format();
+                for (let each in c) {
+                    if (terms[each]) {
+                        c[terms[each]] = c[each];
+                        delete c[each];
+                    }
+                    if (each === "type") {
+                        c[each] = "ceasn:ProgressionLevel";
+                    }
+                }
+                levels[obj] = levels[id] = await jsonLdCompact(c.toJson(), ctx);
+
+                if (levels[id]["ceterms:ctid"] == null) {
+                    if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+                        levels[id]["ceterms:ctid"] = guid;
+                    } else {
+                        levels[id]["ceterms:ctid"] = uuid;
+                    }
+                }
+
+                if (levels[id]["ceterms:ctid"].indexOf("ce-") != 0) {
+                    levels[id]["ceterms:ctid"] = "ce-" + levels[id]["ceterms:ctid"];
+                }
+                delete levels[id]["@context"];
+
+                levels[id] = conceptArrays(levels[id]);
+            }
+            resolve();
+        } catch(err) {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnProgression", err);
+            resolve();
+        }
+    });
+}
+
 async function cassConceptSchemeAsCeasn(framework) {
     EcRepository.caching = true;
     if (framework == null)
@@ -1172,6 +1230,128 @@ async function cassConceptSchemeAsCeasn(framework) {
 
     return JSON.stringify(r, null, 2);
 }
+
+async function cassConceptSchemeAsCeasnProgression(framework) {
+    EcRepository.caching = true;
+    if (framework == null)
+        error("Progression not found.", 404);
+
+    var cs = new EcConceptScheme();
+    cs.copyFrom(framework);
+    if (cs["skos:hasTopConcept"] == null) {
+        cs["skos:hasTopConcept"] = [];
+    }
+    repo.precache(cs["skos:hasTopConcept"], function() {});
+
+    var levels = {};
+    var allLevels = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
+
+    for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
+        var c = await EcConcept.get(cs["skos:hasTopConcept"][i], null, null, repo);
+        if (c != null) {
+            levels[cs["skos:hasTopConcept"][i]] = levels[c.id] = c;
+            if (c["skos:narrower"]) {
+                async function getSubConcepts(c) {
+                    repo.precache(c["skos:narrower"], function() {});
+                    for (var j = 0; j < c["skos:narrower"].length; j++) {
+                        var subC = await EcConcept.get(c["skos:narrower"][j], null, null, repo);
+                        if (subC != null) {
+                            levels[subC.id] = subC;
+                            allLevels.push(subC.id);
+                            if (subC["skos:narrower"]) {
+                                getSubConcepts(subC);
+                            }
+                        }
+                    }
+
+                }
+                await getSubConcepts(c);
+            }
+        }
+    }
+
+    var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"],true);
+    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnProgressionsTerms")),true));
+
+    for (let i = 0; i < allLevels.length; i+=100) {
+        await Promise.all(allLevels.slice(i, i+100).map((id) => levelPromise(id, levels, cs, ctx, terms)));
+    }
+
+    cs.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnProgressions.json";
+
+    framework = cs;
+    var guid = cs.getGuid();
+    var uuid = new UUID(3, "nil", cs.shortId()).format();
+    var csId = cs.id;
+    delete cs["owner"];
+    delete cs["signature"];
+    for (let each in cs) {
+        if (terms[each]) {
+            cs[terms[each]] = cs[each];
+            delete cs[each];
+        }
+        if (each === "type") {
+            cs[each] = "ceasn:ProgressionModel";
+        }
+    }
+    cs = await jsonLdCompact(cs.toJson(), ctx);
+    if (cs["ceasn:inLanguage"] == null) {
+        cs["ceasn:inLanguage"] = "en";
+    }
+    if (cs["ceterms:ctid"] == null) {
+        if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+            cs["ceterms:ctid"] = guid;
+        } else {
+            cs["ceterms:ctid"] = uuid;
+        }
+    }
+    if (cs["ceterms:ctid"].indexOf("ce-") != 0) {
+        cs["ceterms:ctid"] = "ce-" + cs["ceterms:ctid"];
+    }
+
+    if (csId != await ceasnExportUriTransform(csId)) {
+        if (cs["ceasn:exactAlignment"] != null)
+            if (EcArray.isArray(cs["ceasn:exactAlignment"])) {
+                cs["ceasn:exactAlignment"].push(csId);
+            }
+        else {
+            cs["ceasn:exactAlignment"] = [cs["ceasn:exactAlignment"], csId];
+        } else
+            cs["ceasn:exactAlignment"] = [csId];
+    }
+    cs["@id"] = await ceasnExportUriTransform(csId);
+
+    var results = [];
+
+    cs = conceptArrays(cs);
+    results.push(cs);
+    for (var k in levels) {
+        var c = levels[k];
+        var found = false;
+        for (var j = 0; j < results.length; j++) {
+            if (results[j]["@id"] == levels[k]["@id"]) {
+                found = true;
+                break;
+            }
+        }
+        if (found) continue;
+        levels[k]["@id"] = await ceasnExportUriTransform(levels[k]["@id"]);
+        results.push(levels[k]);
+    }
+
+    delete cs["@context"];
+    var r = {};
+    r["@context"] = "https://credreg.net/ctdlasn/schema/context/json";
+    if (ceasnExportUriPrefixGraph != null)
+        if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+            r["@id"] = ceasnExportUriPrefixGraph + guid;
+        else
+            r["@id"] = ceasnExportUriPrefixGraph + uuid;
+    r["@graph"] = results;
+
+    return JSON.stringify(r, null, 2);
+}
+
 
 function createEachRelation(e, field, type, repo, ceo, id, cassRelations, toSave, i) {
     var r = new EcAlignment();
