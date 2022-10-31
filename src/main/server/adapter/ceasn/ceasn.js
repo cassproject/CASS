@@ -1082,7 +1082,7 @@ async function levelPromise(obj, levels, cs, ctx, terms) {
                         delete c[each];
                     }
                     if (each === "type") {
-                        c[each] = "ceasn:ProgressionLevel";
+                        c[each] = "asn:ProgressionLevel";
                     }
                 }
                 levels[obj] = levels[id] = await jsonLdCompact(c.toJson(), ctx);
@@ -1291,7 +1291,7 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
             delete cs[each];
         }
         if (each === "type") {
-            cs[each] = "ceasn:ProgressionModel";
+            cs[each] = "asn:ProgressionModel";
         }
     }
     cs = await jsonLdCompact(cs.toJson(), ctx);
