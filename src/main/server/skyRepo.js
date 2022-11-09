@@ -8760,6 +8760,12 @@ var validateSignatures = async function(id, version, type, errorMessage) {
                 success = true;
                 break;
             }
+            if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner)))
+            {
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepoAdminKeyUseDetected","Admin override detected.");
+                success = true;
+                break;
+            }
         }
         if (!success) 
             error(errorMessage, 401);
@@ -9200,14 +9206,14 @@ var endpointSearch = function() {
 var endpointAdmin = function() {
     return JSON.stringify(skyrepoAdminList());
 };
-var skyrepoAdminPpk = function() {
-    if (!fs.existsSync("etc/skyAdmin.pem")) 
-        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin.pem");
-    return fileToString(fileLoad("etc/skyAdmin.pem"));
+var skyrepoAdminPk = function() {
+    if (!fs.existsSync("etc/skyAdmin2.pem")) 
+        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin2.pem");
+    return EcPpk.fromPem(fileToString(fileLoad("etc/skyAdmin2.pem"))).toPk().toPem();
 };
 var skyrepoAdminList = function() {
     var array = new Array();
-    array.push(skyrepoAdminPpk());
+    array.push(skyrepoAdminPk());
     return array;
 };
 var pingWithTime = function() {
@@ -9216,7 +9222,17 @@ var pingWithTime = function() {
     (o)["time"] = new Date().getTime();
     //Securing Proxy: Return public key as part of init.
     if (this.ctx.req.eim != null)
+    {
         (o)["ssoPublicKey"] = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
+        if (this.ctx.req.eim.ids.length > 1)
+        {
+            (o)["ssoAdditionalPublicKeys"] = [];
+            for (let i = 1;i < this.ctx.req.eim.ids.length;i++)
+            {
+                (o)["ssoAdditionalPublicKeys"].push(this.ctx.req.eim.ids[i].ppk.toPk().toPem());
+            }
+        }
+    }
         
     if (this.ctx.req.oidc != null)
     {
