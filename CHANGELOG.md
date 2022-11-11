@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.18
+* Updated editor, admin mode now works. Admin mode only possible via cartridge or putting admin key in cass-editor.
+
 ## 1.5.17
 * Editor in 1.5.16 wasn't functioning. Fixed in 1.5.17.
 * Updated cassproject library to 1.5.17
