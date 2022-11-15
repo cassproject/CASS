@@ -108,9 +108,9 @@ skyrepoMigrate(function(){
     const after = async () => {       
         global.elasticSearchInfo = await httpGet(elasticEndpoint + "/", true, global.elasticHeaders());
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassListening", `CaSS listening at http${envHttps?'s':''}://localhost:${port}${baseUrl}`);
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassEndpoint", `CaSS thinks it its endpoint is at ${repo.selectedServer}`);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassEndpoint", `CaSS talks to itself at ${repo.selectedServer}`);
         if (repo.selectedServerProxy != null)
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassLoopbackProxy", `CaSS talks to itself at ${repo.selectedServerProxy}`);
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassLoopbackProxy", `CaSS thinks it its endpoint is at ${repo.selectedServerProxy}`);
         global.replicate();
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassStartupTime", `Startup time ${(new Date().getTime() - startupDt.getTime())} ms`);
         let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));

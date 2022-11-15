@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.19
+* Updated editor
+* Updated library
+* Fixed bug in non-loopback proxy support.
+
 ## 1.5.18
 * Updated editor, admin mode now works. Admin mode only possible via cartridge or putting admin key in cass-editor.
 
