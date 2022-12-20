@@ -40,6 +40,14 @@ global.skyrepoMigrate = async function (after) {
         setTimeout(function(){skyrepoMigrate(after)},1000);
         return;
     }
+    if (elasticState.version.number.startsWith("8."))
+    {
+        var settings = await httpPut({
+            "persistent" : {
+                "indices.id_field_data.enabled" : true
+            }
+        },elasticEndpoint + "/_cluster/settings", "application/json", global.elasticHeaders());
+    }
     if (elasticState.version.number.startsWith("7.") && elasticState.version.minimum_index_compatibility_version == "6.0.0-beta1")
     {
         var settings = await httpGet(elasticEndpoint + "/_settings", true, global.elasticHeaders());
