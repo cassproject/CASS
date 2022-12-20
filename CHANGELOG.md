@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.20
+* Added object history queries.
+* Updated editor
+
 ## 1.5.19
 * Updated editor
 * Updated library
