@@ -4,6 +4,7 @@ USER root
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git
 
+USER elasticsearch
 RUN mkdir CASS
 COPY src CASS/src
 COPY package.json CASS/package.json
@@ -15,6 +16,7 @@ COPY copyright.txt CASS/copyright.txt
 COPY LICENSE CASS/LICENSE
 RUN cd CASS && npm install
 
+USER root
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
 RUN echo 'cluster.initial_master_nodes:' >> config/elasticsearch.yml
 RUN echo '  - cass-a' >> config/elasticsearch.yml
@@ -26,10 +28,13 @@ ENV xpack.security.transport.ssl.enabled=false
 EXPOSE 80
 VOLUME ["/usr/share/elasticsearch/data","/usr/share/elasticsearch/CASS/etc","/usr/share/elasticsearch/CASS/logs"]
 
-RUN mkdir /logs
+USER elasticsearch
 RUN mkdir CASS/etc
 RUN mkdir CASS/logs
-RUN chown -R elasticsearch:root CASS /logs
+
+USER root
+RUN mkdir /logs
+RUN chown -R elasticsearch:root /logs
 
 USER elasticsearch:root
 ENTRYPOINT (cd CASS && npm run run:standalone && npm run logs) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh
