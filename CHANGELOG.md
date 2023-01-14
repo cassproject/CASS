@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.22
+* Security Updates
+* Updated editor
+* Updated library
+
 ## 1.5.21
 * Security Updates.
 
