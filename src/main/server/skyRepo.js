@@ -8413,7 +8413,7 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
         else
             (permNoIndex)["permanent"] = doc;
         (doc)["enabled"] = false;
-        var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true, elasticHeaders());
+        var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", elasticHeaders());
         if (skyrepoDebug)
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepoPutInternalPerm", JSON.stringify(result));
         permanentCreated = true;
@@ -9182,7 +9182,7 @@ var endpointMultiPut = async function() {
             else
                 (permNoIndex)["permanent"] = doc;
             (doc)["enabled"] = false;
-            var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true, elasticHeaders());
+            var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", elasticHeaders());
             if (skyrepoDebug)
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepEndpointMultiput", JSON.stringify(result));
             permanentCreated = true;
