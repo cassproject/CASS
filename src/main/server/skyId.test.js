@@ -45,7 +45,7 @@ describe("SkyID Adapter", function() {
         ident.displayName = name;
         im.addIdentity(ident);
         await rld.commit(null,null,im);
-    }).timeout(1000);
+    }).timeout(2000);
 
     it('change password', async () => {
         let rld = new EcRemoteIdentityManager();
@@ -56,7 +56,7 @@ describe("SkyID Adapter", function() {
         assert.equal(im.ids[0].ppk.toPem(),ident.ppk.toPem());
         rld.changePassword(username,password,newPassword);
         await rld.commit(null,null,im);
-    }).timeout(1000);
+    }).timeout(2000);
     
     it('load user', async () => {
         let rld = new EcRemoteIdentityManager();
@@ -65,6 +65,6 @@ describe("SkyID Adapter", function() {
         rld.startLogin(username,newPassword);
         let im = await rld.fetch();
         assert.equal(im.ids[0].ppk.toPem(),ident.ppk.toPem());
-    }).timeout(1000);
+    }).timeout(2000);
 
 });

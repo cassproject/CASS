@@ -8413,13 +8413,14 @@ var skyrepoPutInternalPermanent = async function(o, id, version, type) {
         else
             (permNoIndex)["permanent"] = doc;
         (doc)["enabled"] = false;
-        var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true, elasticHeaders());
+        var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", elasticHeaders());
         if (skyrepoDebug)
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepoPutInternalPerm", JSON.stringify(result));
         permanentCreated = true;
     }
     var data = {};
     (data)["data"] = JSON.stringify(o);
+    data.writeMs = new Date().getTime();
     var url = putPermanentBaseUrl.call(this,o, id, version, type);
     let results = await httpPost(data, url, "application/json", false, null, null, true, elasticHeaders());
     if (results === 409) {
@@ -8604,6 +8605,26 @@ var skyrepoGetPermanent = async function(id, version, type) {
     var result = await skyrepoGetIndexInternal.call(this,"permanent", id, version, type);
     return result;
 };
+var skyrepoHistoryPermanent = async function(id, version, type) {
+    let query = {
+        "size":10000,
+        "query": {
+            "script": {
+                "script": {
+                    "source": "doc['_id'][0].indexOf(params.param1+'.') > -1",
+                    "lang": "painless",
+                    "params": {
+                        "param1": `${id}`
+                    }
+                }
+            }
+        }
+    }
+    var historyUrl = elasticEndpoint + "/permanent/_search";
+    let history = await httpPost(query,historyUrl, "application/json", null,null,null,null,elasticHeaders());
+    console.log(JSON.stringify(history,null,2));
+    return history;
+};
 global.skyrepoGetInternal = async function(id, version, type) {
     var result = await skyrepoGetPermanent(id, version, type);
     if (result == null) 
@@ -8621,6 +8642,49 @@ global.skyrepoGetInternal = async function(id, version, type) {
         return null;
     if ((result)["found"] == true || (result)["_source"] != null) 
         return (result)["_source"];
+    return null;
+};
+global.skyrepoHistoryInternal = async function(id, version, type) {
+    var result = await skyrepoHistoryPermanent(id, version, type);
+    if (result == null) 
+        return null;
+    if ((result)["error"] != null) 
+        return null;
+    if ((result).hits.total.value > 0)
+    {
+        let hits = result.hits.hits;
+        hits.sort((a,b)=>{
+            let A = new EcRemoteLinkedData();
+            A.copyFrom(JSON.parse(a._source.data))
+            let B = new EcRemoteLinkedData();
+            B.copyFrom(JSON.parse(b._source.data))
+            let Ats = A.getTimestamp();
+            let Bts = B.getTimestamp();
+            if (Ats == null) Ats = a._source.writeMs;
+            if (Bts == null) Bts = b._source.writeMs;
+            if (Ats == null || Bts == null) return 0;
+            return Bts-Ats;
+        }) 
+        for (let i = 0;i < hits.length;i++)
+        for (let j = i;j < hits.length;j++)
+        {
+            if (i == j) continue;
+            let A = new EcRemoteLinkedData();
+            A.copyFrom(JSON.parse(hits[i]._source.data))
+            let B = new EcRemoteLinkedData();
+            B.copyFrom(JSON.parse(hits[j]._source.data))
+            let Ats = A.getTimestamp();
+            let Bts = B.getTimestamp();
+            if (Ats == null) Ats = hits[i]._source.writeMs;
+            if (Bts == null) Bts = hits[j]._source.writeMs;
+            console.log(Ats,Bts);
+            if (A.id+Ats == B.id+Bts)
+                hits.splice(j--,1);
+        }
+        return hits.map(h=>JSON.parse(h._source.data));
+    }
+    if (skyrepoDebug)
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepoHistoryInternal", "Failed to find " + type + "/" + id + "/" + version + "."); 
     return null;
 };
 var skyrepoManyGetPermanent = async function(manyParseParams) {
@@ -8668,7 +8732,7 @@ global.skyrepoGet = async function(parseParams) {
         (parseParams)["id"] = this.params.id;
         (parseParams)["type"] = this.params.type;
         (parseParams)["version"] = this.params.version;
-        (parseParams)["versions"] = this.params.versions;
+        (parseParams)["history"] = this.params.history;
     }
     if (skyrepoDebug)
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepGet", JSON.stringify(parseParams));
@@ -8677,21 +8741,28 @@ global.skyrepoGet = async function(parseParams) {
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
-    var versions = (parseParams)["versions"];
-    return await (skyrepoGetParsed).call(this, id, version, type, null, versions);
+    var history = (parseParams)["history"];
+    return await (skyrepoGetParsed).call(this, id, version, type, null, history);
 };
-var skyrepoGetParsed = async function(id, version, type, versions) {
-    var result = await (skyrepoGetInternal).call(this, id, version, type);
-    if (result == null) 
-        return null;
-    var filtered = null;
-    try {
-        filtered = await (filterResults).call(this, result, null);
-    }catch (ex) {
-        if (ex.toString().indexOf("Signature Violation") != -1) 
-             throw ex;
+
+var skyrepoGetParsed = async function(id, version, type, unk,history) {
+    let filtered = null;
+    if (history == true || history == "true") {
+        filtered = await skyrepoHistoryInternal.call(this,id,version,type);
+        filtered = await (filterResults).call(this, filtered, null);
     }
-    if (versions == "true") {}
+    else
+    {
+        let result = await (skyrepoGetInternal).call(this, id, version, type);
+        if (result == null) 
+            return null;
+        try {
+            filtered = await (filterResults).call(this, result, null);
+        }catch (ex) {
+            if (ex.toString().indexOf("Signature Violation") != -1) 
+                throw ex;
+        }
+    }
     if (filtered == null) 
         return null;
     if (EcObject.keys(filtered).length == 0) 
@@ -8948,7 +9019,7 @@ var endpointData = async function() {
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
     var index_hint = this.params.index_hint;
-    var versions = this.params.versions;
+    var history = this.params.history;
     var searchParams = (fileFromDatastream).call(this, "searchParams", null);
     if (searchParams != null) {
         searchParams = fileToString(searchParams);
@@ -8973,9 +9044,9 @@ var endpointData = async function() {
         if ((searchParams)["index_hint"] != undefined) 
         if ((searchParams)["index_hint"] != null) 
             index_hint = (searchParams)["index_hint"];
-        if ((searchParams)["versions"] != undefined) 
-        if ((searchParams)["versions"] != null) 
-            versions = (searchParams)["versions"];
+        if ((searchParams)["history"] != undefined) 
+        if ((searchParams)["history"] != null) 
+            history = (searchParams)["history"];
     }
     if (size === undefined || size == null) 
         size = 50;
@@ -9002,7 +9073,7 @@ var endpointData = async function() {
             o = JSON.parse(fileToString(o));
         if (o == null || o == "") {
             (beforeGet).call(this);
-            o = await (skyrepoGetParsed).call(this, id, version, type, null, versions);
+            o = await (skyrepoGetParsed).call(this, id, version, type, null, history);
             if (o == null) 
                 error("Object not found or you did not supply sufficient permissions to access the object.", 404);
             var expand = this.params.expand != null;
@@ -9014,7 +9085,7 @@ var endpointData = async function() {
         return null;
     } else if (methodType == "GET") {
         (beforeGet).call(this);
-        var o = await (skyrepoGetParsed).call(this, id, version, type, null, versions);
+        var o = await (skyrepoGetParsed).call(this, id, version, type, null, history);
         if (o == null) 
             error("Object not found or you did not supply sufficient permissions to access the object.", 404);
         var expand = this.params.expand != null;
@@ -9111,7 +9182,7 @@ var endpointMultiPut = async function() {
             else
                 (permNoIndex)["permanent"] = doc;
             (doc)["enabled"] = false;
-            var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true, elasticHeaders());
+            var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", elasticHeaders());
             if (skyrepoDebug)
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepEndpointMultiput", JSON.stringify(result));
             permanentCreated = true;

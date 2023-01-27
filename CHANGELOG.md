@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.5.22
+* Security Updates
+* Updated editor
+* Updated library
+
+## 1.5.21
+* Security Updates.
+
+## 1.5.20
+* Added object history queries.
+* Updated editor
+
 ## 1.5.19
 * Updated editor
 * Updated library

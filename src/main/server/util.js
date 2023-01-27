@@ -40,6 +40,14 @@ global.skyrepoMigrate = async function (after) {
         setTimeout(function(){skyrepoMigrate(after)},1000);
         return;
     }
+    if (elasticState.version.number.startsWith("8."))
+    {
+        var settings = await httpPut({
+            "persistent" : {
+                "indices.id_field_data.enabled" : true
+            }
+        },elasticEndpoint + "/_cluster/settings", "application/json", global.elasticHeaders());
+    }
     if (elasticState.version.number.startsWith("7.") && elasticState.version.minimum_index_compatibility_version == "6.0.0-beta1")
     {
         var settings = await httpGet(elasticEndpoint + "/_settings", true, global.elasticHeaders());
@@ -70,7 +78,7 @@ global.skyrepoMigrate = async function (after) {
                 var doc = new Object();
                 (mappings)["mappings"] = doc;
                 (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
@@ -84,7 +92,7 @@ global.skyrepoMigrate = async function (after) {
                     "confidence":{type:"float"},
                     "assertionDateDecrypted":{type:"long"}
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
@@ -105,7 +113,7 @@ global.skyrepoMigrate = async function (after) {
                         }
                     }
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("conceptscheme"))
@@ -126,7 +134,7 @@ global.skyrepoMigrate = async function (after) {
                         }
                     }
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
@@ -142,7 +150,7 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = doc;
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             var r = null;
@@ -162,7 +170,7 @@ global.skyrepoMigrate = async function (after) {
                 var doc = new Object();
                 (mappings)["mappings"] = doc;
                 (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
@@ -183,7 +191,7 @@ global.skyrepoMigrate = async function (after) {
                         }
                     }
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("conceptscheme"))
@@ -204,7 +212,7 @@ global.skyrepoMigrate = async function (after) {
                         }
                     }
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
@@ -218,7 +226,7 @@ global.skyrepoMigrate = async function (after) {
                     "confidence":{type:"float"},
                     "assertionDateDecrypted":{type:"long"}
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
@@ -234,7 +242,7 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = doc;
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing .temp." + index.replace("https:..","").replace(":",".") + " -> "+index.replace("https:..","").replace(":","."));
@@ -272,7 +280,7 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = permNoIndex;
                 (permNoIndex)["permanent"] = doc;
                 (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
@@ -290,7 +298,7 @@ global.skyrepoMigrate = async function (after) {
                     "confidence":{type:"float"},
                     "assertionDateDecrypted":{type:"long"}
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
@@ -318,7 +326,7 @@ global.skyrepoMigrate = async function (after) {
                         }
                     }
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
@@ -338,7 +346,7 @@ global.skyrepoMigrate = async function (after) {
                 }
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             var r = null;
@@ -359,7 +367,7 @@ global.skyrepoMigrate = async function (after) {
                 (mappings)["mappings"] = permNoIndex;
                 (permNoIndex)["permanent"] = doc;
                 (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("competency"))
@@ -384,7 +392,7 @@ global.skyrepoMigrate = async function (after) {
                         }
                     }
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else if (index.endsWith("assertion"))
@@ -402,7 +410,7 @@ global.skyrepoMigrate = async function (after) {
                     "confidence":{type:"float"},
                     "assertionDateDecrypted":{type:"long"}
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             else
@@ -422,7 +430,7 @@ global.skyrepoMigrate = async function (after) {
                 }
                 (doc).properties = {"@version":{type:"long"}};
                 mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", null, true, global.elasticHeaders());
+                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", global.elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
             }
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing .temp." + index + " -> "+index);
