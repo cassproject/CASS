@@ -9642,7 +9642,8 @@ var pingWithTime = function() {
             message: process.env.MOTD_MESSAGE
         } : undefined,
         plugins: process.env.DEFAULT_PLUGINS ? process.env.DEFAULT_PLUGINS : undefined,
-        adminPublicKeys: skyrepoAdminList()
+        adminPublicKeys: skyrepoAdminList(),
+        corsCredentials: process.env.CORS_CREDENTIALS ? process.env.CORS_CREDENTIALS.trim() == 'true' : undefined        
     });
 };
 /**
