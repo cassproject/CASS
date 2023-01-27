@@ -185,10 +185,17 @@ var filterResults = async function(o) {
             var signatures = await (signatureSheet).call(this);
             var foundSignature = false;
             for (var i = 0; i < signatures.length; i++) 
+            {
                 if (JSON.stringify(o).indexOf(signatures[i].owner) != -1) {
                     foundSignature = true;
                     break;
+                }                
+                if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signatures[i].owner)))
+                {
+                    foundSignature = true;
+                    break;
                 }
+            }
             if (!foundSignature) 
                 throw new Error("Signature Violation");
             //Securing Proxy: Decrypt data that is being passed back via SSO.
