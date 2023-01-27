@@ -9325,6 +9325,10 @@ var pingWithTime = function() {
     if (process.env.DEFAULT_PLUGINS) {
         (o).plugins = process.env.DEFAULT_PLUGINS;
     }
+    // Whether requests should include credentials
+    if (process.env.CORS_CREDENTIALS != null) {
+        (o)['corsCredentials'] = process.env.CORS_CREDENTIALS.trim() == 'true';
+    }
     return JSON.stringify(o);
 };
 (function() {

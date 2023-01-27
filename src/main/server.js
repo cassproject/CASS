@@ -32,7 +32,25 @@ global.auditLogger = require('./server/shims/auditLogger.js');
 require("cassproject");
 const fs = require('fs');
 const cors = require('cors');
-app.use(cors());
+
+let corsOptions;
+if (process.env.CORS_ORIGINS != null || process.env.CORS_CREDENTIALS != null) {
+    corsOptions = {};
+
+    if (process.env.CORS_CREDENTIALS != null)
+        corsOptions.credentials = process.env.CORS_CREDENTIALS.trim() == 'true'
+    
+    if (process.env.CORS_ORIGINS != null) {
+        try {
+            corsOptions.origin = process.env.CORS_ORIGINS.split(',').map(x => x.trim());
+        } catch (e) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CorsConfigError", "Misconfigured CORS_ORIGINS env var, ensure the value is a comma separated list of origins");
+        }
+    }
+}
+
+app.use(cors(corsOptions));
+
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 const port = process.env.PORT || (envHttps ? 443 : 80);
 
