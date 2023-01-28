@@ -6,11 +6,9 @@ const fs = require('fs');
 
 //RS2 shims
 let afterSave = function(o){
-    //TODO: Websocket broadcast
     wsBroadcast(EcRemoteLinkedData.trimVersionFromUrl(o["@id"]));
 }
 let afterSaveBulk = function(ary){
-    //TODO: Websocket broadcast
     wsBroadcast(JSON.stringify(ary));
 }
 let beforeGet = function(){
