@@ -82,6 +82,29 @@ require("./server/adapter/xapi/xapi.js");
 require("./server/adapter/replicate/replicate.js");
 require("./server/profile/coordinator.js")();
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'CaSS',
+      version: require('../../package.json').version,
+    },
+  },
+  apis: ['./src/**/*.js'], // files containing annotations as above
+};
+app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
+app.get('/api',(req, res, next) => {
+    return res.redirect('/api/swagger');
+    next();
+});
+app.get('/api/',(req, res, next) => {
+    return res.redirect('swagger');
+    next();
+});
+
 if (process.env.DISABLED_EDITOR != "true")
 {
     app.use(baseUrl,express.static('src/main/webapp/'));

@@ -167,7 +167,7 @@ var filterResults = async function(o) {
             try {
                 result = await (filterResults).call(this, ary[i], null);
             }catch (ex) {
-                if (ex != null && ex.toString().indexOf("Signature Violation") == -1)
+                if (ex != null && ex.toString().indexOf("Object not found or you did not supply sufficient permissions to access the object.") == -1)
                      throw ex;
             }
             if (result == null) {
@@ -185,12 +185,20 @@ var filterResults = async function(o) {
             var signatures = await (signatureSheet).call(this);
             var foundSignature = false;
             for (var i = 0; i < signatures.length; i++) 
+            {
                 if (JSON.stringify(o).indexOf(signatures[i].owner) != -1) {
                     foundSignature = true;
                     break;
                 }
+                if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signatures[i].owner)))
+                {
+                    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepoAdminKeyUseDetected","Admin override detected.");
+                    success = true;
+                    break;
+                }
+            }
             if (!foundSignature) 
-                throw new Error("Signature Violation");
+                throw new Error("Object not found or you did not supply sufficient permissions to access the object.");
             //Securing Proxy: Decrypt data that is being passed back via SSO.
             if (this.ctx.req.eim != null)
             {
@@ -8932,8 +8940,11 @@ var skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_sco
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepSearch", JSON.stringify(searchParameters));
     let results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), "application/json", false, null, null, true, elasticHeaders());
     
+    console.log(results);
     if (skyrepoDebug)
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, "SkyrepSearch", JSON.stringify(results));
+    if (results == null)
+        error("An unknown error has occurred. If using the 'start' parameter, request may be out of bounds.",500);
     if ((results)["error"] != null) {
         var root_cause = ((results)["error"])["root_cause"];
         if (root_cause.length > 0) {
@@ -9094,6 +9105,137 @@ var endpointData = async function() {
     }
     return null;
 };
+/**
+ * @openapi
+ * /api/data/:
+ *   get:
+ *     tags: 
+ *       - Search
+ *     description: Searches for data in the system.
+ *     parameters:
+ *       - in: query
+ *         type: string
+ *         name: q
+ *         allowReserved: true
+ *         description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
+ *         example: name:* AND @type:Competency
+ *       - in: query
+ *         type: integer
+ *         name: start
+ *         required: false
+ *         description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
+ *         example: 0
+ *       - in: query
+ *         type: integer
+ *         name: size
+ *         required: false
+ *         description: The number of results to return. Max 10000 without changes to Elastic.
+ *         example: 10000
+ *       - in: query
+ *         type: string
+ *         name: index_hint
+ *         required: false
+ *         allowReserved: true
+ *         description: Provides an index hinting string to accelerate typed search and avoid searching _all.
+ *         example: "*competency,*encryptedvalue"
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: Array of results
+ *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *   post:
+ *     tags: 
+ *       - Search
+ *     description: Searches for data in the system.
+ *     requestBody:    
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               searchParams:
+ *                 type: object
+ *                 properties:
+ *                   q:
+ *                     type: string
+ *                     required: true
+ *                     description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
+ *                     example: name:* AND @type:Competency
+ *                   start:
+ *                     type: integer
+ *                     required: false
+ *                     description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
+ *                     example: 0
+ *                   size:
+ *                     type: integer
+ *                     required: false
+ *                     description: The number of results to return. Max 10000 without changes to Elastic.
+ *                     example: 10000
+ *                   sort:
+ *                     type: string
+ *                     required: false
+ *                     description: Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html
+ *                     example: "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
+ *                   index_hint:
+ *                     type: string
+ *                     required: false
+ *                     description: Provides an index hinting string to accelerate typed search and avoid searching _all.
+ *                     example: "*competency,*encryptedvalue"
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: Array of results
+ *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ * /api/data/{uid}:
+ *   get:
+ *     tags: 
+ *       - Search
+ *     description: Searches for data in the system.
+ *     parameters:
+ *       - in: path
+ *         type: string
+ *         name: uid
+ *         allowReserved: true
+ *         description: GUID, unique identifier, or MD5 of an object's @id.
+ *         example: 
+ *       - in: query
+ *         type: integer
+ *         name: start
+ *         required: false
+ *         description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
+ *         example: 0
+ *       - in: query
+ *         type: integer
+ *         name: size
+ *         required: false
+ *         description: The number of results to return. Max 10000 without changes to Elastic.
+ *         example: 10000
+ *       - in: query
+ *         type: string
+ *         name: index_hint
+ *         required: false
+ *         allowReserved: true
+ *         description: Provides an index hinting string to accelerate typed search and avoid searching _all.
+ *         example: "*competency,*encryptedvalue"
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: Array of results
+ *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ */
+bindWebService("/data/*", endpointData);
 var endpointMultiGet = async function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
     var lookup = {};
@@ -9271,9 +9413,98 @@ var skyRepoSearch = async function() {
         q = "*";
     return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint));
 };
-var endpointSearch = function() {
-    return (skyRepoSearch).call(this);
-};
+/**
+ * @openapi
+ * /api/sky/repo/search:
+ *   get:
+ *     tags: 
+ *       - Search
+ *     deprecated: true
+ *     description: Searches for data in the system.
+ *     parameters:
+ *       - in: query
+ *         type: string
+ *         name: q
+ *         allowReserved: true
+ *         description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
+ *         example: name:* AND @type:Competency
+ *       - in: query
+ *         type: integer
+ *         name: start
+ *         required: false
+ *         description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
+ *         example: 0
+ *       - in: query
+ *         type: integer
+ *         name: size
+ *         required: false
+ *         description: The number of results to return. Max 10000 without changes to Elastic.
+ *         example: 10000
+ *       - in: query
+ *         type: string
+ *         name: index_hint
+ *         required: false
+ *         allowReserved: true
+ *         description: Provides an index hinting string to accelerate typed search and avoid searching _all.
+ *         example: "*Competency,*encryptedvalue"
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: Array of results
+ *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *   post:
+ *     tags: 
+ *       - Search
+ *     deprecated: true
+ *     description: Searches for data in the system.
+ *     requestBody:    
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               data:
+ *                 type: string
+ *                 description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
+ *                 example: name:* AND @type:Competency
+ *               searchParams:
+ *                 type: object
+ *                 properties:
+ *                   start:
+ *                     type: integer
+ *                     required: false
+ *                     description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
+ *                     example: 0
+ *                   size:
+ *                     type: integer
+ *                     required: false
+ *                     description: The number of results to return. Max 10000 without changes to Elastic.
+ *                     example: 10000
+ *                   sort:
+ *                     type: string
+ *                     required: false
+ *                     description: Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html
+ *                     example: "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
+ *                   index_hint:
+ *                     type: string
+ *                     required: false
+ *                     description: Provides an index hinting string to accelerate typed search and avoid searching _all.
+ *                     example: "*competency,*encryptedvalue"
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: Array of results
+ *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ */
+bindWebService("/sky/repo/search", skyRepoSearch);
 var endpointAdmin = function() {
     return JSON.stringify(skyrepoAdminList());
 };
@@ -9287,51 +9518,133 @@ var skyrepoAdminList = function() {
     array.push(skyrepoAdminPk());
     return array;
 };
+/**
+ * @openapi
+ * /api/sky/admin:
+ *   get:
+ *     tags: 
+ *       - Infrastructure
+ *     description: Fetches public key of the admin user. An identity with the corresponding private key will have edit/delete capabilities over all data.
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: Array of admin public keys
+ *               example: ["<public key>"]
+ */
+bindWebService("/sky/admin", endpointAdmin);
 var pingWithTime = function() {
-    var o = {};
-    (o)["ping"] = "pong";
-    (o)["time"] = new Date().getTime();
-    //Securing Proxy: Return public key as part of init.
-    if (this.ctx.req.eim != null)
-    {
-        (o)["ssoPublicKey"] = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
-        if (this.ctx.req.eim.ids.length > 1)
-        {
-            (o)["ssoAdditionalPublicKeys"] = [];
-            for (let i = 1;i < this.ctx.req.eim.ids.length;i++)
-            {
-                (o)["ssoAdditionalPublicKeys"].push(this.ctx.req.eim.ids[i].ppk.toPk().toPem());
-            }
-        }
-    }
-        
-    if (this.ctx.req.oidc != null)
-    {
-       (o)["ssoLogin"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/')+"api/login";
-       (o)["ssoLogout"] = (process.env.CASS_OIDC_BASE_URL || 'http://localhost/')+"api/logout";
-    }
-    // Add banner info if set in env vars
-    (o)["banner"] = {
-        message: process.env.CASS_BANNER_MESSAGE, // string
-        color: process.env.CASS_BANNER_TEXT_COLOR, // valid css color value
-        background: process.env.CASS_BANNER_BACKGROUND_COLOR // valid css color value
-    };
-    // Add MOTD info if set in env vars
-    (o).motd = {
-        title: process.env.MOTD_TITLE,
-        message: process.env.MOTD_MESSAGE
-    };
-    // Add default plugins if set in env vars
-    if (process.env.DEFAULT_PLUGINS) {
-        (o).plugins = process.env.DEFAULT_PLUGINS;
-    }
-    return JSON.stringify(o);
+    return JSON.stringify({
+        ping: "pong",
+        time: new Date().getTime(),
+        ssoPublicKey: this.ctx.req.eim ? this.ctx.req.eim.ids[0].ppk.toPk().toPem() : undefined,
+        ssoAdditionalPublicKeys: this.ctx.req.eim && this.ctx.req.eim.ids.length ? this.ctx.req.eim.ids.slice(1).map(identity=>identity.ppk.toPk().toPem()) : undefined,
+        ssoLogin: this.ctx.req.oidc ? (process.env.CASS_OIDC_BASE_URL || 'http://localhost/') + "api/login" : undefined,
+        ssoLogout: this.ctx.req.oidc ? (process.env.CASS_OIDC_BASE_URL || 'http://localhost/') + "api/logout" : undefined,
+        banner: process.env.CASS_BANNER_MESSAGE ? {
+            message: process.env.CASS_BANNER_MESSAGE, // string
+            color: process.env.CASS_BANNER_TEXT_COLOR, // valid css color value
+            background: process.env.CASS_BANNER_BACKGROUND_COLOR // valid css color value
+        } : undefined,
+        motd: process.env.MOTD_MESSAGE ? {
+            title: process.env.MOTD_TITLE,
+            message: process.env.MOTD_MESSAGE
+        } : undefined,
+        plugins: process.env.DEFAULT_PLUGINS ? process.env.DEFAULT_PLUGINS : undefined,
+        adminPublicKeys: skyrepoAdminList()
+    });
 };
-(function() {
-    bindWebService("/ping", pingWithTime);
-    bindWebService("/data/*", endpointData);
-    bindWebService("/sky/repo/search", skyRepoSearch);
-    bindWebService("/sky/repo/multiGet", endpointMultiGet);
-    bindWebService("/sky/repo/multiPut", endpointMultiPut);
-    bindWebService("/sky/admin", endpointAdmin);
-})();
+/**
+ * @openapi
+ * /api/ping:
+ *   get:
+ *     tags: 
+ *       - Infrastructure
+ *     description: Fetches server parameters along with information about you, if SSO is enabled.
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               description: Ping response
+ *               additionalProperties: false
+ *               properties:
+ *                 ping:
+ *                   type: string
+ *                   required: true
+ *                   description: Just a known value for ensuring the response isn't from something else.
+ *                   example: pong
+ *                 time:
+ *                   type: integer
+ *                   required: true
+ *                   description: The current number of milliseconds since the Unix epoch, for ensuring signature sheet signing can sign time-nonced signatures that will not be time-desynchronized with the server.
+ *                   example: 1674857764808
+ *                 ssoPublicKey:
+ *                   type: string
+ *                   required: false
+ *                   description: When logged in with SSO, the public key of the first key in the keyring.
+ *                   example: <public key>
+ *                 ssoAdditionalPublicKeys:
+ *                   type: array
+ *                   required: false
+ *                   description: When logged in with SSO, the public keys of keys past the first in the keyring.
+ *                   example: ["<public key>"]
+ *                 ssoLogin:
+ *                   type: string
+ *                   required: false
+ *                   description: When logged in with OIDC (or similar), the URL of the login redirect page, using CASS_OIDC_BASE_URL environment variable for the endpoint.
+ *                   example: http://localhost/api/login
+ *                 ssoLogout:
+ *                   type: string
+ *                   required: false
+ *                   description: When logged in with OIDC (or similar), the URL of the logout redirect page, using CASS_OIDC_BASE_URL environment variable for the endpoint.
+ *                   example: http://localhost/api/logout
+ *                 banner:
+ *                   type: object
+ *                   required: false
+ *                   description: If specified in CASS_BANNER_MESSAGE, CASS_BANNER_TEXT_COLOR, CASS_BANNER_BACKGROUND_COLOR environment variables communicated from the server.
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       required: true
+ *                       description: Banner text as specified by CASS_BANNER_MESSAGE environment variable.
+ *                       example: <Security markings>
+ *                     color:
+ *                       type: string
+ *                       required: true
+ *                       description: CSS text color as specified by CASS_BANNER_TEXT_COLOR environment variable.
+ *                       example: red
+ *                     background:
+ *                       type: string
+ *                       required: true
+ *                       description: CSS background color as specified by CASS_BANNER_BACKGROUND_COLOR environment variable.
+ *                       example: yellow
+ *                 motd:
+ *                   type: object
+ *                   required: false
+ *                   description: If specified in MOTD_TITLE, MOTD_MESSAGE environment variables communicated from the server.
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       required: true
+ *                       description: Message of the Day title as specified by MOTD_TITLE environment variable.
+ *                       example: Message of the Day
+ *                     color:
+ *                       type: string
+ *                       required: true
+ *                       description: Message of the Day text as specified by MOTD_MESSAGE environment variable.
+ *                       example: Have a good day!
+ *                 adminPublicKeys:
+ *                   type: array
+ *                   required: true
+ *                   description: Array of admin public keys
+ *                   example: ["<public key>"]
+ */
+bindWebService("/ping", pingWithTime);
+bindWebService("/sky/repo/multiGet", endpointMultiGet);
+bindWebService("/sky/repo/multiPut", endpointMultiPut);

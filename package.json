@@ -83,6 +83,7 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
+    "@xmldom/xmldom": "^0.8.6",
     "busboy": "^1.6.0",
     "cassproject": "^1.5.22",
     "check-disk-space": "^3.3.1",
@@ -101,8 +102,9 @@
     "pure-uuid": "^1.6.2",
     "rdflib": "^2.2.21",
     "spdy": "^4.0.2",
-    "ws": "^8.12.0",
-    "@xmldom/xmldom": "^0.8.6"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.0",
+    "ws": "^8.12.0"
   },
   "devDependencies": {
     "chai": "^4.3.7",
