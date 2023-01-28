@@ -189,6 +189,11 @@ var filterResults = async function(o) {
                 if (JSON.stringify(o).indexOf(signatures[i].owner) != -1) {
                     foundSignature = true;
                     break;
+                }                
+                if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signatures[i].owner)))
+                {
+                    foundSignature = true;
+                    break;
                 }
                 if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signatures[i].owner)))
                 {
