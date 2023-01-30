@@ -9208,35 +9208,120 @@ var endpointData = async function() {
  *         name: uid
  *         allowReserved: true
  *         description: GUID, unique identifier, or MD5 of an object's @id.
- *         example: 
+ *         example: ce-07c25f74-9119-11e8-b852-782bcb5df6ac
  *       - in: query
- *         type: integer
- *         name: start
- *         required: false
- *         description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
- *         example: 0
- *       - in: query
- *         type: integer
- *         name: size
- *         required: false
- *         description: The number of results to return. Max 10000 without changes to Elastic.
- *         example: 10000
- *       - in: query
- *         type: string
- *         name: index_hint
- *         required: false
- *         allowReserved: true
- *         description: Provides an index hinting string to accelerate typed search and avoid searching _all.
- *         example: "*competency,*encryptedvalue"
+ *         type: boolean
+ *         name: history
+ *         description: Fetches history of object. Will only return portions of the object's history that the user is allowed to see.
+ *         example: false
  *     responses:
  *       200:
  *         description: Success
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               description: Array of results
- *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               oneOf:
+ *               - type: object
+ *                 description: Result
+ *                 example: {"@context":"<url>","@id":"<url>","@type":"<string>"}
+ *               - type: array
+ *                 description: Array of historical results
+ *                 example: [{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *       404:
+ *         description: Failure to locate data due to permission or absence of data.
+ *         content:
+ *           text/plain:
+ *             description: Error message, if any.
+ * /api/data/{type}/{uid}:
+ *   get:
+ *     tags: 
+ *       - Search
+ *     description: Searches for data in the system.
+ *     parameters:
+ *       - in: path
+ *         type: string
+ *         name: uid
+ *         allowReserved: true
+ *         description: GUID, unique identifier, or MD5 of an object's @id.
+ *         example: ce-07c25f74-9119-11e8-b852-782bcb5df6ac
+ *       - in: path
+ *         type: string
+ *         name: type
+ *         allowReserved: true
+ *         description: Type of the object, with namespace, normalized
+ *         example: schema.cassproject.org.0.4.Framework
+ *       - in: query
+ *         type: boolean
+ *         name: history
+ *         required: false
+ *         description: Fetches history of object. Will only return portions of the object's history that the user is allowed to see.
+ *         example: false
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *               - type: object
+ *                 description: Result
+ *                 example: {"@context":"<url>","@id":"<url>","@type":"<string>"}
+ *               - type: array
+ *                 description: Array of historical results
+ *                 example: [{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *       404:
+ *         description: Failure to locate data due to permission or absence of data.
+ *         content:
+ *           text/plain:
+ *             description: Error message, if any.
+ * /api/data/{type}/{uid}/{version}:
+ *   get:
+ *     tags: 
+ *       - Search
+ *     description: Searches for data in the system.
+ *     parameters:
+ *       - in: path
+ *         type: string
+ *         name: uid
+ *         allowReserved: true
+ *         description: GUID, unique identifier, or MD5 of an object's @id.
+ *         example: ce-07c25f74-9119-11e8-b852-782bcb5df6ac
+ *       - in: path
+ *         type: string
+ *         name: type
+ *         allowReserved: true
+ *         description: Type of the object, with namespace, normalized
+ *         example: schema.cassproject.org.0.4.Framework
+ *       - in: path
+ *         type: string
+ *         name: type
+ *         allowReserved: true
+ *         description: Type of the object, with namespace, normalized
+ *         example: schema.cassproject.org.0.4.Framework
+ *       - in: query
+ *         type: boolean
+ *         name: history
+ *         required: false
+ *         description: Fetches history of object. Will only return portions of the object's history that the user is allowed to see.
+ *         example: false
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *               - type: object
+ *                 description: Result
+ *                 example: {"@context":"<url>","@id":"<url>","@type":"<string>"}
+ *               - type: array
+ *                 description: Array of historical results
+ *                 example: [{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *       404:
+ *         description: Failure to locate data due to permission or absence of data.
+ *         content:
+ *           text/plain:
+ *             description: Error message, if any.
  */
 bindWebService("/data/*", endpointData);
 var endpointMultiGet = async function() {
