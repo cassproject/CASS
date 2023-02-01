@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.5.23
+* Started swagger at /api/swagger/
+* Updated editor
+* Updated libraries
+* PM2 is now a production dependency, instead of a dev dependency
+* Migration code now correctly uses authentication headers when connecting to Elastic.
+
 ## 1.5.22
 * Security Updates
 * Updated editor
