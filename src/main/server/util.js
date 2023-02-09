@@ -1,4 +1,4 @@
-/*-
+/* -
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,473 +18,439 @@
  * --END_LICENSE--
  */
 
-require("./shims/levr.js");
-require("./shims/stjs.js");
+require('./shims/levr.js');
+require('./shims/stjs.js');
 
 
-global.skyrepoMigrate = async function (after) {
-    var elasticState = await httpGet(elasticEndpoint + "/", true, global.elasticHeaders());
-    if (elasticState == null)
-    {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Waiting for Elasticsearch to appear at "+elasticEndpoint+"...");
-        setTimeout(function(){skyrepoMigrate(after)},1000);
+global.skyrepoMigrate = async function(after) {
+    let elasticState = await httpGet(elasticEndpoint + '/', true, global.elasticHeaders());
+    if (elasticState == null) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Waiting for Elasticsearch to appear at '+elasticEndpoint+'...');
+        setTimeout(function() {
+            skyrepoMigrate(after);
+        }, 1000);
         return;
     }
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Current Elasticsearch Version: " + elasticState.version.number);
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Current Minimum Index Compatibility Version: " + elasticState.version.minimum_index_compatibility_version);
-    var health = "red";
-    health = (await httpGet(elasticEndpoint + "/_cluster/health",true, global.elasticHeaders())).status;
-    if (health != "yellow" && health != "green")
-    {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Waiting for cluster health...", health);
-        setTimeout(function(){skyrepoMigrate(after)},1000);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Current Elasticsearch Version: ' + elasticState.version.number);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Current Minimum Index Compatibility Version: ' + elasticState.version.minimum_index_compatibility_version);
+    let health = 'red';
+    health = (await httpGet(elasticEndpoint + '/_cluster/health', true, global.elasticHeaders())).status;
+    if (health != 'yellow' && health != 'green') {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Waiting for cluster health...', health);
+        setTimeout(function() {
+            skyrepoMigrate(after);
+        }, 1000);
         return;
     }
-    if (elasticState.version.number.startsWith("8."))
-    {
-        var settings = await httpPut({
-            "persistent" : {
-                "indices.id_field_data.enabled" : true
-            }
-        },elasticEndpoint + "/_cluster/settings", "application/json", global.elasticHeaders());
+    if (elasticState.version.number.startsWith('8.')) {
+        await httpPut({
+            'persistent': {
+                'indices.id_field_data.enabled': true,
+            },
+        }, elasticEndpoint + '/_cluster/settings', 'application/json', global.elasticHeaders());
     }
-    if (elasticState.version.number.startsWith("7.") && elasticState.version.minimum_index_compatibility_version == "6.0.0-beta1")
-    {
-        var settings = await httpGet(elasticEndpoint + "/_settings", true, global.elasticHeaders());
-        var indices = EcObject.keys(settings);
-        for (var i = 0; i < indices.length; i++)
-        {
-            var index = indices[i];
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Checking to see if " + index + " needs upgrading...");
-            if (index.startsWith("."))
-            {
+    if (elasticState.version.number.startsWith('7.') && elasticState.version.minimum_index_compatibility_version == '6.0.0-beta1') {
+        let settings = await httpGet(elasticEndpoint + '/_settings', true, global.elasticHeaders());
+        let indices = EcObject.keys(settings);
+        for (let i = 0; i < indices.length; i++) {
+            let index = indices[i];
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Checking to see if ' + index + ' needs upgrading...');
+            if (index.startsWith('.')) {
                 continue;
             }
-            if (settings[index].settings.index.version.created != "6081299" && settings[index].settings.index.version.created != "6082199" && settings[index].settings.index.version.created != "6082299" && settings[index].settings.index.version.created != "6082399")
-            {
+            if (settings[index].settings.index.version.created != '6081299' && settings[index].settings.index.version.created != '6082199' && settings[index].settings.index.version.created != '6082299' && settings[index].settings.index.version.created != '6082399') {
                 continue;
             }
 
-//            if (index.indexOf("https:") != -1)
-//            {
-//                var r2 = null;
-//                console.log(r2 = httpDelete(elasticEndpoint+"/"+index,true));
-//                continue;
-//            }
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing " + index + " -> .temp."+index.replace("https:..","").replace(":","."));
-            if (index == "permanent")
-            {
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
-                (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("assertion"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
+            //            if (index.indexOf("https:") != -1)
+            //            {
+            //                var r2 = null;
+            //                console.log(r2 = httpDelete(elasticEndpoint+"/"+index,true));
+            //                continue;
+            //            }
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Reindexing ' + index + ' -> .temp.'+index.replace('https:..', '').replace(':', '.'));
+            if (index == 'permanent') {
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
+                (doc)['enabled'] = false;
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('assertion')) {
+                await httpGet(elasticEndpoint + '/' + index + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "confidence":{type:"float"},
-                    "assertionDateDecrypted":{type:"long"}
+                    '@version': {type: 'long'},
+                    'confidence': {type: 'float'},
+                    'assertionDateDecrypted': {type: 'long'},
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("competency"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('competency')) {
+                await httpGet(elasticEndpoint + '/' + index + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "ceasn:codedNotation":{
-                        type:"text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
+                    '@version': {type: 'long'},
+                    'ceasn:codedNotation': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256,
+                            },
+                        },
+                    },
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("conceptscheme"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('conceptscheme')) {
+                await httpGet(elasticEndpoint + '/' + index + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "skos:hasTopConcept":{
-                        type:"text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
+                    '@version': {type: 'long'},
+                    'skos:hasTopConcept': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256,
+                            },
+                        },
+                    },
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else
-            {
-                var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true, global.elasticHeaders());
-                var setting = await httpGet(elasticEndpoint + "/" + index + "/_settings", true, global.elasticHeaders());
-                var fields = setting[index].settings?.index?.mapping?.total_fields.limit;
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else {
+                await httpGet(elasticEndpoint + '/' + index + '/_mapping', true, global.elasticHeaders());
+                let setting = await httpGet(elasticEndpoint + '/' + index + '/_settings', true, global.elasticHeaders());
+                let fields = setting[index].settings?.index?.mapping?.total_fields.limit;
                 if (!fields) {
                     fields = 1000;
                 }
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
-                (doc).properties = {"@version":{type:"long"}};
-                mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
+                (doc).properties = {'@version': {type: 'long'}};
+                mappings['settings'] = {'index.mapping.total_fields.limit': fields};
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             }
-            var r = null;
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
-                source:{index:index},
-                dest:{index:".temp."+index.replace("https:..","").replace(":","."),version_type:"external"}
-            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false", global.elasticHeaders()));
+            let r = null;
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', r = await httpPost(JSON.stringify({
+                source: {index: index},
+                dest: {index: '.temp.'+index.replace('https:..', '').replace(':', '.'), version_type: 'external'},
+            }), elasticEndpoint+'/_reindex?refresh=true', 'application/json', 'false', global.elasticHeaders()));
             if (r.error != null) continue;
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Deleting " + index);
-            var r2 = null;
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r2 = await httpDelete(elasticEndpoint+"/"+index,true, global.elasticHeaders()));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleting ' + index);
+            let r2 = null;
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', r2 = await httpDelete(elasticEndpoint+'/'+index, true, global.elasticHeaders()));
             if (r2.error != null) continue;
-            //if (r.total == 0) continue;
-            if (index == "permanent")
-            {
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
-                (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("competency"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
+            // if (r.total == 0) continue;
+            if (index == 'permanent') {
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
+                (doc)['enabled'] = false;
+                let result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('competency')) {
+                await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "ceasn:codedNotation":{
-                        type:"text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
+                    '@version': {type: 'long'},
+                    'ceasn:codedNotation': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256,
+                            },
+                        },
+                    },
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("conceptscheme"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
+                let result = await httpPut(mappings, elasticEndpoint + '/'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('conceptscheme')) {
+                await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "skos:hasTopConcept":{
-                        type:"text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
+                    '@version': {type: 'long'},
+                    'skos:hasTopConcept': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256,
+                            },
+                        },
+                    },
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("assertion"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
+                let result = await httpPut(mappings, elasticEndpoint + '/'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('assertion')) {
+                await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "confidence":{type:"float"},
-                    "assertionDateDecrypted":{type:"long"}
+                    '@version': {type: 'long'},
+                    'confidence': {type: 'float'},
+                    'assertionDateDecrypted': {type: 'long'},
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else
-            {
-                var mapping = await httpGet(elasticEndpoint + "/.temp." + index.replace("https:..","").replace(":",".") + "/_mapping", true, global.elasticHeaders());
-                var setting = await httpGet(elasticEndpoint + "/.temp." + index + "/_settings", true, global.elasticHeaders());
-                var fields = setting[".temp." + index].settings?.index?.mapping?.total_fields.limit;
+                let result = await httpPut(mappings, elasticEndpoint + '/'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else {
+                await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_mapping', true, global.elasticHeaders());
+                let setting = await httpGet(elasticEndpoint + '/.temp.' + index + '/_settings', true, global.elasticHeaders());
+                let fields = setting['.temp.' + index].settings?.index?.mapping?.total_fields.limit;
                 if (!fields) {
                     fields = 1000;
                 }
-                var mappings = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = doc;
-                (doc).properties = {"@version":{type:"long"}};
-                mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index.replace("https:..","").replace(":","."), "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
+                let mappings = {};
+                let doc = {};
+                (mappings)['mappings'] = doc;
+                (doc).properties = {'@version': {type: 'long'}};
+                mappings['settings'] = {'index.mapping.total_fields.limit': fields};
+                let result = await httpPut(mappings, elasticEndpoint + '/'+index.replace('https:..', '').replace(':', '.'), 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing .temp." + index.replace("https:..","").replace(":",".") + " -> "+index.replace("https:..","").replace(":","."));
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
-                source:{index:".temp."+index.replace("https:..","").replace(":",".")},
-                dest:{index:index.replace("https:..","").replace(":","."),version_type:"external"}
-            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false", global.elasticHeaders()));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Reindexing .temp.' + index.replace('https:..', '').replace(':', '.') + ' -> '+index.replace('https:..', '').replace(':', '.'));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', r = await httpPost(JSON.stringify({
+                source: {index: '.temp.'+index.replace('https:..', '').replace(':', '.')},
+                dest: {index: index.replace('https:..', '').replace(':', '.'), version_type: 'external'},
+            }), elasticEndpoint+'/_reindex?refresh=true', 'application/json', 'false', global.elasticHeaders()));
             if (r.error != null) continue;
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Deleting .temp." + index.replace("https:..","").replace(":","."));
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", await httpDelete(elasticEndpoint+"/.temp."+index.replace("https:..","").replace(":","."),true));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleting .temp.' + index.replace('https:..', '').replace(':', '.'));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', await httpDelete(elasticEndpoint+'/.temp.'+index.replace('https:..', '').replace(':', '.'), true));
         }
     }
-    if (elasticState.version.number.startsWith("6.") && elasticState.version.minimum_index_compatibility_version == "5.0.0")
-    {
-        var settings = await httpGet(elasticEndpoint + "/_settings", true, global.elasticHeaders());
-        var indices = EcObject.keys(settings);
-        for (var i = 0; i < indices.length; i++)
-        {
-            var index = indices[i];
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Checking to see if " + index + " needs upgrading...");
-            if (index.startsWith("."))
-            {
+    if (elasticState.version.number.startsWith('6.') && elasticState.version.minimum_index_compatibility_version == '5.0.0') {
+        let settings = await httpGet(elasticEndpoint + '/_settings', true, global.elasticHeaders());
+        let indices = EcObject.keys(settings);
+        for (let i = 0; i < indices.length; i++) {
+            let index = indices[i];
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Checking to see if ' + index + ' needs upgrading...');
+            if (index.startsWith('.')) {
                 continue;
             }
-            if (settings[index].settings.index.version.created != "5061299" && settings[index].settings.index.version.created != "5061699" && settings[index].settings.index.version.created != "5040099")
-            {
+            if (settings[index].settings.index.version.created != '5061299' && settings[index].settings.index.version.created != '5061699' && settings[index].settings.index.version.created != '5040099') {
                 continue;
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing " + index + " -> .temp."+index);
-            if (index == "permanent")
-            {
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
-                (permNoIndex)["permanent"] = doc;
-                (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("assertion"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Reindexing ' + index + ' -> .temp.'+index);
+            if (index == 'permanent') {
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
+                (permNoIndex)['permanent'] = doc;
+                (doc)['enabled'] = false;
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index, 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('assertion')) {
+                let mapping = await httpGet(elasticEndpoint + '/' + index + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
                 if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 }
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "confidence":{type:"float"},
-                    "assertionDateDecrypted":{type:"long"}
+                    '@version': {type: 'long'},
+                    'confidence': {type: 'float'},
+                    'assertionDateDecrypted': {type: 'long'},
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("competency"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index, 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('competency')) {
+                let mapping = await httpGet(elasticEndpoint + '/' + index + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
                 if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 } else if (index.indexOf('encryptedvalue') !== -1) {
                     let substring = index.substring(0, index.lastIndexOf('.') + 1);
-                    (permNoIndex)[substring + "EncryptedValue"] = doc;
+                    (permNoIndex)[substring + 'EncryptedValue'] = doc;
                 }
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "ceasn:codedNotation":{
-                        type:"text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
+                    '@version': {type: 'long'},
+                    'ceasn:codedNotation': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256,
+                            },
+                        },
+                    },
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else
-            {
-                var mapping = await httpGet(elasticEndpoint + "/" + index + "/_mapping", true, global.elasticHeaders());
-                var setting = await httpGet(elasticEndpoint + "/" + index + "/_settings", true, global.elasticHeaders());
-                var fields = setting[index].settings?.index?.mapping?.total_fields.limit;
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index, 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else {
+                let mapping = await httpGet(elasticEndpoint + '/' + index + '/_mapping', true, global.elasticHeaders());
+                let setting = await httpGet(elasticEndpoint + '/' + index + '/_settings', true, global.elasticHeaders());
+                let fields = setting[index].settings?.index?.mapping?.total_fields.limit;
                 if (!fields) {
                     fields = 1000;
                 }
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
                 if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 }
-                (doc).properties = {"@version":{type:"long"}};
-                mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/.temp."+index, "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
+                (doc).properties = {'@version': {type: 'long'}};
+                mappings['settings'] = {'index.mapping.total_fields.limit': fields};
+                let result = await httpPut(mappings, elasticEndpoint + '/.temp.'+index, 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             }
-            var r = null;
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
-                source:{index:index},
-                dest:{index:".temp."+index,version_type:"external"}
-            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false", global.elasticHeaders()));
+            let r = null;
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', r = await httpPost(JSON.stringify({
+                source: {index: index},
+                dest: {index: '.temp.'+index, version_type: 'external'},
+            }), elasticEndpoint+'/_reindex?refresh=true', 'application/json', 'false', global.elasticHeaders()));
             if (r.error != null) continue;
-            var r2 = null;
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r2 = await httpDelete(elasticEndpoint+"/"+index,true, global.elasticHeaders()));
+            let r2 = null;
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', r2 = await httpDelete(elasticEndpoint+'/'+index, true, global.elasticHeaders()));
             if (r2.error != null) continue;
-            //if (r.total == 0) continue;
-            if (index == "permanent")
-            {
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
-                (permNoIndex)["permanent"] = doc;
-                (doc)["enabled"] = false;
-                var result = await httpPut(mappings, elasticEndpoint + "/permanent", "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("competency"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/.temp." + index + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
-                if (EcObject.keys(mapping[".temp."+index].mappings)[0]) {
-                    (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
+            // if (r.total == 0) continue;
+            if (index == 'permanent') {
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
+                (permNoIndex)['permanent'] = doc;
+                (doc)['enabled'] = false;
+                let result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('competency')) {
+                let mapping = await httpGet(elasticEndpoint + '/.temp.' + index + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
+                if (EcObject.keys(mapping['.temp.'+index].mappings)[0]) {
+                    (permNoIndex)[EcObject.keys(mapping['.temp.'+index].mappings)[0]] = doc;
                 }
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "ceasn:codedNotation":{
-                        type:"text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
+                    '@version': {type: 'long'},
+                    'ceasn:codedNotation': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256,
+                            },
+                        },
+                    },
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else if (index.endsWith("assertion"))
-            {
-                var mapping = await httpGet(elasticEndpoint + "/.temp." + index + "/_mapping", true, global.elasticHeaders());
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
-                if (EcObject.keys(mapping[".temp."+index].mappings)[0]) {
-                    (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
+                let result = await httpPut(mappings, elasticEndpoint + '/'+index, 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else if (index.endsWith('assertion')) {
+                let mapping = await httpGet(elasticEndpoint + '/.temp.' + index + '/_mapping', true, global.elasticHeaders());
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
+                if (EcObject.keys(mapping['.temp.'+index].mappings)[0]) {
+                    (permNoIndex)[EcObject.keys(mapping['.temp.'+index].mappings)[0]] = doc;
                 }
                 (doc).properties = {
-                    "@version":{type:"long"},
-                    "confidence":{type:"float"},
-                    "assertionDateDecrypted":{type:"long"}
+                    '@version': {type: 'long'},
+                    'confidence': {type: 'float'},
+                    'assertionDateDecrypted': {type: 'long'},
                 };
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
-            }
-            else
-            {
-                var mapping = await httpGet(elasticEndpoint + "/.temp." + index + "/_mapping", true, global.elasticHeaders());
-                var setting = await httpGet(elasticEndpoint + "/.temp." + index + "/_settings", true, global.elasticHeaders());
-                var fields = setting[".temp." + index].settings?.index?.mapping?.total_fields.limit;
+                let result = await httpPut(mappings, elasticEndpoint + '/'+index, 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
+            } else {
+                let mapping = await httpGet(elasticEndpoint + '/.temp.' + index + '/_mapping', true, global.elasticHeaders());
+                let setting = await httpGet(elasticEndpoint + '/.temp.' + index + '/_settings', true, global.elasticHeaders());
+                let fields = setting['.temp.' + index].settings?.index?.mapping?.total_fields.limit;
                 if (!fields) {
                     fields = 1000;
                 }
-                var mappings = new Object();
-                var permNoIndex = new Object();
-                var doc = new Object();
-                (mappings)["mappings"] = permNoIndex;
-                if (EcObject.keys(mapping[".temp."+index].mappings)[0]) {
-                    (permNoIndex)[EcObject.keys(mapping[".temp."+index].mappings)[0]] = doc;
+                let mappings = {};
+                let permNoIndex = {};
+                let doc = {};
+                (mappings)['mappings'] = permNoIndex;
+                if (EcObject.keys(mapping['.temp.'+index].mappings)[0]) {
+                    (permNoIndex)[EcObject.keys(mapping['.temp.'+index].mappings)[0]] = doc;
                 }
-                (doc).properties = {"@version":{type:"long"}};
-                mappings["settings"] = {"index.mapping.total_fields.limit": fields};
-                var result = await httpPut(mappings, elasticEndpoint + "/"+index, "application/json", global.elasticHeaders());
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
+                (doc).properties = {'@version': {type: 'long'}};
+                mappings['settings'] = {'index.mapping.total_fields.limit': fields};
+                let result = await httpPut(mappings, elasticEndpoint + '/'+index, 'application/json', global.elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Reindexing .temp." + index + " -> "+index);
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", r = await httpPost(JSON.stringify({
-                source:{index:".temp."+index},
-                dest:{index:index,version_type:"external"}
-            }),elasticEndpoint+"/_reindex?refresh=true", "application/json", "false"));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Reindexing .temp.' + index + ' -> '+index);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', r = await httpPost(JSON.stringify({
+                source: {index: '.temp.'+index},
+                dest: {index: index, version_type: 'external'},
+            }), elasticEndpoint+'/_reindex?refresh=true', 'application/json', 'false'));
             if (r.error != null) continue;
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", "Deleting .temp." + index);
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", await httpDelete(elasticEndpoint+"/.temp."+index,true, global.elasticHeaders()));
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleting .temp.' + index);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', await httpDelete(elasticEndpoint+'/.temp.'+index, true, global.elasticHeaders()));
         }
     }
     after();
 };
 
-skyrepoReindex = async function () {
-    if (this.params.debug != null)
+skyrepoReindex = async function() {
+    if (this.params.debug != null) {
         skyrepoDebug = true;
-    if (this.params.secret.trim() !== skyIdSecret().trim())
-        error("You must provide secret=`cat skyId.secret` to invoke reindex.", 401);
+    }
+    if (this.params.secret.trim() !== skyIdSecret().trim()) {
+        error('You must provide secret=`cat skyId.secret` to invoke reindex.', 401);
+    }
 
-    var firstQueryPost = {
+    let firstQueryPost = {
         query: {
-            query_string: {query: "*:*"}
+            query_string: {query: '*:*'},
         },
-        explain: "false",
-        size: "50",
-        sort: "_doc"
+        explain: 'false',
+        size: '50',
+        sort: '_doc',
     };
-    var firstQueryUrl = elasticEndpoint + "/permanent/_search?scroll=1m&version";
-    var results = await httpPost(JSON.stringify(firstQueryPost), firstQueryUrl, "application/json", "false", global.elasticHeaders());
-    var scroll = results["_scroll_id"];
-    var counter = 0;
-    while (results != null && scroll != null && scroll != "") {
-        scroll = results["_scroll_id"];
-        var hits = results.hits.hits;
-        if (hits.length == 0)
+    let firstQueryUrl = elasticEndpoint + '/permanent/_search?scroll=1m&version';
+    let results = await httpPost(JSON.stringify(firstQueryPost), firstQueryUrl, 'application/json', 'false', global.elasticHeaders());
+    let scroll = results['_scroll_id'];
+    let counter = 0;
+    while (results != null && scroll != null && scroll != '') {
+        scroll = results['_scroll_id'];
+        let hits = results.hits.hits;
+        if (hits.length == 0) {
             break;
-        for (var i = 0; i < hits.length; i++) {
+        }
+        for (let i = 0; i < hits.length; i++) {
             let hit = hits[i];
-			let id = hit._id;
-            if(id.indexOf(".") == id.length-1) {
-                if (++counter % 1000 == 0)
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepReindex", "Reindexed " + counter + " records.");
-                await skyrepoPutInternal.call(this,JSON.parse(hit["_source"].data), hit["_id"].replace("." + hit["_version"], "").replace(/\.$/, ""), null, hit["_type"]);
+            let id = hit._id;
+            if (id.indexOf('.') == id.length-1) {
+                if (++counter % 1000 == 0) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepReindex', 'Reindexed ' + counter + ' records.');
+                }
+                await skyrepoPutInternal.call(this, JSON.parse(hit['_source'].data), hit['_id'].replace('.' + hit['_version'], '').replace(/\.$/, ''), null, hit['_type']);
             }
         }
-        results = await httpGet(elasticEndpoint + "/_search/scroll?scroll=1m&scroll_id=" + scroll, global.elasticHeaders());
+        results = await httpGet(elasticEndpoint + '/_search/scroll?scroll=1m&scroll_id=' + scroll, global.elasticHeaders());
     }
-    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepReindex", "Reindexed " + counter + " records.");
-    if (this.params.debug != null)
+    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepReindex', 'Reindexed ' + counter + ' records.');
+    if (this.params.debug != null) {
         skyrepoDebug = false;
-}
-bindWebService("/util/reindex", skyrepoReindex);
+    }
+};
+bindWebService('/util/reindex', skyrepoReindex);
 
 // skyrepoBackup = function () {
 //     if (this.params.secret != skyIdSecret())
@@ -547,20 +513,23 @@ bindWebService("/util/reindex", skyrepoReindex);
 //     return JSON.stringify(log, null, 2);
 // }
 // bindWebService("/util/restore", skyrepoRestore);
-var skyIdSecret = ()=>{return loadConfigurationFile("skyId.secret", function() {
-    return randomString(2048);
-})}
-skyrepoPurge = async function () {
-    if (this.params.secret != skyIdSecret())
-        error("You must provide secret=`cat skyId.secret` to invoke purge.", 401);
-    var log = [];
-    var settings = await httpGet(elasticEndpoint + "/_mapping", "application/json", null, true, global.elasticHeaders());
-    var indices = EcObject.keys(settings);
-    var types = [];
-    for (var i = 0; i < indices.length; i++) {
+let skyIdSecret = ()=>{
+    return loadConfigurationFile('skyId.secret', function() {
+        return randomString(2048);
+    });
+};
+skyrepoPurge = async function() {
+    if (this.params.secret != skyIdSecret()) {
+        error('You must provide secret=`cat skyId.secret` to invoke purge.', 401);
+    }
+    let log = [];
+    let settings = await httpGet(elasticEndpoint + '/_mapping', 'application/json', null, true, global.elasticHeaders());
+    let indices = EcObject.keys(settings);
+    let types = [];
+    for (let i = 0; i < indices.length; i++) {
         types = types.concat(EcObject.keys(settings[indices[i]].mappings));
-        log.push(await httpDelete(elasticEndpoint + "/" + indices[i],true,global.elasticHeaders()));
+        log.push(await httpDelete(elasticEndpoint + '/' + indices[i], true, global.elasticHeaders()));
     }
     return JSON.stringify(log, null, 2);
-}
-bindWebService("/util/purge", skyrepoPurge);
+};
+bindWebService('/util/purge', skyrepoPurge);

@@ -8659,22 +8659,17 @@ const skyrepoGetIndex = async function(id, version, type) {
     }
 };
 const skyrepoManyGetIndex = async function(manyParseParams) {
-    if (type !== undefined && type != null && type != '') {
-        const results = await skyrepoManyGetIndexInternal(type.toLowerCase(), manyParseParams);
-        return results;
-    } else {
-        const results = [];
-        for (const parseParams of manyParseParams) {
-            const id = (parseParams)['id'];
-            const type = (parseParams)['type'];
-            const version = (parseParams)['version'];
-            const result = await skyrepoGetIndexSearch(id, version, type);
-            if (result != null) {
-                results.push(result);
-            }
+    const results = [];
+    for (const parseParams of manyParseParams) {
+        const id = (parseParams)['id'];
+        const type = (parseParams)['type'];
+        const version = (parseParams)['version'];
+        const result = await skyrepoGetIndexSearch(id, version, type);
+        if (result != null) {
+            results.push(result);
         }
-        return results;
     }
+    return results;
 };
 const skyrepoGetPermanent = async function(id, version, type) {
     const result = await skyrepoGetIndexInternal.call(this, 'permanent', id, version, type);
@@ -9253,40 +9248,17 @@ const endpointData = async function() {
  *       - Search
  *     description: Searches for data in the system.
  *     parameters:
- *       - in: query
- *         type: string
- *         name: q
- *         allowReserved: true
- *         description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
- *         example: name:* AND @type:Competency
- *       - in: query
- *         type: integer
- *         name: start
- *         required: false
- *         description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
- *         example: 0
- *       - in: query
- *         type: integer
- *         name: size
- *         required: false
- *         description: The number of results to return. Max 10000 without changes to Elastic.
- *         example: 10000
- *       - in: query
- *         type: string
- *         name: index_hint
- *         required: false
- *         allowReserved: true
- *         description: Provides an index hinting string to accelerate typed search and avoid searching _all.
- *         example: "*competency,*encryptedvalue"
+ *       - $ref: '#/components/parameters/q'
+ *       - $ref: '#/components/parameters/start'
+ *       - $ref: '#/components/parameters/size'
+ *       - $ref: '#/components/parameters/index_hint'
  *     responses:
  *       200:
  *         description: Success
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               description: Array of results
- *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               $ref: '#/components/schemas/JsonLdArray'
  *   post:
  *     tags:
  *       - Search
@@ -9295,62 +9267,22 @@ const endpointData = async function() {
  *       content:
  *         multipart/form-data:
  *           schema:
- *             type: object
- *             properties:
- *               searchParams:
- *                 type: object
- *                 properties:
- *                   q:
- *                     type: string
- *                     required: true
- *                     description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
- *                     example: name:* AND @type:Competency
- *                   start:
- *                     type: integer
- *                     required: false
- *                     description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
- *                     example: 0
- *                   size:
- *                     type: integer
- *                     required: false
- *                     description: The number of results to return. Max 10000 without changes to Elastic.
- *                     example: 10000
- *                   sort:
- *                     type: string
- *                     required: false
- *                     description: Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html
- *                     example: "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
- *                   index_hint:
- *                     type: string
- *                     required: false
- *                     description: Provides an index hinting string to accelerate typed search and avoid searching _all.
- *                     example: "*competency,*encryptedvalue"
+ *             $ref: '#/components/schemas/SearchParams'
  *     responses:
  *       200:
  *         description: Success
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               description: Array of results
- *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               $ref: '#/components/schemas/JsonLdArray'
  * /api/data/{uid}:
  *   get:
  *     tags:
- *       - Search
- *     description: Searches for data in the system.
+ *       - Repository
+ *     description: Retrieves data from the system.
  *     parameters:
- *       - in: path
- *         type: string
- *         name: uid
- *         allowReserved: true
- *         description: GUID, unique identifier, or MD5 of an object's @id.
- *         example: ce-07c25f74-9119-11e8-b852-782bcb5df6ac
- *       - in: query
- *         type: boolean
- *         name: history
- *         description: Fetches history of object. Will only return portions of the object's history that the user is allowed to see.
- *         example: false
+ *       - $ref: '#/components/parameters/uid'
+ *       - $ref: '#/components/parameters/history'
  *     responses:
  *       200:
  *         description: Success
@@ -9358,41 +9290,40 @@ const endpointData = async function() {
  *           application/json:
  *             schema:
  *               oneOf:
- *               - type: object
- *                 description: Result
- *                 example: {"@context":"<url>","@id":"<url>","@type":"<string>"}
- *               - type: array
- *                 description: Array of historical results
- *                 example: [{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               - $ref: '#/components/schemas/JsonLd'
+ *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         description: Failure to locate data due to permission or absence of data.
- *         content:
- *           text/plain:
- *             description: Error message, if any.
+ *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *   post:
+ *     tags:
+ *       - Repository
+ *     description: Puts data into the system.
+ *     parameters:
+ *       - $ref: '#/components/parameters/uid'
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               data:
+ *                 $ref: '#/components/schemas/JsonLd'
+ *               signatureSheet:
+ *                 $ref: '#/components/schemas/SignatureSheet'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         $ref: '#/components/responses/404PermissionOrAbsent'
  * /api/data/{type}/{uid}:
  *   get:
  *     tags:
- *       - Search
+ *       - Repository
  *     description: Searches for data in the system.
  *     parameters:
- *       - in: path
- *         type: string
- *         name: uid
- *         allowReserved: true
- *         description: GUID, unique identifier, or MD5 of an object's @id.
- *         example: ce-07c25f74-9119-11e8-b852-782bcb5df6ac
- *       - in: path
- *         type: string
- *         name: type
- *         allowReserved: true
- *         description: Type of the object, with namespace, normalized
- *         example: schema.cassproject.org.0.4.Framework
- *       - in: query
- *         type: boolean
- *         name: history
- *         required: false
- *         description: Fetches history of object. Will only return portions of the object's history that the user is allowed to see.
- *         example: false
+ *       - $ref: '#/components/parameters/uid'
+ *       - $ref: '#/components/parameters/type'
+ *       - $ref: '#/components/parameters/history'
  *     responses:
  *       200:
  *         description: Success
@@ -9400,47 +9331,20 @@ const endpointData = async function() {
  *           application/json:
  *             schema:
  *               oneOf:
- *               - type: object
- *                 description: Result
- *                 example: {"@context":"<url>","@id":"<url>","@type":"<string>"}
- *               - type: array
- *                 description: Array of historical results
- *                 example: [{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               - $ref: '#/components/schemas/JsonLd'
+ *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         description: Failure to locate data due to permission or absence of data.
- *         content:
- *           text/plain:
- *             description: Error message, if any.
+ *         $ref: '#/components/responses/404PermissionOrAbsent'
  * /api/data/{type}/{uid}/{version}:
  *   get:
  *     tags:
- *       - Search
+ *       - Repository
  *     description: Searches for data in the system.
  *     parameters:
- *       - in: path
- *         type: string
- *         name: uid
- *         allowReserved: true
- *         description: GUID, unique identifier, or MD5 of an object's @id.
- *         example: ce-07c25f74-9119-11e8-b852-782bcb5df6ac
- *       - in: path
- *         type: string
- *         name: type
- *         allowReserved: true
- *         description: Type of the object, with namespace, normalized
- *         example: schema.cassproject.org.0.4.Framework
- *       - in: path
- *         type: string
- *         name: type
- *         allowReserved: true
- *         description: Type of the object, with namespace, normalized
- *         example: schema.cassproject.org.0.4.Framework
- *       - in: query
- *         type: boolean
- *         name: history
- *         required: false
- *         description: Fetches history of object. Will only return portions of the object's history that the user is allowed to see.
- *         example: false
+ *       - $ref: '#/components/parameters/type'
+ *       - $ref: '#/components/parameters/uid'
+ *       - $ref: '#/components/parameters/version'
+ *       - $ref: '#/components/parameters/history'
  *     responses:
  *       200:
  *         description: Success
@@ -9448,17 +9352,10 @@ const endpointData = async function() {
  *           application/json:
  *             schema:
  *               oneOf:
- *               - type: object
- *                 description: Result
- *                 example: {"@context":"<url>","@id":"<url>","@type":"<string>"}
- *               - type: array
- *                 description: Array of historical results
- *                 example: [{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               - $ref: '#/components/schemas/JsonLd'
+ *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         description: Failure to locate data due to permission or absence of data.
- *         content:
- *           text/plain:
- *             description: Error message, if any.
+ *         $ref: '#/components/responses/404PermissionOrAbsent'
  */
 bindWebService('/data/*', endpointData);
 const endpointMultiGet = async function() {
@@ -9680,40 +9577,17 @@ const skyRepoSearch = async function() {
  *     deprecated: true
  *     description: Searches for data in the system.
  *     parameters:
- *       - in: query
- *         type: string
- *         name: q
- *         allowReserved: true
- *         description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
- *         example: name:* AND @type:Competency
- *       - in: query
- *         type: integer
- *         name: start
- *         required: false
- *         description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
- *         example: 0
- *       - in: query
- *         type: integer
- *         name: size
- *         required: false
- *         description: The number of results to return. Max 10000 without changes to Elastic.
- *         example: 10000
- *       - in: query
- *         type: string
- *         name: index_hint
- *         required: false
- *         allowReserved: true
- *         description: Provides an index hinting string to accelerate typed search and avoid searching _all.
- *         example: "*Competency,*encryptedvalue"
+ *       - $ref: '#/components/parameters/q'
+ *       - $ref: '#/components/parameters/start'
+ *       - $ref: '#/components/parameters/size'
+ *       - $ref: '#/components/parameters/index_hint'
  *     responses:
  *       200:
  *         description: Success
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               description: Array of results
- *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               $ref: '#/components/schemas/JsonLdArray'
  *   post:
  *     tags:
  *       - Search
@@ -9723,44 +9597,14 @@ const skyRepoSearch = async function() {
  *       content:
  *         multipart/form-data:
  *           schema:
- *             type: object
- *             properties:
- *               data:
- *                 type: string
- *                 description: Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
- *                 example: name:* AND @type:Competency
- *               searchParams:
- *                 type: object
- *                 properties:
- *                   start:
- *                     type: integer
- *                     required: false
- *                     description: If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.
- *                     example: 0
- *                   size:
- *                     type: integer
- *                     required: false
- *                     description: The number of results to return. Max 10000 without changes to Elastic.
- *                     example: 10000
- *                   sort:
- *                     type: string
- *                     required: false
- *                     description: Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html
- *                     example: "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
- *                   index_hint:
- *                     type: string
- *                     required: false
- *                     description: Provides an index hinting string to accelerate typed search and avoid searching _all.
- *                     example: "*competency,*encryptedvalue"
+ *             $ref: '#/components/schemas/SearchParams'
  *     responses:
  *       200:
  *         description: Success
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               description: Array of results
- *               example: [{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"},{"@context":"<url>","@id":"<url>","@type":"<string>"}]
+ *               $ref: '#/components/schemas/JsonLdArray'
  */
 bindWebService('/sky/repo/search', skyRepoSearch);
 const endpointAdmin = function() {
@@ -9904,7 +9748,62 @@ const pingWithTime = function() {
  *                   required: true
  *                   description: Array of admin public keys
  *                   example: ["<public key>"]
+ *                 corsCredentials:
+ *                   type: boolean
+ *                   required: false
+ *                   description: Whether the server can use cross-origin credentials to reach other systems.
+ *                   example: true
  */
 bindWebService('/ping', pingWithTime);
+/**
+ * @openapi
+ * /api/sky/repo/multiGet:
+ *   post:
+ *     tags:
+ *       - Repository
+ *     description: 'Fetches multiple pieces of data simultaneously. Note, testing this function does not work. See: https://stackoverflow.com/questions/68291244/how-to-format-a-json-array-in-the-request-body-of-a-multipart-form-data-request/68291856#68291856'
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               data:
+ *                 $ref: '#/components/schemas/MultiGetParams'
+ *               signatureSheet:
+ *                 $ref: '#/components/schemas/SignatureSheet'
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/JsonLdArray'
+ */
 bindWebService('/sky/repo/multiGet', endpointMultiGet);
+/**
+ * @openapi
+ * /api/sky/repo/multiPut:
+ *   post:
+ *     tags:
+ *       - Repository
+ *     description: 'Stores multiple pieces of data simultaneously. Note, testing this function does not work. See: https://stackoverflow.com/questions/68291244/how-to-format-a-json-array-in-the-request-body-of-a-multipart-form-data-request/68291856#68291856'
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               data:
+ *                 $ref: '#/components/schemas/JsonLdArray'
+ *               signatureSheet:
+ *                 $ref: '#/components/schemas/SignatureSheet'
+ *     responses:
+ *       200:
+ *         description: Returns data that was saved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/JsonLdArray'
+ */
 bindWebService('/sky/repo/multiPut', endpointMultiPut);

@@ -1,0 +1,274 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CaSS",
+        "version": "1.5.23"
+    },
+    "components": {
+        "parameters": {
+            "searchQuery": {
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "q",
+                "allowReserved": true,
+                "description": "Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax",
+                "example": "name:* AND @type:Competency"
+            },
+            "uid": {
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "uid",
+                "required": true,
+                "allowReserved": true,
+                "description": "GUID, unique identifier, or MD5 of an object's @id.",
+                "example": "ce-07c25f74-9119-11e8-b852-782bcb5df6ac"
+            },
+            "type": {
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "type",
+                "required": true,
+                "allowReserved": true,
+                "description": "Type of the object, with namespace, normalized",
+                "example": "schema.cassproject.org.0.4.Framework"
+            },
+            "history": {
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "history",
+                "required": false,
+                "description": "Fetches history of object. Will only return portions of the object's history that the user is allowed to see.",
+                "example": false
+            },
+            "version": {
+                "in": "query",
+                "schema": {
+                    "type": "integer"
+                },
+                "name": "version",
+                "required": false,
+                "description": "Version of the object. For CaSS-created data, the timestamp of the modification. For otherwise-registered data, increments from 1",
+                "example": 1675901084853
+            },
+            "q": {
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "q",
+                "allowReserved": true,
+                "description": "Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax",
+                "example": "name:* AND @type:Competency"
+            },
+            "start": {
+                "in": "query",
+                "schema": {
+                    "type": "integer"
+                },
+                "name": "start",
+                "required": false,
+                "description": "If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.",
+                "example": 0
+            },
+            "size": {
+                "in": "query",
+                "schema": {
+                    "type": "integer"
+                },
+                "name": "size",
+                "required": false,
+                "description": "The number of results to return. Max 10000 without changes to Elastic.",
+                "example": 10000
+            },
+            "index_hint": {
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "index_hint",
+                "required": false,
+                "allowReserved": true,
+                "description": "Provides an index hinting string to accelerate typed search and avoid searching _all.",
+                "example": "*competency,*encryptedvalue"
+            }
+        },
+        "schemas": {
+            "SignatureSheet": {
+                "type": "array",
+                "description": "Array of Signatures.",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "@type of the signature per JSON-LD Specification.",
+                            "example": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodYG6jIBqwmshwMD9Ahy9c1on/m0/tVsSHpaefOlRScFV5LmOzisxv4dBHzM7cVElrYP148yIKmXJ/mRNE7tOv5RBoC+kPNoL+9hiw+UnlZEQgjWj7zib1jTVi5YeqHehHiY470YR1dL44QsTIg0hbynJeCq5dbkXK+TdEqL3m0EOjlAVGr8V7awWU29zb5UQuzV/bcSr4LddeJULQVmUxD8gRolR426CRvwuSmf2mS4UuGGSJQu5FmrDcIMmp3/DeEhzlrJLMi2PmjSJHsUJiQBs6eh6gmsFPGSOr8SUQM5pvuCgJMmurLb9mxIKIatbTUcm2JxIICPiRlNzXpMCwIDAQAB-----END PUBLIC KEY-----"
+                        },
+                        "context": {
+                            "type": "string",
+                            "description": "@context of the signature per JSON-LD Specification.",
+                            "example": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodYG6jIBqwmshwMD9Ahy9c1on/m0/tVsSHpaefOlRScFV5LmOzisxv4dBHzM7cVElrYP148yIKmXJ/mRNE7tOv5RBoC+kPNoL+9hiw+UnlZEQgjWj7zib1jTVi5YeqHehHiY470YR1dL44QsTIg0hbynJeCq5dbkXK+TdEqL3m0EOjlAVGr8V7awWU29zb5UQuzV/bcSr4LddeJULQVmUxD8gRolR426CRvwuSmf2mS4UuGGSJQu5FmrDcIMmp3/DeEhzlrJLMi2PmjSJHsUJiQBs6eh6gmsFPGSOr8SUQM5pvuCgJMmurLb9mxIKIatbTUcm2JxIICPiRlNzXpMCwIDAQAB-----END PUBLIC KEY-----"
+                        },
+                        "expiry": {
+                            "type": "integer",
+                            "description": "Expiration date of this signature measured in milliseconds since the Unix Epoch.",
+                            "example": 1675901144907
+                        },
+                        "server": {
+                            "type": "string",
+                            "description": "PEM encoded public key of the entity who wants to perform this action. Used to validate @signature. Compared against the @owner or @reader field of objects that are having operations performed against them.",
+                            "example": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodYG6jIBqwmshwMD9Ahy9c1on/m0/tVsSHpaefOlRScFV5LmOzisxv4dBHzM7cVElrYP148yIKmXJ/mRNE7tOv5RBoC+kPNoL+9hiw+UnlZEQgjWj7zib1jTVi5YeqHehHiY470YR1dL44QsTIg0hbynJeCq5dbkXK+TdEqL3m0EOjlAVGr8V7awWU29zb5UQuzV/bcSr4LddeJULQVmUxD8gRolR426CRvwuSmf2mS4UuGGSJQu5FmrDcIMmp3/DeEhzlrJLMi2PmjSJHsUJiQBs6eh6gmsFPGSOr8SUQM5pvuCgJMmurLb9mxIKIatbTUcm2JxIICPiRlNzXpMCwIDAQAB-----END PUBLIC KEY-----"
+                        },
+                        "@owner": {
+                            "type": "string",
+                            "description": "PEM encoded public key of the entity who wants to perform this action. Used to validate @signature. Compared against the @owner or @reader field of objects that are having operations performed against them.",
+                            "example": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodYG6jIBqwmshwMD9Ahy9c1on/m0/tVsSHpaefOlRScFV5LmOzisxv4dBHzM7cVElrYP148yIKmXJ/mRNE7tOv5RBoC+kPNoL+9hiw+UnlZEQgjWj7zib1jTVi5YeqHehHiY470YR1dL44QsTIg0hbynJeCq5dbkXK+TdEqL3m0EOjlAVGr8V7awWU29zb5UQuzV/bcSr4LddeJULQVmUxD8gRolR426CRvwuSmf2mS4UuGGSJQu5FmrDcIMmp3/DeEhzlrJLMi2PmjSJHsUJiQBs6eh6gmsFPGSOr8SUQM5pvuCgJMmurLb9mxIKIatbTUcm2JxIICPiRlNzXpMCwIDAQAB-----END PUBLIC KEY-----"
+                        },
+                        "@signature": {
+                            "type": "string",
+                            "description": "Base64 encoded cryptographic signature of this object (minus @signature) by the private key holder identified by @owner.",
+                            "example": "JCZlDnSSRKII+bXChVzmCTLe7YPpw+6U+m/fEMR88flveU565QtwyVKY54HfbL5mDa3FtVuxHYTdExeNRj6Q16Tr9AYIAWVc3ckk4ROcWHDcgT73eOrxv238+oBMJAfUw6PvoC/fE68ToUCCcAXq6lhxx2yDzqRT4SZIeRcLQBFcEoHMLdP9lOepzJ5gqpaOkmwz2JKv1qjPbhf7tIA9w/AyW2Skx5Uoh4PoOqRH9YhZHcsKI5h5OKWX+X9y8tFVDm7TdV1ZBTS65Kk0uah91tHLQPuCJP8fWF4EP+7C/Cb7EifiGDSoZr3rG30dV1EQdyFdg9U+Pg0z+KMlAFAqDQ=="
+                        }
+                    },
+                    "start": {
+                        "type": "integer",
+                        "required": false,
+                        "description": "If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.",
+                        "example": 0
+                    },
+                    "size": {
+                        "type": "integer",
+                        "required": false,
+                        "description": "The number of results to return. Max 10000 without changes to Elastic.",
+                        "example": 10000
+                    },
+                    "sort": {
+                        "type": "string",
+                        "required": false,
+                        "description": "Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html",
+                        "example": "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
+                    },
+                    "index_hint": {
+                        "type": "string",
+                        "required": false,
+                        "description": "Provides an index hinting string to accelerate typed search and avoid searching _all.",
+                        "example": "*competency,*encryptedvalue"
+                    }
+                },
+                "example": [
+                    {
+                        "type": "TimeLimitedSignature",
+                        "context": "https://schema.cassproject.org/kbac/0.4",
+                        "expiry": 1675901144907,
+                        "server": "http://localhost/api/data/schema.org.Person/5d1433859a739684cc88338f92cf59ad",
+                        "@owner": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAodYG6jIBqwmshwMD9Ahy9c1on/m0/tVsSHpaefOlRScFV5LmOzisxv4dBHzM7cVElrYP148yIKmXJ/mRNE7tOv5RBoC+kPNoL+9hiw+UnlZEQgjWj7zib1jTVi5YeqHehHiY470YR1dL44QsTIg0hbynJeCq5dbkXK+TdEqL3m0EOjlAVGr8V7awWU29zb5UQuzV/bcSr4LddeJULQVmUxD8gRolR426CRvwuSmf2mS4UuGGSJQu5FmrDcIMmp3/DeEhzlrJLMi2PmjSJHsUJiQBs6eh6gmsFPGSOr8SUQM5pvuCgJMmurLb9mxIKIatbTUcm2JxIICPiRlNzXpMCwIDAQAB-----END PUBLIC KEY-----",
+                        "@signature": "JCZlDnSSRKII+bXChVzmCTLe7YPpw+6U+m/fEMR88flveU565QtwyVKY54HfbL5mDa3FtVuxHYTdExeNRj6Q16Tr9AYIAWVc3ckk4ROcWHDcgT73eOrxv238+oBMJAfUw6PvoC/fE68ToUCCcAXq6lhxx2yDzqRT4SZIeRcLQBFcEoHMLdP9lOepzJ5gqpaOkmwz2JKv1qjPbhf7tIA9w/AyW2Skx5Uoh4PoOqRH9YhZHcsKI5h5OKWX+X9y8tFVDm7TdV1ZBTS65Kk0uah91tHLQPuCJP8fWF4EP+7C/Cb7EifiGDSoZr3rG30dV1EQdyFdg9U+Pg0z+KMlAFAqDQ=="
+                    }
+                ]
+            },
+            "JsonLd": {
+                "type": "object",
+                "description": "Result",
+                "example": {
+                    "@context": "<url>",
+                    "@id": "<url>",
+                    "@type": "<string>"
+                }
+            },
+            "JsonLdHistory": {
+                "type": "array",
+                "description": "Array of historical results",
+                "items": {
+                    "type": "object",
+                    "description": "Result",
+                    "example": {
+                        "@context": "<url>",
+                        "@id": "<url>",
+                        "@type": "<string>"
+                    }
+                }
+            },
+            "JsonLdArray": {
+                "type": "array",
+                "description": "Array of results",
+                "items": {
+                    "type": "object",
+                    "description": "Result",
+                    "example": {
+                        "@context": "<url>",
+                        "@id": "<url>",
+                        "@type": "<string>"
+                    }
+                }
+            },
+            "SearchParams": {
+                "type": "object",
+                "properties": {
+                    "searchParams": {
+                        "type": "object",
+                        "properties": {
+                            "q": {
+                                "type": "string",
+                                "required": true,
+                                "description": "Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax",
+                                "example": "name:* AND @type:Competency"
+                            },
+                            "start": {
+                                "type": "integer",
+                                "required": false,
+                                "description": "If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.",
+                                "example": 0
+                            },
+                            "size": {
+                                "type": "integer",
+                                "required": false,
+                                "description": "The number of results to return. Max 10000 without changes to Elastic.",
+                                "example": 10000
+                            },
+                            "sort": {
+                                "type": "string",
+                                "required": false,
+                                "description": "Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html",
+                                "example": "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
+                            },
+                            "index_hint": {
+                                "type": "string",
+                                "required": false,
+                                "description": "Provides an index hinting string to accelerate typed search and avoid searching _all.",
+                                "example": "*competency,*encryptedvalue"
+                            }
+                        }
+                    }
+                }
+            },
+            "MultiGetParams": {
+                "type": "array",
+                "description": "Array of partial identifiers",
+                "items": {
+                    "type": "string",
+                    "description": "uid-like identifier prefixed with data/",
+                    "example": "data/0a8372fb9b073e5ebb7dc07e20fdfbea"
+                }
+            }
+        },
+        "responses": {
+            "404PermissionOrAbsent": {
+                "description": "Failure to locate data due to permission or absence of data.",
+                "content": {
+                    "text/plain": {
+                        "description": "Error message, if any."
+                    }
+                }
+            }
+        }
+    },
+    "tags": []
+}
