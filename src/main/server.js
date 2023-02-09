@@ -116,11 +116,9 @@ const options = {
 app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
 app.get('/api',(req, res, next) => {
     return res.redirect('/api/swagger');
-    next();
 });
 app.get('/api/',(req, res, next) => {
     return res.redirect('swagger');
-    next();
 });
 
 if (process.env.DISABLED_EDITOR != "true")

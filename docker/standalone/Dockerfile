@@ -2,7 +2,7 @@ FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git && apt upgrade -qqy
 
 USER elasticsearch
 RUN mkdir CASS
@@ -14,7 +14,7 @@ COPY cass.key CASS/cass.key
 COPY pm2.standalone.config.js CASS/pm2.standalone.config.js
 COPY copyright.txt CASS/copyright.txt
 COPY LICENSE CASS/LICENSE
-RUN cd CASS && npm install
+RUN cd CASS && npm install --omit=dev
 
 USER root
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
