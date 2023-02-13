@@ -3,6 +3,7 @@ services:
   cass:
     build:
       context: .
+      dockerfile: docker/standalone/node/Dockerfile
     container_name: cass
     networks:
       - esnet
@@ -29,7 +30,7 @@ services:
     depends_on:
       - elasticsearch
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.2.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.1
     container_name: elasticsearch
     networks:
       - esnet

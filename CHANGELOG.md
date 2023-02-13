@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.24
+* Security updates, changed node base image to Node 19 bulleye.
+
 ## 1.5.23
 * Started swagger at /api/swagger/
 * Updated editor

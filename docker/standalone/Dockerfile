@@ -1,8 +1,8 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.1
 
 USER root
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git && apt upgrade -qqy
+RUN curl -sL https://deb.nodesource.com/setup_19.x | bash -
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs && apt upgrade -qqy
 
 USER elasticsearch
 RUN mkdir CASS
