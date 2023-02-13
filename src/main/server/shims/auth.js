@@ -243,34 +243,41 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
 {
     app.use(async function (req, res, next) {
         let debug = true;
-        let ipFilter = process.env.CASS_IP_ALLOW | "";
+        let ipFilter = process.env.CASS_IP_ALLOW || "";
         ipFilter += ",::ffff:127.0.0.1";
+        let ipFilterList = ipFilter.split(",");
         let allowed = false;
         if (req.originalUrl == global.baseUrl + "/callback")
-            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-client-ip'] != null && ipFilter.indexOf(req.headers['x-client-ip']) != -1)
+            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //SSO is permitted
+        if (req.originalUrl == global.baseUrl + "/login")
+            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
+        if (req.originalUrl == global.baseUrl + "/logout")
+            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
+        if (req.originalUrl == global.baseUrl + "/api/ping")
+            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //Health check is permitted
+        if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList,req.headers['x-client-ip']))
             {if (debug) console.log("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-forwarded-for'] != null && ipFilter.indexOf(req.headers['x-forwarded-for']) != -1)
+        if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList,req.headers['x-forwarded-for']))
             {if (debug) console.log("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['cf-connecting-ip'] != null && ipFilter.indexOf(req.headers['cf-connecting-ip']) != -1)
+        if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList,req.headers['cf-connecting-ip']))
             {if (debug) console.log("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['fastly-client-ip'] != null && ipFilter.indexOf(req.headers['fastly-client-ip']) != -1)
+        if (req.headers['fastly-client-ip'] != null && ipMatch(ipFilterList,req.headers['fastly-client-ip']))
             {if (debug) console.log("Permitted by: " + 'fastly-client-ip' + ": " + req.headers['fastly-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['true-client-ip'] != null && ipFilter.indexOf(req.headers['true-client-ip']) != -1)
+        if (req.headers['true-client-ip'] != null && ipMatch(ipFilterList,req.headers['true-client-ip']))
             {if (debug) console.log("Permitted by: " + 'true-client-ip' + ": " + req.headers['true-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-real-ip'] != null && ipFilter.indexOf(req.headers['x-real-ip']) != -1)
+        if (req.headers['x-real-ip'] != null && ipMatch(ipFilterList,req.headers['x-real-ip']))
             {if (debug) console.log("Permitted by: " + 'x-real-ip' + ": " + req.headers['x-real-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-cluster-client-ip'] != null && ipFilter.indexOf(req.headers['x-cluster-client-ip']) != -1)
+        if (req.headers['x-cluster-client-ip'] != null && ipMatch(ipFilterList,req.headers['x-cluster-client-ip']))
             {if (debug) console.log("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-forwarded'] != null && ipFilter.indexOf(req.headers['x-forwarded']) != -1)
+        if (req.headers['x-forwarded'] != null && ipMatch(ipFilterList,req.headers['x-forwarded']))
             {if (debug) console.log("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.connection != null && req.connection.remoteAddress != null && ipFilter.indexOf(req.connection.remoteAddress) != -1)
+        if (req.connection != null && req.connection.remoteAddress != null && ipMatch(ipFilterList,req.connection.remoteAddress))
             {if (debug) console.log("Permitted by: " + 'connection' + ": " + req.connection.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.socket != null && req.socket.remoteAddress != null && ipFilter.indexOf(req.socket.remoteAddress) != -1)
+        if (req.socket != null && req.socket.remoteAddress != null && ipMatch(ipFilterList,req.socket.remoteAddress))
             {if (debug) console.log("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.connection != null && req.connection.socket != null && req.connection.socket.remoteAddress != null && ipFilter.indexOf(req.connection.socket.remoteAddress) != -1)
+        if (req.connection != null && req.connection.socket != null && req.connection.socket.remoteAddress != null && ipMatch(ipFilterList,req.connection.socket.remoteAddress))
             {if (debug) console.log("Permitted by: " + 'connectionSocket' + ": " + req.connection.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.info != null && req.info.remoteAddress != null && ipFilter.indexOf(req.info.remoteAddress) != -1)
+        if (req.info != null && req.info.remoteAddress != null && ipMatch(ipFilterList,req.info.remoteAddress))
             {if (debug) console.log("Permitted by: " + 'info' + ": " + req.info.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
         if (process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
         if (req.eim != null && req.eim.ids.length >= parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED))
@@ -303,4 +310,58 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             next();
     });
 }
+
+var Address = require('ipaddr.js');
+
+//Source: https://github.com/KennyTangHK/express-ip-access-control/blob/master/LICENSE
+/*
+The MIT License (MIT)
+
+Copyright (c) 2015 Kenny Tang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+var isNumeric = function(n) { return !isNaN(parseFloat(n)) && isFinite(n); };
+
+var ipMatch = function(list,clientIp) {
+	if (clientIp && Address.isValid(clientIp)) {
+		// `Address.process` return the IP instance in IPv4 or IPv6 form.
+		// It will return IPv4 instance if it's a IPv4 mapped IPv6 address
+		clientIp = Address.process(clientIp);
+		return list.some(function(e) {
+			// IPv6 address has 128 bits and IPv4 has 32 bits.
+			// Setting the routing prefix to all bits in a CIDR address means only the specified address is allowed.
+			e = e || '';
+			e = e.indexOf('/') === -1 ? e + '/128' : e;
+			var range = e.split('/');
+			if (range.length === 2 && Address.isValid(range[0]) && isNumeric(range[1])) {
+				var ip = Address.process(range[0]);
+				var bit = parseInt(range[1], 10);
+
+				// `IP.kind()` return `'ipv4'` or `'ipv6'`. Only same type can be `match`.
+				if (clientIp.kind() === ip.kind()) {
+					return clientIp.match(ip, bit);
+				}
+			}
+			return false;
+		});
+	}
+	return false;
+};
 
