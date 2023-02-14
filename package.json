@@ -99,7 +99,7 @@
     "nodemailer": "^6.9.1",
     "pm2": "^5.2.2",
     "pure-uuid": "^1.6.2",
-    "rdflib": "^2.2.25",
+    "rdflib": "^2.2.26",
     "spdy": "^4.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.0",
