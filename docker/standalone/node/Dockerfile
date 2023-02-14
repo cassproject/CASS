@@ -1,4 +1,5 @@
 FROM node:19-bullseye-slim
+USER root
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --omit=dev
