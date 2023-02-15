@@ -2,7 +2,7 @@ FROM node:19-bullseye-slim
 USER root
 WORKDIR /app
 COPY package.json ./
-RUN npm install --omit=dev && npm upgrade --omit=dev && npm audit --omit=dev --fix && chown root:root node_modules -R
+RUN npm install --production && npm upgrade --production && npm audit --production --fix && chown root:root node_modules -R
 COPY src src
 EXPOSE 80
 CMD node ./src/main/server.js
