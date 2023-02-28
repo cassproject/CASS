@@ -9659,6 +9659,7 @@ const pingWithTime = function() {
         plugins: process.env.DEFAULT_PLUGINS ? process.env.DEFAULT_PLUGINS : undefined,
         adminPublicKeys: skyrepoAdminList(),
         corsCredentials: process.env.CORS_CREDENTIALS ? process.env.CORS_CREDENTIALS.trim() == 'true' : undefined,
+        postMaxSize: global.postMaxSize
     });
 };
 /**
@@ -9753,6 +9754,10 @@ const pingWithTime = function() {
  *                   required: false
  *                   description: Whether the server can use cross-origin credentials to reach other systems.
  *                   example: true
+ *                 postMaxSize:
+ *                   type: number
+ *                   required: true
+ *                   description: Max size of fields and files in POST requests that this server can handle in bytes.
  */
 bindWebService('/ping', pingWithTime);
 /**
