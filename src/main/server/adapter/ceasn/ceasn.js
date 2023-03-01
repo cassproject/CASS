@@ -1101,6 +1101,7 @@ async function levelPromise(obj, levels, cs, ctx, terms) {
                 delete levels[id]["@context"];
 
                 levels[id] = conceptArrays(levels[id]);
+                levels[id]["@type"] = "asn:ProgressionLevel";
             }
             resolve();
         } catch(err) {
@@ -1320,6 +1321,7 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
             cs["ceasn:exactAlignment"] = [csId];
     }
     cs["@id"] = await ceasnExportUriTransform(csId);
+    cs["@type"] = "asn:ProgressionModel";
 
     var results = [];
 
