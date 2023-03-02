@@ -16,6 +16,15 @@ global.fileToString = function(file){
     return file + "";
 }
 
+global.postMaxSize = 52428800;
+try {
+    if (process.env.POST_MAX_SIZE != null) {
+        global.postMaxSize = parseInt(process.env.POST_MAX_SIZE);
+    }
+} catch (e) {
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "PostMaxSize", 'Error setting POST max size from environment variable, using default value.', e);
+}
+
 if (global.fileSave === undefined)
 global.fileSave = function(text,filepath){fs.writeFileSync(filepath,text);}
 
@@ -138,7 +147,7 @@ global.bindWebService = function(endpoint,callback){
         }
         let ms = new Date().getTime();
         try{
-            const bb = busboy({ headers: req.headers,limits:{parts:100,fieldSize:52428800,fileSize:52428800}});
+            const bb = busboy({ headers: req.headers,limits:{parts:100,fieldSize:global.postMaxSize,fileSize:global.postMaxSize}});
             req.query.methodType = "POST";
             req.query.urlRemainder = req.params[0];
             let fields = {};
