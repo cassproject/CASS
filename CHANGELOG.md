@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.25
+* Updated with 1.5.25 cassproject npm and 1.5.25 editor.
+* Now reports max HTTP POST size in /ping
+* Fixes to CTDL-ASN
+
 ## 1.5.24
 * Security updates, changed node base image to Node 19 bulleye.
 
