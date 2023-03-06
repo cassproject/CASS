@@ -969,15 +969,17 @@ function conceptArrays(object) {
                                                 if (k.indexOf("ceasn:publisher") != 0)
                                                     if (k.indexOf("ceasn:publisherName") != 0)
                                                         if (k.indexOf("ceasn:rights") != 0)
-                                                            if (k.indexOf("ceasn:source") != 0)
-                                                                if (k.indexOf("skos:broader") != 0)
-                                                                    if (k.indexOf("skos:definition") != 0)
-                                                                        if (k.indexOf("skos:inScheme") != 0)
-                                                                            if (k.indexOf("skos:notation") != 0)
-                                                                                if (k.indexOf("skos:prefLabel") != 0)
-                                                                                    if (k.indexOf("skos:topConceptOf") != 0)
-                                                                                        if (EcArray.isArray(object[k]) == false)
-                                                                                            object[k] = [object[k]];
+                                                            if (k.indexOf("skos:broader") != 0)
+                                                                if (k.indexOf("skos:definition") != 0)
+                                                                    if (k.indexOf("skos:inScheme") != 0)
+                                                                        if (k.indexOf("skos:notation") != 0)
+                                                                            if (k.indexOf("skos:prefLabel") != 0)
+                                                                                if (k.indexOf("ceterms:precedes") != 0)
+                                                                                    if (k.indexOf("ceterms:precededBy") != 0)
+                                                                                        if (k.indexOf("ceasn:inProgressionModel") != 0)
+                                                                                            if (k.indexOf("skos:topConceptOf") != 0)
+                                                                                                if (EcArray.isArray(object[k]) == false)
+                                                                                                    object[k] = [object[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
         if (k === "skos:changeNote" || k === "ceasn:conceptKeyword" || k === "skos:note" || k === "skos:hiddenLabel" || k === "skos:altLabel") {
             Object.keys(object[k]).forEach(function (key) {
