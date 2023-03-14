@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.26
+* Updated editor
+
 ## 1.5.25
 * Updated with 1.5.25 cassproject npm and 1.5.25 editor.
 * Now reports max HTTP POST size in /ping

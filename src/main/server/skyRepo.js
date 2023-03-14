@@ -8692,7 +8692,7 @@ const skyrepoHistoryPermanent = async function(id, version, type) {
     };
     const historyUrl = elasticEndpoint + '/permanent/_search';
     const history = await httpPost(query, historyUrl, 'application/json', null, null, null, null, elasticHeaders());
-    console.log(JSON.stringify(history, null, 2));
+    //console.log(JSON.stringify(history, null, 2));
     return history;
 };
 global.skyrepoGetInternal = async function(id, version, type) {
@@ -8754,7 +8754,7 @@ global.skyrepoHistoryInternal = async function(id, version, type) {
                 let Bts = B.getTimestamp();
                 if (Ats == null) Ats = hits[i]._source.writeMs;
                 if (Bts == null) Bts = hits[j]._source.writeMs;
-                console.log(Ats, Bts);
+                //console.log(Ats, Bts);
                 if (A.id+Ats == B.id+Bts) {
                     hits.splice(j--, 1);
                 }
@@ -9032,7 +9032,7 @@ const skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_s
     }
     const results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), 'application/json', false, null, null, true, elasticHeaders());
 
-    console.log(results);
+    //console.log(results);
     if (skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(results));
     }
