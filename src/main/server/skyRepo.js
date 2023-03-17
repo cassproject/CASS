@@ -9639,6 +9639,18 @@ const skyrepoAdminList = global.skyrepoAdminList = function() {
  *               example: ["<public key>"]
  */
 bindWebService('/sky/admin', endpointAdmin);
+// When CORS_CREDENTIALS is true, inform the cass client that all requests to the urls specified in CORS_ORIGINS should be made with credentials
+const getCorsOrigins = function() {
+    let corsOrigins;
+    if (process.env.CORS_CREDENTIALS != null && process.env.CORS_CREDENTIALS.trim() == 'true' && process.env.CORS_ORIGINS != null) {
+        try {
+            corsOrigins = process.env.CORS_ORIGINS.split(',').map((x) => x.trim());
+        } catch (e) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'CorsConfigError', 'Misconfigured CORS_ORIGINS env var, ensure the value is a comma separated list of origins');
+        }
+    }
+    return corsOrigins;
+}
 const pingWithTime = function() {
     return JSON.stringify({
         ping: 'pong',
@@ -9658,7 +9670,7 @@ const pingWithTime = function() {
         } : undefined,
         plugins: process.env.DEFAULT_PLUGINS ? process.env.DEFAULT_PLUGINS : undefined,
         adminPublicKeys: skyrepoAdminList(),
-        corsCredentials: process.env.CORS_CREDENTIALS ? process.env.CORS_CREDENTIALS.trim() == 'true' : undefined,
+        corsOrigins: getCorsOrigins(),
         postMaxSize: global.postMaxSize
     });
 };
@@ -9749,11 +9761,11 @@ const pingWithTime = function() {
  *                   required: true
  *                   description: Array of admin public keys
  *                   example: ["<public key>"]
- *                 corsCredentials:
- *                   type: boolean
+ *                 corsOrigins:
+ *                   type: array
  *                   required: false
- *                   description: Whether the server can use cross-origin credentials to reach other systems.
- *                   example: true
+ *                   description: For which origins should the cass client include credentials for in its requests.
+ *                   example: ["http://localhost"]
  *                 postMaxSize:
  *                   type: number
  *                   required: true
