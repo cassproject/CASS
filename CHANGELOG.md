@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.27
+* Updated Editor
+* Updated Library
+* Now informs clients about which cross origin requests should include credentials.
+
 ## 1.5.26
 * Updated editor
 
