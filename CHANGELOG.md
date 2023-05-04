@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.29
+* Updated Editor
+* Updated Library
+* Updated VM2 (Security)
+
 ## 1.5.27
 * Updated Editor
 * Updated Library
