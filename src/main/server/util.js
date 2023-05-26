@@ -24,6 +24,11 @@ require('./shims/stjs.js');
 
 global.skyrepoMigrate = async function(after) {
     let elasticState = await httpGet(elasticEndpoint + '/', true, global.elasticHeaders());
+    const result = await httpPut({'index.mapping.total_fields.limit': 10000}, elasticEndpoint + '/schema.cassproject.org.0.4.configuration/_settings', 'application/json', global.elasticHeaders());
+    if (skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalPerm', JSON.stringify(result));
+    }
+
     if (elasticState == null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Waiting for Elasticsearch to appear at '+elasticEndpoint+'...');
         setTimeout(function() {
@@ -214,7 +219,7 @@ global.skyrepoMigrate = async function(after) {
                 let setting = await httpGet(elasticEndpoint + '/.temp.' + index + '/_settings', true, global.elasticHeaders());
                 let fields = setting['.temp.' + index].settings?.index?.mapping?.total_fields.limit;
                 if (!fields) {
-                    fields = 1000;
+                    fields = 10000;
                 }
                 let mappings = {};
                 let doc = {};
@@ -303,7 +308,7 @@ global.skyrepoMigrate = async function(after) {
                 let setting = await httpGet(elasticEndpoint + '/' + index + '/_settings', true, global.elasticHeaders());
                 let fields = setting[index].settings?.index?.mapping?.total_fields.limit;
                 if (!fields) {
-                    fields = 1000;
+                    fields = 10000;
                 }
                 let mappings = {};
                 let permNoIndex = {};
@@ -380,7 +385,7 @@ global.skyrepoMigrate = async function(after) {
                 let setting = await httpGet(elasticEndpoint + '/.temp.' + index + '/_settings', true, global.elasticHeaders());
                 let fields = setting['.temp.' + index].settings?.index?.mapping?.total_fields.limit;
                 if (!fields) {
-                    fields = 1000;
+                    fields = 10000;
                 }
                 let mappings = {};
                 let permNoIndex = {};
