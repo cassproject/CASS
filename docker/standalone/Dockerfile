@@ -2,7 +2,7 @@ FROM docker.elastic.co/elasticsearch/elasticsearch:8.7.1
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_19.x | bash -
-RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs && apt upgrade -qqy
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs && apt upgrade -qqy && apt clean
 
 USER elasticsearch
 RUN mkdir CASS
@@ -20,8 +20,8 @@ USER root
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
 RUN echo 'cluster.initial_master_nodes:' >> config/elasticsearch.yml
 RUN echo '  - cass-a' >> config/elasticsearch.yml
-RUN echo '-Xms4g' >> config/jvm.options
-RUN echo '-Xmx4g' >> config/jvm.options
+RUN echo '-Xms2g' >> config/jvm.options
+RUN echo '-Xmx2g' >> config/jvm.options
 ENV xpack.security.enabled=false
 ENV xpack.security.http.ssl.enabled=false
 ENV xpack.security.transport.ssl.enabled=false
