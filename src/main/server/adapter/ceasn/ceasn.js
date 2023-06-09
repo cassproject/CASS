@@ -1029,7 +1029,7 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
                         delete c[each];
                     }
                     if (each === "type") {
-                        c[each] = "ceasn:Concept";
+                        c[each] = "skos:Concept";
                     }
                 }
                 concepts[obj] = concepts[id] = await jsonLdCompact(c.toJson(), ctx);
