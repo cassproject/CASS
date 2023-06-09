@@ -631,6 +631,8 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                     objToSave["schema:dateCreated"] = date;
                 }
                 toSave.push(objToSave);
+            } else {
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportConceptError", "Unrecognized type: " + type);
             }
             resolve();
         } catch(err) {
