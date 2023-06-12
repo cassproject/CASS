@@ -540,9 +540,12 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
             var type = compacted["@type"]
             var objToSave = compacted;
 
-            if (type == "skos:ConceptScheme") {
+            if ((type == "skos:ConceptScheme") || (type == "asn:ProgressionModel")) {
                 objToSave["@type"] = "ConceptScheme";
                 objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                if (type == "asn:ProgressionModel") {
+                    objToSave["subType"] = "Progression";
+                }
                 objToSave = new EcConceptScheme();
                 objToSave.copyFrom(compacted);
                 conceptSchemeId.push(objToSave.shortId());
@@ -582,9 +585,12 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                 }
                 toSave.push(objToSave);
             }
-            else if (type == "skos:Concept") {
+            else if ((type == "skos:Concept") || (type == "asn:ProgressionLevel")) {
                 objToSave["@type"] = "Concept";
                 objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                if (type == "asn:ProgressionLevel") {
+                    objToSave["subType"] = "Progression";
+                }
                 objToSave = new EcConcept();
                 objToSave.copyFrom(compacted);
                 objToSave.addOwner(skosIdentity.ppk.toPk());
