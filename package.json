@@ -96,7 +96,7 @@
     "express-ws": "^5.0.2",
     "node-object-hash": "^2.3.10",
     "node-worker-threads-pool": "^1.5.1",
-    "nodemailer": "^6.9.1",
+    "nodemailer": "^6.9.2",
     "pm2": "^5.3.0",
     "pure-uuid": "^1.6.3",
     "rdflib": "^2.2.32",
