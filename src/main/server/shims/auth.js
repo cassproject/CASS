@@ -147,6 +147,61 @@ if (process.env.CASS_JWT_ENABLED)
     );
 }
 
+if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
+{
+    function parseHeader(authHeader) {
+        if (!authHeader || !authHeader.startsWith("Bearer "))
+            return null;
+    
+        let tokenStr = authHeader.slice(7);
+        let parsed = parseJwt(tokenStr);
+        
+        return parsed;
+    }
+    
+    function parseJwt (tokenStr) {
+        let parts = tokenStr.split('.');
+        let bodyEncodedB64 = parts[1];
+        let bodyDecodedStr = Buffer.from(bodyEncodedB64, 'base64').toString();
+        let bodyDecoded = JSON.parse(bodyDecodedStr);
+    
+        return bodyDecoded;
+    }
+
+    function validateJwt (token) {
+
+        let checkIssuer = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER;
+        if (checkIssuer) {
+            let expectedIssuer = process.env.CASS_PLATFORM_ONE_ISSUER;
+            let actualIssuer = token.iss;
+            if (actualIssuer !== expectedIssuer)
+                return false;
+        }
+
+        let checkClient = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT;
+        if (checkClient) {
+            let expectedIssuer = process.env.CASS_PLATFORM_ONE_CLIENT;
+            let actualIssuer = token.iss;
+            if (actualIssuer !== expectedIssuer)
+                return false;
+        }
+
+        return true;
+    }
+    
+    app.use((req, res, next) => {
+        
+        let authHeader = req.get("Authorization");
+        let token = parseHeader(authHeader);
+
+        let seemsValid = validateJwt(token);
+        if (seemsValid)
+            req.p1 = token;
+        
+        next();
+    });
+}
+
 app.use(async function (req, res, next) {
     let email = null;
     let identifier = null;
@@ -168,6 +223,23 @@ app.use(async function (req, res, next) {
             email = req.user.email;
         if (req.user.identifier != null)
             identifier = req.user.sub;
+    }
+    if (req.p1 != null) {
+        if (req.p1.iat != null)
+        {
+            let secondsSinceEpoch = req.p1.iat;
+            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
+            {
+                res.end("P1 JWT token is expired.");
+                return;
+            }
+        }
+        if (req.p1.name != null)
+            name = req.p1.name;
+        if (req.p1.email != null)
+            email = req.p1.email;
+        if (req.p1.sub != null)
+            identifier = req.p1.sub;
     }
     if (req.oidc?.user != null)
     {
@@ -364,4 +436,3 @@ var ipMatch = function(list,clientIp) {
 	}
 	return false;
 };
-
