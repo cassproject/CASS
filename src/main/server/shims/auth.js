@@ -149,6 +149,11 @@ if (process.env.CASS_JWT_ENABLED)
 
 if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 {
+    /**
+     * Extract the encoded JWT from the request's provided Authorization header.
+     * @param {String} authHeader 
+     * @returns 
+     */
     function parseHeader(authHeader) {
         if (!authHeader || !authHeader.startsWith("Bearer "))
             return null;
@@ -159,6 +164,11 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         return parsed;
     }
     
+    /**
+     * Parse the JWT's body string into a JSON object.
+     * @param {String} tokenStr 
+     * @returns 
+     */
     function parseJwt (tokenStr) {
         let parts = tokenStr.split('.');
         let bodyEncodedB64 = parts[1];
@@ -168,6 +178,11 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         return bodyDecoded;
     }
 
+    /**
+     * Validate whether this token has the expectd Platform One properties.
+     * @param {Object} token 
+     * @returns 
+     */
     function validateJwt (token) {
 
         let checkIssuer = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER;
