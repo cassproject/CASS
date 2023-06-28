@@ -196,7 +196,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         let checkClient = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT;
         if (checkClient) {
             let expectedIssuer = process.env.CASS_PLATFORM_ONE_CLIENT;
-            let actualIssuer = token.iss;
+            let actualIssuer = token.azp;
             if (actualIssuer !== expectedIssuer)
                 return false;
         }
