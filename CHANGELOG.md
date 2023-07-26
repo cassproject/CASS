@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.31
+* Updated Editor
+* Updated Dependencies
+
 ## 1.5.30
 * Updated Editor
 * Updated Library
