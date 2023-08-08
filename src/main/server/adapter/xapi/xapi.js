@@ -58,7 +58,7 @@ var personFromEmail = async function (mbox) {
     if (mbox.indexOf("@") != -1)
     {
         let people = null;
-        people = await loopback.repositorySearch(repo,"@type:Person AND email:\"" + mbox + "\"",{});
+        people = await loopback.repositorySearch(global.repo,"@type:Person AND email:\"" + mbox + "\"",{});
         if (people != null) {
             if (people.length == 1)
                 person = people[0];
@@ -69,7 +69,7 @@ var personFromEmail = async function (mbox) {
     else
     {
         let people = null;
-        people = await loopback.repositorySearch(repo,"@type:Person AND identifier:\"" + mbox + "\"",{});
+        people = await loopback.repositorySearch(global.repo,"@type:Person AND identifier:\"" + mbox + "\"",{});
         if (people != null) {
             if (people.length == 1)
                 person = people[0];
@@ -96,7 +96,7 @@ var pkFromMbox = async function (xapiPerson) {
 
 var getAlignedCompetencies = async function (objectId) {
     var results = [];
-    let creativeWorks = await loopback.repositorySearch(repo,"@type:CreativeWork AND url:\"" + objectId + "\"",{});
+    let creativeWorks = await loopback.repositorySearch(global.repo,"@type:CreativeWork AND url:\"" + objectId + "\"",{});
     for (let creativeWork of creativeWorks)
     {
         if (creativeWork.educationalAlignment == null) continue;
@@ -142,7 +142,7 @@ var xapiStatement = async function (s) {
     {
         var ppk = await EcPpk.generateKey();
         var person = new schema.Person();
-        person.assignId(repo.selectedServer,ppk.toPk().fingerprint());
+        person.assignId(global.repo.selectedServer,ppk.toPk().fingerprint());
         person.addOwner(ppk.toPk());
 		var mb = getMbox.call(this, s.actor).replace("mailto:","");
 		if (mb.indexOf("@") == -1)
@@ -169,7 +169,7 @@ var xapiStatement = async function (s) {
     var alreadyAligned = {};
     for (var i = 0; i < alignedCompetencies.length; i++) {
         var a = new EcAssertion();
-        a.assignId(repo.selectedServer, EcCrypto.md5(s.id+alignedCompetencies[i].targetUrl));
+        a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id+alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
         a.addOwner(authorityPk);
         await a.setSubject(actorPk);

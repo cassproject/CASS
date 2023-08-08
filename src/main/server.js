@@ -54,7 +54,7 @@ app.use(cors(corsOptions));
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 const port = process.env.PORT || (envHttps ? 443 : 80);
 
-global.repo = new EcRepository();
+let repo = global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? 'https://localhost/api/' : 'http://localhost/api');
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 

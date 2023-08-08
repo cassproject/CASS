@@ -146,7 +146,12 @@ global.bindWebService = function(endpoint,callback){
             res: res
         }
         let ms = new Date().getTime();
-        try{
+        try{            
+            if (req.headers['content-type'] != null)
+                req.headers['content-type'] = req.headers['content-type'].replace('multipart/mixed','multipart/form-data');
+            if (req.headers['content-type'] != null)
+                if (req.headers['content-type'] == "application/json")
+                    return put(req,res);
             const bb = busboy({ headers: req.headers,limits:{parts:100,fieldSize:global.postMaxSize,fileSize:global.postMaxSize}});
             req.query.methodType = "POST";
             req.query.urlRemainder = req.params[0];
