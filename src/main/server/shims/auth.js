@@ -13,14 +13,11 @@ let getPk = async(identifier) => {
     {
         return getPkCache[identifier];
     }
+    console.log("Looking for " + identifier);
     if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
         return loadConfigurationFile("keys/"+identifier, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
         });
-    if (identifier.toLowerCase().indexOf("admin") != -1)
-    {
-        return skyrepoAdminPpk();
-    }
     if (keyEim == null)
     {
         console.log("Establishing skyId Elastic EIM.");
@@ -34,7 +31,6 @@ let getPk = async(identifier) => {
         console.log("SkyId Elastic EIM fingerprint: " + i.ppk.toPk().fingerprint());
         keyEim.addIdentity(i);
     }
-    console.log("Looking for " + identifier);
     let myKey = loadConfigurationFile("keys/"+identifier, () => {
         console.log("Could not find " + identifier + " in file system.");
         return null;
@@ -223,6 +219,7 @@ app.use(async function (req, res, next) {
     let email = null;
     let identifier = null;
     let name = null;
+    let username = null;
     if (req.user != null)
     {
         if (req.user.iat != null)
@@ -263,6 +260,7 @@ app.use(async function (req, res, next) {
         name = req.oidc.user.name;
         identifier = req.oidc.user.sub;
         email = req.oidc.user.email;
+        username = req.oidc.user.preferred_username;
         if (email == null)
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassOidcMissEmail", "OIDC token does not have email address.");
     }
@@ -299,6 +297,8 @@ app.use(async function (req, res, next) {
             p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,i.ppk.toPk().fingerprint());
             p.name = name;
             p.email = email;
+            p.identifier = identifier;
+            p.username = username;
             await repo.saveTo(p);
         }
         //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!

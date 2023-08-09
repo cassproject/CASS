@@ -69,7 +69,7 @@ var personFromEmail = async function (mbox) {
     else
     {
         let people = null;
-        people = await loopback.repositorySearch(global.repo,"@type:Person AND identifier:\"" + mbox + "\"",{});
+        people = await loopback.repositorySearch(global.repo,"@type:Person AND (identifier:\"" + mbox + "\" OR username:\"" + mbox + "\")",{});
         if (people != null) {
             if (people.length == 1)
                 person = people[0];
@@ -146,7 +146,7 @@ var xapiStatement = async function (s) {
         person.addOwner(ppk.toPk());
 		var mb = getMbox.call(this, s.actor).replace("mailto:","");
 		if (mb.indexOf("@") == -1)
-			person.identifier = mb;
+			person.username = mb;
 		else
 			person.email = mb;
         person.name = s.actor.name;
@@ -160,7 +160,26 @@ var xapiStatement = async function (s) {
     if (actorPk == null) return;
     var authorityPk = await pkFromMbox.call(this, s.authority);
     if (authorityPk == null)
-        authorityPk = EcPpk.fromPem(xapiMePpk).toPk();
+    {
+        let ppk = EcPpk.fromPem(xapiMePpk);
+        var person = new schema.Person();
+        person.assignId(global.repo.selectedServer,ppk.toPk().fingerprint());
+        person.addOwner(ppk.toPk());
+		var mb = getMbox.call(this, s.authority);
+        if (mb != null) mb = mb.replace("mailto:","");
+        if (mb == null) mb = "Some Authority";
+		if (mb.indexOf("@") == -1)
+			person.username = mb;
+		else
+			person.email = mb;
+        person.name = (s.authority != null ? s.authority.name : null) || mb;
+        await EcRepository.save(person, (msg) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson", msg);
+        }, (error) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSavePerson", error);
+        });
+        authorityPk = ppk.toPk();
+    }
     if (authorityPk == null) return;
 
     if (s.object == null) return;
@@ -172,6 +191,7 @@ var xapiStatement = async function (s) {
         a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id+alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
         a.addOwner(authorityPk);
+        a.addReader(actorPk);
         await a.setSubject(actorPk);
         await a.setAgent(authorityPk);
         a.competency = alignedCompetencies[i].targetUrl;

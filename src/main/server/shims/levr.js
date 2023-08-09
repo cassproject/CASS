@@ -82,9 +82,19 @@ global.bindWebService = function(endpoint,callback){
             req.query.methodType = "PUT";
             req.query.urlRemainder = req.params[0];
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassHttpPutStart", `${endpoint} Request: ${JSON.stringify(req.query)}`, req.headers);
+            req.setEncoding('utf8');
+            req.body = '';
+            req.on('data', function(chunk) {
+                req.body += chunk;
+            });
+            req.on('end', async function (){
+                let dataStreams = {};
+                if (req.body != "")
+                    dataStreams.body = JSON.parse(req.body);
             var result = await callback.call({
                 ctx:ctx,
-                params: req.query
+                    params: req.query,
+                    dataStreams: dataStreams
             });
             if (typeof(result) == "string")
             {
@@ -92,6 +102,7 @@ global.bindWebService = function(endpoint,callback){
             }
             else
                 res.end(); 
+            });
         }
         catch (ex)
         {
@@ -151,7 +162,7 @@ global.bindWebService = function(endpoint,callback){
                 req.headers['content-type'] = req.headers['content-type'].replace('multipart/mixed','multipart/form-data');
             if (req.headers['content-type'] != null)
                 if (req.headers['content-type'] == "application/json")
-                    return put(req,res);
+                    return await put(req,res);
             const bb = busboy({ headers: req.headers,limits:{parts:100,fieldSize:global.postMaxSize,fileSize:global.postMaxSize}});
             req.query.methodType = "POST";
             req.query.urlRemainder = req.params[0];

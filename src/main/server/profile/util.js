@@ -7,7 +7,7 @@ let anythingToPem = global.anythingToPem = async(subject) => {
     }
 
     return anythingToPerson(subject).then(person => {
-        if (person == null) throw new exports.NotFoundError();
+        if (person == null) throw new Error("No Person found for " + subject);
         if (EcArray.isArray(person))
             return person.map((p)=>p.owner[0]);
         return person.owner[0];
@@ -18,7 +18,7 @@ let anythingToPem = global.anythingToPem = async(subject) => {
 
 let anythingToPerson = global.anythingToPerson = async(subject) => {
     // No/Invalid subject?
-    if (subject == null) throw new exports.ParseError();
+    if (subject == null) throw new Error("Parse Error");
 
     let result;
     if (EcArray.isArray(subject))
@@ -52,11 +52,11 @@ let anythingToPerson = global.anythingToPerson = async(subject) => {
         } catch (e) {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "AnythingToPerson", e);
             if (e instanceof TypeError) {
-                throw new exports.ParseError();
-            } else throw new exports.UnknownError(e.message);
+                throw new Error("Parse Error");
+            } else throw new Error(e.message);
         }
 
-        if (person == null) throw new exports.NotFoundError("Could not find " + subject);
+        if (person == null) throw new Error("Could not find " + subject);
 
         result = person;
     } else if (typeof subject === "string") {
@@ -66,20 +66,20 @@ let anythingToPerson = global.anythingToPerson = async(subject) => {
             people = await EcPerson.search(repo,`email:"${subject}" OR username:"${subject}"`);
         } catch (e) {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, "AnythingToPerson", e);
-            throw new exports.UnknownError(e.message);
+            throw new Error(e.message);
         }
-        if (people == null || people.length === 0) throw new exports.NotFoundError();
+        if (people == null || people.length === 0) Error("No Person found for " + subject);
 
         result = people[0];
     }
 
     if (result != null) {
         if (result.personType != null && result.personType !== "Person")
-            throw new exports.NotFoundError("No Person found for " + subject);
+            throw Error("No Person found for " + subject);
         return result;
     }
 
-    throw new exports.ParseError();
+    throw new Error("Parse Error");
 }
 module.exports = {
 /** Will NOT return null, but may throw errors. */
