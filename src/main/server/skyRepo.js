@@ -9226,7 +9226,7 @@ const endpointData = async function() {
             return o;
         }
         await (skyrepoPutParsed).call(this, o, id, version, type);
-        afterSave(o);
+        afterSave(o.toJson != null ? JSON.parse(o.toJson()) : o);
         return null;
     } else if (methodType == 'GET') {
         (beforeGet).call(this);

@@ -9,8 +9,10 @@ var skyrepoAdminPpk = function() {
     return EcPpk.fromPem(fileToString(fileLoad("etc/skyAdmin2.pem"))).toPem();
 };
 let getPk = async(identifier) => {
-    if (getPkCache[identifier] != null) 
+    if (getPkCache[identifier] != null)
+    {
         return getPkCache[identifier];
+    }
     if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
         return loadConfigurationFile("keys/"+identifier, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
@@ -38,7 +40,7 @@ let getPk = async(identifier) => {
         return null;
     });
     
-    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT | "http://identity/";
+    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/";
     let keypair = new EcRemoteLinkedData();
     if (myKey != null)
     {
@@ -276,7 +278,7 @@ app.use(async function (req, res, next) {
     {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthSigSheetCreating", `Securing Proxy: Creating signature sheet for request from ${email}.`);
         let eim = new EcIdentityManager();
-        let myKey = getPk(email);
+        let myKey = await getPk(email);
         let i = new EcIdentity();
         i.displayName = name;
         i.ppk = EcPpk.fromPem(myKey);

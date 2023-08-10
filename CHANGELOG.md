@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.5.31
+* Updated Editor
+* Updated Dependencies
+
+## 1.5.30
+* Updated Editor
+* Updated Library
+* Platform One SSO Integration
+* CTDL Progression Model Export Updates
+* Reduced CaSS Standalone memory usage to 2gb
+* Updated elastic field limit to 10000
+* Added docker-compose template.
+
 ## 1.5.29
 * Updated Editor
 * Updated Library

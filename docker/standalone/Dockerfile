@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.8.1
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_19.x | bash -
@@ -14,7 +14,7 @@ COPY cass.key CASS/cass.key
 COPY pm2.standalone.config.js CASS/pm2.standalone.config.js
 COPY copyright.txt CASS/copyright.txt
 COPY LICENSE CASS/LICENSE
-RUN cd CASS && npm install --omit=dev && npm audit fix
+RUN cd CASS && npm install --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --audit-level=high fix
 
 USER root
 RUN echo 'node.name: cass-a' >> config/elasticsearch.yml
