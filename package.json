@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.31",
+  "version": "1.5.32",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -86,7 +86,7 @@
   "dependencies": {
     "@xmldom/xmldom": "^0.8.10",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.30",
+    "cassproject": "^1.5.32",
     "check-disk-space": "^3.4.0",
     "cors": "^2.8.5",
     "cron": "^2.4.0",
@@ -108,7 +108,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.7",
-    "eslint": "^8.45.0",
+    "eslint": "^8.46.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",

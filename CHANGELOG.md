@@ -3,6 +3,14 @@
 ## 1.5.31
 * Updated Editor
 * Updated Dependencies
+* Made xAPI adapter more tolerant of SSO parameters.
+* xAPI adapter now generates Persons based on authority.
+* HTTP Put now attaches body to datastreams.
+* Some fixes with profile generation errors.
+
+## 1.5.31
+* Updated Editor
+* Updated Dependencies
 
 ## 1.5.30
 * Updated Editor
