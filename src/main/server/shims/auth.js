@@ -242,15 +242,6 @@ app.use(async function (req, res, next) {
             identifier = req.user.sub;
     }
     if (req.p1 != null) {
-        if (req.p1.iat != null)
-        {
-            let secondsSinceEpoch = req.p1.iat;
-            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
-            {
-                res.end("P1 JWT token is expired.");
-                return;
-            }
-        }
         if (req.p1.name != null)
             name = req.p1.name;
         if (req.p1.email != null)
