@@ -203,6 +203,17 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
                 return false;
         }
 
+        let checkIssueTime = !process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME;
+        if (checkIssueTime)
+        {
+            if (token.iat == undefined)
+                return false;
+
+            let secondsSinceEpoch = token.iat;
+            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
+                return false;
+        }
+
         return true;
     }
     
