@@ -180,6 +180,10 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         return bodyDecoded;
     }
 
+    function interpretEnvFlag(envFlag) {
+        return envBool == "true";
+    }
+    
     /**
      * Validate whether this token has the expectd Platform One properties.
      * @param {Object} token 
@@ -187,7 +191,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
      */
     function validateJwt (token) {
 
-        let checkIssuer = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER;
+        let checkIssuer = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER);
         if (checkIssuer) {
             let expectedIssuer = process.env.CASS_PLATFORM_ONE_ISSUER;
             let actualIssuer = token.iss;
@@ -195,7 +199,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
                 return false;
         }
 
-        let checkClient = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT;
+        let checkClient = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT);
         if (checkClient) {
             let expectedClient = process.env.CASS_PLATFORM_ONE_CLIENT;
             let actualClient = token.azp;
@@ -203,8 +207,8 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
                 return false;
         }
 
-        let checkIssueTime = !process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME;
-        if (checkIssueTime)
+        let ignoreIssueTime = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME);
+        if (!ignoreIssueTime)
         {
             if (token.iat == undefined)
                 return false;
