@@ -181,7 +181,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
     }
 
     function interpretEnvFlag(envFlag) {
-        return envBool == "true";
+        return envFlag == "true";
     }
     
     /**
