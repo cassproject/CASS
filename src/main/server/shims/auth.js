@@ -180,6 +180,10 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         return bodyDecoded;
     }
 
+    function interpretEnvFlag(envFlag) {
+        return envFlag == "true";
+    }
+    
     /**
      * Validate whether this token has the expectd Platform One properties.
      * @param {Object} token 
@@ -187,7 +191,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
      */
     function validateJwt (token) {
 
-        let checkIssuer = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER;
+        let checkIssuer = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER);
         if (checkIssuer) {
             let expectedIssuer = process.env.CASS_PLATFORM_ONE_ISSUER;
             let actualIssuer = token.iss;
@@ -195,11 +199,22 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
                 return false;
         }
 
-        let checkClient = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT;
+        let checkClient = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT);
         if (checkClient) {
-            let expectedIssuer = process.env.CASS_PLATFORM_ONE_CLIENT;
-            let actualIssuer = token.iss;
-            if (actualIssuer !== expectedIssuer)
+            let expectedClient = process.env.CASS_PLATFORM_ONE_CLIENT;
+            let actualClient = token.azp;
+            if (actualClient !== expectedClient)
+                return false;
+        }
+
+        let ignoreIssueTime = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME);
+        if (!ignoreIssueTime)
+        {
+            if (token.iat == undefined)
+                return false;
+
+            let secondsSinceEpoch = token.iat;
+            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
                 return false;
         }
 
@@ -242,15 +257,6 @@ app.use(async function (req, res, next) {
             identifier = req.user.sub;
     }
     if (req.p1 != null) {
-        if (req.p1.iat != null)
-        {
-            let secondsSinceEpoch = req.p1.iat;
-            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
-            {
-                res.end("P1 JWT token is expired.");
-                return;
-            }
-        }
         if (req.p1.name != null)
             name = req.p1.name;
         if (req.p1.email != null)
