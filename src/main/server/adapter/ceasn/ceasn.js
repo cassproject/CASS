@@ -67,7 +67,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
                 });
             c.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json";
             c["ceasn:isPartOf"] = await ceasnExportUriTransform(f.id);
-            if (c["ceasn:isChildOf"] == null) {
+            if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
                 c["ceasn:isTopChildOf"] = await ceasnExportUriTransform(f.id);
             }
             if (c.name == null || c.name == "")
@@ -279,7 +279,7 @@ async function cassFrameworkAsCeasn() {
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
                 if (competencies[r.source] != null)
-                    if (competencies[r.source]["ceasn:isChildOf"] == null)
+                    if (!competencies[r.source]["ceasn:isChildOf"] || competencies[r.source]["ceasn:isChildOf"] == null)
                         competencies[r.source]["ceasn:isChildOf"] = [];
 
                 if (competencies[r.source] != null)
@@ -395,7 +395,7 @@ async function cassFrameworkAsCeasn() {
         };
     }
     for (let c of competencies) {
-        if (c["ceasn:isChildOf"] == null) {
+        if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
             f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
         }
         f.competency.push(await ceasnExportUriTransform(c["@id"]));
@@ -1431,9 +1431,9 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
             var expandedComp = await jsonLdExpand(JSON.stringify(newComp));
             var compactedComp = await jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
 
-            delete compactedComp["ceasn:isChildOf"];
-            delete compactedComp["ceasn:hasChild"];
-            delete compactedComp["ceasn:isPartOf"];
+            if (compactedComp["ceasn:isChildOf"]) delete compactedComp["ceasn:isChildOf"];
+            if (compactedComp["ceasn:hasChild"]) delete compactedComp["ceasn:hasChild"];
+            if (compactedComp["ceasn:isPartOf"]) delete compactedComp["ceasn:isPartOf"];
 
             var c = new EcCompetency();
             c.copyFrom(compactedComp);
@@ -1657,9 +1657,9 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
             var expandedComp = await jsonLdExpand(JSON.stringify(newComp));
             var compactedComp = await jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
 
-            delete compactedComp["ceasn:isChildOf"];
-            delete compactedComp["ceasn:hasChild"];
-            delete compactedComp["ceasn:isPartOf"];
+            if (compactedComp["ceasn:isChildOf"]) delete compactedComp["ceasn:isChildOf"];
+            if (compactedComp["ceasn:hasChild"]) delete compactedComp["ceasn:hasChild"];
+            if (compactedComp["ceasn:isPartOf"]) delete compactedComp["ceasn:isPartOf"];
 
             var c = new EcCompetency();
             c.copyFrom(compactedComp);
