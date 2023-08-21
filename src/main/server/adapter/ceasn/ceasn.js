@@ -1875,8 +1875,10 @@ async function ceasnFrameworkToCass() {
             return await importJsonLdGraph.call(this, graph, jsonLd["@context"]);
         } else if (collectionObj) {
             return await importCeCollectionToCass.call(this, collectionObj, competencyList);
-        } else {
+        } else if (frameworkObj) {
             return await importCeFrameworkToCass.call(this, frameworkObj, competencyList);
+        } else {
+            error("import type not recognized, unsure how to parse");
         }
     } else {
         error("no @graph created, unsure how to parse");
