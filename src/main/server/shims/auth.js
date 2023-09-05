@@ -208,9 +208,9 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         if (adjectives != null && adjectives.length > 0)
         {
             let uuidNumber = numberFromUUID(uuid);
-            let index = uuidNumber % providedAdjectives.length;
+            let index = uuidNumber % adjectives.length;
 
-            return providedAdjectives[index];
+            return adjectives[index];
         }
         
         return "Anonymous";
@@ -224,9 +224,9 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         if (nouns != null && nouns.length > 0)
         {
             let uuidNumber = numberFromUUID(uuid);
-            let index = uuidNumber % providedNouns.length;
+            let index = uuidNumber % nouns.length;
 
-            return providedNouns[index];
+            return nouns[index];
         }
 
         return "User";
