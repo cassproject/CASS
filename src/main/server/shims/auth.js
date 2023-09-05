@@ -193,7 +193,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 
     /** @param {String} uuid */
     function numberFromUUID(uuid) {
-        let hex = Buffer.from(uuid).toString("hex", 16);
+        let hex = Buffer.from(uuid).toString("hex");
         return parseInt(hex, 16);
     }
 
