@@ -183,6 +183,54 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
     function interpretEnvFlag(envFlag) {
         return envFlag == "true";
     }
+
+    function interpretEnvCSV(envCSV) {
+        if (envCSV == undefined || typeof envCSV !== "string" || envCSV === "")
+            return null;
+
+        return envCSV.split(",");
+    }
+
+    /** @param {String} uuid */
+    function numberFromUUID(uuid) {
+        let hex = Buffer.from(uuid).toString("hex");
+        return parseInt(hex, 16);
+    }
+
+    let adjectives = null;
+    let nouns = null;
+
+    function createAdjectiveFrom(uuid) {
+
+        if (adjectives == null)
+            adjectives = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_ADJECTIVES);
+
+        if (adjectives != null && adjectives.length > 0)
+        {
+            let uuidNumber = numberFromUUID(uuid);
+            let index = uuidNumber % adjectives.length;
+
+            return adjectives[index];
+        }
+        
+        return "Anonymous";
+    }
+
+    function createNounFrom(uuid) {
+
+        if (nouns == null)
+            nouns = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_NOUNS);
+
+        if (nouns != null && nouns.length > 0)
+        {
+            let uuidNumber = numberFromUUID(uuid);
+            let index = uuidNumber % nouns.length;
+
+            return nouns[index];
+        }
+
+        return "User";
+    }
     
     /**
      * Validate whether this token has the expectd Platform One properties.
@@ -218,6 +266,10 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
                 return false;
         }
 
+        let uuid = token.sub;
+        if (typeof uuid !== "string" || uuid.length !== 36)
+            return false;
+
         return true;
     }
     
@@ -228,7 +280,19 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 
         let seemsValid = validateJwt(token);
         if (seemsValid)
+        {
+            let shouldAnonymize = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_ANONYMIZE_USERS);
+            if (shouldAnonymize)
+            {
+                let adjective = createAdjectiveFrom(token.sub);
+                let noun = createNounFrom(token.sub);
+
+                token.name = `${adjective} ${noun}`;
+                token.email = token.sub;
+            }
+
             req.p1 = token;
+        }
         
         next();
     });
