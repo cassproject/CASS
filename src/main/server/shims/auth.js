@@ -266,6 +266,10 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
                 return false;
         }
 
+        let uuid = token.sub;
+        if (typeof uuid !== "string" || uuid.length !== 36)
+            return false;
+
         return true;
     }
     
