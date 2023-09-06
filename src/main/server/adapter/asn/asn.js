@@ -660,14 +660,23 @@ async function importJsonLdGraph(graph, context) {
     var conceptSchemeId = [];
     var toSave = [];
 
+    if (!graph || !graph.length) {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "ImportJsonLdGraphErr", "Graph not available");
+        return undefined;
+    }
+    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "AsnImportJsonLdGraph", graph.length);
     for (let i = 0; i < graph.length; i+=100) {
-        await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeId, context, skosIdentity, owner, toSave)));
+        await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeId, context, skosIdentity, owner, toSave))).catch((err) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "ImportJsonLdGraphErr", err);
+        });
     }
     await repo.multiput(toSave, function() {}, (error) => {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportJsonLdGraphError", error);
     });
-    if (conceptSchemeId) {
+    if (conceptSchemeId && Array.isArray(conceptSchemeId) && conceptSchemeId.length > 0) {
         return conceptSchemeId[0];
+    } else {
+        return undefined;
     }
 }
 

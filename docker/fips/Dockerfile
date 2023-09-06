@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.4.2
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.8.1
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git build-essential checkinstall zlib1g-dev wget libssl-dev curl clang

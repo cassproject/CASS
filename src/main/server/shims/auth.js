@@ -9,16 +9,15 @@ var skyrepoAdminPpk = function() {
     return EcPpk.fromPem(fileToString(fileLoad("etc/skyAdmin2.pem"))).toPem();
 };
 let getPk = async(identifier) => {
-    if (getPkCache[identifier] != null) 
+    if (getPkCache[identifier] != null)
+    {
         return getPkCache[identifier];
+    }
+    console.log("Looking for " + identifier);
     if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
         return loadConfigurationFile("keys/"+identifier, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
         });
-    if (identifier.toLowerCase().indexOf("admin") != -1)
-    {
-        return skyrepoAdminPpk();
-    }
     if (keyEim == null)
     {
         console.log("Establishing skyId Elastic EIM.");
@@ -32,13 +31,12 @@ let getPk = async(identifier) => {
         console.log("SkyId Elastic EIM fingerprint: " + i.ppk.toPk().fingerprint());
         keyEim.addIdentity(i);
     }
-    console.log("Looking for " + identifier);
     let myKey = loadConfigurationFile("keys/"+identifier, () => {
         console.log("Could not find " + identifier + " in file system.");
         return null;
     });
     
-    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT | "http://identity/";
+    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/";
     let keypair = new EcRemoteLinkedData();
     if (myKey != null)
     {
@@ -147,10 +145,160 @@ if (process.env.CASS_JWT_ENABLED)
     );
 }
 
+if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
+{
+    /**
+     * Extract the encoded JWT from the request's provided Authorization header.
+     * @param {String} authHeader 
+     * @returns 
+     */
+    function parseHeader(authHeader) {
+        if (!authHeader || !authHeader.startsWith("Bearer "))
+            return null;
+    
+        let tokenStr = authHeader.slice(7);
+        let parsed = parseJwt(tokenStr);
+        
+        return parsed;
+    }
+    
+    /**
+     * Parse the JWT's body string into a JSON object.
+     * @param {String} tokenStr 
+     * @returns 
+     */
+    function parseJwt (tokenStr) {
+        let parts = tokenStr.split('.');
+        let bodyEncodedB64 = parts[1];
+        let bodyDecodedStr = Buffer.from(bodyEncodedB64, 'base64').toString();
+        let bodyDecoded = JSON.parse(bodyDecodedStr);
+    
+        return bodyDecoded;
+    }
+
+    function interpretEnvFlag(envFlag) {
+        return envFlag == "true";
+    }
+
+    function interpretEnvCSV(envCSV) {
+        if (envCSV == undefined || typeof envCSV !== "string" || envCSV === "")
+            return null;
+
+        return envCSV.split(",");
+    }
+
+    /** @param {String} uuid */
+    function numberFromUUID(uuid) {
+        let hex = Buffer.from(uuid).toString("hex");
+        return parseInt(hex, 16);
+    }
+
+    let adjectives = null;
+    let nouns = null;
+
+    function createAdjectiveFrom(uuid) {
+
+        if (adjectives == null)
+            adjectives = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_ADJECTIVES);
+
+        if (adjectives != null && adjectives.length > 0)
+        {
+            let uuidNumber = numberFromUUID(uuid);
+            let index = uuidNumber % adjectives.length;
+
+            return adjectives[index];
+        }
+        
+        return "Anonymous";
+    }
+
+    function createNounFrom(uuid) {
+
+        if (nouns == null)
+            nouns = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_NOUNS);
+
+        if (nouns != null && nouns.length > 0)
+        {
+            let uuidNumber = numberFromUUID(uuid);
+            let index = uuidNumber % nouns.length;
+
+            return nouns[index];
+        }
+
+        return "User";
+    }
+    
+    /**
+     * Validate whether this token has the expectd Platform One properties.
+     * @param {Object} token 
+     * @returns 
+     */
+    function validateJwt (token) {
+
+        let checkIssuer = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER);
+        if (checkIssuer) {
+            let expectedIssuer = process.env.CASS_PLATFORM_ONE_ISSUER;
+            let actualIssuer = token.iss;
+            if (actualIssuer !== expectedIssuer)
+                return false;
+        }
+
+        let checkClient = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT);
+        if (checkClient) {
+            let expectedClient = process.env.CASS_PLATFORM_ONE_CLIENT;
+            let actualClient = token.azp;
+            if (actualClient !== expectedClient)
+                return false;
+        }
+
+        let ignoreIssueTime = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME);
+        if (!ignoreIssueTime)
+        {
+            if (token.iat == undefined)
+                return false;
+
+            let secondsSinceEpoch = token.iat;
+            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
+                return false;
+        }
+
+        let uuid = token.sub;
+        if (typeof uuid !== "string" || uuid.length !== 36)
+            return false;
+
+        return true;
+    }
+    
+    app.use((req, res, next) => {
+        
+        let authHeader = req.get("Authorization");
+        let token = parseHeader(authHeader);
+
+        let seemsValid = validateJwt(token);
+        if (seemsValid)
+        {
+            let shouldAnonymize = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_ANONYMIZE_USERS);
+            if (shouldAnonymize)
+            {
+                let adjective = createAdjectiveFrom(token.sub);
+                let noun = createNounFrom(token.sub);
+
+                token.name = `${adjective} ${noun}`;
+                token.email = token.sub;
+            }
+
+            req.p1 = token;
+        }
+        
+        next();
+    });
+}
+
 app.use(async function (req, res, next) {
     let email = null;
     let identifier = null;
     let name = null;
+    let username = null;
     if (req.user != null)
     {
         if (req.user.iat != null)
@@ -169,11 +317,20 @@ app.use(async function (req, res, next) {
         if (req.user.identifier != null)
             identifier = req.user.sub;
     }
+    if (req.p1 != null) {
+        if (req.p1.name != null)
+            name = req.p1.name;
+        if (req.p1.email != null)
+            email = req.p1.email;
+        if (req.p1.sub != null)
+            identifier = req.p1.sub;
+    }
     if (req.oidc?.user != null)
     {
         name = req.oidc.user.name;
         identifier = req.oidc.user.sub;
         email = req.oidc.user.email;
+        username = req.oidc.user.preferred_username;
         if (email == null)
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassOidcMissEmail", "OIDC token does not have email address.");
     }
@@ -189,7 +346,7 @@ app.use(async function (req, res, next) {
     {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthSigSheetCreating", `Securing Proxy: Creating signature sheet for request from ${email}.`);
         let eim = new EcIdentityManager();
-        let myKey = getPk(email);
+        let myKey = await getPk(email);
         let i = new EcIdentity();
         i.displayName = name;
         i.ppk = EcPpk.fromPem(myKey);
@@ -210,6 +367,8 @@ app.use(async function (req, res, next) {
             p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,i.ppk.toPk().fingerprint());
             p.name = name;
             p.email = email;
+            p.identifier = identifier;
+            p.username = username;
             await repo.saveTo(p);
         }
         //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!
@@ -364,4 +523,3 @@ var ipMatch = function(list,clientIp) {
 	}
 	return false;
 };
-

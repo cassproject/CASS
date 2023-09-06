@@ -8423,6 +8423,16 @@ const flattenLangstrings = function(o) {
     }
     return o;
 };
+const getIndexForObject = function(o, type) {
+    return inferTypeFromObj(o, type).toLowerCase();
+}
+const getTypeForObject = function(o, type) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+        return '_doc';
+    } else {
+        return inferTypeFromObj(o, type);
+    }
+}
 const skyrepoPutInternalIndex = async function(o, id, version, type) {
     const url = putUrl.call(this, o, id, version, type);
     o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
@@ -8497,6 +8507,233 @@ const skyrepoPutInternalPermanent = async function(o, id, version, type) {
     }
     return JSON.stringify(results);
 };
+let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = async function(map) {
+    const failed = {};
+
+    let body = '';
+
+    for (let x of Object.values(map)) {
+        let writeMs = new Date().getTime();
+
+        for (let id of x.permanentIds) {
+            let obj = {"index":{"_index": "permanent", "_id": id + '.' + (x.version || ''), "_type": getTypeForObject(x.object, x.type), "version": x.version, "version_type": "external"}}
+            if (elasticSearchVersion().startsWith('8.')) {
+                delete obj.index['_type'];
+            }
+            body += `${JSON.stringify(obj)}\n`;
+            body += `${JSON.stringify({data: JSON.stringify(x.object), writeMs: writeMs})}\n`;
+
+            obj = {"index":{"_index": "permanent", "_id": id + '.', "_type": getTypeForObject(x.object, x.type), "version": x.version, "version_type": "external"}}
+            if (elasticSearchVersion().startsWith('8.')) {
+                delete obj.index['_type'];
+            }
+            body += `${JSON.stringify(obj)}\n`;
+            body += `${JSON.stringify({data: JSON.stringify(x.object), writeMs: writeMs})}\n`;
+        }
+    }
+    const response = await httpPost(body, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+    if (!response) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutPermBulk', 'No response');
+        for (let x of Object.values(map)) {
+            failed[x.id] = true;
+        }
+        return failed;
+    }
+
+    
+    if (response.errors) {
+        let retries = {};
+        
+        for (let item of response.items) {
+            if (item.index.status === 409) {
+                let found = Object.values(map).find(x=>x.permanentIds.includes(item.index['_id'].split('.')[0]));
+                if (found)
+                    retries[found.id] = found;
+            } else if (item.index.error) {
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutPermBulk', item);
+                let found = Object.values(map).find(x=>x.permanentIds.includes(item.index['_id'].split('.')[0]));
+                if (found) {
+                    failed[found.id] = true;
+                    delete map[found.id];
+                }
+            }
+        }
+
+        if (Object.values(retries).length > 0) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', '409, version is: [' + Object.values(retries).map(x=>x.version).toString() + ']');
+            const current = await skyrepoManyGetPermanent.call(this, Object.values(retries));
+            for (let currentDoc of current.docs) {
+                let found = retries[currentDoc['_id'].split('.')[0]];
+                if (currentDoc['_version'] >= found.version) {
+                    found.version = currentDoc['_version']+1;
+                }
+            }
+
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Updated to: [' + Object.values(retries).map(x=>x.version).toString() + ']');
+            
+            // Used to replay replication / database log files without "just jamming the data in"
+            if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
+                const newFailed = await skyrepoPutInternalBulk.call(this, retries);
+                for (let key of Object.keys(newFailed)) {
+                    failed[key] = true;
+                    delete map[key];
+                }
+            }
+        }
+    }
+
+    return failed;
+}
+let skyrepoPutInternalBulk = global.skyrepoPutInternalBulk = async function(map) {
+    const failed = {};
+    Object.assign(failed, await skyrepoPutInternalIndexBulk.call(this, map));
+    if (Object.values(map).length > 0)
+        Object.assign(failed, await skyrepoPutInternalPermanentBulk.call(this, map));
+
+    return failed;
+}
+let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async function(map) {
+    const failed = {};
+    for (let x of Object.values(map)) {
+        x.permanentIds = [];
+        x.permanentIds.push(x.id);
+
+        const erld = new EcRemoteLinkedData(null, null);
+        erld.copyFrom(x.object);
+        if (this.ctx && this.ctx.req && this.ctx.req.eim != null) {
+            try {
+                await this.ctx.req.eim.sign(erld);
+                x.object = JSON.parse(erld.toJson());
+            } catch (msg) {
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'SkyrepoPutInternalError', msg);
+            }
+        }
+
+        if (erld.id != null && erld.getGuid() != null) {
+            EcArray.setAdd(x.permanentIds, erld.getGuid());
+        };
+        if (erld.id != null && erld.shortId() != null) {
+            EcArray.setAdd(x.permanentIds, EcCrypto.md5(erld.shortId()))
+        }
+    }
+    const permIndexes = await skyrepoManyGetIndexInternal.call(this, 'permanent', Object.values(map));
+    if (permIndexes) {
+        for (let x of permIndexes.docs) {
+            let id = x['_id'].split('.')[0];
+            let chosenVersion = map[id].version;
+            if (chosenVersion == null) {
+                if (x != null && x['_version'] != null && !isNaN(x['_version'])) {
+                    chosenVersion = x['_version']+1;
+                } else {
+                    chosenVersion = 1;
+                }
+            }
+            
+            map[id].version = chosenVersion;
+        }
+    } else {
+        for (let key of Object.keys(map)) {
+            if (map[key].version == null)
+                map[key].version = 1;
+        }
+    }
+    
+
+    let body = '';
+
+    for (let x of Object.values(map)) {
+        let o = x.object;
+        o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
+        if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
+            let owners = (o)['owner'];
+            for (let i = 0; i < owners.length; i++) {
+                if (owners[i].indexOf('\n') != -1) {
+                    owners[i] = EcPk.fromPem(owners[i]).toPem();
+                }
+            }
+        }
+        if ((o)['reader'] != null && EcArray.isArray((o)['reader'])) {
+            let owners = (o)['reader'];
+            for (let i = 0; i < owners.length; i++) {
+                if (owners[i].indexOf('\n') != -1) {
+                    owners[i] = EcPk.fromPem(owners[i]).toPem();
+                }
+            }
+        }
+        try {
+            (o)['@version'] = parseInt(x.version);
+            if (isNaN((o)['@version'])) {
+                (o)['@version'] = new Date().getTime();
+            }
+        } catch (ex) {
+            (o)['@version'] = new Date().getTime();
+        }
+        if (x.type != null && x.type.indexOf('EncryptedValue') != -1) {
+            delete (o)['payload'];
+            delete (o)['secret'];
+        }
+
+        x.index = getIndexForObject(x.object, x.type);
+
+        let obj = {"index":{"_index": x.index, "_id": x.id, "_type": getTypeForObject(x.object, x.type), "version": x.version, "version_type": "external"}}
+        if (elasticSearchVersion().startsWith('8.')) {
+            delete obj.index['_type'];
+        }
+
+        body += `${JSON.stringify(obj)}\n`;
+        body += `${JSON.stringify(o)}\n`;
+    }
+    const response = await httpPost(body, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+    if (!response) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutIndexBulk', 'No response');
+        for (let x of Object.values(map)) {
+            failed[x.id] = true;
+        }
+        return failed;
+    }
+    
+    if (response.errors) {        
+        for (let item of response.items) {
+            if (item.index.status === 409) {
+                // Do nothing
+            } else if (item.index.error) {
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutIndexBulk', item);
+                let found = Object.values(map).find(x=>x.permanentIds.includes(item.index['_id'].split('.')[0]));
+                if (found) {
+                    failed[found.id] = true;
+                    delete map[found.id];
+                }
+            }
+        }
+    }
+
+    const oldIndexRecords = await skyrepoManyGetIndexRecords(response.items.filter(x=>!x.index.error && x.index._index !== 'permanent').map((x) => {
+        let obj = x.index;
+        const erld = new EcRemoteLinkedData(null, null);
+        erld.copyFrom(map[obj._id].object);
+        if (erld.id != null)
+            return erld.shortId();
+    }).filter(x=>x));
+
+    const recordsToDelete = [];
+
+    for (const oldIndexRecord of oldIndexRecords) {
+        let obj = Object.values(map).find(x=>x.permanentIds.includes(oldIndexRecord._id));
+        if (!obj || obj.index != oldIndexRecord._index)
+            recordsToDelete.push(oldIndexRecord);
+    }
+
+    
+    if (recordsToDelete.length > 0) {
+        let deleteBody = '';
+        for (let record of recordsToDelete) {
+            deleteBody += `${JSON.stringify({delete: { _index: record._index, _id: record._id }})}\n`;
+        }
+        const deleteResponse = await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+    }
+
+    return failed;
+}
 let skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, version, type) {
     // Securing Proxy: Sign data that is to be saved.
     const erld = new EcRemoteLinkedData(null, null);
@@ -8629,6 +8866,35 @@ const skyrepoGetIndexSearch = async function(id, version, type) {
     return hit;
 };
 
+const skyrepoManyGetIndexSearch = async function(ary) {
+    if (ary.length === 0)
+        return [];
+    let microSearchUrl = elasticEndpoint + '/_search?version&q=';
+    for (let i = 0; i < ary.length; i++) {
+        microSearchUrl += '_id:"' + ary[i].id + '"';
+        if (i < ary.length - 1)
+            microSearchUrl += ' OR ';
+    }
+
+    const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
+    
+    if (skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexSearch', microSearchUrl);
+    }
+    if (microSearch == null) {
+        return [];
+    }
+    const hitshits = (microSearch)['hits'];
+    if (hitshits == null) {
+        return [];
+    }
+    const hits = (hitshits)['hits'];
+    if (hits.length == 0) {
+        return [];
+    }
+    return hits;
+}
+
 let skyrepoGetIndexRecords = async function(id) {
     const hashId = EcCrypto.md5(id);
     const microSearchUrl = elasticEndpoint + '/_search?version&q=@id:"' + id + '" OR @id:"' + hashId + '"';
@@ -8650,6 +8916,38 @@ let skyrepoGetIndexRecords = async function(id) {
     return hits;
 };
 
+let skyrepoManyGetIndexRecords = async function(ary) {
+    if (ary.length === 0)
+        return [];
+    let hashIds = ary.map(x=>EcCrypto.md5(x));
+    let microSearchUrl = elasticEndpoint + '/_search?version&q=';
+    for (let id of ary)
+        microSearchUrl += '@id:"' + id + '" OR ';
+    for (let i = 0; i < hashIds.length; i++) {
+        microSearchUrl += '@id:"' + hashIds[i] + '"';
+        if (i < hashIds.length - 1)
+            microSearchUrl += ' OR ';
+    }
+
+    const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
+    
+    if (skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexRecords', microSearchUrl);
+    }
+    if (microSearch == null) {
+        return [];
+    }
+    const hitshits = (microSearch)['hits'];
+    if (hitshits == null) {
+        return [];
+    }
+    const hits = (hitshits)['hits'];
+    if (hits.length == 0) {
+        return [];
+    }
+    return hits;
+}
+
 const skyrepoGetIndex = async function(id, version, type) {
     if (type !== undefined && type != null && type != '') {
         const result = await skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
@@ -8659,17 +8957,7 @@ const skyrepoGetIndex = async function(id, version, type) {
     }
 };
 const skyrepoManyGetIndex = async function(manyParseParams) {
-    const results = [];
-    for (const parseParams of manyParseParams) {
-        const id = (parseParams)['id'];
-        const type = (parseParams)['type'];
-        const version = (parseParams)['version'];
-        const result = await skyrepoGetIndexSearch(id, version, type);
-        if (result != null) {
-            results.push(result);
-        }
-    }
-    return results;
+    return await skyrepoManyGetIndexSearch(manyParseParams);
 };
 const skyrepoGetPermanent = async function(id, version, type) {
     const result = await skyrepoGetIndexInternal.call(this, 'permanent', id, version, type);
@@ -8907,6 +9195,36 @@ global.skyrepoPutParsed = async function(o, id, version, type) {
     await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may change it.', null, null);
     await skyrepoPutInternal.call(this, o, id, version, type);
 };
+global.skyrepoPutParsedBulk = async function(ary) {
+    const map = {};
+    for (let x of ary) {
+        map[x.id] = x;
+    }
+
+    const failed = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
+    // Everything failed already
+    if (Object.values(map).length === 0)
+        return failed;
+    
+    // Add the additional fails
+    Object.assign(failed, await skyrepoPutInternalBulk.call(this, map));
+
+    for (let x of Object.values(map)) {
+        let o = x.object;
+        const rld = new EcRemoteLinkedData(null, null);
+        rld.copyFrom(o);
+        if (rld.isAny(new EcRekeyRequest().getTypes())) {
+            const err = new EcRekeyRequest();
+            err.copyFrom(o);
+            if (err.verify()) {
+                err.addRekeyRequestToForwardingTable();
+            }
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
+        }
+    }
+
+    return failed;
+}
 let validateSignatures = async function(id, version, type, errorMessage) {
     const oldGet = await (skyrepoGetInternal).call(this, id, version, type);
     if (oldGet == null) {
@@ -8937,6 +9255,45 @@ let validateSignatures = async function(id, version, type, errorMessage) {
         }
     }
     return oldObj;
+};
+let validateSignaturesBulk = async function(map, errorMessage) {
+    const failed = {};
+    const oldGets = await skyrepoManyGetInternal.call(this, Object.values(map));
+    const signatures = this.ctx.get('signatureSheet') || [];
+    for (let oldGet of oldGets) {
+        if (oldGet) {
+            try {
+                const oldObj = new EcRemoteLinkedData(null, null);
+                oldObj.copyFrom(oldGet);
+                if (oldObj.owner !== undefined && oldObj.owner != null && oldObj.owner.length > 0) {
+                    let success = false;
+                    for (let i = 0; i < signatures.length; i++) {
+                        let owner = signatures[i].owner;
+                        if (owner == null) {
+                            owner = (signatures[i])['@owner'];
+                        }
+                        if (oldObj.hasOwner(EcPk.fromPem(owner))) {
+                            success = true;
+                            break;
+                        }
+                        if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
+                            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected.');
+                            success = true;
+                            break;
+                        }
+                    }
+                    if (!success) {
+                        error(errorMessage, 401);
+                    }
+                }
+            } catch (e) {
+                let id = oldGet['@id'].split('/').pop();
+                failed[id] = true;
+                delete map[id];
+            }
+        }
+    }
+    return failed;
 };
 let skyrepoDeleteInternalIndex = async function(id, version, type) {
     const url = deleteUrl.call(this, id, version, type);
@@ -9226,7 +9583,7 @@ const endpointData = async function() {
             return o;
         }
         await (skyrepoPutParsed).call(this, o, id, version, type);
-        afterSave(o);
+        afterSave(o.toJson != null ? JSON.parse(o.toJson()) : o);
         return null;
     } else if (methodType == 'GET') {
         (beforeGet).call(this);
@@ -9437,11 +9794,17 @@ const endpointMultiPutEach = async function() {
     }
     return null;
 };
+const endpointMultiPutBulk = async function() {
+    const ary = this.params.ary;
+    this.ctx.put('refresh', 'false');
+    const failed = await (skyrepoPutParsedBulk).call(this, ary);
+    return ary.filter(x=>!failed[x.id]).map(x=>x.object);    
+}
 const endpointMultiPut = async function() {
     const ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
     const results = [];
     if (ary != null) {
-    // The following is also in skyrepoPutInternalPermanent. Adding it here avoids trying to create the permanent index for each object in multiput.
+        // The following is also in skyrepoPutInternalPermanent. Adding it here avoids trying to create the permanent index for each object in multiput.
         if (permanentCreated != true) {
             const mappings = {};
             const permNoIndex = {};
@@ -9461,15 +9824,35 @@ const endpointMultiPut = async function() {
             permanentCreated = true;
         }
         await ((signatureSheet).call(this));
-        for (let idx = 0; idx < ary.length; idx+=100) {
-            const forEachResults = await Promise.all(ary.slice(idx, idx+100).map((hit)=>{
-                return endpointMultiPutEach.call({ctx: this.ctx, dataStreams: this.dataStreams, params: {obj: hit}});
-            }));
-            for (let i = 0; i < forEachResults.length; i++) {
-                if (forEachResults[i] != null) {
-                    results.push(forEachResults[i]);
-                }
+
+        const uniques = {};
+        for (let x of ary) {
+            const ld = new EcRemoteLinkedData(null, null);
+            const o = x;
+            ld.copyFrom(o);
+            let id = null;
+            if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServer) == -1) {
+                id = EcCrypto.md5(ld.shortId());
+            } else {
+                id = ld.getGuid();
             }
+            let version = ld.getTimestamp();
+            if (isNaN(version)) {
+                version = null;
+            }
+            const type = ld.getDottedType();
+            uniques[id] = {
+                object: o,
+                id: id,
+                version: version,
+                type: type
+            }
+        }
+
+        const uniqueAry = Object.values(uniques);
+
+        while (uniqueAry.length > 0) {
+            results.push(...(await endpointMultiPutBulk.call({ctx: this.ctx, dataStreams: this.dataStreams, params: {ary: uniqueAry.splice(0,parseInt(process.env.MULTIPUT_BATCH_SIZE || 100))}})).filter(x=>x != null));
         }
     }
     await httpGet(elasticEndpoint + '/_all/_refresh', true, elasticHeaders());
