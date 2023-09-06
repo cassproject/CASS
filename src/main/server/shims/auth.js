@@ -176,6 +176,58 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         return bodyDecoded;
     }
 
+    function interpretEnvFlag(envFlag) {
+        return envFlag == "true";
+    }
+
+    function interpretEnvCSV(envCSV) {
+        if (envCSV == undefined || typeof envCSV !== "string" || envCSV === "")
+            return null;
+
+        return envCSV.split(",");
+    }
+
+    /** @param {String} uuid */
+    function numberFromUUID(uuid) {
+        let hex = Buffer.from(uuid).toString("hex");
+        return parseInt(hex, 16);
+    }
+
+    let adjectives = null;
+    let nouns = null;
+
+    function createAdjectiveFrom(uuid) {
+
+        if (adjectives == null)
+            adjectives = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_ADJECTIVES);
+
+        if (adjectives != null && adjectives.length > 0)
+        {
+            let uuidNumber = numberFromUUID(uuid);
+            let index = uuidNumber % adjectives.length;
+
+            return adjectives[index];
+        }
+        
+        return "Anonymous";
+    }
+
+    function createNounFrom(uuid) {
+
+        if (nouns == null)
+            nouns = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_NOUNS);
+
+        if (nouns != null && nouns.length > 0)
+        {
+            let uuidNumber = numberFromUUID(uuid);
+            let index = uuidNumber % nouns.length;
+
+            return nouns[index];
+        }
+
+        return "User";
+    }
+    
     /**
      * Validate whether this token has the expectd Platform One properties.
      * @param {Object} token 
@@ -183,7 +235,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
      */
     function validateJwt (token) {
 
-        let checkIssuer = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER;
+        let checkIssuer = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER);
         if (checkIssuer) {
             let expectedIssuer = process.env.CASS_PLATFORM_ONE_ISSUER;
             let actualIssuer = token.iss;
@@ -191,13 +243,28 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
                 return false;
         }
 
-        let checkClient = process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT;
+        let checkClient = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT);
         if (checkClient) {
-            let expectedIssuer = process.env.CASS_PLATFORM_ONE_CLIENT;
-            let actualIssuer = token.iss;
-            if (actualIssuer !== expectedIssuer)
+            let expectedClient = process.env.CASS_PLATFORM_ONE_CLIENT;
+            let actualClient = token.azp;
+            if (actualClient !== expectedClient)
                 return false;
         }
+
+        let ignoreIssueTime = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME);
+        if (!ignoreIssueTime)
+        {
+            if (token.iat == undefined)
+                return false;
+
+            let secondsSinceEpoch = token.iat;
+            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
+                return false;
+        }
+
+        let uuid = token.sub;
+        if (typeof uuid !== "string" || uuid.length !== 36)
+            return false;
 
         return true;
     }
@@ -209,7 +276,19 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 
         let seemsValid = validateJwt(token);
         if (seemsValid)
+        {
+            let shouldAnonymize = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_ANONYMIZE_USERS);
+            if (shouldAnonymize)
+            {
+                let adjective = createAdjectiveFrom(token.sub);
+                let noun = createNounFrom(token.sub);
+
+                token.name = `${adjective} ${noun}`;
+                token.email = token.sub;
+            }
+
             req.p1 = token;
+        }
         
         next();
     });
@@ -239,15 +318,6 @@ app.use(async function (req, res, next) {
             identifier = req.user.sub;
     }
     if (req.p1 != null) {
-        if (req.p1.iat != null)
-        {
-            let secondsSinceEpoch = req.p1.iat;
-            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
-            {
-                res.end("P1 JWT token is expired.");
-                return;
-            }
-        }
         if (req.p1.name != null)
             name = req.p1.name;
         if (req.p1.email != null)
