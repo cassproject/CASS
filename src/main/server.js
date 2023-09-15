@@ -129,7 +129,7 @@ if (process.env.DISABLED_EDITOR != 'true') {
 
 if (process.env.INCLUDE_SAMEORIGIN_IFRAME_HEADER == "true") {
     app.use((req, res, next) => {
-        res.setHeader("X-Frame-Options", "max-age=31536000")
+        res.setHeader("X-Frame-Options", "SAMEORIGIN")
         next();
     });
 }
