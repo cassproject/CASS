@@ -46,7 +46,15 @@ if (!envHttp2)
     global.axios = require("axios"); //Pre-empt http2 use.
 }
 require("cassproject");
-global.hasher = require('node-object-hash');
+
+const hashModuleRoot = require("node-object-hash");
+
+// Newer versions of this library moved the function to a property
+//
+if (typeof hashModuleRoot !== "function")
+    global.hasher = hashModuleRoot.hasher;
+else
+    global.hasher = hashModuleRoot;
 
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 
