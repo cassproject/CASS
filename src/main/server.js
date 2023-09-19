@@ -171,6 +171,7 @@ skyrepoMigrate(function() {
         glob.sync( './src/main/server/cartridge/*.js' ).forEach( function( file ) {
             require( path.resolve( file ) );
         });
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
     };
     if (envHttps) {
         global.ca = fs.readFileSync('ca.crt');
@@ -198,7 +199,6 @@ skyrepoMigrate(function() {
     if (typeof process.env.MAX_CONNECTIONS !== 'undefined') {
         global.server.maxConnections = parseInt(process.env.MAX_CONNECTIONS);
     }
-
     server.on('connection', function(socket) {
         socket.setKeepAlive(true);
     });

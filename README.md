@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Release Candidate: 1.5.33 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
+Release Candidate: 1.5.35 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.2)](https://travis-ci.org/cassproject/CASS)
@@ -112,3 +112,25 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * In another command window, `npm run test:mocha` - Must not fail any tests.
  * Commit with release notes.
  * Tag commit with version number.
+ 
+### FIPS:
+FIPS is supported both client-side and server-side in CaSS. Here is the relevant compatibility table.
+
+Sources: https://www.openssl.org/blog/blog/2023/05/29/FIPS-3-0-8/
+
+| --> Server --> | < 1.5.35 | >= 1.5.35 with <br> OpenSSL 3.0.8 and<br> --force-fips | >= 1.5.35 with <br>OpenSSL 3.0.8 and<br> --force-fips and<br> env REJECT_SHA1=true |
+| - | - | - | - |
+| **Client/Library** | |
+| < 1.5.35 | SHA-1 (no FIPS) | SHA-1 (Verify only) | Incompatible
+| < 1.5.35 and<br> OpenSSL 3.0.8 and<br> env FIPS=true | SHA-1 (partial FIPS) | SHA-1 (Verify only) | Incompatible
+| >= 1.5.35 | SHA-1 (no FIPS) | SHA-1 (Verify only*), SHA-256 (FIPS) | SHA-256 (FIPS)
+| >= 1.5.35 and<br> env FIPS=true | SHA-1 (partial FIPS) | SHA-1 (Verify only*), SHA-256 (FIPS) | SHA-256 (FIPS)
+| >= 1.5.35 and<br> --force-fips | Incompatible | SHA-256 (FIPS) | SHA-256 (FIPS)
+
+To get FIPS, it is recommended to use the docker container builds.
+
+Partial FIPS means that we are still violating FIPS by using SHA-1 hashing. All other cryptographic operations are using the FIPS module.
+
+Verify only uses the exception that permits SHA-1 verification but not generation.
+
+Verify only* may fall back to SHA-1 verification if SHA-256 negotiation failed, but typically will not use SHA-1.

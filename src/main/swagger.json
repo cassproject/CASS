@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "CaSS",
-        "version": "1.5.33"
+        "version": "1.5.35"
     },
     "components": {
         "parameters": {
@@ -134,7 +134,12 @@
                         },
                         "@signature": {
                             "type": "string",
-                            "description": "Base64 encoded cryptographic signature of this object (minus @signature) by the private key holder identified by @owner.",
+                            "description": "Base64 encoded cryptographic signature of this object (minus @signature and @signatureSha256) by the private key holder identified by @owner.",
+                            "example": "JCZlDnSSRKII+bXChVzmCTLe7YPpw+6U+m/fEMR88flveU565QtwyVKY54HfbL5mDa3FtVuxHYTdExeNRj6Q16Tr9AYIAWVc3ckk4ROcWHDcgT73eOrxv238+oBMJAfUw6PvoC/fE68ToUCCcAXq6lhxx2yDzqRT4SZIeRcLQBFcEoHMLdP9lOepzJ5gqpaOkmwz2JKv1qjPbhf7tIA9w/AyW2Skx5Uoh4PoOqRH9YhZHcsKI5h5OKWX+X9y8tFVDm7TdV1ZBTS65Kk0uah91tHLQPuCJP8fWF4EP+7C/Cb7EifiGDSoZr3rG30dV1EQdyFdg9U+Pg0z+KMlAFAqDQ=="
+                        },
+                        "@signatureSha256": {
+                            "type": "string",
+                            "description": "Base64 encoded cryptographic signature of this object (minus @signature and minus @signatureSha256) by the private key holder identified by @owner.",
                             "example": "JCZlDnSSRKII+bXChVzmCTLe7YPpw+6U+m/fEMR88flveU565QtwyVKY54HfbL5mDa3FtVuxHYTdExeNRj6Q16Tr9AYIAWVc3ckk4ROcWHDcgT73eOrxv238+oBMJAfUw6PvoC/fE68ToUCCcAXq6lhxx2yDzqRT4SZIeRcLQBFcEoHMLdP9lOepzJ5gqpaOkmwz2JKv1qjPbhf7tIA9w/AyW2Skx5Uoh4PoOqRH9YhZHcsKI5h5OKWX+X9y8tFVDm7TdV1ZBTS65Kk0uah91tHLQPuCJP8fWF4EP+7C/Cb7EifiGDSoZr3rG30dV1EQdyFdg9U+Pg0z+KMlAFAqDQ=="
                         }
                     },

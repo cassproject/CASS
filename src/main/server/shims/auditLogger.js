@@ -3,33 +3,33 @@ const EcArray = require('cassproject/src/com/eduworks/ec/array/EcArray');
 const sendMail = require('./mailer.js').sendMail;
 
 const SyslogFacility = {
-    USER: 1, //user 
-    DAEMON: 3, //daemon - anything that runs in the background like jobs
-    AUTH: 4, //auth - anything that deals with authentication or authorization
-    FTP: 11, //ftp - transferring files in and out of the server
-    NETWORK: 16, //local0 - network traffic related like HTTP POST, GET, and DELETE
-    STORAGE: 17, //local1 - things like DBs
-    STANDARD: 18 //local2 - anything that doesn't fit into other categories most likely goes here
-  
-    //theses are open still, syslog format says that we can go from 16-23 for custom 
-    //facility ids and still be in spec
+    USER: 1, // user
+    DAEMON: 3, // daemon - anything that runs in the background like jobs
+    AUTH: 4, // auth - anything that deals with authentication or authorization
+    FTP: 11, // ftp - transferring files in and out of the server
+    NETWORK: 16, // local0 - network traffic related like HTTP POST, GET, and DELETE
+    STORAGE: 17, // local1 - things like DBs
+    STANDARD: 18, // local2 - anything that doesn't fit into other categories most likely goes here
+
+    // theses are open still, syslog format says that we can go from 16-23 for custom
+    // facility ids and still be in spec
     // OPEN1, //local3
     // OPEN2, //local4
     // OPEN3, //local5
     // OPEN4, //local6
     // OPEN5 //local7
-}
+};
 
 const LogCategory = {
-    SYSTEM: "sys",
-    AUTH: "auth",
-    MESSAGE: "msg",
-    FILE_SYSTEM: "fs",
-    NETWORK: "net",
-    STORAGE: "stor",
-    ADAPTER: "adap",
-    PROFILE: "prof"
-}
+    SYSTEM: 'sys',
+    AUTH: 'auth',
+    MESSAGE: 'msg',
+    FILE_SYSTEM: 'fs',
+    NETWORK: 'net',
+    STORAGE: 'stor',
+    ADAPTER: 'adap',
+    PROFILE: 'prof',
+};
 
 const Severity = {
     EMERGENCY: 0, // system isn't working
@@ -41,30 +41,29 @@ const Severity = {
     INFO: 6, // normal
     DEBUG: 7, // extra information
     NETWORK: 8, // traffic information
-}
+};
 
 const InverseSeverity = {
-    0: "EMERGENCY",
-    1: "ALERT    ",
-    2: "CRITICAL ",
-    3: "ERROR    ",
-    4: "WARNING  ",
-    5: "NOTICE   ",
-    6: "INFO     ",
-    7: "DEBUG    ",
-    8: "NETWORK  "
-}
+    0: 'EMERGENCY',
+    1: 'ALERT    ',
+    2: 'CRITICAL ',
+    3: 'ERROR    ',
+    4: 'WARNING  ',
+    5: 'NOTICE   ',
+    6: 'INFO     ',
+    7: 'DEBUG    ',
+    8: 'NETWORK  ',
+};
 
 let logBuffers = [];
 let timeoutHandler;
 let previousHash = '';
 
 
-
 let flush = function() {
     try {
         if (logBuffers.length > 0) {
-            console.log(logBuffers.join("\n"));
+            console.log(logBuffers.join('\n'));
             logBuffers = [];
             if (timeoutHandler) {
                 clearTimeout(timeoutHandler);
@@ -74,51 +73,51 @@ let flush = function() {
     } catch (e) {
         sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
     }
-}
+};
 
 let hash = function(msg) {
     let concat = previousHash + msg;
     let newHash = EcCrypto.md5(concat);
     previousHash = newHash;
     return `${msg} ${newHash}`;
-}
+};
 
 let syslogFormat = function(facility, severity, timestamp, msgID, data) {
     // RFC 3164
     let msg = hash(`<${(SyslogFacility.USER * 8) + severity}>${timestamp.toISOString()} ${global.repo.selectedServer} ${facility + msgID.trim().substr(0, 27)} ${data}`);
     return msg;
-}
+};
 
-/* 
+/*
    * @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
    */
 let report = function(system, severity, message, ...data) {
-    if (process.env.PRODUCTION == "true")
-    try {
-        if (filterLogs(system, severity, message)) {
-            const msg = JSON.stringify({date:new Date(), message, data,system, severity});
-            logBuffers.push(msg);
+    if (process.env.PRODUCTION == 'true') {
+        try {
+            if (filterLogs(system, severity, message)) {
+                const msg = JSON.stringify({date: new Date(), message, data, system, severity});
+                logBuffers.push(msg);
+            }
+            if (logBuffers.length > 1000) {
+                flush();
+            } else {
+                if (!timeoutHandler) {
+                    timeoutHandler = setTimeout(flush, 5000);
+                }
+            }
+        } catch (e) {
+            sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
         }
-        if (logBuffers.length > 1000)
-            flush();
-        else {
-            if (!timeoutHandler)
-                timeoutHandler = setTimeout(flush, 5000);
-        }
-    } catch (e) {
-        sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
-    }
-    else
-    {
-        if (data.length == 1)
+    } else {
+        if (data.length == 1) {
             data = data[0];
-        if (severity <= 6)
-        {
+        }
+        if (severity <= 6) {
             if (EcArray.isArray(data)) data = JSON.stringify(data);
-            console.log(new Date(),system,InverseSeverity[severity],"",message.substr(0,13),"\t:",data);
+            console.log(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:', data);
         }
     }
-}
+};
 
 let filteredCategories = {};
 let filteredSeverities = {};
@@ -130,7 +129,7 @@ if (process.env.LOG_FILTERED_CATEGORIES) {
             filteredCategories[str.trim().toLowerCase()] = 1;
         }
     } catch (e) {
-        report(LogCategory.SYSTEM, Severity.ERROR, "AuditLogCategoriesError", e);
+        report(LogCategory.SYSTEM, Severity.ERROR, 'AuditLogCategoriesError', e);
     }
 }
 
@@ -141,7 +140,7 @@ if (process.env.LOG_FILTERED_SEVERITIES) {
             filteredSeverities[str.trim().toUpperCase()] = 1;
         }
     } catch (e) {
-        report(LogCategory.SYSTEM, Severity.ERROR, "AuditLogSeveritiesError", e);
+        report(LogCategory.SYSTEM, Severity.ERROR, 'AuditLogSeveritiesError', e);
     }
 }
 
@@ -152,23 +151,26 @@ if (process.env.LOG_FILTERED_MESSAGES) {
             filteredMessages[str.trim()] = 1;
         }
     } catch (e) {
-        report(LogCategory.SYSTEM, Severity.ERROR, "AuditLogMessagesError", e);
+        report(LogCategory.SYSTEM, Severity.ERROR, 'AuditLogMessagesError', e);
     }
 }
 
 let filterLogs = function(system, severity, message) {
-    if (filteredCategories[system])
+    if (filteredCategories[system]) {
         return false;
-    if (filteredSeverities[InverseSeverity[severity]])
+    }
+    if (filteredSeverities[InverseSeverity[severity]]) {
         return false;
-    if (filteredMessages[message])
+    }
+    if (filteredMessages[message]) {
         return false;
+    }
     return true;
-}
+};
 
 module.exports = {
     report,
     flush,
     LogCategory,
-    Severity
-}
+    Severity,
+};

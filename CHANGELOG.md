@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.5.35
+* FIPS compatibility.
+* FIPS is enabled by default in all container builds, built with OpenSSL 3.0.8.
+* Switched Elastic to single-node to avoid some configuration annoyances on various platforms.
+* REJECT_SHA1 environment variable introduced (off by default), rejects requests made by cass-npm library < 1.5.35
+* Turned logging headers off by default.
+* LOG_HEADERS environment variable introduced (off by default), enables logging headers.
+
 ## 1.5.33
 * Multiput now 692% faster (when tested with O*NET Technology Skills, 17,000 items). (194 sec to 28 sec).
 * Updates to P1 SSO methods.
