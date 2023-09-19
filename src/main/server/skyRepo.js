@@ -9285,9 +9285,9 @@ let validateSignaturesBulk = async function(map, errorMessage) {
     const signatures = this.ctx.get('signatureSheet') || [];
     for (let oldGet of oldGets) {
         if (oldGet) {
+            const oldObj = new EcRemoteLinkedData(null, null);
+            oldObj.copyFrom(oldGet);
             try {
-                const oldObj = new EcRemoteLinkedData(null, null);
-                oldObj.copyFrom(oldGet);
                 if (oldObj.owner !== undefined && oldObj.owner != null && oldObj.owner.length > 0) {
                     let success = false;
                     for (let i = 0; i < signatures.length; i++) {
@@ -9310,7 +9310,10 @@ let validateSignaturesBulk = async function(map, errorMessage) {
                     }
                 }
             } catch (e) {
-                let id = oldGet['@id'].split('/').pop();
+                let id = oldObj.getGuid();
+                failed[id] = true;
+                delete map[id];
+                id = EcCrypto.md5(oldObj.shortId());
                 failed[id] = true;
                 delete map[id];
             }

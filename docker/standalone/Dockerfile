@@ -23,15 +23,15 @@ RUN echo 'activate = 1' >> /usr/local/ssl/nodejs.cnf
 
 USER elasticsearch
 RUN mkdir CASS
-COPY src CASS/src
 COPY package.json CASS/package.json
+RUN cd CASS && npm install --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --audit-level=high fix
+COPY src CASS/src
 COPY ca.crt CASS/ca.crt
 COPY cass.crt CASS/cass.crt
 COPY cass.key CASS/cass.key
 COPY pm2.standalone.config.js CASS/pm2.standalone.config.js
 COPY copyright.txt CASS/copyright.txt
 COPY LICENSE CASS/LICENSE
-RUN cd CASS && npm install --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --audit-level=high fix
 
 USER root
 RUN echo '-Xms2g' >> config/jvm.options
