@@ -140,6 +140,13 @@ if (process.env.INCLUDE_STRICT_TRANSPORT_SECURITY_HEADER == "true") {
     });
 }
 
+if (process.env.INCLUDE_MIME_NOSNIFF_HEADER == "true") {
+    app.use((req, res, next) => {
+        res.setHeader("X-Content-Type-Options", "nosniff");
+        next();
+    });
+}
+
 let v8 = require('v8');
 let glob = require('glob');
 let path = require('path');
