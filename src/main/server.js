@@ -127,6 +127,13 @@ if (process.env.DISABLED_EDITOR != 'true') {
     app.use(baseUrl+'cass-editor/', express.static('src/main/webapp/'));
 }
 
+if (process.env.INCLUDE_SAMEORIGIN_IFRAME_HEADER == "true") {
+    app.use((req, res, next) => {
+        res.setHeader("X-Frame-Options", "SAMEORIGIN")
+        next();
+    });
+}
+
 if (process.env.INCLUDE_STRICT_TRANSPORT_SECURITY_HEADER == "true") {
     app.use((req, res, next) => {
 
