@@ -60,8 +60,12 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
     return new Promise(async (resolve) => {
         try {
             var c = competencies[compId];
+            if (!c) {
+                resolve(compId);
+                return;
+            }
             if (c == null) resolve(c);
-            if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] != null)
+            if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] && c["ceasn:hasChild"]["@list"] != null)
                 c["ceasn:hasChild"]["@list"].sort(function (a, b) {
                     return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
                 });
@@ -395,10 +399,16 @@ async function cassFrameworkAsCeasn() {
         };
     }
     for (let c of competencies) {
-        if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
-            f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
+        if (!c["@id"]) {
+            // URI does not reference a valid competency.
+            // For consistency with the data and possible debugging purposes, it should still be included in JSON-LD export
+            f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c));
+        } else {
+            if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
+                f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
+            }
+            f.competency.push(await ceasnExportUriTransform(c["@id"]));
         }
-        f.competency.push(await ceasnExportUriTransform(c["@id"]));
     }
     f.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json";
     delete f.relation;
@@ -502,6 +512,9 @@ async function cassFrameworkAsCeasn() {
     results.push(f);
     for (var k in competencies) {
         var c = competencies[k];
+        if (!c) {
+            continue;
+        }
         var found = false;
         for (var j = 0; j < results.length; j++)
             if (results[j]["@id"] == competencies[k]["@id"]) {
