@@ -399,9 +399,6 @@ async function cassFrameworkAsCeasn() {
         };
     }
     for (let c of competencies) {
-        if (!c) {
-            continue;
-        }
         if (!c["@id"]) {
             // URI does not reference a valid competency.
             // For consistency with the data and possible debugging purposes, it should still be included in JSON-LD export
