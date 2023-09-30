@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Release Candidate: 1.5.35 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
+Release Candidate: 1.5.37 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.2)](https://travis-ci.org/cassproject/CASS)
@@ -92,9 +92,9 @@ Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWind
 Due to the performance improvements in the 1.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
 
 ## Release Process
- * Review dependencies, autocomplete version numbers
+ * `npm upgrade --save` Review dependencies, autocomplete version numbers
  * Increment version number in package.json and src/main/swagger.json
- * Increment elasticsearch version number to latest minor/revision in docker/standalone/DockerFile (https://hub.docker.com/_/elasticsearch)
+ * Increment elasticsearch version number (in Dockerfile and docker-compose) to latest minor/revision in docker/standalone/DockerFile (https://hub.docker.com/_/elasticsearch)
  * `npm install`
  * `npm run testWithCoverage`
  * In another command window, `npm run test:mocha` - Must not fail any tests.

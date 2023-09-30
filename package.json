@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.35",
+  "version": "1.5.37",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -88,13 +88,13 @@
   "dependencies": {
     "@xmldom/xmldom": "^0.8.10",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.36",
+    "cassproject": "^1.5.37",
     "check-disk-space": "^3.4.0",
     "cors": "^2.8.5",
-    "cron": "^2.4.3",
+    "cron": "^2.4.4",
     "express": "^4.18.2",
     "express-jwt": "^8.4.1",
-    "express-openid-connect": "^2.16.0",
+    "express-openid-connect": "^2.17.0",
     "express-ws": "^5.0.2",
     "node-object-hash": "^2.3.10",
     "node-worker-threads-pool": "^1.5.1",
@@ -109,8 +109,8 @@
     "ws": "^8.14.2"
   },
   "devDependencies": {
-    "chai": "^4.3.8",
-    "eslint": "^8.49.0",
+    "chai": "^4.3.10",
+    "eslint": "^8.50.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^10.2.0",
     "nodemon": "^3.0.1",

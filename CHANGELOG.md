@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.37
+* Added hash header, sameorigin header, nosniff, mime sniff header (security)
+* CTDL export updates. 
+
 ## 1.5.35
 * FIPS compatibility.
 * FIPS is enabled by default in all container builds, built with OpenSSL 3.0.8.
