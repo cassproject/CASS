@@ -61,7 +61,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
         try {
             var c = competencies[compId];
             if (!c) {
-                resolve(compId);
+                resolve(null);
                 return;
             }
             if (c == null) resolve(c);
@@ -399,11 +399,7 @@ async function cassFrameworkAsCeasn() {
         };
     }
     for (let c of competencies) {
-        if (!c["@id"]) {
-            // URI does not reference a valid competency.
-            // For consistency with the data and possible debugging purposes, it should still be included in JSON-LD export
-            f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c));
-        } else {
+        if (c && c["@id"]) {
             if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
                 f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
             }
