@@ -185,6 +185,9 @@ skyrepoMigrate(function() {
         glob.sync( './src/main/server/cartridge/*.js' ).forEach( function( file ) {
             require( path.resolve( file ) );
         });
+        glob.sync( './src/main/server/cartridge/**/*.js' ).forEach( function( file ) {
+            require( path.resolve( file ) );
+        });
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
     };
     if (envHttps) {
