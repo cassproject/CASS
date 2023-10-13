@@ -79,7 +79,7 @@ let hash = function(msg) {
     let concat = previousHash + msg;
     let newHash = EcCrypto.md5(concat);
     previousHash = newHash;
-    return `${msg} ${newHash}`;
+    return `${newHash} ${msg}`;
 };
 
 let syslogFormat = function(facility, severity, timestamp, msgID, data) {
@@ -96,7 +96,7 @@ let report = function(system, severity, message, ...data) {
         try {
             if (filterLogs(system, severity, message)) {
                 const msg = JSON.stringify({date: new Date(), message, data, system, severity});
-                logBuffers.push(msg);
+                logBuffers.push(hash(msg));
             }
             if (logBuffers.length > 1000) {
                 flush();
