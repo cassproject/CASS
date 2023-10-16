@@ -235,8 +235,8 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
      */
     function validateJwt (token) {
 
-		if (token == null)
-		    return false;
+        if (token == null)
+            return false;
 
         let checkIssuer = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER);
         if (checkIssuer) {
