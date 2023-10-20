@@ -200,6 +200,17 @@ skyrepoMigrate(function() {
             rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false,
             allowHTTP1: true,
         };
+        // Load CRL Lists
+        if (process.env.CRL_LISTS === 'true') {
+            try {
+                let paths = glob.sync('./src/main/server/crl/*.pem');
+                let crls = paths.map(x=>fs.readFileSync(path.resolve(x)));
+                options.crl = crls;
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CRLList", `Loaded CRLs: ${paths}`);
+            } catch (e) {
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CRLListError", e);
+            }
+        }
         if (envHttp2) {
             global.server = spdy.createServer(options, app).listen(port, after);
         } else {
