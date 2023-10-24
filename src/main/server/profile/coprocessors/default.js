@@ -14,12 +14,13 @@ let fetchAssertions = async function(){
             let prevCount = assertions.length;
             assertions = await Promise.all(assertions.map(async(a)=>{
                 let subjectPk = await a.getSubject();
+                if (subjectPk == null) return null;
                 if (subjectPk.toPem() == this.pem)
                     return a;
                 return null;
             }));
-            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
             assertions = assertions.filter((x)=>(x));
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
             assertions.sort((a, b)=>{
                 return b.id.localeCompare(a.id);
             });

@@ -118,7 +118,7 @@ module.exports = class ProfileCalculator {
         
         if (this.frameworkId != null)
             if (this.framework == null)
-                this.framework = await EcFramework.get(this.frameworkId);
+                this.framework = await EcFramework.get(this.frameworkId,null,null,repo,eim);
 
         let profileKey = null;
         let storedProfile = null;
