@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.5.38
+* Updated casslibrary
+* Updated editor
+* Added CRL_LISTS environment variable for certificate revocation. Reads revoked certs from /src/main/server/crl
+* Updated profile generation to use identity of requestor.
+* Library updates.
+* Security updates.
+
 ## 1.5.37
 * Added hash header, sameorigin header, nosniff, mime sniff header (security)
 * CTDL export updates. 

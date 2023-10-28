@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20-slim
 USER root
 WORKDIR /app
 COPY package.json ./
@@ -22,5 +22,10 @@ RUN echo 'activate = 1' >> /usr/local/ssl/nodejs.cnf
 
 RUN npm install --production --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --omit=dev --audit-level=high --fix && chown root:root node_modules -R
 COPY src src
+COPY ca.crt ca.crt
+COPY cass.crt cass.crt
+COPY cass.key cass.key
+COPY copyright.txt copyright.txt
+COPY LICENSE LICENSE
 EXPOSE 80
 CMD node --force-fips ./src/main/server.js
