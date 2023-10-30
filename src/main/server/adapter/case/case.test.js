@@ -1,5 +1,3 @@
-let axios = require("axios");
-let FormData = require("form-data");
 let chai = require("chai");
 
 let hrtime = function() {
@@ -21,21 +19,21 @@ describe("CASE Adapter", function() {
 
     before(async ()=>{
         try{
-            await axios.get("http://localhost/api/data/70d27b782c062d1280b240890141dcf6");
+            await fetch("http://localhost/api/data/70d27b782c062d1280b240890141dcf6");
         }
         catch(err){
-            let onet = (await axios.get("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).data;
+            let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
             const formData = new FormData();
             formData.append('data',JSON.stringify(onet));
-            await axios.post("http://localhost/api/ctdlasn",formData,{headers:formData.getHeaders()});
+            await fetch("http://localhost/api/ctdlasn",{method: 'POST', body: formData});
         }
     });
 
     it('conversion to CASE', async () => {
-        await axios.get("http://localhost/api/ims/case/v1p0/CFPackages/70d27b782c062d1280b240890141dcf6")
+        await fetch("http://localhost/api/ims/case/v1p0/CFPackages/70d27b782c062d1280b240890141dcf6")
     }).timeout(10000);
 
     it('ACT Collective Problem Solving import', async()=>{
-        await axios.get("http://localhost/api/ims/case/harvest?caseEndpoint=https://opensalt.net&dId=f0e7396a-7edd-11e9-86d4-23cb22a51e7e")
+        await fetch("http://localhost/api/ims/case/harvest?caseEndpoint=https://opensalt.net&dId=f0e7396a-7edd-11e9-86d4-23cb22a51e7e")
     }).timeout(30000);
 });

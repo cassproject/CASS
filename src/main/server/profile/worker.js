@@ -39,12 +39,7 @@
 
 const https = require('https');
 
-const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
 let app;
-if (!envHttp2)
-{
-    global.axios = require("axios"); //Pre-empt http2 use.
-}
 require("cassproject");
 
 const hashModuleRoot = require("node-object-hash");

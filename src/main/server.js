@@ -24,9 +24,6 @@ const spdy = require('spdy');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || '';
 const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
 let app = global.app = express();
-if (!envHttp2) {
-    global.axios = require('axios'); // Pre-empt http2 use.
-}
 global.auditLogger = require('./server/shims/auditLogger.js');
 require('cassproject');
 const fs = require('fs');

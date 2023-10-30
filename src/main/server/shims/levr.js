@@ -2,6 +2,7 @@ const fs = require('fs');
 const os = require('os');
 const busboy = require('busboy');
 const getStream = require('get-stream');
+const dns = require('dns').promises;
 
 // LEVR shims
 if (global.fileLoad === undefined) {
@@ -267,15 +268,39 @@ if (global.httpGet === undefined) {
     global.httpGet = async function(url, flag, headers) {
         let failCounter = 0;
         while (failCounter++ < 1000) {
+            let ip = '';
             try {
-                const response = await axios.get(url, {headers: headers});
-                if (skyrepoDebug) {
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetSuccess', 'get success: ' + JSON.stringify(response.data));
-                }
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetSuccess', response.request.socket.remoteAddress, url);
-                return response.data;
+                ip = (await dns.lookup(new URL(url).hostname)).address;
             } catch (error) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetError', error && error.response ? error.response.request.socket.remoteAddress : '', url, error);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "DNSLookup", url, error);
+            }
+            try {
+                const response = await fetch(url, {headers: headers});
+                if (!response.ok) {
+                    throw {
+                        data: await response.text(),
+                        response: { status: response.status, statusText: response.statusText }
+                    };
+                }
+                let result = null;
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    result = await response.json();
+                } else {
+                    result = await response.text();
+                    try{
+                        result = JSON.parse(result);
+                    }
+                    catch(ex) {
+                        // Text is not json
+                    }
+                }
+                if (skyrepoDebug) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetSuccess', 'get success: ' + JSON.stringify(result));
+                }
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetSuccess', ip, url);
+                return result;
+            } catch (error) {
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetError', ip, url, error);
                 let resp = null;
                 if (error != null) {
                     if (error.data != null) {
@@ -312,15 +337,39 @@ if (global.debug === undefined) {
 
 if (global.httpDelete === undefined) {
     global.httpDelete = async function(url, headers) {
+        let ip = '';
         try {
-            const response = await axios.delete(url, {headers: headers});
+            ip = (await dns.lookup(new URL(url).hostname)).address;
+        } catch (error) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "DNSLookup", url, error);
+        }
+        try {
+            const response = await fetch(url, {headers: headers, method: 'DELETE'});
+            if (!response.ok) {
+                throw {
+                    data: await response.text(),
+                    response: { status: response.status, statusText: response.statusText }
+                };
+            }
+            let result = null;
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                result = await response.json();
+            } else {
+                result = await response.text();
+                try{
+                    result = JSON.parse(result);
+                }
+                catch(ex) {
+                    // Text is not json
+                }
+            }
             if (skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteSuccess', 'delete success: ' + JSON.stringify(response.data));
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteSuccess', response.request.socket.remoteAddress, url);
-            return response.data;
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteSuccess', ip, url);
+            return result;
         } catch (error) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteError', error && error.response ? error.response.request.socket.remoteAddress : '', url, error);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteError', ip, url, error);
             let resp = null;
             if (error != null) {
                 if (error.data != null) {
@@ -342,20 +391,46 @@ if (global.httpDelete === undefined) {
 
 if (global.httpPut === undefined) {
     global.httpPut = async function(data, url, contentType, headers) {
+        let ip = '';
         try {
-            const response = await axios.put(url, data, {
+            ip = (await dns.lookup(new URL(url).hostname)).address;
+        } catch (error) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "DNSLookup", url, error);
+        }
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': contentType,
                     ...headers,
                 },
+                body: data
             });
+            if (!response.ok) {
+                throw {
+                    data: await response.text(),
+                    response: { status: response.status, statusText: response.statusText }
+                };
+            }
+            let result = null;
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                result = await response.json();
+            } else {
+                result = await response.text();
+                try{
+                    result = JSON.parse(result);
+                }
+                catch(ex) {
+                    // Text is not json
+                }
+            }
             if (skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutSuccess', 'put success: ' + JSON.stringify(response.data));
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutSuccess', response.request.socket.remoteAddress, url);
-            return response.data;
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutSuccess', ip, url);
+            return result;
         } catch (error) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutError', error && error.response ? error.response.request.socket.remoteAddress: '', url, error);
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutError', ip, url, error);
             let resp = null;
             if (error != null) {
                 if (error.data != null) {
@@ -379,20 +454,46 @@ if (global.httpPost === undefined) {
     global.httpPost = async function(data, url, contentType, multipart, something, something2, simple, headers) {
         let failCounter = 0;
         while (failCounter++ < 1000) {
+            let ip = '';
             try {
-                const response = await axios.post(url, data, {
+                ip = (await dns.lookup(new URL(url).hostname)).address;
+            } catch (error) {
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "DNSLookup", url, error);
+            }
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': contentType,
                         ...headers,
                     },
+                    body: data
                 });
+                if (!response.ok) {
+                    throw {
+                        data: await response.text(),
+                        response: { status: response.status, statusText: response.statusText }
+                    };
+                }
+                let result = null;
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    result = await response.json();
+                } else {
+                    result = await response.text();
+                    try{
+                        result = JSON.parse(result);
+                    }
+                    catch(ex) {
+                        // Text is not json
+                    }
+                }
                 if (skyrepoDebug) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostSuccess', 'post success: ' + JSON.stringify(response.data));
                 }
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostSuccess', response.request.socket.remoteAddress, url);
-                return response.data;
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostSuccess', ip, url);
+                return result;
             } catch (error) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostError', error && error.response ? error.response.request.socket.remoteAddress : '', url, error);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostError', ip, url, error);
                 let resp = null;
                 if (error != null) {
                     if (error.data != null) {

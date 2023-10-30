@@ -1,4 +1,3 @@
-global.axios = require('axios');
 let chai = require('chai');
 const EcAes = require('cassproject/src/com/eduworks/ec/crypto/EcAes');
 const EcRemoteIdentityManager = require('cassproject/src/org/cassproject/ebac/identity/remote/EcRemoteIdentityManager');
