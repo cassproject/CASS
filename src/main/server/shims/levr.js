@@ -276,12 +276,6 @@ if (global.httpGet === undefined) {
             }
             try {
                 const response = await fetch(url, {headers: headers});
-                if (!response.ok) {
-                    throw {
-                        data: await response.text(),
-                        response: { status: response.status, statusText: response.statusText }
-                    };
-                }
                 let result = null;
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -294,6 +288,12 @@ if (global.httpGet === undefined) {
                     catch(ex) {
                         // Text is not json
                     }
+                }
+                if (!response.ok) {
+                    throw {
+                        data: result,
+                        response: { status: response.status, statusText: response.statusText }
+                    };
                 }
                 if (skyrepoDebug) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetSuccess', 'get success: ' + JSON.stringify(result));
@@ -346,12 +346,6 @@ if (global.httpDelete === undefined) {
         }
         try {
             const response = await fetch(url, {headers: headers, method: 'DELETE'});
-            if (!response.ok) {
-                throw {
-                    data: await response.text(),
-                    response: { status: response.status, statusText: response.statusText }
-                };
-            }
             let result = null;
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -364,6 +358,12 @@ if (global.httpDelete === undefined) {
                 catch(ex) {
                     // Text is not json
                 }
+            }
+            if (!response.ok) {
+                throw {
+                    data: result,
+                    response: { status: response.status, statusText: response.statusText }
+                };
             }
             if (skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteSuccess', 'delete success: ' + JSON.stringify(response.data));
@@ -408,12 +408,6 @@ if (global.httpPut === undefined) {
                 },
                 body: contentType === 'application/json' ? JSON.stringify(data) : data
             });
-            if (!response.ok) {
-                throw {
-                    data: await response.text(),
-                    response: { status: response.status, statusText: response.statusText }
-                };
-            }
             let result = null;
             const _contentType = response.headers.get("content-type");
             if (_contentType && _contentType.indexOf("application/json") !== -1) {
@@ -426,6 +420,12 @@ if (global.httpPut === undefined) {
                 catch(ex) {
                     // Text is not json
                 }
+            }
+            if (!response.ok) {
+                throw {
+                    data: result,
+                    response: { status: response.status, statusText: response.statusText }
+                };
             }
             if (skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutSuccess', 'put success: ' + JSON.stringify(response.data));
@@ -472,12 +472,7 @@ if (global.httpPost === undefined) {
                     },
                     body: contentType === 'application/json' ? JSON.stringify(data) : data
                 });
-                if (!response.ok) {
-                    throw {
-                        data: await response.text(),
-                        response: { status: response.status, statusText: response.statusText }
-                    };
-                }
+                
                 let result = null;
                 const _contentType = response.headers.get("content-type");
                 if (_contentType && _contentType.indexOf("application/json") !== -1) {
@@ -490,6 +485,12 @@ if (global.httpPost === undefined) {
                     catch(ex) {
                         // Text is not json
                     }
+                }
+                if (!response.ok) {
+                    throw {
+                        data: result,
+                        response: { status: response.status, statusText: response.statusText }
+                    };
                 }
                 if (skyrepoDebug) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostSuccess', 'post success: ' + JSON.stringify(response.data));
