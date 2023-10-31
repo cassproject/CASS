@@ -283,6 +283,7 @@ if (global.httpGet === undefined) {
                     };
                 }
                 let result = null;
+                const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     result = await response.json();
                 } else {
@@ -352,6 +353,7 @@ if (global.httpDelete === undefined) {
                 };
             }
             let result = null;
+            const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
                 result = await response.json();
             } else {
@@ -404,7 +406,7 @@ if (global.httpPut === undefined) {
                     'Content-Type': contentType,
                     ...headers,
                 },
-                body: data
+                body: contentType === 'application/json' ? JSON.stringify(data) : data
             });
             if (!response.ok) {
                 throw {
@@ -413,7 +415,8 @@ if (global.httpPut === undefined) {
                 };
             }
             let result = null;
-            if (contentType && contentType.indexOf("application/json") !== -1) {
+            const _contentType = response.headers.get("content-type");
+            if (_contentType && _contentType.indexOf("application/json") !== -1) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -467,7 +470,7 @@ if (global.httpPost === undefined) {
                         'Content-Type': contentType,
                         ...headers,
                     },
-                    body: data
+                    body: contentType === 'application/json' ? JSON.stringify(data) : data
                 });
                 if (!response.ok) {
                     throw {
@@ -476,7 +479,8 @@ if (global.httpPost === undefined) {
                     };
                 }
                 let result = null;
-                if (contentType && contentType.indexOf("application/json") !== -1) {
+                const _contentType = response.headers.get("content-type");
+                if (_contentType && _contentType.indexOf("application/json") !== -1) {
                     result = await response.json();
                 } else {
                     result = await response.text();
