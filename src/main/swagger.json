@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "CaSS",
-        "version": "1.5.37"
+        "version": "1.5.38"
     },
     "components": {
         "parameters": {

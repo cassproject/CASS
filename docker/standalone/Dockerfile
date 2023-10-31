@@ -5,7 +5,7 @@ RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs && apt upgrade -qqy && apt clean
 
 RUN openssl version
-RUN apt install -qqy build-essential checkinstall zlib1g-dev wget libssl-dev curl clang && cd /usr/local/src && wget https://www.openssl.org/source/openssl-3.0.8.tar.gz && tar xvf openssl-3.0.8.tar.gz && cd openssl-3.0.8 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips linux-x86_64 && make -j8 > make.log && make install > makeinstall.log && make install_ssldirs > makeinstallssldirs.log && make install_fips > makeinstallfips.log && cd / && apt remove -qqy build-essential checkinstall zlib1g-dev wget libssl-dev curl clang && apt autoremove -qqy && apt clean
+RUN apt install -qqy build-essential checkinstall zlib1g-dev wget libssl-dev curl clang && cd /usr/local/src && wget https://www.openssl.org/source/openssl-3.0.8.tar.gz && tar xvf openssl-3.0.8.tar.gz && cd openssl-3.0.8 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips linux-x86_64 && make -j8 > make.log && make install > makeinstall.log && make install_ssldirs > makeinstallssldirs.log && make install_fips > makeinstallfips.log && cd / && apt remove -qqy build-essential checkinstall zlib1g-dev wget libssl-dev curl clang && rm -rf cd /usr/local/src/openssl-3.0.8 && apt autoremove -qqy && apt clean
 RUN openssl version
 
 ENV OPENSSL_CONF=/usr/local/ssl/nodejs.cnf
