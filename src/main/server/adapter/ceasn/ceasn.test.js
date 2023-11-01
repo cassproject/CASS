@@ -52,6 +52,17 @@ describe("CEASN Adapter", function() {
         assert(framework != null, "Framework saved to CaSS.");
     }).timeout(30000);
 
+    it('conversion from CEASN (Technology Skills)', async () => {
+        let repo = new EcRepository();
+        repo.selectedServer = "http://localhost/api/";
+        let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-9fab4187-d8e7-11e9-8250-782bcb5df6ac")).json();
+        const formData = new FormData();
+        formData.append('data',JSON.stringify(onet));
+        await fetch("http://localhost/api/ctdlasn",{method: 'POST', body: formData});
+        let framework = await EcRepository.get("https://www.onetcenter.org/ctdlasn/resources/ce-9fab4187-d8e7-11e9-8250-782bcb5df6ac");
+        assert(framework != null, "Framework saved to CaSS.");
+    }).timeout(300000);
+
     // it('Reimport after delete', async () => {
     //     let repo = new EcRepository();
     //     repo.selectedServer = "http://localhost/api/";
