@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.40
+* Removed axios. 
+
 ## 1.5.38
 * Updated casslibrary
 * Updated editor
