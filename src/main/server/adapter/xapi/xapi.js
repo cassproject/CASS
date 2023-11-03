@@ -116,13 +116,7 @@ var xapiStatement = async function (s) {
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
     var negative = false;
-    if (s.result.score != null) {
-        var scaled = s.result.score.scaled;
-        if (scaled > 0.7)
-            negative = false;
-        else
-            negative = true;
-    } else if (s.result.success != null) {
+    if (s.result.success != null) {
         var scaled = 1.0;
         if (s.result.success == true)
             negative = false;
@@ -134,6 +128,12 @@ var xapiStatement = async function (s) {
     } else if (s.result.response == "Fail") {
         var scaled = 1.0;
         negative = true;
+    } if (s.result.score != null) {
+        var scaled = s.result.score.scaled;
+        if (scaled > 0.7)
+            negative = false;
+        else
+            negative = true;
     } else
         return;
 
