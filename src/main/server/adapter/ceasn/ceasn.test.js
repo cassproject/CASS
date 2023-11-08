@@ -1,5 +1,3 @@
-let axios = require("axios");
-let FormData = require("form-data");
 let chai = require("chai");
 const EcCrypto = require("cassproject/src/com/eduworks/ec/crypto/EcCrypto");
 const EcRepository = require("cassproject/src/org/cassproject/ebac/repository/EcRepository");
@@ -27,30 +25,43 @@ describe("CEASN Adapter", function() {
 
     before(async ()=>{
         try{
-            await axios.get("http://localhost/api/data/70d27b782c062d1280b240890141dcf6");
+            await fetch("http://localhost/api/data/70d27b782c062d1280b240890141dcf6");
         }
         catch(err){
-            let onet = (await axios.get("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac",{httpsAgent: new require("https").Agent({ rejectUnauthorized: false })})).data;
+            console.log('doing things');
+            let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
+            console.log('onet', onet);
             const formData = new FormData();
             formData.append('data',JSON.stringify(onet));
-            await axios.post("http://localhost/api/ctdlasn",formData,{headers:formData.getHeaders()});
+            await fetch("http://localhost/api/ctdlasn",{method: 'POST', body: formData});
         }
     });
 
     it('conversion to CEASN', async () => {
-        await axios.get("http://localhost/api/ceasn/70d27b782c062d1280b240890141dcf6")
+        await fetch("http://localhost/api/ceasn/70d27b782c062d1280b240890141dcf6")
     }).timeout(30000);
     
     it('conversion from CEASN', async () => {
         let repo = new EcRepository();
         repo.selectedServer = "http://localhost/api/";
-        let onet = (await axios.get("https://www.onetcenter.org/ctdlasn/graph/ce-07c264d7-9119-11e8-b852-782bcb5df6ac",{httpsAgent: new require("https").Agent({ rejectUnauthorized: false })})).data;
+        let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c264d7-9119-11e8-b852-782bcb5df6ac")).json();
         const formData = new FormData();
         formData.append('data',JSON.stringify(onet));
-        await axios.post("http://localhost/api/ctdlasn",formData,{headers:formData.getHeaders()});
+        await fetch("http://localhost/api/ctdlasn",{method: 'POST', body: formData});
         let framework = await EcRepository.get("https://www.onetcenter.org/ctdlasn/resources/ce-07c264d7-9119-11e8-b852-782bcb5df6ac");
         assert(framework != null, "Framework saved to CaSS.");
     }).timeout(30000);
+
+    it('conversion from CEASN (Technology Skills)', async () => {
+        let repo = new EcRepository();
+        repo.selectedServer = "http://localhost/api/";
+        let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-9fab4187-d8e7-11e9-8250-782bcb5df6ac")).json();
+        const formData = new FormData();
+        formData.append('data',JSON.stringify(onet));
+        await fetch("http://localhost/api/ctdlasn",{method: 'POST', body: formData});
+        let framework = await EcRepository.get("https://www.onetcenter.org/ctdlasn/resources/ce-9fab4187-d8e7-11e9-8250-782bcb5df6ac");
+        assert(framework != null, "Framework saved to CaSS.");
+    }).timeout(300000);
 
     // it('Reimport after delete', async () => {
     //     let repo = new EcRepository();

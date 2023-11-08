@@ -113,8 +113,12 @@ let report = function(system, severity, message, ...data) {
             data = data[0];
         }
         if (severity <= 6) {
-            if (EcArray.isArray(data)) data = JSON.stringify(data);
-            console.log(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:', data);
+            try {
+                if (EcArray.isArray(data)) data = JSON.stringify(data);
+                console.log(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:', data);
+            } catch (ex) {
+                console.trace(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:');
+            }
         }
     }
 };

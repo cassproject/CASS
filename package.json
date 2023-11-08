@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.38",
+  "version": "1.5.40",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -90,7 +90,7 @@
   "dependencies": {
     "@xmldom/xmldom": "^0.8.10",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.38",
+    "cassproject": "^1.5.40",
     "check-disk-space": "^3.4.0",
     "cors": "^2.8.5",
     "cron": "^2.4.4",
@@ -107,6 +107,7 @@
     "spdy": "^4.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "undici": "^5.27.0",
     "uuid": "^9.0.1",
     "ws": "^8.14.2"
   },
