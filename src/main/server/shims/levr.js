@@ -115,6 +115,12 @@ if (global.bindWebService === undefined) {
                         dataStreams: dataStreams,
                     });
                     if (typeof(result) == 'string') {
+                        try {
+                            JSON.parse(result);
+                            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                        } catch (e) {
+                        // not JSON
+                        }
                         res.end(result);
                     } else {
                         res.end();
@@ -152,6 +158,12 @@ if (global.bindWebService === undefined) {
                     params: req.query,
                 });
                 if (typeof(result) == 'string') {
+                    try {
+                        JSON.parse(result);
+                        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                    } catch (e) {
+                    // not JSON
+                    }
                     res.end(result);
                 } else {
                     res.end();
@@ -211,6 +223,12 @@ if (global.bindWebService === undefined) {
                             dataStreams: fields,
                         });
                         if (typeof(result) == 'string') {
+                            try {
+                                JSON.parse(result);
+                                res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                            } catch (e) {
+                            // not JSON
+                            }
                             res.end(result);
                         } else {
                             res.end();
