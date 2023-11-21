@@ -8725,7 +8725,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
     let recordsToGet = [...response.items];
     let oldIndexRecords = [];
     while (recordsToGet.length > 0)
-        oldIndexRecords.push(...(await skyrepoManyGetIndexRecords(recordsToGet.splice(0, 10).filter((x) => !x.index.error && x.index._index !== 'permanent').map((x) => {
+        oldIndexRecords.push(...(await skyrepoManyGetIndexRecords.call(this, recordsToGet.splice(0, 1000).filter((x) => !x.index.error && x.index._index !== 'permanent').map((x) => {
             let obj = x.index;
             const erld = new EcRemoteLinkedData(null, null);
             erld.copyFrom(map[obj._id].object);
@@ -8942,7 +8942,7 @@ let skyrepoManyGetIndexRecords = async function (ary) {
         return [];
     }
     let hashIds = ary.map((x) => EcCrypto.md5(x));
-    let microSearchUrl = elasticEndpoint + '/_search?version&q=';
+    let microSearchUrl = "";
     for (let id of ary) {
         microSearchUrl += '@id:"' + id + '" OR ';
     }
@@ -8953,7 +8953,11 @@ let skyrepoManyGetIndexRecords = async function (ary) {
         }
     }
 
-    const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
+    const searchParameters = await (searchObj).call(this, microSearchUrl, null, 10000);
+    if (skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
+    }
+    const microSearch = await httpPost(searchParameters, searchUrl(), 'application/json', false, null, null, true, elasticHeaders());
 
     if (skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexRecords', microSearchUrl);
