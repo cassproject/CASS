@@ -536,10 +536,8 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                 else {
                     url = "https://schema.cassproject.org/0.4/";
                 }
-                compacted = await jsonLdCompact(JSON.stringify(expanded), url);
-
-                const type = compacted["@type"]
-                let objToSave = compacted;
+                let objToSave = await jsonLdCompact(JSON.stringify(expanded), url);
+                const type = objToSave["@type"]
 
                 if ((type == "skos:ConceptScheme") || (type == "asn:ProgressionModel")) {
                     objToSave["@type"] = "ConceptScheme";
@@ -548,7 +546,7 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                         objToSave["subType"] = "Progression";
                     }
                     objToSave = new EcConceptScheme();
-                    objToSave.copyFrom(compacted);                
+                    objToSave.copyFrom(compacted);
                     conceptSchemeId.push(objToSave.shortId());
                     objToSave.addOwner(skosIdentity.ppk.toPk());
                     if (owner != null)
