@@ -503,7 +503,7 @@ if (!global.importJsonLdGraph) {
 async function importConceptPromise(graphObj, conceptSchemeId, context, skosIdentity, owner, toSave) {
     return new Promise(async (resolve) => {
         try {
-            var compacted;
+            let compacted;
 
             if (context != undefined) {
                 const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassConceptsTerms")),true));
@@ -529,118 +529,125 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                 }
 
                 var expanded = (await jsonLdExpand(JSON.stringify(graphObj)))[0];
+                let url;
                 if (graphObj["@type"].indexOf("Concept") != -1) {
-                    compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/skos/");
+                    url = "https://schema.cassproject.org/0.4/skos/";
                 }
                 else {
-                    compacted = await jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
+                    url = "https://schema.cassproject.org/0.4/";
                 }
-            }
+                compacted = await jsonLdCompact(JSON.stringify(expanded), url);
 
-            var type = compacted["@type"]
-            var objToSave = compacted;
+                const type = compacted["@type"]
+                let objToSave = compacted;
 
-            if ((type == "skos:ConceptScheme") || (type == "asn:ProgressionModel")) {
-                objToSave["@type"] = "ConceptScheme";
-                objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
-                if (type == "asn:ProgressionModel") {
-                    objToSave["subType"] = "Progression";
-                }
-                objToSave = new EcConceptScheme();
-                objToSave.copyFrom(compacted);
-                conceptSchemeId.push(objToSave.shortId());
-                objToSave.addOwner(skosIdentity.ppk.toPk());
-                if (owner != null)
-                    objToSave.addOwner(EcPk.fromPem(owner));
+                if ((type == "skos:ConceptScheme") || (type == "asn:ProgressionModel")) {
+                    objToSave["@type"] = "ConceptScheme";
+                    objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                    if (type == "asn:ProgressionModel") {
+                        objToSave["subType"] = "Progression";
+                    }
+                    objToSave = new EcConceptScheme();
+                    objToSave.copyFrom(compacted);                
+                    conceptSchemeId.push(objToSave.shortId());
+                    objToSave.addOwner(skosIdentity.ppk.toPk());
+                    if (owner != null)
+                        objToSave.addOwner(EcPk.fromPem(owner));
 
-                if (objToSave["dcterms:language"] == null || objToSave["dcterms:language"] === undefined) {
-                    if (EcConceptScheme.template != null && EcConceptScheme.template["dcterms:language"] != null) {
-                        objToSave["dcterms:language"] = EcConceptScheme.template["dcterms:language"];
+                    if (objToSave["dcterms:language"] == null || objToSave["dcterms:language"] === undefined) {
+                        if (EcConceptScheme.template != null && EcConceptScheme.template["dcterms:language"] != null) {
+                            objToSave["dcterms:language"] = EcConceptScheme.template["dcterms:language"];
+                        }
+                        else {
+                            objToSave["dcterms:language"] = "en";
+                        }
                     }
-                    else {
-                        objToSave["dcterms:language"] = "en";
-                    }
-                }
 
-                if (objToSave["skos:hasTopConcept"] != null && !EcArray.isArray(objToSave["skos:hasTopConcept"])) {
-                    objToSave["skos:hasTopConcept"] = [objToSave["skos:hasTopConcept"]];
-                }
+                    if (objToSave["skos:hasTopConcept"] != null && !EcArray.isArray(objToSave["skos:hasTopConcept"])) {
+                        objToSave["skos:hasTopConcept"] = [objToSave["skos:hasTopConcept"]];
+                    }
 
-                if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
-                    var timestamp;
-                    var date;
-                    if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
-                        timestamp = null;
+                    if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
+                        var timestamp;
+                        var date;
+                        if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                            timestamp = null;
+                        }
+                        else {
+                            timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
+                        }
+                        if (timestamp != null) {
+                            date = new Date(parseInt(timestamp)).toISOString();
+                        }
+                        else {
+                            date = new Date().toISOString();
+                        }
+                        objToSave["schema:dateCreated"] = date;
                     }
-                    else {
-                        timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
-                    }
-                    if (timestamp != null) {
-                        date = new Date(parseInt(timestamp)).toISOString();
-                    }
-                    else {
-                        date = new Date().toISOString();
-                    }
-                    objToSave["schema:dateCreated"] = date;
+                    toSave.push(objToSave);
+                    resolve();
                 }
-                toSave.push(objToSave);
-            }
-            else if ((type == "skos:Concept") || (type == "asn:ProgressionLevel")) {
-                objToSave["@type"] = "Concept";
-                objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
-                if (type == "asn:ProgressionLevel") {
-                    objToSave["subType"] = "Progression";
-                }
-                objToSave = new EcConcept();
-                objToSave.copyFrom(compacted);
-                objToSave.addOwner(skosIdentity.ppk.toPk());
-                if (owner != null)
-                    objToSave.addOwner(EcPk.fromPem(owner));
+                else if ((type == "skos:Concept") || (type == "asn:ProgressionLevel")) {
+                    objToSave["@type"] = "Concept";
+                    objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                    if (type == "asn:ProgressionLevel") {
+                        objToSave["subType"] = "Progression";
+                    }
+                    objToSave = new EcConcept();
+                    objToSave.copyFrom(compacted);
+                    objToSave.addOwner(skosIdentity.ppk.toPk());
+                    if (owner != null)
+                        objToSave.addOwner(EcPk.fromPem(owner));
 
-                if (objToSave["skos:narrower"] != null && !EcArray.isArray(objToSave["skos:narrower"])) {
-                    objToSave["skos:narrower"] = [objToSave["skos:narrower"]];
-                }
-                if (objToSave["skos:broader"] != null && !EcArray.isArray(objToSave["skos:broader"])) {
-                    objToSave["skos:broader"] = [objToSave["skos:broader"]];
-                }
-                if (objToSave["skos:broadMatch"] != null && !EcArray.isArray(objToSave["skos:broadMatch"])) {
-                    objToSave["skos:broadMatch"] = [objToSave["skos:broadMatch"]];
-                }
-                if (objToSave["skos:closeMatch"] != null && !EcArray.isArray(objToSave["skos:closeMatch"])) {
-                    objToSave["skos:closeMatch"] = [objToSave["skos:closeMatch"]];
-                }
-                if (objToSave["skos:exactMatch"] != null && !EcArray.isArray(objToSave["skos:exactMatch"])) {
-                    objToSave["skos:exactMatch"] = [objToSave["skos:exactMatch"]];
-                }
-                if (objToSave["skos:narrowMatch"] != null && !EcArray.isArray(objToSave["skos:narrowMatch"])) {
-                    objToSave["skos:narrowMatch"] = [objToSave["skos:narrowMatch"]];
-                }
-                if (objToSave["skos:related"] != null && !EcArray.isArray(objToSave["skos:related"])) {
-                    objToSave["skos:related"] = [objToSave["skos:related"]];
-                }
+                    if (objToSave["skos:narrower"] != null && !EcArray.isArray(objToSave["skos:narrower"])) {
+                        objToSave["skos:narrower"] = [objToSave["skos:narrower"]];
+                    }
+                    if (objToSave["skos:broader"] != null && !EcArray.isArray(objToSave["skos:broader"])) {
+                        objToSave["skos:broader"] = [objToSave["skos:broader"]];
+                    }
+                    if (objToSave["skos:broadMatch"] != null && !EcArray.isArray(objToSave["skos:broadMatch"])) {
+                        objToSave["skos:broadMatch"] = [objToSave["skos:broadMatch"]];
+                    }
+                    if (objToSave["skos:closeMatch"] != null && !EcArray.isArray(objToSave["skos:closeMatch"])) {
+                        objToSave["skos:closeMatch"] = [objToSave["skos:closeMatch"]];
+                    }
+                    if (objToSave["skos:exactMatch"] != null && !EcArray.isArray(objToSave["skos:exactMatch"])) {
+                        objToSave["skos:exactMatch"] = [objToSave["skos:exactMatch"]];
+                    }
+                    if (objToSave["skos:narrowMatch"] != null && !EcArray.isArray(objToSave["skos:narrowMatch"])) {
+                        objToSave["skos:narrowMatch"] = [objToSave["skos:narrowMatch"]];
+                    }
+                    if (objToSave["skos:related"] != null && !EcArray.isArray(objToSave["skos:related"])) {
+                        objToSave["skos:related"] = [objToSave["skos:related"]];
+                    }
 
-                if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
-                    var timestamp;
-                    var date;
-                    if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
-                        timestamp = null;
+                    if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
+                        var timestamp;
+                        var date;
+                        if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                            timestamp = null;
+                        }
+                        else {
+                            timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
+                        }
+                        if (timestamp != null) {
+                            date = new Date(parseInt(timestamp)).toISOString();
+                        }
+                        else {
+                            date = new Date().toISOString();
+                        }
+                        objToSave["schema:dateCreated"] = date;
                     }
-                    else {
-                        timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
-                    }
-                    if (timestamp != null) {
-                        date = new Date(parseInt(timestamp)).toISOString();
-                    }
-                    else {
-                        date = new Date().toISOString();
-                    }
-                    objToSave["schema:dateCreated"] = date;
+                    toSave.push(objToSave);
+                    resolve();
+                } else {
+                    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportConceptError", "Unrecognized type: " + type);
+                    resolve();
                 }
-                toSave.push(objToSave);
             } else {
-                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportConceptError", "Unrecognized type: " + type);
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportConceptError", "Context not available");
+                resolve();
             }
-            resolve();
         } catch(err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "AsnImportConceptError", err);
             resolve();
