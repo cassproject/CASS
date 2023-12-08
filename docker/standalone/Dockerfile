@@ -53,5 +53,6 @@ USER root
 RUN mkdir /logs
 RUN chown -R elasticsearch:root /logs
 
+ENV HTTP2=false
 USER elasticsearch:root
 ENTRYPOINT (cd CASS && npm run run:standalone && npm run logs) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh
