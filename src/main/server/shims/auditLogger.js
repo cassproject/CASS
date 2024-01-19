@@ -112,7 +112,7 @@ let report = function(system, severity, message, ...data) {
         if (data.length == 1) {
             data = data[0];
         }
-        if (severity <= 6) {
+        if (severity <= 6 || global.skyrepoDebug) {
             try {
                 if (EcArray.isArray(data)) data = JSON.stringify(data);
                 console.log(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:', data);

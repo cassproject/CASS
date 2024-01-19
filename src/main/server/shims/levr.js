@@ -6,19 +6,19 @@ const dns = require('dns').promises;
 
 // LEVR shims
 if (global.fileLoad === undefined) {
-    global.fileLoad = function(filepath) {
+    global.fileLoad = function (filepath) {
         return fs.readFileSync(filepath);
     };
 };
 
 if (global.fileExists === undefined) {
-    global.fileExists = function(filepath) {
+    global.fileExists = function (filepath) {
         return fs.existsSync(filepath);
     };
 };
 
 if (global.fileToString === undefined) {
-    global.fileToString = function(file) {
+    global.fileToString = function (file) {
         if (file === undefined || file == null) return null;
         return file + '';
     };
@@ -34,19 +34,19 @@ try {
 }
 
 if (global.fileSave === undefined) {
-    global.fileSave = function(text, filepath) {
+    global.fileSave = function (text, filepath) {
         fs.writeFileSync(filepath, text);
     };
 };
 
 if (global.bindWebService === undefined) {
-    global.bindWebService = function(endpoint, callback) {
-        let get = async function(req, res) {
+    global.bindWebService = function (endpoint, callback) {
+        let get = async function (req, res) {
             let ctx = {
-                get: function(field) {
+                get: function (field) {
                     return ctx[field];
                 },
-                put: function(field, value) {
+                put: function (field, value) {
                     ctx[field] = value;
                 },
             };
@@ -61,12 +61,12 @@ if (global.bindWebService === undefined) {
                     ctx: ctx,
                     params: req.query,
                 });
-                if (typeof(result) == 'string') {
+                if (typeof (result) == 'string') {
                     try {
                         JSON.parse(result);
                         res.setHeader('Content-Type', 'application/json; charset=utf-8');
                     } catch (e) {
-                    // not JSON
+                        // not JSON
                     }
                     res.end(result);
                 } else {
@@ -79,16 +79,16 @@ if (global.bindWebService === undefined) {
                 } else {
                     res.status(500);
                 }
-                res.end(ex && ex.data ? ex.data : ex +'');
+                res.end(ex && ex.data ? ex.data : ex + '');
             }
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
         };
-        let put = async function(req, res) {
+        let put = async function (req, res) {
             let ctx = {
-                get: function(field) {
+                get: function (field) {
                     return ctx[field];
                 },
-                put: function(field, value) {
+                put: function (field, value) {
                     ctx[field] = value;
                 },
             };
@@ -101,10 +101,10 @@ if (global.bindWebService === undefined) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPutStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 req.setEncoding('utf8');
                 req.body = '';
-                req.on('data', function(chunk) {
+                req.on('data', function (chunk) {
                     req.body += chunk;
                 });
-                req.on('end', async function() {
+                req.on('end', async function () {
                     let dataStreams = {};
                     if (req.body != '') {
                         dataStreams.body = JSON.parse(req.body);
@@ -114,7 +114,13 @@ if (global.bindWebService === undefined) {
                         params: req.query,
                         dataStreams: dataStreams,
                     });
-                    if (typeof(result) == 'string') {
+                    if (typeof (result) == 'string') {
+                        try {
+                            JSON.parse(result);
+                            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                        } catch (e) {
+                            // not JSON
+                        }
                         res.end(result);
                     } else {
                         res.end();
@@ -127,16 +133,16 @@ if (global.bindWebService === undefined) {
                 } else {
                     res.status(500);
                 }
-                res.end(ex.data ? ex.data : ex +'');
+                res.end(ex.data ? ex.data : ex + '');
             }
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPutSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
         };
-        let deleet = async function(req, res) {
+        let deleet = async function (req, res) {
             let ctx = {
-                get: function(field) {
+                get: function (field) {
                     return ctx[field];
                 },
-                put: function(field, value) {
+                put: function (field, value) {
                     ctx[field] = value;
                 },
             };
@@ -151,7 +157,13 @@ if (global.bindWebService === undefined) {
                     ctx: ctx,
                     params: req.query,
                 });
-                if (typeof(result) == 'string') {
+                if (typeof (result) == 'string') {
+                    try {
+                        JSON.parse(result);
+                        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                    } catch (e) {
+                        // not JSON
+                    }
                     res.end(result);
                 } else {
                     res.end();
@@ -163,16 +175,16 @@ if (global.bindWebService === undefined) {
                 } else {
                     res.status(500);
                 }
-                res.end(ex.data ? ex.data : ex +'');
+                res.end(ex.data ? ex.data : ex + '');
             }
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpDeleteSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)} ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
         };
-        let post = async function(req, res) {
+        let post = async function (req, res) {
             let ctx = {
-                get: function(field) {
+                get: function (field) {
                     return ctx[field];
                 },
-                put: function(field, value) {
+                put: function (field, value) {
                     ctx[field] = value;
                 },
                 req: req,
@@ -188,20 +200,20 @@ if (global.bindWebService === undefined) {
                         return await put(req, res);
                     }
                 }
-                const bb = busboy({headers: req.headers, limits: {parts: 100, fieldSize: global.postMaxSize, fileSize: global.postMaxSize}});
+                const bb = busboy({ headers: req.headers, limits: { parts: 100, fieldSize: global.postMaxSize, fileSize: global.postMaxSize } });
                 req.query.methodType = 'POST';
                 req.query.urlRemainder = req.params[0];
                 let fields = {};
                 bb.on('file', (name, file, info) => {
-                    const {filename, encoding, mimeType} = info;
+                    const { filename, encoding, mimeType } = info;
                     fields[name || filename] = getStream(file);
                 });
                 bb.on('field', (name, val, info) => {
                     fields[name] = val;
                 });
-                bb.on('close', async ()=>{
+                bb.on('close', async () => {
                     try {
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPostStart', endpoint+ ' ' + (req.isSpdy ? 'spdy' : req.httpVersion) + ' Request: ' + JSON.stringify(req.query) + ' - Parts: ' + JSON.stringify(EcObject.keys(fields)), process.env.LOG_HEADERS ? req.headers : undefined);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPostStart', endpoint + ' ' + (req.isSpdy ? 'spdy' : req.httpVersion) + ' Request: ' + JSON.stringify(req.query) + ' - Parts: ' + JSON.stringify(EcObject.keys(fields)), process.env.LOG_HEADERS ? req.headers : undefined);
                         for (let key in fields) {
                             fields[key] = await fields[key];
                         }
@@ -210,12 +222,18 @@ if (global.bindWebService === undefined) {
                             params: req.query,
                             dataStreams: fields,
                         });
-                        if (typeof(result) == 'string') {
+                        if (typeof (result) == 'string') {
+                            try {
+                                JSON.parse(result);
+                                res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                            } catch (e) {
+                                // not JSON
+                            }
                             res.end(result);
                         } else {
                             res.end();
                         }
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPostSuccess', endpoint+` Response: ${res.statusCode} (` + (new Date().getTime() - ms) + ' ms) ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (new Date().getTime() - ms) + ' ms) ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
                     } catch (ex) {
                         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPostError', `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, process.env.LOG_HEADERS ? req.headers : undefined);
                         if (ex.status !== undefined && ex.status != null) {
@@ -223,7 +241,7 @@ if (global.bindWebService === undefined) {
                         } else {
                             res.status(500);
                         }
-                        res.end(ex.data ? ex.data : ex +'');
+                        res.end(ex.data ? ex.data : ex + '');
                     }
                 });
                 req.pipe(bb);
@@ -234,7 +252,7 @@ if (global.bindWebService === undefined) {
                 } else {
                     res.status(500);
                 }
-                res.end(ex.data ? ex.data : ex +'');
+                res.end(ex.data ? ex.data : ex + '');
             }
         };
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassBindEndpoint', `Binding endpoint: /api${endpoint}`);
@@ -246,9 +264,9 @@ if (global.bindWebService === undefined) {
 };
 
 if (global.fileFromDatastream === undefined) {
-    global.fileFromDatastream = function(dataStream) {
+    global.fileFromDatastream = function (dataStream) {
         if (this.dataStreams === undefined || this.dataStreams == null) return null;
-        if ((dataStream === undefined||dataStream == null) && EcObject.keys(this.dataStreams).length == 1) {
+        if ((dataStream === undefined || dataStream == null) && EcObject.keys(this.dataStreams).length == 1) {
             return this.dataStreams[EcObject.keys(this.dataStreams)[0]];
         }
         if (this.dataStreams[dataStream] === undefined || this.dataStreams[dataStream] == null) {
@@ -259,13 +277,13 @@ if (global.fileFromDatastream === undefined) {
 }
 
 if (global.headers === undefined) {
-    global.headers = function() {
+    global.headers = function () {
         return this.ctx.req.headers;
     };
 };
 
 if (global.httpGet === undefined) {
-    global.httpGet = async function(url, flag, headers) {
+    global.httpGet = async function (url, flag, headers) {
         let failCounter = 0;
         while (failCounter++ < 1000) {
             let ip = '';
@@ -275,17 +293,17 @@ if (global.httpGet === undefined) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "DNSLookup", url, error);
             }
             try {
-                const response = await fetch(url, {headers: headers});
+                const response = await fetch(url, { headers: headers });
                 let result = null;
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     result = await response.json();
                 } else {
                     result = await response.text();
-                    try{
+                    try {
                         result = JSON.parse(result);
                     }
-                    catch(ex) {
+                    catch (ex) {
                         // Text is not json
                     }
                 }
@@ -295,7 +313,7 @@ if (global.httpGet === undefined) {
                         response: { status: response.status, statusText: response.statusText }
                     };
                 }
-                if (skyrepoDebug) {
+                if (global.skyrepoDebug) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetSuccess', 'get success: ' + JSON.stringify(result));
                 }
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetSuccess', ip, url);
@@ -308,10 +326,10 @@ if (global.httpGet === undefined) {
                         resp = error.data;
                     }
                 }
-                if (skyrepoDebug) {
+                if (global.skyrepoDebug) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetError', 'get error: ' + error, url);
                 }
-                if (skyrepoDebug) {
+                if (global.skyrepoDebug) {
                     if (resp != null) {
                         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpGetError', resp);
                     } else
@@ -337,7 +355,7 @@ if (global.debug === undefined) {
 }
 
 if (global.httpDelete === undefined) {
-    global.httpDelete = async function(url, headers) {
+    global.httpDelete = async function (url, headers) {
         let ip = '';
         try {
             ip = (await dns.lookup(new URL(url).hostname)).address;
@@ -345,17 +363,17 @@ if (global.httpDelete === undefined) {
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "DNSLookup", url, error);
         }
         try {
-            const response = await fetch(url, {headers: headers, method: 'DELETE'});
+            const response = await fetch(url, { headers: headers, method: 'DELETE' });
             let result = null;
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
                 result = await response.json();
             } else {
                 result = await response.text();
-                try{
+                try {
                     result = JSON.parse(result);
                 }
-                catch(ex) {
+                catch (ex) {
                     // Text is not json
                 }
             }
@@ -365,7 +383,7 @@ if (global.httpDelete === undefined) {
                     response: { status: response.status, statusText: response.statusText }
                 };
             }
-            if (skyrepoDebug) {
+            if (global.skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteSuccess', 'delete success: ' + JSON.stringify(response.data));
             }
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteSuccess', ip, url);
@@ -378,10 +396,10 @@ if (global.httpDelete === undefined) {
                     resp = error.data;
                 }
             }
-            if (skyrepoDebug) {
+            if (global.skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteError', 'delete error', url);
             }
-            if (skyrepoDebug) {
+            if (global.skyrepoDebug) {
                 if (resp != null) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpDeleteError', resp);
                 }
@@ -392,7 +410,7 @@ if (global.httpDelete === undefined) {
 };
 
 if (global.httpPut === undefined) {
-    global.httpPut = async function(data, url, contentType, headers) {
+    global.httpPut = async function (data, url, contentType, headers) {
         let ip = '';
         try {
             ip = (await dns.lookup(new URL(url).hostname)).address;
@@ -414,10 +432,10 @@ if (global.httpPut === undefined) {
                 result = await response.json();
             } else {
                 result = await response.text();
-                try{
+                try {
                     result = JSON.parse(result);
                 }
-                catch(ex) {
+                catch (ex) {
                     // Text is not json
                 }
             }
@@ -427,7 +445,7 @@ if (global.httpPut === undefined) {
                     response: { status: response.status, statusText: response.statusText }
                 };
             }
-            if (skyrepoDebug) {
+            if (global.skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutSuccess', 'put success: ' + JSON.stringify(response.data));
             }
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutSuccess', ip, url);
@@ -440,10 +458,10 @@ if (global.httpPut === undefined) {
                     resp = error.data;
                 }
             }
-            if (skyrepoDebug) {
+            if (global.skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutError', 'put error', url);
             }
-            if (skyrepoDebug) {
+            if (global.skyrepoDebug) {
                 if (resp != null) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPutError', resp);
                 }
@@ -454,7 +472,7 @@ if (global.httpPut === undefined) {
 };
 
 if (global.httpPost === undefined) {
-    global.httpPost = async function(data, url, contentType, multipart, something, something2, simple, headers) {
+    global.httpPost = async function (data, url, contentType, multipart, something, something2, simple, headers) {
         let failCounter = 0;
         while (failCounter++ < 1000) {
             let ip = '';
@@ -472,17 +490,17 @@ if (global.httpPost === undefined) {
                     },
                     body: contentType === 'application/json' ? JSON.stringify(data) : data
                 });
-                
+
                 let result = null;
                 const _contentType = response.headers.get("content-type");
                 if (_contentType && _contentType.indexOf("application/json") !== -1) {
                     result = await response.json();
                 } else {
                     result = await response.text();
-                    try{
+                    try {
                         result = JSON.parse(result);
                     }
-                    catch(ex) {
+                    catch (ex) {
                         // Text is not json
                     }
                 }
@@ -492,7 +510,7 @@ if (global.httpPost === undefined) {
                         response: { status: response.status, statusText: response.statusText }
                     };
                 }
-                if (skyrepoDebug) {
+                if (global.skyrepoDebug) {
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostSuccess', 'post success: ' + JSON.stringify(response.data));
                 }
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostSuccess', ip, url);
@@ -505,10 +523,10 @@ if (global.httpPost === undefined) {
                         resp = error.data;
                     }
                 }
-                if (skyrepoDebug) {
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostError', 'post error: ' +error.response.status + ': '+ error.response.statusText, url);
+                if (global.skyrepoDebug) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostError', 'post error: ' + error.response.status + ': ' + error.response.statusText, url);
                 }
-                if (skyrepoDebug) {
+                if (global.skyrepoDebug) {
                     if (resp != null) {
                         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.NETWORK, 'CassHttpPostError', resp);
                     } else {
@@ -529,7 +547,7 @@ if (global.httpPost === undefined) {
 };
 
 if (global.error === undefined) {
-    global.error = function(errormessage, status) {
+    global.error = function (errormessage, status) {
         let e = {};
         e.data = errormessage;
         e.status = status;
@@ -540,7 +558,7 @@ if (global.error === undefined) {
 };
 
 if (global.warn === undefined) {
-    global.warn = function(errormessage, status) {
+    global.warn = function (errormessage, status) {
         let e = {};
         e.data = errormessage;
         e.status = status;
@@ -550,20 +568,20 @@ if (global.warn === undefined) {
 };
 
 if (global.randomString === undefined) {
-    global.randomString = function(len) {
+    global.randomString = function (len) {
         return forge.random.getBytesSync(len);
     };
 };
 
 if (global.rsaGenerate === undefined) {
-    global.rsaGenerate = function(len) {
+    global.rsaGenerate = function (len) {
         return EcPpk.generateKey().toPem();
     };
 };
 
 if (global.jsonLdExpand === undefined) {
-    global.jsonLdExpand = function(json) {
-        return new Promise(async function(resolve, reject) {
+    global.jsonLdExpand = function (json) {
+        return new Promise(async function (resolve, reject) {
             try {
                 let actual = await jsonld.expand(JSON.parse(json));
                 resolve(actual);
@@ -576,11 +594,11 @@ if (global.jsonLdExpand === undefined) {
 };
 
 if (global.jsonLdCompact === undefined) {
-    global.jsonLdCompact = function(actual, finalTargetContext) {
-        return new Promise(async function(resolve, reject) {
+    global.jsonLdCompact = function (actual, finalTargetContext) {
+        return new Promise(async function (resolve, reject) {
             try {
                 finalTargetContext = JSON.parse(finalTargetContext);
-            } catch (ex) {}
+            } catch (ex) { }
             try {
                 let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
                 (o)['@context'] = finalTargetContext;
@@ -612,9 +630,9 @@ if (global.jsonLdCompact === undefined) {
 
 const $rdf = require('rdflib');
 if (global.jsonLdToRdfXml === undefined) {
-    global.jsonLdToRdfXml = function(o) {
-        return new Promise(async function(resolve, reject) {
-            let rdf = await jsonld.toRDF(o, {format: 'application/n-quads'});
+    global.jsonLdToRdfXml = function (o) {
+        return new Promise(async function (resolve, reject) {
+            let rdf = await jsonld.toRDF(o, { format: 'application/n-quads' });
             let store = $rdf.graph();
             $rdf.parse(rdf, store, 'whatever', 'application/n-quads', (err, str) => {
                 resolve($rdf.serialize(null, str, '*', 'application/rdf+xml'));
@@ -624,14 +642,14 @@ if (global.jsonLdToRdfXml === undefined) {
 };
 
 if (global.jsonLdToTurtle === undefined) {
-    global.jsonLdToTurtle = async function(o) {
+    global.jsonLdToTurtle = async function (o) {
         return (await toTurtleInternal(o));
     };
 };
 
-toTurtleInternal = function(o) {
-    return new Promise(async function(resolve, reject) {
-        let rdf = await jsonld.toRDF(o, {format: 'application/n-quads'});
+toTurtleInternal = function (o) {
+    return new Promise(async function (resolve, reject) {
+        let rdf = await jsonld.toRDF(o, { format: 'application/n-quads' });
         let store = $rdf.graph();
         $rdf.parse(rdf, store, 'whatever', 'application/n-quads', (err, str) => {
             let result = ($rdf.serialize(null, str, '*', 'text/turtle'));
@@ -641,12 +659,12 @@ toTurtleInternal = function(o) {
 };
 
 if (global.jsonLdToNQuads === undefined) {
-    global.jsonLdToNQuads = async function(o) {
-        return (await jsonld.toRDF(o, {format: 'application/n-quads'}));
+    global.jsonLdToNQuads = async function (o) {
+        return (await jsonld.toRDF(o, { format: 'application/n-quads' }));
     };
 };
 
 // Shim to allow require of modules that are intended to be used to import.
-require('module').Module._extensions['.js'] = function(module, filename) {
+require('module').Module._extensions['.js'] = function (module, filename) {
     module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
 };

@@ -5,18 +5,18 @@ const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/gener
 const fs = require('fs');
 
 // RS2 shims
-const afterSave = function(o) {
+const afterSave = function (o) {
     wsBroadcast(EcRemoteLinkedData.trimVersionFromUrl(o['@id']));
 };
-const afterSaveBulk = function(ary) {
+const afterSaveBulk = function (ary) {
     wsBroadcast(JSON.stringify(ary));
 };
-const beforeGet = function() {
+const beforeGet = function () {
     // TODO: xAPI polling (if enabled);
 };
 // ~RS2 shims~
 
-global.keyFor = function(filename) {
+global.keyFor = function (filename) {
     if (process.env[filename] != null) {
         return process.env[filename];
     }
@@ -33,9 +33,9 @@ global.keyFor = function(filename) {
     return fileToString(fileLoad('etc/' + filename + '.pem', false, true));
 };
 
-global.repoAutoDetect = function() {
+global.repoAutoDetect = function () {
     if (process.env.CASS_LOOPBACK != null) {
-        repo.init(process.env.CASS_LOOPBACK, function() {
+        repo.init(process.env.CASS_LOOPBACK, function () {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassRepoInit', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
         }, (error) => {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'CassRepoInitError', error);
@@ -52,7 +52,7 @@ global.repoAutoDetect = function() {
         'Text Encoding: ' + java.nio.charset.Charset.defaultCharset().toString());
 };
 
-const elasticHeaders = global.elasticHeaders = function() {
+const elasticHeaders = global.elasticHeaders = function () {
     const headers = {};
     if (process.env.ELASTICSEARCH_AUTHORIZATION != null) {
         headers.Authorization = process.env.ELASTICSEARCH_AUTHORIZATION.trim();
@@ -60,10 +60,10 @@ const elasticHeaders = global.elasticHeaders = function() {
     return headers;
 };
 
-const elasticSearchVersion = function() {
+const elasticSearchVersion = function () {
     return ((elasticSearchInfo)['version'])['number'];
 };
-const getTypeFromObject = function(o) {
+const getTypeFromObject = function (o) {
     let encryptedType = (o)['encryptedType'];
     let encryptedContext = (o)['encryptedContext'];
     let type = (o)['@type'];
@@ -102,7 +102,7 @@ const getTypeFromObject = function(o) {
     }
 };
 
-const signatureSheet = async function() {
+const signatureSheet = async function () {
     let sigSheet = null;
     sigSheet = this.ctx.get('signatureSheet');
     if (sigSheet !== undefined && sigSheet != null) {
@@ -191,10 +191,10 @@ const signatureSheet = async function() {
     this.ctx.put('signatureSheet', sigSheet);
     return sigSheet;
 };
-const isEncryptedType = function(obj) {
+const isEncryptedType = function (obj) {
     return obj.isAny(new EbacEncryptedValue().getTypes());
 };
-const filterResults = async function(o) {
+const filterResults = async function (o) {
     if (o == null) {
         return o;
     }
@@ -269,10 +269,10 @@ const filterResults = async function(o) {
         return o;
     }
 };
-const skyrepoUrlType = function(o) {
+const skyrepoUrlType = function (o) {
     return getTypeFromObject(o);
 };
-const inferTypeFromObj = function(o, atType) {
+const inferTypeFromObj = function (o, atType) {
     // if (atType != null)
     //     return atType;
     let fullType = skyrepoUrlType(o);
@@ -289,13 +289,13 @@ const inferTypeFromObj = function(o, atType) {
     fullType = fullType.replace(':', '.');
     return fullType;
 };
-const inferTypeWithoutObj = function(atType) {
+const inferTypeWithoutObj = function (atType) {
     if (atType !== undefined && atType != null) {
         return atType;
     }
     return '_all';
 };
-const putUrl = function(o, id, version, type) {
+const putUrl = function (o, id, version, type) {
     const typeFromObj = inferTypeFromObj(o, type);
     let versionPart = null;
     let refreshPart = 'refresh=true';
@@ -315,12 +315,12 @@ const putUrl = function(o, id, version, type) {
         url += '/' + typeFromObj;
     }
     url += '/' + encodeURIComponent(id) + versionPart;
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoPutUrl', 'Put:' + url);
     }
     return url;
 };
-const putPermanentUrl = function(o, id, version, type) {
+const putPermanentUrl = function (o, id, version, type) {
     let versionPart = null;
     let refreshPart = 'refresh=true';
     if (this.ctx.get('refresh') !== undefined && this.ctx.get('refresh') != null) {
@@ -339,12 +339,12 @@ const putPermanentUrl = function(o, id, version, type) {
         url += '/permanent';
     }
     url += '/' + encodeURIComponent(id) + '.' + (version === undefined || version == null ? '' : version) + versionPart;
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoPutPermanentUrl', 'PutPermanent:' + url);
     }
     return url;
 };
-const putPermanentBaseUrl = function(o, id, version, type) {
+const putPermanentBaseUrl = function (o, id, version, type) {
     let versionPart = null;
     let refreshPart = 'refresh=true';
     if (this.ctx.get('refresh') !== undefined && this.ctx.get('refresh') != null) {
@@ -363,12 +363,12 @@ const putPermanentBaseUrl = function(o, id, version, type) {
         url += '/permanent';
     }
     url += '/' + encodeURIComponent(id) + '.' + versionPart;
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoPutPermanentBaseUrl', 'PutPermanentBase:' + url);
     }
     return url;
 };
-const getUrl = function(index, id, version, type) {
+const getUrl = function (index, id, version, type) {
     let url = elasticEndpoint;
     url += '/' + index;
     if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
@@ -384,12 +384,12 @@ const getUrl = function(index, id, version, type) {
     } else {
         url += '/' + encodeURIComponent(id);
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoGetUrl', 'Get:' + url);
     }
     return url;
 };
-const deleteUrl = function(id, version, type) {
+const deleteUrl = function (id, version, type) {
     const typeFromObj = inferTypeWithoutObj(type);
     let refreshPart = 'refresh=true';
     if (this.ctx.get('refresh') !== undefined && this.ctx.get('refresh') != null) {
@@ -404,12 +404,12 @@ const deleteUrl = function(id, version, type) {
     }
     url += '/' + encodeURIComponent(id);
     url += '?' + refreshPart;
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoDeleteUrl', 'Delete:' + url);
     }
     return url;
 };
-const deletePermanentBaseUrl = function(id, version, type) {
+const deletePermanentBaseUrl = function (id, version, type) {
     let url = elasticEndpoint;
     url += '/permanent';
     if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
@@ -418,13 +418,13 @@ const deletePermanentBaseUrl = function(id, version, type) {
         url += '/permanent';
     }
     url += '/' + encodeURIComponent(id) + '.';
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoDeletePermBase', 'DeletePermanentBase:' + url);
     }
     return url;
 };
 let languages = null;
-const flattenLangstrings = function(o) {
+const flattenLangstrings = function (o) {
     if (languages == null) {
         languages = {};
         const ary = [
@@ -8436,17 +8436,17 @@ const flattenLangstrings = function(o) {
     }
     return o;
 };
-const getIndexForObject = function(o, type) {
+const getIndexForObject = function (o, type) {
     return inferTypeFromObj(o, type).toLowerCase();
 };
-const getTypeForObject = function(o, type) {
+const getTypeForObject = function (o, type) {
     if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
         return '_doc';
     } else {
         return inferTypeFromObj(o, type);
     }
 };
-const skyrepoPutInternalIndex = async function(o, id, version, type) {
+const skyrepoPutInternalIndex = async function (o, id, version, type) {
     const url = putUrl.call(this, o, id, version, type);
     o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
     if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
@@ -8477,14 +8477,14 @@ const skyrepoPutInternalIndex = async function(o, id, version, type) {
         delete (o)['payload'];
         delete (o)['secret'];
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalIndex', JSON.stringify(o));
     }
     const response = await httpPost(o, url, 'application/json', false, null, null, true, elasticHeaders());
     return response;
 };
 let permanentCreated = false;
-const skyrepoPutInternalPermanent = async function(o, id, version, type) {
+const skyrepoPutInternalPermanent = async function (o, id, version, type) {
     if (permanentCreated != true) {
         const mappings = {};
         const permNoIndex = {};
@@ -8498,7 +8498,7 @@ const skyrepoPutInternalPermanent = async function(o, id, version, type) {
         }
         (doc)['enabled'] = false;
         const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
-        if (skyrepoDebug) {
+        if (global.skyrepoDebug) {
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalPerm', JSON.stringify(result));
         }
         permanentCreated = true;
@@ -8515,12 +8515,12 @@ const skyrepoPutInternalPermanent = async function(o, id, version, type) {
         url = putPermanentUrl.call(this, o, id, version, type);
         results = await httpPost(data, url, 'application/json', false, null, null, true, elasticHeaders());
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalPerm', JSON.stringify(results));
     }
     return JSON.stringify(results);
 };
-let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = async function(map) {
+let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = async function (map) {
     const failed = {};
 
     let body = '';
@@ -8529,19 +8529,19 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
         let writeMs = new Date().getTime();
 
         for (let id of x.permanentIds) {
-            let obj = {'index': {'_index': 'permanent', '_id': id + '.' + (x.version || ''), '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external'}};
+            let obj = { 'index': { '_index': 'permanent', '_id': id + '.' + (x.version || ''), '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external' } };
             if (elasticSearchVersion().startsWith('8.')) {
                 delete obj.index['_type'];
             }
             body += `${JSON.stringify(obj)}\n`;
-            body += `${JSON.stringify({data: JSON.stringify(x.object), writeMs: writeMs})}\n`;
+            body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs })}\n`;
 
-            obj = {'index': {'_index': 'permanent', '_id': id + '.', '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external'}};
+            obj = { 'index': { '_index': 'permanent', '_id': id + '.', '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external' } };
             if (elasticSearchVersion().startsWith('8.')) {
                 delete obj.index['_type'];
             }
             body += `${JSON.stringify(obj)}\n`;
-            body += `${JSON.stringify({data: JSON.stringify(x.object), writeMs: writeMs})}\n`;
+            body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs })}\n`;
         }
     }
     const response = await httpPost(body, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
@@ -8559,13 +8559,13 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
 
         for (let item of response.items) {
             if (item.index.status === 409) {
-                let found = Object.values(map).find((x)=>x.permanentIds.includes(item.index['_id'].split('.')[0]));
+                let found = Object.values(map).find((x) => x.permanentIds.includes(item.index['_id'].split('.')[0]));
                 if (found) {
                     retries[found.id] = found;
                 }
             } else if (item.index.error) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutPermBulk', item);
-                let found = Object.values(map).find((x)=>x.permanentIds.includes(item.index['_id'].split('.')[0]));
+                let found = Object.values(map).find((x) => x.permanentIds.includes(item.index['_id'].split('.')[0]));
                 if (found) {
                     failed[found.id] = true;
                     delete map[found.id];
@@ -8574,16 +8574,16 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
         }
 
         if (Object.values(retries).length > 0) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', '409, version is: [' + Object.values(retries).map((x)=>x.version).toString() + ']');
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', '409, version is: [' + Object.values(retries).map((x) => x.version).toString() + ']');
             const current = await skyrepoManyGetPermanent.call(this, Object.values(retries));
             for (let currentDoc of current.docs) {
                 let found = retries[currentDoc['_id'].split('.')[0]];
                 if (currentDoc['_version'] >= found.version) {
-                    found.version = currentDoc['_version']+1;
+                    found.version = currentDoc['_version'] + 1;
                 }
             }
 
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Updated to: [' + Object.values(retries).map((x)=>x.version).toString() + ']');
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Updated to: [' + Object.values(retries).map((x) => x.version).toString() + ']');
 
             // Used to replay replication / database log files without "just jamming the data in"
             if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
@@ -8598,7 +8598,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
 
     return failed;
 };
-let skyrepoPutInternalBulk = global.skyrepoPutInternalBulk = async function(map) {
+let skyrepoPutInternalBulk = global.skyrepoPutInternalBulk = async function (map) {
     const failed = {};
     Object.assign(failed, await skyrepoPutInternalIndexBulk.call(this, map));
     if (Object.values(map).length > 0) {
@@ -8607,7 +8607,7 @@ let skyrepoPutInternalBulk = global.skyrepoPutInternalBulk = async function(map)
 
     return failed;
 };
-let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async function(map) {
+let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async function (map) {
     const failed = {};
     for (let x of Object.values(map)) {
         x.permanentIds = [];
@@ -8638,7 +8638,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             let chosenVersion = map[id].version;
             if (chosenVersion == null) {
                 if (x != null && x['_version'] != null && !isNaN(x['_version'])) {
-                    chosenVersion = x['_version']+1;
+                    chosenVersion = x['_version'] + 1;
                 } else {
                     chosenVersion = 1;
                 }
@@ -8690,7 +8690,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
 
         x.index = getIndexForObject(x.object, x.type);
 
-        let obj = {'index': {'_index': x.index, '_id': x.id, '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external'}};
+        let obj = { 'index': { '_index': x.index, '_id': x.id, '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external' } };
         if (elasticSearchVersion().startsWith('8.')) {
             delete obj.index['_type'];
         }
@@ -8713,7 +8713,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
                 // Do nothing
             } else if (item.index.error) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutIndexBulk', item);
-                let found = Object.values(map).find((x)=>x.permanentIds.includes(item.index['_id'].split('.')[0]));
+                let found = Object.values(map).find((x) => x.permanentIds.includes(item.index['_id'].split('.')[0]));
                 if (found) {
                     failed[found.id] = true;
                     delete map[found.id];
@@ -8722,36 +8722,38 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         }
     }
 
-    const oldIndexRecords = await skyrepoManyGetIndexRecords(response.items.filter((x)=>!x.index.error && x.index._index !== 'permanent').map((x) => {
-        let obj = x.index;
-        const erld = new EcRemoteLinkedData(null, null);
-        erld.copyFrom(map[obj._id].object);
-        if (erld.id != null) {
-            return erld.shortId();
-        }
-    }).filter((x)=>x));
+    let recordsToGet = [...response.items];
+    let oldIndexRecords = [];
+    while (recordsToGet.length > 0)
+        oldIndexRecords.push(...(await skyrepoManyGetIndexRecords.call(this, recordsToGet.splice(0, 1000).filter((x) => !x.index.error && x.index._index !== 'permanent').map((x) => {
+            let obj = x.index;
+            const erld = new EcRemoteLinkedData(null, null);
+            erld.copyFrom(map[obj._id].object);
+            if (erld.id != null) {
+                return erld.shortId();
+            }
+        }).filter((x) => x))));
 
     const recordsToDelete = [];
 
     for (const oldIndexRecord of oldIndexRecords) {
-        let obj = Object.values(map).find((x)=>x.permanentIds.includes(oldIndexRecord._id));
+        let obj = Object.values(map).find((x) => x.id == oldIndexRecord._id);
         if (!obj || obj.index != oldIndexRecord._index) {
             recordsToDelete.push(oldIndexRecord);
         }
     }
 
-
     if (recordsToDelete.length > 0) {
         let deleteBody = '';
         for (let record of recordsToDelete) {
-            deleteBody += `${JSON.stringify({delete: {_index: record._index, _id: record._id}})}\n`;
+            deleteBody += `${JSON.stringify({ delete: { _index: record._index, _id: record._id } })}\n`;
         }
         const deleteResponse = await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
     }
 
     return failed;
 };
-let skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, version, type) {
+let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, version, type) {
     // Securing Proxy: Sign data that is to be saved.
     const erld = new EcRemoteLinkedData(null, null);
     erld.copyFrom(o);
@@ -8770,7 +8772,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
     let chosenVersion = version;
     if (chosenVersion == null) {
         if (oldPermanent != null && oldPermanent['_version'] != null && !isNaN(oldPermanent['_version'])) {
-            chosenVersion = oldPermanent['_version']+1;
+            chosenVersion = oldPermanent['_version'] + 1;
         } else {
             chosenVersion = 1;
         }
@@ -8786,7 +8788,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
             }
         }
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternal', JSON.stringify(obj));
     }
     const permanentIds = [id];
@@ -8808,7 +8810,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
             }
             // Used to replay replication / database log files without "just jamming the data in"
             if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
-                await skyrepoPutInternal.call(this, o, id, chosenVersion+1, type, true);
+                await skyrepoPutInternal.call(this, o, id, chosenVersion + 1, type, true);
             }
             break;
         }
@@ -8824,16 +8826,16 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function(o, id, versi
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
     }
 };
-const skyrepoGetIndexInternal = async function(index, id, version, type) {
-    if (skyrepoDebug) {
+const skyrepoGetIndexInternal = async function (index, id, version, type) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetIndexInternal', 'Fetching from ' + index + ' : ' + type + ' / ' + id + ' / ' + version);
     }
     const response = await httpGet(getUrl.call(this, index, id, version, type), true, elasticHeaders());
     return response;
 };
 
-const skyrepoManyGetIndexInternal = async function(index, manyParseParams) {
-    if (skyrepoDebug) {
+const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams);
     }
 
@@ -8862,10 +8864,10 @@ const skyrepoManyGetIndexInternal = async function(index, manyParseParams) {
     return response;
 };
 
-const skyrepoGetIndexSearch = async function(id, version, type) {
+const skyrepoGetIndexSearch = async function (id, version, type) {
     const microSearchUrl = elasticEndpoint + '/_search?version&q=_id:' + id + '';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetIndexSearch', microSearchUrl);
     }
     if (microSearch == null) {
@@ -8883,7 +8885,7 @@ const skyrepoGetIndexSearch = async function(id, version, type) {
     return hit;
 };
 
-const skyrepoManyGetIndexSearch = async function(ary) {
+const skyrepoManyGetIndexSearch = async function (ary) {
     if (ary.length === 0) {
         return [];
     }
@@ -8897,7 +8899,7 @@ const skyrepoManyGetIndexSearch = async function(ary) {
 
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
 
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexSearch', microSearchUrl);
     }
     if (microSearch == null) {
@@ -8914,11 +8916,11 @@ const skyrepoManyGetIndexSearch = async function(ary) {
     return hits;
 };
 
-let skyrepoGetIndexRecords = async function(id) {
+let skyrepoGetIndexRecords = async function (id) {
     const hashId = EcCrypto.md5(id);
     const microSearchUrl = elasticEndpoint + '/_search?version&q=@id:"' + id + '" OR @id:"' + hashId + '"';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetIndexRecords', microSearchUrl);
     }
     if (microSearch == null) {
@@ -8935,12 +8937,12 @@ let skyrepoGetIndexRecords = async function(id) {
     return hits;
 };
 
-let skyrepoManyGetIndexRecords = async function(ary) {
+let skyrepoManyGetIndexRecords = async function (ary) {
     if (ary.length === 0) {
         return [];
     }
-    let hashIds = ary.map((x)=>EcCrypto.md5(x));
-    let microSearchUrl = elasticEndpoint + '/_search?version&q=';
+    let hashIds = ary.map((x) => EcCrypto.md5(x));
+    let microSearchUrl = "";
     for (let id of ary) {
         microSearchUrl += '@id:"' + id + '" OR ';
     }
@@ -8951,9 +8953,13 @@ let skyrepoManyGetIndexRecords = async function(ary) {
         }
     }
 
-    const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
+    const searchParameters = await (searchObj).call(this, microSearchUrl, null, 10000);
+    if (global.skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
+    }
+    const microSearch = await httpPost(searchParameters, searchUrl(), 'application/json', false, null, null, true, elasticHeaders());
 
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexRecords', microSearchUrl);
     }
     if (microSearch == null) {
@@ -8970,7 +8976,7 @@ let skyrepoManyGetIndexRecords = async function(ary) {
     return hits;
 };
 
-const skyrepoGetIndex = async function(id, version, type) {
+const skyrepoGetIndex = async function (id, version, type) {
     if (type !== undefined && type != null && type != '') {
         const result = await skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
         return result;
@@ -8978,14 +8984,14 @@ const skyrepoGetIndex = async function(id, version, type) {
         return await skyrepoGetIndexSearch(id, version, type);
     }
 };
-const skyrepoManyGetIndex = async function(manyParseParams) {
+const skyrepoManyGetIndex = async function (manyParseParams) {
     return await skyrepoManyGetIndexSearch(manyParseParams);
 };
-const skyrepoGetPermanent = async function(id, version, type) {
+const skyrepoGetPermanent = async function (id, version, type) {
     const result = await skyrepoGetIndexInternal.call(this, 'permanent', id, version, type);
     return result;
 };
-const skyrepoHistoryPermanent = async function(id, version, type) {
+const skyrepoHistoryPermanent = async function (id, version, type) {
     const query = {
         'size': 10000,
         'query': {
@@ -9005,7 +9011,7 @@ const skyrepoHistoryPermanent = async function(id, version, type) {
     // console.log(JSON.stringify(history, null, 2));
     return history;
 };
-global.skyrepoGetInternal = async function(id, version, type) {
+global.skyrepoGetInternal = async function (id, version, type) {
     let result = await skyrepoGetPermanent(id, version, type);
     if (result == null) {
         return null;
@@ -9016,7 +9022,7 @@ global.skyrepoGetInternal = async function(id, version, type) {
     if ((result)['found'] == true) {
         return JSON.parse(((result)['_source'])['data']);
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetInternal', 'Failed to find ' + type + '/' + id + '/' + version + ' -- trying degraded form from search index.');
     }
     result = await (skyrepoGetIndex).call(this, id, version, type);
@@ -9031,7 +9037,7 @@ global.skyrepoGetInternal = async function(id, version, type) {
     }
     return null;
 };
-global.skyrepoHistoryInternal = async function(id, version, type) {
+global.skyrepoHistoryInternal = async function (id, version, type) {
     const result = await skyrepoHistoryPermanent(id, version, type);
     if (result == null) {
         return null;
@@ -9041,7 +9047,7 @@ global.skyrepoHistoryInternal = async function(id, version, type) {
     }
     if ((result).hits.total.value > 0) {
         const hits = result.hits.hits;
-        hits.sort((a, b)=>{
+        hits.sort((a, b) => {
             const A = new EcRemoteLinkedData();
             A.copyFrom(JSON.parse(a._source.data));
             const B = new EcRemoteLinkedData();
@@ -9051,7 +9057,7 @@ global.skyrepoHistoryInternal = async function(id, version, type) {
             if (Ats == null) Ats = a._source.writeMs;
             if (Bts == null) Bts = b._source.writeMs;
             if (Ats == null || Bts == null) return 0;
-            return Bts-Ats;
+            return Bts - Ats;
         });
         for (let i = 0; i < hits.length; i++) {
             for (let j = i; j < hits.length; j++) {
@@ -9065,23 +9071,23 @@ global.skyrepoHistoryInternal = async function(id, version, type) {
                 if (Ats == null) Ats = hits[i]._source.writeMs;
                 if (Bts == null) Bts = hits[j]._source.writeMs;
                 // console.log(Ats, Bts);
-                if (A.id+Ats == B.id+Bts) {
+                if (A.id + Ats == B.id + Bts) {
                     hits.splice(j--, 1);
                 }
             }
         }
-        return hits.map((h)=>JSON.parse(h._source.data));
+        return hits.map((h) => JSON.parse(h._source.data));
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoHistoryInternal', 'Failed to find ' + type + '/' + id + '/' + version + '.');
     }
     return null;
 };
-const skyrepoManyGetPermanent = async function(manyParseParams) {
+const skyrepoManyGetPermanent = async function (manyParseParams) {
     const result = await skyrepoManyGetIndexInternal.call(this, 'permanent', manyParseParams);
     return result;
 };
-global.skyrepoManyGetInternal = async function(manyParseParams) {
+global.skyrepoManyGetInternal = async function (manyParseParams) {
     let response = await skyrepoManyGetPermanent(manyParseParams);
 
     let resultDocs = (response)['docs'];
@@ -9098,7 +9104,7 @@ global.skyrepoManyGetInternal = async function(manyParseParams) {
         }
     }
 
-    if (skyrepoDebug && notFoundInPermanent.length > 0) {
+    if (global.skyrepoDebug && notFoundInPermanent.length > 0) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Failed to find ' + manyParseParams + ' -- trying degraded form from search index.');
     }
 
@@ -9115,7 +9121,7 @@ global.skyrepoManyGetInternal = async function(manyParseParams) {
     }
     return results;
 };
-global.skyrepoGet = async function(parseParams) {
+global.skyrepoGet = async function (parseParams) {
     if (parseParams == null && EcObject.isObject(this.params.obj)) {
         parseParams = this.params.obj;
     }
@@ -9126,10 +9132,10 @@ global.skyrepoGet = async function(parseParams) {
         (parseParams)['version'] = this.params.version;
         (parseParams)['history'] = this.params.history;
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGet', JSON.stringify(parseParams));
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGet', JSON.stringify(this.params.obj));
     }
     const id = (parseParams)['id'];
@@ -9139,7 +9145,7 @@ global.skyrepoGet = async function(parseParams) {
     return await (skyrepoGetParsed).call(this, id, version, type, null, history);
 };
 
-const skyrepoGetParsed = async function(id, version, type, unk, history) {
+const skyrepoGetParsed = async function (id, version, type, unk, history) {
     let filtered = null;
     if (history == true || history == 'true') {
         filtered = await skyrepoHistoryInternal.call(this, id, version, type);
@@ -9165,7 +9171,7 @@ const skyrepoGetParsed = async function(id, version, type, unk, history) {
     }
     return filtered;
 };
-const skyrepoManyGetParsed = async function(manyParseParams) {
+const skyrepoManyGetParsed = async function (manyParseParams) {
     const results = await (skyrepoManyGetInternal).call(this, manyParseParams);
     if (results == null) {
         return null;
@@ -9184,7 +9190,7 @@ const skyrepoManyGetParsed = async function(manyParseParams) {
     }
     return filtered;
 };
-global.skyrepoPut = async function(parseParams) {
+global.skyrepoPut = async function (parseParams) {
     if (parseParams == null && this.params.id != null && this.params.id != '') {
         parseParams = {};
         (parseParams)['id'] = this.params.id;
@@ -9192,10 +9198,10 @@ global.skyrepoPut = async function(parseParams) {
         (parseParams)['version'] = this.params.version;
         (parseParams)['obj'] = this.params.obj;
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPut', 'put pp:' + JSON.stringify(parseParams));
     }
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPut', 'put obj:' + JSON.stringify(this.params.obj));
     }
     if (parseParams == null && EcObject.isObject(this.params.obj)) {
@@ -9210,14 +9216,14 @@ global.skyrepoPut = async function(parseParams) {
     const version = (parseParams)['version'];
     return await (skyrepoPutParsed).call(this, obj, id, version, type, null);
 };
-global.skyrepoPutParsed = async function(o, id, version, type) {
+global.skyrepoPutParsed = async function (o, id, version, type) {
     if (o == null) {
         return;
     }
     await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may change it.', null, null);
     await skyrepoPutInternal.call(this, o, id, version, type);
 };
-global.skyrepoPutParsedBulk = async function(ary) {
+global.skyrepoPutParsedBulk = async function (ary) {
     const map = {};
     for (let x of ary) {
         map[x.id] = x;
@@ -9248,7 +9254,7 @@ global.skyrepoPutParsedBulk = async function(ary) {
 
     return failed;
 };
-let validateSignatures = async function(id, version, type, errorMessage) {
+let validateSignatures = async function (id, version, type, errorMessage) {
     const oldGet = await (skyrepoGetInternal).call(this, id, version, type);
     if (oldGet == null) {
         return null;
@@ -9279,7 +9285,7 @@ let validateSignatures = async function(id, version, type, errorMessage) {
     }
     return oldObj;
 };
-let validateSignaturesBulk = async function(map, errorMessage) {
+let validateSignaturesBulk = async function (map, errorMessage) {
     const failed = {};
     const oldGets = await skyrepoManyGetInternal.call(this, Object.values(map));
     const signatures = this.ctx.get('signatureSheet') || [];
@@ -9321,15 +9327,15 @@ let validateSignaturesBulk = async function(map, errorMessage) {
     }
     return failed;
 };
-let skyrepoDeleteInternalIndex = async function(id, version, type) {
+let skyrepoDeleteInternalIndex = async function (id, version, type) {
     const url = deleteUrl.call(this, id, version, type);
     return await httpDelete(url, elasticHeaders());
 };
-const skyrepoDeleteInternalPermanent = async function(id, version, type) {
+const skyrepoDeleteInternalPermanent = async function (id, version, type) {
     const url = deletePermanentBaseUrl(id, version, type);
     return await httpDelete(url, elasticHeaders());
 };
-global.skyrepoDelete = async function(id, version, type) {
+global.skyrepoDelete = async function (id, version, type) {
     const oldObj = await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may delete it.');
     const ids = [id];
     if (oldObj.id != null && oldObj.getGuid() != null) {
@@ -9349,7 +9355,7 @@ global.skyrepoDelete = async function(id, version, type) {
     }
     return oldObj;
 };
-const searchObj = async function(q, start, size, sort, track_scores) {
+const searchObj = async function (q, start, size, sort, track_scores) {
     const s = {};
     if (start != null) {
         (s)['from'] = start;
@@ -9387,7 +9393,7 @@ const searchObj = async function(q, start, size, sort, track_scores) {
     }
     return s;
 };
-const searchUrl = function(urlRemainder, index_hint) {
+const searchUrl = function (urlRemainder, index_hint) {
     let url = elasticEndpoint;
     if (index_hint != null && index_hint.indexOf('permanent') != -1) {
         index_hint = null;
@@ -9403,20 +9409,20 @@ const searchUrl = function(urlRemainder, index_hint) {
         url += '/';
     }
     url += '_search';
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepSearchUrl', url);
     }
     return url;
 };
-const skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_scores, index_hint) {
+const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint) {
     const searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
     }
     const results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), 'application/json', false, null, null, true, elasticHeaders());
 
     // console.log(results);
-    if (skyrepoDebug) {
+    if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(results));
     }
     if (results == null) {
@@ -9450,7 +9456,7 @@ const skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_s
         hits[i] = hit;
     }
     const me = this;
-    searchResults = await endpointManyGet.call({ctx: me.ctx, params: {objs: hits}});
+    searchResults = await endpointManyGet.call({ ctx: me.ctx, params: { objs: hits } });
     for (let i = 0; i < searchResults.length; i++) {
         if (searchResults[i] == null) {
             searchResults.splice(i--, 1);
@@ -9458,7 +9464,7 @@ const skyrepoSearch = async function(q, urlRemainder, start, size, sort, track_s
     }
     return searchResults;
 };
-global.queryParse = function(urlRemainder) {
+global.queryParse = function (urlRemainder) {
     if (urlRemainder == null && this.params.urlRemainder != null) {
         urlRemainder = this.params.urlRemainder;
     }
@@ -9479,7 +9485,7 @@ global.queryParse = function(urlRemainder) {
     }
     return result;
 };
-const tryFormatOutput = function(o, expand) {
+const tryFormatOutput = function (o, expand) {
     const hdrs = (headers).call(this);
     let accept = (hdrs)['Accept'];
     if (accept == null) {
@@ -9503,7 +9509,7 @@ const tryFormatOutput = function(o, expand) {
     }
     return JSON.stringify(o);
 };
-const endpointData = async function() {
+const endpointData = async function () {
     let q = this.params.q;
     const urlRemainder = this.params.urlRemainder;
     let start = 0;
@@ -9741,7 +9747,7 @@ const endpointData = async function() {
  *         $ref: '#/components/responses/404PermissionOrAbsent'
  */
 bindWebService('/data/*', endpointData);
-const endpointMultiGet = async function() {
+const endpointMultiGet = async function () {
     let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
     const lookup = {};
     const mget = {};
@@ -9785,8 +9791,8 @@ const endpointMultiGet = async function() {
     }
     if (ary != null) {
         const me = this;
-        const forEachResults = await Promise.all(ary.map(function(hit) {
-            return endpointSingleGet.call({ctx: me.ctx, params: {obj: hit}});
+        const forEachResults = await Promise.all(ary.map(function (hit) {
+            return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
         }));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
@@ -9796,7 +9802,7 @@ const endpointMultiGet = async function() {
     }
     return JSON.stringify(results);
 };
-const endpointMultiPutEach = async function() {
+const endpointMultiPutEach = async function () {
     const ld = new EcRemoteLinkedData(null, null);
     const o = this.params.obj;
     ld.copyFrom(o);
@@ -9816,17 +9822,17 @@ const endpointMultiPutEach = async function() {
         await (skyrepoPutParsed).call(this, o, id, version, type);
         return o;
     } catch (ex) {
-    // debug(ex);
+        // debug(ex);
     }
     return null;
 };
-const endpointMultiPutBulk = async function() {
+const endpointMultiPutBulk = async function () {
     const ary = this.params.ary;
     this.ctx.put('refresh', 'false');
     const failed = await (skyrepoPutParsedBulk).call(this, ary);
-    return ary.filter((x)=>!failed[x.id]).map((x)=>x.object);
+    return ary.filter((x) => !failed[x.id]).map((x) => x.object);
 };
-const endpointMultiPut = async function() {
+const endpointMultiPut = async function () {
     const ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
     const results = [];
     if (ary != null) {
@@ -9844,7 +9850,7 @@ const endpointMultiPut = async function() {
             }
             (doc)['enabled'] = false;
             const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
-            if (skyrepoDebug) {
+            if (global.skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepEndpointMultiput', JSON.stringify(result));
             }
             permanentCreated = true;
@@ -9878,7 +9884,7 @@ const endpointMultiPut = async function() {
         const uniqueAry = Object.values(uniques);
 
         while (uniqueAry.length > 0) {
-            results.push(...(await endpointMultiPutBulk.call({ctx: this.ctx, dataStreams: this.dataStreams, params: {ary: uniqueAry.splice(0, parseInt(process.env.MULTIPUT_BATCH_SIZE || 100))}})).filter((x)=>x != null));
+            results.push(...(await endpointMultiPutBulk.call({ ctx: this.ctx, dataStreams: this.dataStreams, params: { ary: uniqueAry.splice(0, parseInt(process.env.MULTIPUT_BATCH_SIZE || 100)) } })).filter((x) => x != null));
         }
     }
     await httpGet(elasticEndpoint + '/_all/_refresh', true, elasticHeaders());
@@ -9890,7 +9896,7 @@ const endpointMultiPut = async function() {
     afterSaveBulk(ids);
     return JSON.stringify(results);
 };
-const endpointSingleGet = async function() {
+const endpointSingleGet = async function () {
     const urlRemainder = this.params.obj;
     const parseParams = (queryParse).call(this, urlRemainder, null);
     const id = (parseParams)['id'];
@@ -9902,7 +9908,7 @@ const endpointSingleGet = async function() {
     }
     return null;
 };
-const endpointManyGet = async function() {
+const endpointManyGet = async function () {
     const manyParseParams = [];
     for (const urlRemainder of this.params.objs) {
         const parseParams = (queryParse).call(this, urlRemainder, null);
@@ -9917,7 +9923,7 @@ const endpointManyGet = async function() {
     }
     return null;
 };
-const skyRepoSearch = async function() {
+const skyRepoSearch = async function () {
     let q = this.params.q;
     const urlRemainder = this.params.urlRemainder;
     let start = 0;
@@ -10016,16 +10022,16 @@ const skyRepoSearch = async function() {
  *               $ref: '#/components/schemas/JsonLdArray'
  */
 bindWebService('/sky/repo/search', skyRepoSearch);
-const endpointAdmin = function() {
+const endpointAdmin = function () {
     return JSON.stringify(skyrepoAdminList());
 };
-const skyrepoAdminPk = global.skyrepoAdminPk = function() {
+const skyrepoAdminPk = global.skyrepoAdminPk = function () {
     if (!fs.existsSync('etc/skyAdmin2.pem')) {
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), 'etc/skyAdmin2.pem');
     }
     return EcPpk.fromPem(fileToString(fileLoad('etc/skyAdmin2.pem'))).toPk().toPem();
 };
-const skyrepoAdminList = global.skyrepoAdminList = function() {
+const skyrepoAdminList = global.skyrepoAdminList = function () {
     const array = [];
     array.push(skyrepoAdminPk());
     return array;
@@ -10049,7 +10055,7 @@ const skyrepoAdminList = global.skyrepoAdminList = function() {
  */
 bindWebService('/sky/admin', endpointAdmin);
 // When CORS_CREDENTIALS is true, inform the cass client that all requests to the urls specified in CORS_ORIGINS should be made with credentials
-const getCorsOrigins = function() {
+const getCorsOrigins = function () {
     let corsOrigins;
     if (process.env.CORS_CREDENTIALS != null && process.env.CORS_CREDENTIALS.trim() == 'true' && process.env.CORS_ORIGINS != null) {
         try {
@@ -10061,12 +10067,12 @@ const getCorsOrigins = function() {
     return corsOrigins;
 };
 let realCrypto = require('crypto');
-const pingWithTime = function() {
+const pingWithTime = function () {
     return JSON.stringify({
         ping: 'pong',
         time: new Date().getTime(),
         ssoPublicKey: this.ctx.req.eim ? this.ctx.req.eim.ids[0].ppk.toPk().toPem() : undefined,
-        ssoAdditionalPublicKeys: this.ctx.req.eim && this.ctx.req.eim.ids.length ? this.ctx.req.eim.ids.slice(1).map((identity)=>identity.ppk.toPk().toPem()) : undefined,
+        ssoAdditionalPublicKeys: this.ctx.req.eim && this.ctx.req.eim.ids.length ? this.ctx.req.eim.ids.slice(1).map((identity) => identity.ppk.toPk().toPem()) : undefined,
         ssoLogin: this.ctx.req.oidc ? (process.env.CASS_OIDC_BASE_URL || 'http://localhost/') + 'api/login' : undefined,
         ssoLogout: this.ctx.req.oidc ? (process.env.CASS_OIDC_BASE_URL || 'http://localhost/') + 'api/logout' : undefined,
         banner: process.env.CASS_BANNER_MESSAGE ? {

@@ -28,4 +28,5 @@ COPY cass.key cass.key
 COPY copyright.txt copyright.txt
 COPY LICENSE LICENSE
 EXPOSE 80
+ENV HTTP2=false
 CMD node --force-fips ./src/main/server.js

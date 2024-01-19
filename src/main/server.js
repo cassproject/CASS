@@ -22,7 +22,7 @@ const express = require('express');
 const https = require('https');
 const spdy = require('spdy');
 const baseUrl = global.baseUrl = process.env.CASS_BASE || '';
-const envHttp2 = process.env.HTTP2 != null ? process.env.HTTP2.trim() == 'true' : true;
+const envHttp2 = process.env.HTTP2_SERVER != null ? process.env.HTTP2_SERVER.trim() == 'true' : true;
 let app = global.app = express();
 global.auditLogger = require('./server/shims/auditLogger.js');
 require('cassproject');
@@ -57,7 +57,7 @@ repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || 'http://localhost:9200';
 
-global.skyrepoDebug = false;
+global.skyrepoDebug = process.env.SKYREPO_DEBUG || false;
 global.thisEndpoint = function() {
     return repo.selectedServer;
 };
