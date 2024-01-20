@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.41
+* CEASN conversion issues fixed.
+* Added SKYREPO_DEBUG to diagnose database issues.
+* Disabled HTTP2 use in library (still supported in server).
+
 ## 1.5.40
 * Removed axios. 
 
