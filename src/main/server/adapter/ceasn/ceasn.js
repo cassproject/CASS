@@ -31,7 +31,7 @@ let UUID = require('pure-uuid');
 
 
 async function ceasnExportUriTransform(uri, frameworkUri) {
-    if (ceasnExportUriPrefix == null)
+    if (ceasnExportUriPrefix == null || !uri)
         return uri;
     if (uri.startsWith(ceasnExportUriPrefix))
         return uri;
