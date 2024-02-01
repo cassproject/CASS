@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.42
+* Updated libraries to address CVEs.
+
 ## 1.5.41
 * CEASN conversion issues fixed.
 * Added SKYREPO_DEBUG to diagnose database issues.
