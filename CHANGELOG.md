@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.43
+* Updated libraries to address CVEs.
+* Updated editor.
+* Updates to CEASN conversions.
+
 ## 1.5.42
 * Updated libraries to address CVEs.
 
