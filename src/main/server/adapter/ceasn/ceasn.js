@@ -631,7 +631,7 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
             }
             delete competencies[compId];
             var id = c.id;
-            c.context = JSON.parse(cass2ceasn);
+            c.context = await JSON.parse(cass2ceasn);
             c["ceterms:isMemberOf"] = collections;
             if (c.name == null || c.name == "")
                 if (c.description != null && c.description != "") {
