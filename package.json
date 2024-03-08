@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.43",
+  "version": "1.5.44",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -94,13 +94,13 @@
     "check-disk-space": "^3.4.0",
     "cors": "^2.8.5",
     "cron": "^2.4.4",
-    "express": "^4.18.2",
+    "express": "^4.18.3",
     "express-jwt": "^8.4.1",
     "express-openid-connect": "^2.17.1",
     "express-ws": "^5.0.2",
     "node-object-hash": "^2.3.10",
     "node-worker-threads-pool": "^1.5.1",
-    "nodemailer": "^6.9.10",
+    "nodemailer": "^6.9.11",
     "pm2": "^5.3.1",
     "pure-uuid": "^1.8.1",
     "rdflib": "^2.2.33",
@@ -113,10 +113,10 @@
   },
   "devDependencies": {
     "chai": "^4.4.1",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^10.3.0",
-    "nodemon": "^3.0.3",
+    "nodemon": "^3.1.0",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
     "wait-on": "^7.2.0"

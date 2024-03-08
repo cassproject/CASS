@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.44
+* Updated editor to fix some security findings.
+* Updated CaSS to fix some security findings.
+
 ## 1.5.43
 * Updated libraries to address CVEs.
 * Updated editor.
