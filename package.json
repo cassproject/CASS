@@ -90,7 +90,7 @@
   "dependencies": {
     "@xmldom/xmldom": "^0.8.10",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.41",
+    "cassproject": "^1.5.45",
     "check-disk-space": "^3.4.0",
     "cors": "^2.8.5",
     "cron": "^2.4.4",
@@ -100,7 +100,7 @@
     "express-ws": "^5.0.2",
     "node-object-hash": "^2.3.10",
     "node-worker-threads-pool": "^1.5.1",
-    "nodemailer": "^6.9.11",
+    "nodemailer": "^6.9.12",
     "pm2": "^5.3.1",
     "pure-uuid": "^1.8.1",
     "rdflib": "^2.2.33",
