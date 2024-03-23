@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.50
+* Updated libraries.
+
 ## 1.5.44
 * Updated editor to fix some security findings.
 * Updated CaSS to fix some security findings.

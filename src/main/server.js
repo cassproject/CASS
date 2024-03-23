@@ -46,6 +46,9 @@ if (process.env.CORS_ORIGINS != null || process.env.CORS_CREDENTIALS != null) {
     }
 }
 
+var compression = require('compression')
+app.use(compression({}));
+
 app.use(cors(corsOptions));
 
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
