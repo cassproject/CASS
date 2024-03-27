@@ -9795,9 +9795,11 @@ const endpointMultiGet = async function () {
     }
     if (ary != null) {
         const me = this;
-        const forEachResults = await Promise.all(ary.map(function (hit) {
+        const forEachResults = []
+        while (ary.length > 0)
+            forEachResults.push(...await Promise.all(ary.splice(0,100).map(function (hit) {
             return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
-        }));
+        })));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
                 results.push(forEachResults[i]);
