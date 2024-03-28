@@ -46,6 +46,9 @@ if (process.env.CORS_ORIGINS != null || process.env.CORS_CREDENTIALS != null) {
     }
 }
 
+var compression = require('compression')
+app.use(compression({}));
+
 app.use(cors(corsOptions));
 
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
@@ -214,7 +217,7 @@ skyrepoMigrate(function() {
             global.server = https.createServer(options, app).listen(port, after);
         }
         if (process.env.HTTPS_REJECT_UNAUTHORIZED == 'false') {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'CassIgnoreUnauthorized', 'Ignoring Unauthorized / Self-Signed HTTPS Certificates. This should only be used in testing mode or in an internal network.');
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'CassIgnoreUnauthorized', 'Accepting Unauthorized / Self-Signed HTTPS Certificates. This should only be used in testing mode or in an internal network.');
             process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
         }
     } else {

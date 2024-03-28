@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.5.51
+* Updated libraries.
+* Updated editor.
+* Multiget fallback now limits to 100 at a time to not overload Elasticsearch
+
+## 1.5.50
+* Updated libraries.
+
+## 1.5.44
+* Updated editor to fix some security findings.
+* Updated CaSS to fix some security findings.
+
 ## 1.5.43
 * Updated libraries to address CVEs.
 * Updated editor.

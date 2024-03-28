@@ -165,23 +165,27 @@ const signatureSheet = async function () {
         }
         let signBytes = signature.signature || signature['@signature'];
         let signBytesSha256 = signature.signatureSha256 || signature['@signatureSha256'];
+        let realSignature = signature.toJson();
         signature.signature = (signature)['@signature'] = signature.signatureSha256 = (signature)['@signatureSha256'] = null;
         if (process.env.REJECT_SHA1 || false) {
             if (signBytes != null && signBytesSha256 == null) {
-                warn('SHA1 Signature Detected. Rejecting: ' + signature.toJson());
-                error('SHA1 Signature is not supported. Invalid Signature Detected: ' + signature.toJson(), 451);
+                warn('SHA1 Signature Detected. Rejecting: ' + realSignature);
+                error('SHA1 Signature is not supported. Invalid Signature Detected: ' + realSignature, 451);
             } else if (!(await EcRsaOaepAsync.verifySha256(pk, signature.toJson(), signBytesSha256))) {
-                error('Invalid Signature Detected: ' + signature.toJson(), 451);
+                error('Invalid Signature Detected: ' + realSignature, 451);
             }
         } else {
+            if (signBytes == null && signBytesSha256 == null) {
+                error('No Signature Detected: ' + realSignature, 451);
+            }
             if (signBytesSha256 != null) {
                 if (!(await EcRsaOaepAsync.verifySha256(pk, signature.toJson(), signBytesSha256))) {
-                    error('Invalid Signature Detected: ' + signature.toJson(), 451);
+                    error('Invalid Signature Detected: ' + realSignature, 451);
                 }
             }
             if (signBytes != null) {
                 if (!(await EcRsaOaepAsync.verify(pk, signature.toJson(), signBytes))) {
-                    error('Invalid Signature Detected: ' + signature.toJson(), 451);
+                    error('Invalid Signature Detected: ' + realSignature, 451);
                 }
             }
         }
@@ -9791,9 +9795,11 @@ const endpointMultiGet = async function () {
     }
     if (ary != null) {
         const me = this;
-        const forEachResults = await Promise.all(ary.map(function (hit) {
+        const forEachResults = []
+        while (ary.length > 0)
+            forEachResults.push(...await Promise.all(ary.splice(0,100).map(function (hit) {
             return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
-        }));
+        })));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
                 results.push(forEachResults[i]);
