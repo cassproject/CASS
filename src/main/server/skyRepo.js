@@ -8840,7 +8840,7 @@ const skyrepoGetIndexInternal = async function (index, id, version, type) {
 
 const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
     }
 
     const ary = manyParseParams;
@@ -9418,7 +9418,7 @@ const searchUrl = function (urlRemainder, index_hint) {
     }
     return url;
 };
-const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint) {
+const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint, originalSize) {
     const searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
@@ -9426,9 +9426,9 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
     const results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), 'application/json', false, null, null, true, elasticHeaders());
 
     // console.log(results);
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(results));
-    }
+    //if (global.skyrepoDebug) {
+    //    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(results));
+    //}
     if (results == null) {
         error('An unknown error has occurred. If using the \'start\' parameter, request may be out of bounds.', 500);
     }
@@ -9459,12 +9459,13 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
         hit += id;
         hits[i] = hit;
     }
-    const me = this;
-    searchResults = await endpointManyGet.call({ ctx: me.ctx, params: { objs: hits } });
-    for (let i = 0; i < searchResults.length; i++) {
-        if (searchResults[i] == null) {
-            searchResults.splice(i--, 1);
-        }
+    searchResults = await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits } });
+    searchResults = searchResults.filter(x => x);
+    // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
+    originalSize = originalSize || size;
+    if (size < 10000 && hits.length >= size && searchResults.length < originalSize) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPagin8', size, hits.length, searchResults.length);
+        return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size)).slice(0, size);
     }
     return searchResults;
 };
@@ -9797,9 +9798,9 @@ const endpointMultiGet = async function () {
         const me = this;
         const forEachResults = []
         while (ary.length > 0)
-            forEachResults.push(...await Promise.all(ary.splice(0,100).map(function (hit) {
-            return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
-        })));
+            forEachResults.push(...await Promise.all(ary.splice(0, 100).map(function (hit) {
+                return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
+            })));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
                 results.push(forEachResults[i]);
