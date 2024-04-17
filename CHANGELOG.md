@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.55
+* Search results now retry search if enough results were not permissioned to the searcher.
+* Updated libraries.
+* Updated editor.
+
 ## 1.5.51
 * Updated libraries.
 * Updated editor.
