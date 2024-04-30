@@ -31,7 +31,7 @@ let UUID = require('pure-uuid');
 
 
 async function ceasnExportUriTransform(uri, frameworkUri) {
-    if (ceasnExportUriPrefix == null)
+    if (ceasnExportUriPrefix == null || !uri)
         return uri;
     if (uri.startsWith(ceasnExportUriPrefix))
         return uri;
@@ -245,7 +245,7 @@ async function cassFrameworkAsCeasn() {
     for (var i = 0; i < f.competency.length; i++) {
         var c = await EcCompetency.get(f.competency[i], null, null, repo);
         if (c != null) {
-            competencies[f.competency[i]] = competencies[c.id] = c;
+            competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
 
@@ -742,7 +742,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
     for (var i = 0; i < f.competency.length; i++) {
         var c = await EcCompetency.get(f.competency[i], null, null, repo);
         if (c != null) {
-            competencies[f.competency[i]] = competencies[c.id] = c;
+            competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
 
