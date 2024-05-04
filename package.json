@@ -43,6 +43,8 @@
     "rotatelogs": "pm2 install pm2-logrotate",
     "status": "pm2 l",
     "stop": "pm2 stop all",
+    "openapi:validate": "npm install -g @apidevtools/swagger-cli && curl -o swagger.json http://localhost/api/swagger.json && swagger-cli validate swagger.json",
+    "openapi:justValidate": "swagger-cli validate swagger.json",
     "build:test": "docker build --progress plain -f docker/test/Dockerfile -t cass-test .",
     "buildRun:kill": "docker kill cass-test | exit 0 && docker rm cass-test | exit 0",
     "buildRun:ubuntu16": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
