@@ -23,8 +23,8 @@ function interpretAdminCSV(envCSV) {
 }
 
 // Optional Admin Config
-const AUTH_ALLOW_ENV_ADMINS = process.env.AUTH_ALLOW_ENV_ADMINS == "true";
-const AUTH_ENV_ADMIN_EMAILS = interpretAdminCSV(process.env.AUTH_ENV_ADMIN_EMAILS);
+const allowEnvEmails = process.env.AUTH_ALLOW_ENV_ADMINS == "true";
+const envEmailArray = interpretAdminCSV(process.env.AUTH_ENV_ADMIN_EMAILS);
 
 let getPk = async(identifier) => {
     if (getPkCache[identifier] != null)
@@ -409,7 +409,7 @@ app.use(async function (req, res, next) {
 
             signatureSheet = await eim.signatureSheet(60000, signatureServer, null, null, "SHA-256");
             
-            let considerUserAnAdmin = AUTH_ALLOW_ENV_ADMINS && AUTH_ENV_ADMIN_EMAILS.includes(email);
+            let considerUserAnAdmin = allowEnvEmails && envEmailArray.includes(email);
             if (considerUserAnAdmin && signatureSheet != null) {
 
                 let adminKey = skyrepoAdminKey();
