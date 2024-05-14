@@ -10077,6 +10077,7 @@ const pingWithTime = function () {
     return JSON.stringify({
         ping: 'pong',
         time: new Date().getTime(),
+        ssoViaP1: this.ctx.req.p1 ? true : null,
         ssoPublicKey: this.ctx.req.eim ? this.ctx.req.eim.ids[0].ppk.toPk().toPem() : undefined,
         ssoAdditionalPublicKeys: this.ctx.req.eim && this.ctx.req.eim.ids.length ? this.ctx.req.eim.ids.slice(1).map((identity) => identity.ppk.toPk().toPem()) : undefined,
         ssoLogin: this.ctx.req.oidc ? (process.env.CASS_OIDC_BASE_URL || 'http://localhost/') + 'api/login' : undefined,
@@ -10125,6 +10126,11 @@ const pingWithTime = function () {
  *                   required: true
  *                   description: The current number of milliseconds since the Unix epoch, for ensuring signature sheet signing can sign time-nonced signatures that will not be time-desynchronized with the server.
  *                   example: 1674857764808
+ *                 ssoViaP1:
+ *                   type: bool
+ *                   required: false
+ *                   description: A flag indicating that the user logged in through a Platform One JWT.
+ *                   example: true
  *                 ssoPublicKey:
  *                   type: string
  *                   required: false
