@@ -8,6 +8,24 @@ var skyrepoAdminPpk = function() {
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin2.pem");
     return EcPpk.fromPem(fileToString(fileLoad("etc/skyAdmin2.pem"))).toPem();
 };
+const skyrepoAdminKey = function () {
+    if (!fs.existsSync('etc/skyAdmin2.pem')) {
+        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), 'etc/skyAdmin2.pem');
+    }
+    return EcPpk.fromPem(fileToString(fileLoad('etc/skyAdmin2.pem')));
+};
+
+function interpretAdminCSV(envCSV) {
+    if (envCSV == undefined || typeof envCSV !== "string" || envCSV === "")
+        return [];
+
+    return envCSV.split(",");
+}
+
+// Optional Admin Config
+const allowEnvEmails = process.env.AUTH_ALLOW_ENV_ADMINS == "true";
+const envEmailArray = interpretAdminCSV(process.env.AUTH_ENV_ADMIN_EMAILS);
+
 let getPk = async(identifier) => {
     if (getPkCache[identifier] != null)
     {
@@ -387,13 +405,32 @@ app.use(async function (req, res, next) {
         }
         if (signatureSheet == null)
         {
-            signatureSheet = await eim.signatureSheet(60000,repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,null,null,"SHA-256");
+            let signatureServer = repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy;
+
+            signatureSheet = await eim.signatureSheet(60000, signatureServer, null, null, "SHA-256");
+            
+            let considerUserAnAdmin = allowEnvEmails && envEmailArray.includes(email);
+            if (considerUserAnAdmin && signatureSheet != null) {
+
+                let adminKey = skyrepoAdminKey();
+                let adminSignature = await eim.createSignature(60000, signatureServer, adminKey, "SHA-256");
+
+                let signatureSheetObj = JSON.parse(signatureSheet);
+                let adminSignatureObj = JSON.parse(JSON.stringify(adminSignature));
+                
+                global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassSigSheetCreated", `Securing Proxy: Adding ADMIN signature for due to ENV config for ${email}.`, signatureSheet);
+
+                signatureSheetObj.push(adminSignatureObj);
+                signatureSheet = JSON.stringify(signatureSheetObj);
+            }
+
             //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!
             signatureSheetCache[p.shortId()] = signatureSheet;
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassSigSheetCreated", `Securing Proxy: Created signature sheet for request from ${email}.`, signatureSheet);
         }
         else
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassSigSheetCreated", `Securing Proxy: Reused signature sheet for request from ${email}.`, signatureSheet);
+        
         req.headers.signatureSheet = signatureSheet;
         req.eim = eim;
     }
