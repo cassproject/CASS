@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.56
+* Merged PRs #307, #316 for P1 compatibility.
+* OpenAPI swagger.json now validates.
+* Updated libraries.
+* Updated editor.
+
 ## 1.5.55
 * Search results now retry search if enough results were not permissioned to the searcher.
 * Updated libraries.

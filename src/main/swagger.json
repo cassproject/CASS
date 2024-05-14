@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "CaSS",
-        "version": "1.5.55"
+        "version": "1.5.56"
     },
     "components": {
         "parameters": {
@@ -74,7 +74,6 @@
                     "type": "integer"
                 },
                 "name": "start",
-                "required": false,
                 "description": "If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.",
                 "example": 0
             },
@@ -84,7 +83,6 @@
                     "type": "integer"
                 },
                 "name": "size",
-                "required": false,
                 "description": "The number of results to return. Max 10000 without changes to Elastic.",
                 "example": 10000
             },
@@ -94,7 +92,6 @@
                     "type": "string"
                 },
                 "name": "index_hint",
-                "required": false,
                 "allowReserved": true,
                 "description": "Provides an index hinting string to accelerate typed search and avoid searching _all.",
                 "example": "*competency,*encryptedvalue"
@@ -142,30 +139,6 @@
                             "description": "Base64 encoded cryptographic signature of this object (minus @signature and minus @signatureSha256) by the private key holder identified by @owner.",
                             "example": "JCZlDnSSRKII+bXChVzmCTLe7YPpw+6U+m/fEMR88flveU565QtwyVKY54HfbL5mDa3FtVuxHYTdExeNRj6Q16Tr9AYIAWVc3ckk4ROcWHDcgT73eOrxv238+oBMJAfUw6PvoC/fE68ToUCCcAXq6lhxx2yDzqRT4SZIeRcLQBFcEoHMLdP9lOepzJ5gqpaOkmwz2JKv1qjPbhf7tIA9w/AyW2Skx5Uoh4PoOqRH9YhZHcsKI5h5OKWX+X9y8tFVDm7TdV1ZBTS65Kk0uah91tHLQPuCJP8fWF4EP+7C/Cb7EifiGDSoZr3rG30dV1EQdyFdg9U+Pg0z+KMlAFAqDQ=="
                         }
-                    },
-                    "start": {
-                        "type": "integer",
-                        "required": false,
-                        "description": "If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.",
-                        "example": 0
-                    },
-                    "size": {
-                        "type": "integer",
-                        "required": false,
-                        "description": "The number of results to return. Max 10000 without changes to Elastic.",
-                        "example": 10000
-                    },
-                    "sort": {
-                        "type": "string",
-                        "required": false,
-                        "description": "Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html",
-                        "example": "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
-                    },
-                    "index_hint": {
-                        "type": "string",
-                        "required": false,
-                        "description": "Provides an index hinting string to accelerate typed search and avoid searching _all.",
-                        "example": "*competency,*encryptedvalue"
                     }
                 },
                 "example": [
@@ -222,35 +195,31 @@
                         "properties": {
                             "q": {
                                 "type": "string",
-                                "required": true,
                                 "description": "Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax",
                                 "example": "name:* AND @type:Competency"
                             },
                             "start": {
                                 "type": "integer",
-                                "required": false,
                                 "description": "If doing paging, the number of results to ignore. Note that CaSS will not return beyond 10,000 results no matter the start parameter.",
                                 "example": 0
                             },
                             "size": {
                                 "type": "integer",
-                                "required": false,
                                 "description": "The number of results to return. Max 10000 without changes to Elastic.",
                                 "example": 10000
                             },
                             "sort": {
                                 "type": "string",
-                                "required": false,
                                 "description": "Elastic sort JSON object. See https://www.elastic.co/guide/en/elasticsearch/reference/8.6/sort-search-results.html",
                                 "example": "[ { \"name.keyword\": {\"order\" : \"asc\" , \"unmapped_type\" : \"text\",  \"missing\" : \"_last\"}} ]"
                             },
                             "index_hint": {
                                 "type": "string",
-                                "required": false,
                                 "description": "Provides an index hinting string to accelerate typed search and avoid searching _all.",
                                 "example": "*competency,*encryptedvalue"
                             }
-                        }
+                        },
+                        "required": ["q"]
                     }
                 }
             },
@@ -261,16 +230,6 @@
                     "type": "string",
                     "description": "uid-like identifier prefixed with data/",
                     "example": "data/0a8372fb9b073e5ebb7dc07e20fdfbea"
-                }
-            }
-        },
-        "responses": {
-            "404PermissionOrAbsent": {
-                "description": "Failure to locate data due to permission or absence of data.",
-                "content": {
-                    "text/plain": {
-                        "description": "Error message, if any."
-                    }
                 }
             }
         }

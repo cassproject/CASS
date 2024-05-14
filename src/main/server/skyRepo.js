@@ -9687,7 +9687,7 @@ const endpointData = async function () {
  *               - $ref: '#/components/schemas/JsonLd'
  *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  *   post:
  *     tags:
  *       - Repository
@@ -9708,7 +9708,7 @@ const endpointData = async function () {
  *       200:
  *         description: Success
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  * /api/data/{type}/{uid}:
  *   get:
  *     tags:
@@ -9728,7 +9728,7 @@ const endpointData = async function () {
  *               - $ref: '#/components/schemas/JsonLd'
  *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  * /api/data/{type}/{uid}/{version}:
  *   get:
  *     tags:
@@ -9749,7 +9749,7 @@ const endpointData = async function () {
  *               - $ref: '#/components/schemas/JsonLd'
  *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  */
 bindWebService('/data/*', endpointData);
 const endpointMultiGet = async function () {
@@ -10115,85 +10115,81 @@ const pingWithTime = function () {
  *               type: object
  *               description: Ping response
  *               additionalProperties: false
+ *               required:
+ *                 - ping
+ *                 - time
+ *                 - adminPublicKeys
+ *                 - postMaxSize
  *               properties:
  *                 ping:
  *                   type: string
- *                   required: true
  *                   description: Just a known value for ensuring the response isn't from something else.
  *                   example: pong
  *                 time:
  *                   type: integer
- *                   required: true
  *                   description: The current number of milliseconds since the Unix epoch, for ensuring signature sheet signing can sign time-nonced signatures that will not be time-desynchronized with the server.
  *                   example: 1674857764808
  *                 ssoPublicKey:
  *                   type: string
- *                   required: false
  *                   description: When logged in with SSO, the public key of the first key in the keyring.
  *                   example: <public key>
  *                 ssoAdditionalPublicKeys:
  *                   type: array
- *                   required: false
  *                   description: When logged in with SSO, the public keys of keys past the first in the keyring.
  *                   example: ["<public key>"]
  *                 ssoLogin:
  *                   type: string
- *                   required: false
  *                   description: When logged in with OIDC (or similar), the URL of the login redirect page, using CASS_OIDC_BASE_URL environment variable for the endpoint.
  *                   example: http://localhost/api/login
  *                 ssoLogout:
  *                   type: string
- *                   required: false
  *                   description: When logged in with OIDC (or similar), the URL of the logout redirect page, using CASS_OIDC_BASE_URL environment variable for the endpoint.
  *                   example: http://localhost/api/logout
  *                 banner:
  *                   type: object
- *                   required: false
+ *                   required:
+ *                     - message
+ *                     - color
+ *                     - background
  *                   description: If specified in CASS_BANNER_MESSAGE, CASS_BANNER_TEXT_COLOR, CASS_BANNER_BACKGROUND_COLOR environment variables communicated from the server.
  *                   properties:
  *                     message:
  *                       type: string
- *                       required: true
  *                       description: Banner text as specified by CASS_BANNER_MESSAGE environment variable.
  *                       example: <Security markings>
  *                     color:
  *                       type: string
- *                       required: true
  *                       description: CSS text color as specified by CASS_BANNER_TEXT_COLOR environment variable.
  *                       example: red
  *                     background:
  *                       type: string
- *                       required: true
  *                       description: CSS background color as specified by CASS_BANNER_BACKGROUND_COLOR environment variable.
  *                       example: yellow
  *                 motd:
  *                   type: object
- *                   required: false
  *                   description: If specified in MOTD_TITLE, MOTD_MESSAGE environment variables communicated from the server.
+ *                   required:
+ *                     - message
+ *                     - color
  *                   properties:
  *                     message:
  *                       type: string
- *                       required: true
  *                       description: Message of the Day title as specified by MOTD_TITLE environment variable.
  *                       example: Message of the Day
  *                     color:
  *                       type: string
- *                       required: true
  *                       description: Message of the Day text as specified by MOTD_MESSAGE environment variable.
  *                       example: Have a good day!
  *                 adminPublicKeys:
  *                   type: array
- *                   required: true
  *                   description: Array of admin public keys
  *                   example: ["<public key>"]
  *                 corsOrigins:
  *                   type: array
- *                   required: false
  *                   description: For which origins should the cass client include credentials for in its requests.
  *                   example: ["http://localhost"]
  *                 postMaxSize:
  *                   type: number
- *                   required: true
  *                   description: Max size of fields and files in POST requests that this server can handle in bytes.
  */
 bindWebService('/ping', pingWithTime);

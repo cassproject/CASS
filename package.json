@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.5.55",
+  "version": "1.5.56",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -43,8 +43,9 @@
     "rotatelogs": "pm2 install pm2-logrotate",
     "status": "pm2 l",
     "stop": "pm2 stop all",
-    "openapi:validate": "npm install -g @apidevtools/swagger-cli && curl -o swagger.json http://localhost/api/swagger.json && swagger-cli validate swagger.json",
-    "openapi:justValidate": "swagger-cli validate swagger.json",
+    "openapi:devValidate": "npm install -g @apidevtools/swagger-cli && nodemon --ignore ./swaggerx.json --exec \"npm run openapi:justValidate\"",
+    "openapi:validate": "npm install -g @apidevtools/swagger-cli && wait-on http://localhost/api/swagger.json && curl -o swaggerx.json http://localhost/api/swagger.json && swagger-cli validate swaggerx.json",
+    "openapi:justValidate": "wait-on http://localhost/api/swagger.json && curl -o swaggerx.json http://localhost/api/swagger.json && swagger-cli validate swaggerx.json && del swaggerx.json",
     "build:test": "docker build --progress plain -f docker/test/Dockerfile -t cass-test .",
     "buildRun:kill": "docker kill cass-test | exit 0 && docker rm cass-test | exit 0",
     "buildRun:ubuntu16": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-16.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
@@ -106,13 +107,13 @@
     "nodemailer": "^6.9.13",
     "pm2": "^5.3.1",
     "pure-uuid": "^1.8.1",
-    "rdflib": "^2.2.34",
+    "rdflib": "^2.2.35",
     "spdy": "^4.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "undici": "6.10.2",
     "uuid": "^9.0.1",
-    "ws": "^8.16.0"
+    "ws": "^8.17.0"
   },
   "devDependencies": {
     "chai": "^4.4.1",
