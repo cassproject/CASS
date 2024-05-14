@@ -8840,7 +8840,7 @@ const skyrepoGetIndexInternal = async function (index, id, version, type) {
 
 const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams);
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
     }
 
     const ary = manyParseParams;
@@ -9418,7 +9418,7 @@ const searchUrl = function (urlRemainder, index_hint) {
     }
     return url;
 };
-const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint) {
+const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint, originalSize) {
     const searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
@@ -9426,9 +9426,9 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
     const results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), 'application/json', false, null, null, true, elasticHeaders());
 
     // console.log(results);
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(results));
-    }
+    //if (global.skyrepoDebug) {
+    //    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(results));
+    //}
     if (results == null) {
         error('An unknown error has occurred. If using the \'start\' parameter, request may be out of bounds.', 500);
     }
@@ -9459,12 +9459,13 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
         hit += id;
         hits[i] = hit;
     }
-    const me = this;
-    searchResults = await endpointManyGet.call({ ctx: me.ctx, params: { objs: hits } });
-    for (let i = 0; i < searchResults.length; i++) {
-        if (searchResults[i] == null) {
-            searchResults.splice(i--, 1);
-        }
+    searchResults = await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits } });
+    searchResults = searchResults.filter(x => x);
+    // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
+    originalSize = originalSize || size;
+    if (size < 10000 && hits.length >= size && searchResults.length < originalSize) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPagin8', size, hits.length, searchResults.length);
+        return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size)).slice(0, size);
     }
     return searchResults;
 };
@@ -9686,7 +9687,7 @@ const endpointData = async function () {
  *               - $ref: '#/components/schemas/JsonLd'
  *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  *   post:
  *     tags:
  *       - Repository
@@ -9707,7 +9708,7 @@ const endpointData = async function () {
  *       200:
  *         description: Success
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  * /api/data/{type}/{uid}:
  *   get:
  *     tags:
@@ -9727,7 +9728,7 @@ const endpointData = async function () {
  *               - $ref: '#/components/schemas/JsonLd'
  *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  * /api/data/{type}/{uid}/{version}:
  *   get:
  *     tags:
@@ -9748,7 +9749,7 @@ const endpointData = async function () {
  *               - $ref: '#/components/schemas/JsonLd'
  *               - $ref: '#/components/schemas/JsonLdHistory'
  *       404:
- *         $ref: '#/components/responses/404PermissionOrAbsent'
+ *         description: "Failure to locate data due to permission or absence of data."
  */
 bindWebService('/data/*', endpointData);
 const endpointMultiGet = async function () {
@@ -9797,9 +9798,9 @@ const endpointMultiGet = async function () {
         const me = this;
         const forEachResults = []
         while (ary.length > 0)
-            forEachResults.push(...await Promise.all(ary.splice(0,100).map(function (hit) {
-            return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
-        })));
+            forEachResults.push(...await Promise.all(ary.splice(0, 100).map(function (hit) {
+                return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
+            })));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
                 results.push(forEachResults[i]);
@@ -10115,15 +10116,18 @@ const pingWithTime = function () {
  *               type: object
  *               description: Ping response
  *               additionalProperties: false
+ *               required:
+ *                 - ping
+ *                 - time
+ *                 - adminPublicKeys
+ *                 - postMaxSize
  *               properties:
  *                 ping:
  *                   type: string
- *                   required: true
  *                   description: Just a known value for ensuring the response isn't from something else.
  *                   example: pong
  *                 time:
  *                   type: integer
- *                   required: true
  *                   description: The current number of milliseconds since the Unix epoch, for ensuring signature sheet signing can sign time-nonced signatures that will not be time-desynchronized with the server.
  *                   example: 1674857764808
  *                 ssoViaP1:
@@ -10133,72 +10137,65 @@ const pingWithTime = function () {
  *                   example: true
  *                 ssoPublicKey:
  *                   type: string
- *                   required: false
  *                   description: When logged in with SSO, the public key of the first key in the keyring.
  *                   example: <public key>
  *                 ssoAdditionalPublicKeys:
  *                   type: array
- *                   required: false
  *                   description: When logged in with SSO, the public keys of keys past the first in the keyring.
  *                   example: ["<public key>"]
  *                 ssoLogin:
  *                   type: string
- *                   required: false
  *                   description: When logged in with OIDC (or similar), the URL of the login redirect page, using CASS_OIDC_BASE_URL environment variable for the endpoint.
  *                   example: http://localhost/api/login
  *                 ssoLogout:
  *                   type: string
- *                   required: false
  *                   description: When logged in with OIDC (or similar), the URL of the logout redirect page, using CASS_OIDC_BASE_URL environment variable for the endpoint.
  *                   example: http://localhost/api/logout
  *                 banner:
  *                   type: object
- *                   required: false
+ *                   required:
+ *                     - message
+ *                     - color
+ *                     - background
  *                   description: If specified in CASS_BANNER_MESSAGE, CASS_BANNER_TEXT_COLOR, CASS_BANNER_BACKGROUND_COLOR environment variables communicated from the server.
  *                   properties:
  *                     message:
  *                       type: string
- *                       required: true
  *                       description: Banner text as specified by CASS_BANNER_MESSAGE environment variable.
  *                       example: <Security markings>
  *                     color:
  *                       type: string
- *                       required: true
  *                       description: CSS text color as specified by CASS_BANNER_TEXT_COLOR environment variable.
  *                       example: red
  *                     background:
  *                       type: string
- *                       required: true
  *                       description: CSS background color as specified by CASS_BANNER_BACKGROUND_COLOR environment variable.
  *                       example: yellow
  *                 motd:
  *                   type: object
- *                   required: false
  *                   description: If specified in MOTD_TITLE, MOTD_MESSAGE environment variables communicated from the server.
+ *                   required:
+ *                     - message
+ *                     - color
  *                   properties:
  *                     message:
  *                       type: string
- *                       required: true
  *                       description: Message of the Day title as specified by MOTD_TITLE environment variable.
  *                       example: Message of the Day
  *                     color:
  *                       type: string
- *                       required: true
  *                       description: Message of the Day text as specified by MOTD_MESSAGE environment variable.
  *                       example: Have a good day!
  *                 adminPublicKeys:
  *                   type: array
- *                   required: true
  *                   description: Array of admin public keys
  *                   example: ["<public key>"]
  *                 corsOrigins:
  *                   type: array
- *                   required: false
  *                   description: For which origins should the cass client include credentials for in its requests.
  *                   example: ["http://localhost"]
  *                 postMaxSize:
  *                   type: number
- *                   required: true
  *                   description: Max size of fields and files in POST requests that this server can handle in bytes.
  */
 bindWebService('/ping', pingWithTime);

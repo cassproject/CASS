@@ -54,7 +54,7 @@ else
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 
 global.repo = new EcRepository();
-repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? "https://localhost/api/" : "http://localhost/api");
+repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? "https://localhost/api/" : "http://localhost/api/");
 if (envHttps)
 {
     https.globalAgent.options.rejectUnauthorized = false;

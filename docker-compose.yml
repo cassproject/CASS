@@ -13,6 +13,7 @@ services:
       - CASS_LOOPBACK=http://cass/api/
       - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
       - PORT=80
+      - SKYREPO_DEBUG=true
       # - CASS_OIDC_ENABLED=true # turns on open id login
       # - CASS_OIDC_ISSUER_BASE_URL=http://keycloak:8080/auth/realms/master/ # point at your keycloak realm
       # - CASS_OIDC_CLIENT_ID=cass # name of your keycloak client
@@ -61,7 +62,7 @@ services:
     depends_on:
       - elasticsearch-cass
   elasticsearch-cass:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
     container_name: elasticsearch-cass
     networks:
       - esnet
