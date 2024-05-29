@@ -9482,7 +9482,7 @@ global.queryParse = function (urlRemainder) {
         (result)['id'] = split[0];
     }
     if (split.length >= 2) {
-        (result)['type'] = split[0];
+        (result)['type'] = split[0] == '' ? null : split[0];
         (result)['id'] = split[1];
     }
     if (split.length == 3) {
