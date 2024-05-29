@@ -1,7 +1,7 @@
 version: '3'
 services:
   cass:
-    image: cassproject/cass:node-1.5.56
+    image: cassproject/cass:node-1.5.57
     container_name: cass
     networks:
       - esnet

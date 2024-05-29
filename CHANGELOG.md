@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.57
+* Updated editor.
+* Updated libraries.
+* Can now multiget versioned entities.
+
 ## 1.5.56
 * Merged PRs #307, #316 for P1 compatibility.
 * OpenAPI swagger.json now validates.
