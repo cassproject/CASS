@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Release Candidate: 1.5.57 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
+Release Candidate: 1.5.60 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.2)](https://travis-ci.org/cassproject/CASS)
@@ -95,12 +95,12 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * `npm upgrade --save` Review dependencies, autocomplete version numbers
  * Increment version number in package.json and src/main/swagger.json and docker-compose*.yml
  * Increment elasticsearch version number (in Dockerfile and docker-compose) to latest minor/revision in docker/standalone/DockerFile (https://hub.docker.com/_/elasticsearch)
+ * Update src/main/webapp to point at the appropriate gh-pages commit.
  * `npm install`
  * `npm run testWithCoverage`
  * In another command window, `npm run test:mocha` - Must not fail any tests.
  * In another command window, `npm run openapi:validate` - Must not fail any tests.
  * In the command window running testWithCoverage, `ctrl+c`. Record the output of the code coverage for the tests in codeCoverage.md.
- * Update src/main/webapp to point at the appropriate gh-pages commit.
  * Update CHANGELOG.md
  * Update README.md
  * Run `npm run buildRun:standaloneTest` to ensure the container can build.
@@ -113,7 +113,7 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * In another command window, `npm run test:mocha` - Must not fail any tests.
  * Commit with release notes.
  * Tag commit with version number.
- 
+
 ### FIPS:
 FIPS is supported both client-side and server-side in CaSS. Here is the relevant compatibility table.
 

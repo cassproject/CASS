@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.5.60
+* Updated editor.
+* Updated libraries.
+* Fixed some issues associated with L2 cache.
+
+## 1.5.58
+* Updated editor.
+* Updated libraries
+* Client side caching now persists across refreshes, and improvements to bandwidth/speed when `EcRepository.cachingL2` is enabled and hitting cached data.
+
 ## 1.5.57
 * Updated editor.
 * Updated libraries.

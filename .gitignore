@@ -65,3 +65,5 @@ coverage/lcov-report/main/
 scan-node.txt
 
 scan-standalone.txt
+
+swaggerx.json

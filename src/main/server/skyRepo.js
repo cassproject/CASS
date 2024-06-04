@@ -198,7 +198,7 @@ const signatureSheet = async function () {
 const isEncryptedType = function (obj) {
     return obj.isAny(new EbacEncryptedValue().getTypes());
 };
-const filterResults = async function (o) {
+const filterResults = async function (o, dontDecryptInSso) {
     if (o == null) {
         return o;
     }
@@ -210,7 +210,7 @@ const filterResults = async function (o) {
             }
             let result = null;
             try {
-                result = await (filterResults).call(this, ary[i], null);
+                result = await (filterResults).call(this, ary[i], dontDecryptInSso);
             } catch (ex) {
                 if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
                     throw ex;
@@ -245,7 +245,7 @@ const filterResults = async function (o) {
                 throw new Error('Object not found or you did not supply sufficient permissions to access the object.');
             }
             // Securing Proxy: Decrypt data that is being passed back via SSO.
-            if (this.ctx.req.eim != null) {
+            if (this.ctx.req.eim != null && dontDecryptInSso == null) {
                 try {
                     if (isEncryptedType(rld)) {
                         const eev = new EcEncryptedValue();
@@ -261,7 +261,7 @@ const filterResults = async function (o) {
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
             let result = null;
-            result = await (filterResults).call(this, (o)[key], null);
+            result = await (filterResults).call(this, (o)[key], dontDecryptInSso);
             if (result != null) {
                 (o)[key] = result;
             } else {
@@ -9149,18 +9149,18 @@ global.skyrepoGet = async function (parseParams) {
     return await (skyrepoGetParsed).call(this, id, version, type, null, history);
 };
 
-const skyrepoGetParsed = async function (id, version, type, unk, history) {
+const skyrepoGetParsed = async function (id, version, type, dontDecrypt, history) {
     let filtered = null;
     if (history == true || history == 'true') {
         filtered = await skyrepoHistoryInternal.call(this, id, version, type);
-        filtered = await (filterResults).call(this, filtered, null);
+        filtered = await (filterResults).call(this, filtered, dontDecrypt);
     } else {
         const result = await (skyrepoGetInternal).call(this, id, version, type);
         if (result == null) {
             return null;
         }
         try {
-            filtered = await (filterResults).call(this, result, null);
+            filtered = await (filterResults).call(this, result, dontDecrypt);
         } catch (ex) {
             if (ex.toString().indexOf('Signature Violation') != -1) {
                 throw ex;
@@ -9418,7 +9418,7 @@ const searchUrl = function (urlRemainder, index_hint) {
     }
     return url;
 };
-const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint, originalSize) {
+const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint, originalSize, ids) {
     const searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
@@ -9444,28 +9444,40 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
     }
     const hits = ((results)['hits'])['hits'];
     let searchResults = [];
-    for (let i = 0; i < hits.length; i++) {
-        const searchResult = hits[i];
-        const type = inferTypeFromObj((searchResult)['_source'], null);
-        if (type == null) {
-            hits.splice(i--, 1);
-            continue;
+    if (ids != null) {
+        try {
+            searchResults = await (filterResults).call(this, hits.map((h) => h._source), true);
+            searchResults = searchResults.map((x) => x['@id']);
+        } catch (ex) {
+            if (ex.toString().indexOf('Signature Violation') != -1) {
+                throw ex;
+            }
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'SkyrepManyGetParsedError', ex);
         }
-        const id = (searchResult)['_id'];
-        let hit = '';
-        if (type != null) {
-            hit += type + '/';
+    } else {
+        for (let i = 0; i < hits.length; i++) {
+            const searchResult = hits[i];
+            const type = inferTypeFromObj((searchResult)['_source'], null);
+            if (type == null) {
+                hits.splice(i--, 1);
+                continue;
+            }
+            const id = (searchResult)['_id'];
+            let hit = '';
+            if (type != null) {
+                hit += type + '/';
+            }
+            hit += id;
+            hits[i] = hit;
         }
-        hit += id;
-        hits[i] = hit;
+        searchResults = await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits } });
     }
-    searchResults = await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits } });
     searchResults = searchResults.filter(x => x);
     // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
     originalSize = originalSize || size;
     if (size < 10000 && hits.length >= size && searchResults.length < originalSize) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPagin8', size, hits.length, searchResults.length);
-        return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size)).slice(0, size);
+        return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size, ids)).slice(0, size);
     }
     return searchResults;
 };
@@ -9538,6 +9550,7 @@ const endpointData = async function () {
     let track_scores = this.params.track_scores;
     let index_hint = this.params.index_hint;
     let history = this.params.history;
+    let ids = this.params.ids;
     let searchParams = (fileFromDatastream).call(this, 'searchParams', null);
     if (searchParams != null) {
         searchParams = fileToString(searchParams);
@@ -9581,6 +9594,11 @@ const endpointData = async function () {
                 history = (searchParams)['history'];
             }
         }
+        if ((searchParams)['ids'] != undefined) {
+            if ((searchParams)['ids'] != null) {
+                ids = (searchParams)['ids'];
+            }
+        }
     }
     if (size === undefined || size == null) {
         size = 50;
@@ -9590,7 +9608,7 @@ const endpointData = async function () {
     }
     if (q !== undefined && q != null) {
         (beforeGet).call(this);
-        return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint));
+        return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint, null, ids));
     }
     const methodType = this.params.methodType;
     const parseParams = (queryParse).call(this, urlRemainder, null);
@@ -9754,6 +9772,7 @@ const endpointData = async function () {
 bindWebService('/data/*', endpointData);
 const endpointMultiGet = async function () {
     let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
+    let idsFlag = fileToString((fileFromDatastream).call(this, 'ids', null));
     const lookup = {};
     const mget = {};
     const docs = [];
@@ -9779,33 +9798,36 @@ const endpointMultiGet = async function () {
     }
     const response = await httpPost(mget, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
     const resultDocs = (response)['docs'];
-    const results = [];
+    let results = [];
     if (resultDocs != null) {
         for (let i = 0; i < resultDocs.length; i++) {
             const doc = resultDocs[i];
             if ((doc)['found']) {
-                delete (lookup)[((doc)['_id']).substring(0, ((doc)['_id']).length - 1)];
+                delete (lookup)[((doc)['_id']).substring(0, ((doc)['_id']).indexOf('.'))];
                 results.push(JSON.parse(((doc)['_source'])['data']));
             }
         }
     }
-    await (filterResults).call(this, results, null);
+    await (filterResults).call(this, results, idsFlag != null ? true : null);
     ary = EcObject.keys(lookup);
     for (let i = 0; i < ary.length; i++) {
         ary[i] = (lookup)[ary[i]];
     }
     if (ary != null) {
         const me = this;
-        const forEachResults = []
+        const forEachResults = [];
         while (ary.length > 0)
             forEachResults.push(...await Promise.all(ary.splice(0, 100).map(function (hit) {
-                return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } });
+                return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit } }, idsFlag != null ? true : null);
             })));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
                 results.push(forEachResults[i]);
             }
         }
+    }
+    if (idsFlag != null ? true : false) {
+        results = results.map((x) => x['@id']);
     }
     return JSON.stringify(results);
 };
@@ -9903,13 +9925,13 @@ const endpointMultiPut = async function () {
     afterSaveBulk(ids);
     return JSON.stringify(results);
 };
-const endpointSingleGet = async function () {
+const endpointSingleGet = async function (dontDecrypt) {
     const urlRemainder = this.params.obj;
     const parseParams = (queryParse).call(this, urlRemainder, null);
     const id = (parseParams)['id'];
     const type = (parseParams)['type'];
     const version = (parseParams)['version'];
-    const o = await (skyrepoGetParsed).call(this, id, version, type, null, null);
+    const o = await (skyrepoGetParsed).call(this, id, version, type, dontDecrypt, null);
     if (o != null) {
         return o;
     }
@@ -9948,6 +9970,7 @@ const skyRepoSearch = async function () {
     let sort = this.params.sort;
     let track_scores = this.params.track_scores;
     let index_hint = this.params.index_hint;
+    let ids = this.params.ids;
     const searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, 'searchParams', null)));
     if (searchParams != null) {
         if ((searchParams)['q'] != undefined) {
@@ -9980,6 +10003,11 @@ const skyRepoSearch = async function () {
                 index_hint = (searchParams)['index_hint'];
             }
         }
+        if ((searchParams)['ids'] != undefined) {
+            if ((searchParams)['ids'] != null) {
+                ids = (searchParams)['ids'];
+            }
+        }
     }
     const data = fileToString((fileFromDatastream).call(this, 'data', null));
     if (data !== undefined && data != null && data != '') {
@@ -9988,7 +10016,7 @@ const skyRepoSearch = async function () {
     if (q === undefined || q == null || q == '') {
         q = '*';
     }
-    return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint));
+    return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint, null, ids));
 };
 /**
  * @openapi
