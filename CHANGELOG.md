@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.60
+* Updated editor.
+* Updated libraries.
+* Fixed some issues associated with L2 cache.
+
 ## 1.5.58
 * Updated editor.
 * Updated libraries
