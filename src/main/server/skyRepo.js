@@ -9773,7 +9773,6 @@ bindWebService('/data/*', endpointData);
 const endpointMultiGet = async function () {
     let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
     let idsFlag = fileToString((fileFromDatastream).call(this, 'ids', null));
-    console.log(idsFlag);
     const lookup = {};
     const mget = {};
     const docs = [];
@@ -9801,7 +9800,6 @@ const endpointMultiGet = async function () {
     const resultDocs = (response)['docs'];
     let results = [];
     if (resultDocs != null) {
-        console.log(lookup);
         for (let i = 0; i < resultDocs.length; i++) {
             const doc = resultDocs[i];
             if ((doc)['found']) {
