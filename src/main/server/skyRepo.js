@@ -3,6 +3,8 @@ const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaep
 const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
 const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/general/EcRemoteLinkedData');
 const fs = require('fs');
+const sharedAdminCache = require("./shims/util/sharedAdminCache");
+
 
 // RS2 shims
 const afterSave = function (o) {
@@ -10069,6 +10071,15 @@ const skyrepoAdminPk = global.skyrepoAdminPk = function () {
 const skyrepoAdminList = global.skyrepoAdminList = function () {
     const array = [];
     array.push(skyrepoAdminPk());
+    
+    let mayHaveUserAdmins = process.env.AUTH_ALLOW_ENV_ADMINS == "true";
+    if (mayHaveUserAdmins) {
+        let knownAdminPks = sharedAdminCache.getKnownUserAdminPks();
+        for (let userPk of knownAdminPks) {
+            array.push(userPk);
+        }
+    }
+
     return array;
 };
 /**
