@@ -1,4 +1,6 @@
 const fs = require('fs');
+const sharedAdminCache = require("./shims/util/sharedAdminCache");
+
 let keyEim = null;
 
 let getPkCache = {};
