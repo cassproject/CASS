@@ -93,7 +93,7 @@
   "dependencies": {
     "@xmldom/xmldom": "^0.8.10",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.60",
+    "cassproject": "^1.5.61",
     "check-disk-space": "^3.4.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
