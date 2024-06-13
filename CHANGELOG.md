@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.61
+* Updated editor.
+* Updated libraries.
+* Fixed bug where precache was modifying the input array.
+
 ## 1.5.60
 * Updated editor.
 * Updated libraries.
