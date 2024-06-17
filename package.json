@@ -113,7 +113,7 @@
     "swagger-ui-express": "^5.0.1",
     "undici": "6.10.2",
     "uuid": "^9.0.1",
-    "ws": "^8.17.0"
+    "ws": "^8.17.1"
   },
   "devDependencies": {
     "chai": "^4.4.1",
