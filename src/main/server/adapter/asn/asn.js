@@ -501,7 +501,6 @@ if (!global.importJsonLdGraph) {
 }
 
 async function importConceptPromise(graphObj, conceptSchemeId, context, skosIdentity, owner, toSave) {
-    console.log(graphObj, conceptSchemeId, context, skosIdentity, owner, toSave);
     return new Promise(async (resolve) => {
         try {
             let compacted;
