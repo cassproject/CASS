@@ -501,6 +501,7 @@ if (!global.importJsonLdGraph) {
 }
 
 async function importConceptPromise(graphObj, conceptSchemeId, context, skosIdentity, owner, toSave) {
+    console.log(graphObj, conceptSchemeId, context, skosIdentity, owner, toSave);
     return new Promise(async (resolve) => {
         try {
             let compacted;
@@ -536,16 +537,16 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                 else {
                     url = "https://schema.cassproject.org/0.4/";
                 }
-                let objToSave = await jsonLdCompact(JSON.stringify(expanded), url);
-                const type = objToSave["@type"]
+                let compacted = await jsonLdCompact(JSON.stringify(expanded), url);
+                const type = compacted["@type"]
 
                 if ((type == "skos:ConceptScheme") || (type == "asn:ProgressionModel")) {
-                    objToSave["@type"] = "ConceptScheme";
-                    objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                    compacted["@type"] = "ConceptScheme";
+                    compacted["@context"] = "https://schema.cassproject.org/0.4/skos/";
                     if (type == "asn:ProgressionModel") {
-                        objToSave["subType"] = "Progression";
+                        compacted["subType"] = "Progression";
                     }
-                    objToSave = new EcConceptScheme();
+                    let objToSave = new EcConceptScheme();
                     objToSave.copyFrom(compacted);
                     conceptSchemeId.push(objToSave.shortId());
                     objToSave.addOwner(skosIdentity.ppk.toPk());
@@ -586,12 +587,12 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                     resolve();
                 }
                 else if ((type == "skos:Concept") || (type == "asn:ProgressionLevel")) {
-                    objToSave["@type"] = "Concept";
-                    objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
+                    compacted["@type"] = "Concept";
+                    compacted["@context"] = "https://schema.cassproject.org/0.4/skos/";
                     if (type == "asn:ProgressionLevel") {
-                        objToSave["subType"] = "Progression";
+                        compacted["subType"] = "Progression";
                     }
-                    objToSave = new EcConcept();
+                    let objToSave = new EcConcept();
                     objToSave.copyFrom(compacted);
                     objToSave.addOwner(skosIdentity.ppk.toPk());
                     if (owner != null)
@@ -669,7 +670,7 @@ async function importJsonLdGraph(graph, context) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "ImportJsonLdGraphErr", "Graph not available");
         return undefined;
     }
-    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "AsnImportJsonLdGraph", graph.length);
+    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "AsnImportJsonLdGraph", graph.length, graph);
     for (let i = 0; i < graph.length; i+=100) {
         await Promise.all(graph.slice(i, i+100).map((id) => importConceptPromise(id, conceptSchemeId, context, skosIdentity, owner, toSave))).catch((err) => {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "ImportJsonLdGraphErr", err);
