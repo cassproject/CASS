@@ -170,7 +170,27 @@ process.on('exit', () => {
     global.auditLogger.flush();
 });
 
-skyrepoMigrate(function() {
+skyrepoMigrate(async function() {
+    try {
+        // Increase the number of fields for cass configurations
+        let result = await httpPut({
+            "index.mapping.total_fields.limit": 10000
+        }, elasticEndpoint + '/schema.cassproject.org.0.4.configuration/_settings', "application/json", global.elasticHeaders());
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result));
+    } catch (e) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "SkyrepMigrate", 'Unable to increase configuration field limit', e);
+    }
+
+    try {
+        // Increase the number of fields for competencies
+        let result2 = await httpPut({
+            "index.mapping.total_fields.limit": 10000
+        }, elasticEndpoint + '/schema.cassproject.org.0.4.competency/_settings', "application/json", global.elasticHeaders());
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "SkyrepMigrate", JSON.stringify(result2));
+    } catch (e) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "SkyrepMigrate", 'Unable to increase competency field limit', e);
+    }
+
     const after = async () => {
         global.elasticSearchInfo = await httpGet(elasticEndpoint + '/', true, global.elasticHeaders());
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassListening', `CaSS listening at http${envHttps?'s':''}://localhost:${port}${baseUrl}`);
