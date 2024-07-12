@@ -1,4 +1,6 @@
 const fs = require('fs');
+const sharedAdminCache = require("./shims/util/sharedAdminCache");
+
 let keyEim = null;
 
 let getPkCache = {};
@@ -422,6 +424,9 @@ app.use(async function (req, res, next) {
 
                 signatureSheetObj.push(adminSignatureObj);
                 signatureSheet = JSON.stringify(signatureSheetObj);
+                
+                let userPublicKeyStr = signatureSheetObj[0]["@owner"];
+                sharedAdminCache.addPublicKeyToKnownAdmins(userPublicKeyStr);
             }
 
             //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!
