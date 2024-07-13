@@ -1,5 +1,5 @@
 const fs = require('fs');
-const sharedAdminCache = require("./shims/util/sharedAdminCache");
+const sharedAdminCache = require("./util/sharedAdminCache.js");
 
 let keyEim = null;
 

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.63
+* Updated editor.
+* Updated libraries.
+* Updated ctdlasn import.
+* Increased number of possible fields in configurations and competencies upon startup.
+
 ## 1.5.61
 * Updated editor.
 * Updated libraries.

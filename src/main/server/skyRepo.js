@@ -10170,8 +10170,7 @@ const pingWithTime = function () {
  *                   description: The current number of milliseconds since the Unix epoch, for ensuring signature sheet signing can sign time-nonced signatures that will not be time-desynchronized with the server.
  *                   example: 1674857764808
  *                 ssoViaP1:
- *                   type: bool
- *                   required: false
+ *                   type: boolean
  *                   description: A flag indicating that the user logged in through a Platform One JWT.
  *                   example: true
  *                 ssoPublicKey:
