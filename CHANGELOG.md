@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.64
+* Updated editor.
+* Updated libraries.
+
 ## 1.5.63
 * Updated editor.
 * Updated libraries.
