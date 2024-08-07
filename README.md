@@ -95,7 +95,7 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * `npm upgrade --save` Review dependencies, autocomplete version numbers
  * Increment version number in package.json and src/main/swagger.json and docker-compose*.yml
  * Increment elasticsearch version number (in Dockerfile and docker-compose) to latest minor/revision in docker/standalone/DockerFile (https://hub.docker.com/_/elasticsearch)
- * Update src/main/webapp to point at the appropriate gh-pages commit.
+ * Update src/main/webapp to point at the appropriate gh-pages commit. Ensure the version number of cass-editor matches.
  * `npm install`
  * `npm run testWithCoverage`
  * In another command window, `npm run test:mocha` - Must not fail any tests.
