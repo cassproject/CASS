@@ -101,6 +101,7 @@ require('./server/adapter/scd/scd.js');
 require('./server/adapter/jsonLd/jsonLd.js');
 require('./server/adapter/openbadges/openbadges.js');
 require('./server/adapter/xapi/xapi.js');
+require('./server/adapter/ce/pna.js');
 require('./server/adapter/replicate/replicate.js');
 require('./server/profile/coordinator.js')();
 
