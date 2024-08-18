@@ -465,8 +465,15 @@ async function cassFrameworkAsCeasn() {
             f[terms[each]] = f[each];
             delete f[each];
         }
+        
         if (each === "type") {
             f[each] = "ceasn:CompetencyFramework";
+        }
+        
+        if (each === 'validFrom' || each === 'validUntil') {
+            if (EcObject.isObject(f[terms[each]]) && f[terms[each]]['@value']) {
+                f[terms[each]] = f[terms[each]]['@value']
+            }
         }
     }
 
