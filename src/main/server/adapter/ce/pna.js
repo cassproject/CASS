@@ -58,15 +58,15 @@ async function pnaEndpoint() {
             if (expanded && expanded["id"]) {
                 match = expanded["id"].match('(.*)(\/data\/)(.*)');
                 let ceasnEndpoint = match && match.length > 1 ? match[1] + "/ceasn/" : undefined;
-
-                match = expanded["id"].match('(.*)(Competency\/)([\d\w-]*)(\/?)(.*)');
-                const ctid = (match && match.length > 3) ? match[3] : '';
+                match = expanded["id"].match('(.*)Competency\/(.*)');
+                let ctid = (match && match.length > 2) ? match[2] : '';
+                ctid = ctid.split("/")[0];
                 competencies.push({
                     id: ceasnEndpoint + ctid,
                     type: "Competency",
                     containedIn: ceasnEndpointFramework + query["id"],
                     competencyText: expanded["statement"] ? expanded["statement"] : (expanded["name"] ? expanded["name"] : (expanded["description"] ? expanded["description"] : "")),
-                    dataUrl: expanded["id"],
+                    dataUrl: ceasnEndpoint + ctid,
                     label: expanded["name"] ? expanded["name"] : ""
                 });
             }
@@ -81,10 +81,57 @@ async function pnaEndpoint() {
     });
 
     if (this.params.methodType == "POST" || this.params.methodType == "PUT") {
-        // TODO: Upload to Competency Explorer registry
+        // Upload index file to Competency Explorer registry
+        const result = await uploadToAws(JSON.stringify(pnaData), query["id"]);
+        return JSON.stringify(result);
     } else {
         return JSON.stringify(pnaData);
     }    
+}
+
+async function uploadToAws(data, name) {
+
+    const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+
+    const AWS_BUCKET = process.env.AWS_BUCKET ? process.env.AWS_BUCKET : "";
+    const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID : "";
+    const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY ? process.env.AWS_SECRET_ACCESS_KEY : "";
+
+    try {
+        const s3 = new S3Client({
+            credentials: {
+                accessKeyId: AWS_ACCESS_KEY_ID,
+                secretAccessKey: AWS_SECRET_ACCESS_KEY
+            },
+            region: "us-east-2",
+        });
+
+        await s3.send(
+            new PutObjectCommand({
+              Bucket: AWS_BUCKET,
+              Key: name,
+              Body: data,
+              ContentType: "application/json"
+            })
+        );
+
+        const { Body } = await s3.send(
+            new GetObjectCommand({
+                Bucket: AWS_BUCKET,
+                Key: name
+            })
+        );
+
+        const receipt = await Body.transformToString(); 
+
+        return receipt;
+
+    } catch (err) {
+        return {
+            framework: name,
+            error: err
+        };
+    }
 }
 
 if (!global.disabledAdapters['ce']) {
