@@ -19,6 +19,12 @@ async function pnaEndpoint() {
         return "Unable to find framework: " + query["id"];
     }
 
+    if (this.params.methodType == "DELETE") {
+        // Remove index file from Competency Explorer registry
+        const result = await removeFromAws(query["id"]);
+        return JSON.stringify(result);
+    }
+
     let match = framework["@id"].match('(.*)(\/data\/)(.*)');
     let ceasnEndpointFramework = match && match.length > 1 ? match[1] + "/ceasn/" : undefined;
 
@@ -125,6 +131,42 @@ async function uploadToAws(data, name) {
         const receipt = await Body.transformToString(); 
 
         return receipt;
+
+    } catch (err) {
+        return {
+            framework: name,
+            error: err
+        };
+    }
+}
+
+async function removeFromAws(name) {
+
+    const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+
+    const AWS_BUCKET = process.env.AWS_BUCKET ? process.env.AWS_BUCKET : "";
+    const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID : "";
+    const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY ? process.env.AWS_SECRET_ACCESS_KEY : "";
+
+    try {
+        const s3 = new S3Client({
+            credentials: {
+                accessKeyId: AWS_ACCESS_KEY_ID,
+                secretAccessKey: AWS_SECRET_ACCESS_KEY
+            },
+            region: "us-east-2",
+        });
+
+        await s3.send(
+            new DeleteObjectCommand({
+              Bucket: AWS_BUCKET,
+              Key: name
+            })
+        );
+
+        return {
+            framework: name
+        };
 
     } catch (err) {
         return {
