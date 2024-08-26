@@ -91,7 +91,9 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.637.0",
     "@xmldom/xmldom": "^0.8.10",
+    "aws-sdk": "^2.1678.0",
     "busboy": "^1.6.0",
     "cassproject": "^1.5.63",
     "check-disk-space": "^3.4.0",
