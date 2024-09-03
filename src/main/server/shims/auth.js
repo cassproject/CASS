@@ -409,13 +409,13 @@ app.use(async function (req, res, next) {
         {
             let signatureServer = repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy;
 
-            signatureSheet = await eim.signatureSheet(60000, signatureServer, null, null, "SHA-256");
+            signatureSheet = await eim.signatureSheet(6000000, signatureServer, null, null, "SHA-256");
             
             let considerUserAnAdmin = allowEnvEmails && envEmailArray.includes(email);
             if (considerUserAnAdmin && signatureSheet != null) {
 
                 let adminKey = skyrepoAdminKey();
-                let adminSignature = await eim.createSignature(60000, signatureServer, adminKey, "SHA-256");
+                let adminSignature = await eim.createSignature(6000000, signatureServer, adminKey, "SHA-256");
 
                 let signatureSheetObj = JSON.parse(signatureSheet);
                 let adminSignatureObj = JSON.parse(JSON.stringify(adminSignature));

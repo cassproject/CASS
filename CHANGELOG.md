@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.5.65
+* AWS Bucket connector to interface with Provider Nodes.
+* CEASN Export
+* Fixed issue with using/reusing signature sheets in multiget.
+* Updated editor.
+* Updated libraries.
+
 ## 1.5.64
 * Updated editor.
 * Updated libraries.
