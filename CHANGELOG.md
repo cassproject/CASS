@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.66
+* Updated libraries.
+* Updated editor.
+
 ## 1.5.65
 * AWS Bucket connector to interface with Provider Nodes.
 * CEASN Export
