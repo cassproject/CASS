@@ -8452,9 +8452,30 @@ const getTypeForObject = function (o, type) {
         return inferTypeFromObj(o, type);
     }
 };
+const removeNonIndexables = function(o) {
+    if (EcObject.isObject(o)) {
+        const keys = EcObject.keys(o);
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            removeNonIndexables((o)[key]);
+        }
+        if (o.type == 'EncryptedValue' || o['@type'] == 'EncryptedValue') {
+            delete (o)['payload'];
+            delete (o)['secret'];
+        }
+        delete (o)['signature'];
+        delete (o)['@signature'];
+    } else if (EcArray.isArray(o)) {
+        const a = o;
+        for (let i = 0; i < a.length; i++) {
+            removeNonIndexables(a[i]);
+        }
+    }
+};
 const skyrepoPutInternalIndex = async function (o, id, version, type) {
     const url = putUrl.call(this, o, id, version, type);
     o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
+    removeNonIndexables(o);
     if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
         let owners = (o)['owner'];
         for (let i = 0; i < owners.length; i++) {
@@ -8478,10 +8499,6 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
         }
     } catch (ex) {
         (o)['@version'] = new Date().getTime();
-    }
-    if (type != null && type.indexOf('EncryptedValue') != -1) {
-        delete (o)['payload'];
-        delete (o)['secret'];
     }
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalIndex', JSON.stringify(o));
