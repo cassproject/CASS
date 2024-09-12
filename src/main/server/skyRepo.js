@@ -205,27 +205,17 @@ const filterResults = async function (o, dontDecryptInSso) {
         return o;
     }
     if (EcArray.isArray(o)) {
-        const ary = o;
-        for (let i = 0; i < ary.length; i++) {
-            if (ary[i] == null) {
-                continue;
-            }
-            let result = null;
+        let me = this;
+        return (await Promise.all(o.map(x => {
             try {
-                result = await (filterResults).call(this, ary[i], dontDecryptInSso);
+                return filterResults.call(me, x, dontDecryptInSso);
             } catch (ex) {
                 if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
                     throw ex;
                 }
+                return null;
             }
-            if (result == null) {
-                ary.splice(i, 1);
-                i--;
-            } else {
-                ary[i] = result;
-            }
-        }
-        return ary;
+        }))).filter(x => x);
     } else if (EcObject.isObject(o)) {
         delete o.decryptedSecret;
         const rld = new EcRemoteLinkedData((o)['@context'], (o)['@type']);
@@ -9206,6 +9196,7 @@ const skyrepoManyGetParsed = async function (manyParseParams) {
     }
     let filtered = null;
     try {
+        await (signatureSheet).call(this);
         filtered = await (filterResults).call(this, results, null);
     } catch (ex) {
         if (ex.toString().indexOf('Signature Violation') != -1) {
@@ -9470,6 +9461,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
     let searchResults = [];
     if (ids != null) {
         try {
+            await (signatureSheet).call(this);
             searchResults = await (filterResults).call(this, hits.map((h) => h._source), true);
             searchResults = searchResults.map((x) => x['@id']);
         } catch (ex) {
@@ -9832,6 +9824,7 @@ const endpointMultiGet = async function () {
             }
         }
     }
+    await (signatureSheet).call(this);
     await (filterResults).call(this, results, idsFlag != null ? true : null);
     ary = EcObject.keys(lookup);
     for (let i = 0; i < ary.length; i++) {
@@ -10093,7 +10086,7 @@ const skyrepoAdminPk = global.skyrepoAdminPk = function () {
 const skyrepoAdminList = global.skyrepoAdminList = function () {
     const array = [];
     array.push(skyrepoAdminPk());
-    
+
     let mayHaveUserAdmins = process.env.AUTH_ALLOW_ENV_ADMINS == "true";
     if (mayHaveUserAdmins) {
         let knownAdminPks = sharedAdminCache.getKnownUserAdminPks();
