@@ -8453,7 +8453,7 @@ const getTypeForObject = function (o, type) {
     }
 };
 const removeNonIndexables = function(o) {
-    if (EcObject.isObject(o)) {
+    if (o != null && EcObject.isObject(o)) {
         const keys = EcObject.keys(o);
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
@@ -8465,7 +8465,7 @@ const removeNonIndexables = function(o) {
         }
         delete (o)['signature'];
         delete (o)['@signature'];
-    } else if (EcArray.isArray(o)) {
+    } else if (o != null && EcArray.isArray(o)) {
         const a = o;
         for (let i = 0; i < a.length; i++) {
             removeNonIndexables(a[i]);
@@ -8793,6 +8793,11 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         version = null;
     }
     let chosenVersion = version;
+    // If we are doing a manual put with a CASS_LOOPBACK that has an associated CASS_LOOPBACK_PROXY from localhost,
+    // we have to pull the version from the object not the url (because it wasn't sent with the url because it's using the md5)
+    if (chosenVersion == null && (erld.id.startsWith(repo.selectedServer) || erld.id.startsWith(repo.selectedServerProxy))) {
+        chosenVersion = erld.getTimestamp();
+    }
     if (chosenVersion == null) {
         if (oldPermanent != null && oldPermanent['_version'] != null && !isNaN(oldPermanent['_version'])) {
             chosenVersion = oldPermanent['_version'] + 1;
@@ -9855,7 +9860,7 @@ const endpointMultiPutEach = async function () {
     const o = this.params.obj;
     ld.copyFrom(o);
     let id = null;
-    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServer) == -1) {
+    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServerProxy) == -1 && ld.id.indexOf(repo.selectedServer) == -1) {
         id = EcCrypto.md5(ld.shortId());
     } else {
         id = ld.getGuid();
@@ -9911,7 +9916,7 @@ const endpointMultiPut = async function () {
             const o = x;
             ld.copyFrom(o);
             let id = null;
-            if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServer) == -1) {
+            if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServerProxy) == -1 && ld.id.indexOf(repo.selectedServer) == -1) {
                 id = EcCrypto.md5(ld.shortId());
             } else {
                 id = ld.getGuid();
