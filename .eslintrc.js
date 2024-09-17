@@ -22,5 +22,9 @@ module.exports = {
         'prefer-const': 'off',
         'require-jsdoc': 'off',
         'camelcase': 'off',
+        'no-var': 'off',
+        'curly': 'off',
+        'quotes': 'off',
+        'semi': 'off',
     },
 };

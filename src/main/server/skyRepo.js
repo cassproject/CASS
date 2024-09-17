@@ -207,14 +207,16 @@ const filterResults = async function (o, dontDecryptInSso) {
     if (EcArray.isArray(o)) {
         let me = this;
         return (await Promise.all(o.map(x => {
-            try {
-                return filterResults.call(me, x, dontDecryptInSso);
-            } catch (ex) {
-                if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
-                    throw ex;
+            return new Promise((resolve,reject)=>{
+                try {
+                    resolve(filterResults.call(me, x, dontDecryptInSso));
+                } catch (ex) {
+                    if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
+                        reject(ex);
+                    }
+                    resolve(null);
                 }
-                return null;
-            }
+            });
         }))).filter(x => x);
     } else if (EcObject.isObject(o)) {
         delete o.decryptedSecret;
@@ -253,7 +255,14 @@ const filterResults = async function (o, dontDecryptInSso) {
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
             let result = null;
-            result = await (filterResults).call(this, (o)[key], dontDecryptInSso);
+            try{
+                result = await (filterResults).call(this, (o)[key], dontDecryptInSso);
+            } catch (ex) {
+                if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
+                    throw ex;
+                }
+                result = null;
+            }
             if (result != null) {
                 (o)[key] = result;
             } else {
@@ -8785,7 +8794,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
     let chosenVersion = version;
     // If we are doing a manual put with a CASS_LOOPBACK that has an associated CASS_LOOPBACK_PROXY from localhost,
     // we have to pull the version from the object not the url (because it wasn't sent with the url because it's using the md5)
-    if (chosenVersion == null && (erld.id.startsWith(repo.selectedServer) || erld.id.startsWith(repo.selectedServerProxy))) {
+    if (chosenVersion == null && erld.id && (erld.id.startsWith(repo.selectedServer) || erld.id.startsWith(repo.selectedServerProxy))) {
         chosenVersion = erld.getTimestamp();
     }
     if (chosenVersion == null) {
