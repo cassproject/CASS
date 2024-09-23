@@ -100,6 +100,7 @@ async function uploadToAws(data, name) {
     const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
 
     const AWS_BUCKET = process.env.AWS_BUCKET ? process.env.AWS_BUCKET : "";
+    const AWS_REGION = process.env.AWS_REGION ? process.env.AWS_REGION : "us-east-2";
     const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID : "";
     const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY ? process.env.AWS_SECRET_ACCESS_KEY : "";
 
@@ -109,7 +110,7 @@ async function uploadToAws(data, name) {
                 accessKeyId: AWS_ACCESS_KEY_ID,
                 secretAccessKey: AWS_SECRET_ACCESS_KEY
             },
-            region: "us-east-2",
+            region: AWS_REGION,
         });
 
         await s3.send(
