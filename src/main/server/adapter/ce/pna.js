@@ -19,12 +19,6 @@ async function pnaEndpoint() {
         return "Unable to find framework: " + query["id"];
     }
 
-    if (this.params.methodType == "DELETE") {
-        // Remove index file from Competency Explorer registry
-        const result = await removeFromAws(query["id"]);
-        return JSON.stringify(result);
-    }
-
     let match = framework["@id"].match('(.*)(\/data\/)(.*)');
     let ceasnEndpointFramework = match && match.length > 1 ? match[1] + "/ceasn/" : undefined;
 
@@ -97,14 +91,50 @@ async function pnaEndpoint() {
 
 async function uploadToAws(data, name) {
 
-    const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+    const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
+    const AWS_REGION = process.env.AWS_REGION ? process.env.AWS_REGION : "";
     const AWS_BUCKET = process.env.AWS_BUCKET ? process.env.AWS_BUCKET : "";
-    const AWS_REGION = process.env.AWS_REGION ? process.env.AWS_REGION : "us-east-2";
     const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID : "";
     const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY ? process.env.AWS_SECRET_ACCESS_KEY : "";
+    let success = false;
 
     try {
+        if (!name) {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", 'No framework provided');
+            return {
+                framework: undefined,
+                success: false
+            };    
+        }
+        if (!AWS_REGION) {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", 'No AWS Region provided');
+            return {
+                framework: name,
+                success: false
+            };    
+        }
+        if (!AWS_BUCKET) {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", 'No AWS Bucket provided');
+            return {
+                framework: name,
+                success: false
+            };
+        }
+        if (!AWS_ACCESS_KEY_ID) {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", 'No AWS Access key provided');
+            return {
+                framework: name,
+                success: false
+            };
+        }
+        if (!AWS_SECRET_ACCESS_KEY) {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", 'No AWS Access secret provided');
+            return {
+                framework: name,
+                success: false
+            };
+        }
         const s3 = new S3Client({
             credentials: {
                 accessKeyId: AWS_ACCESS_KEY_ID,
@@ -113,66 +143,29 @@ async function uploadToAws(data, name) {
             region: AWS_REGION,
         });
 
-        await s3.send(
-            new PutObjectCommand({
-              Bucket: AWS_BUCKET,
-              Key: name,
-              Body: data,
-              ContentType: "application/json"
-            })
-        );
-
-        const { Body } = await s3.send(
-            new GetObjectCommand({
-                Bucket: AWS_BUCKET,
-                Key: name
-            })
-        );
-
-        const receipt = await Body.transformToString(); 
-
-        return receipt;
-
-    } catch (err) {
-        return {
-            framework: name,
-            error: err
-        };
-    }
-}
-
-async function removeFromAws(name) {
-
-    const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
-
-    const AWS_BUCKET = process.env.AWS_BUCKET ? process.env.AWS_BUCKET : "";
-    const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID : "";
-    const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY ? process.env.AWS_SECRET_ACCESS_KEY : "";
-
-    try {
-        const s3 = new S3Client({
-            credentials: {
-                accessKeyId: AWS_ACCESS_KEY_ID,
-                secretAccessKey: AWS_SECRET_ACCESS_KEY
-            },
-            region: "us-east-2",
+        const put = new PutObjectCommand({
+            Bucket: AWS_BUCKET,
+            Key: name,
+            Body: data
+        })
+        await s3.send(put).then(() => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "pnaUploadOk", name);
+            success = true;
+        }).catch((err) => {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", name);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", err);
+            success = false;
         });
-
-        await s3.send(
-            new DeleteObjectCommand({
-              Bucket: AWS_BUCKET,
-              Key: name
-            })
-        );
-
-        return {
-            framework: name
-        };
-
-    } catch (err) {
         return {
             framework: name,
-            error: err
+            success: success
+        };    
+    } catch (err) {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", name);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", err);
+        return {
+            framework: name,
+            success: false
         };
     }
 }
