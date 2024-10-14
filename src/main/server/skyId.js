@@ -226,51 +226,51 @@ global.loadConfigurationFile = function(path, dflt) {
     skyIdPem = EcPpk.fromPem(loadConfigurationFile('skyId.pem', function() {
         return EcPpk.fromPem(rsaGenerate()).toPem();
     }));
-/**
- * @openapi
- * /api/sky/id/salts:
- *   get:
- *     tags:
- *       - Basic Keystore
- *     description: Retrieves salt parameters from server for performing PBKDF2 hashing of usernames and passwords.
- *     responses:
- *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               description: Parameters for hashing credentials.
- *               properties:
- *                 usernameSalt:
- *                   type: string
- *                   description: Salt for the username.
- *                 usernameIterations:
- *                   type: integer
- *                   description: Number of PBKDF2 iterations to perform on the username.
- *                 usernameLength:
- *                   type: integer
- *                   description: Size of PBKDF2 hash for the username.
- *                 passwordSalt:
- *                   type: string
- *                   description: Salt for the password.
- *                 passwordIterations:
- *                   type: integer
- *                   description: Number of PBKDF2 iterations to perform on the password.
- *                 passwordLength:
- *                   type: integer
- *                   description: Size of PBKDF2 hash for the password.
- *                 secretSalt:
- *                   type: string
- *                   description: Salt for the secret used to encrypt the keystore.
- *                 secretIterations:
- *                   type: integer
- *                   description: Number of PBKDF2 iterations to perform on the secret.
- *                 secretLength:
- *                   type: integer
- *                   description: Size of PBKDF2 hash for the secret.
- *               example: {"usernameSalt":"CLXTsjSZsHKxPZvovczkuxkObTHiLoNwgjwGifrIKylkrrZDboaOIgeDRrrYNgTRMysXYLMDOdCWSNUizoGUhrImmtOaOHxUfKnUOMcVsphRvBNpHPPDcGrLnQwvkQNceGycBDogZSBdSZoYkbJdfwamSgMSuCgHdPwtvVVaWScPGlcCHobadsywRyZEzmItYkiIqXpTVAQXlIbwEFCaCoqDMcgjWZRHxtgsKVZIgpHodlrMHYVPXzPdnymHLlLdYfddznJGDbUBSzmuurzuQQnLEiVZSQvGbZblwSETZApdBqwOKTtlnnbsQPfzpmatlgeNCBqiKnBcfwcRicINNIMUSDDjmMsaxmsOApQucbUBckYqVnwkMtPaQmkiCTFcatQEZyJtMbsENHnPHCfCnPOTTtZGJPwyNxPvcmErNDtDSHZWrHoQAFKHivrzCOdqKwLDgwMJOGQegAKyQJLFJVEKlqbHvuEvQzeAOBgcaDPMtNqCBpjoUOjoOMbXnivVsiUDlWBBenINvguHxorHzAacOHYAmmCZTVXzDXTmdhoGpmJWCKEYBKHsiXYMYvHacsqiuGgyhCzJRQulbGfofVFOpjCYBvMeEsHmyKhsJeYTXJImVhDtPntOsfClPWnPDjGMLSgBddiOceuKNeGBAIduNRYLpRrpvfsKGSYjCUgOWJIyJHqgtRErYCtCKNLwmhnUGfjQJsxNImhKHZspJfngYCrSeOkyMdUrVVmplleHAOYytWhbLTvMhyMyyBwFdHvCwAZAZsSIoLdwsGfsIUJPesmAcSWKOnzFNoDCnwLULZJyBdcYBqVhfrFbmXSvhzdSVsnpJymvwMGotSFUZWCzaQJlwAvQgsVZrOUFfezzMroCHoFCPjBFfyjWySrAJRUmKGnWeBrKfKuHuZYyKVkvZEiYbcjrMfwzTGYWIVWbaNeHmfDXPxHGzzreygnybJTuPUqkOPeEPMfEssieVPIWcsdLOfBEyXSFrxOPkrHhIKpcpooBDlcFgohfuNYVfXmOjXNXxysvWlapwpdDMuFhCWNUiIYCZvYtoOGmbzqdbBwWqSnnVDxUwGtqkTovAwYhIlYFalOVTkAcDgXHqkUMfFcrNdoaThDSvCFFoIIdJIsQpEFpwFxkvcYNKhABwPQWzNtcBGqeZYFKwkvzPDcHkpkTnYvxdwxEGGFderbDuVRdkZguyzenGwGgCTvphcnWorwPPjOQEDvPWpZGTDLvEYtnUUEgrJXJwmODykoAgeWwZrjXJUpHHxjTMvmNEEEJdRIuMtmOWKfukpfwnfNRqhMkbLkXUvVkacGRVGTvEXFAIGqbYCytGfjHeNmWpMPxPpFvXeIzOqZmibaNISiPOTTvDHwHmqGNIHSWpHSwIOGnhHLrAJsvOiUnNxfqWhjOPWRyoIOoPeZHxOUptngvhSqABLIhphyasYBjYbPMzoHZtViJneHftoMOlJBUOQnbogYnIThRIUECXwPhicyWSNcDBsZfQRpELwYlJjtFsghTRKDdyDymMstWRkhHkKqNUSIzpWJiatUZopinRmkQmUzGmNnWyUwGaqpAGmSurYZYwBBdGyqcLiHJnRHamcWrHriWZyEETQgHpkqblGYhtDAIWcCnMaoqgOwNUZabjXtJEhlZZIHiOmCJAceXacVtyuhWPfVmrofogYXmiPflIJvGzGfyzyjsIycAdwMBqhsmmFAkHdOgtXrOvSEunMpojAXQUSyhTblMGYHbcdGaolzWRnziZIdXPTHdgnzyWgpOoIQMVEawDzVChVLlSBwIARSaiIZfycABtauwOgIFmKwuAfwiRHpQvuAdxrPBvwAOgrNQULZYXsWMlxBsnjuzekMZkXVnccEMlXbvNuCRTktsGevDBEOkasKWuLMxScddJuDLxwrdHSirzoaIeTCWWBZMkceeyXIdneOpyBnInuXDuBfJsnVsNAcUMIZCcwWRRufWMPbyuEHZhPkbCiYVXXcrGmHTGueSpPooTDYmSYKlgeyceDgcwXMxJEOMbCvIxDsBJtzsxaefkcDo","usernameIterations":5000,"usernameLength":64,"passwordSalt":"IWlyUNiAqFvMrQzQoZJyNqfAqoMFwVbceBOOnAEPGsGwKpAnDhohpznHpGVHFyUPWPnKMBcIMvbApDoKsjJbsxqcaDJnyPALYRhEkoiwagEDBghadQObuvqPayYxlERuhxjXrWijDKidBeyNYnhqaftMRmJnbaSkvGOEiWKPJNegCodzfQYrNtwGRfyRRlvBjUSJtJQmIAwzvsbKgcVfBrosgjofVcFtmnPCmIMCnuUoQbkgNtdJdbtXWIeWcJkZdZRHYFRecLNHQDZqEpnZJZMsaUxLdMAYmktPJFBGpRNpFePoDYYqqbsyCFLElXoYVaZRinfawKwoCFYdQrnbpKdtzWfzANeRcfJiuPiPPFcZWkBdEqhIQFXtZkxsHBkLxCWASNbTjNAwvgLYCWxfLunLpVHNsFBiFlvxxhCghwlOxAQBqVmmdzMmFAcaSbxUdFBKtyecuGWaHXdiNTkCQlBuAysQNHOqqtLCBarWKjMgGJBeRyBNUXgbPWZyQkDLlcVlVsnYQxVkXjzWGyPByKjzyTavADBVtfRQZHyUnwmfBrRxGzuBVpYKBJXVnqZrbHYgeDFgRTZCYEAGHBtGfCLttUPMXviNUbWGqJLVZxqsBBONKKuAXscfpnQLOQJUJaSNVujbFWcxtiOKZQarIRqbLvvxdERzRTNVJjEOblkFhSmYFdIsJacYkaFwOiDcBGXkQofNUfndlhCpEheBEtOFNsvjSrsuaczCThVYYrjhipYUoRCnZgcBRDgscYdUzTXQeRCXiQiWEZiCHovxUMHyFKSXWkRbFaUZQwptPJGTCtbmmZXIeietVUpWkwBDJAmNWQJoDXdwxREPedkNDsbfhzlPCGeJluJKhPJfvMxLXCUDzOWDVDEbhmOSgQSHmibvyjnxWPGkpftyCNzZisOKEsykWtfTMyGHDykeKLjmPLqNzHLHKQuyRKwahASkaQLWkzcLoDqpeSjDzJOdLKtHWxXDACKTaFwoAATcxbsBIqZEJSgmzYmErjoyQzrptScNBXSwNyxBjWOlaFsqrFYvzcbnLGRhIpVhzxybSMgptkujdugoBDrHCteChoFzTbwDMZCwpGFdxTaJcSYyFetNtVXGHtMWNiqKjicRdGLPykTcEzQttKMUuqMlsEwPkYFrEiagucMwLXSrKLmGjXDaAVxxtyRkIYwBYzxDIhuVIhhajGwNTzxZWqVJfHBmEIboGhjXqngwngsfUZgoJmlMhaIYItqgjeBIQiqjIxBBVOnPocsQGdUyLCUSroIqWZWvsQBXWJpLQfLekyzpqSfioIMTRwDiwAVHsoETaTCiTUFxRLddZhVRsxmQqYZAnLpykkehTiJPFqJXcyGzoTlIOxLpMpLxWTUEuuyHbxVWxiyVOVkIiwLbbQHvLLLqKYuyxyShtBaXNThbZOHAPnlonxESVBfVbwnCRxyqCsMyIOxYZebvBhASZKBfYjYhYmJmqxYdVBPSwHdJukDvgkTPjUQdUxQizdTJpOUaPBHATVAovAYOPfRDaBahUdvYXwYQsgcHEQvxklaWSbqiAJIEpYoyrQJfVpAezHrewAqvbIXRxGbQWfJTwAsxFkGlfnMaFinEMBbcgtJWLEIFOYLMjBrzzgjPNlCUQMIobGDcUhyaYLTNlYYTiIfgeZjOcuPwWSPkrKINKGSUdhOymESajWNEJQgGvfQQoecDfPLUsuDaTNQZGfZDhrxAiXIdzQIWHIWqdSGdvKuHkbLTntAPxEPeRGYhBriYejXoGlKbEyGXDzPazUawUINGXifWMvhGVKXPoUdmjDqJkBwRJxrmZzEQxfwHlvxecUFyXjbdwtROUVtXTOgQyfHLXSBnoxOuSmJfZLXUvUJbTYLNUKFEdlPCFmYKwZDtHCCBvmlMWBqnLMngFmXAzXtLzoUVICUvXLzJvgDXXEjunHQysPonnUYbzNmEYpTbApFJlEXQUWZfVANXQNwNHpvNKrKKELBEElodxRaKFLgbhRoGXJYuYKgvroGPaMMQVOvTcIUKOxfrrVsbTUYIhCyKEbuX","passwordIterations":5000,"passwordLength":64,"secretSalt":"qsDFcyzRIDKmjHUsFterKfYOuSlrbpnEfpFzOZrvAArQoYqPpyHBYJSQOUudZttyQjBvBvfeqWVZVVYSTDFbdElTaKjUYFaXJGsqJRFtGXgKrseOjwtRcLqJutNHCeCcFtQmFDjaQZkLZOYhylCgdvsOhFRHkRVfbztDSIjgtwJxBuPtONUWOIZITRRsovqxRWADNhnqqMXZemeXKGDrmJhRVZYCRApAOnFEiIrRFfzoLteBWMKyKHVejxcTbkaxOLXiUcXnDFtmQaGFCEhqgmaaKStDByJrxxZjGAhaiQEwxDAfXrXlBSdkQHECWvyORBoaoougcyzJOzYDMWJfrMEvMnJFFSRbXKwiUMxTqeGNxKYNgqUFrcqJRmpYcdzIbyuveboqwhJVASisPywHzFHwdSEBUMmLBnuvQOuAKiQiLwlBpIviuxygTPkUjqTqxDUvUHqjCTERAWOHWZDljBFZApFgSzEQocrpRAvpxVujUxqslfegqsKcdNcPCvswSKJRlfPLUtmhoSCmHQFEfBDpKSqJCPrWmBKkejlUGyLsUUMyjJcrXDHUIpOSIhllghVMuEAviMVvlunYHmZPvTQjEsJUeNiymTYAqyrlhEktqRPAzffMWySzXZBwSXHqlAbZLuOOmBMBmDSTTFATqfohUGEWimVZArGiYXdEYnQXySFYUUjAHVniMihhrSRUMshKtyAwIolKkGqadjRkDcBtKHWwFAnqhQhEdFYaTfhVszKIIoSTOrmFxyfnhxyDVblnvzgbjuFyubPgIqEbtssMsvBXpIbcFQAmRRxSIboHMnvrcOQooidwaUJngxJZcpXpqJDlLOylgXZBRpIcDtilaZfcJhoZLYNdiWiOaawgchyAQGVMUTwkvKMTzhFMGrNlyAsnRmNGfQmiBwWpVRBDGaTJrkQHjdSDbeDKbpsuXCwHjrfXfzwUNAwxOwRWjgskheaWRALlDkxcWCGMLImgAHzPVaJPDYtleVWTOPVfpWLzTGyNJbgTfLchspXGwEKLzGGDHqUuHYiRWYqkuGjxkIBPfAgypKPdIxnrnGYxjiDlICogjEvAidElWQAuhXBYeCqAWoiOYjZpLzzWMMyMEUcbOagujvjgLevxsBCkUffrmPtHwNIzGdnLeidonTOVvWmlyxLWGFIQjWCBKQqVtJbOpjuCsTcwRkyqVbiNWdQJpwNFAJhBPEXqieeprulpQZfiPrFjIMBsYFLzJwHZDAuoIcSHUYZeOzSukMxBBraZEiDUPabIzoNyuZezZtsGeeGsCvijeoaAYQInGxCMVtBoXVJgJlbGyfOTxCfDdKrroadbXyvVEgyORqBSbFUktpFsgbBXSjHyqVTgZdmcdrmvrZOiZnnHWFKrNYUxmtTjCkhKsNqLCVDdUFrtrltBnnSoAALpVEEDTinMpihzubQPcqLkytNptxvDLngtsCxqFOSllIIxTMlTpaxZUmEWiTLoXFBvItClOwGkbaQrHhxZxOUSexEiIZyKPpKezUqugzrcBYPrFaQveNnltCAaZffDrCemwhuwtagZnCaaqXqBWESBNaTWoalhxkHwuDcYNQvpyaxESYvGjkgWYxXCZhwVMWqgbjCTokQxAEEemNaTarUSlKjLtKpHzoWQEieujbaKgGpsPIOhrnuGFcyJQpKFWsAKoBenqshqUkIRCXeyPUCIcPILMFijlyLMlnkvbGjhllwhGwtRexvhKUsoBBUzqPnWSxgzeOUNBKVkiAcjxcDDNIUhRnBdTYkOMVbgYThhRlSvHwsKuuyWuTIzDZfYCMXgAuwavoQpCLoprURsmUVTITCiMbvwCGFEmgebhOlTrDYEiIECXQSrtnMKRxuAucRUTctVtJyseJovflqoBtqHzBLblMEjSZOtDujUIeugoMExEvfoUZpMaKfECuVdsDxLErTtOQRLSOhAReSinPjkQWdyhEiZPNGYlHbxhPLTEOZlqnIDFrDZKlIdtTRjCBjsKSzJkanhCxOJHLLnxNKbeZnmDKbupUENarikMKYjUkoDUIKosSTV","secretIterations":5000,"secretLength":64}
- */
+    /**
+     * @openapi
+     * /api/sky/id/salts:
+     *   get:
+     *     tags:
+     *       - Basic Keystore
+     *     description: Retrieves salt parameters from server for performing PBKDF2 hashing of usernames and passwords.
+     *     responses:
+     *       200:
+     *         description: Success
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               description: Parameters for hashing credentials.
+     *               properties:
+     *                 usernameSalt:
+     *                   type: string
+     *                   description: Salt for the username.
+     *                 usernameIterations:
+     *                   type: integer
+     *                   description: Number of PBKDF2 iterations to perform on the username.
+     *                 usernameLength:
+     *                   type: integer
+     *                   description: Size of PBKDF2 hash for the username.
+     *                 passwordSalt:
+     *                   type: string
+     *                   description: Salt for the password.
+     *                 passwordIterations:
+     *                   type: integer
+     *                   description: Number of PBKDF2 iterations to perform on the password.
+     *                 passwordLength:
+     *                   type: integer
+     *                   description: Size of PBKDF2 hash for the password.
+     *                 secretSalt:
+     *                   type: string
+     *                   description: Salt for the secret used to encrypt the keystore.
+     *                 secretIterations:
+     *                   type: integer
+     *                   description: Number of PBKDF2 iterations to perform on the secret.
+     *                 secretLength:
+     *                   type: integer
+     *                   description: Size of PBKDF2 hash for the secret.
+     *               example: {"usernameSalt":"CLXTsjSZsHKxPZvovczkuxkObTHiLoNwgjwGifrIKylkrrZDboaOIgeDRrrYNgTRMysXYLMDOdCWSNUizoGUhrImmtOaOHxUfKnUOMcVsphRvBNpHPPDcGrLnQwvkQNceGycBDogZSBdSZoYkbJdfwamSgMSuCgHdPwtvVVaWScPGlcCHobadsywRyZEzmItYkiIqXpTVAQXlIbwEFCaCoqDMcgjWZRHxtgsKVZIgpHodlrMHYVPXzPdnymHLlLdYfddznJGDbUBSzmuurzuQQnLEiVZSQvGbZblwSETZApdBqwOKTtlnnbsQPfzpmatlgeNCBqiKnBcfwcRicINNIMUSDDjmMsaxmsOApQucbUBckYqVnwkMtPaQmkiCTFcatQEZyJtMbsENHnPHCfCnPOTTtZGJPwyNxPvcmErNDtDSHZWrHoQAFKHivrzCOdqKwLDgwMJOGQegAKyQJLFJVEKlqbHvuEvQzeAOBgcaDPMtNqCBpjoUOjoOMbXnivVsiUDlWBBenINvguHxorHzAacOHYAmmCZTVXzDXTmdhoGpmJWCKEYBKHsiXYMYvHacsqiuGgyhCzJRQulbGfofVFOpjCYBvMeEsHmyKhsJeYTXJImVhDtPntOsfClPWnPDjGMLSgBddiOceuKNeGBAIduNRYLpRrpvfsKGSYjCUgOWJIyJHqgtRErYCtCKNLwmhnUGfjQJsxNImhKHZspJfngYCrSeOkyMdUrVVmplleHAOYytWhbLTvMhyMyyBwFdHvCwAZAZsSIoLdwsGfsIUJPesmAcSWKOnzFNoDCnwLULZJyBdcYBqVhfrFbmXSvhzdSVsnpJymvwMGotSFUZWCzaQJlwAvQgsVZrOUFfezzMroCHoFCPjBFfyjWySrAJRUmKGnWeBrKfKuHuZYyKVkvZEiYbcjrMfwzTGYWIVWbaNeHmfDXPxHGzzreygnybJTuPUqkOPeEPMfEssieVPIWcsdLOfBEyXSFrxOPkrHhIKpcpooBDlcFgohfuNYVfXmOjXNXxysvWlapwpdDMuFhCWNUiIYCZvYtoOGmbzqdbBwWqSnnVDxUwGtqkTovAwYhIlYFalOVTkAcDgXHqkUMfFcrNdoaThDSvCFFoIIdJIsQpEFpwFxkvcYNKhABwPQWzNtcBGqeZYFKwkvzPDcHkpkTnYvxdwxEGGFderbDuVRdkZguyzenGwGgCTvphcnWorwPPjOQEDvPWpZGTDLvEYtnUUEgrJXJwmODykoAgeWwZrjXJUpHHxjTMvmNEEEJdRIuMtmOWKfukpfwnfNRqhMkbLkXUvVkacGRVGTvEXFAIGqbYCytGfjHeNmWpMPxPpFvXeIzOqZmibaNISiPOTTvDHwHmqGNIHSWpHSwIOGnhHLrAJsvOiUnNxfqWhjOPWRyoIOoPeZHxOUptngvhSqABLIhphyasYBjYbPMzoHZtViJneHftoMOlJBUOQnbogYnIThRIUECXwPhicyWSNcDBsZfQRpELwYlJjtFsghTRKDdyDymMstWRkhHkKqNUSIzpWJiatUZopinRmkQmUzGmNnWyUwGaqpAGmSurYZYwBBdGyqcLiHJnRHamcWrHriWZyEETQgHpkqblGYhtDAIWcCnMaoqgOwNUZabjXtJEhlZZIHiOmCJAceXacVtyuhWPfVmrofogYXmiPflIJvGzGfyzyjsIycAdwMBqhsmmFAkHdOgtXrOvSEunMpojAXQUSyhTblMGYHbcdGaolzWRnziZIdXPTHdgnzyWgpOoIQMVEawDzVChVLlSBwIARSaiIZfycABtauwOgIFmKwuAfwiRHpQvuAdxrPBvwAOgrNQULZYXsWMlxBsnjuzekMZkXVnccEMlXbvNuCRTktsGevDBEOkasKWuLMxScddJuDLxwrdHSirzoaIeTCWWBZMkceeyXIdneOpyBnInuXDuBfJsnVsNAcUMIZCcwWRRufWMPbyuEHZhPkbCiYVXXcrGmHTGueSpPooTDYmSYKlgeyceDgcwXMxJEOMbCvIxDsBJtzsxaefkcDo","usernameIterations":5000,"usernameLength":64,"passwordSalt":"IWlyUNiAqFvMrQzQoZJyNqfAqoMFwVbceBOOnAEPGsGwKpAnDhohpznHpGVHFyUPWPnKMBcIMvbApDoKsjJbsxqcaDJnyPALYRhEkoiwagEDBghadQObuvqPayYxlERuhxjXrWijDKidBeyNYnhqaftMRmJnbaSkvGOEiWKPJNegCodzfQYrNtwGRfyRRlvBjUSJtJQmIAwzvsbKgcVfBrosgjofVcFtmnPCmIMCnuUoQbkgNtdJdbtXWIeWcJkZdZRHYFRecLNHQDZqEpnZJZMsaUxLdMAYmktPJFBGpRNpFePoDYYqqbsyCFLElXoYVaZRinfawKwoCFYdQrnbpKdtzWfzANeRcfJiuPiPPFcZWkBdEqhIQFXtZkxsHBkLxCWASNbTjNAwvgLYCWxfLunLpVHNsFBiFlvxxhCghwlOxAQBqVmmdzMmFAcaSbxUdFBKtyecuGWaHXdiNTkCQlBuAysQNHOqqtLCBarWKjMgGJBeRyBNUXgbPWZyQkDLlcVlVsnYQxVkXjzWGyPByKjzyTavADBVtfRQZHyUnwmfBrRxGzuBVpYKBJXVnqZrbHYgeDFgRTZCYEAGHBtGfCLttUPMXviNUbWGqJLVZxqsBBONKKuAXscfpnQLOQJUJaSNVujbFWcxtiOKZQarIRqbLvvxdERzRTNVJjEOblkFhSmYFdIsJacYkaFwOiDcBGXkQofNUfndlhCpEheBEtOFNsvjSrsuaczCThVYYrjhipYUoRCnZgcBRDgscYdUzTXQeRCXiQiWEZiCHovxUMHyFKSXWkRbFaUZQwptPJGTCtbmmZXIeietVUpWkwBDJAmNWQJoDXdwxREPedkNDsbfhzlPCGeJluJKhPJfvMxLXCUDzOWDVDEbhmOSgQSHmibvyjnxWPGkpftyCNzZisOKEsykWtfTMyGHDykeKLjmPLqNzHLHKQuyRKwahASkaQLWkzcLoDqpeSjDzJOdLKtHWxXDACKTaFwoAATcxbsBIqZEJSgmzYmErjoyQzrptScNBXSwNyxBjWOlaFsqrFYvzcbnLGRhIpVhzxybSMgptkujdugoBDrHCteChoFzTbwDMZCwpGFdxTaJcSYyFetNtVXGHtMWNiqKjicRdGLPykTcEzQttKMUuqMlsEwPkYFrEiagucMwLXSrKLmGjXDaAVxxtyRkIYwBYzxDIhuVIhhajGwNTzxZWqVJfHBmEIboGhjXqngwngsfUZgoJmlMhaIYItqgjeBIQiqjIxBBVOnPocsQGdUyLCUSroIqWZWvsQBXWJpLQfLekyzpqSfioIMTRwDiwAVHsoETaTCiTUFxRLddZhVRsxmQqYZAnLpykkehTiJPFqJXcyGzoTlIOxLpMpLxWTUEuuyHbxVWxiyVOVkIiwLbbQHvLLLqKYuyxyShtBaXNThbZOHAPnlonxESVBfVbwnCRxyqCsMyIOxYZebvBhASZKBfYjYhYmJmqxYdVBPSwHdJukDvgkTPjUQdUxQizdTJpOUaPBHATVAovAYOPfRDaBahUdvYXwYQsgcHEQvxklaWSbqiAJIEpYoyrQJfVpAezHrewAqvbIXRxGbQWfJTwAsxFkGlfnMaFinEMBbcgtJWLEIFOYLMjBrzzgjPNlCUQMIobGDcUhyaYLTNlYYTiIfgeZjOcuPwWSPkrKINKGSUdhOymESajWNEJQgGvfQQoecDfPLUsuDaTNQZGfZDhrxAiXIdzQIWHIWqdSGdvKuHkbLTntAPxEPeRGYhBriYejXoGlKbEyGXDzPazUawUINGXifWMvhGVKXPoUdmjDqJkBwRJxrmZzEQxfwHlvxecUFyXjbdwtROUVtXTOgQyfHLXSBnoxOuSmJfZLXUvUJbTYLNUKFEdlPCFmYKwZDtHCCBvmlMWBqnLMngFmXAzXtLzoUVICUvXLzJvgDXXEjunHQysPonnUYbzNmEYpTbApFJlEXQUWZfVANXQNwNHpvNKrKKELBEElodxRaKFLgbhRoGXJYuYKgvroGPaMMQVOvTcIUKOxfrrVsbTUYIhCyKEbuX","passwordIterations":5000,"passwordLength":64,"secretSalt":"qsDFcyzRIDKmjHUsFterKfYOuSlrbpnEfpFzOZrvAArQoYqPpyHBYJSQOUudZttyQjBvBvfeqWVZVVYSTDFbdElTaKjUYFaXJGsqJRFtGXgKrseOjwtRcLqJutNHCeCcFtQmFDjaQZkLZOYhylCgdvsOhFRHkRVfbztDSIjgtwJxBuPtONUWOIZITRRsovqxRWADNhnqqMXZemeXKGDrmJhRVZYCRApAOnFEiIrRFfzoLteBWMKyKHVejxcTbkaxOLXiUcXnDFtmQaGFCEhqgmaaKStDByJrxxZjGAhaiQEwxDAfXrXlBSdkQHECWvyORBoaoougcyzJOzYDMWJfrMEvMnJFFSRbXKwiUMxTqeGNxKYNgqUFrcqJRmpYcdzIbyuveboqwhJVASisPywHzFHwdSEBUMmLBnuvQOuAKiQiLwlBpIviuxygTPkUjqTqxDUvUHqjCTERAWOHWZDljBFZApFgSzEQocrpRAvpxVujUxqslfegqsKcdNcPCvswSKJRlfPLUtmhoSCmHQFEfBDpKSqJCPrWmBKkejlUGyLsUUMyjJcrXDHUIpOSIhllghVMuEAviMVvlunYHmZPvTQjEsJUeNiymTYAqyrlhEktqRPAzffMWySzXZBwSXHqlAbZLuOOmBMBmDSTTFATqfohUGEWimVZArGiYXdEYnQXySFYUUjAHVniMihhrSRUMshKtyAwIolKkGqadjRkDcBtKHWwFAnqhQhEdFYaTfhVszKIIoSTOrmFxyfnhxyDVblnvzgbjuFyubPgIqEbtssMsvBXpIbcFQAmRRxSIboHMnvrcOQooidwaUJngxJZcpXpqJDlLOylgXZBRpIcDtilaZfcJhoZLYNdiWiOaawgchyAQGVMUTwkvKMTzhFMGrNlyAsnRmNGfQmiBwWpVRBDGaTJrkQHjdSDbeDKbpsuXCwHjrfXfzwUNAwxOwRWjgskheaWRALlDkxcWCGMLImgAHzPVaJPDYtleVWTOPVfpWLzTGyNJbgTfLchspXGwEKLzGGDHqUuHYiRWYqkuGjxkIBPfAgypKPdIxnrnGYxjiDlICogjEvAidElWQAuhXBYeCqAWoiOYjZpLzzWMMyMEUcbOagujvjgLevxsBCkUffrmPtHwNIzGdnLeidonTOVvWmlyxLWGFIQjWCBKQqVtJbOpjuCsTcwRkyqVbiNWdQJpwNFAJhBPEXqieeprulpQZfiPrFjIMBsYFLzJwHZDAuoIcSHUYZeOzSukMxBBraZEiDUPabIzoNyuZezZtsGeeGsCvijeoaAYQInGxCMVtBoXVJgJlbGyfOTxCfDdKrroadbXyvVEgyORqBSbFUktpFsgbBXSjHyqVTgZdmcdrmvrZOiZnnHWFKrNYUxmtTjCkhKsNqLCVDdUFrtrltBnnSoAALpVEEDTinMpihzubQPcqLkytNptxvDLngtsCxqFOSllIIxTMlTpaxZUmEWiTLoXFBvItClOwGkbaQrHhxZxOUSexEiIZyKPpKezUqugzrcBYPrFaQveNnltCAaZffDrCemwhuwtagZnCaaqXqBWESBNaTWoalhxkHwuDcYNQvpyaxESYvGjkgWYxXCZhwVMWqgbjCTokQxAEEemNaTarUSlKjLtKpHzoWQEieujbaKgGpsPIOhrnuGFcyJQpKFWsAKoBenqshqUkIRCXeyPUCIcPILMFijlyLMlnkvbGjhllwhGwtRexvhKUsoBBUzqPnWSxgzeOUNBKVkiAcjxcDDNIUhRnBdTYkOMVbgYThhRlSvHwsKuuyWuTIzDZfYCMXgAuwavoQpCLoprURsmUVTITCiMbvwCGFEmgebhOlTrDYEiIECXQSrtnMKRxuAucRUTctVtJyseJovflqoBtqHzBLblMEjSZOtDujUIeugoMExEvfoUZpMaKfECuVdsDxLErTtOQRLSOhAReSinPjkQWdyhEiZPNGYlHbxhPLTEOZlqnIDFrDZKlIdtTRjCBjsKSzJkanhCxOJHLLnxNKbeZnmDKbupUENarikMKYjUkoDUIKosSTV","secretIterations":5000,"secretLength":64}
+     */
     bindWebService('/sky/id/salts', salts);
     bindWebService('/sky/id/create', skyIdCreate);
     bindWebService('/sky/id/commit', skyIdCommit);
