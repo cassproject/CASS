@@ -109,7 +109,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
             var cipList = c["cipList"];
 
             for (let each in c) {
-                if (terms[each]) {
+                if (terms[each] && each !== terms[each]) {
                     c[terms[each]] = c[each];
                     delete c[each];
                 }
@@ -665,7 +665,7 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
             var cipList = c["cipList"];
 
             for (let each in c) {
-                if (terms[each]) {
+                if (terms[each] && each !== terms[each]) {
                     c[terms[each]] = c[each];
                     delete c[each];
                 }
@@ -895,7 +895,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var cipList = f["cipList"];
 
     for (let each in f) {
-        if (collectionTerms[each]) {
+        if (collectionTerms[each] && each !== collectionTerms[each]) {
             f[collectionTerms[each]] = f[each];
             delete f[each];
         }
@@ -1044,7 +1044,7 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
                 var guid = c.getGuid();
                 var uuid = new UUID(3, "nil", c.shortId()).format();
                 for (let each in c) {
-                    if (terms[each]) {
+                    if (terms[each] && each !== terms[each]) {
                         c[terms[each]] = c[each];
                         delete c[each];
                     }
@@ -1099,7 +1099,7 @@ async function levelPromise(obj, levels, cs, ctx, terms) {
                 var guid = c.getGuid();
                 var uuid = new UUID(3, "nil", c.shortId()).format();
                 for (let each in c) {
-                    if (terms[each]) {
+                    if (terms[each] && each !== terms[each]) {
                         c[terms[each]] = c[each];
                         delete c[each];
                     }
@@ -1188,7 +1188,7 @@ async function cassConceptSchemeAsCeasn(framework) {
     delete cs["owner"];
     delete cs["signature"];
     for (let each in cs) {
-        if (terms[each]) {
+        if (terms[each] && each !== terms[each]) {
             cs[terms[each]] = cs[each];
             delete cs[each];
         }
@@ -1309,7 +1309,7 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
     delete cs["owner"];
     delete cs["signature"];
     for (let each in cs) {
-        if (terms[each]) {
+        if (terms[each] && each !== terms[each]) {
             cs[terms[each]] = cs[each];
             delete cs[each];
         }
@@ -1440,7 +1440,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
 
             newComp["@context"] = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json";
             for (let each in newComp) {
-                if (ceasn2cassTerms[each]) {
+                if (ceasn2cassTerms[each] && each !== ceasn2cassTerms[each]) {
                     newComp[ceasn2cassTerms[each]] = newComp[each];
                     delete newComp[each];
                 }
@@ -1595,7 +1595,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
 
         frameworkObj["@context"] = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json";
         for (let each in frameworkObj) {
-            if (ceasn2cassTerms[each]) {
+            if (ceasn2cassTerms[each] && each !== ceasn2cassTerms[each]) {
                 frameworkObj[ceasn2cassTerms[each]] = frameworkObj[each];
                 delete frameworkObj[each];
             }
@@ -1666,7 +1666,7 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
 
             newComp["@context"] = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json";
             for (let each in newComp) {
-                if (terms[each]) {
+                if (terms[each] && each !== terms[each]) {
                     newComp[terms[each]] = newComp[each];
                     delete newComp[each];
                 }
@@ -1796,7 +1796,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
 
         frameworkObj["@context"] = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json";
         for (let each in frameworkObj) {
-            if (ceasn2cassTerms[each]) {
+            if (ceasn2cassTerms[each] && each !== ceasn2cassTerms[each]) {
                 frameworkObj[ceasn2cassTerms[each]] = frameworkObj[each];
                 delete frameworkObj[each];
             }
