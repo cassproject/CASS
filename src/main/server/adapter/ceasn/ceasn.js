@@ -461,7 +461,7 @@ async function cassFrameworkAsCeasn() {
     var cipList = f["cipList"];
 
     for (let each in f) {
-        if (terms[each]) {
+        if (terms[each] && each !== terms[each]) {
             f[terms[each]] = f[each];
             delete f[each];
         }
@@ -581,8 +581,11 @@ function stripNonCe(f) {
                                                                                                     if (k.indexOf("ceasn:competencyText") != 0)
                                                                                                         if (k.indexOf("ceterms:subjectWebpage") != 0)
                                                                                                             if (k.indexOf("asn:hasProgressionLevel") != 0)
-                                                                                                                if (EcArray.isArray(f[k]) == false)
-                                                                                                                    f[k] = [f[k]];
+                                                                                                                if (k.indexOf("ceterms:previousVersion") != 0)
+                                                                                                                    if (k.indexOf("ceterms:nextVersion") != 0)
+                                                                                                                        if (k.indexOf("ceterms:latestVersion") != 0)
+                                                                                                                            if (EcArray.isArray(f[k]) == false)
+                                                                                                                                f[k] = [f[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
         if (k === "ceasn:publisherName" || k === "ceasn:conceptKeyword" || k === "ceasn:comment" || k === "ceterms:keyword") {
             Object.keys(f[k]).forEach(function (key) {
