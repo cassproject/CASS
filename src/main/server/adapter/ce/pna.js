@@ -33,16 +33,22 @@ async function pnaEndpoint() {
     const formattedNow = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
 
     pnaData["directory"] = {
-        id: query["id"],
+        id: process.env.PNA_DIRECTORY ? process.env.PNA_DIRECTORY : "",
         type: "Directory",
-        name: "Framework id " + query["id"],
+        name: process.env.PNA_DIRECTORY_NAME ? process.env.PNA_DIRECTORY_NAME : "",
         dateCreated: formattedNow
     };
     pnaData["container"] = {
         id: ceasnEndpointFramework + query["id"],
-        type: "Framework",
+        type: "Collection",
+        fromDirectory: process.env.PNA_DIRECTORY ? process.env.PNA_DIRECTORY : "",
         name: framework["name"],
-        description: framework["description"]
+        description: framework["description"],
+        attributionURL: framework["author"] ? framework["author"] : (framework["ceterms:ownedBy"] ? framework["ceterms:ownedBy"] : ""),
+        beneficiaryRights: framework["rights"] ? framework["rights"] : (framework["license"] ? framework["license"] : ""),
+        dataURL: ceasnEndpointFramework + query["id"],
+        providerMetaModel: process.env.PNA_PROVIDER_META_MODEL ?process.env. PNA_PROVIDER_META_MODEL : "",
+        registryRights: process.env.PNA_REGISTRY_RIGHTS ? process.env.PNA_REGISTRY_RIGHTS : "",
     };
     
     if (framework.competency == null) framework.competency = [];
@@ -66,8 +72,8 @@ async function pnaEndpoint() {
                     type: "Competency",
                     containedIn: ceasnEndpointFramework + query["id"],
                     competencyText: expanded["statement"] ? expanded["statement"] : (expanded["name"] ? expanded["name"] : (expanded["description"] ? expanded["description"] : "")),
-                    dataUrl: ceasnEndpoint + ctid,
-                    label: expanded["name"] ? expanded["name"] : ""
+                    dataURL: ceasnEndpoint + ctid,
+                    competencyLabel: expanded["name"] ? expanded["name"] : ""
                 });
             }
         }).catch((err) => {
@@ -93,10 +99,10 @@ async function uploadToAws(data, name) {
 
     const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
-    const AWS_REGION = process.env.AWS_REGION ? process.env.AWS_REGION : "";
-    const AWS_BUCKET = process.env.AWS_BUCKET ? process.env.AWS_BUCKET : "";
-    const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID : "";
-    const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY ? process.env.AWS_SECRET_ACCESS_KEY : "";
+    const AWS_REGION = process.env.PNA_AWS_REGION ? process.env.PNA_AWS_REGION : "";
+    const AWS_BUCKET = process.env.PNA_AWS_BUCKET ? process.env.PNA_AWS_BUCKET : "";
+    const AWS_ACCESS_KEY_ID = process.env.PNA_AWS_ACCESS_KEY_ID ? process.env.PNA_AWS_ACCESS_KEY_ID : "";
+    const AWS_SECRET_ACCESS_KEY = process.env.PNA_AWS_SECRET_ACCESS_KEY ? process.env.PNA_AWS_SECRET_ACCESS_KEY : "";
     let success = false;
 
     try {
