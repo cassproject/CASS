@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.5.67
+* Remove non-indexable data from index.
+* Multithreaded cryptography.
+* xAPI Caching and other server fixes.
+* Added direct positive assertion coprocessor.
+* Improved AWS adapter. Added region control.
+* CEASN Export changes.
+* Updated libraries.
+* Updated editor.
+
 ## 1.5.66
 * Updated libraries.
 * Updated editor.
