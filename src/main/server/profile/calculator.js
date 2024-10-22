@@ -10,6 +10,8 @@ const reset = "\x1b[0m";
 
 const _ = () => {};
 
+const calculatorVersion = 4;
+
 // Library (node-object-hash) for generating hashes of JS objects.
 // Used to determine when rippling properties are done being computed.
 const hashSortCoerce = hasher({sort: false, coerce: false});
