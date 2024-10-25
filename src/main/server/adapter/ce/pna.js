@@ -38,14 +38,30 @@ async function pnaEndpoint() {
         name: process.env.PNA_DIRECTORY_NAME ? process.env.PNA_DIRECTORY_NAME : "",
         dateCreated: formattedNow
     };
+    let attribution = "";
+    if (framework["ceterms:ownedBy"]) {
+        if (Array.isArray(framework["ceterms:ownedBy"]) && framework["ceterms:ownedBy"].length > 0) {
+            attribution = framework["ceterms:ownedBy"][0];
+        } else {
+            attribution = framework["ceterms:ownedBy"];
+        }
+    }
+    if (attribution == "" && framework["schema:author"]) {
+        if (Array.isArray(framework["schema:author"]) && framework["schema:author"].length > 0) {
+            attribution = framework["schema:author"][0];
+        } else {
+            attribution = framework["schema:author"];
+        }
+    }
     pnaData["container"] = {
         id: ceasnEndpointFramework + query["id"],
         type: "Collection",
         fromDirectory: process.env.PNA_DIRECTORY ? process.env.PNA_DIRECTORY : "",
         name: framework["name"],
         description: framework["description"],
-        attributionURL: framework["author"] ? framework["author"] : (framework["ceterms:ownedBy"] ? framework["ceterms:ownedBy"] : ""),
-        beneficiaryRights: framework["rights"] ? framework["rights"] : (framework["license"] ? framework["license"] : ""),
+        attributionName: attribution.startsWith('http') ? "" : attribution,
+        attributionURL:  attribution.startsWith('http') ? attribution : "",
+        beneficiaryRights: framework["ceasn:license"] ? framework["ceasn:license"] : (framework["schema:license"] ? framework["schema:license"] : ""),
         dataURL: ceasnEndpointFramework + query["id"],
         providerMetaModel: process.env.PNA_PROVIDER_META_MODEL ?process.env. PNA_PROVIDER_META_MODEL : "",
         registryRights: process.env.PNA_REGISTRY_RIGHTS ? process.env.PNA_REGISTRY_RIGHTS : "",
