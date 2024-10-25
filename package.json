@@ -28,7 +28,7 @@
     "mocha": "wait-on http://localhost/api/ping && mocha -b --timeout 15000 node_modules/cassproject/src/**/*.test.js src/**/*.test.js",
     "mochaEncryption": "wait-on http://localhost/api/ping && mocha -b --timeout 15000 node_modules/cassproject/src/com/eduworks/ec/crypto/*.test.js",
     "mochafast": "wait-on http://localhost/api/ping && mocha -b src/**/*.test.js",
-		"nyc": "nyc --reporter lcov npm run mocha",
+    "nyc": "nyc --reporter lcov npm run mocha",
     "automocha": "nodemon --watch ../cass-npm --watch . --exec \"npm run mocha\"",
     "automochafast": "nodemon --exec \"npm run mochafast\"",
     "run": "pm2 start ./pm2.config.js",
@@ -92,7 +92,7 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.676.0",
+    "@aws-sdk/client-s3": "^3.679.0",
     "@xmldom/xmldom": "^0.8.10",
     "aws-sdk": "^2.1691.0",
     "busboy": "^1.6.0",
