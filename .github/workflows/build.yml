@@ -67,7 +67,6 @@ jobs:
           -Dsonar.projectKey=cassproject_CASS
           -Dsonar.organization=cassproject
           -Dsonar.sources=src/main/
-          -Dsonar.tests=src/main/
         projectBaseDir: .
 
     - name: Perform CodeQL Analysis
