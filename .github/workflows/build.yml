@@ -55,8 +55,8 @@ jobs:
       with:
         cache: 'npm'
     - run: npm ci
-    - run: docker compose up -d
-    - run: npm run nyc
+    - run: docker compose up -d elasticsearch-cass
+    - run: npm run run:nyc
 
     - name: Analyze with SonarCloud
       uses: SonarSource/sonarcloud-github-action@v3.0.0
