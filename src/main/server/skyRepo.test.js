@@ -23,7 +23,7 @@ describe('SkyRepo Adapter', function() {
   it('Server Move', async () => {
     // Initial creation.
     const repo1 = new EcRepository();
-    await repo1.init('http://localhost/api/');
+    await repo1.init(process.env.CASS_LOOPBACK || "http://localhost/api/");
     const thing = new schema.Thing();
     thing.name = 'A thing.';
     thing.generateId(repo1.selectedServer);
@@ -33,7 +33,7 @@ describe('SkyRepo Adapter', function() {
     // Wipe and create second repo link to alternate url.
     EcRepository.repos = [];
     const repo2 = new EcRepository();
-    await repo2.init('http://127.0.0.1/api/');
+    await repo2.init(process.env.CASS_LOOPBACK || `http://127.0.0.1:${PORT}/api/`);
 
     // Get from repo2. Falls back to search (in error case);
     const thingCopy2 = await EcRepository.get(canonicalUrl);
@@ -59,7 +59,7 @@ describe('SkyRepo Adapter', function() {
 
   it('Multiput', async () => {
     const repo = new EcRepository();
-    await repo.init('http://localhost/api/');
+    await repo.init(process.env.CASS_LOOPBACK || "http://localhost/api/");
 
     let thing1 = new schema.Thing();
     thing1.generateId(repo.selectedServer);
