@@ -122,6 +122,13 @@ app.get('/api', (req, res, next) => {
 app.get('/api/', (req, res, next) => {
     return res.redirect('swagger');
 });
+if (process.env.KILL)
+{
+    app.get('/api/kill', (req, res, next) => {
+        console.log("Kill received. Exiting process.");
+        process.exit(0);
+    });
+}
 
 if (process.env.DISABLED_EDITOR != 'true') {
     app.use(baseUrl, express.static('src/main/webapp/'));

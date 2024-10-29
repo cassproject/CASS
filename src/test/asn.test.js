@@ -25,7 +25,7 @@ describe("ASN Adapter", function() {
             let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
             const formData = new FormData();
             formData.append('data',JSON.stringify(onet));
-            await fetch("http://localhost/api/ctdlasn",{method: 'POST', body: formData});
+            await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ctdlasn`,{method: 'POST', body: formData});
         }
     });
 

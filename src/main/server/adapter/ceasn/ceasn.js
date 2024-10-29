@@ -60,10 +60,10 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
     try {
         var c = competencies[compId];
         if (!c) {
-            resolve(null);
-            return;
+            return null;
         }
-        if (c == null) resolve(c);
+        if (c == null) 
+            return c;
         if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] && c["ceasn:hasChild"]["@list"] != null)
             c["ceasn:hasChild"]["@list"].sort(function(a, b) {
                 return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
@@ -79,7 +79,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
                 delete c.description;
             }
         if (c.type == null) // Already done / referred to by another name.
-            resolve();
+            return;
         var guid = c.getGuid();
         var uuid = new UUID(3, "nil", c.shortId()).format();
 
@@ -160,10 +160,10 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
         }
         delete c["@context"];
         c = stripNonCe(c);
-        resolve(c);
+        return c;
     } catch (err) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CeasnCompetencyError", err);
-        resolve(c);
+        return c;
     }
 }
 
@@ -613,7 +613,6 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
         try {
             var c = competencies[compId];
             if (c == null) {
-                resolve();
                 return;
             }
             if (!f['ceterms:hasMember'] || !EcArray.isArray(f['ceterms:hasMember'])) {
@@ -628,7 +627,6 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
                     if (frameworks[each].subType !== "Collection") {
                         delete competencies[compId];
                         delete competencies[c.id];
-                        resolve();
                         return;
                     } else {
                         collections.push(await ceasnExportUriTransform(frameworks[each].id));
@@ -645,7 +643,7 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
                     delete c.description;
                 }
             if (c.type == null) //Already done / referred to by another name.
-                resolve();
+                return;
             var guid = c.getGuid();
             var uuid = new UUID(3, "nil", c.shortId()).format();
 
@@ -710,10 +708,10 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
             }
             delete competencies[id]["@context"];
             competencies[id] = stripNonCe(competencies[id]);
-            resolve();
+            return;
         } catch (err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnCompetencyCollection", err);
-            resolve();
+            return;
         }
 }
 
@@ -1033,7 +1031,7 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
                 c["skos:topConceptOf"] = await ceasnExportUriTransform(cs.id);
             }
             if (c.type == null) //Already done / referred to by another name.
-                resolve();
+                return;
             var guid = c.getGuid();
             var uuid = new UUID(3, "nil", c.shortId()).format();
             for (let each in c) {
@@ -1062,10 +1060,10 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
 
             concepts[id] = conceptArrays(concepts[id]);
         }
-        resolve();
+        return;
     } catch (err) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnConcept", err);
-        resolve();
+        return;
     }
 }
 
@@ -1086,7 +1084,7 @@ async function levelPromise(obj, levels, cs, ctx, terms) {
                 c["skos:topConceptOf"] = await ceasnExportUriTransform(cs.id);
             }
             if (c.type == null) //Already done / referred to by another name.
-                resolve();
+                return;
             var guid = c.getGuid();
             var uuid = new UUID(3, "nil", c.shortId()).format();
             for (let each in c) {
@@ -1116,10 +1114,10 @@ async function levelPromise(obj, levels, cs, ctx, terms) {
             levels[id] = conceptArrays(levels[id]);
             levels[id]["@type"] = "asn:ProgressionLevel";
         }
-        resolve();
+        return;
     } catch (err) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnProgression", err);
-        resolve();
+        return;
     }
 }
 
@@ -1642,7 +1640,6 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
 
         let frameworks = await EcFramework.search(repo, 'competency:"' + EcRemoteLinkedData.trimVersionFromUrl(newComp.id) + '" AND NOT subType:Collection');
         if (frameworks && frameworks.length > 0) {
-            resolve();
             return;
         }
 
@@ -1710,10 +1707,8 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
         if (owner != null)
             c.addOwner(EcPk.fromPem(owner));
         listToSave.push(c);
-        resolve();
     } catch (err) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CeasnImportCollection", err);
-        resolve();
     }
 }
 
