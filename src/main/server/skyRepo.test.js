@@ -33,7 +33,7 @@ describe('SkyRepo Adapter', function() {
     // Wipe and create second repo link to alternate url.
     EcRepository.repos = [];
     const repo2 = new EcRepository();
-    await repo2.init(process.env.CASS_LOOPBACK || `http://127.0.0.1:${PORT}/api/`);
+    await repo2.init(process.env.CASS_LOOPBACK || `http://127.0.0.1:${process.env.PORT || 80}/api/`);
 
     // Get from repo2. Falls back to search (in error case);
     const thingCopy2 = await EcRepository.get(canonicalUrl);

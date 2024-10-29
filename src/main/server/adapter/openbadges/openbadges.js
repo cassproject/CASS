@@ -1,9 +1,6 @@
 let loopback = require('../../shims/cassproject.js');
 
 badgeSetup = function () {
-    if (false && repoEndpoint().contains("localhost"))
-        error("Endpoint Configuration is not set.", 500);
-
     this.setup = true;
 
     EcRepository.caching = false;

@@ -5,13 +5,10 @@
 //      https://docs.google.com/document/d/1w_0HDNIA9GZq76txOuS8e-OhmKJiHe9Azjuq1BfrxQ0/edit
 
 async function pnaEndpoint() {
-
-    EcRepository.cache = new Object();
+    EcRepository.cache = {};
     EcRepository.caching = true;
-    if (false && repoEndpoint().contains("localhost"))
-        error("Endpoint Configuration is not set.", 500);
-    var query = queryParse.call(this);
-    var framework = null;
+    let query = queryParse.call(this);
+    let framework = null;
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
 
@@ -27,7 +24,7 @@ async function pnaEndpoint() {
     }
 
     // Data from the framework to be stored in Competency Explorer registry for indexing
-    let pnaData = new Object();
+    let pnaData = {};
 
     const now = new Date();
     const formattedNow = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
@@ -60,23 +57,24 @@ async function pnaEndpoint() {
         name: framework["name"],
         description: framework["description"],
         attributionName: attribution.startsWith('http') ? "" : attribution,
-        attributionURL:  attribution.startsWith('http') ? attribution : "",
+        attributionURL: attribution.startsWith('http') ? attribution : "",
         beneficiaryRights: framework["ceasn:license"] ? framework["ceasn:license"] : (framework["schema:license"] ? framework["schema:license"] : ""),
         dataURL: ceasnEndpointFramework + query["id"],
-        providerMetaModel: process.env.PNA_PROVIDER_META_MODEL ?process.env. PNA_PROVIDER_META_MODEL : "",
+        providerMetaModel: process.env.PNA_PROVIDER_META_MODEL ? process.env.PNA_PROVIDER_META_MODEL : "",
         registryRights: process.env.PNA_REGISTRY_RIGHTS ? process.env.PNA_REGISTRY_RIGHTS : "",
     };
-    
+
     if (framework.competency == null) framework.competency = [];
 
     let competencies = [];
     const promises = [];
-    framework.competency.forEach(cid => {
+    framework.competency.forEach((cid) => {
         promises.push(EcRepository.get(
-        EcRemoteLinkedData.trimVersionFromUrl(cid),
-        null,
-        null,
-        repo).then((expanded) => {
+            EcRemoteLinkedData.trimVersionFromUrl(cid),
+            null,
+            null,
+            repo
+        ).then((expanded) => {
             if (expanded && expanded["id"]) {
                 match = expanded["id"].match('(.*)(\/data\/)(.*)');
                 let ceasnEndpoint = match && match.length > 1 ? match[1] + "/ceasn/" : undefined;
@@ -108,12 +106,11 @@ async function pnaEndpoint() {
         return JSON.stringify(result);
     } else {
         return JSON.stringify(pnaData);
-    }    
+    }
 }
 
 async function uploadToAws(data, name) {
-
-    const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+    const {S3Client, PutObjectCommand} = require("@aws-sdk/client-s3");
 
     const AWS_REGION = process.env.PNA_AWS_REGION ? process.env.PNA_AWS_REGION : "";
     const AWS_BUCKET = process.env.PNA_AWS_BUCKET ? process.env.PNA_AWS_BUCKET : "";
@@ -127,14 +124,14 @@ async function uploadToAws(data, name) {
             return {
                 framework: undefined,
                 success: false
-            };    
+            };
         }
         if (!AWS_REGION) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", 'No AWS Region provided');
             return {
                 framework: name,
                 success: false
-            };    
+            };
         }
         if (!AWS_BUCKET) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", 'No AWS Bucket provided');
@@ -181,7 +178,7 @@ async function uploadToAws(data, name) {
         return {
             framework: name,
             success: success
-        };    
+        };
     } catch (err) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", name);
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "pnaUploadErr", err);

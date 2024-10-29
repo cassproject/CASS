@@ -580,34 +580,27 @@ if (global.rsaGenerate === undefined) {
 };
 
 if (global.jsonLdExpand === undefined) {
-    global.jsonLdExpand = function (json) {
-        return new Promise(async function (resolve, reject) {
-            try {
-                let actual = await jsonld.expand(JSON.parse(json));
-                resolve(actual);
-            } catch (error) {
-                reject((error)['message']);
-                return;
-            }
-        });
+    global.jsonLdExpand = async function (json) {
+        try {
+            return await jsonld.expand(JSON.parse(json));
+        } catch (error) {
+            throw (error)['message'];
+        }
     };
 };
 
 if (global.jsonLdCompact === undefined) {
-    global.jsonLdCompact = function (actual, finalTargetContext) {
-        return new Promise(async function (resolve, reject) {
-            try {
-                finalTargetContext = JSON.parse(finalTargetContext);
-            } catch (ex) { }
-            try {
-                let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
-                (o)['@context'] = finalTargetContext;
-                resolve(o);
-            } catch (s) {
-                reject(s);
-                return;
-            }
-        });
+    global.jsonLdCompact = async function (actual, finalTargetContext) {
+        try {
+            finalTargetContext = JSON.parse(finalTargetContext);
+        } catch (ex) { }
+        try {
+            let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
+            (o)['@context'] = finalTargetContext;
+            return o;
+        } catch (s) {
+            throw s;
+        }
     };
 };
 
@@ -631,7 +624,7 @@ if (global.jsonLdCompact === undefined) {
 const $rdf = require('rdflib');
 if (global.jsonLdToRdfXml === undefined) {
     global.jsonLdToRdfXml = function (o) {
-        return new Promise(async function (resolve, reject) {
+        return new Promise(async function (resolve, reject) { // NOSONAR -- Blends async and callback, which needs direct promise access.
             let rdf = await jsonld.toRDF(o, { format: 'application/n-quads' });
             let store = $rdf.graph();
             $rdf.parse(rdf, store, 'whatever', 'application/n-quads', (err, str) => {
@@ -648,12 +641,11 @@ if (global.jsonLdToTurtle === undefined) {
 };
 
 toTurtleInternal = function (o) {
-    return new Promise(async function (resolve, reject) {
+    return new Promise(async function (resolve, reject) { // NOSONAR -- Blends async and callback, which needs direct promise access.
         let rdf = await jsonld.toRDF(o, { format: 'application/n-quads' });
         let store = $rdf.graph();
         $rdf.parse(rdf, store, 'whatever', 'application/n-quads', (err, str) => {
-            let result = ($rdf.serialize(null, str, '*', 'text/turtle'));
-            resolve(result);
+            resolve($rdf.serialize(null, str, '*', 'text/turtle'));
         });
     });
 };

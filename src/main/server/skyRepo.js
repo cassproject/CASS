@@ -212,7 +212,7 @@ const filterResults = async function (o, dontDecryptInSso) {
                     resolve(filterResults.call(me, x, dontDecryptInSso));
                 } catch (ex) {
                     if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
-                        reject(ex);
+                        reject(ex); // NOSONAR -- Rethrowing error.
                     }
                     resolve(null);
                 }
@@ -9099,7 +9099,7 @@ global.skyrepoHistoryInternal = async function (id, version, type) {
                 if (Bts == null) Bts = hits[j]._source.writeMs;
                 // console.log(Ats, Bts);
                 if (A.id + Ats == B.id + Bts) {
-                    hits.splice(j--, 1);
+                    hits.splice(j--, 1); // NOSONAR -- Valid method of filtering.
                 }
             }
         }
@@ -9484,7 +9484,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
             const searchResult = hits[i];
             const type = inferTypeFromObj((searchResult)['_source'], null);
             if (type == null) {
-                hits.splice(i--, 1);
+                hits.splice(i--, 1); // NOSONAR -- Valid method of filtering.
                 continue;
             }
             const id = (searchResult)['_id'];
