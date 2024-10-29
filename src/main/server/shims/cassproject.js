@@ -7,7 +7,7 @@ let frameworkGet = async function (id) {
                     resolve(f);
                 },
                 function (error) {
-                    reject(error);
+                    reject(error); // NOSONAR - We support non-Error strings.
                 },
                 repo
             );
@@ -24,7 +24,7 @@ let frameworkSearch = async function (repo, query, params) {
                     resolve(fs)
                 },
                 function (error) {
-                    reject(error)
+                    reject(error); // NOSONAR - We support non-Error strings.
                 },
                 params
             );
@@ -40,7 +40,7 @@ let competencyGet = async function (id) {
                     resolve(f);
                 },
                 function (error) {
-                    reject(error);
+                    reject(error); // NOSONAR - We support non-Error strings.
                 },
                 repo
             );
@@ -56,7 +56,7 @@ let repositoryGet = async function (id) {
                     resolve(f);
                 },
                 function (error) {
-                    reject(error);
+                    reject(error); // NOSONAR - We support non-Error strings.
                 },
                 repo
             );
@@ -74,7 +74,7 @@ let repositorySearch = async function (repo, query, params) {
                     resolve(fs)
                 },
                 function (error) {
-                    reject(error)
+                    reject(error); // NOSONAR - We support non-Error strings.
                 },
             );
         }
@@ -89,7 +89,7 @@ let alignmentGet = async function (id) {
                     resolve(f);
                 },
                 function (error) {
-                    reject(error);
+                    reject(error); // NOSONAR - We support non-Error strings.
                 },
                 repo
             );
@@ -106,7 +106,7 @@ let conceptGet = async function (id) {
                     resolve(f);
                 },
                 function (error) {
-                    reject(error);
+                    reject(error); // NOSONAR - We support non-Error strings.
                 },
                 repo
             );
@@ -123,7 +123,7 @@ let multiput = async function (repo, ary) {
                     resolve(f);
                 },
                 function (error) {
-                    reject(error);
+                    reject(error); // NOSONAR - We support non-Error strings.
                 }
             );
         }
