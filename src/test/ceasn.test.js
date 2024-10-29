@@ -1,10 +1,5 @@
-let chai = require("chai");
-const EcCrypto = require("cassproject/src/com/eduworks/ec/crypto/EcCrypto");
 const EcRepository = require("cassproject/src/org/cassproject/ebac/repository/EcRepository");
-const EcIdentityManager = require("cassproject/src/org/cassproject/ebac/identity/EcIdentityManager");
-const EcIdentity = require("cassproject/src/org/cassproject/ebac/identity/EcIdentity");
-const EcPpk = require("cassproject/src/com/eduworks/ec/crypto/EcPpk");
-const fs = require('fs');
+let chai = require("chai");
 
 let hrtime = function() {
     try {
