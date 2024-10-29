@@ -19,7 +19,7 @@ describe("ASN Adapter", function() {
 
     before(async ()=>{
         try{
-            await fetch("http://localhost/api/data/70d27b782c062d1280b240890141dcf6");
+            await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}data/70d27b782c062d1280b240890141dcf6`);
         }
         catch(err){
             let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
@@ -30,6 +30,6 @@ describe("ASN Adapter", function() {
     });
 
     it('conversion to ASN', async () => {
-        await fetch("http://localhost/api/asn/70d27b782c062d1280b240890141dcf6")
+        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}asn/70d27b782c062d1280b240890141dcf6`)
     }).timeout(30000);
 });
