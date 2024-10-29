@@ -38,7 +38,7 @@
     "run:google": "pm2 start ./pm2.google.config.js",
     "run:proxy": "pm2 start ./pm2.proxy.config.js",
     "run:test": "pm2 start ./pm2.test.config.js",
-    "run:nyc": "concurrently --killOthers --successCondition last \"npm run dev:nyc\" \"npm run mochaNyc\"",
+    "run:nyc": "concurrently --killOthers --successCondition first \"npm run dev:nyc\" \"npm run mochaNyc\"",
     "run:cassbase": "pm2 start ./pm2.cassbase.config.js",
     "run:withTests": "npm run test:start & npm run mochaEncryption",
     "pm2startup": "pm2 startup",
