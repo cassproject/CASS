@@ -206,18 +206,16 @@ const filterResults = async function (o, dontDecryptInSso) {
     }
     if (EcArray.isArray(o)) {
         let me = this;
-        return (await Promise.all(o.map(x => {
-            return new Promise((resolve,reject)=>{
-                try {
-                    resolve(filterResults.call(me, x, dontDecryptInSso));
-                } catch (ex) {
-                    if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
-                        reject(ex);
-                    }
-                    resolve(null);
+        return (await Promise.all(o.map(async (x) => {
+            try {
+                return await filterResults.call(me, x, dontDecryptInSso);
+            } catch (ex) {
+                if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
+                    throw ex;
                 }
-            });
-        }))).filter(x => x);
+                return null;
+            }
+        }))).filter((x) => x);
     } else if (EcObject.isObject(o)) {
         delete o.decryptedSecret;
         const rld = new EcRemoteLinkedData((o)['@context'], (o)['@type']);
@@ -225,12 +223,12 @@ const filterResults = async function (o, dontDecryptInSso) {
         if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             const signatures = await (signatureSheet).call(this);
             let foundSignature = false;
-            for (let i = 0; i < signatures.length; i++) {
-                if (JSON.stringify(o).indexOf(signatures[i].owner) != -1) {
+            for (let signature of signatures) {
+                if (JSON.stringify(o).indexOf(signature.owner) != -1) {
                     foundSignature = true;
                     break;
                 }
-                if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signatures[i].owner))) {
+                if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signature.owner))) {
                     foundSignature = true;
                     break;
                 }
@@ -252,10 +250,9 @@ const filterResults = async function (o, dontDecryptInSso) {
             }
         }
         const keys = EcObject.keys(o);
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
+        for (let key of keys) {
             let result = null;
-            try{
+            try {
                 result = await (filterResults).call(this, (o)[key], dontDecryptInSso);
             } catch (ex) {
                 if (ex != null && ex.toString().indexOf('Object not found or you did not supply sufficient permissions to access the object.') == -1) {
@@ -8451,7 +8448,7 @@ const getTypeForObject = function (o, type) {
         return inferTypeFromObj(o, type);
     }
 };
-const removeNonIndexables = function(o) {
+const removeNonIndexables = function (o) {
     if (o != null && EcObject.isObject(o)) {
         const keys = EcObject.keys(o);
         for (let i = 0; i < keys.length; i++) {
@@ -8913,34 +8910,40 @@ const skyrepoGetIndexSearch = async function (id, version, type) {
 };
 
 const skyrepoManyGetIndexSearch = async function (ary) {
-    if (ary.length === 0) {
-        return [];
+    let results = [];
+    if (ary.length == 0) {
+        return results;
     }
-    let microSearchUrl = elasticEndpoint + '/_search?version&q=';
-    for (let i = 0; i < ary.length; i++) {
-        microSearchUrl += '_id:"' + ary[i].id + '"';
-        if (i < ary.length - 1) {
-            microSearchUrl += ' OR ';
+    while (ary.length > 0) {
+        let batch = ary.splice(0, 50);
+        let microSearchUrl = elasticEndpoint + '/_search?version&q=';
+        for (let i = 0; i < batch.length; i++) {
+            microSearchUrl += '_id:"' + batch[i].id + '"';
+            if (i < batch.length - 1) {
+                microSearchUrl += ' OR ';
+            }
         }
-    }
 
-    const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
+        const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
 
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexSearch', microSearchUrl);
+        if (global.skyrepoDebug) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexSearch', microSearchUrl);
+        }
+        if (microSearch == null) {
+            return [];
+        }
+        const hitshits = (microSearch)['hits'];
+        if (hitshits == null) {
+            return [];
+        }
+        const hits = (hitshits)['hits'];
+        if (hits.length == 0) {
+            return [];
+        }
+        for (let hit of hits)
+            results.push(hit);
     }
-    if (microSearch == null) {
-        return [];
-    }
-    const hitshits = (microSearch)['hits'];
-    if (hitshits == null) {
-        return [];
-    }
-    const hits = (hitshits)['hits'];
-    if (hits.length == 0) {
-        return [];
-    }
-    return hits;
+    return results;
 };
 
 let skyrepoGetIndexRecords = async function (id) {
@@ -9132,14 +9135,13 @@ global.skyrepoManyGetInternal = async function (manyParseParams) {
     }
 
     if (global.skyrepoDebug && notFoundInPermanent.length > 0) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Failed to find ' + manyParseParams + ' -- trying degraded form from search index.');
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Failed to find ' + notFoundInPermanent + ' -- trying degraded form from search index.');
     }
 
     response = await (skyrepoManyGetIndex).call(this, notFoundInPermanent);
-    resultDocs = (response)['docs'];
-    if (resultDocs != null) {
-        for (let i = 0; i < resultDocs.length; i++) {
-            let doc = resultDocs[i];
+    let resultDocs2 = (response)['docs'];
+    if (resultDocs2 != null) {
+        for (let doc of resultDocs2) {
             if ((doc)['found']) {
                 delete (lookup)[((doc)['_id']).substring(0, ((doc)['_id']).length - 1)];
                 results.push(JSON.parse(((doc)['_source'])['data']));
