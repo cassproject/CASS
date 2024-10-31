@@ -40,7 +40,7 @@
     "run:google": "pm2 start ./pm2.google.config.js",
     "run:proxy": "pm2 start ./pm2.proxy.config.js",
     "run:test": "pm2 start ./pm2.test.config.js",
-    "run:nyc": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&export PORT=8080|| set PORT=8080&&export KILL=true|| set KILL=true&&concurrently --killOthers --success=first --kill-signal=SIGINT \"nyc --reporter=lcov npm run dev:node\" \"npm run mochaNyc\"",
+    "run:nyc": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&export PORT=8080|| set PORT=8080&&export KILL=true|| set KILL=true&&concurrently \"nyc --reporter=lcov npm run dev:node\" \"npm run mochaNyc\"",
     "run:merge": "nyc report --reporter=lcov",
     "run:cassbase": "pm2 start ./pm2.cassbase.config.js",
     "run:withTests": "npm run test:start & npm run mochaEncryption",
