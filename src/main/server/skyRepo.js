@@ -8915,7 +8915,7 @@ const skyrepoManyGetIndexSearch = async function (ary) {
         return results;
     }
     while (ary.length > 0) {
-        let batch = ary.splice(0, 50);
+        let batch = ary.splice(0, 10);
         let microSearchUrl = elasticEndpoint + '/_search?version&q=';
         for (let i = 0; i < batch.length; i++) {
             microSearchUrl += '_id:"' + batch[i].id + '"';
@@ -8925,7 +8925,7 @@ const skyrepoManyGetIndexSearch = async function (ary) {
         }
 
         const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
-
+        if (microSearch.error) throw new Error(microSearch.error.reason);
         if (global.skyrepoDebug) {
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexSearch', microSearchUrl);
         }
@@ -9135,17 +9135,19 @@ global.skyrepoManyGetInternal = async function (manyParseParams) {
     }
 
     if (global.skyrepoDebug && notFoundInPermanent.length > 0) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Failed to find ' + notFoundInPermanent + ' -- trying degraded form from search index.');
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Failed to find ' + JSON.stringify(notFoundInPermanent) + ' -- trying degraded form from search index.');
     }
 
     response = await (skyrepoManyGetIndex).call(this, notFoundInPermanent);
-    let resultDocs2 = (response)['docs'];
+
+    if (global.skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Index get - ' + JSON.stringify(response));
+    }
+
+    let resultDocs2 = (response);
     if (resultDocs2 != null) {
         for (let doc of resultDocs2) {
-            if ((doc)['found']) {
-                delete (lookup)[((doc)['_id']).substring(0, ((doc)['_id']).length - 1)];
-                results.push(JSON.parse(((doc)['_source'])['data']));
-            }
+            results.push(doc['_source']);
         }
     }
     return results;
@@ -9367,6 +9369,11 @@ const skyrepoDeleteInternalPermanent = async function (id, version, type) {
 };
 global.skyrepoDelete = async function (id, version, type) {
     const oldObj = await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may delete it.');
+    if (oldObj == null) {
+        console.log("Couldn't find data to delete, removing the index entry.");
+        await skyrepoDeleteInternalIndex.call(this, id, version, type);
+        return null;
+    }
     const ids = [id];
     if (oldObj.id != null && oldObj.getGuid() != null) {
         ids.push(oldObj.getGuid());
@@ -9497,7 +9504,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
             hit += id;
             hits[i] = hit;
         }
-        searchResults = await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits } });
+        searchResults = await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits }, dataStreams: this.dataStreams });
     }
     searchResults = searchResults.filter(x => x);
     // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
