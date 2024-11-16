@@ -109,7 +109,10 @@ module.exports = async ()=>{
         size: 1,
         task: filePath,
         shareEnv: true,
-        workerData: workerData
+        workerData: workerData,
+        resourceLimits: {
+            maxOldGenerationSizeMb: process.env.WORKER_MAX_MEMORY || 512
+        }
     });
     global.profileFlush = ()=>{
         lastFlush = Date.now();
