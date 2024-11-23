@@ -1,19 +1,8 @@
 const fs = require('fs');
 const https = require('https');
 require('fake-indexeddb/auto');
-
-const schema = {
-    "Thing": require('../org/schema/Thing.js')
-};
-
 let chai = require("chai");
-const EcRsaOaepAsyncWorker = require('../com/eduworks/ec/crypto/EcRsaOaepAsyncWorker.js');
-const EcRepository = require('../org/cassproject/ebac/repository/EcRepository.js');
-const EcCrypto = require('../com/eduworks/ec/crypto/EcCrypto.js');
-const EcEncryptedValue = require('../org/cassproject/ebac/repository/EcEncryptedValue.js');
-const EcIdentityManager = require('../org/cassproject/ebac/identity/EcIdentityManager.js');
-const EcIdentity = require('../org/cassproject/ebac/identity/EcIdentity.js');
-const EcPpk = require('../com/eduworks/ec/crypto/EcPpk.js');
+require("cassproject");
 
 let hrtime = function () {
     try {

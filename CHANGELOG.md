@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.70
+* Added additional logging
+* WIP Code coverage and scans
+
 ## 1.5.68
 * Multiget now works in chunks. Fixed bug with async decryption
 * Made large encrypted batch operations, deletion of orphan search results and made retrieval of lost/fragmented data more robust.
