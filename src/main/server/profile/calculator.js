@@ -376,13 +376,13 @@ module.exports = class ProfileCalculator {
             for (let i = 0; i < vertex.children.length; i++) {
                 let prune = pruneNonFrameworkData(vertex.children[i], depth + 1);
                 if (prune.length == 0) {
-                    vertex.children.splice(i--, 1);
+                    vertex.children.splice(i--, 1); // NOSONAR -- This is a method for filtering.
                 }
                 if (prune.length == 1) {
                     vertex.children.splice(i, 1, ...prune);
                 }
                 if (prune.length > 1) {
-                    vertex.children.splice(i--, 1, ...prune);
+                    vertex.children.splice(i--, 1, ...prune); // NOSONAR -- This is a method for filtering.
                 }
             }
             if (!EcArray.has(this.framework.competency, vertex.id)) {

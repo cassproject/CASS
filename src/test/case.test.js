@@ -14,12 +14,12 @@ var expect = chai.expect;
 var assert = chai.assert;
 
 
-describe("ASN Adapter", function() {
+describe("CASE Adapter", function() {
     this.timeout(30000);
 
     before(async ()=>{
         try{
-            await fetch("http://localhost/api/data/70d27b782c062d1280b240890141dcf6");
+            await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}data/70d27b782c062d1280b240890141dcf6`);
         }
         catch(err){
             let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
@@ -29,7 +29,11 @@ describe("ASN Adapter", function() {
         }
     });
 
-    it('conversion to ASN', async () => {
-        await fetch("http://localhost/api/asn/70d27b782c062d1280b240890141dcf6")
+    it('conversion to CASE', async () => {
+        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ims/case/v1p0/CFPackages/70d27b782c062d1280b240890141dcf6`)
+    }).timeout(10000);
+
+    it('ACT Collective Problem Solving import', async()=>{
+        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ims/case/harvest?caseEndpoint=https://opensalt.net&dId=f0e7396a-7edd-11e9-86d4-23cb22a51e7e`)
     }).timeout(30000);
 });

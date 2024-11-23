@@ -1,9 +1,9 @@
 const chai = require('chai');
 require('cassproject');
 
-const hrtime = function() {
+const hrtime = function () {
   try {
-    return [Math.round(performance.now()/1000), performance.now() * 1000];
+    return [Math.round(performance.now() / 1000), performance.now() * 1000];
   } catch (e) {
     // Eat quietly.
   }
@@ -15,15 +15,15 @@ const expect = chai.expect;
 const assert = chai.assert;
 
 
-describe('SkyRepo Adapter', function() {
-  it('Search auto-extends', async ()=>{
+describe('SkyRepo Adapter', function () {
+  it('Search auto-extends', async () => {
 
   });
 
   it('Server Move', async () => {
     // Initial creation.
     const repo1 = new EcRepository();
-    await repo1.init('http://localhost/api/');
+    await repo1.init(process.env.CASS_LOOPBACK || "http://localhost/api/");
     const thing = new schema.Thing();
     thing.name = 'A thing.';
     thing.generateId(repo1.selectedServer);
@@ -33,7 +33,7 @@ describe('SkyRepo Adapter', function() {
     // Wipe and create second repo link to alternate url.
     EcRepository.repos = [];
     const repo2 = new EcRepository();
-    await repo2.init('http://127.0.0.1/api/');
+    await repo2.init(process.env.CASS_LOOPBACK || `http://127.0.0.1:${process.env.PORT || 80}/api/`);
 
     // Get from repo2. Falls back to search (in error case);
     const thingCopy2 = await EcRepository.get(canonicalUrl);
@@ -59,7 +59,7 @@ describe('SkyRepo Adapter', function() {
 
   it('Multiput', async () => {
     const repo = new EcRepository();
-    await repo.init('http://localhost/api/');
+    await repo.init(process.env.CASS_LOOPBACK || "http://localhost/api/");
 
     let thing1 = new schema.Thing();
     thing1.generateId(repo.selectedServer);
@@ -68,7 +68,7 @@ describe('SkyRepo Adapter', function() {
     thing2.generateId(repo.selectedServer);
     thing2.name = 'Thing 2';
 
-    
+
 
     // Multiput 2 things
     let result = await repo.multiput([thing1, thing2]);
@@ -147,7 +147,7 @@ describe('SkyRepo Adapter', function() {
     // If not owner, shouldn't save
     newId1 = new EcIdentity();
     newId1.ppk = EcPpk.fromPem(
-      "-----BEGIN RSA PRIVATE KEY-----MIIEowIBAAKCAQEArhqVpI3B8eM8nZcg4TbBnPWp31w5c7S84nbeGvOYYkS2g/I4WKxuxeRHSgU/skGM86b2GLt2im7mmZROphZIRh0Qo6g8E58j71Kr7G62N8V8i36XRM4SEhOlgMpI43OjwGwkgmNL5N4NDr1ZMMqXx1+QZ3x/KJrR5/pqonrbe5QM7qm4CATey2Oqnt86sOnpDslsXE+s1uZmqO37sHQttD/Ct1fLqxrIpP+XMk3iPZZbe3BxkWeT4DOPq6WI7tWJYbWXXX3Xf7BJaXH0hQUy8ylBt/vAWiEmTm6t7yiFzGTXZUDLX6smFe7vkfBz2ByyuH2b6HQWXSvOktAQcCLTcQIDAQABAoIBAHf6lAMZOX0i1oPXQO5S2Kv803q8SE9HTx9VQQwbsHiP16MoCdJ5ycCP5tzIrzN9XtANz+wNS8xsTnepr2VfV6ERqITPi88NzSrAsv+079eRPZm3vDDLPcK9TUFqpT4xU7hoDeTY3tUyfJcav1sTUfMwFQhr0AlAX8TYWiHsPlJy+fy3fZvjCvk6DhUiArpqXBAXzuN3jTYrbrYxfmmszFZNl9hVe5vQ3O+lNB1i/jvsP2aWR6AOfcrCzzrVGU+WavbuGCrHyAvsUIgHFfBiFdi6HSE/TB2HjgSyRhiarum9WD1f2cGn05IXbpJGx2b/jmjE/PqSypb4R2zWAMe2PH0CgYEA3d81eNpz6c1yfZzMVEDU+4Rbnd0Wa/0Ukufu1TOQgNiAYoz81ZrA5u99QpGONwzNtgBA2GkvkQVPPEXpBKser0eedZ1F+SG8O2KqJlhnOo/AHhQNNloJylsv9APDrI77FsGk8sBK38BB5s6c7SeCckR7bXJLdjrM+iZuWaXx1esCgYEAyOJh3MpJdQb7o0nkMZSwAAXOn0z4nm5sXT9n0Zvh+vZMbRtSK3366OY3bLK2C8YwBilgWE2z9kOiUVvcOYGes54ScYz6AVHcVfejBgn40NMCcNR6lcktll3pFwL5vfePey+yLzcWGl8RgIl6jIYba4OJnfGQ189qLmb3SvTkGRMCgYEAufx3HYS57/6Jf+Sln+bs4p4UEqQXPJTc3zzPByd/dZKHJJWdCA3+sFeHf/r15Q21j2Bs+zxJZF64CgVsjL5JLZNysJMS6gEugfV2PkiS2BNSb6RNYwdc96Uy8HELYSZGMtBGzjsFSMUoOStvfplFDzZ65McPnN8znmoCzOF/dNsCgYAYqzQ5WN4McP8V3k0XiZrTZeMpzNn7GrRT/yVQqEPn/bcE7wX4MVBOqXbE8m1IpN3g49PhBCnFZCjatN0mcrR6ej7pktZgsxzLsc1jQHY9rqvuDym+myXuATpOiR8CJRSJnCHVin48XtBXaIqUFyPm4BBWRQP0fJQdfqd/nPMl4QKBgEI705+8hkvGZU7mrCiIGSrQekY5DjeDU1Eq2kKFdm6sYOPxdvxkzmdJMEvkQ1bcHmtpdHMQPCe9Cglp+3ES0ZaSHODFOOdUbFQ6vu4Zwcf8upcjVG74ZfLe27doGP9SPORI2yfRp5WaTLbgqcrHKW8Zf5DEWOguccnr1NR1+aMW-----END RSA PRIVATE KEY-----"    
+      "-----BEGIN RSA PRIVATE KEY-----MIIEowIBAAKCAQEArhqVpI3B8eM8nZcg4TbBnPWp31w5c7S84nbeGvOYYkS2g/I4WKxuxeRHSgU/skGM86b2GLt2im7mmZROphZIRh0Qo6g8E58j71Kr7G62N8V8i36XRM4SEhOlgMpI43OjwGwkgmNL5N4NDr1ZMMqXx1+QZ3x/KJrR5/pqonrbe5QM7qm4CATey2Oqnt86sOnpDslsXE+s1uZmqO37sHQttD/Ct1fLqxrIpP+XMk3iPZZbe3BxkWeT4DOPq6WI7tWJYbWXXX3Xf7BJaXH0hQUy8ylBt/vAWiEmTm6t7yiFzGTXZUDLX6smFe7vkfBz2ByyuH2b6HQWXSvOktAQcCLTcQIDAQABAoIBAHf6lAMZOX0i1oPXQO5S2Kv803q8SE9HTx9VQQwbsHiP16MoCdJ5ycCP5tzIrzN9XtANz+wNS8xsTnepr2VfV6ERqITPi88NzSrAsv+079eRPZm3vDDLPcK9TUFqpT4xU7hoDeTY3tUyfJcav1sTUfMwFQhr0AlAX8TYWiHsPlJy+fy3fZvjCvk6DhUiArpqXBAXzuN3jTYrbrYxfmmszFZNl9hVe5vQ3O+lNB1i/jvsP2aWR6AOfcrCzzrVGU+WavbuGCrHyAvsUIgHFfBiFdi6HSE/TB2HjgSyRhiarum9WD1f2cGn05IXbpJGx2b/jmjE/PqSypb4R2zWAMe2PH0CgYEA3d81eNpz6c1yfZzMVEDU+4Rbnd0Wa/0Ukufu1TOQgNiAYoz81ZrA5u99QpGONwzNtgBA2GkvkQVPPEXpBKser0eedZ1F+SG8O2KqJlhnOo/AHhQNNloJylsv9APDrI77FsGk8sBK38BB5s6c7SeCckR7bXJLdjrM+iZuWaXx1esCgYEAyOJh3MpJdQb7o0nkMZSwAAXOn0z4nm5sXT9n0Zvh+vZMbRtSK3366OY3bLK2C8YwBilgWE2z9kOiUVvcOYGes54ScYz6AVHcVfejBgn40NMCcNR6lcktll3pFwL5vfePey+yLzcWGl8RgIl6jIYba4OJnfGQ189qLmb3SvTkGRMCgYEAufx3HYS57/6Jf+Sln+bs4p4UEqQXPJTc3zzPByd/dZKHJJWdCA3+sFeHf/r15Q21j2Bs+zxJZF64CgVsjL5JLZNysJMS6gEugfV2PkiS2BNSb6RNYwdc96Uy8HELYSZGMtBGzjsFSMUoOStvfplFDzZ65McPnN8znmoCzOF/dNsCgYAYqzQ5WN4McP8V3k0XiZrTZeMpzNn7GrRT/yVQqEPn/bcE7wX4MVBOqXbE8m1IpN3g49PhBCnFZCjatN0mcrR6ej7pktZgsxzLsc1jQHY9rqvuDym+myXuATpOiR8CJRSJnCHVin48XtBXaIqUFyPm4BBWRQP0fJQdfqd/nPMl4QKBgEI705+8hkvGZU7mrCiIGSrQekY5DjeDU1Eq2kKFdm6sYOPxdvxkzmdJMEvkQ1bcHmtpdHMQPCe9Cglp+3ES0ZaSHODFOOdUbFQ6vu4Zwcf8upcjVG74ZfLe27doGP9SPORI2yfRp5WaTLbgqcrHKW8Zf5DEWOguccnr1NR1+aMW-----END RSA PRIVATE KEY-----"
     );
     thing1.addOwner(newId1.ppk.toPk());
     thing2.addOwner(newId1.ppk.toPk());
@@ -183,7 +183,7 @@ describe('SkyRepo Adapter', function() {
 
     const test2 = new EcCompetency();
     test2.generateId(repo.selectedServer);
-    test2.testDataField = {obj: 'thing'};
+    test2.testDataField = { obj: 'thing' };
     test2.name = 'Test 2';
 
     let result3 = await repo.multiput([test1, test2]);

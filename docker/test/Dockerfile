@@ -2,7 +2,7 @@ FROM docker.elastic.co/elasticsearch/elasticsearch:8.8.1
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt upgrade -qqy
-RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs git
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy git nodejs
 
 ENV CASS_VERSION=1.5
 COPY src CASS/src

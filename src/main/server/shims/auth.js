@@ -56,7 +56,7 @@ let getPk = async(identifier) => {
         return null;
     });
     
-    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/";
+    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/"; // NOSONAR -- This is being used as a URI.
     let keypair = new EcRemoteLinkedData();
     if (myKey != null)
     {
