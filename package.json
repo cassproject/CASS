@@ -15,7 +15,7 @@
     "test:deps": "docker-compose up -d elasticsearch-cass",
     "test:nodemon": "nodemon src/main/server.js",
     "test:logs": "pm2 logs --nostream --lines 1000",
-    "dev": "npm run dev:deps && npm run dev:nodemon",
+    "dev": "export SKYREPO_DEBUG=true|| set SKYREPO_DEBUG=true&&npm run dev:deps && npm run dev:nodemon",
     "dev:docker": "npm run dev:deps && npm run dev:nodemon:docker",
     "dev:https": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& npm run dev:nodemon",
     "dev:clientSideCertificates": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& export HTTP2=false|| set HTTP2=false&& export HTTPS_REJECT_UNAUTHORIZED=false|| set HTTPS_REJECT_UNAUTHORIZED=false&& export REQUEST_CLIENT_SIDE_CERTIFICATE=true|| set REQUEST_CLIENT_SIDE_CERTIFICATE=true&& npm run dev:nodemon",

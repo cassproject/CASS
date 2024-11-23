@@ -9117,9 +9117,12 @@ const skyrepoManyGetPermanent = async function (manyParseParams) {
     const result = await skyrepoManyGetIndexInternal.call(this, 'permanent', manyParseParams);
     return result;
 };
-global.skyrepoManyGetInternal = async function (manyParseParams) {
+let skyrepoManyGetInternal = global.skyrepoManyGetInternal = async function (manyParseParams) {
     let response = await skyrepoManyGetPermanent(manyParseParams);
 
+    if (global.skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepMGStuff', response);
+    }
     let resultDocs = (response)['docs'];
     const results = [];
     const notFoundInPermanent = [];
@@ -9203,7 +9206,7 @@ const skyrepoGetParsed = async function (id, version, type, dontDecrypt, history
     return filtered;
 };
 const skyrepoManyGetParsed = async function (manyParseParams) {
-    const results = await (skyrepoManyGetInternal).call(this, manyParseParams);
+    const results = await skyrepoManyGetInternal.call(this, manyParseParams);
     if (results == null) {
         return null;
     }
@@ -9515,7 +9518,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
     }
     return searchResults;
 };
-global.queryParse = function (urlRemainder) {
+let queryParse = global.queryParse = function (urlRemainder) {
     if (urlRemainder == null && this.params.urlRemainder != null) {
         urlRemainder = this.params.urlRemainder;
     }
