@@ -223,7 +223,7 @@ var xapiStatement = async function (s, accm) {
             continue;
         alreadyAligned[a.competency + a.framework] = true;
         await a.setEvidence([JSON.stringify(s)]);
-        await a.setAssertionDate(new Date(s.timestamp).getTime());
+        await a.setAssertionDate(new Date(s.timestamp).getTime() || new Date().getTime());
         await a.setNegative(negative);
         a.confidence = scaled;
         if (accm != null)

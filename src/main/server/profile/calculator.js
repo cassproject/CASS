@@ -321,11 +321,13 @@ module.exports = class ProfileCalculator {
         const vertices = {}; // These are metaVertices
         const topLevelVertices = {}; // These are metaVertices
         const inEdges = {};
+        this.log("Processing state start.");
         for (let coprocessor of coprocessors)
             coprocessor.postProcessStart.call(this,vertices,topLevelVertices, inEdges);
 
         // Put information from each vertex into its meta-vertex,
         // and attach additional data on assertions, goals, & required signatures into meta.state
+        this.log("Processing vertices.");
         for (const vertex of this.g.verticies) {
             for (let coprocessor of coprocessors)
                 coprocessor.postProcessEachVertex.call(this,vertex,vertices,topLevelVertices, inEdges);
@@ -336,6 +338,7 @@ module.exports = class ProfileCalculator {
         // * topLevelVertices
         // * inEdges.equivalent
         // * inEdges.narrows
+        this.log("Processing edges.");
         for (const edge of this.g.edges) {
             for (let coprocessor of coprocessors)
                 coprocessor.postProcessEachEdge.call(this,edge,vertices,topLevelVertices, inEdges);
@@ -343,6 +346,7 @@ module.exports = class ProfileCalculator {
 
         let hash;
         do {
+            this.log("Iterating.");
             hash = hashSortCoerce.hash(topLevelVertices);
 
             // Handle relations between competencies, to determine how the competencies relate to goals
@@ -360,6 +364,7 @@ module.exports = class ProfileCalculator {
         let profile = {
             children: []
         };
+        this.log("Collapsing data into tree.");
         for (let coprocessor of coprocessors)
             coprocessor.postProcessProfileBefore.call(this,profile,vertices,topLevelVertices, inEdges);
 
@@ -391,6 +396,7 @@ module.exports = class ProfileCalculator {
             profile.children = profile.children.concat(topLevelVertices[vertexKey]);
         }
         // Get summary statistics for results
+        this.log("Profile - per element.");
         for (const child of profile.children) {
             for (let coprocessor of coprocessors)
                 coprocessor.postProcessProfileEachElement.call(this,child,inEdges,vertices);
@@ -403,6 +409,7 @@ module.exports = class ProfileCalculator {
         profile.children = newChildren;
 
         // Insert profile.timeline (resource alignments for goal competencies and their children)
+        this.log("Last step.");
         for (let obj of profile.children)
         for (let coprocessor of coprocessors)
             coprocessor.postProcessProfileAfter.call(this,obj,profile);

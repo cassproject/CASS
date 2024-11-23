@@ -235,7 +235,7 @@ if (global.bindWebService === undefined) {
                         }
                         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (new Date().getTime() - ms) + ' ms) ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
                     } catch (ex) {
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPostError', `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPostError', `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, process.env.LOG_HEADERS ? req.headers : undefined, ex.toString());
                         if (ex.status !== undefined && ex.status != null) {
                             res.status(ex.status);
                         } else {

@@ -60,7 +60,7 @@ let timeoutHandler;
 let previousHash = '';
 
 
-let flush = function() {
+let flush = function () {
     try {
         if (logBuffers.length > 0) {
             console.log(logBuffers.join('\n'));
@@ -75,14 +75,14 @@ let flush = function() {
     }
 };
 
-let hash = function(msg) {
+let hash = function (msg) {
     let concat = previousHash + msg;
     let newHash = EcCrypto.md5(concat);
     previousHash = newHash;
     return `${newHash} ${msg}`;
 };
 
-let syslogFormat = function(facility, severity, timestamp, msgID, data) {
+let syslogFormat = function (facility, severity, timestamp, msgID, data) {
     // RFC 3164
     let msg = hash(`<${(SyslogFacility.USER * 8) + severity}>${timestamp.toISOString()} ${global.repo.selectedServer} ${facility + msgID.trim().substr(0, 27)} ${data}`);
     return msg;
@@ -91,11 +91,11 @@ let syslogFormat = function(facility, severity, timestamp, msgID, data) {
 /*
    * @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
    */
-let report = function(system, severity, message, ...data) {
+let report = function (system, severity, message, ...data) {
     if (process.env.PRODUCTION == 'true') {
         try {
             if (filterLogs(system, severity, message)) {
-                const msg = JSON.stringify({date: new Date(), message, data, system, severity});
+                const msg = JSON.stringify({ date: new Date(), message, data, system, severity });
                 logBuffers.push(hash(msg));
             }
             if (logBuffers.length > 1000) {
@@ -114,6 +114,8 @@ let report = function(system, severity, message, ...data) {
         }
         if (severity <= 6 || global.skyrepoDebug) {
             try {
+                if (severity == 3)
+                    console.trace(data?.[0]);
                 if (EcArray.isArray(data)) data = JSON.stringify(data);
                 console.log(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:', data);
             } catch (ex) {
@@ -159,7 +161,7 @@ if (process.env.LOG_FILTERED_MESSAGES) {
     }
 }
 
-let filterLogs = function(system, severity, message) {
+let filterLogs = function (system, severity, message) {
     if (filteredCategories[system]) {
         return false;
     }
