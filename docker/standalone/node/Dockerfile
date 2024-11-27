@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM --platform=linux/amd64 node:20-slim
 USER root
 WORKDIR /app
 COPY package.json ./

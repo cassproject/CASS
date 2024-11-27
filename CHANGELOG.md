@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.71
+* Updated libraries.
+* Updated editor.
+* 
+
 ## 1.5.70
 * Added additional logging
 * WIP Code coverage and scans
