@@ -117,6 +117,7 @@
     "pm2": "^5.4.3",
     "pure-uuid": "^1.8.1",
     "rdflib": "^2.2.35",
+    "rxjs": "^7.8.1",
     "spdy": "^4.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
