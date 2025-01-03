@@ -1,46 +1,46 @@
-let rxjs = require('rxjs');
-
-const init = async ()=>{
-    const result = await httpPut({
-        mappings:{
-            enabled: false
+let subscription = global.events.database.connected.subscribe(async (connected) => {
+    if (connected) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralInit');
+        const result = await httpPut({
+            mappings: {
+                enabled: false
+            }
+        }, elasticEndpoint + '/ephemeral', 'application/json', elasticHeaders());
+        if (global.skyrepoDebug) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalEphe', JSON.stringify(result));
         }
-    }, elasticEndpoint + '/ephemeral', 'application/json', elasticHeaders());
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalEphe', JSON.stringify(result));
-    }
 
-    global.ephemeral.put('test', {test: 'test'}, new Date().getTime() + 10000);
+        global.ephemeral = {
+            get: async function (id) {
+                return (await httpGet(elasticEndpoint + '/ephemeral/_doc/' + id, 'application/json', elasticHeaders()))["_source"];
+            },
+            put: async function (id, obj, until) {
+                return await httpPut(obj, elasticEndpoint + '/ephemeral/_doc/' + id + '?version=' + until + '&version_type=external', 'application/json', elasticHeaders());
+            },
+        }
 
-    const timer = rxjs.interval(60000);
-    timer.subscribe(async ()=>{
-        let result = await httpPost({
-            "query": {
-                "bool": {
-                    "filter": {
-                        "script": {
+        global.ephemeral.put('test', { test: 'test' }, new Date().getTime() + 10000);
+
+        global.events.database.periodic.subscribe(async () => {
+            let result = await httpPost({
+                "query": {
+                    "bool": {
+                        "filter": {
                             "script": {
-                                "source": "doc._version.value < params.param1",
-                                "lang": "painless",
-                                "params": {
-                                    "param1": new Date().getTime()
+                                "script": {
+                                    "source": "doc._version.value < params.param1",
+                                    "lang": "painless",
+                                    "params": {
+                                        "param1": new Date().getTime()
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }, elasticEndpoint + '/ephemeral/_delete_by_query', 'application/json', elasticHeaders());
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralDeleteOld', JSON.stringify(result));
-    });
-    global.ephemeral = {
-        get: async function (id) {
-            return (await httpGet(elasticEndpoint + '/ephemeral/_doc/' + id, 'application/json', elasticHeaders()))["_source"];
-        },
-        put: async function (id, obj, until) {
-            return await httpPut(obj, elasticEndpoint + '/ephemeral/_doc/' + id + '?version=' + until + '&version_type=external', 'application/json', elasticHeaders());
-        },
+            }, elasticEndpoint + '/ephemeral/_delete_by_query', 'application/json', elasticHeaders());
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralDeleteOld', JSON.stringify(result));
+        });
+        subscription.unsubscribe();
     }
-}
-
-init();
+});

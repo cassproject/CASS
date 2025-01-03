@@ -21,8 +21,7 @@
 require('./shims/levr.js');
 require('./shims/stjs.js');
 
-
-global.skyrepoMigrate = async function (after) {
+global.events.server.init.subscribe(async function (after) {
     let elasticState = await httpGet(elasticEndpoint + '/', true, global.elasticHeaders());
     const result = await httpPut({ 'index.mapping.total_fields.limit': 10000 }, elasticEndpoint + '/schema.cassproject.org.0.4.configuration/_settings', 'application/json', global.elasticHeaders());
     if (global.skyrepoDebug) {
@@ -408,8 +407,8 @@ global.skyrepoMigrate = async function (after) {
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', await httpDelete(elasticEndpoint + '/.temp.' + index, true, global.elasticHeaders()));
         }
     }
-    after();
-};
+    global.events.database.connected.next(true);
+});
 
 skyrepoReindex = async function () {
     if (this.params.debug != null) {

@@ -1,5 +1,4 @@
 const fs = require('fs');
-const os = require('os');
 const busboy = require('busboy');
 const getStream = require('get-stream');
 const dns = require('dns').promises;

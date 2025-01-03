@@ -77,6 +77,8 @@ if (process.env.DISABLED_ADAPTERS) {
     }
 }
 
+require('./server/shims/event.js');
+require('./server/shims/ephemeral.js');
 require('./server/shims/jobs.js');
 require('./server/shims/mailer.js');
 require('./server/shims/auth.js');
@@ -84,12 +86,10 @@ require('./server/shims/levr.js');
 require('./server/shims/stjs.js');
 require('./server/shims/cassproject.js');
 
-
 // Tests remaining: Upgrade from elasticsearch 5.x to 6.x to 7.x
 require('./server/util.js');
 
 require('./server/skyRepo.js');
-
 require('./server/skyId.js');
 
 require('./server/adapter/asn/asn.js');
@@ -178,7 +178,29 @@ process.on('exit', () => {
     global.auditLogger.flush();
 });
 
-skyrepoMigrate(async function() {
+global.events.server.listening.subscribe(async (isListening) => {
+    if (!isListening) return;
+    global.elasticSearchInfo = await httpGet(elasticEndpoint + '/', true, global.elasticHeaders());
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassListening', `CaSS listening at http${envHttps ? 's' : ''}://localhost:${port}${baseUrl}`);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassEndpoint', `CaSS talks to itself at ${repo.selectedServer}`);
+    if (repo.selectedServerProxy != null) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassLoopbackProxy', `CaSS thinks it its endpoint is at ${repo.selectedServerProxy}`);
+    }
+    global.replicate();
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassStartupTime', `Startup time ${(new Date().getTime() - startupDt.getTime())} ms`);
+    let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassHeapSize', `Total Heap Size ${totalHeapSizeInGB}GB`);
+    glob.sync('./src/main/server/cartridge/*.js').forEach(function (file) {
+        require(path.resolve(file));
+    });
+    glob.sync('./src/main/server/cartridge/**/*.js').forEach(function (file) {
+        require(path.resolve(file));
+    });
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
+});
+
+global.events.database.connected.subscribe(async function(isConnected) {
+    if (!isConnected) return;
     try {
         // Increase the number of fields for cass configurations
         let result = await httpPut({
@@ -199,25 +221,6 @@ skyrepoMigrate(async function() {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "SkyrepMigrate", 'Unable to increase competency field limit', e);
     }
 
-    const after = async () => {
-        global.elasticSearchInfo = await httpGet(elasticEndpoint + '/', true, global.elasticHeaders());
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassListening', `CaSS listening at http${envHttps?'s':''}://localhost:${port}${baseUrl}`);
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassEndpoint', `CaSS talks to itself at ${repo.selectedServer}`);
-        if (repo.selectedServerProxy != null) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassLoopbackProxy', `CaSS thinks it its endpoint is at ${repo.selectedServerProxy}`);
-        }
-        global.replicate();
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassStartupTime', `Startup time ${(new Date().getTime() - startupDt.getTime())} ms`);
-        let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassHeapSize', `Total Heap Size ${totalHeapSizeInGB}GB`);
-        glob.sync( './src/main/server/cartridge/*.js' ).forEach( function( file ) {
-            require( path.resolve( file ) );
-        });
-        glob.sync( './src/main/server/cartridge/**/*.js' ).forEach( function( file ) {
-            require( path.resolve( file ) );
-        });
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
-    };
     if (envHttps) {
         global.ca = fs.readFileSync('ca.crt');
         let options = {
@@ -240,16 +243,16 @@ skyrepoMigrate(async function() {
             }
         }
         if (envHttp2) {
-            global.server = spdy.createServer(options, app).listen(port, after);
+            global.server = spdy.createServer(options, app).listen(port, ()=>{ global.events.server.listening.next(true); });
         } else {
-            global.server = https.createServer(options, app).listen(port, after);
+            global.server = https.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         }
         if (process.env.HTTPS_REJECT_UNAUTHORIZED == 'false') {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'CassIgnoreUnauthorized', 'Accepting Unauthorized / Self-Signed HTTPS Certificates. This should only be used in testing mode or in an internal network.');
             process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
         }
     } else {
-        global.server = app.listen(port, after);
+        global.server = app.listen(port, () => { global.events.server.listening.next(true); });
     }
 
     if (typeof process.env.MAX_CONNECTIONS !== 'undefined') {
@@ -260,3 +263,5 @@ skyrepoMigrate(async function() {
     });
     require('./server/websocket.js');
 });
+
+global.events.server.init.next();
