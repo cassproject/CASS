@@ -21,7 +21,7 @@
 require('./shims/levr.js');
 require('./shims/stjs.js');
 
-global.events.server.init.subscribe(async function (after) {
+global.events.server.init.subscribe(skyrepoMigrate = async function (after) {
     let elasticState = await httpGet(elasticEndpoint + '/', true, global.elasticHeaders());
     const result = await httpPut({ 'index.mapping.total_fields.limit': 10000 }, elasticEndpoint + '/schema.cassproject.org.0.4.configuration/_settings', 'application/json', global.elasticHeaders());
     if (global.skyrepoDebug) {

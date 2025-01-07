@@ -1,4 +1,4 @@
-var expressWs = require('express-ws')(global.app, global.server);
+require('express-ws')(global.app, global.server);
 let wses = [];
 app.ws('/ws/custom', function(ws, req) {
     wses.push(ws);
@@ -12,11 +12,15 @@ app.ws('/ws/custom', function(ws, req) {
             }
     });
 });
-global.wsBroadcast = async(s) => {
+global.events.database.afterSave.subscribe(async (s) => {
+    if (EcArray.isArray(s))
+        s = JSON.stringify(s.map(x=>EcRemoteLinkedData.trimVersionFromUrl(x.toJson ? JSON.parse(x.toJson())["@id"] : x["@id"])));
+    else
+        s = EcRemoteLinkedData.trimVersionFromUrl(s.toJson ? JSON.parse(s.toJson())["@id"] : s["@id"]);
     for (let ws of wses)
-    try {
-        ws.send(s);
-    } catch(err) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassWsCustomError", err);
-    }
-}
+        try {
+            ws.send(s);
+        } catch(err) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CassWsCustomError", err);
+        }
+});

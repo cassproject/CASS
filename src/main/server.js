@@ -170,8 +170,6 @@ const sendMail = require('./server/shims/mailer.js').sendMail;
 process.on('uncaughtException', async (err) => {
     await sendMail(`CaSS Server`, 'Uncaught Exception', `The CaSS Server at ${process.env.CASS_LOOPBACK} experienced an uncaught exception: ${err.stack}`);
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, 'uncaughtException', err.stack);
-    global.auditLogger.flush();
-    process.exit(1);
 });
 
 process.on('exit', () => {
@@ -243,7 +241,7 @@ global.events.database.connected.subscribe(async function(isConnected) {
             }
         }
         if (envHttp2) {
-            global.server = spdy.createServer(options, app).listen(port, ()=>{ global.events.server.listening.next(true); });
+            global.server = spdy.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         } else {
             global.server = https.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         }

@@ -5,19 +5,6 @@ const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/gener
 const fs = require('fs');
 const sharedAdminCache = require("./shims/util/sharedAdminCache");
 
-
-// RS2 shims
-const afterSave = function (o) {
-    wsBroadcast(EcRemoteLinkedData.trimVersionFromUrl(o['@id']));
-};
-const afterSaveBulk = function (ary) {
-    wsBroadcast(JSON.stringify(ary));
-};
-const beforeGet = function () {
-    // TODO: xAPI polling (if enabled);
-};
-// ~RS2 shims~
-
 global.keyFor = function (filename) {
     if (process.env[filename] != null) {
         return process.env[filename];
@@ -9644,7 +9631,6 @@ const endpointData = async function () {
         start = 0;
     }
     if (q !== undefined && q != null) {
-        (beforeGet).call(this);
         return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint, null, ids));
     }
     const methodType = this.params.methodType;
@@ -9657,7 +9643,7 @@ const endpointData = async function () {
         if (oldObj == null) {
             return null;
         }
-        afterSave(JSON.parse(oldObj.toJson()));
+        global.events.database.afterSave.next(oldObj);
         return null;
     } else if (methodType == 'POST') {
         let o = (fileFromDatastream).call(this, 'data', null);
@@ -9665,7 +9651,6 @@ const endpointData = async function () {
             o = JSON.parse(fileToString(o));
         }
         if (o == null || o == '') {
-            (beforeGet).call(this);
             o = await (skyrepoGetParsed).call(this, id, version, type, null, history);
             if (o == null) {
                 error('Object not found or you did not supply sufficient permissions to access the object.', 404);
@@ -9675,10 +9660,9 @@ const endpointData = async function () {
             return o;
         }
         await (skyrepoPutParsed).call(this, o, id, version, type);
-        afterSave(o.toJson != null ? JSON.parse(o.toJson()) : o);
+        global.events.database.afterSave.next(o);
         return null;
     } else if (methodType == 'GET') {
-        (beforeGet).call(this);
         let o = await (skyrepoGetParsed).call(this, id, version, type, null, history);
         if (o == null) {
             error('Object not found or you did not supply sufficient permissions to access the object.', 404);
@@ -9955,12 +9939,7 @@ const endpointMultiPut = async function () {
         }
     }
     await httpGet(elasticEndpoint + '/_all/_refresh', true, elasticHeaders());
-    const ids = [];
-    for (let i = 0; i < results.length; i++) {
-        const o = results[i];
-        ids.push(EcRemoteLinkedData.trimVersionFromUrl((o)['@id']));
-    }
-    afterSaveBulk(ids);
+    global.events.database.afterSave.next(results);
     return JSON.stringify(results);
 };
 const endpointSingleGet = async function (dontDecrypt) {

@@ -5,6 +5,7 @@ const events = global.events = {};
 events.database = {
     connected: new rxjs.BehaviorSubject(false),
     periodic: rxjs.interval(60000),
+    afterSave: new rxjs.Subject(),
 };
 events.server = {
     init: new rxjs.Subject(),
