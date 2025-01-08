@@ -10129,6 +10129,8 @@ const getCorsOrigins = function () {
 };
 let realCrypto = require('crypto');
 const pingWithTime = function () {
+    if (this.ctx?.req?.eim?.ids)
+        global.events.person.doPing(this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()));
     return JSON.stringify({
         ping: 'pong',
         time: new Date().getTime(),

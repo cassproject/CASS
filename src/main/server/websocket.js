@@ -2,6 +2,8 @@ require('express-ws')(global.app, global.server);
 let wses = [];
 app.ws('/ws/custom', function(ws, req) {
     wses.push(ws);
+    if (this.ctx?.req?.eim?.ids)
+        global.events.person.doPing(this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()));
     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassWsCustom", "Websocket connected.");
     ws.on('close', function(msg) {
         for (let i = 0;i < wses.length;i++)
