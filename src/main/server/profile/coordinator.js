@@ -26,20 +26,20 @@ let profileCalculator = async function(){
     if (framework == null)
         error("Framework not identified or does not exist.", 400);
 
-    let query_agent_pk = null;
-    let query_agent_ppk = null;
-    if (this.ctx.req.eim != null && this.ctx.req.eim.ids[0] != null)
+    let query_agent_pk = [];
+    let query_agent_ppk = [];
+    if (this?.ctx?.req?.eim)
     {
-        query_agent_pk = this.ctx.req.eim.ids[0].ppk.toPk().toPem();
-        query_agent_ppk = this.ctx.req.eim.ids[0].ppk.toPem();
+        query_agent_pk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().toPem()));
+        query_agent_ppk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPem()));
     }
     if (process.env.PROFILE_PPK != null)
     {
-        query_agent_ppk = process.env.PROFILE_PPK;
-        query_agent_pk = EcPpk.fromPem(query_agent_ppk).toPk().toPem();
+        query_agent_ppk.push(process.env.PROFILE_PPK);
+        query_agent_pk.push(EcPpk.fromPem(query_agent_ppk).toPk().toPem());
     }
 
-    if (query_agent_ppk == null)
+    if (query_agent_ppk.length == 0)
         error("Server is not acting on behalf of a user, and has no ability to access data.", 400);
 
     let subject = await anythingToPem(subjectId);
@@ -54,7 +54,7 @@ let profileCalculator = async function(){
     };
 
     // Perform caching check and establish cache key
-    p.cacheKey = `${framework.shortId()}|${subject}|${query_agent_pk}|${EcCrypto.md5(JSON.stringify(p.params))}|general`;
+    p.cacheKey = `${framework.shortId()}|${subject}|${JSON.stringify(query_agent_pk)}|${EcCrypto.md5(JSON.stringify(p.params))}|general`;
     if (this.params.flushCache == "true")
         delete profileInProgress[p.cacheKey];
     else if (process.env.PROFILE_CACHE == "true") {
@@ -68,7 +68,7 @@ let profileCalculator = async function(){
     }
 
     // Return the profile if it's already been computed
-    const cached = profileCache[p.cacheKey];
+    const cached = global.ephemeral.get(p.cacheKey);
     if (cached != null && (this.params.flushCache !== "true" && (process.env.PROFILE_CACHE == "true" || this.params.cache == "true"))) {
         cached.msSpeed = new Date().getTime() - p.timer;
         global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
@@ -84,7 +84,7 @@ let profileCalculator = async function(){
         if (profile.error == null)
         {
             if (process.env.PROFILE_CACHE == "true" || this.params.cache == "true")
-                profileCache[p.cacheKey] = profile;
+                global.ephemeral.put(p.cacheKey,profile,new Date().getTime()+24*60*60*1000);
             delete profileInProgress[p.cacheKey];
             return JSON.stringify(profile);
         }
@@ -96,9 +96,11 @@ let profileCalculator = async function(){
         error(profile.error,500);
     }
 }
+let oldError = global.error;
+global.error = (error)=>{console.trace(error);oldError(error);}
 
 if (!global.disabledAdapters['profile']) {
-    bindWebService("/profile/latest", profileCalculator);
+    bindWebService("/profile/latest", global.calculateProfile = profileCalculator);
 }
 
 

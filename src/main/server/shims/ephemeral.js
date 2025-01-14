@@ -17,6 +17,29 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
             put: async function (id, obj, until) {
                 return await httpPut(obj, elasticEndpoint + '/ephemeral/_doc/' + id + '?version=' + until + '&version_type=external', 'application/json', elasticHeaders());
             },
+            delete: async function (id) {
+                return await httpDelete(obj, elasticEndpoint + '/ephemeral/_doc/' + id, elasticHeaders())
+            },
+            deleteWith: async function (partOfId) { 
+                let result = await httpPost({
+                    "query": {
+                        "bool": {
+                            "filter": {
+                                "script": {
+                                    "script": {
+                                        "source": "doc._id.value.contains(params.param1)",
+                                        "lang": "painless",
+                                        "params": {
+                                            "param1": partOfId
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }, elasticEndpoint + '/ephemeral/_delete_by_query', 'application/json', elasticHeaders());
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralDeleteOld', JSON.stringify(result));
+            }
         }
 
         global.ephemeral.put('test', { test: 'test' }, new Date().getTime() + 10000);
