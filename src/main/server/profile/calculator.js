@@ -15,6 +15,7 @@ const calculatorVersion = 4;
 // Library (node-object-hash) for generating hashes of JS objects.
 // Used to determine when rippling properties are done being computed.
 const hashSortCoerce = hasher({sort: false, coerce: false});
+const process = require('process');
 
 // Globals defined at beginning of profile calculation
 const TRACE_SOURCE = false; // Logs the framework name and entire subject PEM with each console log
@@ -67,7 +68,7 @@ module.exports = class ProfileCalculator {
             `${gray}(${ms}ms)${reset}\n`
         )
         this.timer = new Date().getTime();
-        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator", `${msg} (${ms} ms step, ${msTotal} ms total)`);
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator", `${msg} (${ms} ms step, ${msTotal} ms total, ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} MB used))`);
     }
 
     /** Prints an error to the console, but doesn't stop execution. */

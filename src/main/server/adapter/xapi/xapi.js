@@ -209,7 +209,7 @@ var xapiStatement = async function (s, accm) {
     var alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id);
     var alreadyAligned = {};
     for (var i = 0; i < alignedCompetencies.length; i++) {
-        var a = new EcAssertion();
+        let a = new EcAssertion();
         a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id + alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
         a.addOwner(authorityPk);
@@ -230,6 +230,7 @@ var xapiStatement = async function (s, accm) {
             accm.push(a);
         else
             EcRepository.save(a, (msg) => {
+                global.events.assertionAbout.next(actorPk);
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSaveAssertion", msg);
             }, (error) => {
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSaveAssertion", error);

@@ -9190,6 +9190,8 @@ const skyrepoGetParsed = async function (id, version, type, dontDecrypt, history
     if (EcObject.keys(filtered).length == 0) {
         return null;
     }
+    global.events.data.read.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    global.events.data.any.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
     return filtered;
 };
 const skyrepoManyGetParsed = async function (manyParseParams) {
@@ -9210,6 +9212,8 @@ const skyrepoManyGetParsed = async function (manyParseParams) {
     if (filtered == null) {
         return null;
     }
+    global.events.data.read.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    global.events.data.any.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
     return filtered;
 };
 global.skyrepoPut = async function (parseParams) {
@@ -9244,6 +9248,8 @@ global.skyrepoPutParsed = async function (o, id, version, type) {
     }
     await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may change it.', null, null);
     await skyrepoPutInternal.call(this, o, id, version, type);
+    global.events.data.write.next([o], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    global.events.data.any.next([o], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
 };
 global.skyrepoPutParsedBulk = async function (ary) {
     const map = {};
@@ -9274,6 +9280,8 @@ global.skyrepoPutParsedBulk = async function (ary) {
         }
     }
 
+    global.events.data.write.next(ary, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    global.events.data.any.next(ary, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
     return failed;
 };
 let validateSignatures = async function (id, version, type, errorMessage) {
@@ -9380,6 +9388,8 @@ global.skyrepoDelete = async function (id, version, type) {
     } else {
         error('Can\'t find object to delete', 401);
     }
+    global.events.data.delete.next([oldObj], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    global.events.data.any.next([oldObj], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
     return oldObj;
 };
 const searchObj = async function (q, start, size, sort, track_scores) {
@@ -9503,6 +9513,8 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPagin8', size, hits.length, searchResults.length);
         return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size, ids)).slice(0, size);
     }
+    global.events.data.found.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    global.events.data.any.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
     return searchResults;
 };
 let queryParse = global.queryParse = function (urlRemainder) {

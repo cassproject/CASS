@@ -8,7 +8,7 @@ let pool = null;
 let profileCache = global.profileCache = {};
 let profileInProgress = global.profileInProgress = {};
 
-let profileCalculator = async function(){    
+let profileCalculator = async function() {
     const subjectId = this.params.subject;
     const frameworkId = this.params.frameworkId;
     if (this.params.flushCache != null && this.params.flushCache)
@@ -22,21 +22,20 @@ let profileCalculator = async function(){
     if (frameworkId == null)
         error("Framework not identified or does not exist.", 400);
 
-    let framework = await EcFramework.get(frameworkId);
-    if (framework == null)
-        error("Framework not identified or does not exist.", 400);
-
+    let query_agent_fingerprint = [];
     let query_agent_pk = [];
     let query_agent_ppk = [];
     if (this?.ctx?.req?.eim)
     {
         query_agent_pk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().toPem()));
         query_agent_ppk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPem()));
+        query_agent_fingerprint.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().fingerprint()));
     }
     if (process.env.PROFILE_PPK != null)
     {
         query_agent_ppk.push(process.env.PROFILE_PPK);
         query_agent_pk.push(EcPpk.fromPem(query_agent_ppk).toPk().toPem());
+        query_agent_fingerprint.push(EcPpk.fromPem(query_agent_ppk).toPk().fingerprint());
     }
 
     if (query_agent_ppk.length == 0)
@@ -54,7 +53,7 @@ let profileCalculator = async function(){
     };
 
     // Perform caching check and establish cache key
-    p.cacheKey = `${framework.shortId()}|${subject}|${JSON.stringify(query_agent_pk)}|${EcCrypto.md5(JSON.stringify(p.params))}|general`;
+    p.cacheKey = `${EcRemoteLinkedData.trimVersionFromUrl(frameworkId).split("/").pop()}|${EcPk.fromPem(subject).fingerprint()}|-${query_agent_fingerprint.join('-')}|${EcCrypto.md5(JSON.stringify(p.params))}|general`;
     if (this.params.flushCache == "true")
         delete profileInProgress[p.cacheKey];
     else if (process.env.PROFILE_CACHE == "true") {
@@ -68,7 +67,7 @@ let profileCalculator = async function(){
     }
 
     // Return the profile if it's already been computed
-    const cached = global.ephemeral.get(p.cacheKey);
+    const cached = await global.ephemeral.get(p.cacheKey);
     if (cached != null && (this.params.flushCache !== "true" && (process.env.PROFILE_CACHE == "true" || this.params.cache == "true"))) {
         cached.msSpeed = new Date().getTime() - p.timer;
         global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
@@ -83,8 +82,8 @@ let profileCalculator = async function(){
         profile = await pool.exec(p);
         if (profile.error == null)
         {
-            if (process.env.PROFILE_CACHE == "true" || this.params.cache == "true")
-                global.ephemeral.put(p.cacheKey,profile,new Date().getTime()+24*60*60*1000);
+            // if (process.env.PROFILE_CACHE == "true" || this.params.cache == "true")
+            await global.ephemeral.put(p.cacheKey,profile,new Date().getTime()+24*60*60*1000);
             delete profileInProgress[p.cacheKey];
             return JSON.stringify(profile);
         }
@@ -113,6 +112,7 @@ module.exports = async ()=>{
         shareEnv: true,
         workerData: workerData,
         resourceLimits: {
+            maxYoungGenerationSizeMb: process.env.WORKER_MAX_MEMORY || 512,
             maxOldGenerationSizeMb: process.env.WORKER_MAX_MEMORY || 512
         }
     });
@@ -121,3 +121,5 @@ module.exports = async ()=>{
         profileCache = global.profileCache = {};
     }
 };
+
+require("./controller.js");

@@ -168,7 +168,7 @@ let postProcessEachVertex = function(vertex,vertices,topLevelVertices,inEdges){
     topLevelVertices[vertex.id] = meta; // All vertices go in here (these will be filtered later)
     vertices[vertex.id] = meta;
 
-    meta.name = vertex.getName().trim();
+    meta.name = vertex.getName()?.trim();
     meta.shortName = schema.Thing.getDisplayStringFrom(vertex["schema:alternateName"]);
     meta.id = vertex.shortId();
     //TODO meta.inFrameworks = [...new Set(global.competencyFrameworkMap[vertex.shortId()])],

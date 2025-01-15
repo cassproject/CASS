@@ -20,7 +20,15 @@ events.person = {
     },
     activePeople: [],
     arrived: new rxjs.BehaviorSubject([]),
+    assertionAbout: new rxjs.Subject(),
 };
+events.data = {
+    read: new rxjs.Subject(),
+    write: new rxjs.Subject(),
+    delete: new rxjs.Subject(),
+    found: new rxjs.Subject(),
+    any: new rxjs.Subject(),
+}
 
 events.person.arrived.subscribe(async (people) => {
     console.log(people);
