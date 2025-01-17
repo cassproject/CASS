@@ -28,7 +28,51 @@ events.data = {
     delete: new rxjs.Subject(),
     found: new rxjs.Subject(),
     any: new rxjs.Subject(),
+    frameworks: [],
 }
+
+events.data.read.subscribe(async (data) => {
+    if (!EcArray.isArray(data)) data = [data];
+    for (let datum of data) {
+        let d = new EcRemoteLinkedData().copyFrom(datum);
+        if (d.type == "Framework" || d.encryptedType == "Framework")
+            EcArray.setAdd(events.data.frameworks, d.shortId());
+    }
+    // console.log("Frameworks", data, events.data.frameworks);
+});
+
+events.data.found.subscribe(async (data) => {
+    if (!EcArray.isArray(data)) data = [data];
+    for (let datum of data) {
+        let d = new EcRemoteLinkedData().copyFrom(datum);
+        if (d.type == "Framework" || d.encryptedType == "Framework")
+            EcArray.setAdd(events.data.frameworks, d.shortId());
+    }
+    // console.log("Frameworks", data, events.data.frameworks);
+});
+
+events.data.write.subscribe(async (data) => {
+    if (!EcArray.isArray(data)) data = [data];
+    for (let datum of data) {
+        let d = new EcRemoteLinkedData().copyFrom(datum);
+        if (d.type == "Framework" || d.encryptedType == "Framework") {
+            EcArray.setRemove(events.data.frameworks, d.shortId());
+            events.data.frameworks.unshift(d.shortId());
+        }
+    }
+    // console.log("Frameworks", data, events.data.frameworks);
+});
+
+events.data.delete.subscribe(async (data) => {
+    if (!EcArray.isArray(data)) data = [data];
+    for (let datum of data) {
+        let d = new EcRemoteLinkedData().copyFrom(datum);
+        if (d.type == "Framework" || d.encryptedType == "Framework") {
+            EcArray.setRemove(events.data.frameworks, d.shortId());
+        }
+    }
+    // console.log("Frameworks", data, events.data.frameworks);
+});
 
 events.person.arrived.subscribe(async (people) => {
     console.log(people);

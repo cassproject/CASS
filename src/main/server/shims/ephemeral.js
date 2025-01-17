@@ -38,6 +38,7 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
                         }
                     }
                 }, elasticEndpoint + '/ephemeral/_delete_by_query', 'application/json', elasticHeaders());
+                console.log(JSON.stringify(result));
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralDeleteOld', JSON.stringify(result));
             }
         }
@@ -62,6 +63,7 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
                     }
                 }
             }, elasticEndpoint + '/ephemeral/_delete_by_query', 'application/json', elasticHeaders());
+            console.log(JSON.stringify(result));
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralDeleteOld', JSON.stringify(result));
         });
         subscription.unsubscribe();

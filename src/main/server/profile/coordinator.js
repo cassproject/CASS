@@ -43,13 +43,21 @@ let profileCalculator = async function() {
 
     let subject = await anythingToPem(subjectId);
     
+    let paramsCopy = {...this.params};
+    delete paramsCopy.subject;
+    delete paramsCopy.frameworkId;
+    delete paramsCopy.flushCache;
+    delete paramsCopy.cache;
+    delete paramsCopy.autoComputed;
+    delete paramsCopy.methodType;
+    delete paramsCopy.urlRemainder;
     const p = {
-        subject: subjectId, 
+        subject: subject, 
         frameworkId: frameworkId, 
         query_agent: query_agent_ppk, 
         flushCache: this.params.flushCache, 
         lastFlush: lastFlush,
-        params: this.params
+        params: paramsCopy
     };
 
     // Perform caching check and establish cache key
@@ -65,12 +73,15 @@ let profileCalculator = async function() {
             }
         }
     }
+    console.log(p.params);
+    console.log(p.cacheKey);
 
     // Return the profile if it's already been computed
     const cached = await global.ephemeral.get(p.cacheKey);
     if (cached != null && (this.params.flushCache !== "true" && (process.env.PROFILE_CACHE == "true" || this.params.cache == "true"))) {
         cached.msSpeed = new Date().getTime() - p.timer;
-        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
+        if (this.params.autoComputed != true)
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
         return JSON.stringify(cached);
     }
 

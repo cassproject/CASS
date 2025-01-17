@@ -56,7 +56,7 @@ let getPk = async(identifier) => {
         return null;
     });
     
-    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/"; // NOSONAR -- This is being used as a URI.
+    let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/api/"; // NOSONAR -- This is being used as a URI.
     let keypair = new EcRemoteLinkedData();
     if (myKey != null)
     {
@@ -77,7 +77,7 @@ let getPk = async(identifier) => {
         await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair),null,null,keyEim);
     }
     if (myKey == null)
-    {        
+    {
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";

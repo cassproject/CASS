@@ -9481,7 +9481,9 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
         try {
             await (signatureSheet).call(this);
             searchResults = await (filterResults).call(this, hits.map((h) => h._source), true);
-            searchResults = searchResults.map((x) => x['@id']);
+            global.events.data.found.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+            global.events.data.any.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+            searchResults = searchResults.map((x) => x['@id']).filter(x => x);
         } catch (ex) {
             if (ex.toString().indexOf('Signature Violation') != -1) {
                 throw ex;
@@ -9504,17 +9506,14 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
             hit += id;
             hits[i] = hit;
         }
-        searchResults = await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits }, dataStreams: this.dataStreams });
+        searchResults = (await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits }, dataStreams: this.dataStreams })).filter(x => x);
     }
-    searchResults = searchResults.filter(x => x);
     // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
     originalSize = originalSize || size;
     if (size < 10000 && hits.length >= size && searchResults.length < originalSize) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPagin8', size, hits.length, searchResults.length);
         return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size, ids)).slice(0, size);
     }
-    global.events.data.found.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-    global.events.data.any.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
     return searchResults;
 };
 let queryParse = global.queryParse = function (urlRemainder) {
