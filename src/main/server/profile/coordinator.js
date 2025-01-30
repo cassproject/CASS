@@ -73,8 +73,6 @@ let profileCalculator = async function() {
             }
         }
     }
-    console.log(p.params);
-    console.log(p.cacheKey);
 
     // Return the profile if it's already been computed
     const cached = await global.ephemeral.get(p.cacheKey);

@@ -1,9 +1,15 @@
 # Change Log
 
+## 1.6.0
+* Updated editor.
+* Added event based processing (reactive processing) with rxjs. Added events for (see src/main/server/shims/event.js).
+* Added ephemeral storage and periodic deletion of ephemeral records where the TTL has expired. (see src/main/server/shims/ephemeral.js)
+* This will require some updates to server.js if you are overriding it, or it will break some things.
+* When in SSO mode or have a PROFILE_PPK defined, visitors will trigger profiles to be calculated for everyone else based on that visitor's viewport. These records expire every 24 hours.
+
 ## 1.5.71
 * Updated libraries.
 * Updated editor.
-* 
 
 ## 1.5.70
 * Added additional logging
