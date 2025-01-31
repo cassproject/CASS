@@ -1,4 +1,4 @@
-/* -
+/*-
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
@@ -52,7 +52,7 @@ app.use(compression({}));
 app.use(cors(corsOptions));
 
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
-const port = process.env.PORT || (envHttps ? 443 : 80);
+const port = global.port = process.env.PORT || (envHttps ? 443 : 80);
 
 let repo = global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? 'https://localhost/api/' : 'http://localhost/api/');
@@ -61,12 +61,8 @@ repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 global.elasticEndpoint = process.env.ELASTICSEARCH_ENDPOINT || 'http://localhost:9200';
 
 global.skyrepoDebug = process.env.SKYREPO_DEBUG || false;
-global.thisEndpoint = function() {
-    return repo.selectedServer;
-};
-global.repoEndpoint = function() {
-    return repo.selectedServer;
-};
+global.thisEndpoint = function () { return repo.selectedServer; }
+global.repoEndpoint = function () { return repo.selectedServer; }
 
 
 global.disabledAdapters = {};
@@ -81,7 +77,9 @@ require('./server/shims/event.js');
 require('./server/shims/ephemeral.js');
 require('./server/shims/jobs.js');
 require('./server/shims/mailer.js');
-require('./server/shims/auth.js');
+if (process.env.STATIC_NOAUTH != "true") {
+    require("./server/shims/auth.js");
+}
 require('./server/shims/levr.js');
 require('./server/shims/stjs.js');
 require('./server/shims/cassproject.js');
@@ -105,6 +103,15 @@ require('./server/adapter/ce/pna.js');
 require('./server/adapter/replicate/replicate.js');
 require('./server/profile/coordinator.js')();
 
+if (process.env.DISABLED_EDITOR != "true") {
+    app.use(baseUrl, express.static('src/main/webapp/', { maxAge: 24 * 60 * 60 * 1000 }));
+    app.use(baseUrl + "cass-editor/", express.static('src/main/webapp/', { maxAge: 24 * 60 * 60 * 1000 }));
+}
+
+if (process.env.STATIC_NOAUTH == "true") {
+    require("./server/shims/auth.js");
+}
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
@@ -122,17 +129,11 @@ app.get('/api', (req, res, next) => {
 app.get('/api/', (req, res, next) => {
     return res.redirect('swagger');
 });
-if (process.env.KILL)
-{
+if (process.env.KILL) {
     app.get('/api/kill', (req, res, next) => {
         console.log("Kill received. Exiting process.");
         process.exit(0);
     });
-}
-
-if (process.env.DISABLED_EDITOR != 'true') {
-    app.use(baseUrl, express.static('src/main/webapp/'));
-    app.use(baseUrl+'cass-editor/', express.static('src/main/webapp/'));
 }
 
 if (process.env.INCLUDE_SAMEORIGIN_IFRAME_HEADER == "true") {
@@ -170,11 +171,16 @@ const sendMail = require('./server/shims/mailer.js').sendMail;
 process.on('uncaughtException', async (err) => {
     await sendMail(`CaSS Server`, 'Uncaught Exception', `The CaSS Server at ${process.env.CASS_LOOPBACK} experienced an uncaught exception: ${err.stack}`);
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, 'uncaughtException', err.stack);
+    global.auditLogger.flush();
+    process.exit(1);
 });
 
 process.on('exit', () => {
     global.auditLogger.flush();
 });
+
+if (global.wsBroadcast == null)
+    var wsBroadcast = global.wsBroadcast = () => { };
 
 global.events.server.listening.subscribe(async (isListening) => {
     if (!isListening) return;
@@ -197,7 +203,7 @@ global.events.server.listening.subscribe(async (isListening) => {
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
 });
 
-global.events.database.connected.subscribe(async function(isConnected) {
+global.events.database.connected.subscribe(async function (isConnected) {
     if (!isConnected) return;
     try {
         // Increase the number of fields for cass configurations
@@ -233,7 +239,7 @@ global.events.database.connected.subscribe(async function(isConnected) {
         if (process.env.CRL_LISTS === 'true') {
             try {
                 let paths = glob.sync('./src/main/server/crl/*.pem');
-                let crls = paths.map(x=>fs.readFileSync(path.resolve(x)));
+                let crls = paths.map(x => fs.readFileSync(path.resolve(x)));
                 options.crl = crls;
                 global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CRLList", `Loaded CRLs: ${paths}`);
             } catch (e) {

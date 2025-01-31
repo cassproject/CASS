@@ -154,7 +154,7 @@ parentPort.on('message', async(param) => {
     }
     if (allFrameworks.length == 0)
     {
-        allFrameworks = await EcFramework.search(repo,"*",null,null,{size:10000});
+        allFrameworks = await EcFramework.search(repo,"@type:Framework",null,null,{size:10000});
         global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", `Profile Calculator: Fetched ${allFrameworks.length} frameworks for determining network effects.`);
     }
 
