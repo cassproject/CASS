@@ -64,8 +64,8 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
         }
         if (c == null) 
             return c;
-        if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] && c["ceasn:hasChild"]["@list"] != null)
-            c["ceasn:hasChild"]["@list"].sort(function(a, b) {
+        if (c["ceasn:hasChild"] != null)
+            c["ceasn:hasChild"].sort(function(a, b) {
                 return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
             });
         c.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json";
@@ -290,15 +290,13 @@ async function cassFrameworkAsCeasn() {
 
                 if (competencies[r.target] != null)
                     if (competencies[r.target]["ceasn:hasChild"] == null)
-                        competencies[r.target]["ceasn:hasChild"] = {
-                            "@list": []
-                        };
+                        competencies[r.target]["ceasn:hasChild"] = [];
 
                 if (competencies[r.target] != null)
                     if (competencies[r.source] != null)
-                        competencies[r.target]["ceasn:hasChild"]["@list"].push(await ceasnExportUriTransform(competencies[r.source].id));
+                        competencies[r.target]["ceasn:hasChild"].push(await ceasnExportUriTransform(competencies[r.source].id));
                     else
-                        competencies[r.target]["ceasn:hasChild"]["@list"].push(await ceasnExportUriTransform(r.source));
+                        competencies[r.target]["ceasn:hasChild"].push(await ceasnExportUriTransform(r.source));
             }
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO) {
@@ -390,14 +388,12 @@ async function cassFrameworkAsCeasn() {
     }
     competencies = mappedCompetencies.slice(0);
     if (f["ceasn:hasTopChild"] == null) {
-        f["ceasn:hasTopChild"] = {
-            "@list": []
-        };
+        f["ceasn:hasTopChild"] = [];
     }
     for (let c of competencies) {
         if (c && c["@id"]) {
             if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
-                f["ceasn:hasTopChild"]["@list"].push(await ceasnExportUriTransform(c["@id"]));
+                f["ceasn:hasTopChild"].push(await ceasnExportUriTransform(c["@id"]));
             }
             f.competency.push(await ceasnExportUriTransform(c["@id"]));
         }
@@ -472,7 +468,6 @@ async function cassFrameworkAsCeasn() {
             }
         }
     }
-
     f = await jsonLdCompact(f.toJson(), ctx);
     if (socList) {
         f["socList"] = socList;
