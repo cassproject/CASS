@@ -1,9 +1,11 @@
 # Change Log
 
+## 1.5.72
+* Updated ceasn adapter.
+
 ## 1.5.71
 * Updated libraries.
 * Updated editor.
-* 
 
 ## 1.5.70
 * Added additional logging
