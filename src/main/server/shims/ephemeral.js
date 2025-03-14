@@ -14,6 +14,21 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
             get: async function (id) {
                 return (await httpGet(elasticEndpoint + '/ephemeral/_doc/' + id, 'application/json', elasticHeaders()))["_source"];
             },
+            gets: async function (ids) {
+                if (global.skyrepoDebug) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
+                }
+
+                const mget = {};
+                const docs = [];
+                (mget)['docs'] = docs;
+
+                docs.push(...ids.map(id => ({ _index: 'ephemeral', _id: id })));
+                
+                let response = await httpPost(mget, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
+                response = response?.docs?.map(x => x._source);
+                return response || [];
+            },
             put: async function (id, obj, until) {
                 return await httpPut(obj, elasticEndpoint + '/ephemeral/_doc/' + id + '?version=' + until + '&version_type=external', 'application/json', elasticHeaders());
             },
