@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.5.73
+* Remove usage of @list in ceasn schema
+* Updated libraries.
+* Updated editor.
+
 ## 1.5.72
 * Updated ceasn adapter.
 
