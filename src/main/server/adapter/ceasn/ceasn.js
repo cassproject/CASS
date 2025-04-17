@@ -1256,23 +1256,23 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
         var c = await EcConcept.get(cs["skos:hasTopConcept"][i], null, null, repo);
         if (c != null) {
             levels[cs["skos:hasTopConcept"][i]] = levels[c.id] = c;
-            if (c["skos:narrower"]) {
-                async function getSubConcepts(c) {
-                    repo.precache(c["skos:narrower"], function () { });
-                    for (var j = 0; j < c["skos:narrower"].length; j++) {
-                        var subC = await EcConcept.get(c["skos:narrower"][j], null, null, repo);
-                        if (subC != null) {
-                            levels[subC.id] = subC;
-                            allLevels.push(subC.id);
-                            if (subC["skos:narrower"]) {
-                                getSubConcepts(subC);
-                            }
-                        }
-                    }
+            // if (c["skos:narrower"]) {
+            //     async function getSubConcepts(c) {
+            //         repo.precache(c["skos:narrower"], function () { });
+            //         for (var j = 0; j < c["skos:narrower"].length; j++) {
+            //             var subC = await EcConcept.get(c["skos:narrower"][j], null, null, repo);
+            //             if (subC != null) {
+            //                 levels[subC.id] = subC;
+            //                 allLevels.push(subC.id);
+            //                 if (subC["skos:narrower"]) {
+            //                     getSubConcepts(subC);
+            //                 }
+            //             }
+            //         }
 
-                }
-                await getSubConcepts(c);
-            }
+            //     }
+            //     await getSubConcepts(c);
+            // }
         }
     }
 

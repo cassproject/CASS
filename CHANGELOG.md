@@ -7,6 +7,14 @@
 * This will require some updates to server.js if you are overriding it, or it will break some things.
 * When in SSO mode or have a PROFILE_PPK defined, visitors will trigger profiles to be calculated for everyone else based on that visitor's viewport. These records expire every 24 hours.
 
+## 1.5.73
+* Remove usage of @list in ceasn schema
+* Updated libraries.
+* Updated editor.
+
+## 1.5.72
+* Updated ceasn adapter.
+
 ## 1.5.71
 * Updated libraries.
 * Updated editor.
