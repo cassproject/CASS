@@ -33,26 +33,26 @@ let getPk = async(identifier) => {
     {
         return getPkCache[identifier];
     }
-    console.log("Looking for " + identifier);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'AuthLookingIdentifier', "Looking for " + identifier);
     if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
         return loadConfigurationFile("keys/"+identifier, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
         });
     if (keyEim == null)
     {
-        console.log("Establishing skyId Elastic EIM.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'AuthCreatingIdentifier', "Establishing skyId Elastic EIM.");
         keyEim = new EcIdentityManager();
         let i = new EcIdentity();
         i.displayName = "Key Manager";
         i.ppk = EcPpk.fromPem(loadConfigurationFile("skyId.pem", function() {
-            console.log("Generating SkyId Elastic EIM fingerprint.");
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'AuthGeneratingEIMFingerprint', "Generating SkyId Elastic EIM fingerprint.");
             return EcPpk.fromPem(rsaGenerate()).toPem();
         }));
-        console.log("SkyId Elastic EIM fingerprint: " + i.ppk.toPk().fingerprint());
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthEIMFingerprint', "SkyId Elastic EIM fingerprint: " + i.ppk.toPk().fingerprint());
         keyEim.addIdentity(i);
     }
     let myKey = loadConfigurationFile("keys/"+identifier, () => {
-        console.log("Could not find " + identifier + " in file system.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFindKeyDirectoryFail', "Could not find " + identifier + " in file system.");
         return null;
     });
     
@@ -60,12 +60,12 @@ let getPk = async(identifier) => {
     let keypair = new EcRemoteLinkedData();
     if (myKey != null)
     {
-        console.log("Found file system keypair. Securing and saving to Elastic.");
-        loadConfigurationFile("keys/backup/"+identifier, () => {
-            console.log("Saved to backup location.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileSystemKeypair', "Found file system keypair. Securing and saving to Elastic.");
+        loadConfigurationFile("keys/backup/" + identifier, () => {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairBackupSaved', "Saved to backup location.");
             return myKey;
         });
-        console.log("Deleting old keypair file.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairDeleted', "Deleting old keypair file.");
         fs.unlinkSync("etc/keys/"+identifier);
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
@@ -73,7 +73,7 @@ let getPk = async(identifier) => {
         keypair.addOwner(keyEim.ids[0].ppk.toPk());
         keypair.assignId(identityPrefix,keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
         keypair.ppk = myKey;
-        console.log("Saving Elastic keypair to: " + keypair.shortId());
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundElasticKeypairSaved', "Saving Elastic keypair to: " + keypair.shortId());
         await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair),null,null,keyEim);
     }
     if (myKey == null)
@@ -81,8 +81,8 @@ let getPk = async(identifier) => {
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
-        keypair.assignId(identityPrefix,keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
-        console.log("Reading Elastic keypair from: " + keypair.shortId());
+        keypair.assignId(identityPrefix, keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairRead', "Reading Elastic keypair from: " + keypair.shortId());
         keypair = await EcRepository.get(keypair.shortId(),null,null,repo,keyEim);
         if (keypair != null)
             keypair = await EcEncryptedValue.fromEncryptedValue(keypair,null,null,keyEim);
@@ -94,8 +94,8 @@ let getPk = async(identifier) => {
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
-        keypair.assignId(identityPrefix,keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
-        console.log("Reading Elastic keypair (again) from: " + keypair.shortId());
+        keypair.assignId(identityPrefix, keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairRead2', "Reading Elastic keypair (again) from: " + keypair.shortId());
         keypair = await EcRepository.get(keypair.shortId(),null,null,repo,keyEim);
         if (keypair != null)
             keypair = await EcEncryptedValue.fromEncryptedValue(keypair,null,null,keyEim);
@@ -104,14 +104,14 @@ let getPk = async(identifier) => {
     }
     if (myKey == null)
     {
-        console.log("Could not find Elastic keypair. Generating a new one.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairCreate', "Could not find Elastic keypair. Generating a new one.");
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
         keypair.addOwner(keyEim.ids[0].ppk.toPk());
         keypair.assignId(identityPrefix,keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
         myKey = keypair.ppk = EcPpk.fromPem(rsaGenerate()).toPem();
-        console.log("Saving Elastic keypair to: " + keypair.shortId());
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairSave', "Saving Elastic keypair to: " + keypair.shortId());
         await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair),null,null,keyEim);
     }
     getPkCache[identifier] = myKey;
@@ -478,41 +478,42 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
         ipFilter += ",::ffff:127.0.0.1";
         let ipFilterList = ipFilter.split(",");
         let allowed = false;
+        req.permittedBy = [];
         if (req.originalUrl == global.baseUrl + "/callback")
-            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //SSO is permitted
+            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //SSO is permitted
         if (req.originalUrl == global.baseUrl + "/login")
-            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
+            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
         if (req.originalUrl == global.baseUrl + "/logout")
-            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
+            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
         if (req.originalUrl == global.baseUrl + "/api/ping")
-            {if (debug) console.log("Permitted by: " + 'sso callback');allowed = true;} //Health check is permitted
+            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //Health check is permitted
         if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList,req.headers['x-client-ip']))
-            {if (debug) console.log("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+            {req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList,req.headers['x-forwarded-for']))
-            {if (debug) console.log("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+            {req.permittedBy.push("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList,req.headers['cf-connecting-ip']))
-            {if (debug) console.log("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+            {req.permittedBy.push("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['fastly-client-ip'] != null && ipMatch(ipFilterList,req.headers['fastly-client-ip']))
-            {if (debug) console.log("Permitted by: " + 'fastly-client-ip' + ": " + req.headers['fastly-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+            {req.permittedBy.push("Permitted by: " + 'fastly-client-ip' + ": " + req.headers['fastly-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['true-client-ip'] != null && ipMatch(ipFilterList,req.headers['true-client-ip']))
-            {if (debug) console.log("Permitted by: " + 'true-client-ip' + ": " + req.headers['true-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+            {req.permittedBy.push("Permitted by: " + 'true-client-ip' + ": " + req.headers['true-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-real-ip'] != null && ipMatch(ipFilterList,req.headers['x-real-ip']))
-            {if (debug) console.log("Permitted by: " + 'x-real-ip' + ": " + req.headers['x-real-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+            {req.permittedBy.push("Permitted by: " + 'x-real-ip' + ": " + req.headers['x-real-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-cluster-client-ip'] != null && ipMatch(ipFilterList,req.headers['x-cluster-client-ip']))
-            {if (debug) console.log("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+            {req.permittedBy.push("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-forwarded'] != null && ipMatch(ipFilterList,req.headers['x-forwarded']))
-            {if (debug) console.log("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.connection != null && req.connection.remoteAddress != null && ipMatch(ipFilterList,req.connection.remoteAddress))
-            {if (debug) console.log("Permitted by: " + 'connection' + ": " + req.connection.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.socket != null && req.socket.remoteAddress != null && ipMatch(ipFilterList,req.socket.remoteAddress))
-            {if (debug) console.log("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.connection != null && req.connection.socket != null && req.connection.socket.remoteAddress != null && ipMatch(ipFilterList,req.connection.socket.remoteAddress))
-            {if (debug) console.log("Permitted by: " + 'connectionSocket' + ": " + req.connection.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.info != null && req.info.remoteAddress != null && ipMatch(ipFilterList,req.info.remoteAddress))
-            {if (debug) console.log("Permitted by: " + 'info' + ": " + req.info.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
+            {req.permittedBy.push("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.connection?.remoteAddress != null && ipMatch(ipFilterList,req.connection.remoteAddress))
+            {req.permittedBy.push("Permitted by: " + 'connection' + ": " + req.connection.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
+        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList,req.socket.remoteAddress))
+            {req.permittedBy.push("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
+        if (req.connection?.socket?.remoteAddress != null && ipMatch(ipFilterList,req.connection.socket.remoteAddress))
+            {req.permittedBy.push("Permitted by: " + 'connectionSocket' + ": " + req.connection.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
+        if (req.info?.remoteAddress != null && ipMatch(ipFilterList,req.info.remoteAddress))
+            {req.permittedBy.push("Permitted by: " + 'info' + ": " + req.info.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
         if (process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
         if (req.eim != null && req.eim.ids.length >= parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED))
-            {if (debug) console.log("Permitted by: " + 'sso ids > '+ process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length);allowed = true;} //In a permissioned group.
+            {req.permittedBy.push("Permitted by: " + 'sso ids > '+ process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length);allowed = true;} //In a permissioned group.
         if (!allowed)
         {            
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.",JSON.stringify( {

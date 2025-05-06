@@ -89,8 +89,8 @@ let syslogFormat = function (facility, severity, timestamp, msgID, data) {
 };
 
 /*
-   * @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
-   */
+* @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
+*/
 let report = function (system, severity, message, ...data) {
     if (process.env.PRODUCTION == 'true') {
         try {
@@ -114,14 +114,12 @@ let report = function (system, severity, message, ...data) {
         }
         if (severity <= 6 || global.skyrepoDebug) {
             try {
-                try {
-                    if (severity == 3)
-                        console.trace(data);
-                } catch (ex) { }
+                if (severity == 3)
+                    console.trace(data);
                 if (EcArray.isArray(data)) data = JSON.stringify(data);
-                console.log(new Date(), system, (((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0))+"M", InverseSeverity[severity], '', message.substr(0, 18), '\t:', data);
+                console.log(new Date(), system, ((((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0)) + "M").padEnd(5, " "), InverseSeverity[severity], '', message.substr(0, 18).padEnd(18, " "), data);
             } catch (ex) {
-                console.trace(new Date(), system, (((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0))+"M", InverseSeverity[severity], '', message.substr(0, 18), '\t:',ex);
+                console.trace(new Date(), system, ((((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0)) + "M").padEnd(5, " "), InverseSeverity[severity], '', message.substr(0, 18).padEnd(18, " "), data, ex);
             }
         }
     }

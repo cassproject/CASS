@@ -2,14 +2,15 @@ let going = false;
 let keysIndex = 0;
 let personIndex = 0;
 let frameworksIndex = 0;
-console.log("Loading auto profile calculator.");
+
+global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'ProfileControllerLoad', "Loading auto profile calculator.");
 if (process.env.PROFILE_PPK != null)
 {
     global.events.person.activePeople.push(JSON.stringify([process.env.PROFILE_PPK]));
 }
 let autoCalculatePeople = async ()=>{
     if (going) return;
-    console.log("Auto-calculating profiles.");
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'ProfileControllerCompute', "Auto-calculating profiles.");
     try {
         going = true;
         for (keysIndex = 0;keysIndex < global.events.person.activePeople.length;keysIndex++) {
@@ -42,9 +43,8 @@ let autoCalculatePeople = async ()=>{
                         },
                     });
                     }
-                    catch(ex){
-                        console.log(framework.shortId());
-                        console.error(ex);
+                    catch (ex) {
+                        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'ProfileControllerError', framework.shortId(),ex);
                     }
                 }, { concurrency: 5 });
             }
@@ -53,7 +53,7 @@ let autoCalculatePeople = async ()=>{
         console.error(ex);
     } finally {
         going = false;
-        console.log("Done calculating profiles.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'ProfileControllerDone', "Done calculating profiles.");
     }
 }
 
@@ -104,15 +104,13 @@ let invalidateProfileByAssertion = async (data) => {
     }
     if (hasAssertion) {
         EcArray.removeDuplicates(subjects);
-        console.log(subjects);
         for (let subject of subjects) {
-            console.log("Deleting profiles associated with " + EcPk.fromPem(subject).fingerprint());
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'ProfileControllerInvalidating', "Deleting profiles associated with " + EcPk.fromPem(subject).fingerprint());
             await global.ephemeral.deleteWith(`|${EcPk.fromPem(subject).fingerprint()}|`);
             keysIndex = 0;
             personIndex = 0;
             autoCalculatePeople();
         }
-        // console.log("Frameworks", data, events.data.frameworks);
     }
 }
 

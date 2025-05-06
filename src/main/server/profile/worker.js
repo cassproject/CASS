@@ -113,22 +113,22 @@ parentPort.on('message', async (param) => {
         }
 
         const memoryData = process.memoryUsage();
-        console.log(formatMemoryUsage(memoryData.heapUsed) + " used of " + formatMemoryUsage(memoryData.heapTotal));
         if (memoryData.heapUsed > 750 * 1024 * 1024) {
-            console.log("cryptoCacheCleared");
+
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileWorkerCryptoCacheCleared', "Hit high water memory mark, clearing crypto cache.");
             EcCrypto.cache = {};
             if (global.gc && process.memoryUsage().heapUsed > 500 * 1024 * 1024) {
-                console.log("profileFrameworksCleared");
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileWorkerProfileFrameworksCleared', "Hit high water memory mark, clearing profile frameworks cache.");
                 global.profileFrameworks = {};
                 if (global.gc) global.gc();
             }
             if (global.gc && process.memoryUsage().heapUsed > 500 * 1024 * 1024) {
-                console.log("allFrameworksCleared");
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileWorkerAllFrameworksCleared', "Hit high water memory mark, clearing all frameworks cache.");
                 global.allFrameworks = {};
                 if (global.gc) global.gc();
             }
             if (process.memoryUsage().heapUsed > 400 * 1024 * 1024) {
-                console.log("repositoryCacheCleared");
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileWorkerRepositoryCacheCleared', "Hit high water memory mark, clearing repository cache.");
                 EcRepository.cache = {};
                 if (global.gc) global.gc();
             }

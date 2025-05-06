@@ -266,7 +266,10 @@ var xapiLoopEach = async function(since, config, sinceFilePath) {
     try
     {
         var results = await xapiEndpoint.call(this, null, since, config);
-    } catch (ex) { console.log(ex); return; }
+    } catch (ex) { 
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'xAPILoopEach', ex);
+        return; 
+    }
     while (results != null && results.statements != null && results.statements.length > 0) {
         for (var i = 0; i < results.statements.length; i++) {
             await xapiStatement.call(this, results.statements[i]);
@@ -284,7 +287,8 @@ var xapiLoop = async function () {
     let tokenSet = null;
     if (process.env.OIDC_CLIENT_ENDPOINT != null) {
         const oidcIssuer = await openid.Issuer.discover(process.env.OIDC_CLIENT_ENDPOINT);
-        console.log('Discovered issuer %s %O', oidcIssuer.issuer, oidcIssuer.metadata);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'xAPILoop', 'Discovered issuer %s %O', oidcIssuer.issuer, oidcIssuer.metadata);
+
         const client = new oidcIssuer.Client({
             client_id: process.env.OIDC_CLIENT_CLIENT_ID,
             client_secret: process.env.OIDC_CLIENT_CLIENT_SECRET,
@@ -298,7 +302,8 @@ var xapiLoop = async function () {
             resource: 'urn:example:third-party-api',
             grant_type: 'client_credentials'
         });
-        console.log(tokenSet);
+
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'xAPIOIDCAuth', tokenSet);
     }
 
     var ident = new EcIdentity();

@@ -134,7 +134,7 @@ app.get('/api/', (req, res, next) => {
 
 if (process.env.KILL) {
     app.get('/api/kill', (req, res, next) => {
-        console.log("Kill received. Exiting process.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, 'CassExit', "Kill received. Exiting process.");
         process.exit(0);
     });
 }

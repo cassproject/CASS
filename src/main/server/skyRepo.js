@@ -9020,7 +9020,6 @@ const skyrepoHistoryPermanent = async function (id, version, type) {
     };
     const historyUrl = elasticEndpoint + '/permanent/_search';
     const history = await httpPost(query, historyUrl, 'application/json', null, null, null, null, elasticHeaders());
-    // console.log(JSON.stringify(history, null, 2));
     return history;
 };
 global.skyrepoGetInternal = async function (id, version, type) {
@@ -9082,7 +9081,6 @@ global.skyrepoHistoryInternal = async function (id, version, type) {
                 let Bts = B.getTimestamp();
                 if (Ats == null) Ats = hits[i]._source.writeMs;
                 if (Bts == null) Bts = hits[j]._source.writeMs;
-                // console.log(Ats, Bts);
                 if (A.id + Ats == B.id + Bts) {
                     hits.splice(j--, 1); // NOSONAR -- Valid method of filtering.
                 }
@@ -9363,7 +9361,7 @@ const skyrepoDeleteInternalPermanent = async function (id, version, type) {
 global.skyrepoDelete = async function (id, version, type) {
     const oldObj = await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may delete it.');
     if (oldObj == null) {
-        console.log("Couldn't find data to delete, removing the index entry.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'IndexNoPermanent', "Couldn't find data to delete, removing the index entry.");
         await skyrepoDeleteInternalIndex.call(this, id, version, type);
         return null;
     }
@@ -9453,10 +9451,6 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
     }
     const results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), 'application/json', false, null, null, true, elasticHeaders());
 
-    // console.log(results);
-    //if (global.skyrepoDebug) {
-    //    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(results));
-    //}
     if (results == null) {
         error('An unknown error has occurred. If using the \'start\' parameter, request may be out of bounds.', 500);
     }

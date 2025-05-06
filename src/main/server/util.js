@@ -481,7 +481,7 @@ skyrepoCull = async function () {
     let firstQueryUrl = elasticEndpoint + '/permanent/_search?scroll=1m&version';
     let results = await httpPost(firstQueryPost, firstQueryUrl, 'application/json', 'false', global.elasticHeaders());
     let scroll = results['_scroll_id'];
-    console.log(JSON.stringify(results, null, 2));
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoCullResults', JSON.stringify(results, null, 2));
     let counter = 0;
     let resultsData = {
         total: 0,
@@ -498,34 +498,34 @@ skyrepoCull = async function () {
             let id = hit._id;
             resultsData.total++;
             if (id.indexOf('.') == id.length - 1) {
-                console.log("Latest: " + id);
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestId', "Latest: " + id);
             }
             else {
-                console.log("Versioned: " + id, JSON.stringify(resultsData));
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestVersioned', "Versioned: " + id, JSON.stringify(resultsData));
                 let latestId = id.substring(0, id.indexOf('.'));
                 let latest = await httpGet(elasticEndpoint + '/permanent/_doc/' + latestId + ".", global.elasticHeaders());
                 if (latest != null && latest._source != null) {
                     let latestVersion = EcRemoteLinkedData.getVersionFromUrl(JSON.parse(latest._source.data)["@id"]);
                     let version = parseInt(id.substring(id.indexOf('.') + 1));
                     if (version != null && latestVersion != null && version < latestVersion) {
-                        console.log(" Deleting: " + id, " version: " + version + " latest: " + latestVersion);
+                        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestDeleted', " Deleting: " + id, " version: " + version + " latest: " + latestVersion);
                         resultsData.deletedRevision++;
                         httpDelete(elasticEndpoint + '/permanent/_doc/' + id, global.elasticHeaders());
                     }
                 }
                 else {
-                    console.log(" Deleting (doesn't exist): " + id);
+                    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestDeleted', " Deleting (doesn't exist): " + id);
                     resultsData.deletedDeleted++;
                     httpDelete(elasticEndpoint + '/permanent/_doc/' + id, global.elasticHeaders());
                 }
             }
             if (++counter % 100 == 0) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepReindex', 'Culling records: on ' + counter + ' .');
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoCull', 'Culling records: on ' + counter + ' .');
             }
         }, { concurrency: 10 });
         results = await httpGet(elasticEndpoint + '/_search/scroll?scroll=1m&scroll_id=' + scroll, global.elasticHeaders());
     }
-    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepReindex', 'Culled ' + counter + ' records.');
+    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoCull', 'Culled ' + counter + ' records.');
     if (this.params.debug != null) {
         global.skyrepoDebug = false;
     }
@@ -548,7 +548,7 @@ skyrepoCullFast = async function () {
     let firstQueryUrl = elasticEndpoint + '/permanent/_search?scroll=1m&version';
     let results = await httpPost(firstQueryPost, firstQueryUrl, 'application/json', 'false', global.elasticHeaders());
     let scroll = results['_scroll_id'];
-    console.log(JSON.stringify(results, null, 2));
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoCullFastResults', JSON.stringify(results, null, 2));
     let counter = 0;
     let deleted = 0;
     let resultsData = {
@@ -585,7 +585,7 @@ skyrepoCullFast = async function () {
         counter += hits.length;
         deleted += hits3.length;
         //Delete what's left (records with no head and records with a head with a different version)
-        console.log("Deleting " + hits3.length + " records" + ` (${counter}, ${deleted}, ${hits?.length}, ${hits2?.length}, ${heads?.length}, ${hits3?.length})`);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'SkyrepoCullFastIterate', "Deleting " + hits3.length + " records" + ` (${counter}, ${deleted}, ${hits?.length}, ${hits2?.length}, ${heads?.length}, ${hits3?.length})`);
         if (hits3.length > 0) {
             let del = hits3.map((hit) => {
                 return {
