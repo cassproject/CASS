@@ -8,8 +8,8 @@ if (process.env.PROFILE_PPK != null)
     global.events.person.activePeople.push(JSON.stringify([process.env.PROFILE_PPK]));
 }
 let autoCalculatePeople = async ()=>{
-    console.log("Auto-calculating profiles.");
     if (going) return;
+    console.log("Auto-calculating profiles.");
     try {
         going = true;
         for (keysIndex = 0;keysIndex < global.events.person.activePeople.length;keysIndex++) {
@@ -20,13 +20,14 @@ let autoCalculatePeople = async ()=>{
                 let i = new EcIdentity();
                 i.ppk = EcPpk.fromPem(key);
                 i.displayName = "Identity from Controller";
-                eim.ids.push(i);
+                eim.addIdentity(i);
             }
             let frameworks = await repo.multiget(events.data.frameworks, eim);
             let people = await EcPerson.search(repo, "*", null, null, { size: 10000 }, eim);
             for (personIndex = 0;personIndex < people.length;personIndex++) {
                 let person = people[personIndex];
-                Promise.map(frameworks, async (framework) => {
+                await Promise.map(frameworks, async (framework) => {
+                    try{
                     await global.calculateProfile.call({
                         params: {
                             subject: person.owner[0],
@@ -40,11 +41,19 @@ let autoCalculatePeople = async ()=>{
                             },
                         },
                     });
+                    }
+                    catch(ex){
+                        console.log(framework.shortId());
+                        console.error(ex);
+                    }
                 }, { concurrency: 5 });
             }
         }
+    } catch (ex) {
+        console.error(ex);
     } finally {
         going = false;
+        console.log("Done calculating profiles.");
     }
 }
 

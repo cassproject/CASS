@@ -8,13 +8,13 @@ const gray = "\x1b[38;5;242m";
 // const blink = "\x1b[5m";
 const reset = "\x1b[0m";
 
-const _ = () => {};
+const _ = () => { };
 
 const calculatorVersion = 4;
 
 // Library (node-object-hash) for generating hashes of JS objects.
 // Used to determine when rippling properties are done being computed.
-const hashSortCoerce = hasher({sort: false, coerce: false});
+const hashSortCoerce = hasher({ sort: false, coerce: false });
 const process = require('process');
 
 // Globals defined at beginning of profile calculation
@@ -29,16 +29,15 @@ let PRECACHE_ALL_FRAMEWORKS = false;
 
 let coprocessors = [];
 let coprocessorConfiguration = "";
-glob.sync( 'src/main/server/profile/coprocessors/*.js' ).forEach( function( file ) {
-    let coprocessor = require( path.resolve( file ) );
-    if (coprocessor.enabled !== false)
-    {
+glob.sync('src/main/server/profile/coprocessors/*.js').forEach(function (file) {
+    let coprocessor = require(path.resolve(file));
+    if (coprocessor.enabled !== false) {
         coprocessors.push(coprocessor);
         coprocessorConfiguration += path.resolve(file) + coprocessor.version;
     }
 });
 coprocessorConfiguration = EcCrypto.md5(coprocessorConfiguration);
-coprocessors.sort((a,b)=>{return a.order - b.order});
+coprocessors.sort((a, b) => { return a.order - b.order });
 
 module.exports = class ProfileCalculator {
     constructor() {
@@ -79,17 +78,28 @@ module.exports = class ProfileCalculator {
 
     // Calculate the profile
     async calculate() {
+        if (this.frameworkId != null)
+            if (this.framework == null)
+                this.framework = await EcFramework.get(this.frameworkId, null, null, repo);
+
+        if (this.framework == null) {
+            return {error:"Framework not found"};
+        }
+
         if (this.g == null) {
-            let cacheKey = "graph_"+this.frameworkId;
+            let cacheKey = "graph_" + this.frameworkId;
             this.g = profileFrameworks[cacheKey];
             if (this.g == null) {
                 this.g = new EcFrameworkGraph();
+
+                this.framework.competency = this.framework.competency || [];
+                this.framework.relation = this.framework.relation || [];
 
                 // Add the framework to the graph
                 await this.g.addFramework(this.framework, repo, _, _);
 
                 // Insert resource alignments
-                await Promise.all(coprocessors.map(async(coprocessor)=>{await coprocessor.insertResources.call(this)}));
+                await Promise.all(coprocessors.map(async (coprocessor) => { await coprocessor.insertResources.call(this) }));
 
                 // Recursively add outside (aka related) frameworks to graph, based on framework's relations stored in graph's edges
                 await this.insertOutsideFrameworks([this.framework.shortId()]);
@@ -107,21 +117,16 @@ module.exports = class ProfileCalculator {
         let assertionHash = null;
         // Search for assertions about the subject for later in the background
         let assertions = [];
-        await Promise.all(coprocessors.map(async(coprocessor)=>{assertions = assertions.concat(await coprocessor.fetchAssertions.call(this))}));
-        assertions = assertions.filter((x)=>x); //Remove nulls.
-        for (let i = 0;i < assertions.length;i++) //Remove duplicates.
+        await Promise.all(coprocessors.map(async (coprocessor) => { assertions = assertions.concat(await coprocessor.fetchAssertions.call(this)) }));
+        assertions = assertions.filter((x) => x); //Remove nulls.
+        for (let i = 0; i < assertions.length; i++) //Remove duplicates.
         {
-            for (let j = i;j < assertions.length;j++)
-            {
+            for (let j = i; j < assertions.length; j++) {
                 if (j == i) continue;
                 while (assertions[i].id == assertions[j].id) 
-                    assertions.splice(j,1);
+                    assertions.splice(j, 1);
             }
         }
-        
-        if (this.frameworkId != null)
-            if (this.framework == null)
-                this.framework = await EcFramework.get(this.frameworkId,null,null,repo,eim);
 
         let profileKey = null;
         let storedProfile = null;
@@ -171,7 +176,7 @@ module.exports = class ProfileCalculator {
 
         if (profileKey != null && PROFILE_REPOSITORY_CACHE) {
             let len = JSON.stringify(result).length;
-            if (len < 30*1024*1024) {
+            if (len < 30 * 1024 * 1024) {
                 storedProfile = new EcRemoteLinkedData("https://schema.cassproject.org/0.4/", "StoredProfile");
                 storedProfile.assignId(repo.selectedServer, profileKey);
                 storedProfile.addOwner(EcIdentityManager.default.ids[0].ppk.toPk());
@@ -276,7 +281,7 @@ module.exports = class ProfileCalculator {
                     repo,
                     `competency:"${outsideCompID}"`,
                     null, null,
-                    {size: 5}
+                    { size: 5 }
                 );
             }
 
@@ -324,14 +329,14 @@ module.exports = class ProfileCalculator {
         const inEdges = {};
         this.log("Processing state start.");
         for (let coprocessor of coprocessors)
-            coprocessor.postProcessStart.call(this,vertices,topLevelVertices, inEdges);
+            coprocessor.postProcessStart.call(this, vertices, topLevelVertices, inEdges);
 
         // Put information from each vertex into its meta-vertex,
         // and attach additional data on assertions, goals, & required signatures into meta.state
         this.log("Processing vertices.");
         for (const vertex of this.g.verticies) {
             for (let coprocessor of coprocessors)
-                coprocessor.postProcessEachVertex.call(this,vertex,vertices,topLevelVertices, inEdges);
+                coprocessor.postProcessEachVertex.call(this, vertex, vertices, topLevelVertices, inEdges);
         }
 
         // Process each edge by itself to create initial processing data, and build:
@@ -342,7 +347,7 @@ module.exports = class ProfileCalculator {
         this.log("Processing edges.");
         for (const edge of this.g.edges) {
             for (let coprocessor of coprocessors)
-                coprocessor.postProcessEachEdge.call(this,edge,vertices,topLevelVertices, inEdges);
+                coprocessor.postProcessEachEdge.call(this, edge, vertices, topLevelVertices, inEdges);
         }
 
         let hash;
@@ -353,12 +358,12 @@ module.exports = class ProfileCalculator {
             // Handle relations between competencies, to determine how the competencies relate to goals
             for (const edge of this.g.edges) {
                 for (let coprocessor of coprocessors)
-                    coprocessor.postProcessEachEdgeRepeating.call(this,edge,vertices,topLevelVertices, inEdges);
+                    coprocessor.postProcessEachEdgeRepeating.call(this, edge, vertices, topLevelVertices, inEdges);
             }
 
             for (const vertex of this.g.verticies) {
                 for (let coprocessor of coprocessors)
-                    coprocessor.postProcessEachVertexRepeating.call(this,vertex,vertices,topLevelVertices, inEdges);
+                    coprocessor.postProcessEachVertexRepeating.call(this, vertex, vertices, topLevelVertices, inEdges);
             }
         } while (hash !== hashSortCoerce.hash(topLevelVertices));
 
@@ -367,10 +372,10 @@ module.exports = class ProfileCalculator {
         };
         this.log("Collapsing data into tree.");
         for (let coprocessor of coprocessors)
-            coprocessor.postProcessProfileBefore.call(this,profile,vertices,topLevelVertices, inEdges);
+            coprocessor.postProcessProfileBefore.call(this, profile, vertices, topLevelVertices, inEdges);
 
         // Hides data from outputted profile
-        const pruneNonFrameworkData = (vertex, depth)=>{
+        const pruneNonFrameworkData = (vertex, depth) => {
             if (depth == null)
                 depth = 0;
             delete vertex.framework;
@@ -400,7 +405,7 @@ module.exports = class ProfileCalculator {
         this.log("Profile - per element.");
         for (const child of profile.children) {
             for (let coprocessor of coprocessors)
-                coprocessor.postProcessProfileEachElement.call(this,child,inEdges,vertices);
+                coprocessor.postProcessProfileEachElement.call(this, child, inEdges, vertices);
         }
 
         let newChildren = [];
@@ -413,7 +418,7 @@ module.exports = class ProfileCalculator {
         this.log("Last step.");
         for (let obj of profile.children)
         for (let coprocessor of coprocessors)
-            coprocessor.postProcessProfileAfter.call(this,obj,profile);
+                coprocessor.postProcessProfileAfter.call(this, obj, profile);
         this.log("Done computing profile.");
 
         return profile;

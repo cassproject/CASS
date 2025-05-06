@@ -10,7 +10,7 @@ var xapiConfig = function () {
             xapiHostname: "",
             xapiAuth: "",
             enabled: false
-        }), xapiConfigFilePath);
+        }),xapiConfigFilePath);
     this.xapiConfig = JSON.parse(fileToString(fileLoad(xapiConfigFilePath)));
     return this.xapiConfig;
 }
@@ -60,17 +60,19 @@ var personFromEmail = async function (mbox) {
     if (personCache[mbox] != null) return personCache[mbox];
     var person = null;
     mbox = mbox.replace("mailto:", "");
-    if (mbox.indexOf("@") != -1) {
+    if (mbox.indexOf("@") != -1)
+    {
         let people = null;
-        people = await loopback.repositorySearch(global.repo, "@type:Person AND email:\"" + mbox + "\"", {});
+        people = await loopback.repositorySearch(global.repo,"@type:Person AND email:\"" + mbox + "\"",{});
         if (people != null) {
             if (people.length >= 1)
                 person = people[0];
         }
     }
-    else {
+    else
+    {
         let people = null;
-        people = await loopback.repositorySearch(global.repo, "@type:Person AND (identifier:\"" + mbox + "\" OR username:\"" + mbox + "\")", {});
+        people = await loopback.repositorySearch(global.repo,"@type:Person AND (identifier:\"" + mbox + "\" OR username:\"" + mbox + "\")",{});
         if (people != null) {
             if (people.length >= 1)
                 person = people[0];
@@ -102,8 +104,9 @@ var getAlignedCompetencies = async function (objectId) {
     var results = [];
     if (alignedCompetenciesCache[objectId] != null)
         return alignedCompetenciesCache[objectId];
-    let creativeWorks = await loopback.repositorySearch(global.repo, "@type:CreativeWork AND url:\"" + objectId + "\"", {});
-    for (let creativeWork of creativeWorks) {
+    let creativeWorks = await loopback.repositorySearch(global.repo,"@type:CreativeWork AND url:\"" + objectId + "\"",{});
+    for (let creativeWork of creativeWorks)
+    {
         if (creativeWork.educationalAlignment == null) continue;
         if (!EcArray.isArray(creativeWork.educationalAlignment))
             creativeWork.educationalAlignment = [creativeWork.educationalAlignment];
@@ -115,11 +118,11 @@ var getAlignedCompetencies = async function (objectId) {
 }
 
 let defaultAuthority = null;
-var xapiStatement = async function (s, accm) {
+var xapiStatement = async function (s,accm) {
     if (s == null) return;
     if (EcArray.isArray(s))
         for (let st of s)
-            await xapiStatement(st, accm);
+            await xapiStatement(st,accm);
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
     var negative = false;
@@ -145,12 +148,13 @@ var xapiStatement = async function (s, accm) {
         return;
 
     var actorPk = await pkFromMbox.call(this, s.actor);
-    if (actorPk == null) {
+    if (actorPk == null)
+    {
         var ppk = await EcPpk.generateKey();
         var person = new schema.Person();
-        person.assignId(global.repo.selectedServer, ppk.toPk().fingerprint());
+        person.assignId(global.repo.selectedServer,ppk.toPk().fingerprint());
         person.addOwner(ppk.toPk());
-        var mb = getMbox.call(this, s.actor).replace("mailto:", "");
+		var mb = getMbox.call(this, s.actor).replace("mailto:","");
         if (mb.indexOf("@") == -1)
             person.username = mb;
         else
@@ -165,16 +169,19 @@ var xapiStatement = async function (s, accm) {
     }
     if (actorPk == null) return;
     var authorityPk = await pkFromMbox.call(this, s.authority);
-    if (authorityPk == null) {
+    if (authorityPk == null)
+    {
         let ppk = EcPpk.fromPem(xapiMePpk);
         var person = new schema.Person();
-        person.assignId(global.repo.selectedServer, ppk.toPk().fingerprint());
+        person.assignId(global.repo.selectedServer,ppk.toPk().fingerprint());
         person.addOwner(ppk.toPk());
         var mb = getMbox.call(this, s.authority);
-        if (mb != null) mb = mb.replace("mailto:", "");
-        if (mb == null) {
+        if (mb != null) mb = mb.replace("mailto:","");
+        if (mb == null) 
+        {
             mb = "Some Authority";
-            if (defaultAuthority == null) {
+            if (defaultAuthority == null)
+            {
                 defaultAuthority = person;
                 if (mb.indexOf("@") == -1)
                     person.username = mb;
@@ -188,7 +195,8 @@ var xapiStatement = async function (s, accm) {
                 });
             }
         }
-        else {
+        else
+        {
             if (mb.indexOf("@") == -1)
                 person.username = mb;
             else
@@ -209,8 +217,8 @@ var xapiStatement = async function (s, accm) {
     var alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id);
     var alreadyAligned = {};
     for (var i = 0; i < alignedCompetencies.length; i++) {
-        let a = new EcAssertion();
-        a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id + alignedCompetencies[i].targetUrl));
+        var a = new EcAssertion();
+        a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id+alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
         a.addOwner(authorityPk);
         a.addOwner(EcPk.fromPem(skyrepoAdminPk()));
@@ -230,7 +238,7 @@ var xapiStatement = async function (s, accm) {
             accm.push(a);
         else
             EcRepository.save(a, (msg) => {
-                global.events.assertionAbout.next(actorPk);
+                global.events?.assertionAbout.next(actorPk);
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSaveAssertion", msg);
             }, (error) => {
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSaveAssertion", error);
@@ -241,7 +249,7 @@ var xapiStatement = async function (s, accm) {
 var xapiStatementListener = async function () {
     let accm = [];
     for (let val in this.dataStreams)
-        await xapiStatement(this.dataStreams[val], accm);
+        await xapiStatement(this.dataStreams[val],accm);
     await global.repo.multiput(accm);
 }
 
@@ -254,8 +262,9 @@ xapiKey = function () {
 }
 
 
-var xapiLoopEach = async function (since, config, sinceFilePath) {
-    try {
+var xapiLoopEach = async function(since, config, sinceFilePath) {
+    try
+    {
         var results = await xapiEndpoint.call(this, null, since, config);
     } catch (ex) { console.log(ex); return; }
     while (results != null && results.statements != null && results.statements.length > 0) {

@@ -4,24 +4,39 @@ let util = require(path.resolve(glob.sync( 'src/main/server/profile/util.js' )[0
 
 //Each of these is being called such that using 'this' refers to the profileProcessor.
 let fetchAssertions = async function(){
-    return await EcAssertion.search(
+    let assertions = [];
+    let competencies = this.g.verticies.map(x=>x.shortId());
+    while (competencies.length > 0) {
+        let first = true;
+        let bigSearchString = "";
+        for (const competency of competencies.splice(0, 100)) {
+            if (!first)
+                bigSearchString += " OR ";
+            first = false;
+            bigSearchString += `competency:"${competency}"`;
+        }
+        let someAssertions = await EcAssertion.search(
         repo,
-        // Note: Searches don't work well for encrypted data. This may return irrelevant data, or fail to return
-        //       the relevant data.
+            `"${this.pem}" AND (${bigSearchString})`,
+            null,
+            null,
+            { size: 10000 }
+        )
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Searching for assertions, ${someAssertions.length} found.`);
+        assertions.push(...someAssertions.filter(x=>x));
+    }
 
-        `"${this.pem}"`,
-        async(assertions) => {
             let prevCount = assertions.length;
-            assertions = await Promise.all(assertions.map(async(a)=>{
+    assertions = await Promise.all(assertions.map(async (a) => {
                 let subjectPk = await a.getSubject();
                 if (subjectPk == null) return null;
                 if (subjectPk.toPem() == this.pem)
                     return a;
                 return null;
             }));
-            assertions = assertions.filter((x)=>(x));
+    assertions = assertions.filter((x) => (x));
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
-            assertions.sort((a, b)=>{
+    assertions.sort((a, b) => {
                 return b.id.localeCompare(a.id);
             });
             let concatAssertions = "";
@@ -29,10 +44,6 @@ let fetchAssertions = async function(){
                 concatAssertions += assertion.id;
             assertionHash = EcCrypto.md5(concatAssertions);
             return assertions;
-        },
-        null,
-        {size: 10000}
-    );
 }
 let insertResources = async function(){
     // Search for resource alignments

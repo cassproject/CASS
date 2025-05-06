@@ -8571,14 +8571,18 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
             const current = await skyrepoManyGetPermanent.call(this, Object.values(retries));
             for (let currentDoc of current.docs) {
                 let found = retries[currentDoc['_id'].split('.')[0]];
-                if (currentDoc['_version'] >= found.version) {
+                if (currentDoc['_version'] >= found.version && currentDoc['_version'] > 1743202754349) {
+                    delete retries[currentDoc['_id'].split('.')[0]];
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Dumping, was at: [' + found.version + ']');
+                } 
+                else if (currentDoc['_version'] >= found.version) {
                     found.version = currentDoc['_version'] + 1;
                 }
             }
-
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Updated to: [' + Object.values(retries).map((x) => x.version).toString() + ']');
 
             // Used to replay replication / database log files without "just jamming the data in"
+            if (Object.values(retries).length > 0)
             if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
                 const newFailed = await skyrepoPutInternalBulk.call(this, retries);
                 for (let key of Object.keys(newFailed)) {
@@ -8802,7 +8806,11 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         if (status === '409') {
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', '409, version is: ' + chosenVersion);
             const current = await skyrepoGetPermanent.call(this, permId, null, type);
-            if (current && current._version > chosenVersion) {
+            if (current && current._version > chosenVersion && current._version > 1743202754349) {
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Dumping, was at ' + chosenVersion);
+                break;
+            }
+            else if (current && current._version > chosenVersion) {
                 chosenVersion = current._version;
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Updated to ' + chosenVersion);
             }
