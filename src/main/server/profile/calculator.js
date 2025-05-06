@@ -25,7 +25,7 @@ const PROFILE_REPOSITORY_CACHE = process.env.PROFILE_REPOSITORY_CACHE || false;
 //Coprocessor Initialization
 let glob = require('glob');
 let path = require('path');
-let PRECACHE_ALL_FRAMEWORKS = true;
+let PRECACHE_ALL_FRAMEWORKS = false;
 
 let coprocessors = [];
 let coprocessorConfiguration = "";
