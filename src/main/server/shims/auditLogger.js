@@ -117,9 +117,9 @@ let report = function (system, severity, message, ...data) {
                 if (severity == 3)
                     console.trace(data?.[0]);
                 if (EcArray.isArray(data)) data = JSON.stringify(data);
-                console.log(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:', data);
+                console.log(new Date(), system, (((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0))+"M", InverseSeverity[severity], '', message.substr(0, 18), '\t:', data);
             } catch (ex) {
-                console.trace(new Date(), system, InverseSeverity[severity], '', message.substr(0, 13), '\t:');
+                console.trace(new Date(), system, (((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0))+"M", InverseSeverity[severity], '', message.substr(0, 18), '\t:',ex);
             }
         }
     }
@@ -168,10 +168,7 @@ let filterLogs = function (system, severity, message) {
     if (filteredSeverities[InverseSeverity[severity]]) {
         return false;
     }
-    if (filteredMessages[message]) {
-        return false;
-    }
-    return true;
+    return !(filteredMessages[message]);
 };
 
 module.exports = {

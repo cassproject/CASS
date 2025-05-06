@@ -16,7 +16,7 @@ badgeKey = function () {
 
 
 badgeGetPerson = async function (fingerprint) {
-    var person = await loopback.repositoryGet(repoEndpoint() + "data/" + fingerprint);
+    var person = await loopback.repositoryGet(global.repo.selectedServer + "data/" + fingerprint);
     if (person == null)
         return null;
 
@@ -38,9 +38,9 @@ badgeCryptographicKey = async function (fingerprint) {
 
     return JSON.stringify({
         "@context": "https://w3id.org/openbadges/v2",
-        id: repoEndpoint() + "badge/cryptographicKey/" + fingerprint,
+        id: global.repo.selectedServer + "badge/cryptographicKey/" + fingerprint,
         type: "CryptographicKey",
-        owner: repoEndpoint() + "data/" + fingerprint,
+        owner: global.repo.selectedServer + "data/" + fingerprint,
         publicKeyPem: person.publicKey
     });
 };
@@ -55,15 +55,15 @@ badgeProfile = async function (fingerprint) {
 
     return JSON.stringify({
         "@context": "https://w3id.org/openbadges/v2",
-        id: repoEndpoint() + "badge/profile/" + fingerprint,
+        id: global.repo.selectedServer + "badge/profile/" + fingerprint,
         type: "Issuer",
         name: person.name,
-        url: person.url == null ? (repoEndpoint() + "badge/profile/" + fingerprint) : person.url ,
+        url: person.url == null ? (global.repo.selectedServer + "badge/profile/" + fingerprint) : person.url ,
         telephone: person.telephone,
         description: person.description,
         image: "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
         email: person.email,
-        publicKey: repoEndpoint() + "badge/cryptographicKey/" + fingerprint,
+        publicKey: global.repo.selectedServer + "badge/cryptographicKey/" + fingerprint,
         verification: {
             type: "hosted"
         }
@@ -125,7 +125,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
     else {
         var query = queryParse.call(this);
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "BadgeClass", query);
-        competency = await loopback.competencyGet(repoEndpoint() + "data/" + query.type);
+        competency = await loopback.competencyGet(global.repo.selectedServer + "data/" + query.type);
         fingerprint = query.id;
     }
 
@@ -136,11 +136,11 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
     if (assertion != null)
         competencyAlignment.educationalFramework = assertion.framework;
 
-    competencyId = repoEndpoint() + "badge/class/" + competency.getGuid() + "/" + fingerprint;
-    if (competency.id.startsWith(repoEndpoint()) == false) {
+    competencyId = global.repo.selectedServer + "badge/class/" + competency.getGuid() + "/" + fingerprint;
+    if (competency.id.startsWith(global.repo.selectedServer) == false) {
         var md5 = forge.md.md5.create();
         md5.update(competency.id);
-        competencyId = repoEndpoint() + "badge/class/" + md5.digest().toHex() + "/" + fingerprint;
+        competencyId = global.repo.selectedServer + "badge/class/" + md5.digest().toHex() + "/" + fingerprint;
     }
 
     var criteria = {type:"Criteria"};
@@ -152,7 +152,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
         "@context": "https://w3id.org/openbadges/v2",
         id: competencyId,
         type: "BadgeClass",
-        issuer: repoEndpoint() + "badge/profile/" + fingerprint,
+        issuer: global.repo.selectedServer + "badge/profile/" + fingerprint,
         name: competency.name,
         criteria: criteria,
         description: competency.description == null ? competency.name : competency.description,
@@ -165,7 +165,7 @@ badgeAssertion = async function () {
     badgeSetup.call(this);
 
     var query = queryParse.call(this);
-    var assertion = await loopback.repositoryGet(repoEndpoint() + "data/" + query.id);
+    var assertion = await loopback.repositoryGet(global.repo.selectedServer + "data/" + query.id);
     if (assertion == null)
         error("Assertion not found.", 404);
     var a = new EcAssertion();
@@ -202,7 +202,7 @@ badgeAssertion = async function () {
         evidences = evidences[0];
     var result = {
         "@context": "https://w3id.org/openbadges/v2",
-        "id": repoEndpoint() + "badge/assertion/" + query.id,
+        "id": global.repo.selectedServer + "badge/assertion/" + query.id,
         "type":"Assertion",
         "recipient": subject,
         "evidence": evidences,
@@ -228,7 +228,7 @@ openbadgeCheckId = async function(){
 	if (a.subject["reader"] == null && a.subject["@reader"] == null)
 		return debug("Badge not generated for assertion: Assertion has no readers.");
 
-    if (repoEndpoint().contains("localhost"))
+    if (global.repo.selectedServer.contains("localhost"))
         return debug("Badge not generated for assertion: Endpoint Configuration is not set.");
 
 	if (a.subject["reader"] && !EcArray.has(a.subject["reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
@@ -250,7 +250,7 @@ openbadgeCheckId = async function(){
 	badgeSendEmail({
 		recipient: person.email,
 		competencyName: await loopback.repositoryGet(a.competency).name,
-		badgeId: repoEndpoint() + "badge/assertion/" + a.getGuid()
+		badgeId: global.repo.selectedServer + "badge/assertion/" + a.getGuid()
 	});
 }
 

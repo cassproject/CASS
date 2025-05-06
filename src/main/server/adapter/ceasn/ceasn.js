@@ -187,7 +187,7 @@ async function cassFrameworkAsCeasn() {
         framework = await EcFramework.get(decodeURIComponent(this.params.id), null, null, repo);
     }
     if (framework == null && this.params.urlRemainder != null) {
-        var id = repoEndpoint() + "data" + this.params.urlRemainder;
+        var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
         framework = await EcFramework.get(id, null, null, repo);
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
@@ -203,7 +203,7 @@ async function cassFrameworkAsCeasn() {
             competency = c;
         }
         if (competency == null && this.params.urlRemainder != null) {
-            var id = repoEndpoint() + "data" + this.params.urlRemainder;
+            var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
             competency = await EcCompetency.get(id, null, null, repo);
         }
         if (competency != null) {
@@ -1402,7 +1402,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
                 r.source = EcRemoteLinkedData.trimVersionFromUrl(childComps[i]);
                 r.target = EcRemoteLinkedData.trimVersionFromUrl(canonicalId);
                 r.relationType = Relation.NARROWS;
-                r.generateId(repoEndpoint());
+                r.generateId(global.repo.selectedServer);
                 r.addOwner(ceasnIdentity.ppk.toPk());
 
                 if (owner != null)

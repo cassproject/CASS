@@ -1,3 +1,23 @@
+/* -
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2025 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
+
 const EcArray = require('cassproject/src/com/eduworks/ec/array/EcArray');
 const EcRsaOaepAsync = require('cassproject/src/com/eduworks/ec/crypto/EcRsaOaepAsync');
 const EcEncryptedValue = require('cassproject/src/org/cassproject/ebac/repository/EcEncryptedValue');
@@ -41,7 +61,7 @@ global.repoAutoDetect = function () {
         'Text Encoding: ' + java.nio.charset.Charset.defaultCharset().toString());
 };
 
-const elasticHeaders = global.elasticHeaders = function () {
+global.elasticHeaders = function () {
     const headers = {};
     if (process.env.ELASTICSEARCH_AUTHORIZATION != null) {
         headers.Authorization = process.env.ELASTICSEARCH_AUTHORIZATION.trim();
@@ -49,41 +69,21 @@ const elasticHeaders = global.elasticHeaders = function () {
     return headers;
 };
 
-const elasticSearchVersion = function () {
+global.elasticSearchVersion = function () {
     return ((elasticSearchInfo)['version'])['number'];
 };
+
 const getTypeFromObject = function (o) {
-    let encryptedType = (o)['encryptedType'];
-    let encryptedContext = (o)['encryptedContext'];
-    let type = (o)['@type'];
-    let context = (o)['@context'];
-    if (type == null) {
-        type = (o)['type'];
-    }
-    if (context == null) {
-        context = (o)['context'];
-    }
-    if (encryptedType == null) {
-        encryptedType = (o)['@encryptedType'];
-    }
-    if (encryptedContext == null) {
-        encryptedContext = (o)['@encryptedContext'];
-    }
-    if (encryptedType != null) {
-        type = encryptedType;
-    }
-    if (encryptedContext != null) {
-        context = encryptedContext;
-    }
-    if (type == null) {
+    let encryptedType = o.encryptedType || o['@encryptedType'];
+    let encryptedContext = o.encryptedContext || o['@encryptedContext'];
+    let type = encryptedType || o['@type'] || o.type;
+    let context = encryptedContext || o['@context'] || o.context;
+    if (type == null)
         return null;
-    }
-    if (type.indexOf('http') != -1) {
+    if (type.indexOf('http') != -1)
         return type;
-    }
-    if (context == null) {
+    if (context == null)
         return type;
-    }
     if (context.endsWith('/')) {
         return context + type;
     } else {
@@ -92,54 +92,42 @@ const getTypeFromObject = function (o) {
 };
 
 const signatureSheet = async function () {
-    let sigSheet = null;
-    sigSheet = this.ctx.get('signatureSheet');
-    if (sigSheet !== undefined && sigSheet != null) {
+    let sigSheet = this.ctx.get('signatureSheet');
+    if (sigSheet != null) {
         return sigSheet;
     }
     sigSheet = [];
+
     const fromDatastream = (fileFromDatastream).call(this, 'signatureSheet', null);
     const stringFromDatastream = fileToString(fromDatastream);
-    if (stringFromDatastream !== undefined && stringFromDatastream != null) {
+    if (stringFromDatastream != null) {
         try {
             sigSheet = sigSheet.concat(JSON.parse(stringFromDatastream));
-        } catch (ex) {
+        } catch {
             error('Missing or Malformed Signature.', 496);
         }
     }
-    const hdrs = (headers).call(this);
-    const camelcaseSignatureSheet = (hdrs)['signatureSheet'];
-    const lowercaseSignatureSheet = (hdrs)['signaturesheet'];
-    if (camelcaseSignatureSheet !== undefined && camelcaseSignatureSheet != null) {
-        sigSheet = sigSheet.concat(JSON.parse(camelcaseSignatureSheet));
+
+    const hdrs = headers.call(this);
+    if (hdrs.signatureSheet != null || hdrs.signaturesheet != null) {
+        sigSheet = sigSheet.concat(JSON.parse(hdrs.signatureSheet || hdrs.signaturesheet));
     }
-    if (lowercaseSignatureSheet !== undefined && lowercaseSignatureSheet != null) {
-        sigSheet = sigSheet.concat(JSON.parse(lowercaseSignatureSheet));
-    }
+    
     for (let i = 0; i < sigSheet.length; i++) {
         const signature = new EbacSignature();
         signature.copyFrom(sigSheet[i]);
-        if (signature == null) {
-            error('Missing Signature.', 496);
-        }
-
-        let owner = signature.owner;
-        if (owner == null) {
-            owner = (signature)['@owner'];
-        }
-        (signature)['@owner'] = owner;
-        signature.owner = null;
-        const pk = EcPk.fromPem(owner);
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassIdentity', pk.fingerprint());
+        if (signature == null) error('Missing Signature.', 496);
+        
+        let owner = signature.owner || signature["@owner"];
+        signature['@owner'] = owner;
+        delete signature.owner;
+        
+        const ownerPk = EcPk.fromPem(owner);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassIdentity', ownerPk.fingerprint());
 
         const validTypes = signature.getTypes();
-        let foundType = false;
-        for (let j = 0; j < validTypes.length; j++) {
-            if (getTypeFromObject(sigSheet[i]) == validTypes[j]) {
-                foundType = true;
-            }
-        }
-        if (!foundType) {
+        // Check if the signature type is valid
+        if (!validTypes.some(validType => validType == getTypeFromObject(sigSheet[i]))) {
             error('Invalid Signature Version.', 422);
         }
         if (signature.expiry == null) {
@@ -156,11 +144,11 @@ const signatureSheet = async function () {
         let signBytesSha256 = signature.signatureSha256 || signature['@signatureSha256'];
         let realSignature = signature.toJson();
         signature.signature = (signature)['@signature'] = signature.signatureSha256 = (signature)['@signatureSha256'] = null;
-        if (process.env.REJECT_SHA1 || false) {
+        if (process.env.REJECT_SHA1) {
             if (signBytes != null && signBytesSha256 == null) {
                 warn('SHA1 Signature Detected. Rejecting: ' + realSignature);
                 error('SHA1 Signature is not supported. Invalid Signature Detected: ' + realSignature, 451);
-            } else if (!(await EcRsaOaepAsync.verifySha256(pk, signature.toJson(), signBytesSha256))) {
+            } else if (!(await EcRsaOaepAsync.verifySha256(ownerPk, signature.toJson(), signBytesSha256))) {
                 error('Invalid Signature Detected: ' + realSignature, 451);
             }
         } else {
@@ -168,17 +156,17 @@ const signatureSheet = async function () {
                 error('No Signature Detected: ' + realSignature, 451);
             }
             if (signBytesSha256 != null) {
-                if (!(await EcRsaOaepAsync.verifySha256(pk, signature.toJson(), signBytesSha256))) {
+                if (!(await EcRsaOaepAsync.verifySha256(ownerPk, signature.toJson(), signBytesSha256))) {
                     error('Invalid Signature Detected: ' + realSignature, 451);
                 }
             }
             if (signBytes != null) {
-                if (!(await EcRsaOaepAsync.verify(pk, signature.toJson(), signBytes))) {
+                if (!(await EcRsaOaepAsync.verify(ownerPk, signature.toJson(), signBytes))) {
                     error('Invalid Signature Detected: ' + realSignature, 451);
                 }
             }
         }
-        signature.owner = (signature)['@owner'];
+        signature.owner = signature['@owner'];
         sigSheet[i] = signature;
     }
     this.ctx.put('signatureSheet', sigSheet);
@@ -8558,7 +8546,6 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
         }
         return failed;
     }
-
 
     if (response.errors) {
         let retries = {};

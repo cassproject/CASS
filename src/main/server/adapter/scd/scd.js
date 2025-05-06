@@ -123,7 +123,7 @@ async function cassToScd() {
         framework = await EcFramework.get(decodeURIComponent(this.params.id), null, null, repo);
     }
     if (framework == null && this.params.urlRemainder != null) {
-        var id = repoEndpoint() + "data" + this.params.urlRemainder;
+        var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
         framework = await EcFramework.get(id, null, null, repo);
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
@@ -140,7 +140,7 @@ async function cassToScd() {
             competency = c;
         }
         if (competency == null && this.params.urlRemainder != null) {
-            var id = repoEndpoint() + "data" + this.params.urlRemainder;
+            var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
             competency = await EcCompetency.get(id, null, null, repo);
         }
         if (competency.type == null || !competency.type.contains("ompetency"))
@@ -157,7 +157,7 @@ async function cassToScd() {
                 relation = r;
             }
             if (relation == null && this.params.urlRemainder != null) {
-                var id = repoEndpoint() + "data" + this.params.urlRemainder;
+                var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
                 relation = await EcAlignment.get(id, null, null, repo);
             }
             if (relation != null) {

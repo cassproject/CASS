@@ -67,3 +67,4 @@ scan-node.txt
 scan-standalone.txt
 
 swaggerx.json
+*.cpuprofile

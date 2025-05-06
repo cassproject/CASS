@@ -69,7 +69,7 @@ cfGetCompetency = async function (c) {
         if (competency == null && url != null)
             competency = await loopback.competencyGet(url);
         if (competency == null && url != null)
-            competency = await loopback.competencyGet(thisEndpoint() + "data/" + EcCrypto.md5(url));
+            competency = await loopback.competencyGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url));
         if (competency == null) {
             var result = null;
             EcCompetency.search(repo, "@id:" + query.id, function (success) {
@@ -103,7 +103,7 @@ cfGetAlignment = async function (c) {
         if (competency == null && url != null)
             competency = await loopback.alignmentGet(url);
         if (competency == null && url != null)
-            competency = await loopback.alignmentGet(thisEndpoint() + "data/" + EcCrypto.md5(url));
+            competency = await loopback.alignmentGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url));
         if (competency == null)
             cfError(404,"failure","error","Alignment not found.","uuid","unknownobject");
         c = new EcAlignment();
@@ -179,11 +179,11 @@ cfDocuments = async function (f, terms) {
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFDocuments/" + guid;
+    f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFDocuments/" + guid;
     f2.CFPackageURI = {
         title: name,
         identifier: guid,
-        uri: thisEndpoint() + "ims/case/v1p0/CFPackages/" + guid
+        uri: global.repo.selectedServer + "ims/case/v1p0/CFPackages/" + guid
     };
     return JSON.stringify(f2, null, 2);
 }
@@ -267,7 +267,7 @@ cfItems = async function (f, fw, terms) {
         f2.CFItemType = null;
         f2.CFItemTypeURI = null;
     }
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
+    f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
         var parent = skyrepoSearch.call(this,"competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
@@ -310,7 +310,7 @@ cfItemAssociations = async function (f, fw, terms) {
         }
     }
     let f2 = f;
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;
+    f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFAssociations/" + guid;
     if (fw == null) {
         var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
@@ -385,7 +385,7 @@ var repo;
 cfPackages = async function (f) {
     if (repo == null)
         repo = new EcRepository();
-    repo.selectedServer = thisEndpoint();
+    repo.selectedServer = global.repo.selectedServer;
 
     EcRepository.cache = {};
     var result = {};

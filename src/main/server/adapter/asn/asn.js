@@ -1,6 +1,6 @@
 let loopback = require('../../shims/cassproject.js');
 
-var asnContext = {
+let asnContext = {
     asn: "http://purl.org/ASN/schema/core/",
     cc: "http://creativecommons.org/ns#",
     dc: "http://purl.org/dc/elements/1.1/",
@@ -15,8 +15,6 @@ var asnContext = {
     xsd: "http://www.w3.org/2001/XMLSchema#"
 };
 
-//asnContext["@vocab"] = "http://schema.cassproject.org/0.2/cass2asn";
-
 async function cassFrameworkAsAsn() {
     EcRepository.cache = {};
     let query = queryParse.call(this);
@@ -24,17 +22,17 @@ async function cassFrameworkAsAsn() {
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2asnTerms")), true));
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
-    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
+    if (framework == null || framework["@type"]?.contains("ramework"))
         framework = null;
     if (framework == null)
         framework = await loopback.frameworkGet(decodeURIComponent(this.params.id));
     if (framework == null) {
-        var competency = null;
+        let competency = null;
         competency = await skyrepoGet.call(this, query);
         if (competency == null)
             competency = await loopback.competencyGet(decodeURIComponent(this.params.id));
         else {
-            var c = new EcCompetency();
+            let c = new EcCompetency();
             c.copyFrom(competency);
             competency = c;
         }
@@ -81,10 +79,10 @@ async function cassFrameworkAsAsn() {
         }
 
     if (f.relation != null)
-        for (let i = 0; i < f.relation.length; i++) {
+        for (const relationId of f.relation) {
             //Workaround due to bug in 1.3.0
-            if (await loopback.repositoryGet(f.relation[i]) == null) continue;
-            let r = await loopback.alignmentGet(f.relation[i]);
+            if (await loopback.repositoryGet(relationId) == null) continue;
+            let r = await loopback.alignmentGet(relationId);
             if (r.source == null || r.target == null) continue;
             if (r.relationType == Relation.NARROWS) {
                 EcArray.setRemove(f.competency, r.source);
@@ -162,9 +160,9 @@ async function cassFrameworkAsAsn() {
         }
     let toSerialize = [];
 
-    for (let i = 0; i < allCompetencies.length; i++) {
-        let c = competencies[allCompetencies[i]];
-        delete competencies[allCompetencies[i]];
+    for (const competency of allCompetencies) {
+        let c = competencies[competency];
+        delete competencies[competency];
         if (c == null) continue;
         c.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2asn.json";
         if (c.type == null) //Already done / referred to by another name.
@@ -199,109 +197,6 @@ async function cassFrameworkAsAsn() {
     return competencies;
 }
 
-// /**
-//  *
-//  * @param jsonLd
-//  * @returns
-//  */
-// function fixScalars(jsonLd) {
-//     var JSONLD_VALUE = "@value";
-//     var JSONLD_ID = "@id";
-//     var JSONLD_TYPE = "@type";
-//     var JSONLD_LANG = "@language";
-
-//     if (jsonLd === Object(jsonLd)) {
-//         for (let key in jsonLd) {
-//             try {
-//                 let field = jsonLd[key];
-//                 if (Array.isArray(field)) {
-//                     let flattenText = true;
-//                     let textArray = [];
-//                     let langArray = [];
-//                     for (let idx in field) {
-//                         let obj = field[idx];
-
-//                         if (obj === Object(obj)) {
-//                             if (obj["type"] != undefined) {
-//                                 if (obj["type"] == "uri") {
-//                                     if (obj["value"] != undefined && obj[JSONLD_ID] == undefined) {
-//                                         obj[JSONLD_ID] = obj["value"];
-//                                         delete obj["value"];
-//                                     }
-//                                 } else {
-//                                     if (obj["value"] != undefined && obj[JSONLD_VALUE] == undefined) {
-//                                         obj[JSONLD_VALUE] = obj["value"];
-//                                         delete obj["value"];
-//                                     }
-//                                 }
-
-//                                 delete obj["type"];
-//                             }
-//                             if (obj["datatype"] != undefined && obj[JSONLD_TYPE] == undefined) {
-//                                 obj[JSONLD_TYPE] = obj["datatype"];
-//                                 delete obj["datatype"];
-//                             }
-//                             if (obj["lang"] != undefined && obj[JSONLD_LANG] == undefined) {
-//                                 obj[JSONLD_LANG] = obj["lang"];
-//                                 delete obj["lang"];
-
-//                             }
-
-//                             field[idx] = obj;
-//                         }
-//                     }
-
-//                 } else if (field === Object(field)) {
-//                     let keepGoing = true;
-
-
-//                     if (field["type"] != undefined) {
-//                         if (field["type"] == "uri") {
-//                             if (field["value"] != undefined && field[JSONLD_ID] == undefined) {
-//                                 field[JSONLD_ID] = field["value"];
-//                                 delete field["value"];
-//                                 keepGoing = false;
-//                             }
-//                         } else {
-//                             if (field["value"] != undefined && field[JSONLD_VALUE] == undefined) {
-//                                 field[JSONLD_VALUE] = field["value"];
-//                                 delete field["value"];
-//                                 keepGoing = false;
-//                             }
-//                         }
-
-//                         delete field["type"];
-//                         keepGoing = false;
-//                     }
-//                     if (field["datatype"] != undefined && field[JSONLD_TYPE] == undefined) {
-//                         field[JSONLD_TYPE] = field["datatype"];
-//                         delete field["datatype"];
-//                         keepGoing = false;
-//                     }
-//                     if (field["lang"] != undefined && field[JSONLD_LANG] == undefined) {
-//                         field[JSONLD_LANG] = field["lang"];
-//                         delete field["lang"];
-
-//                         keepGoing = false;
-//                     }
-
-//                     if (keepGoing) {
-//                         field = fixScalars(field);
-//                     }
-//                 }
-
-//                 jsonLd[key] = field;
-//             } catch (exception) {
-//                 error("Exception when fixing json-ld scalars " + exception.message)
-//             }
-//         }
-//     }
-//     return jsonLd;
-// }
-
-/**
- *
- */
 async function importFrameworkToCass(frameworkObj, competencyList) {
     let asnIdentity = new EcIdentity();
     asnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.asn.private"));
@@ -323,8 +218,6 @@ async function importFrameworkToCass(frameworkObj, competencyList) {
     let cassCompetencies = [];
     let cassRelationships = [];
     let relationshipMap = {};
-    let parentMap = {};
-
 
     for (let idx in competencyList) {
         let asnComp = competencyList[idx];
@@ -338,16 +231,16 @@ async function importFrameworkToCass(frameworkObj, competencyList) {
         cassCompetencies.push(canonicalId);
 
         let childComps = asnComp["gemq:hasChild"];
-        if (childComps != undefined && childComps.length != undefined) {
+        if (childComps?.length != undefined) {
             for (let idx2 in childComps) {
                 let r = new EcAlignment();
                 r.source = childComps[idx2]["@id"];
                 r.target = canonicalId;
                 r.relationType = Relation.NARROWS;
-                r.generateId(repoEndpoint());
+                r.generateId(global.repo.selectedServer);
                 r.addOwner(asnIdentity.ppk.toPk());
 
-                if (relationshipMap[r.source + r.target] != true) {
+                if (!relationshipMap[r.source + r.target]) {
                     relationshipMap[r.source + r.target] = true;
                     r.save(null, print);
                     cassRelationships.push(r.id);
@@ -386,7 +279,7 @@ async function importFrameworkToCass(frameworkObj, competencyList) {
 
                 r.target = parentId;
                 r.relationType = Relation.NARROWS;
-                r.generateId(repoEndpoint());
+                r.generateId(global.repo.selectedServer);
                 r.addOwner(asnIdentity.ppk.toPk());
 
                 if (relationshipMap[r.source + r.target] != true) {
@@ -425,13 +318,10 @@ async function importFrameworkToCass(frameworkObj, competencyList) {
             version: version
         });
 
-        return repoEndpoint() + "asn/" + guid;
+        return global.repo.selectedServer + "asn/" + guid;
     } // end if frameworkObj != null
 }
 
-/**
- *
- */
 function asnFrameworkToCass() {
 
     let jsonLd, text;
