@@ -133,7 +133,7 @@ if (process.env.CASS_OIDC_ENABLED || false)
             secret: process.env.CASS_OIDC_SECRET || 'a71b92d4-336e-4664-bc05-2226f76b4042',
 	        routes:{callback:global.baseUrl + "/callback"},
             authorizationParams: {
-                scope: 'openid profile email'
+                scope: 'openid profile email microprofile-jwt'
             },
             authRequired: false
         })
@@ -142,7 +142,7 @@ if (process.env.CASS_OIDC_ENABLED || false)
         res.oidc.login({
             returnTo: req.query.redirectUrl || '/',
             authorizationParams: {
-                scope: 'openid profile email',
+                scope: 'openid profile email microprofile-jwt',
             }
         });
     });
@@ -374,6 +374,32 @@ app.use(async function (req, res, next) {
         i.displayName = name;
         i.ppk = EcPpk.fromPem(myKey);
         eim.addIdentity(i);
+        if (req.oidc?.user?.groups != null) {
+            for (const group of req.oidc?.user?.groups ?? []) {
+                let myKey = await getPk(group);
+                let i = new EcIdentity();
+                i.displayName = group.replaceAll(/_/g, " ").trim();
+                i.ppk = EcPpk.fromPem(myKey);
+                eim.addIdentity(i);
+                let p = getPersonCache[i.ppk.toPk().toPem()];
+                if (p == null)
+                    try {
+                        p = await EcPerson.getByPk(repo, i.ppk.toPk(), null, null, eim);
+                        getPersonCache[i.ppk.toPk().toPem()] = p;
+                    } catch (ex) {
+                        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthPersonNotFound", "Could not find organization.", ex);
+                    }
+                if (p == null) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthCreatingPerson", "Creating organization.", i.ppk.toPk().fingerprint());
+                    p = new EcPerson();
+                    p.addOwner(i.ppk.toPk());
+                    p.ssoSignature = await EcRsaOaepAsync.sign(EcPpk.fromPem(skyrepoAdminPpk()), i.ppk.toPk().toPem());
+                    p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy, i.ppk.toPk().fingerprint());
+                    p.name = group.replaceAll(/_/g, " ").replace("fp", "").replace("FP", "").replace("Cont", "Contributor").replace("Read", "Reader").trim();
+                    await repo.saveTo(p);
+                }
+            }
+        }
         let p = getPersonCache[i.ppk.toPk().toPem()];
         if (p == null)
             try{
@@ -392,6 +418,7 @@ app.use(async function (req, res, next) {
             p.email = email;
             p.identifier = identifier;
             p.username = username;
+            p.ssoSignature = await EcRsaOaepAsync.sign(EcPpk.fromPem(skyrepoAdminPpk()), i.ppk.toPk().toPem());
             await repo.saveTo(p);
         }
         //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!

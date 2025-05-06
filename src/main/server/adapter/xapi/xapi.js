@@ -19,7 +19,7 @@ var xapiConfigAutoExecute = xapiConfig;
 var xapiEndpoint = async function (more, since, config) {
     var endpoint;
     if (config) {
-        endpoint = config.xapiEndpoint + "statements?format=exact&limit=10";
+        endpoint = config.xapiEndpoint + "statements?format=exact&limit=0";
     } else {
         endpoint = xapiConfig.call(this).xapiEndpoint + "statements?format=exact&limit=0";
     }
