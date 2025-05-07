@@ -187,7 +187,7 @@ async function cassFrameworkAsCeasn() {
         framework = await EcFramework.get(decodeURIComponent(this.params.id), null, null, repo);
     }
     if (framework == null && this.params.urlRemainder != null) {
-        var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
+        let id = global.repo.selectedServer + "data" + (this.params.urlRemainder.startsWith("/") ? "" : "/") + this.params.urlRemainder;
         framework = await EcFramework.get(id, null, null, repo);
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))

@@ -94,16 +94,6 @@ require('./server/shims/cassproject.js');
 require('./server/util.js');
 require('./server/skyRepo.js');
 require('./server/skyId.js');
-require('./server/adapter/asn/asn.js');
-require('./server/adapter/case/caseAdapter.js');
-require('./server/adapter/case/caseIngest.js');
-require('./server/adapter/ceasn/ceasn.js');
-require('./server/adapter/scd/scd.js');
-require('./server/adapter/jsonLd/jsonLd.js');
-require('./server/adapter/openbadges/openbadges.js');
-require('./server/adapter/xapi/xapi.js');
-require('./server/adapter/ce/pna.js');
-require('./server/adapter/replicate/replicate.js');
 require('./server/profile/coordinator.js')();
 
 if (process.env.DISABLED_EDITOR != "true") {
@@ -172,22 +162,21 @@ process.on('exit', () => {
 
 global.events.server.listening.subscribe(async (isListening) => {
     if (!isListening) return;
-    global.elasticSearchInfo = await httpGet(elasticEndpoint + '/', true, elasticHeaders());
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassListening', `CaSS listening at http${envHttps ? 's' : ''}://localhost:${port}${baseUrl}`);
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassEndpoint', `CaSS talks to itself at ${repo.selectedServer}`);
-    if (repo.selectedServerProxy != null) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassLoopbackProxy', `CaSS thinks it its endpoint is at ${repo.selectedServerProxy}`);
-    }
-    global.replicate();
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassStartupTime', `Startup time ${(new Date().getTime() - startupDt.getTime())} ms`);
-    let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassHeapSize', `Total Heap Size ${totalHeapSizeInGB}GB`);
     glob.sync('./src/main/server/cartridge/*.js').forEach(function (file) {
         require(path.resolve(file));
     });
     glob.sync('./src/main/server/cartridge/**/*.js').forEach(function (file) {
         require(path.resolve(file));
     });
+    global.elasticSearchInfo = await httpGet(elasticEndpoint + '/', true, elasticHeaders());
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassListening', `CaSS listening at http${envHttps ? 's' : ''}://localhost:${port}${baseUrl}`);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassEndpoint', `CaSS talks to itself at ${repo.selectedServer}`);
+    if (repo.selectedServerProxy != null) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassLoopbackProxy', `CaSS thinks it its endpoint is at ${repo.selectedServerProxy}`);
+    }
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassStartupTime', `Startup time ${(new Date().getTime() - startupDt.getTime())} ms`);
+    let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassHeapSize', `Total Heap Size ${totalHeapSizeInGB}GB`);
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
 });
 

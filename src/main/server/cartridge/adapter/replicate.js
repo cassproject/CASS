@@ -1,4 +1,3 @@
-let loopback = require('../../shims/cassproject.js');
 const WebSocket = require('ws');
 let mePpk = process.env.CASS_REPLICATION_PPK || keyFor("replicateAdapter");
 let replicateEndpoint = process.env.CASS_REPLICATION_ENDPOINT || null;
@@ -88,6 +87,11 @@ global.replicate = async function(last){
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "Replicate", e);
     }    
 }
+
+global.events.server.listening.subscribe(async (isListening) => {
+    if (!isListening) return;
+    global.replicate();
+});
 
 let reconnectMs = 1000;
 function connectWebsocket(){

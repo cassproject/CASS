@@ -4,7 +4,19 @@
         "title": "CaSS",
         "version": "1.6.0"
     },
+    "security":[
+        {
+            "openId": []
+        }
+    ],
     "components": {
+        "securitySchemes": {
+            "openId": {
+                "type": "openIdConnect",
+                "description": "OpenID Connect authentication (when connected to SSO, non-SSO is bespoke key based security).",
+                "openIdConnectUrl": "https://example.com/.well-known/openid-configuration"
+            }
+        },
         "parameters": {
             "searchQuery": {
                 "in": "query",
