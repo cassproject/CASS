@@ -9335,7 +9335,7 @@ let validateSignaturesBulk = async function (map, errorMessage) {
                         }
                     }
                     if (!success) {
-                        error(errorMessage, 401);
+                        throw new Error(errorMessage);
                     }
                 }
             } catch (e) {

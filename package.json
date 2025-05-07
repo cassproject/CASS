@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -60,7 +60,7 @@
     "buildRun:ubuntu20": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-20.04-latest/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:ubuntu18:13to15": "npm run buildRun:kill && docker build --progress plain -f docker/test/ubuntu-18.04-latest/Dockerfile-13to15 -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:standaloneWindowsFips": "npm run buildRun:kill && docker build --pull --no-cache --progress plain -f docker/fips/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
-    "buildRun:standaloneTest": "npm run buildRun:kill && docker build --pull --progress plain -f docker/standalone/Dockerfile -t cass-test . && docker run -p80:80 -p9200:9200 --name cass-test cass-test",
+    "buildRun:standaloneTest": "npm run buildRun:kill && docker build --pull --no-cache --progress plain -f docker/standalone/Dockerfile -t cass-test . && docker run -p80:80 -p9200:9200 --name cass-test cass-test",
     "buildRun:standalone": "npm run buildRun:kill && docker build --pull --no-cache --progress plain -f docker/standalone/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:standaloneNode": "npm run buildRun:kill && docker build --pull --no-cache --progress plain -f docker/standalone/node/Dockerfile -t cass-test . && docker run -p80:80 --name cass-test cass-test",
     "buildRun:test": "npm run buildRun:kill && docker build --progress plain -f docker/test/Dockerfile -t cass-test . && docker run --network esnet -p80:80 --name cass-test cass-test",
@@ -98,7 +98,7 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.803.0",
+    "@aws-sdk/client-s3": "^3.804.0",
     "@xmldom/xmldom": "^0.9.8",
     "aws-sdk": "^2.1692.0",
     "busboy": "^1.6.0",

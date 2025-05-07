@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.6.1
+* Updated ceasn importer.
+* Added bulk ephemeral cache retrieval.
+* Updates based on sonar and fortify findings.
+* Assertion processing now searches based on competency ids.
+* Updated profile caching to 30 days.
+* Updated profile calculation to 1gb.
+* Fixed issue associated with 409 errors when reading data causing writes to take a long time.
+* Moved adapter/* to cartridge/* to allow for more control over removal of adapters.
+* Added skyrepo cull methods that remove history to reclaim disk space.
+* Added adopting group identities for SSO groups
+
 ## 1.6.0
 * Updated editor.
 * Added event based processing (reactive processing) with rxjs. Added events for (see src/main/server/shims/event.js).

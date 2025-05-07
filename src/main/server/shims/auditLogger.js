@@ -41,8 +41,9 @@ const Severity = {
     NOTICE: 5, // normal but unlikely
     INFO: 6, // normal
     DEBUG: 7, // extra information
-    NETWORK: 8, // traffic information
-    DATA: 9, // data information
+    SERVICE: 8,
+    NETWORK: 9, // traffic information
+    DATA: 10, // data information
 };
 
 const InverseSeverity = {
@@ -54,8 +55,9 @@ const InverseSeverity = {
     5: 'NOTICE   ',
     6: 'INFO     ',
     7: 'DEBUG    ',
-    8: 'NETWORK  ',
-    9: 'DATA     '
+    8: 'DEBUG    ',
+    9: 'NETWORK  ',
+    10:'DATA     '
 };
 
 let logBuffers = [];
@@ -115,9 +117,9 @@ let report = function (system, severity, message, ...data) {
         if (data.length == 1) {
             data = data[0];
         }
-        if (severity <= 6 || global.skyrepoDebug) {
+        if (severity <= Severity.SERVICE || global.skyrepoDebug) {
             try {
-                if (severity == 3)
+                if (severity == Severity.ERROR)
                     console.trace(data);
                 if (EcArray.isArray(data)) data = JSON.stringify(data);
                 console.log(new Date(), system, ((((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0)) + "M").padEnd(5, " "), InverseSeverity[severity], '', message.substr(0, 18).padEnd(18, " "), data);
