@@ -22,9 +22,7 @@ describe("CEASN Adapter", function() {
         try {
             await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}data/70d27b782c062d1280b240890141dcf6`);
         } catch (err) {
-            console.log('doing things');
             let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
-            console.log('onet', onet);
             const formData = new FormData();
             formData.append('data', JSON.stringify(onet));
             await fetch("http://localhost/api/ctdlasn", {method: 'POST', body: formData});

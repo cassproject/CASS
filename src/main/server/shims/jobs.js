@@ -1,7 +1,9 @@
 const checkDiskSpace = require('check-disk-space').default
 const sendMail = require('./mailer.js').sendMail;
 
+let counter = 0;
 global.events.server.periodic.subscribe(async () => {
+    if (counter++ % 60 == 0)
     try {
         let diskSpace = await checkDiskSpace(__dirname);
         let capacity = Math.round((diskSpace.free / diskSpace.size) * 100);

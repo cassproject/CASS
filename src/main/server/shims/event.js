@@ -38,7 +38,6 @@ events.data.read.subscribe(async (data) => {
         if (d.type == "Framework" || d.encryptedType == "Framework")
             EcArray.setAdd(events.data.frameworks, d.shortId());
     }
-    // console.log("Frameworks", data, events.data.frameworks);
 });
 
 events.data.found.subscribe(async (data) => {
@@ -48,7 +47,6 @@ events.data.found.subscribe(async (data) => {
         if (d.type == "Framework" || d.encryptedType == "Framework")
             EcArray.setAdd(events.data.frameworks, d.shortId());
     }
-    // console.log("Frameworks", data, events.data.frameworks);
 });
 
 events.data.write.subscribe(async (data) => {
@@ -60,7 +58,6 @@ events.data.write.subscribe(async (data) => {
             events.data.frameworks.unshift(d.shortId());
         }
     }
-    // console.log("Frameworks", data, events.data.frameworks);
 });
 
 events.data.delete.subscribe(async (data) => {
@@ -71,9 +68,7 @@ events.data.delete.subscribe(async (data) => {
             EcArray.setRemove(events.data.frameworks, d.shortId());
         }
     }
-    // console.log("Frameworks", data, events.data.frameworks);
 });
 
 events.person.arrived.subscribe(async (people) => {
-    console.log(people);
 });

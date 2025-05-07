@@ -28,13 +28,8 @@ let deleteById = async function (id) {
     await EcRepository.get(
         id,
         function (p1) {
-            EcRepository._delete(p1, null, function (p1) {
-                console.log(p1);
-            });
-        },
-        function (p1) {
-            console.log(p1);
-        }
+            EcRepository._delete(p1, null,failure);
+        },failure
     );
 };
 let failure = function (p1) {
@@ -57,7 +52,6 @@ let changeNameAndSaveAndCheck = async (rld) => {
     let newName = "Some Thing " + EcCrypto.generateUUID();
     rld.setName(newName);
     await repo.saveTo(rld);
-    console.log(rld.id);
     assert.equal((await EcEncryptedValue.fromEncryptedValue(await EcRepository.get(rld.shortId(), null, null, repo))).getName(), newName);
 };
 
@@ -87,8 +81,7 @@ describe("EcRepository (L0 Cache)", () => {
         EcIdentityManager.default.clearIdentities();
         if ((typeof Cypress !== 'undefined') && Cypress != null && Cypress.env != null)
             process.env.CASS_LOOPBACK = Cypress.env('CASS_LOOPBACK');
-        console.log(process.env.CASS_LOOPBACK);
-        await repo.init(process.env.CASS_LOOPBACK || "http://localhost/api/", null, null, console.log);
+        await repo.init(process.env.CASS_LOOPBACK || "http://localhost/api/");
         if (EcIdentityManager.default.ids.length > 0)
             newId1 = EcIdentityManager.default.ids[0];
             else {
@@ -148,7 +141,6 @@ describe("EcRepository (L0 Cache)", () => {
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
         results = await EcRepository.get(rld.shortId());
-        console.log(EcRepository.cacheDB);
         EcRepository.caching = false;
     }).timeout(10000);
     it('encrypt and save (to)', async () => {
@@ -419,19 +411,14 @@ describe("EcRepository (L0 Cache)", () => {
         assert.isTrue(permanentStore4.status >= 200 && permanentStore4.status < 300, "Permanent store 4 failed.");
         thing.id = oldId;
         let results = await repo.search(`@id:"${thing.shortId()}"`);
-        console.log(results);
         assert.isAbove(results.length, 0, "Search (short) failed.");
         results = await repo.search(`@id:"${thing.id}"`);
-        console.log(results);
         assert.isAbove(results.length, 0, "Search (long) failed.");
         results = await repo.multiget([thing.id]);
-        console.log(results);
         assert.equal(results.length, 0, "Multiget (long) failed.");
         results = await repo.multiget([thing.shortId()]);
-        console.log(results);
         assert.isAbove(results.length, 0, "Multiget (short) failed.");
         results = await repo.multiget([EcRemoteLinkedData.veryShortId(repo.selectedServer, EcCrypto.md5(thing.shortId()))]);
-        console.log(results);
         assert.isAbove(results.length, 0, "Multiget (md5 id) failed.");
     }).timeout(10000);
     it('Turn off caching', async () => {

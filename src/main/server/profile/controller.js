@@ -10,7 +10,7 @@ if (process.env.PROFILE_PPK != null)
 }
 let autoCalculatePeople = async ()=>{
     if (going) return;
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'ProfileControllerCompute', "Auto-calculating profiles.");
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileControllerCompute', "Auto-calculating profiles.");
     try {
         going = true;
         for (keysIndex = 0;keysIndex < global.events.person.activePeople.length;keysIndex++) {
@@ -50,10 +50,10 @@ let autoCalculatePeople = async ()=>{
             }
         }
     } catch (ex) {
-        console.error(ex);
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'ProfileControllerError', ex);
     } finally {
         going = false;
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'ProfileControllerDone', "Done calculating profiles.");
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileControllerDone', "Done calculating profiles.");
     }
 }
 
@@ -105,7 +105,7 @@ let invalidateProfileByAssertion = async (data) => {
     if (hasAssertion) {
         EcArray.removeDuplicates(subjects);
         for (let subject of subjects) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'ProfileControllerInvalidating', "Deleting profiles associated with " + EcPk.fromPem(subject).fingerprint());
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileControllerInvalidating', "Deleting profiles associated with " + EcPk.fromPem(subject).fingerprint());
             await global.ephemeral.deleteWith(`|${EcPk.fromPem(subject).fingerprint()}|`);
             keysIndex = 0;
             personIndex = 0;

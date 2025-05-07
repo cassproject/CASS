@@ -1,7 +1,7 @@
 let loopback = require('../../shims/cassproject.js');
 
 cfError = function (code, codeMajor, severity, description, codeMinor, codeMinorValue) {
-    error(JSON.stringify({
+    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CaseAdapterError', {
         "imsx_codeMajor": codeMajor,
         "imsx_severity": severity,
         "imsx_description": description,
@@ -13,7 +13,20 @@ cfError = function (code, codeMajor, severity, description, codeMinor, codeMinor
                 }
             ]
         }
-    }, null, 2), code);
+    }, code);
+    throw new Error(JSON.stringify({
+        "imsx_codeMajor": codeMajor,
+        "imsx_severity": severity,
+        "imsx_description": description,
+        "imsx_codeMinor": {
+            "imsx_codeMinorField": [
+                {
+                    "imsx_codeMinorFieldName": codeMinor,
+                    "imsx_codeMinorFieldValue": codeMinorValue
+                }
+            ]
+        }
+    }));
 }
 
 cfGetFramework = async function (f) {
@@ -31,7 +44,7 @@ cfGetFramework = async function (f) {
             var result = null;
             EcFramework.search(repo, "@id:" + query.id, function (success) {
                 result = success;
-            }, console.log);
+            });
             if (result.length > 0) {
                 f = new EcFramework();
                 f.copyFrom(result[0]);
@@ -74,7 +87,7 @@ cfGetCompetency = async function (c) {
             var result = null;
             EcCompetency.search(repo, "@id:" + query.id, function (success) {
                 result = success;
-            }, console.log);
+            });
             if (result && result.length > 0) {
                 competency = new EcCompetency();
                 competency.copyFrom(result[0]);

@@ -153,14 +153,12 @@ describe('SkyRepo Adapter', function () {
     thing2.addOwner(newId1.ppk.toPk());
 
     result = await repo.multiput([thing1, thing2]);
-    console.log(result);
     assert.strictEqual(result.length, 2);
 
     thing1.name = 'Thing 1d';
     thing2.name = 'Thing 2d';
 
     let result2 = await repo.multiput([thing1, thing2]);
-    console.log(result2);
     assert.strictEqual(result2.length, 0);
 
     const getByShortId1d = await EcRepository.get(thing1.shortId());

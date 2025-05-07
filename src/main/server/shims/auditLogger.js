@@ -10,7 +10,7 @@ const SyslogFacility = {
     NETWORK: 16, // local0 - network traffic related like HTTP POST, GET, and DELETE
     STORAGE: 17, // local1 - things like DBs
     STANDARD: 18, // local2 - anything that doesn't fit into other categories most likely goes here
-
+    SECURITY: 23
     // theses are open still, syslog format says that we can go from 16-23 for custom
     // facility ids and still be in spec
     // OPEN1, //local3
@@ -26,9 +26,10 @@ const LogCategory = {
     MESSAGE: 'msg',
     FILE_SYSTEM: 'fs',
     NETWORK: 'net',
-    STORAGE: 'stor',
-    ADAPTER: 'adap',
-    PROFILE: 'prof',
+    STORAGE: 'sto',
+    ADAPTER: 'ada',
+    PROFILE: 'pro',
+    SECURITY: 'sec'
 };
 
 const Severity = {
@@ -41,6 +42,7 @@ const Severity = {
     INFO: 6, // normal
     DEBUG: 7, // extra information
     NETWORK: 8, // traffic information
+    DATA: 9, // data information
 };
 
 const InverseSeverity = {
@@ -53,6 +55,7 @@ const InverseSeverity = {
     6: 'INFO     ',
     7: 'DEBUG    ',
     8: 'NETWORK  ',
+    9: 'DATA     '
 };
 
 let logBuffers = [];

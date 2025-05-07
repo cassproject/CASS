@@ -45,15 +45,15 @@ global.keyFor = function (filename) {
 global.repoAutoDetect = function () {
     if (process.env.CASS_LOOPBACK != null) {
         repo.init(process.env.CASS_LOOPBACK, function () {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassRepoInit', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'CassRepoInit', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
         }, (error) => {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'CassRepoInitError', error);
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'CassRepoInitError', error);
         });
     } else {
         repo.autoDetectRepository();
     }
 
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassRepoAutoDetect',
+    global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'CassRepoAutoDetect',
         'Loopback: ' + repo.selectedServer,
         'Loopback Proxy: ' + repo.selectedServerProxy,
         'Elasticsearch Endpoint: ' + elasticEndpoint,
@@ -123,7 +123,7 @@ const signatureSheet = async function () {
         delete signature.owner;
         
         const ownerPk = EcPk.fromPem(owner);
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassIdentity', ownerPk.fingerprint());
+        global.auditLogger.report(global.auditLogger.LogCategory.SECURITY, global.auditLogger.Severity.NETWORK, 'CassIdentity', ownerPk.fingerprint());
 
         const validTypes = signature.getTypes();
         // Check if the signature type is valid
@@ -220,7 +220,7 @@ const filterResults = async function (o, dontDecryptInSso) {
                         o.decryptedSecret = await eev.decryptSecret(this.ctx.req.eim);
                     }
                 } catch (msg) {
-                    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'CassDecryptError', 'We couldn\'t decrypt it, hope the client has better luck! -- ' + msg);
+                    global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'CassDecryptError', 'We couldn\'t decrypt it, hope the client has better luck! -- ' + msg);
                 }
             }
         }
@@ -293,7 +293,7 @@ const putUrl = function (o, id, version, type) {
     }
     url += '/' + encodeURIComponent(id) + versionPart;
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoPutUrl', 'Put:' + url);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoPutUrl', 'Put:' + url);
     }
     return url;
 };
@@ -317,7 +317,7 @@ const putPermanentUrl = function (o, id, version, type) {
     }
     url += '/' + encodeURIComponent(id) + '.' + (version === undefined || version == null ? '' : version) + versionPart;
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoPutPermanentUrl', 'PutPermanent:' + url);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoPutPermanentUrl', 'PutPermanent:' + url);
     }
     return url;
 };
@@ -341,7 +341,7 @@ const putPermanentBaseUrl = function (o, id, version, type) {
     }
     url += '/' + encodeURIComponent(id) + '.' + versionPart;
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoPutPermanentBaseUrl', 'PutPermanentBase:' + url);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoPutPermanentBaseUrl', 'PutPermanentBase:' + url);
     }
     return url;
 };
@@ -362,7 +362,7 @@ const getUrl = function (index, id, version, type) {
         url += '/' + encodeURIComponent(id);
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoGetUrl', 'Get:' + url);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoGetUrl', 'Get:' + url);
     }
     return url;
 };
@@ -382,7 +382,7 @@ const deleteUrl = function (id, version, type) {
     url += '/' + encodeURIComponent(id);
     url += '?' + refreshPart;
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoDeleteUrl', 'Delete:' + url);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoDeleteUrl', 'Delete:' + url);
     }
     return url;
 };
@@ -396,7 +396,7 @@ const deletePermanentBaseUrl = function (id, version, type) {
     }
     url += '/' + encodeURIComponent(id) + '.';
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoDeletePermBase', 'DeletePermanentBase:' + url);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoDeletePermBase', 'DeletePermanentBase:' + url);
     }
     return url;
 };
@@ -8472,7 +8472,7 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
         (o)['@version'] = new Date().getTime();
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalIndex', JSON.stringify(o));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalIndex', JSON.stringify(o));
     }
     const response = await httpPost(o, url, 'application/json', false, null, null, true, elasticHeaders());
     return response;
@@ -8493,7 +8493,7 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
         (doc)['enabled'] = false;
         const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
         if (global.skyrepoDebug) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalPerm', JSON.stringify(result));
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalPerm', JSON.stringify(result));
         }
         permanentCreated = true;
     }
@@ -8510,7 +8510,7 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
         results = await httpPost(data, url, 'application/json', false, null, null, true, elasticHeaders());
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternalPerm', JSON.stringify(results));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalPerm', JSON.stringify(results));
     }
     return JSON.stringify(results);
 };
@@ -8540,7 +8540,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
     }
     const response = await httpPost(body, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
     if (!response) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutPermBulk', 'No response');
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'DbPutPermBulk', 'No response');
         for (let x of Object.values(map)) {
             failed[x.id] = true;
         }
@@ -8557,7 +8557,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
                     retries[found.id] = found;
                 }
             } else if (item.index.error) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutPermBulk', item);
+                global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'PutPermBulk', item);
                 let found = Object.values(map).find((x) => x.permanentIds.includes(item.index['_id'].split('.')[0]));
                 if (found) {
                     failed[found.id] = true;
@@ -8567,19 +8567,19 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
         }
 
         if (Object.values(retries).length > 0) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', '409, version is: [' + Object.values(retries).map((x) => x.version).toString() + ']');
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'DbPutInternal', '409, version is: [' + Object.values(retries).map((x) => x.version).toString() + ']');
             const current = await skyrepoManyGetPermanent.call(this, Object.values(retries));
             for (let currentDoc of current.docs) {
                 let found = retries[currentDoc['_id'].split('.')[0]];
                 if (currentDoc['_version'] >= found.version && currentDoc['_version'] > 1743202754349) {
                     delete retries[currentDoc['_id'].split('.')[0]];
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Dumping, was at: [' + found.version + ']');
+                    global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'SkyrepoPutInternal', 'Dumping, was at: [' + found.version + ']');
                 } 
                 else if (currentDoc['_version'] >= found.version) {
                     found.version = currentDoc['_version'] + 1;
                 }
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Updated to: [' + Object.values(retries).map((x) => x.version).toString() + ']');
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'DbPutInternal', 'Updated to: [' + Object.values(retries).map((x) => x.version).toString() + ']');
 
             // Used to replay replication / database log files without "just jamming the data in"
             if (Object.values(retries).length > 0)
@@ -8617,7 +8617,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
                 await this.ctx.req.eim.sign(erld);
                 x.object = JSON.parse(erld.toJson());
             } catch (msg) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'SkyrepoPutInternalError', msg);
+                global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'DbPutInternalError', msg);
             }
         }
 
@@ -8697,7 +8697,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
     }
     const response = await httpPost(body, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
     if (!response) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutIndexBulk', 'No response');
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'DbPutIndexBulk', 'No response');
         for (let x of Object.values(map)) {
             failed[x.id] = true;
         }
@@ -8709,7 +8709,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             if (item.index.status === 409) {
                 // Do nothing
             } else if (item.index.error) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'PutIndexBulk', item);
+                global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'DbPutIndexBulk', item);
                 let found = Object.values(map).find((x) => x.permanentIds.includes(item.index['_id'].split('.')[0]));
                 if (found) {
                     failed[found.id] = true;
@@ -8759,7 +8759,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
             await this.ctx.req.eim.sign(erld);
             o = JSON.parse(erld.toJson());
         } catch (msg) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'SkyrepoPutInternalError', msg);
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'DbPutInternalError', msg);
         }
     }
     const oldPermanent = await skyrepoGetPermanent(id, version, type);
@@ -8791,7 +8791,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         }
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoPutInternal', JSON.stringify(obj));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'PutInternal', JSON.stringify(obj));
     }
     const permanentIds = [id];
     if (erld.id != null && erld.getGuid() != null) {
@@ -8804,15 +8804,15 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
     for (const permId of permanentIds) {
         const status = await skyrepoPutInternalPermanent.call(this, o, permId, chosenVersion, type);
         if (status === '409') {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', '409, version is: ' + chosenVersion);
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', '409, version is: ' + chosenVersion);
             const current = await skyrepoGetPermanent.call(this, permId, null, type);
             if (current && current._version > chosenVersion && current._version > 1743202754349) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Dumping, was at ' + chosenVersion);
+                global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', 'Dumping, was at ' + chosenVersion);
                 break;
             }
             else if (current && current._version > chosenVersion) {
                 chosenVersion = current._version;
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', 'Updated to ' + chosenVersion);
+                global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', 'Updated to ' + chosenVersion);
             }
             // Used to replay replication / database log files without "just jamming the data in"
             if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
@@ -8829,12 +8829,12 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         if (err.verify()) {
             err.addRekeyRequestToForwardingTable();
         }
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
     }
 };
 const skyrepoGetIndexInternal = async function (index, id, version, type) {
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetIndexInternal', 'Fetching from ' + index + ' : ' + type + ' / ' + id + ' / ' + version);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexInternal', 'Fetching from ' + index + ' : ' + type + ' / ' + id + ' / ' + version);
     }
     const response = await httpGet(getUrl.call(this, index, id, version, type), true, elasticHeaders());
     return response;
@@ -8842,7 +8842,7 @@ const skyrepoGetIndexInternal = async function (index, id, version, type) {
 
 const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
     }
 
     const ary = manyParseParams;
@@ -8874,7 +8874,7 @@ const skyrepoGetIndexSearch = async function (id, version, type) {
     const microSearchUrl = elasticEndpoint + '/_search?version&q=_id:' + id + '';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetIndexSearch', microSearchUrl);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexSearch', microSearchUrl);
     }
     if (microSearch == null) {
         return null;
@@ -8909,7 +8909,7 @@ const skyrepoManyGetIndexSearch = async function (ary) {
         const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
         if (microSearch.error) throw new Error(microSearch.error.reason);
         if (global.skyrepoDebug) {
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexSearch', microSearchUrl);
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexSearch', microSearchUrl);
         }
         if (microSearch == null) {
             return [];
@@ -8933,7 +8933,7 @@ let skyrepoGetIndexRecords = async function (id) {
     const microSearchUrl = elasticEndpoint + '/_search?version&q=@id:"' + id + '" OR @id:"' + hashId + '"';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetIndexRecords', microSearchUrl);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexRecords', microSearchUrl);
     }
     if (microSearch == null) {
         return null;
@@ -8967,12 +8967,12 @@ let skyrepoManyGetIndexRecords = async function (ary) {
 
     const searchParameters = await (searchObj).call(this, microSearchUrl, null, 10000);
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepSearch', JSON.stringify(searchParameters));
     }
     const microSearch = await httpPost(searchParameters, searchUrl(), 'application/json', false, null, null, true, elasticHeaders());
 
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexRecords', microSearchUrl);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexRecords', microSearchUrl);
     }
     if (microSearch == null) {
         return [];
@@ -9034,7 +9034,7 @@ global.skyrepoGetInternal = async function (id, version, type) {
         return JSON.parse(((result)['_source'])['data']);
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGetInternal', 'Failed to find ' + type + '/' + id + '/' + version + ' -- trying degraded form from search index.');
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetInternal', 'Failed to find ' + type + '/' + id + '/' + version + ' -- trying degraded form from search index.');
     }
     result = await (skyrepoGetIndex).call(this, id, version, type);
     if (result == null) {
@@ -9089,7 +9089,7 @@ global.skyrepoHistoryInternal = async function (id, version, type) {
         return hits.map((h) => JSON.parse(h._source.data));
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepoHistoryInternal', 'Failed to find ' + type + '/' + id + '/' + version + '.');
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoHistoryInternal', 'Failed to find ' + type + '/' + id + '/' + version + '.');
     }
     return null;
 };
@@ -9101,7 +9101,7 @@ let skyrepoManyGetInternal = global.skyrepoManyGetInternal = async function (man
     let response = await skyrepoManyGetPermanent(manyParseParams);
 
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepMGStuff', response);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepMGStuff', response);
     }
     let resultDocs = (response)['docs'];
     const results = [];
@@ -9118,13 +9118,13 @@ let skyrepoManyGetInternal = global.skyrepoManyGetInternal = async function (man
     }
 
     if (global.skyrepoDebug && notFoundInPermanent.length > 0) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Failed to find ' + JSON.stringify(notFoundInPermanent) + ' -- trying degraded form from search index.');
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetInternal', 'Failed to find ' + JSON.stringify(notFoundInPermanent) + ' -- trying degraded form from search index.');
     }
 
     response = await (skyrepoManyGetIndex).call(this, notFoundInPermanent);
 
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetInternal', 'Index get - ' + JSON.stringify(response));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetInternal', 'Index get - ' + JSON.stringify(response));
     }
 
     let resultDocs2 = (response);
@@ -9147,10 +9147,10 @@ global.skyrepoGet = async function (parseParams) {
         (parseParams)['history'] = this.params.history;
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGet', JSON.stringify(parseParams));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGet', JSON.stringify(parseParams));
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepGet', JSON.stringify(this.params.obj));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGet', JSON.stringify(this.params.obj));
     }
     const id = (parseParams)['id'];
     const type = (parseParams)['type'];
@@ -9200,7 +9200,7 @@ const skyrepoManyGetParsed = async function (manyParseParams) {
         if (ex.toString().indexOf('Signature Violation') != -1) {
             throw ex;
         }
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'SkyrepManyGetParsedError', ex);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'SkyrepManyGetParsedError', ex);
     }
     if (filtered == null) {
         return null;
@@ -9218,10 +9218,10 @@ global.skyrepoPut = async function (parseParams) {
         (parseParams)['obj'] = this.params.obj;
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPut', 'put pp:' + JSON.stringify(parseParams));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPut', 'put pp:' + JSON.stringify(parseParams));
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPut', 'put obj:' + JSON.stringify(this.params.obj));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPut', 'put obj:' + JSON.stringify(this.params.obj));
     }
     if (parseParams == null && EcObject.isObject(this.params.obj)) {
         parseParams = this.params.obj;
@@ -9269,7 +9269,7 @@ global.skyrepoPutParsedBulk = async function (ary) {
             if (err.verify()) {
                 err.addRekeyRequestToForwardingTable();
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
         }
     }
 
@@ -9297,7 +9297,7 @@ let validateSignatures = async function (id, version, type, errorMessage) {
                 break;
             }
             if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
-                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected.');
+                global.auditLogger.report(global.auditLogger.LogCategory.SECURITY, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected.');
                 success = true;
                 break;
             }
@@ -9329,7 +9329,7 @@ let validateSignaturesBulk = async function (map, errorMessage) {
                             break;
                         }
                         if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
-                            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected.');
+                            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected.');
                             success = true;
                             break;
                         }
@@ -9361,7 +9361,7 @@ const skyrepoDeleteInternalPermanent = async function (id, version, type) {
 global.skyrepoDelete = async function (id, version, type) {
     const oldObj = await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may delete it.');
     if (oldObj == null) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'IndexNoPermanent', "Couldn't find data to delete, removing the index entry.");
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'IndexNoPermanent', "Couldn't find data to delete, removing the index entry.");
         await skyrepoDeleteInternalIndex.call(this, id, version, type);
         return null;
     }
@@ -9440,14 +9440,14 @@ const searchUrl = function (urlRemainder, index_hint) {
     }
     url += '_search';
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepSearchUrl', url);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepSearchUrl', url);
     }
     return url;
 };
 const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint, originalSize, ids) {
     const searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepSearch', JSON.stringify(searchParameters));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepSearch', JSON.stringify(searchParameters));
     }
     const results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), 'application/json', false, null, null, true, elasticHeaders());
 
@@ -9477,7 +9477,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
             if (ex.toString().indexOf('Signature Violation') != -1) {
                 throw ex;
             }
-            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'SkyrepManyGetParsedError', ex);
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'SkyrepManyGetParsedError', ex);
         }
     } else {
         for (let i = 0; i < hits.length; i++) {
@@ -9500,7 +9500,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
     // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
     originalSize = originalSize || size;
     if (size < 10000 && hits.length >= size && searchResults.length < originalSize) {
-        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepPagin8', size, hits.length, searchResults.length);
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPagin8', size, hits.length, searchResults.length);
         return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size, ids)).slice(0, size);
     }
     return searchResults;
@@ -9902,7 +9902,7 @@ const endpointMultiPut = async function () {
             (doc)['enabled'] = false;
             const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
             if (global.skyrepoDebug) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepEndpointMultiput', JSON.stringify(result));
+                global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepEndpointMultiput', JSON.stringify(result));
             }
             permanentCreated = true;
         }
@@ -10122,7 +10122,7 @@ const getCorsOrigins = function () {
         try {
             corsOrigins = process.env.CORS_ORIGINS.split(',').map((x) => x.trim());
         } catch (e) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'CorsConfigError', 'Misconfigured CORS_ORIGINS env var, ensure the value is a comma separated list of origins');
+            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'CorsConfigError', 'Misconfigured CORS_ORIGINS env var, ensure the value is a comma separated list of origins',e);
         }
     }
     return corsOrigins;

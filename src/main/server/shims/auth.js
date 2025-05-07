@@ -367,7 +367,7 @@ app.use(async function (req, res, next) {
     }
     if (email != null)
     {
-        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthSigSheetCreating", `Securing Proxy: Creating signature sheet for request from ${email}.`);
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassAuthSigSheetCreating", `Securing Proxy: Creating signature sheet for request from ${email}.`);
         let eim = new EcIdentityManager();
         let myKey = await getPk(email);
         let i = new EcIdentity();
@@ -458,10 +458,10 @@ app.use(async function (req, res, next) {
 
             //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!
             signatureSheetCache[p.shortId()] = signatureSheet;
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassSigSheetCreated", `Securing Proxy: Created signature sheet for request from ${email}.`, signatureSheet);
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassSigSheetCreated", `Securing Proxy: Created signature sheet for request from ${email}.`, signatureSheet);
         }
         else
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassSigSheetCreated", `Securing Proxy: Reused signature sheet for request from ${email}.`, signatureSheet);
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassSigSheetCreated", `Securing Proxy: Reused signature sheet for request from ${email}.`, signatureSheet);
         
         req.headers.signatureSheet = signatureSheet;
         req.eim = eim;
@@ -516,7 +516,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             {req.permittedBy.push("Permitted by: " + 'sso ids > '+ process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length);allowed = true;} //In a permissioned group.
         if (!allowed)
         {            
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.",JSON.stringify( {
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.",JSON.stringify( {
                 allowed,
                 headers:req.headers,
                 connections:{
