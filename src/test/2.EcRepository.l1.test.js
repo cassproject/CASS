@@ -1,6 +1,5 @@
 const fs = require('fs');
 const https = require('https');
-require('fake-indexeddb/auto');
 let chai = require("chai");
 require("cassproject");
 
@@ -30,7 +29,7 @@ let deleteById = async function (id) {
         id,
         function (p1) {
             EcRepository._delete(p1, null, failure);
-        },failure
+        }, failure
     );
 };
 let failure = function (p1) {
@@ -73,17 +72,26 @@ let changeNameAndSaveAndCheckMultiput = async (rld) => {
 let repo = new EcRepository();
 
 let newId1 = null;
-describe("EcRepository (L2 Cache)", () => {
+describe("EcRepository (L1 Cache)", () => {
     let id = null;
     let rld = null;
+    it('Waiting for server to be ready', async () => {
+        let ready = false;
+        global.events.server.ready.subscribe(function (isReady) {
+            if (!isReady) {
+                console.log('Server not ready. Skipping tests.');
+                return;
+            }
+            ready = true;
+        });
+        while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
+    });
     it('create', async () => {
         EcRepository.caching = true;
-        EcRepository.cachingL2 = true;
+        EcRepository.cachingL2 = false;
         EcIdentityManager.default.clearIdentities();
         if ((typeof Cypress !== 'undefined') && Cypress != null && Cypress.env != null)
             process.env.CASS_LOOPBACK = Cypress.env('CASS_LOOPBACK');
-        if ((typeof Cypress !== 'undefined') && Cypress != null && Cypress.env != null)
-            process.env.ELASTICSEARCH_ENDPOINT = Cypress.env('ELASTICSEARCH_ENDPOINT');
         await repo.init(process.env.CASS_LOOPBACK || "http://localhost/api/");
         if (EcIdentityManager.default.ids.length > 0)
             newId1 = EcIdentityManager.default.ids[0];

@@ -1,9 +1,9 @@
 const EcRepository = require("cassproject/src/org/cassproject/ebac/repository/EcRepository");
 let chai = require("chai");
 
-let hrtime = function() {
+let hrtime = function () {
     try {
-        return [Math.round(performance.now()/1000), performance.now() * 1000];
+        return [Math.round(performance.now() / 1000), performance.now() * 1000];
     } catch (e) {
         // Eat quietly.
     }
@@ -14,18 +14,28 @@ var should = chai.should();
 var expect = chai.expect;
 var assert = chai.assert;
 
-
-describe("CEASN Adapter", function() {
+describe("CEASN Adapter", function () {
     this.timeout(30000);
 
-    before(async ()=>{
+    it('Waiting for server to be ready', async () => {
+        let ready = false;
+        global.events.server.ready.subscribe(function (isReady) {
+            if (!isReady) {
+                console.log('Server not ready. Skipping tests.');
+                return;
+            }
+            ready = true;
+        });
+        while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
+    });
+    before(async () => {
         try {
             await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}data/70d27b782c062d1280b240890141dcf6`);
         } catch (err) {
             let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
             const formData = new FormData();
             formData.append('data', JSON.stringify(onet));
-            await fetch("http://localhost/api/ctdlasn", {method: 'POST', body: formData});
+            await fetch("http://localhost/api/ctdlasn", { method: 'POST', body: formData });
         }
     });
 
@@ -39,7 +49,7 @@ describe("CEASN Adapter", function() {
         let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c264d7-9119-11e8-b852-782bcb5df6ac")).json();
         const formData = new FormData();
         formData.append('data', JSON.stringify(onet));
-        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ctdlasn`, {method: 'POST', body: formData});
+        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ctdlasn`, { method: 'POST', body: formData });
         let framework = await EcRepository.get("https://www.onetcenter.org/ctdlasn/resources/ce-07c264d7-9119-11e8-b852-782bcb5df6ac");
         assert(framework != null, "Framework saved to CaSS.");
     }).timeout(30000);
@@ -50,7 +60,7 @@ describe("CEASN Adapter", function() {
         let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-9fab4187-d8e7-11e9-8250-782bcb5df6ac")).json();
         const formData = new FormData();
         formData.append('data', JSON.stringify(onet));
-        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ctdlasn`, {method: 'POST', body: formData});
+        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ctdlasn`, { method: 'POST', body: formData });
         let framework = await EcRepository.get("https://www.onetcenter.org/ctdlasn/resources/ce-9fab4187-d8e7-11e9-8250-782bcb5df6ac");
         assert(framework != null, "Framework saved to CaSS.");
     }).timeout(300000);

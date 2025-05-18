@@ -322,6 +322,24 @@ app.use(async function (req, res, next) {
     let identifier = null;
     let name = null;
     let username = null;
+    if ((process.env.AUTH_OVERRIDE || global.AUTH_OVERRIDE) != null)
+    {
+        req.user = JSON.parse(process.env.AUTH_OVERRIDE || global.AUTH_OVERRIDE);
+        let ppk = getPkCache[req.user.email];
+        if (getPkCache[req.user.email] == null)
+            ppk = getPkCache[req.user.email] = EcPpk.fromPem(process.env.AUTH_OVERRIDE_KEY || global.AUTH_OVERRIDE_KEY).toPem();
+        if (getPersonCache[ppk] == null)
+        {
+            let p = new EcPerson();
+            p.addOwner(EcPpk.fromPem(ppk).toPk());
+            p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,EcPpk.fromPem(ppk).toPk().fingerprint());
+            p.name = req.user.name;
+            p.email = req.user.email;
+            p.identifier = req.user.sub;
+            getPersonCache[EcPpk.fromPem(ppk).toPk().toPem()] = p;
+        }
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CaSSFalsifyingIdentity", "Falsifying identity for testing purposes.", req.user);
+    }
     if (req.user != null)
     {
         if (req.user.iat != null)

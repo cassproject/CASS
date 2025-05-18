@@ -10,6 +10,7 @@ events.database = {
 events.server = {
     init: new rxjs.Subject(),
     listening: new rxjs.BehaviorSubject(false),
+    ready: new rxjs.BehaviorSubject(false),
     periodic: rxjs.interval(60000),
 };
 events.person = {
