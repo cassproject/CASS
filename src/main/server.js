@@ -64,7 +64,7 @@ if (process.env.CORS_ORIGINS != null || process.env.CORS_CREDENTIALS != null) {
         try {
             corsOptions.origin = process.env.CORS_ORIGINS.split(',').map((x) => x.trim());
         } catch (e) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'CorsConfigError', 'Misconfigured CORS_ORIGINS env var, ensure the value is a comma separated list of origins',e);
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'CorsConfigError', 'Misconfigured CORS_ORIGINS env var, ensure the value is a comma separated list of origins', e);
             System.exit(1);
         }
     }
@@ -125,7 +125,12 @@ app.get('/api/', (req, res, next) => {
 if (process.env.KILL) {
     app.get('/api/kill', (req, res, next) => {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, 'CassExit', "Kill received. Exiting process.");
-        process.exit(0);
+        res.statusCode = 200;
+        res.write("Killing process.");
+        res.end();
+        setTimeout(() => {
+            process.exit(0);
+        }, 1000);
     });
 }
 
@@ -140,7 +145,7 @@ if (process.env.INCLUDE_STRICT_TRANSPORT_SECURITY_HEADER == "true") {
     app.use((req, res, next) => {
 
         let forwardingProtocol = req.headers["x-forwarded-proto"];
-        let forwardedSecurely = forwardingProtocol && forwardingProtocol === "https"; 
+        let forwardedSecurely = forwardingProtocol && forwardingProtocol === "https";
         if (forwardedSecurely || req.secure) {
             res.setHeader("Strict-Transport-Security", "max-age=31536000")
         }
@@ -158,6 +163,13 @@ if (process.env.INCLUDE_MIME_NOSNIFF_HEADER == "true") {
 
 process.on('exit', () => {
     global.auditLogger.flush();
+});
+
+process.on('SIGTERM', function (code) {
+    console.log('SIGTERM received...');
+    server.close();
+    global.auditLogger.flush();
+    process.exit(code || 1);
 });
 
 global.events.server.listening.subscribe(async (isListening) => {
@@ -240,7 +252,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
     if (typeof process.env.MAX_CONNECTIONS !== 'undefined') {
         global.server.maxConnections = parseInt(process.env.MAX_CONNECTIONS);
     }
-    server.on('connection', function(socket) {
+    server.on('connection', function (socket) {
         socket.setKeepAlive(true);
     });
     require('./server/websocket.js');

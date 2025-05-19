@@ -8,7 +8,7 @@
 * Updated profile caching to 30 days.
 * Updated profile calculation to 1gb.
 * Fixed issue associated with 409 errors when reading data causing writes to take a long time.
-* Moved adapter/* to cartridge/* to allow for more control over removal of adapters.
+* Moved adapter/*/* to cartridge/adapter/* to allow for more control over removal of adapters.
 * Added skyrepo cull methods that remove history to reclaim disk space.
 * Added adopting group identities for SSO groups
 

@@ -118,9 +118,9 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
 ### FIPS:
 FIPS is supported both client-side and server-side in CaSS. Here is the relevant compatibility table.
 
-Sources: https://www.openssl.org/blog/blog/2023/05/29/FIPS-3-0-8/
+Sources: https://openssl-library.org/post/2025-03-11-fips-140-3/
 
-| --> Server --> | < 1.5.35 | >= 1.5.35 with <br> OpenSSL 3.0.8 and<br> --force-fips | >= 1.5.35 with <br>OpenSSL 3.0.8 and<br> --force-fips and<br> env REJECT_SHA1=true |
+| --> Server --> | < 1.5.35 | >= 1.5.35 with <br> OpenSSL 3.1.2 and<br> --force-fips | >= 1.5.35 with <br>OpenSSL 3.1.2 and<br> --force-fips and<br> env REJECT_SHA1=true |
 | - | - | - | - |
 | **Client/Library** | |
 | < 1.5.35 | SHA-1 (no FIPS) | SHA-1 (Verify only) | Incompatible
