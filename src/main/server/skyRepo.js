@@ -253,12 +253,8 @@ const inferTypeFromObj = function (o, atType) {
     }
     fullType = fullType.replace('http://', '');
     fullType = fullType.replace('https://', '');
-    fullType = fullType.replace('/', '.');
-    fullType = fullType.replace('/', '.');
-    fullType = fullType.replace('/', '.');
-    fullType = fullType.replace(':', '.');
-    fullType = fullType.replace(':', '.');
-    fullType = fullType.replace(':', '.');
+    fullType = fullType.replace(/\//g, '.');
+    fullType = fullType.replace(/:/g, '.');
     return fullType;
 };
 const inferTypeWithoutObj = function (atType) {
