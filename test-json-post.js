@@ -20,6 +20,8 @@ function testJsonPost() {
     }
   };
 
+  console.log('Sending POST request with application/json content-type...');
+  
   const req = http.request(options, (res) => {
     console.log('Status Code:', res.statusCode);
     
@@ -30,12 +32,27 @@ function testJsonPost() {
     
     res.on('end', () => {
       console.log('Response Headers:', res.headers);
-      console.log('Response Body:', responseData);
+      
+      try {
+        const parsedData = JSON.parse(responseData);
+        console.log('Response Body:', JSON.stringify(parsedData, null, 2));
+      } catch (e) {
+        console.log('Response Body (not JSON):', responseData);
+      }
+      
+      // Log success confirmation
+      console.log('\nTest result:');
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        console.log('\x1b[32m%s\x1b[0m', 'SUCCESS: JSON POST request was handled correctly');
+      } else {
+        console.log('\x1b[31m%s\x1b[0m', 'FAILURE: JSON POST request failed');
+      }
     });
   });
 
   req.on('error', (error) => {
     console.error('Error during request:', error);
+    console.log('\x1b[31m%s\x1b[0m', 'FAILURE: Request error occurred');
   });
 
   req.write(data);
