@@ -1,5 +1,6 @@
 const EcArray = require('cassproject/src/com/eduworks/ec/array/EcArray');
 
+let v8 = global.v8 = require('v8');
 const sendMail = require('./mailer.js').sendMail;
 
 const SyslogFacility = {

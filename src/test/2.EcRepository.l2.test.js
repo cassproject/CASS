@@ -373,7 +373,7 @@ describe("EcRepository (L2 Cache)", () => {
         thing.generateId(repo.selectedServer);
         thing.name = "Thing (index)";
         thing.updateTimestamp();
-        let indexStore = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200/"}schema.org.thing/_doc/${EcCrypto.md5(thing.shortId())}?version=${thing.getTimestamp()}&version_type=external&refresh=true`, {
+        let indexStore = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200"}/schema.org.thing/_doc/${EcCrypto.md5(thing.shortId())}?version=${thing.getTimestamp()}&version_type=external&refresh=true`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -383,7 +383,7 @@ describe("EcRepository (L2 Cache)", () => {
         let oldId = thing.id;
         thing.updateTimestamp();
         assert.isTrue(indexStore.status >= 200 && indexStore.status < 300, "Index store failed.");
-        let permanentStore = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200/"}permanent/_doc/${EcCrypto.md5(thing.shortId())}.?refresh=true`, {
+        let permanentStore = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200"}/permanent/_doc/${EcCrypto.md5(thing.shortId())}.?refresh=true`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -391,7 +391,7 @@ describe("EcRepository (L2 Cache)", () => {
             body: JSON.stringify({ data: thing.toJson() })
         });
         assert.isTrue(permanentStore.status >= 200 && permanentStore.status < 300, "Permanent store 1 failed.");
-        let permanentStore2 = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200/"}permanent/_doc/${EcCrypto.md5(thing.shortId())}.${thing.getTimestamp()}?refresh=true`, {
+        let permanentStore2 = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200"}/permanent/_doc/${EcCrypto.md5(thing.shortId())}.${thing.getTimestamp()}?refresh=true`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -399,7 +399,7 @@ describe("EcRepository (L2 Cache)", () => {
             body: JSON.stringify({ data: thing.toJson() })
         });
         assert.isTrue(permanentStore2.status >= 200 && permanentStore2.status < 300, "Permanent store 2 failed.");
-        let permanentStore3 = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200/"}permanent/_doc/${thing.getGuid()}.?refresh=true`, {
+        let permanentStore3 = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200"}/permanent/_doc/${thing.getGuid()}.?refresh=true`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -407,7 +407,7 @@ describe("EcRepository (L2 Cache)", () => {
             body: JSON.stringify({ data: thing.toJson() })
         });
         assert.isTrue(permanentStore3.status >= 200 && permanentStore3.status < 300, "Permanent store 3 failed.");
-        let permanentStore4 = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200/"}permanent/_doc/${thing.getGuid()}.${thing.getTimestamp()}?refresh=true`, {
+        let permanentStore4 = await fetch(`${process.env.ELASTICSEARCH_ENDPOINT || "http://localhost:9200"}/permanent/_doc/${thing.getGuid()}.${thing.getTimestamp()}?refresh=true`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -80,23 +80,14 @@ global.elasticHeaders = function () {
 global.elasticSearchVersion = function () {
     return ((elasticSearchInfo)['version'])['number'];
 };
-
 const getTypeFromObject = function (o) {
-    let encryptedType = o.encryptedType || o['@encryptedType'];
-    let encryptedContext = o.encryptedContext || o['@encryptedContext'];
-    let type = encryptedType || o['@type'] || o.type;
-    let context = encryptedContext || o['@context'] || o.context;
-    if (type == null)
-        return null;
-    if (type.indexOf('http') != -1)
-        return type;
-    if (context == null)
-        return type;
-    if (context.endsWith('/')) {
-        return context + type;
-    } else {
-        return context + '/' + type;
-    }
+    const type = o.encryptedType || o['@encryptedType'] || o['@type'] || o.type;
+    const context = o.encryptedContext || o['@encryptedContext'] || o['@context'] || o.context;
+
+    if (!type) return null;
+    if (type.startsWith('http')) return type;
+
+    return context ? `${context.endsWith('/') ? context : context + '/'}${type}` : type;
 };
 
 const signatureSheetEach = async function (obj) {
