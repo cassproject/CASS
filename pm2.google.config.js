@@ -13,7 +13,6 @@ module.exports = {
           log_file: 'logs/cass.log',
           env: {
             "CASS_LOOPBACK": "https://<endpoint>/api/",
-            "ELASTICSEARCH_ENDPOINT": "http://localhost:9200",
             "PORT": "80",
             "CASS_BASE": "",
             "CASS_OIDC_ISSUER_BASE_URL": "https://accounts.google.com/",
