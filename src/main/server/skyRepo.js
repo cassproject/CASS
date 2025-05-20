@@ -5,7 +5,6 @@ const EcRemoteLinkedData = require('cassproject/src/org/cassproject/schema/gener
 const fs = require('fs');
 const sharedAdminCache = require("./shims/util/sharedAdminCache");
 
-
 // RS2 shims
 const afterSave = function (o) {
     wsBroadcast(EcRemoteLinkedData.trimVersionFromUrl(o['@id']));
@@ -272,14 +271,10 @@ const filterResults = async function (o, dontDecryptInSso) {
         return o;
     }
 };
-const skyrepoUrlType = function (o) {
-    return getTypeFromObject(o);
-};
-module.exports.skyrepoUrlType = skyrepoUrlType;
-const inferTypeFromObj = function (o, atType) {
+const inferTypeFromObj = global.inferTypeFromObj = function (o, atType) {
     // if (atType != null)
     //     return atType;
-    let fullType = skyrepoUrlType(o);
+    let fullType = getTypeFromObject(o);
     if (fullType == null) {
         return fullType;
     }
@@ -289,7 +284,6 @@ const inferTypeFromObj = function (o, atType) {
     fullType = fullType.replace(/:/g, '.');
     return fullType;
 };
-module.exports.inferTypeFromObj = inferTypeFromObj;
 const inferTypeWithoutObj = function (atType) {
     if (atType !== undefined && atType != null) {
         return atType;

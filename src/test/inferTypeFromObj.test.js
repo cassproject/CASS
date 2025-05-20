@@ -1,6 +1,5 @@
 const chai = require('chai');
 const assert = chai.assert;
-const skyRepo = require('../main/server/skyRepo.js');
 
 describe('inferTypeFromObj function', function () {
     it('should handle URLs with more than three slashes', function () {
@@ -11,7 +10,7 @@ describe('inferTypeFromObj function', function () {
         };
         
         // Call the inferTypeFromObj function
-        const result = skyRepo.inferTypeFromObj(testObj);
+        const result = inferTypeFromObj(testObj);
         
         // Verify all slashes were replaced with dots
         assert.isFalse(result.includes('/'), 'Result should not contain any slashes');
@@ -27,7 +26,7 @@ describe('inferTypeFromObj function', function () {
         };
         
         // Call the inferTypeFromObj function
-        const result = skyRepo.inferTypeFromObj(testObj);
+        const result = inferTypeFromObj(testObj);
         
         // Verify all colons were replaced with dots
         assert.isFalse(result.includes(':'), 'Result should not contain any colons');
