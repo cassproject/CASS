@@ -3,6 +3,7 @@
 ## 1.5.68
 * Multiget now works in chunks. Fixed bug with async decryption
 * Made large encrypted batch operations, deletion of orphan search results and made retrieval of lost/fragmented data more robust.
+* Fixed bug in inferTypeFromObj to support more than three slashes in context URLs.
 
 ## 1.5.67
 * Remove non-indexable data from index.
