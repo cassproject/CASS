@@ -197,48 +197,7 @@ if (global.bindWebService === undefined) {
                 }
                 if (req.headers['content-type'] != null) {
                     if (req.headers['content-type'] == 'application/json') {
-                        req.query.methodType = 'POST';
-                        req.query.urlRemainder = req.params[0];
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPostStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
-                        req.setEncoding('utf8');
-                        req.body = '';
-                        req.on('data', function (chunk) {
-                            req.body += chunk;
-                        });
-                        req.on('end', async function () {
-                            try {
-                                let dataStreams = {};
-                                if (req.body != '') {
-                                    dataStreams.body = JSON.parse(req.body);
-                                }
-                                let result = await callback.call({
-                                    ctx: ctx,
-                                    params: req.query,
-                                    dataStreams: dataStreams,
-                                });
-                                if (typeof (result) == 'string') {
-                                    try {
-                                        JSON.parse(result);
-                                        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-                                    } catch (e) {
-                                        // not JSON
-                                    }
-                                    res.end(result);
-                                } else {
-                                    res.end();
-                                }
-                                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (new Date().getTime() - ms) + ' ms) ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
-                            } catch (ex) {
-                                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPostError', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined, ex.toString());
-                                if (ex.status !== undefined && ex.status != null) {
-                                    res.status(ex.status);
-                                } else {
-                                    res.status(500);
-                                }
-                                res.end(ex.data ? ex.data : ex + '');
-                            }
-                        });
-                        return;
+                        return await put(req, res);
                     }
                 }
                 const bb = busboy({ headers: req.headers, limits: { parts: 100, fieldSize: global.postMaxSize, fileSize: global.postMaxSize } });
