@@ -224,6 +224,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
             requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,
             rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false,
             allowHTTP1: true,
+            secureProtocol: 'TLSv1_2_method',
         };
         // Load CRL Lists
         if (process.env.CRL_LISTS === 'true') {
