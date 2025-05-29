@@ -26,7 +26,7 @@ const https = require('https');
 const spdy = require('spdy');
 require('cassproject');
 const fs = require('fs');
-let v8 = global.v8 = require('v8');
+global.v8 = require('v8');
 let glob = require('glob');
 let path = require('path');
 const sendMail = require('./server/shims/mailer.js').sendMail;

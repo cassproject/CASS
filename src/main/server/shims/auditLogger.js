@@ -94,7 +94,6 @@ let syslogFormat = function (facility, severity, timestamp, msgID, data) {
     return msg;
 };
 
-let v8 = global.v8 = require('v8');
 /*
 * @param message must be 27 or fewer characters and no spaces otherwise it will be truncated to 27
 */
