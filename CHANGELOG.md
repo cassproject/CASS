@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.6.2
+* Updated libraries.
+* Updated editor.
+* Added TLS Requirements
+* Added Ollama adapter (POC)
+* Updated OpenSSL to 3.1.2
+
 ## 1.6.1
 * Updated ceasn importer.
 * Added bulk ephemeral cache retrieval.

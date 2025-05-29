@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "directories": {
@@ -98,11 +98,11 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.804.0",
+    "@aws-sdk/client-s3": "^3.820.0",
     "@xmldom/xmldom": "^0.9.8",
     "aws-sdk": "^2.1692.0",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.73",
+    "cassproject": "^1.5.74",
     "check-disk-space": "^3.4.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
@@ -121,21 +121,16 @@
     "spdy": "^4.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "undici": "^6.21.2",
+    "undici": "^6.21.3",
     "uuid": "^11.1.0",
     "ws": "^8.18.2"
-  },
-  "overrides": {
-    "cassproject": {
-      "web-worker": "1.3.0"
-    }
   },
   "devDependencies": {
     "chai": "4.5.0",
     "concurrently": "^9.1.2",
-    "eslint": "^9.26.0",
+    "eslint": "^9.27.0",
     "eslint-config-google": "^0.14.0",
-    "fake-indexeddb": "^6.0.0",
+    "fake-indexeddb": "^6.0.1",
     "mocha": "^10.8.2",
     "nodemon": "^3.1.10",
     "nyc": "^17.1.0",
