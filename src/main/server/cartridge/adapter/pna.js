@@ -1,3 +1,4 @@
+const { skyrepoGet } = require('../../skyRepo/get');
 // For integration with the Competency Explorer developed by T3 Network.
 //  This Provider Node Agent (PNA) offers an endpoint for pushing a description of a framework to an s3 bucket that is accessible by the Competency Explorer.
 //  The initial use case is for JobSIDE to push frameworks (associated with Job Skills Profiles) as they are published.

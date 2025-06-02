@@ -3,9 +3,6 @@
   "version": "1.6.2",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
     "test": "npm run test:deps && npm run test:start && npm run mocha && npm run stop",
     "testWithCoverage": "npm run test:deps && nyc --reporter=lcov --reporter=text --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run test:start",

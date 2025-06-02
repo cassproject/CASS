@@ -1,4 +1,6 @@
 let loopback = require('../../shims/cassproject.js');
+const { skyrepoGet } = require('../../skyRepo/get');
+const { skyrepoSearch } = require('../../skyRepo/search');
 
 cfError = function (code, codeMajor, severity, description, codeMinor, codeMinorValue) {
     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CaseAdapterError', {

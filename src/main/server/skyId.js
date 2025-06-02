@@ -19,6 +19,8 @@
  */
 
 const fs = require('fs');
+const { skyrepoGetInternal } = require('./skyRepo/get');
+const { skyrepoPutParsed } = require('./skyRepo/put');
 let usernameSalt = null;
 let passwordSalt = null;
 let secretSalt = null;

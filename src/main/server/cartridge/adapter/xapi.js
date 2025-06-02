@@ -37,7 +37,6 @@ var xapiEndpoint = async function (more, since, config) {
     return await httpGet(endpoint,false, headers);
 }
 
-
 var getMbox = function (agentObject) {
     if (agentObject == null)
         return null;
@@ -210,10 +209,10 @@ var xapiStatement = async function (s,accm) {
         }
         authorityPk = ppk.toPk();
     }
-    if (authorityPk == null) return;
-
-    if (s.object == null) return;
-
+    if (authorityPk == null) 
+        return;
+    if (s.object == null) 
+        return;
     var alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id);
     var alreadyAligned = {};
     for (var i = 0; i < alignedCompetencies.length; i++) {

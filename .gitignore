@@ -1,9 +1,6 @@
 *.DS_Store
 *._DS_Store
 *.iml
-skyrepo
-skyrepo.p
-skyrepo.t
 build.xml
 .settings
 *.salt

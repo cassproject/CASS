@@ -1,4 +1,6 @@
 let loopback = require('../../shims/cassproject.js');
+const { skyrepoGet } = require('../../skyRepo/get');
+const { skyrepoPut } = require('../../skyRepo/put');
 
 let asnContext = {
     asn: "http://purl.org/ASN/schema/core/",
