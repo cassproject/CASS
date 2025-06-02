@@ -81,13 +81,42 @@ global.elasticSearchVersion = function () {
     return ((elasticSearchInfo)['version'])['number'];
 };
 const getTypeFromObject = function (o) {
-    const type = o.encryptedType || o['@encryptedType'] || o['@type'] || o.type;
-    const context = o.encryptedContext || o['@encryptedContext'] || o['@context'] || o.context;
-
-    if (!type) return null;
-    if (type.startsWith('http')) return type;
-
-    return context ? `${context.endsWith('/') ? context : context + '/'}${type}` : type;
+    let encryptedType = (o)['encryptedType'];
+    let encryptedContext = (o)['encryptedContext'];
+    let type = (o)['@type'];
+    let context = (o)['@context'];
+    if (type == null) {
+        type = (o)['type'];
+    }
+    if (context == null) {
+        context = (o)['context'];
+    }
+    if (encryptedType == null) {
+        encryptedType = (o)['@encryptedType'];
+    }
+    if (encryptedContext == null) {
+        encryptedContext = (o)['@encryptedContext'];
+    }
+    if (encryptedType != null) {
+        type = encryptedType;
+    }
+    if (encryptedContext != null) {
+        context = encryptedContext;
+    }
+    if (type == null) {
+        return null;
+    }
+    if (type.indexOf('http') != -1) {
+        return type;
+    }
+    if (context == null) {
+        return type;
+    }
+    if (context.endsWith('/')) {
+        return context + type;
+    } else {
+        return context + '/' + type;
+    }
 };
 
 const signatureSheetEach = async function (obj) {
@@ -174,7 +203,7 @@ const signatureSheet = async function () {
     this.ctx.put('signatureSheet', sigSheet);
     return sigSheet;
 };
-const eevPrototype = new EbacEncryptedValue();
+const eevPrototype = new EcEncryptedValue();
 const filterResults = async function (o, dontDecryptInSso) {
     if (o == null)
         return o;
@@ -191,26 +220,27 @@ const filterResults = async function (o, dontDecryptInSso) {
         }))).filter((x) => x);
     } else if (EcObject.isObject(o)) {
         delete o.decryptedSecret;
-        if (this.ctx.req.eim != null && dontDecryptInSso == null)
-        {
-            const rld = new EcRemoteLinkedData().copyFrom(o);
-            if ((rld.reader != null && rld.reader.length != 0) || rld.isAny(eevPrototype.getTypes())) {
-                const signatures = await (signatureSheet).call(this);
-                let foundSignature = false;
-                for (let signature of signatures) {
-                    if (JSON.stringify(o).indexOf(signature.owner) != -1) {
-                        foundSignature = true;
-                        break;
-                    }
-                    if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signature.owner))) {
-                        foundSignature = true;
-                        break;
-                    }
+        const rld = new EcRemoteLinkedData().copyFrom(o);
+        console.log(rld);
+        if ((rld.reader != null && rld.reader.length != 0) || rld.isAny(eevPrototype.getTypes())) {
+            const signatures = await (signatureSheet).call(this);
+            let foundSignature = false;
+            for (let signature of signatures) {
+                if (JSON.stringify(o).indexOf(signature.owner) != -1) {
+                    foundSignature = true;
+                    break;
                 }
-                if (!foundSignature) {
-                    throw new Error(objectNotFoundError);
+                if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signature.owner))) {
+                    foundSignature = true;
+                    break;
                 }
-                // Securing Proxy: Decrypt data that is being passed back via SSO.
+            }
+            if (!foundSignature) {
+                throw new Error(objectNotFoundError);
+            }
+            // Securing Proxy: Decrypt data that is being passed back via SSO.
+            if (this.ctx.req.eim != null && dontDecryptInSso == null)
+            {
                 try {
                     let eev = new EcEncryptedValue();
                     eev.copyFrom(o);
@@ -1166,6 +1196,7 @@ const skyrepoGetParsed = async function (id, version, type, dontDecrypt, history
             return null;
         }
         try {
+            console.log('Fetching from skyrepoGetInternal2');
             filtered = await (filterResults).call(this, result, dontDecrypt);
         } catch (ex) {
             if (ex.toString().indexOf('Signature Violation') != -1) {
@@ -1372,6 +1403,7 @@ global.skyrepoDelete = async function (id, version, type) {
     if (oldObj != null) {
         for (const id of ids) {
             await skyrepoDeleteInternalIndex.call(this, id, version, type);
+            await skyrepoDeleteInternalIndex.call(this, id, version, inferTypeFromObj(oldObj));
             await skyrepoDeleteInternalPermanent.call(this, id, version, type);
         }
     } else {
@@ -1849,30 +1881,6 @@ const endpointMultiGet = async function () {
     }
     return JSON.stringify(results);
 };
-const endpointMultiPutEach = async function () {
-    const ld = new EcRemoteLinkedData(null, null);
-    const o = this.params.obj;
-    ld.copyFrom(o);
-    let id = null;
-    if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServerProxy) == -1 && ld.id.indexOf(repo.selectedServer) == -1) {
-        id = EcCrypto.md5(ld.shortId());
-    } else {
-        id = ld.getGuid();
-    }
-    let version = ld.getTimestamp();
-    if (isNaN(version)) {
-        version = null;
-    }
-    const type = ld.getDottedType();
-    try {
-        this.ctx.put('refresh', 'false');
-        await (skyrepoPutParsed).call(this, o, id, version, type);
-        return o;
-    } catch (ex) {
-        // debug(ex);
-    }
-    return null;
-};
 const endpointMultiPutBulk = async function () {
     const ary = this.params.ary;
     this.ctx.put('refresh', 'false');
@@ -2303,3 +2311,29 @@ bindWebService('/sky/repo/multiGet', endpointMultiGet);
  *               $ref: '#/components/schemas/JsonLdArray'
  */
 bindWebService('/sky/repo/multiPut', endpointMultiPut);
+/**
+ * @openapi
+ * /api/sky/repo/multiDelete:
+ *   post:
+ *     tags:
+ *       - Repository
+ *     description: 'Deletes multiple pieces of data simultaneously. See: https://stackoverflow.com/questions/68291244/how-to-format-a-json-array-in-the-request-body-of-a-multipart-form-data-request/68291856#68291856'
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               data:
+ *                 $ref: '#/components/schemas/MultiGetParams'
+ *               signatureSheet:
+ *                 $ref: '#/components/schemas/SignatureSheet'
+ *     responses:
+ *       200:
+ *         description: Returns data that was deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/JsonLdArray'
+ */
+// bindWebService('/sky/repo/multiDelete', endpointMultiDelete);
