@@ -164,7 +164,7 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
         } else {
             (permNoIndex)['permanent'] = doc;
         }
-        (doc)['enabled'] = false;
+        doc['enabled'] = false;
         const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
         if (global.skyrepoDebug) {
             global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalPerm', JSON.stringify(result));
@@ -296,13 +296,13 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
 const skyrepoPut = async function (parseParams) {
     if (parseParams == null && this.params.id != null && this.params.id != '') {
         parseParams = {};
-        (parseParams)['id'] = this.params.id;
-        (parseParams)['type'] = this.params.type;
-        (parseParams)['version'] = this.params.version;
-        (parseParams)['obj'] = this.params.obj;
+        parseParams['id'] = this.params.id;
+        parseParams['type'] = this.params.type;
+        parseParams['version'] = this.params.version;
+        parseParams['obj'] = this.params.obj;
     }
     if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPut', 'put pp:' + JSON.stringify(parseParams));
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPut', 'put pp:' + JSON.stringifyparseParams);
     }
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPut', 'put obj:' + JSON.stringify(this.params.obj));
@@ -310,13 +310,13 @@ const skyrepoPut = async function (parseParams) {
     if (parseParams == null && EcObject.isObject(this.params.obj)) {
         parseParams = this.params.obj;
     }
-    let obj = (parseParams)['obj'];
+    let obj = parseParams['obj'];
     if (!EcObject.isObject(obj)) {
         obj = JSON.parse(obj);
     }
-    const id = (parseParams)['id'];
-    const type = (parseParams)['type'];
-    const version = (parseParams)['version'];
+    const id = parseParams['id'];
+    const type = parseParams['type'];
+    const version = parseParams['version'];
     return await (skyrepoPutParsed).call(this, obj, id, version, type, null);
 };
 const skyrepoPutParsed = async function (o, id, version, type) {

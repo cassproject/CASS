@@ -116,10 +116,10 @@ const skyrepoGet = async function (parseParams) {
     }
     if (parseParams == null) {
         parseParams = {};
-        (parseParams)['id'] = this.params.id;
-        (parseParams)['type'] = this.params.type;
-        (parseParams)['version'] = this.params.version;
-        (parseParams)['history'] = this.params.history;
+        parseParams['id'] = this.params.id;
+        parseParams['type'] = this.params.type;
+        parseParams['version'] = this.params.version;
+        parseParams['history'] = this.params.history;
     }
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGet', JSON.stringify(parseParams));
@@ -127,10 +127,10 @@ const skyrepoGet = async function (parseParams) {
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGet', JSON.stringify(this.params.obj));
     }
-    const id = (parseParams)['id'];
-    const type = (parseParams)['type'];
-    const version = (parseParams)['version'];
-    const history = (parseParams)['history'];
+    const id = parseParams['id'];
+    const type = parseParams['type'];
+    const version = parseParams['version'];
+    const history = parseParams['history'];
     return await (skyrepoGetParsed).call(this, id, version, type, null, history);
 };
 
@@ -145,7 +145,6 @@ const skyrepoGetParsed = async function (id, version, type, dontDecrypt, history
             return null;
         }
         try {
-            console.log('Fetching from skyrepoGetInternal2');
             filtered = await (filterResults).call(this, result, dontDecrypt);
         } catch (ex) {
             if (ex.toString().indexOf('Signature Violation') != -1) {

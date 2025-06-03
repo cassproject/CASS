@@ -122,7 +122,6 @@ global.filterResults = async function (o, dontDecryptInSso) {
     } else if (EcObject.isObject(o)) {
         delete o.decryptedSecret;
         const rld = new EcRemoteLinkedData().copyFrom(o);
-        console.log(rld);
         if ((rld.reader != null && rld.reader.length != 0) || rld.isAny(eevPrototype.getTypes())) {
             const signatures = await (signatureSheet).call(this);
             let foundSignature = false;

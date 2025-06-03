@@ -21,7 +21,7 @@
 const endpointManyDelete = async function () {
     const manyParseParams = [];
     for (const urlRemainder of this.params.objs) {
-        const parseParams = (queryParse).call(this, urlRemainder, null);
+        const parseParams = queryParse.call(this, urlRemainder, null);
         manyParseParams.push(parseParams);
     }
     if (manyParseParams.length == 0) {

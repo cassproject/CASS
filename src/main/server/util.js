@@ -74,7 +74,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc)['enabled'] = false;
+                doc['enabled'] = false;
                 let result = await httpPut(mappings, elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.'), 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             } else if (index.endsWith('assertion')) {
@@ -82,7 +82,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'confidence': { type: 'float' },
                     'assertionDateDecrypted': { type: 'long' },
@@ -94,7 +94,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'ceasn:codedNotation': {
                         'type': 'text',
@@ -113,7 +113,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'skos:hasTopConcept': {
                         'type': 'text',
@@ -137,7 +137,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = { '@version': { type: 'long' } };
+                doc.properties = { '@version': { type: 'long' } };
                 mappings['settings'] = { 'index.mapping.total_fields.limit': fields };
                 let result = await httpPut(mappings, elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.'), 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
@@ -156,7 +156,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc)['enabled'] = false;
+                doc['enabled'] = false;
                 let result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             } else if (index.endsWith('competency')) {
@@ -164,7 +164,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'ceasn:codedNotation': {
                         'type': 'text',
@@ -183,7 +183,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'skos:hasTopConcept': {
                         'type': 'text',
@@ -202,7 +202,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'confidence': { type: 'float' },
                     'assertionDateDecrypted': { type: 'long' },
@@ -219,7 +219,7 @@ let skyrepoMigrate = async function (after) {
                 let mappings = {};
                 let doc = {};
                 (mappings)['mappings'] = doc;
-                (doc).properties = { '@version': { type: 'long' } };
+                doc.properties = { '@version': { type: 'long' } };
                 mappings['settings'] = { 'index.mapping.total_fields.limit': fields };
                 let result = await httpPut(mappings, elasticEndpoint + '/' + index.replace('https:..', '').replace(':', '.'), 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
@@ -252,7 +252,7 @@ let skyrepoMigrate = async function (after) {
                 let doc = {};
                 (mappings)['mappings'] = permNoIndex;
                 (permNoIndex)['permanent'] = doc;
-                (doc)['enabled'] = false;
+                doc['enabled'] = false;
                 let result = await httpPut(mappings, elasticEndpoint + '/.temp.' + index, 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             } else if (index.endsWith('assertion')) {
@@ -264,7 +264,7 @@ let skyrepoMigrate = async function (after) {
                 if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 }
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'confidence': { type: 'float' },
                     'assertionDateDecrypted': { type: 'long' },
@@ -283,7 +283,7 @@ let skyrepoMigrate = async function (after) {
                     let substring = index.substring(0, index.lastIndexOf('.') + 1);
                     (permNoIndex)[substring + 'EncryptedValue'] = doc;
                 }
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'ceasn:codedNotation': {
                         'type': 'text',
@@ -311,7 +311,7 @@ let skyrepoMigrate = async function (after) {
                 if (EcObject.keys(mapping[index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping[index].mappings)[0]] = doc;
                 }
-                (doc).properties = { '@version': { type: 'long' } };
+                doc.properties = { '@version': { type: 'long' } };
                 mappings['settings'] = { 'index.mapping.total_fields.limit': fields };
                 let result = await httpPut(mappings, elasticEndpoint + '/.temp.' + index, 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
@@ -331,7 +331,7 @@ let skyrepoMigrate = async function (after) {
                 let doc = {};
                 (mappings)['mappings'] = permNoIndex;
                 (permNoIndex)['permanent'] = doc;
-                (doc)['enabled'] = false;
+                doc['enabled'] = false;
                 let result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));
             } else if (index.endsWith('competency')) {
@@ -343,7 +343,7 @@ let skyrepoMigrate = async function (after) {
                 if (EcObject.keys(mapping['.temp.' + index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping['.temp.' + index].mappings)[0]] = doc;
                 }
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'ceasn:codedNotation': {
                         'type': 'text',
@@ -366,7 +366,7 @@ let skyrepoMigrate = async function (after) {
                 if (EcObject.keys(mapping['.temp.' + index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping['.temp.' + index].mappings)[0]] = doc;
                 }
-                (doc).properties = {
+                doc.properties = {
                     '@version': { type: 'long' },
                     'confidence': { type: 'float' },
                     'assertionDateDecrypted': { type: 'long' },
@@ -387,7 +387,7 @@ let skyrepoMigrate = async function (after) {
                 if (EcObject.keys(mapping['.temp.' + index].mappings)[0]) {
                     (permNoIndex)[EcObject.keys(mapping['.temp.' + index].mappings)[0]] = doc;
                 }
-                (doc).properties = { '@version': { type: 'long' } };
+                doc.properties = { '@version': { type: 'long' } };
                 mappings['settings'] = { 'index.mapping.total_fields.limit': fields };
                 let result = await httpPut(mappings, elasticEndpoint + '/' + index, 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', JSON.stringify(result));

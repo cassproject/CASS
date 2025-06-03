@@ -312,7 +312,7 @@ const endpointMultiPut = async function () {
             } else {
                 (permNoIndex)['permanent'] = doc;
             }
-            (doc)['enabled'] = false;
+            doc['enabled'] = false;
             const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
             if (global.skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepEndpointMultiput', JSON.stringify(result));

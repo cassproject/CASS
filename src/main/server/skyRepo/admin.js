@@ -19,20 +19,12 @@
  */
 const fs = require('fs');
 
-const endpointAdmin = function () {
-    return JSON.stringify(skyrepoAdminList());
-};
-
 const skyrepoAdminPk = global.skyrepoAdminPk = function () {
-    if (!fs.existsSync('etc/skyAdmin2.pem')) {
-        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), 'etc/skyAdmin2.pem');
-    }
-    return EcPpk.fromPem(fileToString(fileLoad('etc/skyAdmin2.pem'))).toPk().toPem();
+    return EcPpk.fromPem(keyFor("skyAdmin2")).toPk().toPem();
 };
 
 const skyrepoAdminList = global.skyrepoAdminList = function () {
-    const array = [];
-    array.push(skyrepoAdminPk());
+    const array = [skyrepoAdminPk()];
 
     let mayHaveUserAdmins = process.env.AUTH_ALLOW_ENV_ADMINS == "true";
     if (mayHaveUserAdmins) {
@@ -43,6 +35,10 @@ const skyrepoAdminList = global.skyrepoAdminList = function () {
     }
 
     return array;
+};
+
+const endpointAdmin = function () {
+    return JSON.stringify(skyrepoAdminList());
 };
 
 /**
@@ -67,5 +63,5 @@ bindWebService('/sky/admin', endpointAdmin);
 return module.exports = {
     skyrepoAdminPk,
     skyrepoAdminList,
-    endpointAdmin
+    // endpointAdmin
 };

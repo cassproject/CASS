@@ -107,10 +107,10 @@ const endpointData = async function () {
         return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint, null, ids));
     }
     const methodType = this.params.methodType;
-    const parseParams = (queryParse).call(this, urlRemainder, null);
-    const id = (parseParams)['id'];
-    const type = (parseParams)['type'];
-    const version = (parseParams)['version'];
+    const parseParams = queryParse.call(this, urlRemainder, null);
+    const id = parseParams['id'];
+    const type = parseParams['type'];
+    const version = parseParams['version'];
     if (methodType == 'DELETE') {
         const oldObj = await (skyrepoDelete).call(this, id, version, type);
         if (oldObj == null) {

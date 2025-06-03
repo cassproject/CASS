@@ -31,8 +31,8 @@ const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
     (mget)['docs'] = docs;
     for (let i = 0; i < ary.length; i++) {
         const parseParams = ary[i];
-        const id = (parseParams)['id'];
-        const version = (parseParams)['version'];
+        const id = parseParams['id'];
+        const version = parseParams['version'];
         const p = {};
         (p)['_index'] = index;
         if (elasticSearchVersion().startsWith('8.')) {
@@ -146,8 +146,8 @@ let skyrepoManyGetInternal = async function (manyParseParams) {
     if (resultDocs != null) {
         for (let i = 0; i < resultDocs.length; i++) {
             let doc = resultDocs[i];
-            if ((doc)['found']) {
-                results.push(JSON.parse(((doc)['_source'])['data']));
+            if (doc['found']) {
+                results.push(JSON.parse(doc['_source']['data']));
             } else {
                 notFoundInPermanent.push(manyParseParams[i]);
             }
@@ -198,10 +198,10 @@ const skyrepoManyGetParsed = async function (manyParseParams) {
 
 const endpointSingleGet = async function (dontDecrypt) {
     const urlRemainder = this.params.obj;
-    const parseParams = (queryParse).call(this, urlRemainder, null);
-    const id = (parseParams)['id'];
-    const type = (parseParams)['type'];
-    const version = (parseParams)['version'];
+    const parseParams = queryParse.call(this, urlRemainder, null);
+    const id = parseParams['id'];
+    const type = parseParams['type'];
+    const version = parseParams['version'];
     const o = await (skyrepoGetParsed).call(this, id, version, type, dontDecrypt, null);
     if (o != null) {
         return o;
@@ -212,7 +212,7 @@ const endpointSingleGet = async function (dontDecrypt) {
 const endpointManyGet = async function () {
     const manyParseParams = [];
     for (const urlRemainder of this.params.objs) {
-        const parseParams = (queryParse).call(this, urlRemainder, null);
+        const parseParams = queryParse.call(this, urlRemainder, null);
         manyParseParams.push(parseParams);
     }
     if (manyParseParams.length == 0) {
@@ -234,10 +234,10 @@ const endpointMultiGet = async function () {
     (mget)['docs'] = docs;
     for (let i = 0; i < ary.length; i++) {
         const urlRemainder = ary[i].replace('data/', '');
-        const parseParams = (queryParse).call(this, urlRemainder, null);
-        const id = (parseParams)['id'];
-        (lookup)[id] = urlRemainder;
-        const version = (parseParams)['version'];
+        const parseParams = queryParse.call(this, urlRemainder, null);
+        const id = parseParams['id'];
+        lookup[id] = urlRemainder;
+        const version = parseParams['version'];
         const p = {};
         (p)['_index'] = 'permanent';
         if (elasticSearchVersion().startsWith('8.')) {
@@ -257,9 +257,9 @@ const endpointMultiGet = async function () {
     if (resultDocs != null) {
         for (let i = 0; i < resultDocs.length; i++) {
             const doc = resultDocs[i];
-            if ((doc)['found']) {
-                delete (lookup)[((doc)['_id']).substring(0, ((doc)['_id']).indexOf('.'))];
-                results.push(JSON.parse(((doc)['_source'])['data']));
+            if (doc['found']) {
+                delete lookup[doc['_id'].substring(0, doc['_id'].indexOf('.'))];
+                results.push(JSON.parse(doc['_source']['data']));
             }
         }
     }
@@ -267,7 +267,7 @@ const endpointMultiGet = async function () {
     await (filterResults).call(this, results, idsFlag != null ? true : null);
     ary = EcObject.keys(lookup);
     for (let i = 0; i < ary.length; i++) {
-        ary[i] = (lookup)[ary[i]];
+        ary[i] = lookup[ary[i]];
     }
     if (ary != null) {
         const me = this;

@@ -76,17 +76,17 @@ let newId1 = null;
 describe("EcRepository (L2 Cache)", () => {
     let id = null;
     let rld = null;
-    // it('Waiting for server to be ready', async () => {
-    //     let ready = false;
-    //     global.events.server.ready.subscribe(function (isReady) {
-    //         if (!isReady) {
-    //             console.log('Server not ready. Skipping tests.');
-    //             return;
-    //         }
-    //         ready = true;
-    //     });
-    //     while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
-    // });
+    it('Waiting for server to be ready', async () => {
+        let ready = false;
+        global.events.server.ready.subscribe(function (isReady) {
+            if (!isReady) {
+                console.log('Server not ready. Skipping tests.');
+                return;
+            }
+            ready = true;
+        });
+        while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
+    });
     it('create', async () => {
         EcRepository.caching = true;
         EcRepository.cachingL2 = true;
