@@ -25,16 +25,12 @@ const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
     }
 
-    const ary = manyParseParams;
-    const mget = {};
     const docs = [];
-    (mget)['docs'] = docs;
-    for (let i = 0; i < ary.length; i++) {
-        const parseParams = ary[i];
-        const id = parseParams['id'];
-        const version = parseParams['version'];
-        const p = {};
-        (p)['_index'] = index;
+    for (let {id,version} of manyParseParams) {
+        const p = {
+            '_index': index,
+            '_id': id + '.' + (version == null ? '' : version)
+        };
         if (elasticSearchVersion().startsWith('8.')) {
             // Don't multiget with _type
         } else if (elasticSearchVersion().startsWith('7.')) {
@@ -42,96 +38,32 @@ const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
         } else {
             (p)['_type'] = index;
         }
-        (p)['_id'] = id + '.' + (version == null ? '' : version);
         docs.push(p);
     }
 
-    const response = await httpPost(mget, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
-    return response;
+    return await httpPost({ docs }, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
 };
 const skyrepoManyGetIndexSearch = async function (ary) {
     let results = [];
-    if (ary.length == 0) {
-        return results;
-    }
     while (ary.length > 0) {
         let batch = ary.splice(0, 10);
+
         let microSearchUrl = elasticEndpoint + '/_search?version&q=';
-        for (let i = 0; i < batch.length; i++) {
-            microSearchUrl += '_id:"' + batch[i].id + '"';
-            if (i < batch.length - 1) {
-                microSearchUrl += ' OR ';
-            }
-        }
+        microSearchUrl += batch.map(x=>`_id:"${x.id}"`).join(" OR ");
 
         const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
-        if (microSearch.error) throw new Error(microSearch.error.reason);
+        if (microSearch.error) 
+            throw new Error(microSearch.error.reason);
         if (global.skyrepoDebug) {
             global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexSearch', microSearchUrl);
         }
-        if (microSearch == null) {
-            return [];
-        }
-        const hitshits = (microSearch)['hits'];
-        if (hitshits == null) {
-            return [];
-        }
-        const hits = (hitshits)['hits'];
-        if (hits.length == 0) {
-            return [];
-        }
-        for (let hit of hits)
-            results.push(hit);
+        results.push(...(microSearch?.hits?.hits || []));
     }
     return results;
 };
 
-let skyrepoManyGetIndexRecords = async function (ary) {
-    if (ary.length === 0) {
-        return [];
-    }
-    let hashIds = ary.map((x) => EcCrypto.md5(x));
-    let microSearchUrl = "";
-    for (let id of ary) {
-        microSearchUrl += '@id:"' + id + '" OR ';
-    }
-    for (let i = 0; i < hashIds.length; i++) {
-        microSearchUrl += '@id:"' + hashIds[i] + '"';
-        if (i < hashIds.length - 1) {
-            microSearchUrl += ' OR ';
-        }
-    }
-
-    const searchParameters = await (searchObj).call(this, microSearchUrl, null, 10000);
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepSearch', JSON.stringify(searchParameters));
-    }
-    const microSearch = await httpPost(searchParameters, searchUrl(), 'application/json', false, null, null, true, elasticHeaders());
-
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexRecords', microSearchUrl);
-    }
-    if (microSearch == null) {
-        return [];
-    }
-    const hitshits = (microSearch)['hits'];
-    if (hitshits == null) {
-        return [];
-    }
-    const hits = (hitshits)['hits'];
-    if (hits.length == 0) {
-        return [];
-    }
-    return hits;
-};
-
-const skyrepoManyGetIndex = async function (manyParseParams) {
-    return await skyrepoManyGetIndexSearch(manyParseParams);
-};
-
 const skyrepoManyGetPermanent = async function (manyParseParams) {
-    const result = await skyrepoManyGetIndexInternal.call(this, 'permanent', manyParseParams);
-    return result;
+    return await skyrepoManyGetIndexInternal.call(this, 'permanent', manyParseParams);
 };
 
 let skyrepoManyGetInternal = async function (manyParseParams) {
@@ -140,13 +72,14 @@ let skyrepoManyGetInternal = async function (manyParseParams) {
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepMGStuff', response);
     }
-    let resultDocs = (response)['docs'];
+
+    let resultDocs = response.docs;
     const results = [];
     const notFoundInPermanent = [];
     if (resultDocs != null) {
         for (let i = 0; i < resultDocs.length; i++) {
             let doc = resultDocs[i];
-            if (doc['found']) {
+            if (doc.found) {
                 results.push(JSON.parse(doc['_source']['data']));
             } else {
                 notFoundInPermanent.push(manyParseParams[i]);
@@ -158,18 +91,13 @@ let skyrepoManyGetInternal = async function (manyParseParams) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetInternal', 'Failed to find ' + JSON.stringify(notFoundInPermanent) + ' -- trying degraded form from search index.');
     }
 
-    response = await (skyrepoManyGetIndex).call(this, notFoundInPermanent);
+    response = await skyrepoManyGetIndexSearch.call(this, notFoundInPermanent);
 
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetInternal', 'Index get - ' + JSON.stringify(response));
     }
 
-    let resultDocs2 = (response);
-    if (resultDocs2 != null) {
-        for (let doc of resultDocs2) {
-            results.push(doc['_source']);
-        }
-    }
+    results.push(...(response || []).map(doc=>doc['_source']));
     return results;
 };
 
@@ -318,7 +246,6 @@ module.exports = {
     // skyrepoManyGetParsed,
     skyrepoManyGetIndexInternal,
     // skyrepoManyGetIndexSearch,
-    skyrepoManyGetIndexRecords,
     // skyrepoManyGetIndex,
     // skyrepoManyGetPermanent,
     skyrepoManyGetInternal,

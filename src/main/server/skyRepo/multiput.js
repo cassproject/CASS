@@ -17,7 +17,8 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-const { skyrepoManyGetIndexInternal, skyrepoManyGetIndexRecords } = require('./multiget');
+const { skyrepoManyGetIndexInternal} = require('./multiget');
+const { searchUrl, searchObj } = require('./searchUtil');
 let permanentCreated = false;
 
 let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = async function (map) {
@@ -29,14 +30,30 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
         let writeMs = new Date().getTime();
 
         for (let id of x.permanentIds) {
-            let obj = { 'index': { '_index': 'permanent', '_id': id + '.' + (x.version || ''), '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external' } };
+            let obj = { 
+                'index': { 
+                    '_index': 'permanent', 
+                    '_id': id + '.' + (x.version || ''), 
+                    '_type': getTypeForObject(x.object, x.type), 
+                    'version': x.version, 
+                    'version_type': 'external' 
+                } 
+            };
             if (elasticSearchVersion().startsWith('8.')) {
                 delete obj.index['_type'];
             }
             body += `${JSON.stringify(obj)}\n`;
             body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs })}\n`;
 
-            obj = { 'index': { '_index': 'permanent', '_id': id + '.', '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external' } };
+            obj = { 
+                'index': { 
+                    '_index': 'permanent', 
+                    '_id': id + '.', 
+                    '_type': getTypeForObject(x.object, x.type), 
+                    'version': x.version, 
+                    'version_type': 'external' 
+                } 
+            };
             if (elasticSearchVersion().startsWith('8.')) {
                 delete obj.index['_type'];
             }
@@ -110,6 +127,47 @@ let skyrepoPutInternalBulk = global.skyrepoPutInternalBulk = async function (map
 
     return failed;
 };
+
+let skyrepoManyGetIndexRecords = async function (ary) {
+    //TODO: Merge with multiget.skyrepoManyGetIndexSearch
+    if (ary.length === 0) {
+        return [];
+    }
+    let hashIds = ary.map((x) => EcCrypto.md5(x));
+    let microSearchUrl = "";
+    for (let id of ary) {
+        microSearchUrl += '@id:"' + id + '" OR ';
+    }
+    for (let i = 0; i < hashIds.length; i++) {
+        microSearchUrl += '@id:"' + hashIds[i] + '"';
+        if (i < hashIds.length - 1) {
+            microSearchUrl += ' OR ';
+        }
+    }
+
+    const searchParameters = await searchObj.call(this, microSearchUrl, null, 10000);
+    if (global.skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepSearch', JSON.stringify(searchParameters));
+    }
+    const microSearch = await httpPost(searchParameters, searchUrl(), 'application/json', false, null, null, true, elasticHeaders());
+
+    if (global.skyrepoDebug) {
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexRecords', microSearchUrl);
+    }
+    if (microSearch == null) {
+        return [];
+    }
+    const hitshits = (microSearch)['hits'];
+    if (hitshits == null) {
+        return [];
+    }
+    const hits = (hitshits)['hits'];
+    if (hits.length == 0) {
+        return [];
+    }
+    return hits;
+};
+
 let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async function (map) {
     const failed = {};
     for (let x of Object.values(map)) {
