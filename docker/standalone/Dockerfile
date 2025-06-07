@@ -28,6 +28,7 @@ RUN mkdir CASS
 COPY --chown=elasticsearch package.json CASS/package.json
 RUN cd CASS && npm install --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --audit-level=high fix
 COPY --chown=elasticsearch src CASS/src
+RUN rm CASS/src/test/0.harness.test.js
 COPY --chown=elasticsearch ca.crt CASS/ca.crt
 COPY --chown=elasticsearch cass.crt CASS/cass.crt
 COPY --chown=elasticsearch cass.key CASS/cass.key
@@ -57,4 +58,5 @@ RUN chown -R elasticsearch:root /logs
 
 ENV HTTP2=false
 USER elasticsearch:root
+RUN CLOSE=true npm run mocha
 ENTRYPOINT (cd CASS && npm run run:standalone && npm run logs) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh

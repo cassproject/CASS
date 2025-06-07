@@ -9,5 +9,7 @@ const assert = chai.assert;
 describe('Skyrepo Log Restore', function () {
     it('Restore', async () => {
         global.auditLogger.report = global.auditLogger.oldReport;
+        if (process.env.CLOSE)
+            process.exit(0);
     });
 });

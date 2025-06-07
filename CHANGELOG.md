@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.6.3
+* Added multidelete!!!!
+* Refactored src/main/skyRepo.js into multiple files. Overriding it should still work OK.
+* Unit test driven fixes
+
 ## 1.6.2
 * Updated libraries.
 * Updated editor.

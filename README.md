@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Experimental: 1.6.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
+Experimental: 1.6.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
 Release Candidate: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
@@ -107,11 +107,9 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Run `npm run buildRun:standaloneTest` to ensure the container can build.
  * `docker scout cves cass-test > scan-standalone.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
- * In another command window, `npm run test:mocha` - Must not fail any tests.
  * Run `docker-compose up --build` to ensure the container can build.
  * `docker scout cves cass-cass > scan-node.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
- * In another command window, `npm run test:mocha` - Must not fail any tests.
  * Commit with release notes.
  * Tag commit with version number.
 
