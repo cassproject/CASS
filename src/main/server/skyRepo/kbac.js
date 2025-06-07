@@ -19,6 +19,7 @@
  */
 const { skyrepoGetInternal } = require('./get');
 const { skyrepoManyGetInternal } = require('./multiget');
+const objectNotFoundError = 'Object not found or you did not supply sufficient permissions to access the object.';
 
 const signatureSheetEach = async function (obj) {
     const signature = new EbacSignature();
@@ -200,6 +201,7 @@ global.validateSignatures = async function (id, version, type, errorMessage) {
 };
 global.validateSignaturesBulk = async function (map, errorMessage) {
     const failed = {};
+    const succeeded = [];
     const oldGets = await skyrepoManyGetInternal.call(this, Object.values(map));
     const signatures = this.ctx.get('signatureSheet') || [];
     for (let oldGet of oldGets) {
@@ -226,6 +228,8 @@ global.validateSignaturesBulk = async function (map, errorMessage) {
                     }
                     if (!success) {
                         throw new Error(errorMessage);
+                    } else {
+                        succeeded.push(oldObj);
                     }
                 }
             } catch (e) {
@@ -238,5 +242,9 @@ global.validateSignaturesBulk = async function (map, errorMessage) {
             }
         }
     }
-    return failed;
+    return {succeeded,failed};
+};
+
+module.exports = {
+    objectNotFoundError
 };

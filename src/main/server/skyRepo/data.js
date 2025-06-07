@@ -21,7 +21,7 @@ const { skyrepoGetParsed } = require('./get');
 const { skyrepoPutParsed } = require('./put');
 const { skyrepoDelete } = require('./delete');
 const { skyrepoSearch } = require('./search');
-const objectNotFoundError = 'Object not found or you did not supply sufficient permissions to access the object.';
+const objectNotFoundError = require('./kbac.js').objectNotFoundError;
 
 const endpointData = async function () {
     let q = this.params.q;

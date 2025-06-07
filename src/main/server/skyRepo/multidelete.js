@@ -18,40 +18,44 @@
  * --END_LICENSE--
  */
 
-const endpointManyDelete = async function () {
-    const manyParseParams = [];
-    for (const urlRemainder of this.params.objs) {
-        const parseParams = queryParse.call(this, urlRemainder, null);
-        manyParseParams.push(parseParams);
+const endpointMultiDelete = async function () {
+    let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
+    const manyParseParams = {};
+    for (const urlRemainder of ary) {
+        manyParseParams[urlRemainder] = queryParse.call(this, urlRemainder.replace('data/', ''), null);
     }
-    if (manyParseParams.length == 0) {
+    if (Object.values(manyParseParams).length == 0) {
         return [];
     }
-    const oldObjs = await (validateSignaturesBulk).call(this, manyParseParams, 'Only an owner of an object may delete it.');
-    if (oldObjs == null) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'IndexNoPermanent', "Couldn't find data to delete, removing the index entry.");
-        await skyrepoDeleteInternalIndex.call(this, id, version, type);
-        return null;
-    }
-    const ids = [id];
-    if (oldObjs.id != null && oldObjs.getGuid() != null) {
-        ids.push(oldObjs.getGuid());
-    };
-    if (oldObjs.id != null && oldObjs.shortId() != null) {
-        ids.push(EcCrypto.md5(oldObjs.shortId()));
-    }
-    EcArray.removeDuplicates(ids);
-    if (oldObjs != null) {
-        for (const id of ids) {
-            await skyrepoDeleteInternalIndex.call(this, id, version, type);
-            await skyrepoDeleteInternalIndex.call(this, id, version, inferTypeFromObj(oldObjs));
-            await skyrepoDeleteInternalPermanent.call(this, id, version, type);
+    await (signatureSheet).call(this);
+    const {succeeded: oldObjs,failed} = await validateSignaturesBulk.call(this, manyParseParams, 'Only an owner of an object may delete it.');
+    
+    let deleteBody = '';
+    for (let oldObj of oldObjs) {
+        let ids = [];
+        if (oldObj.id != null && oldObj.getGuid() != null) {
+            ids.push(oldObj.getGuid());
+        };
+        if (oldObj.id != null && oldObj.shortId() != null) {
+            ids.push(EcCrypto.md5(oldObj.shortId()));
         }
-    } else {
-        error('Can\'t find object to delete', 401);
+        EcArray.removeDuplicates(ids);
+        if (oldObj != null) {
+            for (const id of ids) {
+                deleteBody += `${JSON.stringify({ delete: { _index: inferTypeFromObj(oldObj).toLowerCase(), _id: id } })}\n`;
+                deleteBody += `${JSON.stringify({ delete: { _index: 'permanent', _id: id+'.' } })}\n`;
+            }
+        } else {
+            error('Can\'t find object to delete', 401);
+        }
     }
-    global.events.data.delete.next([oldObjs], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-    global.events.data.any.next([oldObjs], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    let deleteResponse = [];
+    if (deleteBody.length != 0)
+        deleteResponse = await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+    global.events.data.delete.next(oldObjs, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    global.events.data.any.next(oldObjs, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    await (filterResults).call(this, oldObjs);
+    await httpGet(elasticEndpoint + '/_all/_refresh', true, elasticHeaders());
     return oldObjs;
 };
 
@@ -80,4 +84,4 @@ const endpointManyDelete = async function () {
  *             schema:
  *               $ref: '#/components/schemas/JsonLdArray'
  */
-// bindWebService('/sky/repo/multiDelete', endpointMultiDelete);
+bindWebService('/sky/repo/multiDelete', endpointMultiDelete);

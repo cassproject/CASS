@@ -320,7 +320,7 @@ const skyrepoPutParsedBulk = async function (ary) {
         map[x.id] = x;
     }
 
-    const failed = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
+    const {succeeded,failed} = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
     // Everything failed already
     if (Object.values(map).length === 0) {
         return failed;

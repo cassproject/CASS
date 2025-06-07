@@ -121,7 +121,7 @@ let report = function (system, severity, message, ...data) {
         if (severity <= Severity.SERVICE || global.skyrepoDebug) {
             try {
                 if (severity == Severity.ERROR)
-                    console.trace(data);
+                    console.trace(data[0]);
                 if (EcArray.isArray(data)) data = JSON.stringify(data);
                 console.log(new Date(), system, ((((v8.getHeapStatistics().used_heap_size) / 1024 / 1024).toFixed(0)) + "M").padEnd(5, " "), InverseSeverity[severity], '', message.substr(0, 18).padEnd(18, " "), data);
             } catch (ex) {
