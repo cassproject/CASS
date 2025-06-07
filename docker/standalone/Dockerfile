@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.17.3
+FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.18.2
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
@@ -21,10 +21,11 @@ RUN echo 'fips = fips_sect' >> /usr/local/ssl/nodejs.cnf
 RUN echo '[default_sect]' >> /usr/local/ssl/nodejs.cnf
 RUN echo 'activate = 1' >> /usr/local/ssl/nodejs.cnf
 
+RUN npm upgrade --global --save
 USER elasticsearch
 RUN mkdir CASS
 COPY --chown=elasticsearch package.json CASS/package.json
-RUN cd CASS && npm install --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --audit-level=high fix
+RUN cd CASS && npm install --production --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --omit=dev --audit-level=high fix
 COPY --chown=elasticsearch src CASS/src
 COPY --chown=elasticsearch ca.crt CASS/ca.crt
 COPY --chown=elasticsearch cass.crt CASS/cass.crt
