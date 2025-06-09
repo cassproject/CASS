@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Experimental: 1.6.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
+Experimental: 1.6.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
 Release Candidate: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
 Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
@@ -99,7 +99,6 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Update src/main/webapp to point at the appropriate gh-pages commit. Ensure the version number of cass-editor matches.
  * `npm install`
  * `npm run testWithCoverage`
- * In another command window, `npm run test:mocha` - Must not fail any tests.
  * In another command window, `npm run openapi:validate` - Must not fail any tests.
  * In the command window running testWithCoverage, `ctrl+c`. Record the output of the code coverage for the tests in codeCoverage.md.
  * Update CHANGELOG.md

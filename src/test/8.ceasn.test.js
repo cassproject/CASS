@@ -18,6 +18,7 @@ describe("CEASN Adapter", function () {
     this.timeout(30000);
 
     it('Waiting for server to be ready', async () => {
+        if (process.env.NODEV != null) return;
         let ready = false;
         global.events.server.ready.subscribe(function (isReady) {
             if (!isReady) {

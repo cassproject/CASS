@@ -76,6 +76,7 @@ describe("EcRepository (L1 Cache)", () => {
     let id = null;
     let rld = null;
     it('Waiting for server to be ready', async () => {
+        if (process.env.NODEV != null) return;
         let ready = false;
         global.events.server.ready.subscribe(function (isReady) {
             if (!isReady) {

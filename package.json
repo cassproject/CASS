@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "scripts": {
@@ -24,7 +24,8 @@
     "dev:nodemon:docker": "nodemon --ignore etc --exec \"docker compose up -d --build\"",
     "dev:nyc": "nyc --reporter lcov node src/main/server.js",
     "dev:node": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&export PORT=8080|| set PORT=8080&&node src/main/server.js",
-    "mocha": "mocha -b --timeout 15000 src/**/*.test.js",
+    "mocha": "set NODEV=true&& mocha -b --timeout 15000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
+    "mochaDev": "mocha -b --timeout 15000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
     "mochaEncryption": "mocha -b --timeout 15000 node_modules/cassproject/src/com/eduworks/ec/crypto/*.test.js",
     "mochafast": "mocha -b src/**/*.test.js",
     "mochaNyc": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&wait-on http://localhost:8080/api/ping && mocha -b --timeout 15000 src/**/*.test.js node_modules/cassproject/src/**/*.test.js && wait-on http://localhost:8080/api/kill",
@@ -99,7 +100,7 @@
     "@xmldom/xmldom": "^0.9.8",
     "aws-sdk": "^2.1692.0",
     "busboy": "^1.6.0",
-    "cassproject": "^1.5.74",
+    "cassproject": "^5.0.0",
     "check-disk-space": "^3.4.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",

@@ -17,6 +17,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 describe('SkyRepo Adapter', function () {
   it('Waiting for server to be ready', async () => {
+    if (process.env.NODEV != null) return;
     let ready = false;
     global.events.server.ready.subscribe(function (isReady) {
       if (!isReady) {
