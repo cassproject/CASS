@@ -9,7 +9,7 @@
 * Refactored src/main/skyRepo.js into multiple files. Overriding it should still work OK.
 * Unit test driven fixes
 
-## 1.6.2
+## 1.6.2 (revoked)
 * Updated libraries.
 * Updated editor.
 * Added TLS Requirements
