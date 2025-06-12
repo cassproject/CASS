@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.75
+* Fixed bug with delete.
+* Updated libraries.
+
 ## 1.5.73
 * Remove usage of @list in ceasn schema
 * Updated libraries.

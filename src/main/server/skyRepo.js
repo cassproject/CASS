@@ -9387,6 +9387,7 @@ global.skyrepoDelete = async function (id, version, type) {
     EcArray.removeDuplicates(ids);
     if (oldObj != null) {
         for (const id of ids) {
+            await skyrepoDeleteInternalIndex.call(this, id, version, inferTypeFromObj(oldObj));
             await skyrepoDeleteInternalIndex.call(this, id, version, type);
             await skyrepoDeleteInternalPermanent.call(this, id, version, type);
         }
@@ -9653,7 +9654,7 @@ const endpointData = async function () {
     const type = (parseParams)['type'];
     const version = (parseParams)['version'];
     if (methodType == 'DELETE') {
-        const oldObj = await (skyrepoDelete).call(this, id, version, type);
+        const oldObj = await skyrepoDelete.call(this, id, version, type);
         if (oldObj == null) {
             return null;
         }

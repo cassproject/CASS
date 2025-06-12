@@ -20,7 +20,7 @@ RUN echo 'fips = fips_sect' >> /usr/local/ssl/nodejs.cnf
 RUN echo '[default_sect]' >> /usr/local/ssl/nodejs.cnf
 RUN echo 'activate = 1' >> /usr/local/ssl/nodejs.cnf
 
-RUN npm install --production --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production --omit=dev --audit-level=high --fix && chown root:root node_modules -R
+RUN npm install --production --omit=dev && npm upgrade --production --omit=dev --save && npm upgrade --global --save && npm audit --production --omit=dev --audit-level=high --fix && chown root:root node_modules -R
 COPY src src
 COPY ca.crt ca.crt
 COPY cass.crt cass.crt
