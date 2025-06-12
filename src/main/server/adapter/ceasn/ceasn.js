@@ -158,12 +158,52 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
                 }
             }
         }
+
+        setVersionIdentifier(c);
+
         delete c["@context"];
         c = stripNonCe(c);
         return c;
     } catch (err) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CeasnCompetencyError", err);
         return c;
+    }
+}
+
+function setVersionIdentifier(f) {
+    if (f["ceterms:versionIdentifier"]) {
+
+        let lang = f['ceasn:inLanguage'] ? f['ceasn:inLanguage'] : 'en-us';
+        if (Array.isArray(f['ceasn:inLanguage'])) {
+            if (f['ceasn:inLanguage'].length > 0) {
+                lang = f['ceasn:inLanguage'][0];
+            } else {
+                lang = 'en-us';
+            }
+        }
+
+        if (!Array.isArray(f["ceterms:versionIdentifier"])) {
+            f["ceterms:versionIdentifier"] = [f["ceterms:versionIdentifier"]];
+        }
+        for (let i = 0; i < f["ceterms:versionIdentifier"].length; i++) {
+            if (!f["ceterms:versionIdentifier"][i]["@type"]) {
+                f["ceterms:versionIdentifier"][i]["@type"] = "ceterms:IdentifierValue";
+            }
+            if (f["ceterms:versionIdentifier"][i]["ceterms:identifierTypeName"]) {
+                if (f["ceterms:versionIdentifier"][i]["ceterms:identifierTypeName"]["@none"]) {
+                    f["ceterms:versionIdentifier"][i]["ceterms:identifierTypeName"][lang] = f["ceterms:versionIdentifier"][i]["ceterms:identifierTypeName"]["@none"];
+                    delete f["ceterms:versionIdentifier"][i]["ceterms:identifierTypeName"]["@none"];
+                }
+            }
+            if (f["ceterms:versionIdentifier"][i]["https://purl.org/ctdl/terms/identifierValueCode"]) {
+                f["ceterms:versionIdentifier"][i]["ceterms:identifierValueCode"] = f["ceterms:versionIdentifier"][i]["https://purl.org/ctdl/terms/identifierValueCode"];
+                delete f["ceterms:versionIdentifier"][i]["https://purl.org/ctdl/terms/identifierValueCode"];
+            }
+            if (f["ceterms:versionIdentifier"][i]["https://purl.org/ctdl/terms/identifierType"]) {
+                f["ceterms:versionIdentifier"][i]["ceterms:identifierType"] = f["ceterms:versionIdentifier"][i]["https://purl.org/ctdl/terms/identifierType"];
+                delete f["ceterms:versionIdentifier"][i]["https://purl.org/ctdl/terms/identifierType"];
+            }
+        }
     }
 }
 
@@ -501,6 +541,8 @@ async function cassFrameworkAsCeasn() {
     }
     f["@id"] = await ceasnExportUriTransform(f["@id"]);
 
+    setVersionIdentifier(f);
+
     var results = [];
     f = stripNonCe(f);
     results.push(f);
@@ -703,6 +745,9 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
             }
             delete competencies[id]["@context"];
             competencies[id] = stripNonCe(competencies[id]);
+
+            setVersionIdentifier(competencies[id]);
+
             return;
         } catch (err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnCompetencyCollection", err);
@@ -921,6 +966,8 @@ async function cassFrameworkAsCeasnCollection(framework) {
             f["ceasn:source"] = f["@id"];
     }
     f["@id"] = await ceasnExportUriTransform(f["@id"]);
+
+    setVersionIdentifier(f);
 
     var results = [];
     f = stripNonCe(f);
@@ -1206,6 +1253,8 @@ async function cassConceptSchemeAsCeasn(framework) {
     }
     cs["@id"] = await ceasnExportUriTransform(csId);
 
+    setVersionIdentifier(cs);
+
     var results = [];
 
     cs = conceptArrays(cs);
@@ -1327,6 +1376,8 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
     }
     cs["@id"] = await ceasnExportUriTransform(csId);
     cs["@type"] = "asn:ProgressionModel";
+
+    setVersionIdentifier(cs);
 
     var results = [];
 
