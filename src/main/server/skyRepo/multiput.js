@@ -17,7 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-const { skyrepoManyGetIndexInternal} = require('./multiget');
+const { skyrepoManyGetIndexInternal, skyrepoManyGetPermanent } = require('./multiget');
 const { searchUrl, searchObj } = require('./searchUtil');
 let permanentCreated = false;
 

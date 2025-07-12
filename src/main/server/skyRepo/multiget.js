@@ -247,7 +247,7 @@ module.exports = {
     skyrepoManyGetIndexInternal,
     // skyrepoManyGetIndexSearch,
     // skyrepoManyGetIndex,
-    // skyrepoManyGetPermanent,
+    skyrepoManyGetPermanent,
     skyrepoManyGetInternal,
     // endpointSingleGet,
     endpointManyGet
