@@ -237,7 +237,7 @@ var xapiStatement = async function (s,accm) {
             accm.push(a);
         else
             EcRepository.save(a, (msg) => {
-                global.events?.assertionAbout.next(actorPk);
+                global.person?.assertionAbout.next(actorPk);
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSaveAssertion", msg);
             }, (error) => {
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSaveAssertion", error);
