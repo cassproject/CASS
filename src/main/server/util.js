@@ -465,7 +465,7 @@ let skyrepoPurge = async function () {
 };
 bindWebService('/util/purge', skyrepoPurge);
 
-skyrepoCull = async function () {
+let skyrepoCullFast = async function () {
     if (this.params.secret.trim() !== skyIdSecret().trim()) {
         error('You must provide secret=`cat skyId.secret` to invoke reindex.', 401);
     }
@@ -478,75 +478,8 @@ skyrepoCull = async function () {
         size: '500',
         sort: '_doc',
     };
-    let firstQueryUrl = elasticEndpoint + '/permanent/_search?scroll=1m&version';
-    let results = await httpPost(firstQueryPost, firstQueryUrl, 'application/json', 'false', global.elasticHeaders());
-    let scroll = results['_scroll_id'];
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoCullResults', JSON.stringify(results, null, 2));
-    let counter = 0;
-    let resultsData = {
-        total: 0,
-        deletedRevision: 0,
-        deletedDeleted: 0
-    }
-    while (results != null && scroll != null && scroll != '') {
-        scroll = results['_scroll_id'];
-        let hits = results.hits.hits;
-        if (hits.length == 0) {
-            break;
-        }
-        await Promise.map(hits, async (hit) => {
-            let id = hit._id;
-            resultsData.total++;
-            if (id.indexOf('.') == id.length - 1) {
-                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestId', "Latest: " + id);
-            }
-            else {
-                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestVersioned', "Versioned: " + id, JSON.stringify(resultsData));
-                let latestId = id.substring(0, id.indexOf('.'));
-                let latest = await httpGet(elasticEndpoint + '/permanent/_doc/' + latestId + ".", global.elasticHeaders());
-                if (latest != null && latest._source != null) {
-                    let latestVersion = EcRemoteLinkedData.getVersionFromUrl(JSON.parse(latest._source.data)["@id"]);
-                    let version = parseInt(id.substring(id.indexOf('.') + 1));
-                    if (version != null && latestVersion != null && version < latestVersion) {
-                        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestDeleted', " Deleting: " + id, " version: " + version + " latest: " + latestVersion);
-                        resultsData.deletedRevision++;
-                        httpDelete(elasticEndpoint + '/permanent/_doc/' + id, global.elasticHeaders());
-                    }
-                }
-                else {
-                    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestDeleted', " Deleting (doesn't exist): " + id);
-                    resultsData.deletedDeleted++;
-                    httpDelete(elasticEndpoint + '/permanent/_doc/' + id, global.elasticHeaders());
-                }
-            }
-            if (++counter % 100 == 0) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoCull', 'Culling records: on ' + counter + ' .');
-            }
-        }, { concurrency: 10 });
-        results = await httpGet(elasticEndpoint + '/_search/scroll?scroll=1m&scroll_id=' + scroll, global.elasticHeaders());
-    }
-    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepoCull', 'Culled ' + counter + ' records.');
-    if (this.params.debug != null) {
-        global.skyrepoDebug = false;
-    }
-    return JSON.stringify(resultsData, null, 2);
-};
-bindWebService('/util/cull', skyrepoCull);
-skyrepoCullFast = async function () {
-    if (this.params.secret.trim() !== skyIdSecret().trim()) {
-        error('You must provide secret=`cat skyId.secret` to invoke reindex.', 401);
-    }
-
-    let firstQueryPost = {
-        query: {
-            query_string: { query: '*:*' },
-        },
-        explain: 'false',
-        size: '1000',
-        sort: '_doc',
-    };
-    let firstQueryUrl = elasticEndpoint + '/permanent/_search?scroll=1m&version';
-    let results = await httpPost(firstQueryPost, firstQueryUrl, 'application/json', 'false', global.elasticHeaders());
+    let firstQueryUrl = elasticEndpoint + '/permanent/_search?scroll=30m&version';
+    let results = await httpPost(firstQueryPost, firstQueryUrl, 'application/json', false, null, null, null, global.elasticHeaders());
     let scroll = results['_scroll_id'];
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoCullFastResults', JSON.stringify(results, null, 2));
     let counter = 0;
@@ -562,6 +495,7 @@ skyrepoCullFast = async function () {
         if (hits.length == 0) {
             break;
         }
+        let nextResults = await httpGet(elasticEndpoint + '/_search/scroll?scroll=1m&scroll_id=' + scroll, null, global.elasticHeaders());
 
         //Filter out records that end with "."
         let hits2 = hits.filter((hit) => {
@@ -577,6 +511,7 @@ skyrepoCullFast = async function () {
             })
         }, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
         heads = heads.docs;
+        heads = heads.filter(head => head._source)
         //Filter out records where the head's version matches the record's version
         let hits3 = hits2.filter(
             hit => !heads.filter(head => head._id.split('.')[0] == hit._id.split('.')[0])
@@ -598,7 +533,7 @@ skyrepoCullFast = async function () {
             }).map(x => JSON.stringify(x)).join("\n") + "\n\n";
             let deleted = httpPost(del, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
         }
-        results = await httpGet(elasticEndpoint + '/_search/scroll?scroll=1m&scroll_id=' + scroll, global.elasticHeaders());
+        results = await nextResults;
     }
     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepReindex', 'Culled ' + counter + ' records.');
     if (this.params.debug != null) {
@@ -606,4 +541,5 @@ skyrepoCullFast = async function () {
     }
     return JSON.stringify(resultsData, null, 2);
 };
+bindWebService('/util/cull', skyrepoCullFast);
 bindWebService('/util/cullFast', skyrepoCullFast);
