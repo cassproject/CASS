@@ -100,7 +100,7 @@
     "@xmldom/xmldom": "^0.9.8",
     "aws-sdk": "^2.1692.0",
     "busboy": "^1.6.0",
-    "cassproject": "^5.0.0",
+    "cassproject": "^5.0.1",
     "check-disk-space": "^3.4.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
