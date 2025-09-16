@@ -23,7 +23,7 @@ global.auditLogger = require('./server/shims/auditLogger.js');
 const express = require('express');
 let app = global.app = express();
 const https = require('https');
-const spdy = require('spdy');
+const spdy = require('spdy-fixes');
 require('cassproject');
 const fs = require('fs');
 global.v8 = require('v8');
