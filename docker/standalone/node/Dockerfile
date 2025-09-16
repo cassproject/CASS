@@ -44,4 +44,4 @@ COPY src src
 COPY ca.crt cass.crt cass.key copyright.txt ./
 
 EXPOSE 80
-CMD [ "node", "--force-fips", "./src/main/server.js" ]
+ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]

@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.6.5 v2
+* Switched back to ENTRYPOINT.
+
 ## 1.6.5
 * Updated libraries
 * Updated to Node 24 to better support security releases and performance.
