@@ -238,7 +238,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
             }
         }
         if (envHttp2) {
-            global.server = http2.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
+            global.server = http2.createSecureServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         } else {
             global.server = https.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         }
