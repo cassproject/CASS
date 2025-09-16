@@ -51,7 +51,7 @@ let skyrepoMigrate = async function (after) {
         }, 1000);
         return;
     }
-    if (elasticState.version.number.startsWith('8.')) {
+    if (elasticState.version.number.startsWith('8.') || elasticState.version.number.startsWith('9.')) {
         await httpPut({
             'persistent': {
                 'indices.id_field_data.enabled': true,
@@ -466,10 +466,6 @@ let skyrepoPurge = async function () {
 bindWebService('/util/purge', skyrepoPurge);
 
 let skyrepoCullFast = async function () {
-    if (this.params.secret.trim() !== skyIdSecret().trim()) {
-        error('You must provide secret=`cat skyId.secret` to invoke reindex.', 401);
-    }
-
     let firstQueryPost = {
         query: {
             query_string: { query: '*:*' },
@@ -481,7 +477,6 @@ let skyrepoCullFast = async function () {
     let firstQueryUrl = elasticEndpoint + '/permanent/_search?scroll=30m&version';
     let results = await httpPost(firstQueryPost, firstQueryUrl, 'application/json', false, null, null, null, global.elasticHeaders());
     let scroll = results['_scroll_id'];
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepoCullFastResults', JSON.stringify(results, null, 2));
     let counter = 0;
     let deleted = 0;
     let resultsData = {
@@ -501,37 +496,43 @@ let skyrepoCullFast = async function () {
         let hits2 = hits.filter((hit) => {
             return hit._id.indexOf('.') != hit._id.length - 1;
         });
-        //Create multiget request for all the records
-        let heads = await httpPost({
-            docs: hits2.map((hit) => {
-                return {
-                    _index: 'permanent',
-                    _id: hit._id.split('.')[0] + '.'
-                };
-            })
-        }, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
-        heads = heads.docs;
-        heads = heads.filter(head => head._source)
-        //Filter out records where the head's version matches the record's version
-        let hits3 = hits2.filter(
-            hit => !heads.filter(head => head._id.split('.')[0] == hit._id.split('.')[0])
-                .some(head => JSON.parse(head._source.data)["@id"] == JSON.parse(hit._source.data)["@id"])
-        );
-        counter += hits.length;
-        deleted += hits3.length;
-        //Delete what's left (records with no head and records with a head with a different version)
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'SkyrepoCullFastIterate', "Deleting " + hits3.length + " records" + ` (${counter}, ${deleted}, ${hits?.length}, ${hits2?.length}, ${heads?.length}, ${hits3?.length})`);
-        if (hits3.length > 0) {
-            let del = hits3.map((hit) => {
-                return {
-                    delete:
-                    {
+        if (hits2.length > 0) {
+            //Create multiget request for all the records
+            let heads = await httpPost({
+                docs: hits2.map((hit) => {
+                    return {
                         _index: 'permanent',
-                        _id: hit._id
+                        _id: hit._id.split('.')[0] + '.'
+                    };
+                })
+            }, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
+            if (heads.docs == null) {
+                console.log(JSON.stringify(hits2, null, 2));
+                console.log(JSON.stringify(heads, null, 2));
+            }
+            heads = heads.docs;
+            heads = heads.filter(head => head._source)
+            //Filter out records where the head's version matches the record's version
+            let hits3 = hits2.filter(
+                hit => !heads.filter(head => head._id.split('.')[0] == hit._id.split('.')[0])
+                    .some(head => JSON.parse(head._source.data)["@id"] == JSON.parse(hit._source.data)["@id"])
+            );
+            counter += hits.length;
+            deleted += hits3.length;
+            //Delete what's left (records with no head and records with a head with a different version)
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'SkyrepoCullFastIterate', "Deleting " + hits3.length + " records" + ` (${counter}, ${deleted}, ${hits?.length}, ${hits2?.length}, ${heads?.length}, ${hits3?.length})`);
+            if (hits3.length > 0) {
+                let del = hits3.map((hit) => {
+                    return {
+                        delete:
+                        {
+                            _index: 'permanent',
+                            _id: hit._id
+                        }
                     }
-                }
-            }).map(x => JSON.stringify(x)).join("\n") + "\n\n";
-            let deleted = httpPost(del, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+                }).map(x => JSON.stringify(x)).join("\n") + "\n\n";
+                let deleted = httpPost(del, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+            }
         }
         results = await nextResults;
     }

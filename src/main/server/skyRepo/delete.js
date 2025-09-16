@@ -25,7 +25,7 @@ const deleteUrl = function (id, version, type) {
     }
     let url = elasticEndpoint;
     url += '/' + typeFromObj.toLowerCase();
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
         url += '/_doc';
     } else {
         url += '/' + typeFromObj;
@@ -41,7 +41,7 @@ const deleteUrl = function (id, version, type) {
 const deletePermanentBaseUrl = function (id, version, type) {
     let url = elasticEndpoint;
     url += '/permanent';
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
         url += '/_doc';
     } else {
         url += '/permanent';

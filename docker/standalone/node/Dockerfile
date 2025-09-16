@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:20-slim
+FROM --platform=linux/amd64 node:24-slim
 WORKDIR /app
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt update && \ 
 apt dist-upgrade -y && \
@@ -33,7 +33,8 @@ ENV OPENSSL_MODULES=/usr/local/ssl/lib64/ossl-modules
 
 COPY package.json ./
 
-RUN npm install --production --omit=dev && \
+RUN npm update && \
+npm install --production --omit=dev && \
 npm upgrade --production --omit=dev --save && \
 npm upgrade --global --production --omit=dev && \
 npm audit --production --omit=dev --audit-level=high --fix && \
@@ -43,4 +44,4 @@ COPY src src
 COPY ca.crt cass.crt cass.key copyright.txt ./
 
 EXPOSE 80
-ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]
+CMD [ "node", "--force-fips", "./src/main/server.js" ]

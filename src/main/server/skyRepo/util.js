@@ -145,7 +145,7 @@ global.flattenLangstrings = function (o) {
 };
 
 global.getTypeForObject = function (o, type) {
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
         return '_doc';
     } else {
         return inferTypeFromObj(o, type);

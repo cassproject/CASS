@@ -21,7 +21,7 @@ const { skyrepoHistoryInternal } = require('./history');
 const getUrl = function (index, id, version, type) {
     let url = elasticEndpoint;
     url += '/' + index;
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
         url += '/_doc';
     } else if (index == 'permanent') {
         url += '/permanent';

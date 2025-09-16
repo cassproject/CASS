@@ -23,7 +23,7 @@ global.auditLogger = require('./server/shims/auditLogger.js');
 const express = require('express');
 let app = global.app = express();
 const https = require('https');
-const spdy = require('spdy');
+const http2 = require('node:http2');
 require('cassproject');
 const fs = require('fs');
 global.v8 = require('v8');
@@ -238,7 +238,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
             }
         }
         if (envHttp2) {
-            global.server = spdy.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
+            global.server = http2.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         } else {
             global.server = https.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         }

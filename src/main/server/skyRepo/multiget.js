@@ -31,7 +31,7 @@ const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
             '_index': index,
             '_id': id + '.' + (version == null ? '' : version)
         };
-        if (elasticSearchVersion().startsWith('8.')) {
+        if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
             // Don't multiget with _type
         } else if (elasticSearchVersion().startsWith('7.')) {
             (p)['_type'] = '_doc';
@@ -168,7 +168,7 @@ const endpointMultiGet = async function () {
         const version = parseParams['version'];
         const p = {};
         (p)['_index'] = 'permanent';
-        if (elasticSearchVersion().startsWith('8.')) {
+        if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
             // Don't multiget with _type
         } else
             if (elasticSearchVersion().startsWith('7.')) {

@@ -39,7 +39,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
                     'version_type': 'external' 
                 } 
             };
-            if (elasticSearchVersion().startsWith('8.')) {
+            if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
                 delete obj.index['_type'];
             }
             body += `${JSON.stringify(obj)}\n`;
@@ -54,7 +54,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
                     'version_type': 'external' 
                 } 
             };
-            if (elasticSearchVersion().startsWith('8.')) {
+            if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
                 delete obj.index['_type'];
             }
             body += `${JSON.stringify(obj)}\n`;
@@ -252,7 +252,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         x.index = inferTypeFromObj(x.object, x.type).toLowerCase();
 
         let obj = { 'index': { '_index': x.index, '_id': x.id, '_type': getTypeForObject(x.object, x.type), 'version': x.version, 'version_type': 'external' } };
-        if (elasticSearchVersion().startsWith('8.')) {
+        if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
             delete obj.index['_type'];
         }
 
@@ -365,7 +365,7 @@ const endpointMultiPut = async function () {
             const doc = {};
             (mappings)['mappings'] = permNoIndex;
 
-            if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+            if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
                 permNoIndex.enabled = false;
             } else {
                 (permNoIndex)['permanent'] = doc;

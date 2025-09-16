@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.6.5
+* Updated libraries
+* Updated to Node 24 to better support security releases and performance.
+* Updated to Elastic 9.x
+* Fixed bug with multiget / multiput
+* Fixed bug with incoming assertions
+* Improved performance of cullFast
+* Fixed issue with not being able to receive files in custom services. (binary encoding)
+
 ## 1.6.4
 * Updated libraries.
 * Updated editor.

@@ -35,7 +35,7 @@ const putUrl = function (o, id, version, type) {
     }
     let url = elasticEndpoint;
     url += '/' + typeFromObj.toLowerCase();
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
         url += '/_doc';
     } else {
         url += '/' + typeFromObj;
@@ -60,7 +60,7 @@ const putPermanentUrl = function (o, id, version, type) {
     }
     let url = elasticEndpoint;
     url += '/permanent';
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
         url += '/_doc';
     } else {
         url += '/permanent';
@@ -85,7 +85,7 @@ const putPermanentBaseUrl = function (o, id, version, type) {
     }
     let url = elasticEndpoint;
     url += '/permanent';
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
         url += '/_doc';
     } else {
         url += '/permanent';
@@ -159,7 +159,7 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
         const doc = {};
         (mappings)['mappings'] = permNoIndex;
 
-        if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.')) {
+        if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
             permNoIndex.enabled = false;
         } else {
             (permNoIndex)['permanent'] = doc;

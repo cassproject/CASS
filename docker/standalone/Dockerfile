@@ -1,7 +1,7 @@
 FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.18.2
 
 USER root
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs && apt upgrade -qqy && apt clean
 
 RUN openssl version
