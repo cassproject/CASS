@@ -119,11 +119,11 @@ describe("EcRepository (SSO L2 Cache)", () => {
     });
     it('save (to)', async () => {
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('encrypt and save (to)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('encrypt some more', async () => {
         await changeNameAndSaveAndCheck(rld);
         rld = await EcEncryptedValue.toEncryptedValue(rld);
@@ -134,46 +134,46 @@ describe("EcRepository (SSO L2 Cache)", () => {
         rld = await EcEncryptedValue.toEncryptedValue(rld);
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await repo.saveTo(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
         results[0] = await EcEncryptedValue.fromEncryptedValue(results[0]);
         assert.equal(results[0].squirrel, "brown");
-    }).timeout(10000);
+    });
     it('decrypt and save (to)', async () => {
         rld = await EcEncryptedValue.fromEncryptedValue(await EcRepository.get(rld.shortId(), null, null, repo));
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('encrypt and save (to)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('decrypt and save (to)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('history', async () => {
         let history = await EcRepository.history(rld.shortId(), repo);
         assert.isAbove(history.length, 6, "History is not populated.");
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('create', async () => {
         rld = new schema.Thing();
         rld.generateId(repo.selectedServer);
@@ -183,46 +183,46 @@ describe("EcRepository (SSO L2 Cache)", () => {
     });
     it('save (ecrepository)', async () => {
         await changeNameAndSaveAndCheckRepo(rld);
-    }).timeout(10000);
+    });
     it('encrypt and save (ecrepository)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheckRepo(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('decrypt and save (ecrepository)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheckRepo(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('save (ecrepository)', async () => {
         await changeNameAndSaveAndCheckRepo(rld);
-    }).timeout(10000);
+    });
     it('encrypt and save (ecrepository)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheckRepo(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('decrypt and save (ecrepository)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheckRepo(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('create', async () => {
         rld = new schema.Thing();
         rld.generateId(repo.selectedServer);
@@ -232,46 +232,46 @@ describe("EcRepository (SSO L2 Cache)", () => {
     });
     it('save (multiput)', async () => {
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('encrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('decrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('save (multiput)', async () => {
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('encrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('decrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered create', async () => {
         rld = new schema.Thing();
         rld.id = "https://this.object.is.not.here/" + EcCrypto.generateUUID();
@@ -281,43 +281,43 @@ describe("EcRepository (SSO L2 Cache)", () => {
     });
     it('registered save (to)', async () => {
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('registered encrypt and save (to)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered decrypt and save (to)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered encrypt and save (to)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered decrypt and save (to)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheck(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered create', async () => {
         rld = new schema.Thing();
         rld.id = "https://this.object.is.not.here/" + EcCrypto.generateUUID();
@@ -327,50 +327,50 @@ describe("EcRepository (SSO L2 Cache)", () => {
     });
     it('registered save (multiput)', async () => {
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('registered encrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered decrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered save (multiput)', async () => {
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('registered encrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), true);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered decrypt and save (multiput)', async () => {
         EcEncryptedValue.encryptOnSave(rld.shortId(), false);
         await changeNameAndSaveAndCheckMultiput(rld);
-    }).timeout(10000);
+    });
     it('registered search', async () => {
         let results = await repo.search(`@id:"${rld.shortId()}"`);
         assert.equal(results.length, 1);
         assert.equal(results[0].shortId(), rld.shortId());
-    }).timeout(10000);
+    });
     it('registered history', async () => {
         let history = await EcRepository.history(rld.shortId(), repo);
         assert.isTrue(history.length == 6, "History is not populated.");
-    }).timeout(10000);
+    });
     it('search index/permanent mismatch', async () => {
         let thing = new schema.Thing();
         thing.generateId(repo.selectedServer);
@@ -429,10 +429,10 @@ describe("EcRepository (SSO L2 Cache)", () => {
         assert.isAbove(results.length, 0, "Multiget (short) failed.");
         results = await repo.multiget([EcRemoteLinkedData.veryShortId(repo.selectedServer, EcCrypto.md5(thing.shortId()))]);
         assert.isAbove(results.length, 0, "Multiget (md5 id) failed.");
-    }).timeout(10000);
+    });
     it('Turn off caching', async () => {
         EcRepository.caching = false;
         EcRepository.cachingL2 = false;
         delete global.AUTH_OVERRIDE;
-    }).timeout(10000);
+    });
 });

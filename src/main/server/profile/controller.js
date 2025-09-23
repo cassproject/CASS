@@ -44,7 +44,7 @@ let autoCalculatePeople = async ()=>{
                     });
                     }
                     catch (ex) {
-                        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'ProfileControllerError', framework.shortId(),ex);
+                        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'ProfileControllerError', framework.shortId(), ex);
                     }
                 }, { concurrency: 5 });
             }
@@ -73,6 +73,7 @@ let invalidateProfileByAssertion = async (data) => {
     let subjects = [];
     if (!EcArray.isArray(data)) data = [data];
     for (let datum of data) {
+        datum = datum.object ? datum.object : datum;
         let d = new EcRemoteLinkedData().copyFrom(datum);
         if (d.type == "Assertion" || d.encryptedType == "Assertion") {
             hasAssertion = true;

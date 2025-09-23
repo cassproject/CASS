@@ -53,7 +53,7 @@ else
 
 const envHttps = process.env.HTTPS != null ? process.env.HTTPS.trim() == 'true' : false;
 
-var repo = global.repo = new EcRepository();
+global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? "https://localhost/api/" : "http://localhost/api/");
 if (envHttps) {
     https.globalAgent.options.rejectUnauthorized = false;
@@ -65,8 +65,8 @@ EcRepository.cachingSearch = true;
 EcCrypto.caching = true;
 
 const PRECACHE_ALL_FRAMEWORKS = true;
-let allFrameworks = global.allFrameworks = []; // Cache of all frameworks
-let profileFrameworks = global.profileFrameworks = {}; //Cache of constructed frameworks
+global.allFrameworks = []; // Cache of all frameworks
+global.profileFrameworks = {}; //Cache of constructed frameworks
 
 // Access the workerData by requiring it.
 let { parentPort, workerData } = require('worker_threads');
@@ -75,7 +75,6 @@ let initialized = false;
 
 let glob = require('glob');
 let path = require('path');
-const EcPk = require("cassproject/src/com/eduworks/ec/crypto/EcPk");
 
 global.auditLogger = require(path.resolve(glob.sync('src/main/server/shims/auditLogger.js')[0]));
 
@@ -86,15 +85,14 @@ global.lastFlush = Date.now();
 // Main thread will pass the data you need through this event listener.
 parentPort.on('message', async (param) => {
     try {
-
         const subject = param.subject;
         const frameworkId = param.frameworkId;
         const query_agent = param.query_agent;
 
         let userChanged = true;
         if (EcIdentityManager.default.ids.length > 0)
-            if (JSON.stringify(EcIdentityManager.default.ids.map(x => x.ppk.toPem())) == JSON.stringify(query_agent));
-        userChanged = false;
+            if (JSON.stringify(EcIdentityManager.default.ids.map(x => x.ppk.toPem())) == JSON.stringify(query_agent))
+                userChanged = false;
         EcIdentityManager.default.clearIdentities();
         if (param.lastFlush != global.lastFlush) {
             global.lastFlush = param.lastFlush;
@@ -104,8 +102,8 @@ parentPort.on('message', async (param) => {
         if (param.flushCache == "true") {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", "Flushing cache.");
             EcRepository.cache = {};
-            allFrameworks = global.allFrameworks = [];
-            profileFrameworks = global.profileFrameworks = {};
+            global.allFrameworks = [];
+            global.profileFrameworks = {};
         }
         if (userChanged) {
             EcCrypto.cache = {};
@@ -113,6 +111,7 @@ parentPort.on('message', async (param) => {
         }
 
         const memoryData = process.memoryUsage();
+        console.log(formatMemoryUsage(memoryData.heapUsed) + " used of " + formatMemoryUsage(memoryData.heapTotal));
         if (memoryData.heapUsed > 750 * 1024 * 1024) {
 
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileWorkerCryptoCacheCleared', "Hit high water memory mark, clearing crypto cache.");
@@ -135,6 +134,10 @@ parentPort.on('message', async (param) => {
             if (global.gc) global.gc();
         }
 
+        global.agent = new EcIdentity();
+        global.agent.ppk = EcPpk.fromPem(process.env.PROFILE_PPK);
+        global.agent.displayName = "PROFILE_PPK";
+        EcIdentityManager.default.addIdentity(global.agent);
         for (let a of query_agent) {
             global.agent = new EcIdentity();
             global.agent.ppk = EcPpk.fromPem(a);
@@ -226,3 +229,33 @@ parentPort.on('message', async (param) => {
         throw ex;
     }
 });
+
+if (!Promise.map) {
+    Promise.map = function (iterable, mapper, options = {}) {
+        let concurrency = options.concurrency || Infinity
+
+        let index = 0
+        const results = []
+        const pending = []
+        const iterator = iterable[Symbol.iterator]()
+
+        while (concurrency-- > 0) {
+            const thread = wrappedMapper()
+            if (thread) pending.push(thread)
+            else break
+        }
+
+        return Promise.all(pending).then(() => results)
+
+        function wrappedMapper() {
+            const next = iterator.next()
+            if (next.done) return null
+            const i = index++
+            const mapped = mapper(next.value, i)
+            return Promise.resolve(mapped).then(resolved => {
+                results[i] = resolved
+                return wrappedMapper()
+            })
+        }
+    }
+}

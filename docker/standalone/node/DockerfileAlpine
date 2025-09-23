@@ -1,0 +1,58 @@
+ARG alpineVersion=3.22
+ARG nodeVersion=24
+FROM node:$nodeVersion-alpine$alpineVersion
+
+RUN apk update && apk upgrade --no-cache
+
+WORKDIR /
+ENV OPENSSL_VERSION=3.1.2
+
+RUN apk add --no-cache vim perl gcc musl-dev linux-headers make gcompat curl libc6-compat openssl-dev && \
+wget https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz && \
+tar xf openssl-${OPENSSL_VERSION}.tar.gz && \
+cd /openssl-${OPENSSL_VERSION} && \
+./Configure enable-fips && \
+make install && \
+make install_fips && \
+openssl version -d -a && \
+cp /usr/local/lib64/ossl-modules/fips.so /usr/lib/ossl-modules/ && \
+openssl fipsinstall -out /etc/fipsmodule.cnf -module /usr/lib/ossl-modules/fips.so && \
+cp ./providers/fipsmodule.cnf /etc/ssl/ && \
+diff ./providers/fips.so /usr/lib/ossl-modules/fips.so && \
+echo ".include /etc/ssl/fipsmodule.cnf" >> /tmp/openssl_fips_insert.txt && \
+echo "[openssl_init]" >> /tmp/openssl_fips_insert.txt && \
+echo "providers = provider_sect" >> /tmp/openssl_fips_insert.txt && \
+echo "alg_section = algorithm_sect" >> /tmp/openssl_fips_insert.txt && \
+echo "[algorithm_sect]" >> /tmp/openssl_fips_insert.txt && \
+echo "default_properties = fips=yes" >> /tmp/openssl_fips_insert.txt && \
+echo "[provider_sect]" >> /tmp/openssl_fips_insert.txt && \
+echo "fips = fips_sect" >> /tmp/openssl_fips_insert.txt && \
+echo "base = base_sect" >> /tmp/openssl_fips_insert.txt && \
+echo "default = default_sect" >> /tmp/openssl_fips_insert.txt && \
+echo "[base_sect]" >> /tmp/openssl_fips_insert.txt && \
+echo "activate = 1" >> /tmp/openssl_fips_insert.txt && \
+awk '/^# For FIPS/ { print; system("cat /tmp/openssl_fips_insert.txt"); skip=1; next } \
+     /^# fips = fips_sect/ { skip=0; next } \
+     skip { next } \
+     { print }' /etc/ssl/openssl.cnf > /etc/ssl/openssl.cnf.new && \
+mv /etc/ssl/openssl.cnf /etc/ssl/openssl.cnf.bak && \
+mv /etc/ssl/openssl.cnf.new /etc/ssl/openssl.cnf && \
+apk del vim perl gcc musl-dev linux-headers make gcompat curl libc6-compat openssl-dev && \
+cd / && \
+rm -rf /openssl-${OPENSSL_VERSION}*
+
+WORKDIR /app
+COPY package.json ./
+
+RUN npm update && \
+npm install --production --omit=dev && \
+npm upgrade --production --omit=dev --save && \
+npm upgrade --global --production --omit=dev && \
+npm audit --production --omit=dev --audit-level=high --fix && \
+chown root:root node_modules -R
+
+COPY src src
+COPY ca.crt cass.crt cass.key copyright.txt ./
+
+EXPOSE 80
+ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]

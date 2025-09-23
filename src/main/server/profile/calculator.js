@@ -83,7 +83,7 @@ module.exports = class ProfileCalculator {
                 this.framework = await EcFramework.get(this.frameworkId, null, null, repo);
 
         if (this.framework == null) {
-            return {error:"Framework not found"};
+            return { error: "Framework not found" };
         }
 
         if (this.g == null) {
@@ -333,7 +333,7 @@ module.exports = class ProfileCalculator {
 
         // Put information from each vertex into its meta-vertex,
         // and attach additional data on assertions, goals, & required signatures into meta.state
-        this.log("Processing vertices.");
+        this.log("Processing vertices. " + this.g.verticies.length + " vertices.");
         for (const vertex of this.g.verticies) {
             for (let coprocessor of coprocessors)
                 coprocessor.postProcessEachVertex.call(this, vertex, vertices, topLevelVertices, inEdges);
@@ -344,7 +344,7 @@ module.exports = class ProfileCalculator {
         // * topLevelVertices
         // * inEdges.equivalent
         // * inEdges.narrows
-        this.log("Processing edges.");
+        this.log("Processing edges. " + this.g.edges.length + " edges.");
         for (const edge of this.g.edges) {
             for (let coprocessor of coprocessors)
                 coprocessor.postProcessEachEdge.call(this, edge, vertices, topLevelVertices, inEdges);
@@ -367,6 +367,7 @@ module.exports = class ProfileCalculator {
             }
         } while (hash !== hashSortCoerce.hash(topLevelVertices));
 
+        this.log(this.g.verticies.length + " vertices processed.");
         let profile = {
             children: []
         };
