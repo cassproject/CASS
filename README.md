@@ -109,6 +109,10 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Run `docker-compose up --build` to ensure the container can build.
  * `docker scout cves cass-cass > scan-node.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
+ * Run `docker-compose -f docker-compose-alpine.yml up --build` to ensure the container can build.
+ * `npm run mocha`
+ * `docker scout cves cass-cass > scan-node.txt`
+ * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
  * Commit with release notes.
  * Tag commit with version number.
 

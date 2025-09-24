@@ -61,7 +61,7 @@ services:
     depends_on:
       - elasticsearch-cass
   elasticsearch-cass:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.4
     container_name: elasticsearch-cass
     networks:
       - esnet
