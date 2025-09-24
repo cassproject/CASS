@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/DockerfileAlpine
+    platform: linux/amd64
     container_name: cass
     networks:
       - esnet
@@ -33,6 +34,7 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/DockerfileAlpine
+    platform: linux/amd64
     container_name: cassl
     networks:
       - esnet
@@ -61,7 +63,7 @@ services:
     depends_on:
       - elasticsearch-cass
   elasticsearch-cass:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.4
     container_name: elasticsearch-cass
     networks:
       - esnet

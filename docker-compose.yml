@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/Dockerfile
+    platform: linux/amd64
     container_name: cass
     networks:
       - esnet
@@ -33,6 +34,7 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/Dockerfile
+    platform: linux/amd64
     container_name: cassl
     networks:
       - esnet

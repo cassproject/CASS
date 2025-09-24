@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.6.6
+* Added Alpine Node w/FIPS.
+* Updated libraries.
+* Updated editor.
+
 ## 1.6.5 v2
 * Switched back to ENTRYPOINT.
 
