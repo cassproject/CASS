@@ -12,10 +12,10 @@ RUN apk add --no-cache --virtual .build-deps make gcc libgcc musl-dev linux-head
     && tar -xf openssl-${OPENSSL_VERSION}.tar.gz \
     && cd openssl-${OPENSSL_VERSION} \
     && ./Configure --prefix=/usr/local shared enable-fips enable-ec_nistp_64_gcc_128 \
-    && make -j8 \
-    && make install \
-    && make install_ssldirs \
-    && make install_fips \
+    && make -j8 > make.log \
+    && make install > makeinstall.log \
+    && make install_ssldirs > makeinstallssldirs.log \
+    && make install_fips > makeinstallfips.log \
     && apk del .build-deps make gcc libgcc musl-dev linux-headers perl vim \
     && cd .. && rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION} \
     && apk upgrade --no-cache -U
