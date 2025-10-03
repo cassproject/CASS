@@ -133,7 +133,7 @@ if (process.env.CASS_OIDC_ENABLED || false)
             secret: process.env.CASS_OIDC_SECRET || 'a71b92d4-336e-4664-bc05-2226f76b4042',
 	        routes:{callback:global.baseUrl + "/callback"},
             authorizationParams: {
-                scope: 'openid profile email microprofile-jwt'
+                scope: process.env.CASS_OIDC_SCOPE || 'openid profile email'
             },
             authRequired: false
         })
