@@ -142,7 +142,7 @@ if (process.env.CASS_OIDC_ENABLED || false)
         res.oidc.login({
             returnTo: req.query.redirectUrl || '/',
             authorizationParams: {
-                scope: 'openid profile email microprofile-jwt',
+                scope: process.env.CASS_OIDC_SCOPE || 'openid profile email',
             }
         });
     });
