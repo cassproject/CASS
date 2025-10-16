@@ -1,4 +1,3 @@
-const EcArray = require('cassproject/src/com/eduworks/ec/array/EcArray');
 const { StaticPool } = require('node-worker-threads-pool');
 
 const filePath = './src/main/server/profile/worker.js';

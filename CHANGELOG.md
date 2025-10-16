@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.6.7
+* Compatibility with Elasticsearch 9.x
+* Updated libraries.
+* Updated editor.
+
 ## 1.6.6
 * Added Alpine Node w/FIPS.
 * Updated libraries.

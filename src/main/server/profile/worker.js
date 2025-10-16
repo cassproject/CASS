@@ -134,10 +134,13 @@ parentPort.on('message', async (param) => {
             if (global.gc) global.gc();
         }
 
-        global.agent = new EcIdentity();
-        global.agent.ppk = EcPpk.fromPem(process.env.PROFILE_PPK);
-        global.agent.displayName = "PROFILE_PPK";
-        EcIdentityManager.default.addIdentity(global.agent);
+        if (process.env.PROFILE_PPK)
+        {
+            global.agent = new EcIdentity();
+            global.agent.ppk = EcPpk.fromPem(process.env.PROFILE_PPK);
+            global.agent.displayName = "PROFILE_PPK";
+            EcIdentityManager.default.addIdentity(global.agent);
+        }
         for (let a of query_agent) {
             global.agent = new EcIdentity();
             global.agent.ppk = EcPpk.fromPem(a);

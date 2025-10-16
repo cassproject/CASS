@@ -23,7 +23,7 @@ let autoCalculatePeople = async ()=>{
                 i.displayName = "Identity from Controller";
                 eim.addIdentity(i);
             }
-            let frameworks = await repo.multiget(events.data.frameworks, eim);
+            let frameworks = await repo.multiget(events.data.frameworks, null,null,eim);
             let people = await EcPerson.search(repo, "*", null, null, { size: 10000 }, eim);
             for (personIndex = 0;personIndex < people.length;personIndex++) {
                 let person = people[personIndex];
@@ -44,6 +44,8 @@ let autoCalculatePeople = async ()=>{
                     });
                     }
                     catch (ex) {
+                        console.log(keys);
+
                         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'ProfileControllerError', framework.shortId(), ex);
                     }
                 }, { concurrency: 5 });

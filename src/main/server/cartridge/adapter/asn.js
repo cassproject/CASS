@@ -22,6 +22,7 @@ async function cassFrameworkAsAsn() {
     let query = queryParse.call(this);
     let framework = null;
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2asnTerms")), true));
+    console.log(query);
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
     if (framework == null || framework["@type"]?.contains("ramework"))
