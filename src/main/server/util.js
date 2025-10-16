@@ -51,7 +51,7 @@ let skyrepoMigrate = async function (after) {
         }, 1000);
         return;
     }
-    if (elasticState.version.number.startsWith('8.')) {
+    if (elasticState.version.number.startsWith('8.') || elasticState.version.number.startsWith('9.')) {
         await httpPut({
             'persistent': {
                 'indices.id_field_data.enabled': true,
