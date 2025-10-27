@@ -115,7 +115,7 @@
     "nodemailer": "^6.10.1",
     "pm2": "^6.0.13",
     "pure-uuid": "^1.8.1",
-    "rdflib": "^2.2.37",
+    "rdflib": "^2.3.0",
     "rxjs": "^7.8.2",
     "spdy-fixes": "^4.0.5",
     "swagger-jsdoc": "^6.2.8",
