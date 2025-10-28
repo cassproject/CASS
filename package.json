@@ -112,7 +112,7 @@
     "express-ws": "^5.0.2",
     "node-object-hash": "^3.1.1",
     "node-worker-threads-pool": "^1.5.1",
-    "nodemailer": "^7.0.9",
+    "nodemailer": "^7.0.7",
     "pm2": "^6.0.13",
     "pure-uuid": "^1.8.1",
     "rdflib": "^2.3.0",
