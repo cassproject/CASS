@@ -29,23 +29,21 @@ let autoCalculatePeople = async ()=>{
                 let person = people[personIndex];
                 await Promise.map(frameworks, async (framework) => {
                     try{
-                    await global.calculateProfile.call({
-                        params: {
-                            subject: person.owner[0],
-                            frameworkId: framework.shortId(),
-                            autoComputed: true,
-                            cache: "true",
-                        },
-                        ctx: {
-                            req: {
-                                eim: eim,
+                        await global.calculateProfile.call({
+                            params: {
+                                subject: person.owner[0],
+                                frameworkId: framework.shortId(),
+                                autoComputed: true,
+                                cache: "true",
                             },
-                        },
-                    });
+                            ctx: {
+                                req: {
+                                    eim: eim,
+                                },
+                            },
+                        });
                     }
                     catch (ex) {
-                        console.log(keys);
-
                         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'ProfileControllerError', framework.shortId(), ex);
                     }
                 }, { concurrency: 5 });

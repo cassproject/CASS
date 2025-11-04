@@ -19,6 +19,7 @@
  */
 
 const fs = require('fs');
+const nodePath = require('path');
 const { skyrepoGetInternal } = require('./skyRepo/get');
 const { skyrepoPutParsed } = require('./skyRepo/put');
 let usernameSalt = null;
@@ -120,6 +121,9 @@ let skyIdLogin = async function() {
     return JSON.stringify(get);
 };
 global.loadConfigurationFile = function(path, dflt) {
+    if (nodePath.normalize(path) !== path) {
+        throw new Error('Path must be normalized: ' + path);
+    }
     const ensureDirectoryExists = (dirPath) => {
         if (!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, { recursive: true });

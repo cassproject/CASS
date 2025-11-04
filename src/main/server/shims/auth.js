@@ -1,4 +1,5 @@
 const fs = require('fs');
+const nodePath = require('path');
 const sharedAdminCache = require("./util/sharedAdminCache.js");
 
 let keyEim = null;
@@ -30,9 +31,7 @@ const envEmailArray = interpretAdminCSV(process.env.AUTH_ENV_ADMIN_EMAILS);
 
 let getPk = async(identifier) => {
     if (getPkCache[identifier] != null)
-    {
         return getPkCache[identifier];
-    }
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'AuthLookingIdentifier', "Looking for " + identifier);
     if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
         return loadConfigurationFile("keys/"+identifier, () => {
@@ -50,7 +49,8 @@ let getPk = async(identifier) => {
         }));
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthEIMFingerprint', "SkyId Elastic EIM fingerprint: " + i.ppk.toPk().fingerprint());
         keyEim.addIdentity(i);
-    }
+    } 
+    global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.DEBUG, "GetPk", "Looking for " + identifier);
     let myKey = loadConfigurationFile("keys/"+identifier, () => {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFindKeyDirectoryFail', "Could not find " + identifier + " in file system.");
         return null;
@@ -66,6 +66,9 @@ let getPk = async(identifier) => {
             return myKey;
         });
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairDeleted', "Deleting old keypair file.");
+        if (nodePath.normalize(identifier) !== identifier) {
+            throw new Error('Identifier includes non-normalized characters: ' + identifier);
+        }
         fs.unlinkSync("etc/keys/"+identifier);
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
@@ -109,7 +112,7 @@ let getPk = async(identifier) => {
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
         keypair.addOwner(keyEim.ids[0].ppk.toPk());
-        keypair.assignId(identityPrefix,keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
+        keypair.assignId(identityPrefix, keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
         myKey = keypair.ppk = EcPpk.fromPem(rsaGenerate()).toPem();
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairSave', "Saving Elastic keypair to: " + keypair.shortId());
         await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair),null,null,keyEim);
@@ -135,7 +138,12 @@ if (process.env.CASS_OIDC_ENABLED || false)
             authorizationParams: {
                 scope: process.env.CASS_OIDC_SCOPE || 'openid profile email'
             },
-            authRequired: false
+            authRequired: false,
+            session: {
+                cookie: {
+                    sameSite: process.env.CORS_CREDENTIALS && process.env.CORS_CREDENTIALS.trim() == 'true' ? 'None' : 'Lax'
+                }
+            }
         })
     );
     app.get(global.baseUrl + '/api/login', (req, res) => {
@@ -474,13 +482,11 @@ app.use(async function (req, res, next) {
                 sharedAdminCache.addPublicKeyToKnownAdmins(userPublicKeyStr);
             }
 
-            //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!
             signatureSheetCache[p.shortId()] = signatureSheet;
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassSigSheetCreated", `Securing Proxy: Created signature sheet for request from ${email}.`, signatureSheet);
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassSigSheetCreated", `Securing Proxy: Created signature sheet for request from ${email}.`);
         }
         else
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassSigSheetCreated", `Securing Proxy: Reused signature sheet for request from ${email}.`, signatureSheet);
-        
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassSigSheetCreated", `Securing Proxy: Reused signature sheet for request from ${email}.`);
         req.headers.signatureSheet = signatureSheet;
         req.eim = eim;
     }
@@ -498,43 +504,43 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
         let allowed = false;
         req.permittedBy = [];
         if (req.originalUrl == global.baseUrl + "/callback")
-            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //SSO is permitted
+            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO is permitted
         if (req.originalUrl == global.baseUrl + "/login")
-            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
+            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
         if (req.originalUrl == global.baseUrl + "/logout")
-            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //SSO redirect is permitted
+            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
         if (req.originalUrl == global.baseUrl + "/api/ping")
-            {req.permittedBy.push("Permitted by: " + 'sso callback');allowed = true;} //Health check is permitted
-        if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList,req.headers['x-client-ip']))
-            {req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList,req.headers['x-forwarded-for']))
-            {req.permittedBy.push("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList,req.headers['cf-connecting-ip']))
-            {req.permittedBy.push("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['fastly-client-ip'] != null && ipMatch(ipFilterList,req.headers['fastly-client-ip']))
-            {req.permittedBy.push("Permitted by: " + 'fastly-client-ip' + ": " + req.headers['fastly-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['true-client-ip'] != null && ipMatch(ipFilterList,req.headers['true-client-ip']))
-            {req.permittedBy.push("Permitted by: " + 'true-client-ip' + ": " + req.headers['true-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-real-ip'] != null && ipMatch(ipFilterList,req.headers['x-real-ip']))
-            {req.permittedBy.push("Permitted by: " + 'x-real-ip' + ": " + req.headers['x-real-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-cluster-client-ip'] != null && ipMatch(ipFilterList,req.headers['x-cluster-client-ip']))
-            {req.permittedBy.push("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-forwarded'] != null && ipMatch(ipFilterList,req.headers['x-forwarded']))
-            {req.permittedBy.push("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']);allowed = true;} //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.connection?.remoteAddress != null && ipMatch(ipFilterList,req.connection.remoteAddress))
-            {req.permittedBy.push("Permitted by: " + 'connection' + ": " + req.connection.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList,req.socket.remoteAddress))
-            {req.permittedBy.push("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.connection?.socket?.remoteAddress != null && ipMatch(ipFilterList,req.connection.socket.remoteAddress))
-            {req.permittedBy.push("Permitted by: " + 'connectionSocket' + ": " + req.connection.socket.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
-        if (req.info?.remoteAddress != null && ipMatch(ipFilterList,req.info.remoteAddress))
-            {req.permittedBy.push("Permitted by: " + 'info' + ": " + req.info.remoteAddress);allowed = true;} //Remote address is permitted. (vpns, direct access)
+            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //Health check is permitted
+        if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-client-ip']))
+            { req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList, req.headers['x-forwarded-for']))
+            { req.permittedBy.push("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList, req.headers['cf-connecting-ip']))
+            { req.permittedBy.push("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['fastly-client-ip'] != null && ipMatch(ipFilterList, req.headers['fastly-client-ip']))
+            { req.permittedBy.push("Permitted by: " + 'fastly-client-ip' + ": " + req.headers['fastly-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['true-client-ip'] != null && ipMatch(ipFilterList, req.headers['true-client-ip']))
+            { req.permittedBy.push("Permitted by: " + 'true-client-ip' + ": " + req.headers['true-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-real-ip'] != null && ipMatch(ipFilterList, req.headers['x-real-ip']))
+            { req.permittedBy.push("Permitted by: " + 'x-real-ip' + ": " + req.headers['x-real-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-cluster-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-cluster-client-ip']))
+            { req.permittedBy.push("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-forwarded'] != null && ipMatch(ipFilterList, req.headers['x-forwarded']))
+            { req.permittedBy.push("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.connection?.remoteAddress != null && ipMatch(ipFilterList, req.connection.remoteAddress))
+            { req.permittedBy.push("Permitted by: " + 'connection' + ": " + req.connection.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
+        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList, req.socket.remoteAddress))
+            { req.permittedBy.push("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
+        if (req.connection?.socket?.remoteAddress != null && ipMatch(ipFilterList, req.connection.socket.remoteAddress))
+            { req.permittedBy.push("Permitted by: " + 'connectionSocket' + ": " + req.connection.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
+        if (req.info?.remoteAddress != null && ipMatch(ipFilterList, req.info.remoteAddress))
+            { req.permittedBy.push("Permitted by: " + 'info' + ": " + req.info.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
         if (process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
         if (req.eim != null && req.eim.ids.length >= parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED))
-            {req.permittedBy.push("Permitted by: " + 'sso ids > '+ process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length);allowed = true;} //In a permissioned group.
+            { req.permittedBy.push("Permitted by: " + 'sso ids > ' + process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length); allowed = true; } //In a permissioned group.
         if (!allowed)
         {            
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.",JSON.stringify( {
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.", JSON.stringify({
                 allowed,
                 headers:req.headers,
                 connections:{

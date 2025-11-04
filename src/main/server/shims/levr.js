@@ -1,4 +1,5 @@
 const fs = require('fs');
+const nodePath = require('path');
 const busboy = require('busboy');
 const getStream = require('get-stream');
 const dns = require('dns').promises;
@@ -6,12 +7,18 @@ const dns = require('dns').promises;
 // LEVR shims
 if (global.fileLoad === undefined) {
     global.fileLoad = function (filepath) {
+        if (nodePath.normalize(filepath) !== filepath) {
+            throw new Error('Path must be normalized: ' + filepath);
+        }
         return fs.readFileSync(filepath);
     };
 };
 
 if (global.fileExists === undefined) {
     global.fileExists = function (filepath) {
+        if (nodePath.normalize(filepath) !== filepath) {
+            throw new Error('Path must be normalized: ' + filepath);
+        }
         return fs.existsSync(filepath);
     };
 };
@@ -34,6 +41,9 @@ try {
 
 if (global.fileSave === undefined) {
     global.fileSave = function (text, filepath) {
+        if (nodePath.normalize(filepath) !== filepath) {
+            throw new Error('Path must be normalized: ' + filepath);
+        }
         fs.writeFileSync(filepath, text);
     };
 };
