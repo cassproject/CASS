@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.6.8
+* Updated libraries.
+* Updated editor.
+* Added implies relation as a functional relationship to explicitly allow assertions to transfer to another competency.
+
 ## 1.6.7
 * Compatibility with Elasticsearch 9.x
 * Updated libraries.

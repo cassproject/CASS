@@ -121,7 +121,7 @@ let skyIdLogin = async function() {
     return JSON.stringify(get);
 };
 global.loadConfigurationFile = function(path, dflt) {
-    if (nodePath.normalize(path) !== path) {
+    if (nodePath.normalize(path).replaceAll('\\', '/') !== path.replaceAll('\\', '/')) {
         throw new Error('Path must be normalized: ' + path);
     }
     const ensureDirectoryExists = (dirPath) => {
