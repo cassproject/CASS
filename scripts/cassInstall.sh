@@ -228,6 +228,78 @@ fi
 if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-6.*.jar' | head -1)" ]
  then
  echo -----
+ echo Getting ready to upgrade ElasticSearch 8.x to 9.x... Backing up to ~/es.8.tar.gz...
+ echo WAIT....
+ echo DO YOU HAVE ENOUGH HARD DRIVE SPACE?
+ du -s -h /var/lib/elasticsearch
+ df -h
+ read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ result=${result:-yes}
+ if [ "$result" == "yes" ]
+  then
+  echo Now backing up to ~/es.8.tar.gz -- Please Wait...
+  tar -czf es.8.tar.gz /var/lib/elasticsearch
+  echo -----
+  echo Upgrading ElasticSearch 8.x to 9.x...
+  echo WAIT....
+  echo HAVE YOU STARTED CASS USING ELASTICSEARCH 8.x AND HAD IT FINISH ITS MIGRATION AND FULLY COME UP?
+  echo IF YOU DO NOT, IT WILL NOT LOAD THE INDICES CREATED IN ELASTICSEARCH 7.x. NOTHING WILL APPEAR TO BE WORKING.
+  echo TO REMEDY THIS IF IT HAPPENS, REMOVE ELASTICSEARCH 9.x, REMOVE THE APT SOURCE AND DOWNGRADE TO ELASTICSEARCH 8.x AND START CASS AND LET IT FINISH MIGRATING.
+  echo YOU ALSO SHOULD TAKE A BACKUP. Copy out the /var/lib/elasticsearch directory.
+  read -p "DO YOU WANT TO CONTINUE WITH THE UPGRADE TO ELASTICSEARCH 9.x? [default=yes]" result
+  result=${result:-yes}
+  if [ "$result" == "yes" ]
+   then
+   wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+   apt-get -qqy install apt-transport-https
+   echo "deb https://artifacts.elastic.co/packages/9.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-9.x.list
+   apt-get -qqy update
+   apt-get -qqy install elasticsearch
+   update-rc.d elasticsearch defaults 95 10
+   chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
+  fi
+ fi
+fi
+#Upgrade script
+if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-6.*.jar' | head -1)" ]
+ then
+ echo -----
+ echo Getting ready to upgrade ElasticSearch 7.x to 8.x... Backing up to ~/es.7.tar.gz...
+ echo WAIT....
+ echo DO YOU HAVE ENOUGH HARD DRIVE SPACE?
+ du -s -h /var/lib/elasticsearch
+ df -h
+ read -p "DO YOU HAVE ENOUGH HARD DRIVE SPACE? [default=yes]" result
+ result=${result:-yes}
+ if [ "$result" == "yes" ]
+  then
+  echo Now backing up to ~/es.7.tar.gz -- Please Wait...
+  tar -czf es.7.tar.gz /var/lib/elasticsearch
+  echo -----
+  echo Upgrading ElasticSearch 7.x to 8.x...
+  echo WAIT....
+  echo HAVE YOU STARTED CASS USING ELASTICSEARCH 7.x AND HAD IT FINISH ITS MIGRATION AND FULLY COME UP?
+  echo IF YOU DO NOT, IT WILL NOT LOAD THE INDICES CREATED IN ELASTICSEARCH 6.x. NOTHING WILL APPEAR TO BE WORKING.
+  echo TO REMEDY THIS IF IT HAPPENS, REMOVE ELASTICSEARCH 8.x, REMOVE THE APT SOURCE AND DOWNGRADE TO ELASTICSEARCH 7.x AND START CASS AND LET IT FINISH MIGRATING.
+  echo YOU ALSO SHOULD TAKE A BACKUP. Copy out the /var/lib/elasticsearch directory.
+  read -p "DO YOU WANT TO CONTINUE WITH THE UPGRADE TO ELASTICSEARCH 8.x? [default=yes]" result
+  result=${result:-yes}
+  if [ "$result" == "yes" ]
+   then
+   wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+   apt-get -qqy install apt-transport-https
+   echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-8.x.list
+   apt-get -qqy update
+   apt-get -qqy install elasticsearch
+   update-rc.d elasticsearch defaults 95 10
+   chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
+  fi
+ fi
+fi
+#Upgrade script
+if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-6.*.jar' | head -1)" ]
+ then
+ echo -----
  echo Getting ready to upgrade ElasticSearch 6.x to 7.x... Backing up to ~/es.6.tar.gz...
  echo WAIT....
  echo DO YOU HAVE ENOUGH HARD DRIVE SPACE?
