@@ -111,7 +111,7 @@ if [ -e "src/main/server.js" ];
  then
 echo -----
 echo Node version of CaSS detected.
-curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 if [ "$platformDebian" -ne 0 ]
  then
 apt install -qqy nodejs build-essential
@@ -195,10 +195,10 @@ fi
 if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
-echo Downloading and installing ElasticSearch 7.x...
+echo Downloading and installing ElasticSearch 9.x...
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 apt-get -qqy install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-7.x.list
+echo "deb https://artifacts.elastic.co/packages/9.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-9.x.list
 apt-get -qqy update
 apt-get -qqy install elasticsearch
 update-rc.d elasticsearch defaults 95 10
@@ -208,11 +208,11 @@ fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
-echo Downloading and installing ElasticSearch 7.x...
+echo Downloading and installing ElasticSearch 9.x...
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
-echo "[elasticsearch-7.x]" >> /etc/yum.repos.d/elasticsearch.repo
-echo "name=Elasticsearch repository for 7.x packages" >> /etc/yum.repos.d/elasticsearch.repo
-echo "baseurl=https://artifacts.elastic.co/packages/7.x/yum" >> /etc/yum.repos.d/elasticsearch.repo
+echo "[elasticsearch-9.x]" >> /etc/yum.repos.d/elasticsearch.repo
+echo "name=Elasticsearch repository for 9.x packages" >> /etc/yum.repos.d/elasticsearch.repo
+echo "baseurl=https://artifacts.elastic.co/packages/9.x/yum" >> /etc/yum.repos.d/elasticsearch.repo
 echo "gpgcheck=1" >> /etc/yum.repos.d/elasticsearch.repo
 echo "gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch" >> /etc/yum.repos.d/elasticsearch.repo
 echo "enabled=1" >> /etc/yum.repos.d/elasticsearch.repo
@@ -225,7 +225,7 @@ chkconfig elasticsearch on
 fi
 
 #Upgrade script
-if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-6.*.jar' | head -1)" ]
+if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-8.*.jar' | head -1)" ]
  then
  echo -----
  echo Getting ready to upgrade ElasticSearch 8.x to 9.x... Backing up to ~/es.8.tar.gz...
@@ -261,7 +261,7 @@ if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -nam
  fi
 fi
 #Upgrade script
-if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-6.*.jar' | head -1)" ]
+if [ "$platformDebian" -ne 0 ] && [ -n "$(find /usr/share/elasticsearch/lib -name 'elasticsearch-7.*.jar' | head -1)" ]
  then
  echo -----
  echo Getting ready to upgrade ElasticSearch 7.x to 8.x... Backing up to ~/es.7.tar.gz...

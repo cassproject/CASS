@@ -65,12 +65,14 @@ let skyrepoMigrate = async function (after) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted pipelines: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/pipeline/*', elasticHeaders())));
 
         let geoipDatabases = await httpGet(elasticEndpoint + '/_ingest/geoip/database/', true, elasticHeaders());
+        if (geoipDatabases?.databases)
         for (const db of geoipDatabases.databases) {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Found GeoIP database: ' + db.id);
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted GeoIP database: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/geoip/database/' + db.id, elasticHeaders())));
         }
 
         let ipLocationDatabases = await httpGet(elasticEndpoint + '/_ingest/ip_location/database/', true, elasticHeaders());
+        if (ipLocationDatabases?.databases)
         for (const db of ipLocationDatabases.databases) {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Found IP Location database: ' + db.id);
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted IP Location database: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/ip_location/database/' + db.id, elasticHeaders())));
