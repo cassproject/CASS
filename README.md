@@ -3,9 +3,6 @@ Competency and Skills Service -- Competency Management
 
 Experimental: 1.6.8 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
 Release Candidate: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
-Supported: 1.4 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.4)](https://travis-ci.org/cassproject/CASS)  
-Supported: 1.3 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.3)](https://travis-ci.org/cassproject/CASS)  
-Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.2)](https://travis-ci.org/cassproject/CASS)
 
 [High level documentation](https://docs.cassproject.org)  
 [Developer documentation](https://devs.cassproject.org)
@@ -14,10 +11,10 @@ Supported: 1.2 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branc
 This document is intended to act as a technical guide to the installation of CaSS.
 
 This installation of CaSS will provide several components that operate to provide a working system. It is composed of:
- * The CaSS Repository, a Java application that runs in a Servlet Container, such as Tomcat.
+ * The CaSS Repository, a Node JS application.
  * The CaSS Library, a Javascript library that provides an interoperability layer between web applications and the CaSS Repository.
  * CaSS Embeddable Apps, a set of iframeable applications for branded web applications.
- * CaSS Adapters, an adapter that interprets xAPI statements and asserts competence, and an adapter that synchronizes competencies and frameworks to and from Moodle.
+ * CaSS Adapters, which provide particular functionality, typically standards based (xAPI, CTDL-ASN, etc).
 
 # CaSS Libraries
 ## From GitHub
@@ -39,7 +36,7 @@ During the installation, you will be asked to select a version to install. Versi
 
 ## Docker
 
-Docker images for standalone instances (based on Ubuntu) and distributed/scalable instances (based on Alpine Linux) can be found at:
+Docker images for standalone instances (based on Ubuntu) and distributed/scalable instances (based on Node and Alpine Linux) can be found at:
 
 https://hub.docker.com/r/cassproject/cass
 
