@@ -122,17 +122,22 @@ var personFromEmail = async function (mbox, name) {
 }
 
 var pkFromMbox = async function (xapiPerson) {
-    var mbox = getMbox.call(this, xapiPerson);
-    if (mbox == null)
-        return null;
-    var person = await personFromEmail.call(this, mbox);
-    if (person == null)
-        return null;
-    var pk = null;
-    for (var i = 0; i < person.owner.length; i++)
-        if (EcPk.fromPem(person.owner[i]).fingerprint() == person.getGuid())
-            pk = EcPk.fromPem(person.owner[i]);
-    return pk;
+    var mboxes = getMbox.call(this, xapiPerson);
+    let results = [];
+    for (let mbox of mboxes) {
+        if (mbox == null)
+            continue;
+        var person = await personFromEmail.call(this, mbox.mbox, mbox.name);
+        if (person == null)
+            continue;
+        var pk = null;
+        for (var i = 0; i < person.owner.length; i++)
+            if (EcPk.fromPem(person.owner[i]).fingerprint() == person.getGuid())
+                pk = EcPk.fromPem(person.owner[i]);
+        if (pk != null)
+            results.push(pk);
+    }
+    return results;
 }
 
 let alignedCompetenciesCache = {};
@@ -156,12 +161,61 @@ var getAlignedCompetencies = async function (objectId) {
     return results;
 }
 
+/**
+ *  Sets the subjects of an assertion. Makes a few assumptions: Owners of the
+ *  object should be able to see and change the encrypted value. Owners and
+ *  readers of the object should be persisted.
+ *
+ *  @param pk
+ */
+let setSubjects = global.setSubjects = async function (pks) {
+    if (pks.length == 1) {
+        await this.setSubject(pks[0]);
+        return;
+    }
+    var owners = [];
+    var readers = null;
+    if (this.reader == null) readers = [];
+    else readers = JSON.parse(JSON.stringify(this.reader));
+    if (this.owner != null) owners = owners.concat(this.owner);
+    for (let pk of pks) {
+        EcArray.setAdd(readers, pk.toPem());
+    }
+    this.subject = (await EcEncryptedValue.encryptValue(
+        JSON.stringify(pks.map((pk) => pk.toPem())),
+        this.id,
+        owners,
+        readers
+    ));
+}
+let getSubjects = global.getSubjects = async function () {
+    if (this.subject == null) return null;
+    var v = new EcEncryptedValue();
+    v.copyFrom(this.subject);
+    var codebook = Assertion.getCodebook(this);
+    var decryptedString;
+    if (codebook != null)
+        decryptedString = await v
+            .decryptIntoStringUsingSecret(codebook.subject)
+            .catch((error) => null);
+    else {
+        decryptedString = await v
+            .decryptIntoString(null, null, eim)
+            .catch((error) => null);
+    }
+    if (decryptedString == null) return null;
+    if (decryptedString.startsWith("["))
+        return JSON.parse(decryptedString).map((str) => EcPk.fromPem(str));
+    return EcPk.fromPem(decryptedString);
+}
+
 let defaultAuthority = null;
-var xapiStatement = async function (s,accm) {
+var xapiStatement = async function (s, accm) {
     if (s == null) return;
     if (EcArray.isArray(s))
-        for (let st of s)
-            await xapiStatement(st,accm);
+        await Promise.map(s, async (st) => {
+            await xapiStatement(st, accm);
+        }, { concurrency: 1 });
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
     var negative = false;
