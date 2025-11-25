@@ -3,29 +3,29 @@ let path = require('path');
 let util = require(path.resolve(glob.sync( 'src/main/server/profile/util.js' )[0]));
 
 //Each of these is being called such that using 'this' refers to the profileProcessor.
-let fetchAssertions = async function(){
-    let assertions = [];
-    let competencies = this.g.verticies.map(x=>x.shortId());
-    while (competencies.length > 0) {
-        let first = true;
-        let bigSearchString = "";
-        for (const competency of competencies.splice(0, 100)) {
-            if (!first)
-                bigSearchString += " OR ";
-            first = false;
-            bigSearchString += `competency:"${competency}"`;
-        }
-        let someAssertions = await EcAssertion.search(
-        repo,
-            `"${this.pem}" AND (${bigSearchString})`,
-            null,
-            null,
-            { size: 10000 }
-        )
-        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Searching for assertions, ${someAssertions.length} found.`);
-        assertions.push(...someAssertions.filter(x=>x));
+let fetchAssertions = async function () {
+    let params = this.params;
+    console.log("Params:" + JSON.stringify(params))
+    let chunks = [];
+    let comps = this.g.getVertices().map(x => x.shortId());
+    while (comps.length > 0) {
+        chunks.push(comps.splice(0, 10));
     }
-
+    let assertions = (await Promise.map(chunks, (async cs => {
+        let searchString = "";
+        for (let i = 0; i < cs.length; i++) {
+            if (i > 0)
+                searchString += " OR ";
+            searchString += "competency:\"" + cs[i] + "\"";
+        }
+        searchString = `"${this.pem}" AND (${searchString})`;
+        return await repo.searchWithParams(searchString, {
+            size: 10000,
+            index_hint: "*assertion"
+        });
+    }), { concurrency: 5 })).flat();
+    assertions = assertions.map(x => new EcAssertion().copyFrom(x));
+        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Searching for assertions, ${assertions.length} found.`);
             let prevCount = assertions.length;
     assertions = await Promise.all(assertions.map(async (a) => {
                 let subjectPk = await a.getSubject();
