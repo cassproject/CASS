@@ -148,9 +148,8 @@ var getAlignedCompetencies = async function (objectId) {
     var results = [];
     if (alignedCompetenciesCache[objectId] != null)
         return alignedCompetenciesCache[objectId];
-    let creativeWorks = await loopback.repositorySearch(global.repo,"@type:CreativeWork AND url:\"" + objectId + "\"",{});
-    for (let creativeWork of creativeWorks)
-    {
+    let creativeWorks = await loopback.repositorySearch(global.repo, "@type:CreativeWork AND url:\"" + objectId + "\"", {});
+    for (let creativeWork of creativeWorks) {
         if (creativeWork.educationalAlignment == null) continue;
         if (!EcArray.isArray(creativeWork.educationalAlignment))
             creativeWork.educationalAlignment = [creativeWork.educationalAlignment];
@@ -237,87 +236,84 @@ var xapiStatement = async function (s, accm) {
     } else if (s.result.response == "Fail") {
         var scaled = 1.0;
         negative = true;
+    } else if (s.result.response == "At Expectation") {
+        var scaled = 1.0;
+        negative = false;
+    } else if (s.result.response == "Above Expectation") {
+        var scaled = 1.0;
+        negative = false;
+    } else if (s.result.response == "Below Expectation") {
+        var scaled = 1.0;
+        negative = true;
     } else
         return;
 
-    var actorPk = await pkFromMbox.call(this, s.actor);
-    if (actorPk == null)
-    {
-        var ppk = await EcPpk.generateKey();
-        var person = new schema.Person();
-        person.assignId(global.repo.selectedServer,ppk.toPk().fingerprint());
-        person.addOwner(ppk.toPk());
-		var mb = getMbox.call(this, s.actor).replace("mailto:","");
-        if (mb.indexOf("@") == -1)
-            person.username = mb;
-        else
-            person.email = mb;
-        person.name = s.actor.name;
-        await EcRepository.save(person, (msg) => {
-            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson", msg);
-        }, (error) => {
-            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSavePerson", error);
+    var actorPks = await pkFromMbox.call(this, s.actor);
+    if (process.env.XAPI_DEBUG) console.log("Actor Pks: " + actorPks.length);
+    if (actorPks.length == 0) return;
+    var authorityPks = await pkFromMbox.call(this, s.authority);
+    EcArray.setAdd(authorityPks, EcPpk.fromPem(xapiMePpk).toPk());
+    if (process.env.XAPI_DEBUG) console.log("Authority Pks: " + authorityPks.length);
+    if (authorityPks.length == 0) return;
+
+    if (s.object == null) return;
+
+    let alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id);
+    if (s?.object?.id != null && s?.object?.id.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.id), null, null, repo, xapiIm)) != null)
+        alignedCompetencies.push({
+            targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s.object.id)
         });
-        actorPk = ppk.toPk();
-    }
-    if (actorPk == null) return;
-    var authorityPk = await pkFromMbox.call(this, s.authority);
-    if (authorityPk == null)
-    {
-        let ppk = EcPpk.fromPem(xapiMePpk);
-        var person = new schema.Person();
-        person.assignId(global.repo.selectedServer,ppk.toPk().fingerprint());
-        person.addOwner(ppk.toPk());
-        var mb = getMbox.call(this, s.authority);
-        if (mb != null) mb = mb.replace("mailto:","");
-        if (mb == null) 
-        {
-            mb = "Some Authority";
-            if (defaultAuthority == null)
-            {
-                defaultAuthority = person;
-                if (mb.indexOf("@") == -1)
-                    person.username = mb;
-                else
-                    person.email = mb;
-                person.name = (s.authority != null ? s.authority.name : null) || mb;
-                await EcRepository.save(person, (msg) => {
-                    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson", msg);
-                }, (error) => {
-                    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSavePerson", error);
-                });
-            }
-        }
-        else
-        {
-            if (mb.indexOf("@") == -1)
-                person.username = mb;
-            else
-                person.email = mb;
-            person.name = (s.authority != null ? s.authority.name : null) || mb;
-            await EcRepository.save(person, (msg) => {
-                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson", msg);
-            }, (error) => {
-                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSavePerson", error);
-            });
-        }
-        authorityPk = ppk.toPk();
-    }
-    if (authorityPk == null) 
-        return;
-    if (s.object == null) 
-        return;
-    var alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id);
-    var alreadyAligned = {};
-    for (var i = 0; i < alignedCompetencies.length; i++) {
-        var a = new EcAssertion();
-        a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id+alignedCompetencies[i].targetUrl));
+    if (s?.object?.definition?.moreInfo != null && s?.object?.definition?.moreInfo.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo))) != null)
+        alignedCompetencies.push({
+            targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo)
+        });
+    if (process.env.XAPI_DEBUG) console.log("Aligned Competencies: " + alignedCompetencies.length);
+    let alreadyAligned = {};
+    for (let i = 0; i < alignedCompetencies.length; i++) {
+        let a = new EcAssertion();
+        a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id + alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
-        a.addOwner(authorityPk);
-        a.addOwner(EcPk.fromPem(skyrepoAdminPk()));
-        a.addReader(actorPk);
-        await a.setSubject(actorPk);
-        await a.setAgent(authorityPk);
+        for (let authorityPk of authorityPks)
+            await a.addOwner(authorityPk);
+        for (let actorPk of actorPks) {
+            await a.addReader(actorPk);
+    }
+        if (actorPks.length > 1) {
+            let groupHash = actorPks.join("");
+            let groupMd5 = EcCrypto.md5(groupHash);
+            let groupPerson = personCache[groupMd5] || (await EcPerson.search(repo, `identifier:"${groupMd5}"`, null, null, repo, xapiIm))[0];
+            if (groupPerson == null) {
+                var ppk = await EcPpk.generateKey();
+                groupPerson = new schema.Person();
+                groupPerson.assignId(global.repo.selectedServer, ppk.toPk().fingerprint());
+                groupPerson.identifier = groupMd5;
+                await groupPerson.addOwner(ppk.toPk());
+                await groupPerson.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
+                let theNames = (await Promise.all(actorPks.map((pk) => EcPerson.getByPk(repo, pk, null, null, xapiIm))));
+                if (process.env.XAPI_DEBUG) console.log(theNames);
+                groupPerson.name = theNames.map(x => x.name).filter(x => x).join(", ");
+                if (groupPerson.name == "")
+                    groupPerson.name = null;
+                for (let authorityPk of authorityPks)
+                    await groupPerson.addOwner(authorityPk);
+                // for (let actorPk of actorPks)
+                //     await groupPerson.addReader(actorPk);
+
+                await repo.saveTo(groupPerson, null, null, xapiIm);
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson");
+            }
+            if (groupPerson.name == null) {
+                await repo.saveTo(groupPerson, null, null, xapiIm);
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson");
+            }
+            personCache[groupMd5] = groupPerson;
+            actorPks = [EcPk.fromPem(groupPerson.owner[0])];
+            if (process.env.XAPI_DEBUG) console.log(groupPerson.shortId());
+            await a.addReader(EcPk.fromPem(groupPerson.owner[0]));
+        }
+        global.events.person.assertionAbout.next(actorPks[0]);
+        await a.setSubject(actorPks[0]);
+        await a.setAgent(authorityPks[0]);
         a.competency = alignedCompetencies[i].targetUrl;
         a.framework = alignedCompetencies[i].educationalFramework;
         if (alreadyAligned[a.competency + a.framework] == true)
@@ -327,51 +323,77 @@ var xapiStatement = async function (s, accm) {
         await a.setAssertionDate(new Date(s.timestamp).getTime() || new Date().getTime());
         await a.setNegative(negative);
         a.confidence = scaled;
+        a.registration = s.context?.registration;
         if (accm != null)
             accm.push(a);
         else
             EcRepository.save(a, (msg) => {
-                global.person?.assertionAbout.next(actorPk);
+                global.events.person.assertionAbout.next(actorPks);
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSaveAssertion", msg);
             }, (error) => {
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiSaveAssertion", error);
-            });
+            }, repo, xapiIm);
     }
 }
 
 var xapiStatementListener = async function () {
     let accm = [];
+    if (process.env.XAPI_DEBUG) console.log(this.params,this.dataStreams,this?.ctx?.req?.rawHeaders,this?.ctx?.req?.headers);
     for (let val in this.dataStreams)
-        await xapiStatement(this.dataStreams[val],accm);
-    await global.repo.multiput(accm);
+    {
+        console.log(val,this.dataStreams[val]);
+        await xapiStatement(this.dataStreams[val], accm);
+    }
+    if (accm.length > 0)
+    {
+        console.log("Saving " + accm.length + " xAPI statements as assertions.");
+        await global.repo.multiput(accm, null, null, xapiIm);
+    }
 }
 
 var ident = new EcIdentity();
 ident.displayName = "xAPI Adapter";
 ident.ppk = EcPpk.fromPem(xapiMePpk);
+let xapiIm = new EcIdentityManager();
 EcIdentityManager.default.addIdentity(ident);
+xapiIm.addIdentity(ident);
 xapiKey = function () {
     return ident.ppk.toPk().toPem();
 }
 
 
-var xapiLoopEach = async function(since, config, sinceFilePath) {
-    try
-    {
+var xapiLoopEach = async function (since, config, sinceFilePath) {
+    if (process.env.XAPI_DEBUG) console.log(since,config,sinceFilePath);
+    try {
         var results = await xapiEndpoint.call(this, null, since, config);
-    } catch (ex) { 
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'xAPILoopEach', ex);
-        return; 
-    }
+    } catch (ex) { console.log(ex); return; }
+    if (process.env.XAPI_DEBUG) console.log(results);
+    let accm = [];
     while (results != null && results.statements != null && results.statements.length > 0) {
+        let lastRequested = new Date().toISOString();
         for (var i = 0; i < results.statements.length; i++) {
-            await xapiStatement.call(this, results.statements[i]);
+            await xapiStatement.call(this, results.statements[i],accm);
         }
-        fileSave(new Date().toISOString(), sinceFilePath);
+        fileSave(lastRequested, sinceFilePath);
         if (results.more != null && results.more != "")
             results = await xapiEndpoint.call(this, results.more, null, config);
         else
             results = {};
+
+        if (accm > 500)
+        {
+            if (accm.length > 0)
+            {
+                console.log("Saving " + accm.length + " xAPI statements as assertions.");
+                await global.repo.multiput(accm, null, null, xapiIm);
+            }
+            accm = [];
+        }
+    }
+    if (accm.length > 0)
+    {
+        console.log("Saving " + accm.length + " xAPI statements as assertions.");
+        await global.repo.multiput(accm, null, null, xapiIm);
     }
 }
 
