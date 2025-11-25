@@ -23,14 +23,20 @@ var xapiConfigAutoExecute = xapiConfig;
 var xapiEndpoint = async function (more, since, config) {
     var endpoint;
     if (config) {
-        endpoint = config.xapiEndpoint + "statements?format=exact&limit=0";
+        endpoint = config.xapiEndpoint + "statements?format=exact&limit=" + (process.env.XAPI_STATEMENT_COUNT || 10);
     } else {
         endpoint = xapiConfig.call(this).xapiEndpoint + "statements?format=exact&limit=0";
+        if (!xapiConfig.call(this).enabled)
+            return;
     }
     if (since != null)
         endpoint += "&since=" + since;
     if (more != null)
-        endpoint += more;
+        if (config) {
+            endpoint = config.xapiHostname + more;
+        } else {
+            endpoint = xapiConfig.call(this).xapiHostname + more;
+        }
     var headers = {};
     if (config) {
         headers["Authorization"] = config.xapiAuth;
@@ -38,44 +44,74 @@ var xapiEndpoint = async function (more, since, config) {
         headers["Authorization"] = xapiConfig.call(this).xapiAuth;
     }
     headers["X-Experience-API-Version"] = "1.0.1";
-    return await httpGet(endpoint,false, headers);
+    if (process.env.XAPI_DEBUG) console.log(endpoint,headers);
+    let results = await fetch(endpoint, { method: "GET", headers: headers });
+    results = await results.json();
+    if (process.env.XAPI_DEBUG) console.log(results);
+    return results;
 }
 
 var getMbox = function (agentObject) {
     if (agentObject == null)
-        return null;
+        return [];
     if (EcArray.isArray(agentObject))
         agentObject = agentObject[0];
+    if (agentObject.objectType == "Group") {
+        let agents = [];
+        for (let agent of agentObject.member)
+            agents = agents.concat(getMbox(agent));
+        return agents;
+    }
     var email = agentObject.mbox;
     if (email != null)
-        return email;
+        return [{ mbox: email, name: agentObject.name }];
     if (agentObject.account != null)
-        return agentObject.account.name;
-    return null;
+        return [{ mbox: agentObject.account.name, name: agentObject.name }];
+    return [];
 }
 
 let personCache = {};
 setInterval(function () {
     personCache = {};
 }, 1000 * 60 * 60);
-var personFromEmail = async function (mbox) {
+var personFromEmail = async function (mbox, name) {
     if (mbox == null) return null;
     if (personCache[mbox] != null) return personCache[mbox];
     var person = null;
     mbox = mbox.replace("mailto:", "");
-    if (mbox.indexOf("@") != -1)
-    {
+    if (mbox.indexOf("@") != -1) {
         let people = null;
-        people = await loopback.repositorySearch(global.repo,"@type:Person AND email:\"" + mbox + "\"",{});
+        people = await loopback.repositorySearch(global.repo, "@type:Person AND email:\"" + mbox + "\"", {});
         if (people != null) {
             if (people.length >= 1)
                 person = people[0];
-        }
+            else if (people.length == 0) {
+                var ppk = await EcPpk.generateKey();
+                person = new schema.Person();
+                person.assignId(repo.selectedServer, ppk.toPk().fingerprint());
+                person.addOwner(ppk.toPk());
+                person.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
+                var mb = mbox.replace("mailto:", "");
+                if (mb.indexOf("@") == -1) {
+                    person.username = mb;
+                    person.identifier = mb;
     }
     else
-    {
+                    person.email = mb;
+                person.name = name;
+                await repo.saveTo(person, null, null, xapiIm);
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson");
+            }
+            if (person.name == null) {
+                person.name = name;
+                await repo.saveTo(person, null, null, xapiIm);
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson");
+            }
+        }
+    }
+    else {
         let people = null;
-        people = await loopback.repositorySearch(global.repo,"@type:Person AND (identifier:\"" + mbox + "\" OR username:\"" + mbox + "\")",{});
+        people = await loopback.repositorySearch(global.repo, "@type:Person AND (identifier:\"" + mbox + "\" OR username:\"" + mbox + "\")", {});
         if (people != null) {
             if (people.length >= 1)
                 person = people[0];
