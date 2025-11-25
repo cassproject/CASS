@@ -402,8 +402,7 @@ var xapiLoop = async function () {
     let tokenSet = null;
     if (process.env.OIDC_CLIENT_ENDPOINT != null) {
         const oidcIssuer = await openid.Issuer.discover(process.env.OIDC_CLIENT_ENDPOINT);
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'xAPILoop', 'Discovered issuer %s %O', oidcIssuer.issuer, oidcIssuer.metadata);
-
+        if (process.env.XAPI_DEBUG) console.log('Discovered issuer %s %O', oidcIssuer.issuer, oidcIssuer.metadata);
         const client = new oidcIssuer.Client({
             client_id: process.env.OIDC_CLIENT_CLIENT_ID,
             client_secret: process.env.OIDC_CLIENT_CLIENT_SECRET,
@@ -417,8 +416,7 @@ var xapiLoop = async function () {
             resource: 'urn:example:third-party-api',
             grant_type: 'client_credentials'
         });
-
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'xAPIOIDCAuth', tokenSet);
+        if (process.env.XAPI_DEBUG) console.log(tokenSet);
     }
 
     var ident = new EcIdentity();
@@ -448,6 +446,22 @@ var xapiLoop = async function () {
     }
 
 }
+
+const rxjs = require('rxjs');
+events.server.xapiTick = new rxjs.interval(5000);
+let working = false;
+events.server.xapiTick.subscribe(async () => {
+    if (working) return;
+    try {
+        working = true;
+        await xapiLoop.call(this);
+    } catch (ex) {
+        console.error("Error in xAPI loop: ", ex);
+    }
+    finally{
+        working = false;
+    }
+});
 
 if (!global.disabledAdapters['xapi']) {
     bindWebService("/xapi/tick", xapiLoop);
