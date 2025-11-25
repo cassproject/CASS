@@ -107,10 +107,7 @@ let invalidateProfileByAssertion = async (data) => {
         EcArray.removeDuplicates(subjects);
         for (let subject of subjects) {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileControllerInvalidating', "Deleting profiles associated with " + EcPk.fromPem(subject).fingerprint());
-            await global.ephemeral.deleteWith(`|${EcPk.fromPem(subject).fingerprint()}|`);
-            keysIndex = 0;
-            personIndex = 0;
-            autoCalculatePeople();
+            global.ephemeral.deleteWith(`|${EcPk.fromPem(subject).fingerprint()}|`);
         }
     }
 }
