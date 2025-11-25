@@ -146,8 +146,11 @@ let processAssertions = async function(){
                         subject: this.person.name,
                         agent: agentPerson.name,
                         competency: (await EcCompetency.get(a.competency)).getName(),
+                        condition: a.condition,
                         assertionDate,
-                        expirationDate
+                        expirationDate,
+                        id: a.shortId(),
+                        registration: a.registration,
                     };
                     if (evidence != null) assertionOutput.evidence = evidence;
 
@@ -168,9 +171,9 @@ let processAssertions = async function(){
         }
     });
 }
-let postProcessStart = async function(vertices,topLevelVertices, inEdges){
+let postProcessStart = async function (vertices, topLevelVertices, inEdges) {
 }  
-let postProcessEachVertex = function(vertex,vertices,topLevelVertices,inEdges){
+let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdges) {
     if (inEdges.equivalent == null)
         inEdges.equivalent = {};
     if (inEdges.narrows == null)
@@ -472,7 +475,7 @@ let postProcessProfileAfter = function(o, profile){
     if (o.state != null)
         if (o.state.isGoal || o.state.requiredForGoalBottomUp || o.state.leadsToGoalTopDown) {
             for (let o2 of o.children) {
-                this.insertTimelineHelper(o2, profile);
+                postProcessProfileAfter.call(this, o2, profile);
             }
         }
 }
