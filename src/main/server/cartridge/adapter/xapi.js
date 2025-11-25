@@ -10,8 +10,12 @@ var xapiConfig = function () {
             xapiHostname: "",
             xapiAuth: "",
             enabled: false
-        }),xapiConfigFilePath);
+        }), xapiConfigFilePath);
     this.xapiConfig = JSON.parse(fileToString(fileLoad(xapiConfigFilePath)));
+    this.xapiConfig.xapiEndpoint = process.env.XAPI_ENDPOINT || this.xapiConfig.xapiEndpoint;
+    this.xapiConfig.xapiAuth = process.env.XAPI_AUTH || this.xapiConfig.xapiAuth;
+    this.xapiConfig.enabled = (process.env.XAPI_ENABLED ? true : false) || this.xapiConfig.xapiEnabled;
+    if (process.env.XAPI_DEBUG) console.log(this.xapiConfig);
     return this.xapiConfig;
 }
 var xapiConfigAutoExecute = xapiConfig;
