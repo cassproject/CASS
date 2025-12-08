@@ -279,7 +279,7 @@ var xapiStatement = async function (s, accm) {
             await a.addReader(actorPk);
     }
         if (actorPks.length > 1) {
-            let groupHash = actorPks.join("");
+            let groupHash = actorPks.map(x => x.toPem()).sort().join("");
             let groupMd5 = EcCrypto.md5(groupHash);
             let groupPerson = personCache[groupMd5] || (await EcPerson.search(repo, `identifier:"${groupMd5}"`, null, null, repo, xapiIm))[0];
             if (groupPerson == null) {
