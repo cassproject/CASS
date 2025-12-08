@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Experimental: 1.6.8 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
+Experimental: 1.6.9 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
 Release Candidate: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 
 [High level documentation](https://docs.cassproject.org)  
@@ -100,7 +100,7 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * In the command window running testWithCoverage, `ctrl+c`. Record the output of the code coverage for the tests in codeCoverage.md.
  * Update CHANGELOG.md
  * Update README.md
- * Run `npm run buildRun:standaloneTest` to ensure the container can build.
+ * Run `npm run buildRun:standalone` to ensure the container can build.
  * `docker scout cves cass-test > scan-standalone.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
  * Run `docker-compose up --build` to ensure the container can build.

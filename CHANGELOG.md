@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.6.9
+* Updated libraries.
+* Updated editor.
+* Profile calculator: Added disabled version of condition detection scheme for xAPI statements
+* xAPI Adapter: Can now override xAPI adapter connect configurations using environment variables.
+* xAPI Adapter: Improved pagination and now use fetch API for xAPI fetching.
+* xAPI Adapter: Can now parse xAPI based group performance and turn those into assertions.
+* xAPI Adapter: Added more robust xAPI statement parsing and log messages.
+* xAPI Adapter: Tied to reactive profile recalculation elements to ensure profiles are recalculated when xAPI statements about a person are received.
+* xAPI Adapter: Optimized default coprocessor's default assertion fetch methods.
+* xAPI Adapter: Reactive profile cache invalidation no longer immediately restarts profile calculation.
+
 ## 1.6.8
 * Updated libraries.
 * Updated editor.

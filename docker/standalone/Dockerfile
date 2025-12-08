@@ -57,4 +57,4 @@ RUN chown -R elasticsearch:root /logs
 
 ENV HTTP2=false
 USER elasticsearch:root
-ENTRYPOINT (cd CASS && npm run run:standalone && npm run logs) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT (cd CASS && node --force-fips src/main/server.js) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh
