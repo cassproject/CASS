@@ -7,18 +7,14 @@ const dns = require('dns').promises;
 // LEVR shims
 if (global.fileLoad === undefined) {
     global.fileLoad = function (filepath) {
-        if (nodePath.normalize(filepath).replaceAll('\\', '/') !== filepath.replaceAll('\\', '/')) {
-            throw new Error('Path must be normalized: ' + filepath + ' (was ' + nodePath.normalize(filepath) + ')');
-        }
+        global.pathCheck(filepath);
         return fs.readFileSync(filepath);
     };
 };
 
 if (global.fileExists === undefined) {
     global.fileExists = function (filepath) {
-        if (nodePath.normalize(filepath).replaceAll('\\', '/') !== filepath.replaceAll('\\', '/')) {
-            throw new Error('Path must be normalized: ' + filepath + ' (was ' + nodePath.normalize(filepath) + ')');
-        }
+        global.pathCheck(filepath);
         return fs.existsSync(filepath);
     };
 };
@@ -41,9 +37,7 @@ try {
 
 if (global.fileSave === undefined) {
     global.fileSave = function (text, filepath) {
-        if (nodePath.normalize(filepath).replaceAll('\\', '/') !== filepath.replaceAll('\\', '/')) {
-            throw new Error('Path must be normalized: ' + filepath);
-        }
+        global.pathCheck(filepath);
         fs.writeFileSync(filepath, text);
     };
 };

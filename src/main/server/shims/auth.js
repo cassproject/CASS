@@ -66,9 +66,7 @@ let getPk = async(identifier) => {
             return myKey;
         });
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairDeleted', "Deleting old keypair file.");
-        if (nodePath.normalize(identifier).replaceAll('\\', '/') !== identifier.replaceAll('\\', '/')) {
-            throw new Error('Identifier includes non-normalized characters: ' + identifier);
-        }
+        global.pathCheck(identifier);
         fs.unlinkSync("etc/keys/"+identifier);
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";

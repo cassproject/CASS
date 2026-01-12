@@ -95,8 +95,8 @@ var personFromEmail = async function (mbox, name) {
                 if (mb.indexOf("@") == -1) {
                     person.username = mb;
                     person.identifier = mb;
-    }
-    else
+            }
+            else
                     person.email = mb;
                 person.name = name;
                 await repo.saveTo(person, null, null, xapiIm);

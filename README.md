@@ -1,8 +1,8 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Experimental: 1.6.9 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
-Release Candidate: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
+Mainline: 1.6.10 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
+Supported: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 
 [High level documentation](https://docs.cassproject.org)  
 [Developer documentation](https://devs.cassproject.org)
@@ -87,7 +87,7 @@ Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWind
  To get the process to restart when your linux machine restarts, run `npm run pm2startup`, run the command the process tells you to, and run `npm run pm2save`. For Windows, an additional library is needed to configure this.
 
 ## A note on Elasticsearch and 1.5
-Due to the performance improvements in the 1.5 version of CaSS, we highly recommend using Elasticsearch 7 with it as it's better configured to handle the load than previous versions.
+Due to the performance improvements in the 1.5 version of CaSS, we highly recommend using Elasticsearch 9 with it as it's better configured to handle the load than previous versions.
 
 ## Release Process
  * `npm upgrade --save` Review dependencies, autocomplete version numbers

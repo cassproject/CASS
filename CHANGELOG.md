@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.6.10
+* Updated libraries.
+* (SECURITY) Added path traversal attack detection.
+
 ## 1.6.9
 * Updated libraries.
 * Updated editor.

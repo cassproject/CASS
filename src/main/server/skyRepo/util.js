@@ -18,10 +18,25 @@
  * --END_LICENSE--
  */
 const fs = require('fs');
+const nodePath = require('path');
+
+let cwdAtStart = process.cwd();
+global.pathCheck = function (p) {
+    //We only want the path separator replaced. Do not use path.normalize as it will resolve path traversal elements.
+    p = p.replaceAll(nodePath.sep == '\\' ? '/' : "\\", nodePath.sep);
+    if (nodePath.normalize("foo/" + p) !== nodePath.normalize("foo/") + p) {
+        throw new Error('Path must be normalized, and not be an absolute path: ' + p + ' (normalized to ' + nodePath.normalize(p) + ')');
+    }
+    if (!nodePath.resolve(p).startsWith(cwdAtStart)) {
+        throw new Error('Path must be within the application directory: ' + p);
+    }
+};
 
 global.keyFor = function (filename) {
     // Check environment variable first
     if (process.env[filename]) return process.env[filename];
+
+    global.pathCheck(filename);
 
     // Build possible file paths
     const fileNames = [

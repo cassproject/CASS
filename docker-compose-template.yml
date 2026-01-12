@@ -1,7 +1,7 @@
 version: '3'
 services:
   cass:
-    image: cassproject/cass:node-1.6.9
+    image: cassproject/cass:node-1.6.10
     container_name: cass
     networks:
       - esnet
@@ -28,7 +28,7 @@ services:
     depends_on:
       - elasticsearch
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.3
     container_name: elasticsearch
     networks:
       - esnet
