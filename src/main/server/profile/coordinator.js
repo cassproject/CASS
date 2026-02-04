@@ -100,6 +100,30 @@ let profileCalculator = async function () {
     }
 }
 
+/**
+ * @openapi
+ * /api/profile/latest:
+ *   get:
+ *     tags:
+ *       - Profile
+ *     summary: Computes the current state of the learner given a framework.
+ *     parameters:
+ *       - $ref: '#/components/parameters/frameworkId'
+ *       - $ref: '#/components/parameters/subject'
+ *       - $ref: '#/components/parameters/flushCache'
+ *       - $ref: '#/components/parameters/cache'
+ *       - $ref: '#/components/parameters/targetDateTime'
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               description: Ping response
+ *               additionalProperties: false
+ */
+
 if (!global.disabledAdapters['profile']) {
     bindWebService("/profile/latest", global.calculateProfile = profileCalculator);
 }

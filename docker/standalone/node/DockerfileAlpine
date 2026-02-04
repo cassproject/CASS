@@ -5,20 +5,29 @@ FROM --platform=linux/amd64 node:$nodeVersion-alpine$alpineVersion
 RUN apk update && apk upgrade --no-cache
 
 WORKDIR /
-ENV OPENSSL_VERSION=3.1.2
+ENV OPENSSL_VALIDATED_VERSION=3.1.2
+ENV OPENSSL_VERSION=3.5.5
 
 RUN apk add --no-cache --virtual .build-deps make gcc libgcc musl-dev linux-headers perl vim \
+    && wget https://www.openssl.org/source/openssl-${OPENSSL_VALIDATED_VERSION}.tar.gz \
+    && tar -xf openssl-${OPENSSL_VALIDATED_VERSION}.tar.gz \
+    && cd openssl-${OPENSSL_VALIDATED_VERSION} \
+    && ./Configure --prefix=/usr/local shared enable-fips enable-ec_nistp_64_gcc_128 \
+    && make -j8 > make.log \
+    && cd .. \
     && wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
     && tar -xf openssl-${OPENSSL_VERSION}.tar.gz \
     && cd openssl-${OPENSSL_VERSION} \
     && ./Configure --prefix=/usr/local shared enable-fips enable-ec_nistp_64_gcc_128 \
     && make -j8 > make.log \
+    && cp ../openssl-${OPENSSL_VALIDATED_VERSION}/providers/fips.so providers/. \
+    && cp ../openssl-${OPENSSL_VALIDATED_VERSION}/providers/fipsmodule.cnf providers/. \
     && make install > makeinstall.log \
-    && make install_ssldirs > makeinstallssldirs.log \
-    && make install_fips > makeinstallfips.log \
+    && cd .. \
+    && cd openssl-${OPENSSL_VERSION} \
+    && ./util/wrap.pl -fips apps/openssl list -provider-path providers -provider fips -providers \
     && apk del .build-deps make gcc libgcc musl-dev linux-headers perl vim \
-    && cd .. && rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION} \
-    && apk upgrade --no-cache -U
+    && cd .. && rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION} openssl-${OPENSSL_VALIDATED_VERSION}.tar.gz openssl-${OPENSSL_VALIDATED_VERSION}
 
 RUN echo "nodejs_conf = nodejs_init" >> /etc/ssl/nodejs.cnf && \
 echo ".include /usr/local/ssl/fipsmodule.cnf" >> /etc/ssl/nodejs.cnf && \

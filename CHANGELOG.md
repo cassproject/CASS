@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.6.11
+* Updated libraries.
+* Hybrid alpine OpenSSL using FIPS compliant base with FIPS validated FIPS module.
+* Added profile openapi spec.
+
 ## 1.6.10
 * Updated libraries.
 * (SECURITY) Added path traversal attack detection.

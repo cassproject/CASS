@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.18.2
+FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.19.10
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
@@ -38,12 +38,11 @@ COPY --chown=elasticsearch LICENSE CASS/LICENSE
 USER root
 RUN echo '-Xms2g' >> config/jvm.options
 RUN echo '-Xmx2g' >> config/jvm.options
-ENV bootstrap.memory_lock=true
-ENV discovery.type=single-node
-ENV xpack.security.enabled=false
-ENV xpack.security.enrollment.enabled=false
-ENV xpack.security.http.ssl.enabled=false
-ENV xpack.security.transport.ssl.enabled=false
+RUN echo 'xpack.security.enabled: false' >> config/elasticsearch.yml
+RUN echo 'xpack.security.enrollment.enabled: false' >> config/elasticsearch.yml
+RUN echo 'xpack.security.http.ssl.enabled: false' >> config/elasticsearch.yml
+RUN echo 'xpack.security.transport.ssl.enabled: false' >> config/elasticsearch.yml
+RUN echo 'discovery.type: single-node' >> config/elasticsearch.yml
 EXPOSE 80
 VOLUME ["/usr/share/elasticsearch/data","/usr/share/elasticsearch/CASS/etc","/usr/share/elasticsearch/CASS/logs"]
 

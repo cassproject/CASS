@@ -18,6 +18,56 @@
             }
         },
         "parameters": {
+            "frameworkId": {
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "frameworkId",
+                "allowReserved": true,
+                "description": "Identifier for the framework used in the profile calculation.",
+                "example": "https://cass.asid.eduworks.com/api/data/schema.cassproject.org.0.4.Framework/0caa8f8c-139f-4a6f-95b2-e8327fa99f62"
+            },
+            "subject": {
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "name": "subject",
+                "allowReserved": true,
+                "description": "Identifier for the subject (person) whose profile is being calculated.",
+                "example": "https://cass.asid.eduworks.com/api/data/schema.org.Person/146ea4b8eece12658c2d5c5255ca95fe"
+            },
+            "flushCache": {
+                "in": "query",
+                "schema": {
+                    "type": "boolean"
+                },
+                "name": "flushCache",
+                "required": false,
+                "description": "If true, forces recalculation of the profile rather than using a cached version.",
+                "example": true
+            },
+            "cache": {
+                "in": "query",
+                "schema": {
+                    "type": "boolean"
+                },
+                "name": "cache",
+                "required": false,
+                "description": "If true, allows the use of cached profile data to speed up response time.",
+                "example": true
+            },
+            "targetDateTime": {
+                "in": "query",
+                "schema": {
+                    "type": "integer"
+                },
+                "name": "targetDateTime",
+                "required": false,
+                "description": "A target time (in UTC milliseconds) to calculate the profile over by filtering assertions",
+                "example": 1675901084853
+            },
             "searchQuery": {
                 "in": "query",
                 "schema": {
