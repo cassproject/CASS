@@ -46,18 +46,21 @@ ENV OPENSSL_MODULES=/usr/local/lib64/ossl-modules
 RUN openssl version -d -a
 RUN node --force-fips -e "console.log('Node.js is running with FIPS:', process.versions.openssl, process.versions.node);"
 
+RUN npm upgrade --global --production --omit=dev
+
+USER 1000:1000
 WORKDIR /app
-COPY package.json ./
+RUN chown 1000:1000 . -R
+COPY --chown=1000:1000 package.json ./
 
 RUN npm update && \
 npm install --production --omit=dev && \
 npm upgrade --production --omit=dev --save && \
-npm upgrade --global --production --omit=dev && \
 npm audit --production --omit=dev --audit-level=high --fix && \
-chown root:root node_modules -R
+chown 1000:1000 node_modules -R
 
-COPY src src
-COPY ca.crt cass.crt cass.key copyright.txt ./
+COPY --chown=1000:1000 src src
+COPY --chown=1000:1000 ca.crt cass.crt cass.key copyright.txt ./
 
 EXPOSE 80
 ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]

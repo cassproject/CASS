@@ -1,5 +1,4 @@
 FROM --platform=linux/amd64 node:24-slim
-WORKDIR /app
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt update && \ 
 apt dist-upgrade -y && \
 apt install -qqy build-essential checkinstall clang curl libssl-dev wget zlib1g-dev && \
@@ -31,17 +30,21 @@ echo "activate = 1" >> /usr/local/ssl/nodejs.cnf
 ENV OPENSSL_CONF=/usr/local/ssl/nodejs.cnf
 ENV OPENSSL_MODULES=/usr/local/ssl/lib64/ossl-modules
 
-COPY package.json ./
+RUN npm upgrade --global --production --omit=dev
+
+USER 1000:1000
+WORKDIR /app
+RUN chown 1000:1000 . -R
+COPY --chown=1000:1000 package.json ./
 
 RUN npm update && \
 npm install --production --omit=dev && \
 npm upgrade --production --omit=dev --save && \
-npm upgrade --global --production --omit=dev && \
 npm audit --production --omit=dev --audit-level=high --fix && \
-chown root:root node_modules -R
+chown 1000:1000 node_modules -R
 
-COPY src src
-COPY ca.crt cass.crt cass.key copyright.txt ./
+COPY --chown=1000:1000 src src
+COPY --chown=1000:1000 ca.crt cass.crt cass.key copyright.txt ./
 
 EXPOSE 80
 ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]
