@@ -4,6 +4,7 @@
 * Updated libraries.
 * Hybrid alpine OpenSSL using FIPS compliant base with FIPS validated FIPS module.
 * Added profile openapi spec.
+* ENVIRONMENT BREAKING CHANGE - The container builds for CaSS now run as user 1000, and all downstream Dockerfiles must ensure user 1000 can perform all relevant operations (binding network ports, modifying files, etc.)
 
 ## 1.6.10
 * Updated libraries.
