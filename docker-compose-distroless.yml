@@ -1,0 +1,134 @@
+version: '3'
+services:
+  cass:
+    build:
+      context: .
+      dockerfile: docker/standalone/node/DockerfileDistroless
+    container_name: cass
+    networks:
+      - esnet
+    ports:
+      - 80:80
+    environment:
+      - CASS_LOOPBACK=http://cass/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - PORT=80
+      # - CASS_OIDC_ENABLED=true # turns on open id login
+      # - CASS_OIDC_ISSUER_BASE_URL=http://keycloak:8080/auth/realms/master/ # point at your keycloak realm
+      # - CASS_OIDC_CLIENT_ID=cass # name of your keycloak client
+      # - CASS_OIDC_SECRET=M2nn59wDxkwUZ9SVEVAJADYnUeKP78vU # secret from your keycloak client
+      # - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
+      # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
+      # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
+      # - CASS_BANNER_BACKGROUND_COLOR=yellow # valid css color value for background color of banner
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - etc:/app/etc
+    depends_on:
+      - elasticsearch-cass
+  cassl:
+    build:
+      context: .
+      dockerfile: docker/standalone/node/DockerfileDistroless
+    platform: linux/amd64
+    container_name: cassl
+    networks:
+      - esnet
+    ports:
+      - 443:443
+    environment:
+      - CASS_LOOPBACK=https://cassl/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - HTTPS=true
+      - HTTP2=true
+      - NODE_EXTRA_CA_CERTS=ca.crt
+      # - CASS_OIDC_ENABLED=true # turns on open id login
+      # - CASS_OIDC_ISSUER_BASE_URL=http://keycloak:8080/auth/realms/master/ # point at your keycloak realm
+      # - CASS_OIDC_CLIENT_ID=cass # name of your keycloak client
+      # - CASS_OIDC_SECRET=M2nn59wDxkwUZ9SVEVAJADYnUeKP78vU # secret from your keycloak client
+      # - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
+      # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
+      # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
+      # - CASS_BANNER_BACKGROUND_COLOR=yellow # valid css color value for background color of banner
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - etc:/app/etc
+    depends_on:
+      - elasticsearch-cass
+  elasticsearch-cass:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.5
+    container_name: elasticsearch-cass
+    networks:
+      - esnet
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+  # UNCOMMENT FOR KEYCLOAK IF USING OIDC
+  # mysql-keycloak:
+  #   image: mysql:5.7
+  #   container_name: mysql-keycloak
+  #   networks:
+  #     - esnet
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: keycloak
+  #     MYSQL_USER: keycloak
+  #     MYSQL_PASSWORD: password
+  # keycloak:
+  #   image: jboss/keycloak
+  #   container_name: keycloak
+  #   networks:
+  #     - esnet
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     DB_VENDOR: MYSQL
+  #     DB_ADDR: mysql-keycloak
+  #     DB_DATABASE: keycloak
+  #     DB_USER: keycloak
+  #     DB_PASSWORD: password
+  #     KEYCLOAK_USER: cass
+  #     KEYCLOAK_PASSWORD: cass
+  #     KEYCLOAK_HOSTNAME: host.docker.internal
+  #     KEYCLOAK_HTTP_PORT: 8080
+  #   depends_on:
+  #     - mysql-keycloak
+volumes:
+  etc:
+    driver: local
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+  mysql_data:
+    driver: local
+  mariadb_data:
+    driver: local
+  moodle_data:
+    driver: local
+  psql_data:
+    driver: local
+
+networks:
+  esnet:
