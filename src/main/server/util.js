@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2025 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2026 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,17 +66,17 @@ let skyrepoMigrate = async function (after) {
 
         let geoipDatabases = await httpGet(elasticEndpoint + '/_ingest/geoip/database/', true, elasticHeaders());
         if (geoipDatabases?.databases)
-        for (const db of geoipDatabases.databases) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Found GeoIP database: ' + db.id);
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted GeoIP database: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/geoip/database/' + db.id, elasticHeaders())));
-        }
+            for (const db of geoipDatabases.databases) {
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Found GeoIP database: ' + db.id);
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted GeoIP database: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/geoip/database/' + db.id, elasticHeaders())));
+            }
 
         let ipLocationDatabases = await httpGet(elasticEndpoint + '/_ingest/ip_location/database/', true, elasticHeaders());
         if (ipLocationDatabases?.databases)
-        for (const db of ipLocationDatabases.databases) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Found IP Location database: ' + db.id);
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted IP Location database: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/ip_location/database/' + db.id, elasticHeaders())));
-        }
+            for (const db of ipLocationDatabases.databases) {
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Found IP Location database: ' + db.id);
+                global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted IP Location database: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/ip_location/database/' + db.id, elasticHeaders())));
+            }
 
         let settings = await httpGet(elasticEndpoint + '/_settings?expand_wildcards=all', true, elasticHeaders());
         let indices = EcObject.keys((await httpGet(elasticEndpoint + '/_stats?expand_wildcards=all', true, elasticHeaders())).indices);
@@ -502,6 +502,36 @@ let skyrepoReindex = async function () {
         global.skyrepoDebug = false;
     }
 };
+
+/**
+ * @openapi
+ * /api/util/reindex:
+ *   post:
+ *     tags:
+ *       - Administration
+ *     summary: Reindex all data in Elasticsearch
+ *     description: |
+ *       Iterates over every record in the permanent index and re-saves it,
+ *       rebuilding all Elasticsearch mappings and search indices.
+ *       Requires the server secret (`skyId.secret`) for authentication.
+ *     parameters:
+ *       - in: query
+ *         name: secret
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Contents of the server's `skyId.secret` file.
+ *       - in: query
+ *         name: debug
+ *         schema:
+ *           type: string
+ *         description: If present, enables debug logging during reindex.
+ *     responses:
+ *       200:
+ *         description: Reindex completed.
+ *       401:
+ *         description: Invalid or missing secret.
+ */
 bindWebService('/util/reindex', skyrepoReindex);
 
 let skyrepoPurge = async function () {
@@ -518,6 +548,37 @@ let skyrepoPurge = async function () {
     }
     return JSON.stringify(log, null, 2);
 };
+
+/**
+ * @openapi
+ * /api/util/purge:
+ *   post:
+ *     tags:
+ *       - Administration
+ *     summary: Purge all Elasticsearch indices
+ *     description: |
+ *       Deletes all Elasticsearch indices and their mappings.
+ *       This is a destructive operation — all indexed data will be removed.
+ *       Requires the server secret (`skyId.secret`) for authentication.
+ *     parameters:
+ *       - in: query
+ *         name: secret
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Contents of the server's `skyId.secret` file.
+ *     responses:
+ *       200:
+ *         description: Purge completed. Returns a JSON array of deletion results per index.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       401:
+ *         description: Invalid or missing secret.
+ */
 bindWebService('/util/purge', skyrepoPurge);
 
 skyrepoCull = async function () {
@@ -586,8 +647,42 @@ skyrepoCull = async function () {
     }
     return JSON.stringify(resultsData, null, 2);
 };
+
+/**
+ * @openapi
+ * /api/util/cull:
+ *   post:
+ *     tags:
+ *       - Administration
+ *     summary: Remove old versioned records
+ *     description: |
+ *       Walks every record in the permanent index and deletes old version
+ *       entries that no longer match the current head pointer, reclaiming
+ *       storage. Requires the server secret for authentication.
+ *     parameters:
+ *       - in: query
+ *         name: secret
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Contents of the server's `skyId.secret` file.
+ *       - in: query
+ *         name: debug
+ *         schema:
+ *           type: string
+ *         description: If present, enables debug logging during cull.
+ *     responses:
+ *       200:
+ *         description: Cull completed.
+ *       401:
+ *         description: Invalid or missing secret.
+ */
 bindWebService('/util/cull', skyrepoCull);
 skyrepoCullFast = async function () {
+    if (this.params.secret.trim() !== skyIdSecret().trim()) {
+        error('You must provide secret=`cat skyId.secret` to invoke reindex.', 401);
+    }
+
     let firstQueryPost = {
         query: {
             query_string: { query: '*:*' },
@@ -659,4 +754,46 @@ skyrepoCullFast = async function () {
     }
     return JSON.stringify(resultsData, null, 2);
 };
+
+/**
+ * @openapi
+ * /api/util/cullFast:
+ *   post:
+ *     tags:
+ *       - Administration
+ *     summary: Fast cull of old versioned records
+ *     description: |
+ *       An optimised version of `/api/util/cull` that uses bulk multi-get
+ *       and bulk delete operations. Compares each record against its head
+ *       pointer and removes stale versions in batch. Returns statistics.
+ *       Requires the server secret for authentication.
+ *     parameters:
+ *       - in: query
+ *         name: secret
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Contents of the server's `skyId.secret` file.
+ *       - in: query
+ *         name: debug
+ *         schema:
+ *           type: string
+ *         description: If present, enables debug logging during cull.
+ *     responses:
+ *       200:
+ *         description: Fast cull completed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                 deletedRevision:
+ *                   type: integer
+ *                 deletedDeleted:
+ *                   type: integer
+ *       401:
+ *         description: Invalid or missing secret.
+ */
 bindWebService('/util/cullFast', skyrepoCullFast);

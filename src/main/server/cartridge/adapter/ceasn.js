@@ -63,10 +63,10 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
         if (!c) {
             return null;
         }
-        if (c == null) 
+        if (c == null)
             return c;
         if (c["ceasn:hasChild"] != null)
-            c["ceasn:hasChild"].sort(function(a, b) {
+            c["ceasn:hasChild"].sort(function (a, b) {
                 return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
             });
         c.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json";
@@ -606,109 +606,109 @@ function orderFields(object) {
 }
 
 async function competencyInCollectionPromise(compId, competencies, allCompetencies, f, ctx, terms, cass2ceasn) {
-        try {
-            var c = competencies[compId];
-            if (c == null) {
-                return;
-            }
-            if (!f['ceterms:hasMember'] || !EcArray.isArray(f['ceterms:hasMember'])) {
-                f['ceterms:hasMember'] = [];
-            }
-
-            f['ceterms:hasMember'].push(await ceasnExportUriTransform(c.shortId()));
-            let frameworks = await EcFramework.search(repo, 'competency:"' + c.shortId() + '"');
-            let collections = [];
-            if (frameworks && frameworks.length > 0) {
-                for (let each in frameworks) {
-                    if (frameworks[each].subType !== "Collection") {
-                        delete competencies[compId];
-                        delete competencies[c.id];
-                        return;
-                    } else {
-                        collections.push(await ceasnExportUriTransform(frameworks[each].id));
-                    }
-                }
-            }
-            delete competencies[compId];
-            var id = c.id;
-            c.context = JSON.parse(cass2ceasn);
-            c["ceterms:isMemberOf"] = collections;
-            if (c.name == null || c.name == "")
-                if (c.description != null && c.description != "") {
-                    c.name = c.description;
-                    delete c.description;
-                }
-            if (c.type == null) //Already done / referred to by another name.
-                return;
-            var guid = c.getGuid();
-            var uuid = new UUID(3, "nil", c.shortId()).format();
-
-            //Remove fields that are only whitespace
-            for (var key in c) {
-                if (typeof c[key] == "string" && c[key].trim().length == 0) {
-                    delete c[key];
-                }
-            }
-            var socList = c["socList"];
-            var naicsList = c["naicsList"];
-            var cipList = c["cipList"];
-
-            for (let each in c) {
-                if (terms[each] && each !== terms[each]) {
-                    c[terms[each]] = c[each];
-                    delete c[each];
-                }
-                if (each === "type") {
-                    c[each] = "ceasn:Competency";
-                }
-            }
-            c = await jsonLdCompact(c.toJson(), ctx);
-            if (socList) {
-                c["socList"] = socList;
-            }
-            if (naicsList) {
-                c["naicsList"] = naicsList;
-            }
-            if (cipList) {
-                c["cipList"] = cipList;
-            }
-
-            competencies[compId] = competencies[id] = c;
-
-            if (competencies[id]["ceterms:ctid"] == null) {
-                if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-                    competencies[id]["ceterms:ctid"] = guid;
-                else
-                    competencies[id]["ceterms:ctid"] = uuid;
-            }
-            if (competencies[id]["ceterms:ctid"].indexOf("ce-") != 0)
-                competencies[id]["ceterms:ctid"] = "ce-" + competencies[id]["ceterms:ctid"];
-            if (competencies[id]["ceasn:name"] != null) {
-                competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
-                delete competencies[id]["ceasn:name"];
-            }
-            if (competencies[id]["ceasn:description"] != null) {
-                competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
-                delete competencies[id]["ceasn:description"];
-            }
-            if (c["schema:educationalAlignment"] != null) {
-                if (!EcArray.isArray(c["schema:educationalAlignment"])) {
-                    competencies[id]["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"];
-                }
-                else {
-                    competencies[id]["ceasn:educationLevelType"] = [];
-                    for (var j = 0; j < c["schema:educationalAlignment"].length; j++) {
-                        competencies[id]["ceasn:educationLevelType"].push(c["schema:educationalAlignment"][j]["schema:targetName"]);
-                    }
-                }
-            }
-            delete competencies[id]["@context"];
-            competencies[id] = stripNonCe(competencies[id]);
-            return;
-        } catch (err) {
-            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnCompetencyCollection", err);
+    try {
+        var c = competencies[compId];
+        if (c == null) {
             return;
         }
+        if (!f['ceterms:hasMember'] || !EcArray.isArray(f['ceterms:hasMember'])) {
+            f['ceterms:hasMember'] = [];
+        }
+
+        f['ceterms:hasMember'].push(await ceasnExportUriTransform(c.shortId()));
+        let frameworks = await EcFramework.search(repo, 'competency:"' + c.shortId() + '"');
+        let collections = [];
+        if (frameworks && frameworks.length > 0) {
+            for (let each in frameworks) {
+                if (frameworks[each].subType !== "Collection") {
+                    delete competencies[compId];
+                    delete competencies[c.id];
+                    return;
+                } else {
+                    collections.push(await ceasnExportUriTransform(frameworks[each].id));
+                }
+            }
+        }
+        delete competencies[compId];
+        var id = c.id;
+        c.context = JSON.parse(cass2ceasn);
+        c["ceterms:isMemberOf"] = collections;
+        if (c.name == null || c.name == "")
+            if (c.description != null && c.description != "") {
+                c.name = c.description;
+                delete c.description;
+            }
+        if (c.type == null) //Already done / referred to by another name.
+            return;
+        var guid = c.getGuid();
+        var uuid = new UUID(3, "nil", c.shortId()).format();
+
+        //Remove fields that are only whitespace
+        for (var key in c) {
+            if (typeof c[key] == "string" && c[key].trim().length == 0) {
+                delete c[key];
+            }
+        }
+        var socList = c["socList"];
+        var naicsList = c["naicsList"];
+        var cipList = c["cipList"];
+
+        for (let each in c) {
+            if (terms[each] && each !== terms[each]) {
+                c[terms[each]] = c[each];
+                delete c[each];
+            }
+            if (each === "type") {
+                c[each] = "ceasn:Competency";
+            }
+        }
+        c = await jsonLdCompact(c.toJson(), ctx);
+        if (socList) {
+            c["socList"] = socList;
+        }
+        if (naicsList) {
+            c["naicsList"] = naicsList;
+        }
+        if (cipList) {
+            c["cipList"] = cipList;
+        }
+
+        competencies[compId] = competencies[id] = c;
+
+        if (competencies[id]["ceterms:ctid"] == null) {
+            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+                competencies[id]["ceterms:ctid"] = guid;
+            else
+                competencies[id]["ceterms:ctid"] = uuid;
+        }
+        if (competencies[id]["ceterms:ctid"].indexOf("ce-") != 0)
+            competencies[id]["ceterms:ctid"] = "ce-" + competencies[id]["ceterms:ctid"];
+        if (competencies[id]["ceasn:name"] != null) {
+            competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
+            delete competencies[id]["ceasn:name"];
+        }
+        if (competencies[id]["ceasn:description"] != null) {
+            competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
+            delete competencies[id]["ceasn:description"];
+        }
+        if (c["schema:educationalAlignment"] != null) {
+            if (!EcArray.isArray(c["schema:educationalAlignment"])) {
+                competencies[id]["ceasn:educationLevelType"] = c["schema:educationalAlignment"]["schema:targetName"];
+            }
+            else {
+                competencies[id]["ceasn:educationLevelType"] = [];
+                for (var j = 0; j < c["schema:educationalAlignment"].length; j++) {
+                    competencies[id]["ceasn:educationLevelType"].push(c["schema:educationalAlignment"][j]["schema:targetName"]);
+                }
+            }
+        }
+        delete competencies[id]["@context"];
+        competencies[id] = stripNonCe(competencies[id]);
+        return;
+    } catch (err) {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "CeasnCompetencyCollection", err);
+        return;
+    }
 }
 
 async function cassFrameworkAsCeasnCollection(framework) {
@@ -1886,7 +1886,141 @@ async function ceasnEndpoint() {
     return "Not Yet Implemented";
 }
 if (!global.disabledAdapters['ceasn']) {
+    /**
+     * @openapi
+     * /api/ceasn/{id}:
+     *   get:
+     *     tags:
+     *       - CEASN Adapter
+     *     summary: Export a framework as CE/ASN JSON-LD
+     *     description: |
+     *       Looks up a CaSS framework by ID and exports it (with competencies
+     *       and relations) in Credential Engine ASN (CEASN) JSON-LD format.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Framework identifier (GUID or full URL).
+     *     responses:
+     *       200:
+     *         description: CEASN JSON-LD graph.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *       404:
+     *         description: Framework not found.
+     *   post:
+     *     tags:
+     *       - CEASN Adapter
+     *     summary: Import a CE/ASN JSON-LD framework
+     *     description: |
+     *       Receives a CEASN/CTDL-ASN JSON-LD document (via URL or upload)
+     *       and imports it as a CaSS framework with competencies and relations.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Identifier or source URL.
+     *     requestBody:
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               owner:
+     *                 type: string
+     *                 description: PEM-encoded public key to set as owner.
+     *               url:
+     *                 type: string
+     *                 description: URL of a CEASN document to import.
+     *     responses:
+     *       200:
+     *         description: Imported framework JSON-LD.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/ceasn/*", ceasnEndpoint);
+
+    /**
+     * @openapi
+     * /api/ctdlasn/{id}:
+     *   get:
+     *     tags:
+     *       - CEASN Adapter
+     *     summary: Export a framework as CTDL-ASN JSON-LD (alias)
+     *     description: Alias for `/api/ceasn/{id}` GET. Returns the same CEASN JSON-LD output.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Framework identifier.
+     *     responses:
+     *       200:
+     *         description: CEASN JSON-LD graph.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *   post:
+     *     tags:
+     *       - CEASN Adapter
+     *     summary: Import a CTDL-ASN JSON-LD framework (alias)
+     *     description: Alias for `/api/ceasn/{id}` POST. Accepts the same input formats.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Identifier or source URL.
+     *     requestBody:
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *     responses:
+     *       200:
+     *         description: Imported framework JSON-LD.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/ctdlasn/*", ceasnEndpoint);
+
+    /**
+     * @openapi
+     * /api/ctdlasn:
+     *   get:
+     *     tags:
+     *       - CEASN Adapter
+     *     summary: CTDL-ASN root endpoint
+     *     description: Root alias — behaves identically to `/api/ctdlasn/{id}`.
+     *     responses:
+     *       200:
+     *         description: CEASN JSON-LD graph or listing.
+     *   post:
+     *     tags:
+     *       - CEASN Adapter
+     *     summary: Import a CTDL-ASN framework (root)
+     *     description: Root alias — behaves identically to `/api/ctdlasn/{id}` POST.
+     *     requestBody:
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *     responses:
+     *       200:
+     *         description: Imported framework JSON-LD.
+     */
     bindWebService("/ctdlasn", ceasnEndpoint);
 }

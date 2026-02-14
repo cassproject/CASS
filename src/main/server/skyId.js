@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2025 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2026 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,16 @@ let passwordSalt = null;
 let secretSalt = null;
 let skyIdSalt = null;
 let skyIdSecretStr = null;
-global.skyIdSecret = function() {
+global.skyIdSecret = function () {
     return skyIdSecretStr;
 };
 let skyIdSecretKey = null;
 let skyIdPem = null;
 let cachedSalts = {};
-let salts = function() {
+let salts = function () {
     return JSON.stringify(cachedSalts);
 };
-let skyIdCreate = async function() {
+let skyIdCreate = async function () {
     let { username: id, password, credentials } = JSON.parse(fileToString((fileFromDatastream).call(this, 'credentialCommit', null))) || {};
 
     if (!id) error('Missing username.', 422);
@@ -59,7 +59,7 @@ let skyIdCreate = async function() {
     await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, 'schema.cassproject.org.kbac.0.2.EncryptedValue');
     return null;
 };
-let skyIdCommit = async function() {
+let skyIdCommit = async function () {
     let searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, 'credentialCommit', null))) || {};
     let { username: id, password, token, credentials } = searchParams;
 
@@ -87,7 +87,7 @@ let skyIdCommit = async function() {
     await (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, 'schema.cassproject.org.kbac.0.2.EncryptedValue');
     return null;
 };
-let skyIdLogin = async function() {
+let skyIdLogin = async function () {
     let { username: id, password } = JSON.parse(fileToString((fileFromDatastream).call(this, 'credentialRequest', null))) || {};
 
     if (!id) error('Missing username.', 422);
@@ -213,7 +213,105 @@ global.loadConfigurationFile = function (path, dflt) {
      *               example: {"usernameSalt":"exampleSalt","usernameIterations":5000,"usernameLength":64,"passwordSalt":"exampleSalt","passwordIterations":5000,"passwordLength":64,"secretSalt":"exampleSalt","secretIterations":5000,"secretLength":64}
      */
     bindWebService('/sky/id/salts', salts);
+
+    /**
+     * @openapi
+     * /api/sky/id/create:
+     *   post:
+     *     tags:
+     *       - Basic Keystore
+     *     summary: Create a new user identity
+     *     description: |
+     *       Creates a new SkyID user account. The client must first fetch salts from
+     *       `/api/sky/id/salts`, hash the username and password with PBKDF2 on the client side,
+     *       then send the hashed credentials along with the encrypted keystore (PPK, etc.)
+     *       in the `credentialCommit` form field. Returns null on success.
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               credentialCommit:
+     *                 type: string
+     *                 description: JSON string containing `username`, `password`, and `credentials` (the encrypted keystore payload).
+     *     responses:
+     *       200:
+     *         description: Account created successfully (returns null).
+     *       422:
+     *         description: Missing username or password, or account already exists.
+     */
     bindWebService('/sky/id/create', skyIdCreate);
+
+    /**
+     * @openapi
+     * /api/sky/id/commit:
+     *   post:
+     *     tags:
+     *       - Basic Keystore
+     *     summary: Update an existing user identity
+     *     description: |
+     *       Commits (updates) the encrypted keystore for an existing SkyID account.
+     *       Requires a valid synchronization `token` obtained from a prior login.
+     *       The token prevents concurrent overwrites.
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               credentialCommit:
+     *                 type: string
+     *                 description: JSON string containing `username`, `password`, `token`, and `credentials`.
+     *     responses:
+     *       200:
+     *         description: Account updated successfully (returns null).
+     *       403:
+     *         description: Synchronization token mismatch — re-login and try again.
+     *       404:
+     *         description: User does not exist.
+     *       422:
+     *         description: Missing username, password, or token.
+     */
     bindWebService('/sky/id/commit', skyIdCommit);
+
+    /**
+     * @openapi
+     * /api/sky/id/login:
+     *   post:
+     *     tags:
+     *       - Basic Keystore
+     *     summary: Log in and retrieve the encrypted keystore
+     *     description: |
+     *       Authenticates with a hashed username and password, then returns the
+     *       encrypted keystore credentials along with a new synchronization token
+     *       for subsequent commits.
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               credentialRequest:
+     *                 type: string
+     *                 description: JSON string containing `username` and `password`.
+     *     responses:
+     *       200:
+     *         description: Login successful.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               description: The decrypted credential payload (minus the password) with a new token and lastLogin timestamp.
+     *       403:
+     *         description: Invalid password.
+     *       404:
+     *         description: User does not exist.
+     *       422:
+     *         description: Missing username or password.
+     */
     bindWebService('/sky/id/login', skyIdLogin);
 })();

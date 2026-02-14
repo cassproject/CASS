@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2025 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2026 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
     }
 
     const docs = [];
-    for (let {id,version} of manyParseParams) {
+    for (let { id, version } of manyParseParams) {
         const p = {
             '_index': index,
             '_id': id + '.' + (version == null ? '' : version)
@@ -49,10 +49,10 @@ const skyrepoManyGetIndexSearch = async function (ary) {
         let batch = ary.splice(0, 10);
 
         let microSearchUrl = elasticEndpoint + '/_search?version&q=';
-        microSearchUrl += batch.map(x=>`_id:"${x.id}"`).join(" OR ");
+        microSearchUrl += batch.map(x => `_id:"${x.id}"`).join(" OR ");
 
         const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
-        if (microSearch.error) 
+        if (microSearch.error)
             throw new Error(microSearch.error.reason);
         if (global.skyrepoDebug) {
             global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexSearch', microSearchUrl);
@@ -97,7 +97,7 @@ let skyrepoManyGetInternal = async function (manyParseParams) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetInternal', 'Index get - ' + JSON.stringify(response));
     }
 
-    results.push(...(response || []).map(doc=>doc['_source']));
+    results.push(...(response || []).map(doc => doc['_source']));
     return results;
 };
 

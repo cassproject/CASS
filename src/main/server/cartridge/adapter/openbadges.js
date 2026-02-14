@@ -58,7 +58,7 @@ badgeProfile = async function (fingerprint) {
         id: global.repo.selectedServer + "badge/profile/" + fingerprint,
         type: "Issuer",
         name: person.name,
-        url: person.url == null ? (global.repo.selectedServer + "badge/profile/" + fingerprint) : person.url ,
+        url: person.url == null ? (global.repo.selectedServer + "badge/profile/" + fingerprint) : person.url,
         telephone: person.telephone,
         description: person.description,
         image: "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
@@ -143,7 +143,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
         competencyId = global.repo.selectedServer + "badge/class/" + md5.digest().toHex() + "/" + fingerprint;
     }
 
-    var criteria = {type:"Criteria"};
+    var criteria = { type: "Criteria" };
     if (competency.description != null)
         criteria.narrative = competency.description;
     else
@@ -188,25 +188,24 @@ badgeAssertion = async function () {
         error("Insufficient data available to generate badge issuer object.", 405);
 
     var evidences = [];
-    for (var i = 0; i < a.getEvidenceCount(); i++)
-    {
+    for (var i = 0; i < a.getEvidenceCount(); i++) {
         var evidence = await a.getEvidence(i);
         if (evidence.toLowerCase().startsWith("http"))
-                evidences.push(evidence);
+            evidences.push(evidence);
         else if (EcObject.isObject(evidence))
-                evidences.push(evidence);
+            evidences.push(evidence);
         else
-                evidences.push({type:"Evidence",narrative:evidence});
+            evidences.push({ type: "Evidence", narrative: evidence });
     }
     if (evidences.length == 1)
         evidences = evidences[0];
     var result = {
         "@context": "https://w3id.org/openbadges/v2",
         "id": global.repo.selectedServer + "badge/assertion/" + query.id,
-        "type":"Assertion",
+        "type": "Assertion",
         "recipient": subject,
         "evidence": evidences,
-"narrative": "This individual was claimed to have demonstrated this competency.",
+        "narrative": "This individual was claimed to have demonstrated this competency.",
         "image": "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
         "issuedOn": new Date(await a.getAssertionDate()).toISOString(),
         "expires": new Date(await a.getExpirationDate()).toISOString(),
@@ -219,46 +218,175 @@ badgeAssertion = async function () {
     return JSON.stringify(result);
 }
 
-openbadgeCheckId = async function(){
-	badgeSetup.call(this);
+openbadgeCheckId = async function () {
+    badgeSetup.call(this);
 
-	var a = new EcAssertion();
-	a.copyFrom(JSON.parse(this.params.obj));
+    var a = new EcAssertion();
+    a.copyFrom(JSON.parse(this.params.obj));
 
-	if (a.subject["reader"] == null && a.subject["@reader"] == null)
-		return debug("Badge not generated for assertion: Assertion has no readers.");
+    if (a.subject["reader"] == null && a.subject["@reader"] == null)
+        return debug("Badge not generated for assertion: Assertion has no readers.");
 
     if (global.repo.selectedServer.contains("localhost"))
         return debug("Badge not generated for assertion: Endpoint Configuration is not set.");
 
-	if (a.subject["reader"] && !EcArray.has(a.subject["reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
-		return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
-
-    if (a.subject["@reader"] && !EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
+    if (a.subject["reader"] && !EcArray.has(a.subject["reader"], EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
         return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
-	var subject = await a.getSubject();
-	if (subject == null)
-		return debug("Badge not generated for assertion: No subject found.");
+    if (a.subject["@reader"] && !EcArray.has(a.subject["@reader"], EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
+        return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
+
+    var subject = await a.getSubject();
+    if (subject == null)
+        return debug("Badge not generated for assertion: No subject found.");
     var person = await badgeGetPerson.call(this, subject.fingerprint());
     if (person == null)
         return debug("Badge not generated for assertion: Subject profile not found.");
 
     if (person.email == null)
-    	return debug("Badge not generated for assertion: Profile does not contain email address.");
+        return debug("Badge not generated for assertion: Profile does not contain email address.");
 
-	badgeSendEmail({
-		recipient: person.email,
-		competencyName: await loopback.repositoryGet(a.competency).name,
-		badgeId: global.repo.selectedServer + "badge/assertion/" + a.getGuid()
-	});
+    badgeSendEmail({
+        recipient: person.email,
+        competencyName: await loopback.repositoryGet(a.competency).name,
+        badgeId: global.repo.selectedServer + "badge/assertion/" + a.getGuid()
+    });
 }
 
 if (!global.disabledAdapters['badge']) {
+    /**
+     * @openapi
+     * /api/badge/pk:
+     *   get:
+     *     tags:
+     *       - OpenBadges Adapter
+     *     summary: Get the OpenBadges adapter public key
+     *     description: Returns the PEM-encoded public key used by the OpenBadges adapter for signing and verification.
+     *     responses:
+     *       200:
+     *         description: PEM-encoded public key string.
+     *         content:
+     *           text/plain:
+     *             schema:
+     *               type: string
+     */
     bindWebService("/badge/pk", badgeKey);
+
+    /**
+     * @openapi
+     * /api/badge/profile/{fingerprint}:
+     *   get:
+     *     tags:
+     *       - OpenBadges Adapter
+     *     summary: Get an OpenBadges v2 Issuer profile
+     *     description: Returns an OpenBadges v2 Issuer profile object for the person identified by their public key fingerprint.
+     *     parameters:
+     *       - in: path
+     *         name: fingerprint
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Public key fingerprint of the person.
+     *     responses:
+     *       200:
+     *         description: OpenBadges v2 Issuer profile JSON.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *       405:
+     *         description: Insufficient data to generate the profile.
+     */
     bindWebService("/badge/profile/*", badgeProfile);
+
+    /**
+     * @openapi
+     * /api/badge/cryptographicKey/{fingerprint}:
+     *   get:
+     *     tags:
+     *       - OpenBadges Adapter
+     *     summary: Get an OpenBadges v2 CryptographicKey
+     *     description: Returns a CryptographicKey object for verifying badges issued by the given person.
+     *     parameters:
+     *       - in: path
+     *         name: fingerprint
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Public key fingerprint of the person.
+     *     responses:
+     *       200:
+     *         description: OpenBadges v2 CryptographicKey JSON.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *       405:
+     *         description: Insufficient data to generate the cryptographic key.
+     */
     bindWebService("/badge/cryptographicKey/*", badgeCryptographicKey);
+
+    /**
+     * @openapi
+     * /api/badge/class/{competencyId}/{fingerprint}:
+     *   get:
+     *     tags:
+     *       - OpenBadges Adapter
+     *     summary: Get an OpenBadges v2 BadgeClass
+     *     description: Returns a BadgeClass object for a specific competency, representing the badge that can be earned.
+     *     parameters:
+     *       - in: path
+     *         name: competencyId
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Competency GUID.
+     *       - in: path
+     *         name: fingerprint
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Issuer fingerprint.
+     *     responses:
+     *       200:
+     *         description: OpenBadges v2 BadgeClass JSON.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/badge/class/*", badgeClass);
+
+    /**
+     * @openapi
+     * /api/badge/assertion/{id}:
+     *   get:
+     *     tags:
+     *       - OpenBadges Adapter
+     *     summary: Get an OpenBadges v2 Assertion
+     *     description: |
+     *       Returns a hosted OpenBadges v2 Assertion for a CaSS assertion.
+     *       Requires the badge adapter's key to be listed as a reader on the
+     *       assertion in order to decrypt subject and agent information.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: CaSS assertion GUID.
+     *     responses:
+     *       200:
+     *         description: OpenBadges v2 Assertion JSON.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *       401:
+     *         description: Not authorized — badge adapter key is not a reader on the assertion.
+     *       404:
+     *         description: Assertion not found.
+     */
     bindWebService("/badge/assertion/*", badgeAssertion);
 }
 

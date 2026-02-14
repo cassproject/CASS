@@ -1,4 +1,4 @@
-const { skyrepoGet } = require('../../skyRepo/get'); 
+const { skyrepoGet } = require('../../skyRepo/get');
 let frameworkTranslation = {
     "@id": "id",
     "ceasn:derivedFrom": "authoritativeSource",
@@ -69,7 +69,7 @@ async function cassCompetencyAsScd(c) {
     let frameworks = null;
     try {
         frameworks = await EcFramework.search(repo, "competency:\"" + c.shortId() + "\"");
-    } catch(error) {
+    } catch (error) {
         error("Framework search failed.");
     }
     if (frameworks) {
@@ -92,7 +92,7 @@ async function cassRelationAsScd(r) {
     let frameworks = null;
     try {
         frameworks = await EcFramework.search(repo, "relation:\"" + r.shortId() + "\"");
-    } catch(error) {
+    } catch (error) {
         error("Framework search failed.");
     }
     if (frameworks) {
@@ -178,4 +178,34 @@ async function scdEndpoint() {
     return "Not Yet Implemented";
 }
 
+/**
+ * @openapi
+ * /api/scd/{id}:
+ *   get:
+ *     tags:
+ *       - SCD Adapter
+ *     summary: Export a framework, competency, or relation in SCD format
+ *     description: |
+ *       Looks up the object by ID and converts it to Skills Competency Data
+ *       (SCD) format. Automatically detects the type (framework, competency,
+ *       or relation) and returns the appropriate SCD representation.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Object identifier (GUID or full URL).
+ *     responses:
+ *       200:
+ *         description: SCD-formatted JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: Object not found or insufficient permissions.
+ *       405:
+ *         description: Non-GET methods are not yet implemented.
+ */
 bindWebService("/scd/*", scdEndpoint);

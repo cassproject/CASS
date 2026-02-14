@@ -581,66 +581,63 @@ function asnEndpoint() {
 }
 
 if (!global.disabledAdapters['asn']) {
+    /**
+     * @openapi
+     * /api/asn/{id}:
+     *   get:
+     *     tags:
+     *       - ASN Adapter
+     *     summary: Export a framework as ASN RDF/XML
+     *     description: |
+     *       Looks up a CaSS framework by ID and converts it (and its
+     *       competencies/relations) into ASN RDF/XML format.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Framework identifier (GUID or full URL).
+     *     responses:
+     *       200:
+     *         description: ASN RDF/XML representation of the framework.
+     *         content:
+     *           application/rdf+xml:
+     *             schema:
+     *               type: string
+     *       404:
+     *         description: Framework not found.
+     *   post:
+     *     tags:
+     *       - ASN Adapter
+     *     summary: Import an ASN-format framework into CaSS
+     *     description: |
+     *       Fetches or receives an ASN document (RDF/XML or JSON-LD) and
+     *       imports its standards as a CaSS framework with competencies
+     *       and relations.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Source URL or identifier of the ASN document to import.
+     *     requestBody:
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               owner:
+     *                 type: string
+     *                 description: PEM-encoded public key to set as owner of imported objects.
+     *     responses:
+     *       200:
+     *         description: Imported framework JSON-LD.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/asn/*", asnEndpoint);
 }
-
-
-
-//function test(){
-//	var jsonLd;
-//	var text = fileToString(fileLoad(this.params.path));
-//
-//	try{
-//		jsonLd = JSON.parse(text);
-//	}catch(e){
-//		debug("Not json")
-//
-//		jsonLd = rdfToJsonLd(text);
-//	}
-//
-//	print(JSON.stringify(jsonLd));
-//
-//	jsonLd = fixScalars(jsonLd);
-//
-//	print(JSON.stringify(jsonLd));
-//
-//	for(var idx in jsonLd){
-//		var obj = jsonLd[idx];
-//
-//		var context = JSON.parse(JSON.stringify(asnContext));
-//		context["type"] = "@type";
-//		context["uri"] = "@id";
-//
-//		obj["@context"] = context;
-//
-//		if(obj["@id"] == undefined)
-//			obj["@id"] = idx;
-//
-//		var expanded = jsonLdExpand(JSON.stringify(obj));
-//
-//		//print(JSON.stringify(expanded));
-//
-//		var graphObj = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
-//
-//		print(JSON.stringify(graphObj));
-//
-//		if(graphObj["rdf:type"] != undefined && graphObj["@type"] == undefined){
-//			//print(JSON.stringify(graphObj["rdf:type"]));
-//			//print(Object.keys(graphObj["rdf:type"]));
-//			if(graphObj["rdf:type"]["@id"] == undefined){
-//				graphObj["@type"] = graphObj["rdf:type"]
-//			}else{
-//				graphObj["@type"] = graphObj["rdf:type"]["@id"]
-//			}
-//			delete graphObj["rdf:type"];
-//		}
-//
-//		if(graphObj["@type"] == "asn:StandardDocument"){
-//			frameworkObj = graphObj;
-//		}else if (graphObj["@type"] == "asn:Statement" ){
-//			competencyList.push(graphObj);
-//		}
-//	}
-//}
-
-//bindWebService("/quickTest", test);

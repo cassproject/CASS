@@ -44,7 +44,7 @@ var xapiEndpoint = async function (more, since, config) {
         headers["Authorization"] = xapiConfig.call(this).xapiAuth;
     }
     headers["X-Experience-API-Version"] = "1.0.1";
-    if (process.env.XAPI_DEBUG) console.log(endpoint,headers);
+    if (process.env.XAPI_DEBUG) console.log(endpoint, headers);
     let results = await fetch(endpoint, { method: "GET", headers: headers });
     results = await results.json();
     if (process.env.XAPI_DEBUG) console.log(results);
@@ -95,8 +95,8 @@ var personFromEmail = async function (mbox, name) {
                 if (mb.indexOf("@") == -1) {
                     person.username = mb;
                     person.identifier = mb;
-            }
-            else
+                }
+                else
                     person.email = mb;
                 person.name = name;
                 await repo.saveTo(person, null, null, xapiIm);
@@ -277,7 +277,7 @@ var xapiStatement = async function (s, accm) {
             await a.addOwner(authorityPk);
         for (let actorPk of actorPks) {
             await a.addReader(actorPk);
-    }
+        }
         if (actorPks.length > 1) {
             let groupHash = actorPks.map(x => x.toPem()).sort().join("");
             let groupMd5 = EcCrypto.md5(groupHash);
@@ -338,14 +338,12 @@ var xapiStatement = async function (s, accm) {
 
 var xapiStatementListener = async function () {
     let accm = [];
-    if (process.env.XAPI_DEBUG) console.log(this.params,this.dataStreams,this?.ctx?.req?.rawHeaders,this?.ctx?.req?.headers);
-    for (let val in this.dataStreams)
-    {
-        console.log(val,this.dataStreams[val]);
+    if (process.env.XAPI_DEBUG) console.log(this.params, this.dataStreams, this?.ctx?.req?.rawHeaders, this?.ctx?.req?.headers);
+    for (let val in this.dataStreams) {
+        console.log(val, this.dataStreams[val]);
         await xapiStatement(this.dataStreams[val], accm);
     }
-    if (accm.length > 0)
-    {
+    if (accm.length > 0) {
         console.log("Saving " + accm.length + " xAPI statements as assertions.");
         await global.repo.multiput(accm, null, null, xapiIm);
     }
@@ -363,7 +361,7 @@ xapiKey = function () {
 
 
 var xapiLoopEach = async function (since, config, sinceFilePath) {
-    if (process.env.XAPI_DEBUG) console.log(since,config,sinceFilePath);
+    if (process.env.XAPI_DEBUG) console.log(since, config, sinceFilePath);
     try {
         var results = await xapiEndpoint.call(this, null, since, config);
     } catch (ex) { console.log(ex); return; }
@@ -372,7 +370,7 @@ var xapiLoopEach = async function (since, config, sinceFilePath) {
     while (results != null && results.statements != null && results.statements.length > 0) {
         let lastRequested = new Date().toISOString();
         for (var i = 0; i < results.statements.length; i++) {
-            await xapiStatement.call(this, results.statements[i],accm);
+            await xapiStatement.call(this, results.statements[i], accm);
         }
         fileSave(lastRequested, sinceFilePath);
         if (results.more != null && results.more != "")
@@ -380,18 +378,15 @@ var xapiLoopEach = async function (since, config, sinceFilePath) {
         else
             results = {};
 
-        if (accm > 500)
-        {
-            if (accm.length > 0)
-            {
+        if (accm > 500) {
+            if (accm.length > 0) {
                 console.log("Saving " + accm.length + " xAPI statements as assertions.");
                 await global.repo.multiput(accm, null, null, xapiIm);
             }
             accm = [];
         }
     }
-    if (accm.length > 0)
-    {
+    if (accm.length > 0) {
         console.log("Saving " + accm.length + " xAPI statements as assertions.");
         await global.repo.multiput(accm, null, null, xapiIm);
     }
@@ -458,15 +453,110 @@ events.server.xapiTick.subscribe(async () => {
     } catch (ex) {
         console.error("Error in xAPI loop: ", ex);
     }
-    finally{
+    finally {
         working = false;
     }
 });
 
 if (!global.disabledAdapters['xapi']) {
+    /**
+     * @openapi
+     * /api/xapi/tick:
+     *   post:
+     *     tags:
+     *       - xAPI Adapter
+     *     summary: Manually trigger one xAPI polling cycle
+     *     description: |
+     *       Runs a single iteration of the xAPI statement polling loop,
+     *       fetching new statements from the configured LRS and converting
+     *       them into CaSS assertions. Normally this runs automatically
+     *       every 5 seconds.
+     *     responses:
+     *       200:
+     *         description: Polling cycle completed.
+     */
     bindWebService("/xapi/tick", xapiLoop);
+
+    /**
+     * @openapi
+     * /api/xapi/pk:
+     *   get:
+     *     tags:
+     *       - xAPI Adapter
+     *     summary: Get the xAPI adapter public key
+     *     description: Returns the PEM-encoded public key used by the xAPI adapter for assertion ownership.
+     *     responses:
+     *       200:
+     *         description: PEM-encoded public key string.
+     *         content:
+     *           text/plain:
+     *             schema:
+     *               type: string
+     */
     bindWebService("/xapi/pk", xapiKey);
+
+    /**
+     * @openapi
+     * /api/xapi/statement:
+     *   post:
+     *     tags:
+     *       - xAPI Adapter
+     *     summary: Receive a single xAPI statement
+     *     description: |
+     *       Accepts an xAPI statement via POST and converts it into CaSS
+     *       assertions based on aligned competencies. The statement should
+     *       be sent as form data.
+     *     requestBody:
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *     responses:
+     *       200:
+     *         description: Statement processed and assertions created.
+     */
     bindWebService("/xapi/statement", xapiStatementListener);
+
+    /**
+     * @openapi
+     * /api/xapi/statements:
+     *   post:
+     *     tags:
+     *       - xAPI Adapter
+     *     summary: Receive multiple xAPI statements
+     *     description: |
+     *       Accepts multiple xAPI statements via POST and converts them into
+     *       CaSS assertions based on aligned competencies. Statements should
+     *       be sent as form data.
+     *     requestBody:
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *     responses:
+     *       200:
+     *         description: Statements processed and assertions created.
+     */
     bindWebService("/xapi/statements", xapiStatementListener);
+
+    /**
+     * @openapi
+     * /api/xapi/endpoint:
+     *   get:
+     *     tags:
+     *       - xAPI Adapter
+     *     summary: Proxy-fetch statements from the configured LRS
+     *     description: |
+     *       Fetches xAPI statements from the configured Learning Record Store
+     *       endpoint. Used for debugging and manual inspection of the xAPI
+     *       data source. Requires XAPI_ENDPOINT to be configured.
+     *     responses:
+     *       200:
+     *         description: xAPI statements from the LRS.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/xapi/endpoint", xapiEndpoint);
 }

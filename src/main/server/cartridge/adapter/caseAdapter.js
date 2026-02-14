@@ -54,7 +54,7 @@ cfGetFramework = async function (f) {
         }
     }
     if (f == null)
-        cfError(404,"failure","error","Framework not found.","uuid","unknownobject");
+        cfError(404, "failure", "error", "Framework not found.", "uuid", "unknownobject");
     var result = new EcFramework();
     result.copyFrom(f);
     return result;
@@ -96,7 +96,7 @@ cfGetCompetency = async function (c) {
             }
         }
         if (competency == null) {
-            cfError(404,"failure","error","Competency not found.","uuid","unknownobject");
+            cfError(404, "failure", "error", "Competency not found.", "uuid", "unknownobject");
         }
         var c = new EcCompetency();
         c.copyFrom(competency);
@@ -120,7 +120,7 @@ cfGetAlignment = async function (c) {
         if (competency == null && url != null)
             competency = await loopback.alignmentGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url));
         if (competency == null)
-            cfError(404,"failure","error","Alignment not found.","uuid","unknownobject");
+            cfError(404, "failure", "error", "Alignment not found.", "uuid", "unknownobject");
         c = new EcAlignment();
         c.copyFrom(competency);
     }
@@ -164,13 +164,13 @@ cfDocuments = async function (f, terms) {
     if (f == null) {
         var aggResults = [];
         var me = this;
-        let frameworks = loopback.frameworkSearch(repo, "*",{size: 5000});
+        let frameworks = loopback.frameworkSearch(repo, "*", { size: 5000 });
         if (frameworks == null)
             error("Could not reach repository", 500);
-        for (var i = 0;i < frameworks.length;i++) {
-            var fw = await cfDocuments.call(me,frameworks[i], terms);
+        for (var i = 0; i < frameworks.length; i++) {
+            var fw = await cfDocuments.call(me, frameworks[i], terms);
             if (fw != null)
-            aggResults.push(JSON.parse(fw));
+                aggResults.push(JSON.parse(fw));
         }
         return JSON.stringify(aggResults, null, 2);
     }
@@ -257,7 +257,7 @@ cfItems = async function (f, fw, terms) {
         f = f.toJson();
     try {
         f = JSON.parse(f);
-    } catch(e) {
+    } catch (e) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CaseCfItemsParseError", e);
     }
     for (let each in f) {
@@ -285,7 +285,7 @@ cfItems = async function (f, fw, terms) {
     f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
-        var parent = skyrepoSearch.call(this,"competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
+        var parent = skyrepoSearch.call(this, "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
         t = parent[0];
@@ -337,7 +337,7 @@ cfItemAssociations = async function (f, fw, terms) {
     else
         parent = [fw];
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
-    f2.associationType = {"isEquivalentTo": "exactMatchOf", "narrows": "isChildOf"}[f2["case:relationType"]];
+    f2.associationType = { "isEquivalentTo": "exactMatchOf", "narrows": "isChildOf" }[f2["case:relationType"]];
     delete f2["case:relationType"];
     if (f2["case:destinationNodeURI"] == null) return null;
     if (f2["case:originNodeURI"] == null) return null;
@@ -412,8 +412,8 @@ cfPackages = async function (f) {
     if (f.relation) {
         toPrecache = toPrecache.concat(f.relation);
     }
-    repo.precache(toPrecache, function (results) {});
-    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2caseTerms")),true));
+    repo.precache(toPrecache, function (results) { });
+    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2caseTerms")), true));
 
     result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     result.CFDocument = JSON.parse(await cfDocuments.call(this, f, terms));
@@ -440,7 +440,7 @@ cfPackages = async function (f) {
                 result.CFAssociations.push(a);
             }
         }
-    result.CFDefinitions = {CFConcepts: [], CFSubject: [], CFLicenses: [], CFItemTypes: [], CFAssociationGroupings: []};
+    result.CFDefinitions = { CFConcepts: [], CFSubject: [], CFLicenses: [], CFItemTypes: [], CFAssociationGroupings: [] };
     delete result["@context"];
     return JSON.stringify(result, null, 2);
 }
@@ -468,15 +468,226 @@ cfSubjects = async function () {
 }
 
 if (!global.disabledAdapters['case']) {
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFDocuments:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Documents
+     *     description: |
+     *       Returns all Competency Framework documents, or a single document
+     *       when an ID is provided in the URL path. Conforms to IMS CASE v1p0
+     *       `CFDocumentSet` / `CFDocument` response shapes.
+     *     parameters:
+     *       - in: query
+     *         name: id
+     *         schema:
+     *           type: string
+     *         description: Optional CF Document identifier to retrieve a single document.
+     *     responses:
+     *       200:
+     *         description: CFDocumentSet or a single CFDocument JSON.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/ims/case/v1p0/CFDocuments", cfDocuments);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFAssociations:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get a CF Association by ID
+     *     description: |
+     *       Retrieves a single CFAssociation by its identifier, converted from
+     *       a CaSS relation. Conforms to IMS CASE v1p0 response shape.
+     *     parameters:
+     *       - in: query
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: CFAssociation identifier (GUID).
+     *     responses:
+     *       200:
+     *         description: CFAssociation JSON.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/ims/case/v1p0/CFAssociations", cfAssociations);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFAssociationGroupings:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Association Groupings (not implemented)
+     *     description: This endpoint is not yet implemented and returns 501.
+     *     responses:
+     *       501:
+     *         description: Not Yet Implemented.
+     */
     bindWebService("/ims/case/v1p0/CFAssociationGroupings", cfAssociationGroupings);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFConcepts:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Concepts (not implemented)
+     *     description: This endpoint is not yet implemented and returns 501.
+     *     responses:
+     *       501:
+     *         description: Not Yet Implemented.
+     */
     bindWebService("/ims/case/v1p0/CFConcepts", cfConcepts);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFItems:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get a CF Item by ID
+     *     description: |
+     *       Retrieves a single CFItem by its identifier, converted from a
+     *       CaSS competency.
+     *     parameters:
+     *       - in: query
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: CFItem identifier (GUID).
+     *     responses:
+     *       200:
+     *         description: CFItem JSON.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/ims/case/v1p0/CFItems", cfItems);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFItemAssociations:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Associations for a CF Item
+     *     description: |
+     *       Retrieves all CFAssociations where the given item is either the
+     *       origin or destination. Returns a CFAssociationSet.
+     *     parameters:
+     *       - in: query
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: CFItem identifier whose associations to retrieve.
+     *     responses:
+     *       200:
+     *         description: Array of CFAssociation objects.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 type: object
+     */
     bindWebService("/ims/case/v1p0/CFItemAssociations", cfItemAssociations);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFItemTypes:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Item Types (not implemented)
+     *     description: This endpoint is not yet implemented and returns 501.
+     *     responses:
+     *       501:
+     *         description: Not Yet Implemented.
+     */
     bindWebService("/ims/case/v1p0/CFItemTypes", cfItemTypes);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFLicenses:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Licenses (not implemented)
+     *     description: This endpoint is not yet implemented and returns 501.
+     *     responses:
+     *       501:
+     *         description: Not Yet Implemented.
+     */
     bindWebService("/ims/case/v1p0/CFLicenses", cfLicenses);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFPackages/{id}:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get a full CF Package
+     *     description: |
+     *       Retrieves a full CFPackage for a framework, including the
+     *       CFDocument, all CFItems, and all CFAssociations.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Framework identifier (GUID or full URL).
+     *     responses:
+     *       200:
+     *         description: CFPackage JSON containing CFDocument, CFItems, and CFAssociations.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *       404:
+     *         description: Framework not found.
+     */
     bindWebService("/ims/case/v1p0/CFPackages/*", cfPackages);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFRubrics:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Rubrics (not implemented)
+     *     description: This endpoint is not yet implemented and returns 501.
+     *     responses:
+     *       501:
+     *         description: Not Yet Implemented.
+     */
     bindWebService("/ims/case/v1p0/CFRubrics", cfRubrics);
+
+    /**
+     * @openapi
+     * /api/ims/case/v1p0/CFSubjects:
+     *   get:
+     *     tags:
+     *       - IMS CASE v1p0
+     *     summary: Get CF Subjects (not implemented)
+     *     description: This endpoint is not yet implemented and returns 501.
+     *     responses:
+     *       501:
+     *         description: Not Yet Implemented.
+     */
     bindWebService("/ims/case/v1p0/CFSubjects", cfSubjects);
 }

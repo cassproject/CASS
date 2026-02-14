@@ -3,40 +3,40 @@ var testCase = false;
 
 var caseInterface = {
     CFDocuments: async function () {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments",true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments", true, { "Accept": "application/json" });
     },
     CFDocument: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFPackages: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFPackages/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFPackages/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFItems: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFItems/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFItems/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFAssociations: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociations/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociations/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFItemAssociations: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFItemAssociations/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFItemAssociations/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFAssociationGroupings: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociationGroupings/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociationGroupings/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFConcepts: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFConcepts/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFConcepts/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFItemTypes: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFItemTypes/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFItemTypes/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFLicenses: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFLicenses/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFLicenses/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFSubjects: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFSubjects/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFSubjects/" + sourcedId, true, { "Accept": "application/json" });
     },
     CFRubrics: async function (sourcedId) {
-        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFRubrics/" + sourcedId,true,{"Accept":"application/json"});
+        return await httpGet(this.targetUrl + "/ims/case/v1p0/CFRubrics/" + sourcedId, true, { "Accept": "application/json" });
     }
 }
 
@@ -54,7 +54,7 @@ stripCassNamespace = function (o) {
     return o;
 }
 
-setDateCreated = function(object) {
+setDateCreated = function (object) {
     if (object["ceasn:dateCreated"] == null && (object)["schema:dateCreated"] == null) {
         var timestamp = getTimestamp(object);
         var date;
@@ -67,7 +67,7 @@ setDateCreated = function(object) {
     }
 };
 
-getTimestamp = function(object) {
+getTimestamp = function (object) {
     var timestamp = object["id"].substring(object["id"].lastIndexOf("/") + 1);
     if (timestamp.matches("[0-9]+")) {
         return Integer.parseInt(timestamp);
@@ -155,30 +155,28 @@ convertCFItemIntoCompetency = async function (a, terms) {
 }
 
 //Returns array of objects to save.
-embedCFPackageIntoFramework = async function(f,document, terms){
-	var p = await caseInterface.CFPackages.call(this,document.CFPackageURI.identifier);
-	var results = [f];
-	var i = 0;
-	if (p.CFAssociations != null)
-	for (i = 0;i < p.CFAssociations.length;i++)
-	{
-		var relation = await convertCFAssociationIntoRelation(p.CFAssociations[i], terms);
-		results.push(relation);
-        p.CFAssociations[i] = relation.id;
-	}
-	f.relation = p.CFAssociations;
+embedCFPackageIntoFramework = async function (f, document, terms) {
+    var p = await caseInterface.CFPackages.call(this, document.CFPackageURI.identifier);
+    var results = [f];
+    var i = 0;
+    if (p.CFAssociations != null)
+        for (i = 0; i < p.CFAssociations.length; i++) {
+            var relation = await convertCFAssociationIntoRelation(p.CFAssociations[i], terms);
+            results.push(relation);
+            p.CFAssociations[i] = relation.id;
+        }
+    f.relation = p.CFAssociations;
     if (p.CFItems != null)
-	for (i = 0;i < p.CFItems.length;i++)
-	{
-		var competency = await convertCFItemIntoCompetency(p.CFItems[i], terms);
-		results.push(competency);
-        p.CFItems[i] = competency.id;
-	}
-	f.competency = p.CFItems;
-	return results;
+        for (i = 0; i < p.CFItems.length; i++) {
+            var competency = await convertCFItemIntoCompetency(p.CFItems[i], terms);
+            results.push(competency);
+            p.CFItems[i] = competency.id;
+        }
+    f.competency = p.CFItems;
+    return results;
 }
 
-testSuiteCase = async function() {
+testSuiteCase = async function () {
     var targetUrl = this.params.caseEndpoint;
     this.targetUrl = targetUrl;
     await caseInterface.CFAssociationGroupings.call(this, this.params.dId);
@@ -199,9 +197,9 @@ ingestCase = async function () {
     if (testCase == true) {
         return await testSuiteCase.call(this);
     }
-    cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/",true,{"Accept":"application/json"}))["@context"]);
-    let terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/case2cassTerms",true))));
-    var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
+    cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/", true, { "Accept": "application/json" }))["@context"]);
+    let terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/case2cassTerms", true))));
+    var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
     var caseIdentity = new EcIdentity();
     caseIdentity.ppk = EcPpk.fromPem(keyFor("adapter.case.private"));
@@ -210,7 +208,7 @@ ingestCase = async function () {
 
     var targetUrl = this.params.caseEndpoint;
     if (targetUrl.endsWith("/"))
-        targetUrl = targetUrl.substring(0,targetUrl.length-1);
+        targetUrl = targetUrl.substring(0, targetUrl.length - 1);
     if (targetUrl == null)
         return "Please specify caseEndpoint = <target server> -- we'll add the /ims/case/v1p0.";
     this.targetUrl = targetUrl;
@@ -225,13 +223,13 @@ ingestCase = async function () {
     for (var i = 0; i < documents.CFDocuments.length; i++) {
         var document = documents.CFDocuments[i];
         var f = await convertCFDocumentToFramework(document, terms);
-        var listToSave = await embedCFPackageIntoFramework.call(this,f, document, terms);
+        var listToSave = await embedCFPackageIntoFramework.call(this, f, document, terms);
         for (var j = 0; j < listToSave.length; j++) {
             listToSave[j].addOwner(caseIdentity.ppk.toPk());
             if (owner != null)
                 listToSave[j].addOwner(EcPk.fromPem(owner));
         }
-        await repo.multiput(listToSave,function(results){},(error) => {
+        await repo.multiput(listToSave, function (results) { }, (error) => {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CaseIngestCaseError", error);
         });
     }
@@ -241,12 +239,72 @@ ingestCase = async function () {
 getDocuments = async function () {
     var url = this.params.url;
     url += "ims/case/v1p0/CFDocuments";
-    var results = await httpGet(url,true,{"Accept":"application/json"});
+    var results = await httpGet(url, true, { "Accept": "application/json" });
     return JSON.stringify(results);
 }
 
 if (!global.disabledAdapters['case']) {
+    /**
+     * @openapi
+     * /api/ims/case/harvest:
+     *   post:
+     *     tags:
+     *       - CASE Adapter
+     *     summary: Ingest CASE frameworks from a remote server
+     *     description: |
+     *       Connects to a remote CASE-compliant server, fetches CFDocuments and
+     *       CFPackages, converts them into CaSS frameworks and competencies,
+     *       and saves them to the repository.
+     *     parameters:
+     *       - in: query
+     *         name: caseEndpoint
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Base URL of the remote CASE server (e.g. `https://example.com`).
+     *       - in: query
+     *         name: dId
+     *         schema:
+     *           type: string
+     *         description: Optional specific document identifier to harvest. If omitted, all documents are harvested.
+     *     requestBody:
+     *       content:
+     *         multipart/form-data:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               owner:
+     *                 type: string
+     *                 description: PEM-encoded public key to add as owner of ingested objects.
+     *     responses:
+     *       200:
+     *         description: Harvest completed. Returns JSON of the ingested data.
+     */
     bindWebService("/ims/case/harvest", ingestCase);
+
+    /**
+     * @openapi
+     * /api/ims/case/getDocs:
+     *   get:
+     *     tags:
+     *       - CASE Adapter
+     *     summary: List CFDocuments from a remote CASE server
+     *     description: Fetches and returns the list of CFDocuments from the given CASE endpoint URL.
+     *     parameters:
+     *       - in: query
+     *         name: url
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Base URL of the remote CASE server (must end with `/`).
+     *     responses:
+     *       200:
+     *         description: JSON array of CFDocuments from the remote server.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     */
     bindWebService("/ims/case/getDocs", getDocuments);
 }
 

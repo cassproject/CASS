@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2025 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2026 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,16 +47,19 @@ const endpointAdmin = function () {
  *   get:
  *     tags:
  *       - Infrastructure
- *     description: Fetches public key of the admin user. An identity with the corresponding private key will have edit/delete capabilities over all data.
+ *     summary: Get admin public keys
+ *     description: Returns the public keys of all admin identities. Includes the built-in server admin key and, when AUTH_ALLOW_ENV_ADMINS is enabled, any user-granted admin keys. Identities with the corresponding private keys have edit and delete capabilities over all data.
  *     responses:
  *       200:
- *         description: Success
+ *         description: An array of PEM-encoded admin public keys.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
- *               description: Array of admin public keys
- *               example: ["<public key>"]
+ *               items:
+ *                 type: string
+ *                 description: PEM-encoded public key
+ *               example: ["-----BEGIN PUBLIC KEY-----\nMIIBI..."]
  */
 bindWebService('/sky/admin', endpointAdmin);
 

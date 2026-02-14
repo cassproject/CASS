@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2025 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2026 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ const endpointMultiDelete = async function () {
         return [];
     }
     await (signatureSheet).call(this);
-    const {succeeded: oldObjs,failed} = await validateSignaturesBulk.call(this, manyParseParams, 'Only an owner of an object may delete it.');
-    
+    const { succeeded: oldObjs, failed } = await validateSignaturesBulk.call(this, manyParseParams, 'Only an owner of an object may delete it.');
+
     let deleteBody = '';
     for (let oldObj of oldObjs) {
         let ids = [];
@@ -43,7 +43,7 @@ const endpointMultiDelete = async function () {
         if (oldObj != null) {
             for (const id of ids) {
                 deleteBody += `${JSON.stringify({ delete: { _index: inferTypeFromObj(oldObj).toLowerCase(), _id: id } })}\n`;
-                deleteBody += `${JSON.stringify({ delete: { _index: 'permanent', _id: id+'.' } })}\n`;
+                deleteBody += `${JSON.stringify({ delete: { _index: 'permanent', _id: id + '.' } })}\n`;
             }
         } else {
             error('Can\'t find object to delete', 401);

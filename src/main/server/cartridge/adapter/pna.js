@@ -111,7 +111,7 @@ async function pnaEndpoint() {
 }
 
 async function uploadToAws(data, name) {
-    const {S3Client, PutObjectCommand} = require("@aws-sdk/client-s3");
+    const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
     const AWS_REGION = process.env.PNA_AWS_REGION ? process.env.PNA_AWS_REGION : "";
     const AWS_BUCKET = process.env.PNA_AWS_BUCKET ? process.env.PNA_AWS_BUCKET : "";
@@ -191,5 +191,58 @@ async function uploadToAws(data, name) {
 }
 
 if (!global.disabledAdapters['ce']) {
+    /**
+     * @openapi
+     * /api/ce/pna/{id}:
+     *   get:
+     *     tags:
+     *       - PNA Adapter
+     *     summary: Get PNA index data for a framework
+     *     description: |
+     *       Generates a Provider Node Agent (PNA) index document for the T3
+     *       Network Competency Explorer, including directory metadata,
+     *       framework container info, and a list of competencies.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Framework identifier.
+     *     responses:
+     *       200:
+     *         description: PNA index JSON with directory, container, and competencies.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *   post:
+     *     tags:
+     *       - PNA Adapter
+     *     summary: Publish PNA index to the Competency Explorer S3 registry
+     *     description: |
+     *       Generates the PNA index and uploads it to the configured AWS S3
+     *       bucket for the Competency Explorer registry. Requires PNA_AWS_*
+     *       environment variables to be configured.
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Framework identifier.
+     *     responses:
+     *       200:
+     *         description: Upload result with framework ID and success status.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 framework:
+     *                   type: string
+     *                 success:
+     *                   type: boolean
+     */
     bindWebService("/ce/pna/*", pnaEndpoint);
 }

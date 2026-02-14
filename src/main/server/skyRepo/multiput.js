@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2025 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2026 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,14 +30,14 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
         let writeMs = new Date().getTime();
 
         for (let id of x.permanentIds) {
-            let obj = { 
-                'index': { 
-                    '_index': 'permanent', 
-                    '_id': id + '.' + (x.version || ''), 
-                    '_type': getTypeForObject(x.object, x.type), 
-                    'version': x.version, 
-                    'version_type': 'external' 
-                } 
+            let obj = {
+                'index': {
+                    '_index': 'permanent',
+                    '_id': id + '.' + (x.version || ''),
+                    '_type': getTypeForObject(x.object, x.type),
+                    'version': x.version,
+                    'version_type': 'external'
+                }
             };
             if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
                 delete obj.index['_type'];
@@ -45,14 +45,14 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
             body += `${JSON.stringify(obj)}\n`;
             body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs })}\n`;
 
-            obj = { 
-                'index': { 
-                    '_index': 'permanent', 
-                    '_id': id + '.', 
-                    '_type': getTypeForObject(x.object, x.type), 
-                    'version': x.version, 
-                    'version_type': 'external' 
-                } 
+            obj = {
+                'index': {
+                    '_index': 'permanent',
+                    '_id': id + '.',
+                    '_type': getTypeForObject(x.object, x.type),
+                    'version': x.version,
+                    'version_type': 'external'
+                }
             };
             if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
                 delete obj.index['_type'];
@@ -320,7 +320,7 @@ const skyrepoPutParsedBulk = async function (ary) {
         map[x.id] = x;
     }
 
-    const {succeeded,failed} = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
+    const { succeeded, failed } = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
     // Everything failed already
     if (Object.values(map).length === 0) {
         return failed;
