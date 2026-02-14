@@ -361,13 +361,11 @@ if (process.env.INCLUDE_SAMEORIGIN_IFRAME_HEADER == "true") {
 
 if (process.env.INCLUDE_STRICT_TRANSPORT_SECURITY_HEADER == "true") {
     app.use((req, res, next) => {
-
         let forwardingProtocol = req.headers["x-forwarded-proto"];
         let forwardedSecurely = forwardingProtocol && forwardingProtocol === "https";
         if (forwardedSecurely || req.secure) {
             res.setHeader("Strict-Transport-Security", "max-age=31536000")
         }
-
         next();
     });
 }
