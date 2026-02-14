@@ -1,0 +1,90 @@
+# Stage 1: Builder - compile FIPS OpenSSL (dual-version approach) and install dependencies
+# NOTE: Builder uses Debian (not Alpine) because the distroless runtime is Debian-based (glibc).
+# Alpine uses musl libc which produces incompatible binaries for the distroless glibc runtime.
+# The OpenSSL build pattern follows DockerfileAlpine's dual-version FIPS approach.
+FROM --platform=linux/amd64 node:24-slim AS builder
+
+ARG OPENSSL_VALIDATED_VERSION=3.1.2
+ARG OPENSSL_VERSION=3.5.5
+
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt update && \
+apt dist-upgrade -y && \
+apt install -qqy build-essential checkinstall clang curl libssl-dev wget zlib1g-dev perl && \
+cd /usr/local/src && \
+wget https://www.openssl.org/source/openssl-${OPENSSL_VALIDATED_VERSION}.tar.gz && \
+tar xvf openssl-${OPENSSL_VALIDATED_VERSION}.tar.gz && \
+cd openssl-${OPENSSL_VALIDATED_VERSION} && \
+./config --prefix=/usr/local shared zlib enable-fips enable-ec_nistp_64_gcc_128 && \
+make -j8 > make.log && \
+cd .. && \
+wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
+tar xvf openssl-${OPENSSL_VERSION}.tar.gz && \
+cd openssl-${OPENSSL_VERSION} && \
+./config --prefix=/usr/local shared zlib enable-fips enable-ec_nistp_64_gcc_128 && \
+make -j8 > make.log && \
+cp ../openssl-${OPENSSL_VALIDATED_VERSION}/providers/fips.so providers/. && \
+cp ../openssl-${OPENSSL_VALIDATED_VERSION}/providers/fipsmodule.cnf providers/. && \
+make install > makeinstall.log && \
+ldconfig && \
+cd .. && \
+cd openssl-${OPENSSL_VERSION} && \
+./util/wrap.pl -fips apps/openssl list -provider-path providers -provider fips -providers && \
+cd / && \
+apt remove -qqy build-essential checkinstall zlib1g-dev wget libssl-dev curl clang perl && \
+apt autoremove -qqy && \
+apt clean && \
+rm -rf /usr/local/src/openssl-${OPENSSL_VERSION}.tar.gz /usr/local/src/openssl-${OPENSSL_VERSION} \
+       /usr/local/src/openssl-${OPENSSL_VALIDATED_VERSION}.tar.gz /usr/local/src/openssl-${OPENSSL_VALIDATED_VERSION} && \
+echo "nodejs_conf = nodejs_init" >> /etc/ssl/nodejs.cnf && \
+echo ".include /usr/local/ssl/fipsmodule.cnf" >> /etc/ssl/nodejs.cnf && \
+echo "[nodejs_init]" >> /etc/ssl/nodejs.cnf && \
+echo "providers = provider_sect" >> /etc/ssl/nodejs.cnf && \
+echo "[provider_sect]" >> /etc/ssl/nodejs.cnf && \
+echo "default = default_sect" >> /etc/ssl/nodejs.cnf && \
+echo "fips = fips_sect" >> /etc/ssl/nodejs.cnf && \
+echo "[default_sect]" >> /etc/ssl/nodejs.cnf && \
+echo "activate = 1" >> /etc/ssl/nodejs.cnf
+
+ENV OPENSSL_FIPS=1
+ENV OPENSSL_CONF=/etc/ssl/nodejs.cnf
+ENV OPENSSL_MODULES=/usr/local/lib64/ossl-modules
+ENV LD_LIBRARY_PATH=/usr/local/lib64
+
+RUN openssl version -d -a
+RUN node --force-fips -e "console.log('Node.js is running with FIPS:', process.versions.openssl, process.versions.node);"
+
+RUN npm upgrade --global --production --omit=dev
+
+WORKDIR /app
+COPY package.json ./
+
+RUN npm update && \
+npm install --production --omit=dev && \
+npm upgrade --production --omit=dev --save && \
+npm audit --production --omit=dev --audit-level=high --fix
+
+COPY src src
+COPY ca.crt cass.crt cass.key copyright.txt ./
+
+# Stage 2: Distroless runtime - minimal image with no shell or package manager
+FROM --platform=linux/amd64 gcr.io/distroless/nodejs24-debian12
+
+# Copy FIPS OpenSSL libraries, modules, and configuration from builder
+COPY --from=builder /usr/local/lib /usr/local/lib
+COPY --from=builder /usr/local/lib64 /usr/local/lib64
+COPY --from=builder /usr/local/ssl /usr/local/ssl
+COPY --from=builder /etc/ssl/nodejs.cnf /etc/ssl/nodejs.cnf
+
+ENV OPENSSL_FIPS=1
+ENV OPENSSL_CONF=/etc/ssl/nodejs.cnf
+ENV OPENSSL_MODULES=/usr/local/lib64/ossl-modules
+ENV LD_LIBRARY_PATH=/usr/local/lib64
+
+# Copy application and dependencies from builder
+WORKDIR /app
+COPY --from=builder /app/node_modules node_modules
+COPY --from=builder /app/src src
+COPY --from=builder /app/ca.crt /app/cass.crt /app/cass.key /app/copyright.txt ./
+
+EXPOSE 80
+ENTRYPOINT ["/nodejs/bin/node", "--force-fips", "./src/main/server.js"]
