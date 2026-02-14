@@ -324,16 +324,40 @@ const options = {
     definition: JSON.parse(fs.readFileSync('src/main/swagger.json') + ''),
     apis: ['./src/**/*.js']
 };
+const generatedSpec = swaggerJsdoc(options);
+
+// Validate the OpenAPI spec at startup — exit if invalid.
+const OpenApiSchemaValidator = require('openapi-schema-validator').default;
+const specValidator = new OpenApiSchemaValidator({ version: 3 });
+const specValidationResult = specValidator.validate(generatedSpec);
+if (specValidationResult.errors.length > 0) {
+    console.error('OpenAPI specification validation failed:');
+    for (const err of specValidationResult.errors) {
+        console.error(`  - ${err.instancePath || '/'}: ${err.message}`);
+    }
+    process.exit(1);
+}
+
 app.get('/api/swagger.json', (req, res, next) => {
-    res.end(JSON.stringify(swaggerJsdoc(options), null, 2));
+    res.end(JSON.stringify(generatedSpec, null, 2));
 });
-app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options), swaggerUiOptions));
+app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(generatedSpec, swaggerUiOptions));
 app.get('/api', (req, res, next) => {
     return res.redirect('/api/swagger');
 });
 app.get('/api/', (req, res, next) => {
     return res.redirect('swagger');
 });
+
+// Optional: validate every response against the OpenAPI spec (enable for testing).
+if (process.env.VALIDATE_RESPONSES) {
+    const OpenApiValidator = require('express-openapi-validator');
+    app.use(OpenApiValidator.middleware({
+        apiSpec: generatedSpec,
+        validateRequests: false,
+        validateResponses: true,
+    }));
+}
 
 if (process.env.KILL) {
     app.get('/api/kill', (req, res, next) => {

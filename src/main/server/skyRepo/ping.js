@@ -76,12 +76,12 @@ const pingWithTime = function () {
  *             schema:
  *               type: object
  *               description: Ping response
- *               additionalProperties: false
  *               required:
  *                 - ping
  *                 - time
  *                 - adminPublicKeys
  *                 - postMaxSize
+ *                 - signatureSheetHashAlgorithm
  *               properties:
  *                 ping:
  *                   type: string
@@ -93,6 +93,7 @@ const pingWithTime = function () {
  *                   example: 1674857764808
  *                 ssoViaP1:
  *                   type: boolean
+ *                   nullable: true
  *                   description: A flag indicating that the user logged in through a Platform One JWT.
  *                   example: true
  *                 ssoPublicKey:
@@ -102,6 +103,8 @@ const pingWithTime = function () {
  *                 ssoAdditionalPublicKeys:
  *                   type: array
  *                   description: When logged in with SSO, the public keys of keys past the first in the keyring.
+ *                   items:
+ *                     type: string
  *                   example: ["<public key>"]
  *                 ssoLogin:
  *                   type: string
@@ -136,26 +139,41 @@ const pingWithTime = function () {
  *                   description: If specified in MOTD_TITLE, MOTD_MESSAGE environment variables communicated from the server.
  *                   required:
  *                     - message
- *                     - color
+ *                     - title
  *                   properties:
- *                     message:
+ *                     title:
  *                       type: string
  *                       description: Message of the Day title as specified by MOTD_TITLE environment variable.
  *                       example: Message of the Day
- *                     color:
+ *                     message:
  *                       type: string
  *                       description: Message of the Day text as specified by MOTD_MESSAGE environment variable.
  *                       example: Have a good day!
+ *                 plugins:
+ *                   type: string
+ *                   description: Default plugins to load, as specified by DEFAULT_PLUGINS environment variable.
  *                 adminPublicKeys:
  *                   type: array
  *                   description: Array of admin public keys
+ *                   items:
+ *                     type: string
  *                   example: ["<public key>"]
  *                 corsOrigins:
  *                   type: array
  *                   description: For which origins should the cass client include credentials for in its requests.
+ *                   items:
+ *                     type: string
  *                   example: ["http://localhost"]
  *                 postMaxSize:
  *                   type: number
  *                   description: Max size of fields and files in POST requests that this server can handle in bytes.
+ *                 signatureSheetHashAlgorithm:
+ *                   type: string
+ *                   description: The hash algorithm used for signature sheet verification.
+ *                   example: SHA-256
+ *                 fips:
+ *                   type: integer
+ *                   description: FIPS mode status from OpenSSL crypto module. 0 means disabled, 1 means enabled.
+ *                   example: 0
  */
 bindWebService('/ping', pingWithTime);
