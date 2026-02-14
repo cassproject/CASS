@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.6.12
+* Added distroless Docker image (`docker-compose-distroless.yml`) — minimal attack surface with no shell or package manager.
+* Added comprehensive OpenAPI documentation to all API endpoints — interactive API docs available at `/api/swagger/`.
+* OpenAPI specification is now validated at server startup — the server exits if the spec is invalid.
+* Added `ENVIRONMENT.md` documenting all 80+ environment variables.
+* Added `CONFIGURATION.md` (configuration guide), `DEPLOYMENT.md` (local, Docker Hub, and Kubernetes deployment), and `FILE.md` (project structure).
+* (SECURITY) Updated `qs` dependency from 6.14.1 to 6.14.2.
+* Updated libraries.
+
 ## 1.6.11
 * Updated libraries.
 * Hybrid alpine OpenSSL using FIPS compliant base with FIPS validated FIPS module.

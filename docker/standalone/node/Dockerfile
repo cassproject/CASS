@@ -46,5 +46,8 @@ chown 1000:1000 node_modules -R
 COPY --chown=1000:1000 src src
 COPY --chown=1000:1000 ca.crt cass.crt cass.key copyright.txt ./
 
+RUN mkdir /app/etc
+RUN chown 1000:1000 /app/etc
+
 EXPOSE 80
 ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]

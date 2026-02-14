@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Mainline: 1.6.11 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
+Mainline: 1.6.12 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
 Supported: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
 
 [High level documentation](https://docs.cassproject.org)  
@@ -96,20 +96,29 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Update src/main/webapp to point at the appropriate gh-pages commit. Ensure the version number of cass-editor matches.
  * `npm install`
  * `npm run testWithCoverage`
- * In another command window, `npm run openapi:validate` - Must not fail any tests.
  * In the command window running testWithCoverage, `ctrl+c`. Record the output of the code coverage for the tests in codeCoverage.md.
  * Update CHANGELOG.md
  * Update README.md
+
  * Run `npm run buildRun:standalone` to ensure the container can build.
  * `docker scout cves cass-test > scan-standalone.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
+
  * Run `docker-compose up --build` to ensure the container can build.
+ * `npm run mocha`
  * `docker scout cves cass-cass > scan-node.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
+
  * Run `docker-compose -f docker-compose-alpine.yml up --build` to ensure the container can build.
  * `npm run mocha`
  * `docker scout cves cass-cass > scan-node.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
+ 
+ * Run `docker-compose -f docker-compose-distroless.yml up --build` to ensure the container can build.
+ * `npm run mocha`
+ * `docker scout cves cass-cass > scan-node.txt`
+ * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
+ 
  * Commit with release notes.
  * Tag commit with version number.
 

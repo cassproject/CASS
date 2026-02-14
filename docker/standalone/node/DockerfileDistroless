@@ -65,6 +65,8 @@ npm audit --production --omit=dev --audit-level=high --fix
 
 COPY src src
 COPY ca.crt cass.crt cass.key copyright.txt ./
+RUN mkdir /app/etc
+RUN chown 1000:1000 /app/etc
 
 # Stage 2: Distroless runtime - minimal image with no shell or package manager
 FROM --platform=linux/amd64 gcr.io/distroless/nodejs24-debian12
@@ -85,6 +87,7 @@ WORKDIR /app
 COPY --from=builder /app/node_modules node_modules
 COPY --from=builder /app/src src
 COPY --from=builder /app/ca.crt /app/cass.crt /app/cass.key /app/copyright.txt ./
+COPY --from=builder /app/etc etc
 
 EXPOSE 80
 ENTRYPOINT ["/nodejs/bin/node", "--force-fips", "./src/main/server.js"]

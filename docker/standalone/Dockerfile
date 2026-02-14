@@ -31,7 +31,6 @@ COPY --chown=elasticsearch src CASS/src
 COPY --chown=elasticsearch ca.crt CASS/ca.crt
 COPY --chown=elasticsearch cass.crt CASS/cass.crt
 COPY --chown=elasticsearch cass.key CASS/cass.key
-COPY --chown=elasticsearch pm2.standalone.config.js CASS/pm2.standalone.config.js
 COPY --chown=elasticsearch copyright.txt CASS/copyright.txt
 COPY --chown=elasticsearch LICENSE CASS/LICENSE
 

@@ -26,6 +26,7 @@ services:
       memlock:
         soft: -1
         hard: -1
+    user: "1000"
     volumes:
       - etc:/app/etc
     depends_on:
