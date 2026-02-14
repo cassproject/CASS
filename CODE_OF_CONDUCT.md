@@ -1,6 +1,6 @@
 # 1. Purpose
 
-At the CaSS project, we believe our community should be open for everyone. As such, we are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, disability, ethnicity, religion, or technical preferences.
+At the CaSS project, we believe our community should be open for everyone. As such, we are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, disability, ethnicity, religion, terminal or other technical preferences.
 This code of conduct outlines our expectations for community member behavior as well as the consequences for unacceptable behavior.
 We invite all community members to help us realize a safe and positive environment for everyone.
 

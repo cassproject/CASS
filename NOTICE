@@ -1,5 +1,10 @@
 Competency and Skills Service (CASS)
-Copyright 2015-2025 Eduworks Corporation and other contributing parties.
+Copyright 2015-2026 Eduworks Corporation and other contributing parties.
+
+---
+
+Bundled Client-Side Libraries (src/main/webapp/)
+=================================================
 
 This software uses the Forge library (https://github.com/digitalbazaar/forge) developed by Digital Bazaar under the New BSD 3-clause license.
 	forge.min.js
@@ -13,9 +18,7 @@ This software uses the Foundation library (http://foundation.zurb.com/) under th
 	foundation.css
 The Foundation license can be found at https://github.com/zurb/foundation-sites/blob/develop/LICENSE.
 
-Foundation uses a what-input.min.js library (https://github.com/ten1seven/what-input) under the MIT license at https://github.com/ten1seven/what-input/blob/master/LICENSE.
-
-This software uses the moment-with-locales.js (http://momentjs.com/) developed by Tim Wood, Iskren Chernev, et al under the MIT license at https://github.com/moment/moment/blob/develop/LICENSE.
+This software uses moment-with-locales.js (http://momentjs.com/) developed by Tim Wood, Iskren Chernev, et al under the MIT license at https://github.com/moment/moment/blob/develop/LICENSE.
 
 This software uses papaparse.js, developed by Matthew Holt under the MIT license at https://github.com/mholt/PapaParse/blob/master/LICENSE
 
@@ -24,5 +27,46 @@ This software uses jquery under the MIT license at http://jquery.org/license
 This software uses xml2json.js library under the Apache Version 2 license attached to the file.
 
 This software uses the stjs.js library by Alexandru Craciun, Eyal Kaspi under the Apache Version 2 license at https://github.com/st-js/st-js/blob/master/LICENSE.TXT
+
+---
+
+Node.js Production Dependencies
+=================================
+
+The following third-party packages are installed via npm and used at runtime.
+
+Apache-2.0 License:
+  @aws-sdk/client-s3       - AWS SDK for S3  (https://github.com/aws/aws-sdk-js-v3)
+  cassproject               - CaSS Project library  (https://github.com/cassproject/cass-npm)
+  rxjs                      - Reactive Extensions  (https://github.com/ReactiveX/rxjs)
+
+MIT License:
+  @xmldom/xmldom            - XML DOM implementation  (https://github.com/xmldom/xmldom)
+  busboy                    - Multipart form parser  (https://github.com/mscdex/busboy)
+  check-disk-space          - Disk space checker  (https://github.com/Alex-music/check-disk-space)
+  compression               - HTTP compression middleware  (https://github.com/expressjs/compression)
+  cors                      - CORS middleware  (https://github.com/expressjs/cors)
+  express                   - Web framework  (https://github.com/expressjs/express)
+  express-jwt               - JWT middleware  (https://github.com/auth0/express-jwt)
+  express-openid-connect    - OIDC middleware  (https://github.com/auth0/express-openid-connect)
+  jsonpath-plus             - JSONPath implementation  (https://github.com/JSONPath-Plus/JSONPath)
+  node-object-hash          - Object hashing  (https://github.com/SkeLLLa/node-object-hash)
+  node-worker-threads-pool  - Worker thread pool  (https://github.com/nickyc975/node-worker-threads-pool)
+  pure-uuid                 - UUID generation  (https://github.com/nicedoc/pure-uuid)
+  rdflib                    - RDF library  (https://github.com/linkeddata/rdflib.js)
+  spdy-fixes                - HTTP/2 server  (https://github.com/nickyc975/spdy-fixes)
+  swagger-jsdoc             - Swagger/OpenAPI doc generation  (https://github.com/Surnet/swagger-jsdoc)
+  swagger-ui-express        - Swagger UI middleware  (https://github.com/scottie1984/swagger-ui-express)
+  undici                    - HTTP client  (https://github.com/nodejs/undici)
+  uuid                      - UUID generation  (https://github.com/uuidjs/uuid)
+  ws                        - WebSocket client/server  (https://github.com/websockets/ws)
+
+MIT-0 License:
+  nodemailer                - Email sending  (https://github.com/nodemailer/nodemailer)
+
+BSD-2-Clause License:
+  express-ws                - WebSocket support for Express  (https://github.com/HenningM/express-ws)
+
+---
 
 All other files in this project are subject to the license designated in the preamble of the file, or to the Apache 2 license found under LICENSE.
