@@ -18,6 +18,28 @@
  * --END_LICENSE--
  */
 
+let originalFetch = global.fetch;
+let fetchAllowList = process.env.FETCH_ALLOW_LIST ? process.env.FETCH_ALLOW_LIST.split(',').map(x => x.trim()) : null;
+global.fetch = async function (url, options) {
+    //Get allow list from environment variable, split by comma, and trim whitespace
+    if (fetchAllowList) {
+        let allowed = fetchAllowList.some(allowedUrl => {
+            if (allowedUrl.endsWith('*')) {
+                // Handle wildcard at the end of the URL
+                return url.startsWith(allowedUrl.slice(0, -1));
+            } else {
+                // Exact match
+                return url === allowedUrl;
+            }
+        });
+        if (!allowed) {
+            global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.WARNING, 'FetchBlocked', `Blocked fetch to ${url} not in allow list`);
+            throw new Error(`Fetch to ${url} blocked by allow list`);
+        }
+    }
+    return originalFetch(url, options);
+}
+
 let startupDt = new Date();
 global.auditLogger = require('./server/shims/auditLogger.js');
 const express = require('express');
