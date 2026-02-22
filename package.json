@@ -4,7 +4,7 @@
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "scripts": {
-    "test": "npm run test:deps && npm run test:start && npm run mocha && npm run stop",
+    "test": "npm run test:deps && npm run mochaDev",
     "testWithCoverage": "npm run test:deps && nyc --reporter=lcov --reporter=text --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run test:mocha",
     "test:mocha": "mocha -b --timeout 15000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
     "test:start": "node src/main/server.js",
@@ -23,7 +23,7 @@
     "dev:nyc": "nyc --reporter lcov node src/main/server.js",
     "dev:node": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&export PORT=8080|| set PORT=8080&&node src/main/server.js",
     "mocha": "export NODEV=true|| set NODEV=true&& mocha -b --timeout 15000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
-    "mochaDev": "mocha -b --timeout 15000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
+    "mochaDev": "export CLOSE=true|| set CLOSE=true&& mocha -b --timeout 15000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
     "mochaEncryption": "mocha -b --timeout 15000 node_modules/cassproject/src/com/eduworks/ec/crypto/*.test.js",
     "mochafast": "mocha -b src/**/*.test.js",
     "mochaHttps": "export CASS_LOOPBACK=https://localhost/api/|| set CASS_LOOPBACK=https://localhost/api/&&npm run mocha",
@@ -74,10 +74,10 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.992.0",
+    "@aws-sdk/client-s3": "^3.995.0",
     "@xmldom/xmldom": "^0.9.8",
     "busboy": "^1.6.0",
-    "cassproject": "^5.0.10",
+    "cassproject": "^5.0.12",
     "check-disk-space": "^3.4.0",
     "compression": "^1.8.1",
     "cors": "^2.8.6",
@@ -103,15 +103,19 @@
   "devDependencies": {
     "chai": "4.5.0",
     "concurrently": "^9.2.1",
-    "eslint": "^9.39.2",
+    "eslint": "^9.39.3",
     "eslint-config-google": "^0.14.0",
     "express-openapi-validator": "^5.6.2",
     "fake-indexeddb": "^6.2.5",
     "mocha": "^11.7.5",
-    "nodemon": "^3.1.11",
+    "nodemon": "^3.1.14",
     "nyc": "^17.1.0",
     "sinon": "^21.0.1",
     "wait-on": "^9.0.4"
   },
-  "packageManager": "npm@11.3.0+sha512.96eb611483f49c55f7fa74df61b588de9e213f80a256728e6798ddc67176c7b07e4a1cfc7de8922422cbce02543714367037536955221fa451b0c4fefaf20c66"
+  "packageManager": "npm@11.3.0+sha512.96eb611483f49c55f7fa74df61b588de9e213f80a256728e6798ddc67176c7b07e4a1cfc7de8922422cbce02543714367037536955221fa451b0c4fefaf20c66",
+  "overrides": {
+    "minimatch": "^10.2.1",
+    "glob": "^10.5.0"
+  }
 }

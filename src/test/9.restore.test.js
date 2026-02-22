@@ -11,6 +11,9 @@ describe('Skyrepo Log Restore', function () {
     it('Restore', async () => {
         global.auditLogger.report = global.auditLogger.oldReport;
         if (process.env.CLOSE)
+        {
+            console.log("CLOSE is set -- Closing server.");
             process.exit(0);
+        }
     });
 });
