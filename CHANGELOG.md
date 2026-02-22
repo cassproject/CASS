@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.6.13
+* Added FETCH_ALLOW_LIST to identify valid targets to fetch, if set.
+* Updated libraries
+* Security updates.
+
 ## 1.6.12
 * Added distroless Docker image (`docker-compose-distroless.yml`) — minimal attack surface with no shell or package manager.
 * Added comprehensive OpenAPI documentation to all API endpoints — interactive API docs available at `/api/swagger/`.
