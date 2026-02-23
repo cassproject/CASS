@@ -1,6 +1,5 @@
-ARG alpineVersion=3.22
 ARG nodeVersion=24
-FROM --platform=linux/amd64 node:$nodeVersion-alpine$alpineVersion
+FROM --platform=linux/amd64 node:$nodeVersion-alpine
 
 RUN apk update && apk upgrade --no-cache
 
