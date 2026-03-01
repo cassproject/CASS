@@ -74,23 +74,7 @@ Use containerized builds, see compose files in the root for examples.
 Due to the performance improvements in the 1.5 version of CaSS, we highly recommend using Elasticsearch 9 with it as it's better configured to handle the load than previous versions.
 
 ## Release Process
- * `npm upgrade --save` Review dependencies, autocomplete version numbers
- * Increment version number in package.json and src/main/swagger.json and docker-compose*.yml
- * Increment elasticsearch version number (in Dockerfile and docker-compose) to latest minor/revision in docker/standalone/DockerFile (https://hub.docker.com/_/elasticsearch)
- * Update src/main/webapp to point at the appropriate gh-pages commit. Ensure the version number of cass-editor matches.
-
- * Update CHANGELOG.md
- * Update README.md
-
- * Run `docker compose -f docker-compose-test.yml up elasticsearch-cass -d `
- * Run `docker compose -f docker-compose-test.yml build --no-cache`
- * Run `docker compose -f docker-compose-test.yml up -d`
-
- * `docker scout cves cass-cass -o scan-node.txt;docker scout cves cass-cass-alpine -o scan-alpine.txt;docker scout cves cass-cass-distroless -o scan-distroless.txt;docker scout cves cass-cass-standalone -o scan-standalone.txt`
- * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
-
- * Commit with release notes.
- * Tag commit with version number.
+The CaSS release process is automated via GitHub Actions. For detailed instructions on how to trigger a release, see [RELEASE.md](RELEASE.md).
 
 ### FIPS:
 FIPS is supported both client-side and server-side in CaSS. Here is the relevant compatibility table.
