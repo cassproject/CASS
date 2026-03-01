@@ -59,10 +59,14 @@ npm audit --production --omit=dev --audit-level=high --fix && \
 chown 1000:1000 node_modules -R
 
 COPY --chown=1000:1000 src src
-COPY --chown=1000:1000 ca.crt cass.crt cass.key copyright.txt ./
+COPY --chown=1000:1000 ca.crt cass.crt cass.key copyright.txt client.key client.crt ./
 
 RUN mkdir /app/etc
 RUN chown 1000:1000 /app/etc
+
+ARG TEST=false
+RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=http://localhost:8082/api/ && npm i && npm run mochaDev && npm ci --production --omit=dev ; fi
+RUN rm -f client.key client.crt
 
 EXPOSE 80
 ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]

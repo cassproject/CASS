@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.19.10
+FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.19.12
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
@@ -31,6 +31,8 @@ COPY --chown=elasticsearch src CASS/src
 COPY --chown=elasticsearch ca.crt CASS/ca.crt
 COPY --chown=elasticsearch cass.crt CASS/cass.crt
 COPY --chown=elasticsearch cass.key CASS/cass.key
+COPY --chown=elasticsearch client.crt CASS/client.crt
+COPY --chown=elasticsearch client.key CASS/client.key
 COPY --chown=elasticsearch copyright.txt CASS/copyright.txt
 COPY --chown=elasticsearch LICENSE CASS/LICENSE
 
@@ -55,4 +57,9 @@ RUN chown -R elasticsearch:root /logs
 
 ENV HTTP2=false
 USER elasticsearch:root
+
+ARG TEST=false
+RUN if [ "$TEST" = "true" ] ; then export PORT=8080 && export CASS_LOOPBACK=http://localhost:8080/api/ && cd CASS && npm i && (nohup /bin/tini -- /usr/local/bin/docker-entrypoint.sh > /dev/null 2>&1 & npm run mochaDev) && npm ci --production --omit=dev ; fi
+RUN rm -f CASS/client.key CASS/client.crt
+
 ENTRYPOINT (cd CASS && node --force-fips src/main/server.js) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh

@@ -64,9 +64,13 @@ npm upgrade --production --omit=dev --save && \
 npm audit --production --omit=dev --audit-level=high --fix
 
 COPY src src
-COPY ca.crt cass.crt cass.key copyright.txt ./
+COPY --chown=1000:1000 ca.crt cass.crt cass.key client.key client.crt copyright.txt ./
 RUN mkdir /app/etc
 RUN chown 1000:1000 /app/etc
+
+ARG TEST=false
+RUN if [ "$TEST" = "true" ] ; then export PORT=8083 && export CASS_LOOPBACK=http://localhost:8083/api/ && npm i && npm run mochaDev && npm ci --production --omit=dev ; fi
+RUN rm -f client.key client.crt
 
 # Stage 2: Distroless runtime - minimal image with no shell or package manager
 FROM --platform=linux/amd64 gcr.io/distroless/nodejs24-debian12
@@ -84,10 +88,10 @@ ENV LD_LIBRARY_PATH=/usr/local/lib64
 
 # Copy application and dependencies from builder
 WORKDIR /app
-COPY --from=builder /app/node_modules node_modules
-COPY --from=builder /app/src src
-COPY --from=builder /app/ca.crt /app/cass.crt /app/cass.key /app/copyright.txt ./
-COPY --from=builder /app/etc etc
+COPY --from=builder --chown=1000:1000 /app/node_modules node_modules
+COPY --from=builder --chown=1000:1000 /app/src src
+COPY --from=builder --chown=1000:1000 /app/ca.crt /app/cass.crt /app/cass.key /app/copyright.txt ./
+COPY --from=builder --chown=1000:1000 /app/etc etc
 
 EXPOSE 80
 ENTRYPOINT ["/nodejs/bin/node", "--force-fips", "./src/main/server.js"]

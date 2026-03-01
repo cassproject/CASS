@@ -1,8 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Mainline: 1.6.13 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.6)](https://travis-ci.org/cassproject/CASS) 
-Supported: 1.5.73 [![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=1.5)](https://travis-ci.org/cassproject/CASS)  
+Mainline: 1.6.13
 
 [High level documentation](https://docs.cassproject.org)  
 [Developer documentation](https://devs.cassproject.org)
@@ -15,6 +14,12 @@ This installation of CaSS will provide several components that operate to provid
  * The CaSS Library, a Javascript library that provides an interoperability layer between web applications and the CaSS Repository.
  * CaSS Embeddable Apps, a set of iframeable applications for branded web applications.
  * CaSS Adapters, which provide particular functionality, typically standards based (xAPI, CTDL-ASN, etc).
+
+## Docker
+
+Docker images for standalone instances (based on Elasticsearch's container) and distributed/scalable instances (based on Node, Alpine Linux, and Distroless) can be found at:
+
+https://hub.docker.com/r/cassproject/cass
 
 # CaSS Libraries
 ## From GitHub
@@ -33,12 +38,6 @@ https://www.npmjs.com/package/cassproject
     sudo ./cassInstall.sh
     
 During the installation, you will be asked to select a version to install. Versions are listed at the top of this document.
-
-## Docker
-
-Docker images for standalone instances (based on Ubuntu) and distributed/scalable instances (based on Node and Alpine Linux) can be found at:
-
-https://hub.docker.com/r/cassproject/cass
 
 # Post Installation
 To support open linked data, it is important that the objects created in CaSS have public, reliable URLs. For this:
@@ -60,31 +59,16 @@ Dependencies: Docker (will pull and run elasticsearch on port 9200)
 
 ## In a separate command line, if you want unit tests:
 
- * `npm run automocha` - Runs both cass-npm and cass unit tests, runs them again on-save.
- * `npm run automochafast` - Runs cass unit tests, runs them again on-save.
- * `npm run mocha` - Runs cass-npm and cass unit tests.
- * `npm run mochafast` - Runs cass unit tests.
+ * `npm test` - Runs server, cass-npm and cass unit tests, runs them again on-save. Don't run with dev.
 
 ## Generating documentation
 Will be deposited in `/docs`
 
  * `npm run docs`
 
-## Running in myriad environments (requires Docker)
-
-Where flavors are: ubuntu16, ubuntu18, ubuntu20, ubuntu18:13to15, standaloneWindows, standalone, testReplication
- * `npm run buildRun:<flavor>` - Wipes previous test container, builds and starts flavor container.
- * `npm run buildRun:kill` - Stops the running container.
-
 ## Running it like it's in prod
 
- * `npm run run:cassbase` - Starts PM2 on localhost:8080/cass (used by cassInstall.sh)
- * `npm run run:standalone` - Starts PM2 on localhost/ (used by Docker installs)
- * `npm run run` - Starts PM2 on localhost:8080/
- * `npm run logs` - Tails logs.
- * `npm run stop` - Stops all PM2 services.
-
- To get the process to restart when your linux machine restarts, run `npm run pm2startup`, run the command the process tells you to, and run `npm run pm2save`. For Windows, an additional library is needed to configure this.
+Use containerized builds, see compose files in the root for examples.
 
 ## A note on Elasticsearch and 1.5
 Due to the performance improvements in the 1.5 version of CaSS, we highly recommend using Elasticsearch 9 with it as it's better configured to handle the load than previous versions.
@@ -94,30 +78,17 @@ Due to the performance improvements in the 1.5 version of CaSS, we highly recomm
  * Increment version number in package.json and src/main/swagger.json and docker-compose*.yml
  * Increment elasticsearch version number (in Dockerfile and docker-compose) to latest minor/revision in docker/standalone/DockerFile (https://hub.docker.com/_/elasticsearch)
  * Update src/main/webapp to point at the appropriate gh-pages commit. Ensure the version number of cass-editor matches.
- * `npm install`
- * `npm run testWithCoverage`
+
  * Update CHANGELOG.md
  * Update README.md
 
- * Run `npm run buildRun:standalone` to ensure the container can build.
- * `docker scout cves cass-test > scan-standalone.txt`
+ * Run `docker compose -f docker-compose-test.yml up elasticsearch-cass -d `
+ * Run `docker compose -f docker-compose-test.yml build --no-cache`
+ * Run `docker compose -f docker-compose-test.yml up -d`
+
+ * `docker scout cves cass-cass -o scan-node.txt;docker scout cves cass-cass-alpine -o scan-alpine.txt;docker scout cves cass-cass-distroless -o scan-distroless.txt;docker scout cves cass-cass-standalone -o scan-standalone.txt`
  * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
 
- * Run `docker-compose up --build` to ensure the container can build.
- * `npm run mocha`
- * `docker scout cves cass-cass > scan-node.txt`
- * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
-
- * Run `docker-compose -f docker-compose-alpine.yml up --build` to ensure the container can build.
- * `npm run mocha`
- * `docker scout cves cass-cass > scan-node.txt`
- * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
- 
- * Run `docker-compose -f docker-compose-distroless.yml up --build` to ensure the container can build.
- * `npm run mocha`
- * `docker scout cves cass-cass > scan-node.txt`
- * Use Docker Desktop or the previous output to resolve any high or medium priority (6.0 CVSS and above) issues.
- 
  * Commit with release notes.
  * Tag commit with version number.
 

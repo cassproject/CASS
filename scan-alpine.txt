@@ -1,0 +1,97 @@
+
+
+## Overview
+
+                   │       Analyzed Image        
+───────────────────┼─────────────────────────────
+ Target            │  cass-cass-alpine:latest    
+   digest          │  8c9173a4eea5               
+   platform        │ linux/amd64                 
+   vulnerabilities │    0C     2H     4M     2L  
+   size            │ 193 MB                      
+   packages        │ 662                         
+
+
+## Packages and Vulnerabilities
+
+   0C     2H     0M     0L  minimatch 10.2.2
+pkg:npm/minimatch@10.2.2
+
+    x HIGH CVE-2026-27904 [Inefficient Regular Expression Complexity]
+      https://scout.docker.com/v/CVE-2026-27904?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
+      Affected range : >=10.0.0                                     
+                     : <10.2.3                                      
+      Fixed version  : 10.2.3                                       
+      CVSS Score     : 7.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
+    
+    x HIGH CVE-2026-27903 [Inefficient Algorithmic Complexity]
+      https://scout.docker.com/v/CVE-2026-27903?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
+      Affected range : >=10.0.0                                     
+                     : <10.2.3                                      
+      Fixed version  : 10.2.3                                       
+      CVSS Score     : 7.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
+    
+
+   0C     0H     3M     0L  jose 2.0.7
+pkg:npm/jose@2.0.7
+
+    x MEDIUM CVE-2021-29446 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/CVE-2021-29446?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
+      Affected range : <3.11.4                                      
+      Fixed version  : 3.11.4                                       
+      CVSS Score     : 5.9                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
+    
+    x MEDIUM CVE-2021-29445 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/CVE-2021-29445?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
+      Affected range : <3.11.4                                      
+      Fixed version  : 3.11.4                                       
+      CVSS Score     : 5.9                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
+    
+    x MEDIUM CVE-2021-29444 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/CVE-2021-29444?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
+      Affected range : <3.11.4                                      
+      Fixed version  : 3.11.4                                       
+      CVSS Score     : 5.9                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
+    
+
+   0C     0H     1M     0L  busybox 1.37.0-r30
+pkg:apk/alpine/busybox@1.37.0-r30?os_name=alpine&os_version=3.23
+
+    x MEDIUM CVE-2025-60876
+      https://scout.docker.com/v/CVE-2025-60876?s=alpine&n=busybox&ns=alpine&t=apk&osn=alpine&osv=3.23&vr=%3C%3D1.37.0-r30
+      Affected range : <=1.37.0-r30 
+      Fixed version  : not fixed    
+    
+
+   0C     0H     0M     1L  fast-xml-parser 5.3.6
+pkg:npm/fast-xml-parser@5.3.6
+
+    x LOW CVE-2026-27942 [Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')]
+      https://scout.docker.com/v/CVE-2026-27942?s=github&n=fast-xml-parser&t=npm&vr=%3C5.3.8
+      Affected range : <5.3.8                                                              
+      Fixed version  : 5.3.8                                                               
+      CVSS Score     : 2.7                                                                 
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:U 
+    
+
+   0C     0H     0M     1L  zlib 1.3.1-r2
+pkg:apk/alpine/zlib@1.3.1-r2?os_name=alpine&os_version=3.23
+
+    x LOW CVE-2026-27171
+      https://scout.docker.com/v/CVE-2026-27171?s=alpine&n=zlib&ns=alpine&t=apk&osn=alpine&osv=3.23&vr=%3C%3D1.3.1-r2
+      Affected range : <=1.3.1-r2 
+      Fixed version  : not fixed  
+    
+
+
+8 vulnerabilities found in 5 packages
+  CRITICAL  0 
+  HIGH      2 
+  MEDIUM    4 
+  LOW       2 
+

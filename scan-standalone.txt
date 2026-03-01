@@ -1,0 +1,262 @@
+
+
+## Overview
+
+                   │               Analyzed Image               
+───────────────────┼────────────────────────────────────────────
+ Target            │  cass-cass-standalone:latest               
+   digest          │  53615ca0d78a                              
+   platform        │ linux/amd64                                
+   provenance      │ https://github.com/elastic/elasticsearch   
+                   │  https://github.com/elastic/elasticsearch/blob/840cd2a58b052d1632219ee0b8dcc0f364226287  
+   vulnerabilities │    0C     4H    17M     5L                 
+   size            │ 1.1 GB                                     
+   packages        │ 1356                                       
+
+
+## Packages and Vulnerabilities
+
+   0C     2H     0M     0L  minimatch 10.2.2
+pkg:npm/minimatch@10.2.2
+
+    x HIGH CVE-2026-27904 [Inefficient Regular Expression Complexity]
+      https://scout.docker.com/v/CVE-2026-27904?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
+      Affected range : >=10.0.0                                     
+                     : <10.2.3                                      
+      Fixed version  : 10.2.3                                       
+      CVSS Score     : 7.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
+    
+    x HIGH CVE-2026-27903 [Inefficient Algorithmic Complexity]
+      https://scout.docker.com/v/CVE-2026-27903?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
+      Affected range : >=10.0.0                                     
+                     : <10.2.3                                      
+      Fixed version  : 10.2.3                                       
+      CVSS Score     : 7.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
+    
+
+   0C     1H     0M     0L  com.fasterxml.jackson.core/jackson-core 2.17.2
+pkg:maven/com.fasterxml.jackson.core/jackson-core@2.17.2
+
+    x HIGH GHSA-72hv-8253-57qq [Allocation of Resources Without Limits or Throttling]
+      https://scout.docker.com/v/GHSA-72hv-8253-57qq?s=github&n=jackson-core&ns=com.fasterxml.jackson.core&t=maven&vr=%3E%3D2.0.0%2C%3C%3D2.18.5
+      Affected range : >=2.0.0                                                         
+                     : <=2.18.5                                                        
+      Fixed version  : 2.18.6                                                          
+      CVSS Score     : 8.7                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N 
+    
+
+   0C     1H     0M     0L  com.fasterxml.jackson.core/jackson-core 2.15.0
+pkg:maven/com.fasterxml.jackson.core/jackson-core@2.15.0
+
+    x HIGH GHSA-72hv-8253-57qq [Allocation of Resources Without Limits or Throttling]
+      https://scout.docker.com/v/GHSA-72hv-8253-57qq?s=github&n=jackson-core&ns=com.fasterxml.jackson.core&t=maven&vr=%3E%3D2.0.0%2C%3C%3D2.18.5
+      Affected range : >=2.0.0                                                         
+                     : <=2.18.5                                                        
+      Fixed version  : 2.18.6                                                          
+      CVSS Score     : 8.7                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N 
+    
+
+   0C     0H     6M     0L  nodejs 24.14.0-1nodesource1
+pkg:deb/ubuntu/nodejs@24.14.0-1nodesource1?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x MEDIUM CVE-2025-23166
+      https://scout.docker.com/v/CVE-2025-23166?s=ubuntu&n=nodejs&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+    x MEDIUM CVE-2025-23085
+      https://scout.docker.com/v/CVE-2025-23085?s=ubuntu&n=nodejs&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+    x MEDIUM CVE-2024-27983
+      https://scout.docker.com/v/CVE-2024-27983?s=ubuntu&n=nodejs&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+    x MEDIUM CVE-2024-27982
+      https://scout.docker.com/v/CVE-2024-27982?s=ubuntu&n=nodejs&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+    x MEDIUM CVE-2024-22020
+      https://scout.docker.com/v/CVE-2024-22020?s=ubuntu&n=nodejs&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+    x MEDIUM CVE-2024-22018
+      https://scout.docker.com/v/CVE-2024-22018?s=ubuntu&n=nodejs&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+
+   0C     0H     3M     0L  jose 2.0.7
+pkg:npm/jose@2.0.7
+
+    x MEDIUM CVE-2021-29446 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/CVE-2021-29446?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
+      Affected range : <3.11.4                                      
+      Fixed version  : 3.11.4                                       
+      CVSS Score     : 5.9                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
+    
+    x MEDIUM CVE-2021-29445 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/CVE-2021-29445?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
+      Affected range : <3.11.4                                      
+      Fixed version  : 3.11.4                                       
+      CVSS Score     : 5.9                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
+    
+    x MEDIUM CVE-2021-29444 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/CVE-2021-29444?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
+      Affected range : <3.11.4                                      
+      Fixed version  : 3.11.4                                       
+      CVSS Score     : 5.9                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
+    
+
+   0C     0H     1M     1L  gnupg2 2.4.4-2ubuntu17.4
+pkg:deb/ubuntu/gnupg2@2.4.4-2ubuntu17.4?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x MEDIUM CVE-2025-68972
+      https://scout.docker.com/v/CVE-2025-68972?s=ubuntu&n=gnupg2&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0                                          
+      Fixed version  : not fixed                                    
+      CVSS Score     : 4.7                                          
+      CVSS Vector    : CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:H/A:N 
+    
+    x LOW CVE-2022-3219
+      https://scout.docker.com/v/CVE-2022-3219?s=ubuntu&n=gnupg2&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0                                          
+      Fixed version  : not fixed                                    
+      CVSS Score     : 3.3                                          
+      CVSS Vector    : CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L 
+    
+
+   0C     0H     1M     0L  pam 1.5.3-5ubuntu5.5
+pkg:deb/ubuntu/pam@1.5.3-5ubuntu5.5?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x MEDIUM CVE-2025-8941
+      https://scout.docker.com/v/CVE-2025-8941?s=ubuntu&n=pam&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+
+   0C     0H     1M     0L  tar 1.35+dfsg-3build1
+pkg:deb/ubuntu/tar@1.35%2Bdfsg-3build1?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x MEDIUM CVE-2025-45582
+      https://scout.docker.com/v/CVE-2025-45582?s=ubuntu&n=tar&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+
+   0C     0H     1M     0L  org.apache.logging.log4j/log4j-core 2.19.0
+pkg:maven/org.apache.logging.log4j/log4j-core@2.19.0
+
+    x MEDIUM CVE-2025-68161 [Improper Validation of Certificate with Host Mismatch]
+      https://scout.docker.com/v/CVE-2025-68161?s=github&n=log4j-core&ns=org.apache.logging.log4j&t=maven&vr=%3E%3D2.0-beta9%2C%3C2.25.3
+      Affected range : >=2.0-beta9                                                     
+                     : <2.25.3                                                         
+      Fixed version  : 2.25.3                                                          
+      CVSS Score     : 6.3                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:L/SA:N 
+    
+
+   0C     0H     1M     0L  expat 2.6.1-2ubuntu0.4
+pkg:deb/ubuntu/expat@2.6.1-2ubuntu0.4?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x MEDIUM CVE-2025-66382
+      https://scout.docker.com/v/CVE-2025-66382?s=ubuntu&n=expat&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0                                          
+      Fixed version  : not fixed                                    
+      CVSS Score     : 5.5                                          
+      CVSS Vector    : CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H 
+    
+
+   0C     0H     1M     0L  org.apache.commons/commons-lang3 3.9
+pkg:maven/org.apache.commons/commons-lang3@3.9
+
+    x MEDIUM CVE-2025-48924 [Uncontrolled Recursion]
+      https://scout.docker.com/v/CVE-2025-48924?s=github&n=commons-lang3&ns=org.apache.commons&t=maven&vr=%3E%3D3.0%2C%3C3.18.0
+      Affected range : >=3.0                                        
+                     : <3.18.0                                      
+      Fixed version  : 3.18.0                                       
+      CVSS Score     : 6.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N 
+    
+
+   0C     0H     1M     0L  org.apache.logging.log4j/log4j-core 2.25.0
+pkg:maven/org.apache.logging.log4j/log4j-core@2.25.0
+
+    x MEDIUM CVE-2025-68161 [Improper Validation of Certificate with Host Mismatch]
+      https://scout.docker.com/v/CVE-2025-68161?s=github&n=log4j-core&ns=org.apache.logging.log4j&t=maven&vr=%3E%3D2.0-beta9%2C%3C2.25.3
+      Affected range : >=2.0-beta9                                                     
+                     : <2.25.3                                                         
+      Fixed version  : 2.25.3                                                          
+      CVSS Score     : 6.3                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:L/SA:N 
+    
+
+   0C     0H     1M     0L  io.projectreactor.netty/reactor-netty-http 1.0.45
+pkg:maven/io.projectreactor.netty/reactor-netty-http@1.0.45
+
+    x MEDIUM CVE-2025-22227 [Exposure of Sensitive Information to an Unauthorized Actor]
+      https://scout.docker.com/v/CVE-2025-22227?s=github&n=reactor-netty-http&ns=io.projectreactor.netty&t=maven&vr=%3C1.2.8
+      Affected range : <1.2.8                                       
+      Fixed version  : 1.2.8                                        
+      CVSS Score     : 6.1                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N 
+    
+
+   0C     0H     0M     1L  libgcrypt20 1.10.3-2build1
+pkg:deb/ubuntu/libgcrypt20@1.10.3-2build1?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x LOW CVE-2024-2236
+      https://scout.docker.com/v/CVE-2024-2236?s=ubuntu&n=libgcrypt20&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+
+   0C     0H     0M     1L  shadow 1:4.13+dfsg1-4ubuntu3.2
+pkg:deb/ubuntu/shadow@1%3A4.13%2Bdfsg1-4ubuntu3.2?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x LOW CVE-2024-56433
+      https://scout.docker.com/v/CVE-2024-56433?s=ubuntu&n=shadow&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+
+   0C     0H     0M     1L  coreutils 9.4-3ubuntu6.1
+pkg:deb/ubuntu/coreutils@9.4-3ubuntu6.1?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x LOW CVE-2016-2781
+      https://scout.docker.com/v/CVE-2016-2781?s=ubuntu&n=coreutils&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0                                          
+      Fixed version  : not fixed                                    
+      CVSS Score     : 6.5                                          
+      CVSS Vector    : CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N 
+    
+
+   0C     0H     0M     1L  fast-xml-parser 5.3.6
+pkg:npm/fast-xml-parser@5.3.6
+
+    x LOW CVE-2026-27942 [Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')]
+      https://scout.docker.com/v/CVE-2026-27942?s=github&n=fast-xml-parser&t=npm&vr=%3C5.3.8
+      Affected range : <5.3.8                                                              
+      Fixed version  : 5.3.8                                                               
+      CVSS Score     : 2.7                                                                 
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:U 
+    
+
+
+26 vulnerabilities found in 17 packages
+  CRITICAL  0  
+  HIGH      4  
+  MEDIUM    17 
+  LOW       5  
+

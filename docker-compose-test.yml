@@ -1,0 +1,138 @@
+version: '3'
+services:
+  elasticsearch-cass:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.3.1
+    container_name: elasticsearch-cass
+    networks:
+      - esnet
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+  cass:
+    build:
+      context: .
+      network: host
+      args:
+        - TEST=true
+      dockerfile: docker/standalone/node/Dockerfile
+    platform: linux/amd64
+    container_name: cass
+    networks:
+      - esnet
+    ports:
+      - 80:80
+    environment:
+      - CASS_LOOPBACK=http://cass/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - PORT=80
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    user: "1000"
+    volumes:
+      - etc:/app/etc
+    depends_on:
+      - elasticsearch-cass
+  cass-alpine:
+    build:
+      context: .
+      network: host
+      dockerfile: docker/standalone/node/DockerfileAlpine
+    platform: linux/amd64
+    container_name: cass-alpine
+    networks:
+      - esnet
+    ports:
+      - 81:80
+    environment:
+      - CASS_LOOPBACK=http://cass-alpine/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - PORT=80
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - etc:/app/etc
+    depends_on:
+      - elasticsearch-cass
+  cass-distroless:
+    build:
+      context: .
+      network: host
+      args:
+        - TEST=true
+      dockerfile: docker/standalone/node/DockerfileDistroless
+    container_name: cass-distroless
+    networks:
+      - esnet
+    ports:
+      - 82:80
+    environment:
+      - CASS_LOOPBACK=http://cass-distroless/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - PORT=80
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - etc:/app/etc
+    depends_on:
+      - elasticsearch-cass
+  cass-standalone:
+    build:
+      context: .
+      args:
+        - TEST=true
+      dockerfile: docker/standalone/Dockerfile
+    platform: linux/amd64
+    container_name: cass-standalone
+    networks:
+      - esnet
+    ports:
+      - 83:80
+    environment:
+      - CASS_LOOPBACK=http://cass-standalone/api/
+      - PORT=80
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    user: "1000"
+    volumes:
+      - etc:/app/etc
+    depends_on:
+      - elasticsearch-cass
+volumes:
+  etc:
+    driver: local
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+  mysql_data:
+    driver: local
+  mariadb_data:
+    driver: local
+  moodle_data:
+    driver: local
+  psql_data:
+    driver: local
+
+networks:
+  esnet:

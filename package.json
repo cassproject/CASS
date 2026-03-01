@@ -8,7 +8,6 @@
     "testWithCoverage": "npm run test:deps && nyc --reporter=lcov --reporter=text --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run mochaDev",
     "test:start": "node src/main/server.js",
     "test:deps": "docker compose up -d elasticsearch-cass",
-    "test:nodemon": "nodemon src/main/server.js",
     "dev": "npm run dev:deps && npm run dev:nodemon",
     "dev:docker": "npm run dev:deps && npm run dev:nodemon:docker",
     "dev:https": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& npm run dev:nodemon",
@@ -73,7 +72,7 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.995.0",
+    "@aws-sdk/client-s3": "^3.1000.0",
     "@xmldom/xmldom": "^0.9.8",
     "busboy": "^1.6.0",
     "cassproject": "^5.0.12",
@@ -116,12 +115,16 @@
   "packageManager": "npm@11.3.0+sha512.96eb611483f49c55f7fa74df61b588de9e213f80a256728e6798ddc67176c7b07e4a1cfc7de8922422cbce02543714367037536955221fa451b0c4fefaf20c66",
   "overrides": {
     "swagger-jsdoc": {
-      "minimatch": "^10.2.2",
+      "minimatch": "^10.2.3",
       "glob": "^13.0.6"
     },
     "spdy-fixes": {
-      "minimatch": "^10.2.2",
-      "glob": "^13.0.6"
+      "minimatch": "^10.2.3",
+      "glob": "^13.0.6",
+      "serialize-javascript": "^7.0.3"
+    },
+    "glob": {
+      "minimatch": "^10.2.3"
     }
   }
 }
