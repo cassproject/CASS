@@ -54,7 +54,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         cache: 'npm'
-    - run: npm ci
+    - run: npm i
     - run: docker compose up -d elasticsearch-cass
     - run: npm run run:nyc
 
