@@ -2,9 +2,7 @@ name: Image Vulnerability Scan
 
 on:
   pull_request:
-    branches:
-      - "1.5"
-      - "1.6"
+    branches: [ "1.5","1.6" ]
 
 jobs:
   scan-images:
