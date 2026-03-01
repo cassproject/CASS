@@ -13,6 +13,14 @@ on:
           - minor
           - major
           - prerelease
+      branch:
+        description: 'Branch to release to'
+        required: true
+        default: '1.6'
+        type: choice
+        options:
+          - 1.5
+          - 1.6
 
 jobs:
   draft-release:
@@ -41,7 +49,7 @@ jobs:
       - name: Prepare Release Branch
         id: branch
         run: |
-          BRANCH_NAME="release/draft-$(date +%s)"
+          BRANCH_NAME="release/draft-${{ github.event.inputs.branch }}-$(date +%s)"
           git checkout -b $BRANCH_NAME
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
 
@@ -82,7 +90,7 @@ jobs:
           gh pr create \
             --title "Release: ${{ env.new_version }}" \
             --body "Automated release PR bumping the version and generating dependency updates. \n\nReview the changes and merge this PR into the major/minor target branch when you are ready to publish the Docker images." \
-            --base ${{ github.ref_name }} \
+            --base ${{ github.event.inputs.branch }} \
             --head ${{ env.branch_name }}
 
   scan-images:
