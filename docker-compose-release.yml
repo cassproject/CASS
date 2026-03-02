@@ -3,9 +3,6 @@ services:
   standalone-branch:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/Dockerfile
       platforms:
         - "linux/amd64"
@@ -14,9 +11,6 @@ services:
   standalone-version:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/Dockerfile
       platforms:
         - "linux/amd64"
@@ -25,9 +19,6 @@ services:
   node-branch:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/Dockerfile
       platforms:
         - "linux/amd64"
@@ -36,9 +27,6 @@ services:
   node-version:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/Dockerfile
       platforms:
         - "linux/amd64"
@@ -47,9 +35,6 @@ services:
   alpine-branch:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/DockerfileAlpine
       platforms:
         - "linux/amd64"
@@ -58,9 +43,6 @@ services:
   alpine-version:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/DockerfileAlpine
       platforms:
         - "linux/amd64"
@@ -69,9 +51,6 @@ services:
   distroless-branch:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/DockerfileDistroless
       platforms:
         - "linux/amd64"
@@ -80,9 +59,6 @@ services:
   distroless-version:
     build:
       context: .
-      network: host
-      args:
-        - TEST=true
       dockerfile: docker/standalone/node/DockerfileDistroless
       platforms:
         - "linux/amd64"

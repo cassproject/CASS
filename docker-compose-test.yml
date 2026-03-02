@@ -123,16 +123,5 @@ volumes:
     driver: local
   esdata1:
     driver: local
-  esdata2:
-    driver: local
-  mysql_data:
-    driver: local
-  mariadb_data:
-    driver: local
-  moodle_data:
-    driver: local
-  psql_data:
-    driver: local
-
 networks:
   esnet:
