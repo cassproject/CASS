@@ -2,6 +2,11 @@
 
 Releases for CaSS are fully automated via GitHub Actions to ensure consistency, security, and traceability. The release workflow is split into two parts:
 
+## 0. Check the tests locally
+1. `docker compose -f docker-compose-test.yml up -d elasticsearch-cass`
+2. `docker compose -f docker-compose-test.yml build`
+3. `docker scout cves -o scan-node.txt cass-cass;docker scout cves -o scan-alpine.txt cass-cass-alpine;docker scout cves -o scan-distroless.txt cass-cass-distroless;docker scout cves -o scan-standalone.txt cass-cass-standalone`
+
 ## 1. Triggering a Release (Creating the PR)
 To begin a release, you manually trigger the `Draft Release` workflow.
 

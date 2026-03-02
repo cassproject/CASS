@@ -5,11 +5,11 @@
                    │        Analyzed Image         
 ───────────────────┼───────────────────────────────
  Target            │  cass-cass-distroless:latest  
-   digest          │  0c86a49b083d                 
+   digest          │  50d2982d20b8                 
    platform        │ linux/amd64                   
    vulnerabilities │    0C     2H     3M     1L    
-   size            │ 121 MB                        
-   packages        │ 649                           
+   size            │ 110 MB                        
+   packages        │ 650                           
 
 
 ## Packages and Vulnerabilities

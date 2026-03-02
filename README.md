@@ -1,7 +1,7 @@
 # CaSS
 Competency and Skills Service -- Competency Management
 
-Mainline: 1.6.13
+Mainline: 1.6.x
 
 [High level documentation](https://docs.cassproject.org)  
 [Developer documentation](https://devs.cassproject.org)

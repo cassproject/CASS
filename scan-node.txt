@@ -5,11 +5,11 @@
                    │       Analyzed Image        
 ───────────────────┼─────────────────────────────
  Target            │  cass-cass:latest           
-   digest          │  d2436e25e3e9               
+   digest          │  a16774f98b1f               
    platform        │ linux/amd64                 
    vulnerabilities │    0C     2H     4M    25L  
-   size            │ 246 MB                      
-   packages        │ 775                         
+   size            │ 252 MB                      
+   packages        │ 776                         
 
 
 ## Packages and Vulnerabilities
@@ -150,20 +150,6 @@ pkg:deb/debian/libgcrypt20@1.10.1-3?os_distro=bookworm&os_name=debian&os_version
       Fixed version  : not fixed  
     
 
-   0C     0H     0M     2L  perl 5.36.0-7+deb12u3
-pkg:deb/debian/perl@5.36.0-7%2Bdeb12u3?os_distro=bookworm&os_name=debian&os_version=12
-
-    x LOW CVE-2023-31486
-      https://scout.docker.com/v/CVE-2023-31486?s=debian&n=perl&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D5.36.0-7%2Bdeb12u3
-      Affected range : <=5.36.0-7+deb12u3 
-      Fixed version  : not fixed          
-    
-    x LOW CVE-2011-4116
-      https://scout.docker.com/v/CVE-2011-4116?s=debian&n=perl&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D5.36.0-7%2Bdeb12u3
-      Affected range : <=5.36.0-7+deb12u3 
-      Fixed version  : not fixed          
-    
-
    0C     0H     0M     2L  coreutils 9.1-1
 pkg:deb/debian/coreutils@9.1-1?os_distro=bookworm&os_name=debian&os_version=12
 
@@ -178,22 +164,18 @@ pkg:deb/debian/coreutils@9.1-1?os_distro=bookworm&os_name=debian&os_version=12
       Fixed version  : not fixed 
     
 
-   0C     0H     0M     1L  gcc-12 12.2.0-14+deb12u1
-pkg:deb/debian/gcc-12@12.2.0-14%2Bdeb12u1?os_distro=bookworm&os_name=debian&os_version=12
+   0C     0H     0M     2L  perl 5.36.0-7+deb12u3
+pkg:deb/debian/perl@5.36.0-7%2Bdeb12u3?os_distro=bookworm&os_name=debian&os_version=12
 
-    x LOW CVE-2022-27943
-      https://scout.docker.com/v/CVE-2022-27943?s=debian&n=gcc-12&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D12.2.0-14%2Bdeb12u1
-      Affected range : <=12.2.0-14+deb12u1 
-      Fixed version  : not fixed           
+    x LOW CVE-2023-31486
+      https://scout.docker.com/v/CVE-2023-31486?s=debian&n=perl&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D5.36.0-7%2Bdeb12u3
+      Affected range : <=5.36.0-7+deb12u3 
+      Fixed version  : not fixed          
     
-
-   0C     0H     0M     1L  shadow 1:4.13+dfsg1-1+deb12u2
-pkg:deb/debian/shadow@1%3A4.13%2Bdfsg1-1%2Bdeb12u2?os_distro=bookworm&os_name=debian&os_version=12
-
-    x LOW CVE-2007-5686
-      https://scout.docker.com/v/CVE-2007-5686?s=debian&n=shadow&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D1%3A4.13%2Bdfsg1-1%2Bdeb12u2
-      Affected range : <=1:4.13+dfsg1-1+deb12u2 
-      Fixed version  : not fixed                
+    x LOW CVE-2011-4116
+      https://scout.docker.com/v/CVE-2011-4116?s=debian&n=perl&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D5.36.0-7%2Bdeb12u3
+      Affected range : <=5.36.0-7+deb12u3 
+      Fixed version  : not fixed          
     
 
    0C     0H     0M     1L  openssl 3.0.18-1~deb12u2
@@ -202,6 +184,26 @@ pkg:deb/debian/openssl@3.0.18-1~deb12u2?os_distro=bookworm&os_name=debian&os_ver
     x LOW CVE-2010-0928
       https://scout.docker.com/v/CVE-2010-0928?s=debian&n=openssl&ns=debian&t=deb&osn=debian&osv=12&vr=%3E%3D3.0.11-1%7Edeb12u2
       Affected range : >=3.0.11-1~deb12u2 
+      Fixed version  : not fixed          
+    
+
+   0C     0H     0M     1L  fast-xml-parser 5.3.6
+pkg:npm/fast-xml-parser@5.3.6
+
+    x LOW CVE-2026-27942 [Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')]
+      https://scout.docker.com/v/CVE-2026-27942?s=github&n=fast-xml-parser&t=npm&vr=%3C5.3.8
+      Affected range : <5.3.8                                                              
+      Fixed version  : 5.3.8                                                               
+      CVSS Score     : 2.7                                                                 
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:U 
+    
+
+   0C     0H     0M     1L  util-linux 2.38.1-5+deb12u3
+pkg:deb/debian/util-linux@2.38.1-5%2Bdeb12u3?os_distro=bookworm&os_name=debian&os_version=12
+
+    x LOW CVE-2022-0563
+      https://scout.docker.com/v/CVE-2022-0563?s=debian&n=util-linux&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D2.38.1-5%2Bdeb12u3
+      Affected range : <=2.38.1-5+deb12u3 
       Fixed version  : not fixed          
     
 
@@ -214,15 +216,6 @@ pkg:deb/debian/gnupg2@2.2.40-1.1%2Bdeb12u2?os_distro=bookworm&os_name=debian&os_
       Fixed version  : not fixed            
     
 
-   0C     0H     0M     1L  util-linux 2.38.1-5+deb12u3
-pkg:deb/debian/util-linux@2.38.1-5%2Bdeb12u3?os_distro=bookworm&os_name=debian&os_version=12
-
-    x LOW CVE-2022-0563
-      https://scout.docker.com/v/CVE-2022-0563?s=debian&n=util-linux&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D2.38.1-5%2Bdeb12u3
-      Affected range : <=2.38.1-5+deb12u3 
-      Fixed version  : not fixed          
-    
-
    0C     0H     0M     1L  apt 2.6.1
 pkg:deb/debian/apt@2.6.1?os_distro=bookworm&os_name=debian&os_version=12
 
@@ -232,15 +225,22 @@ pkg:deb/debian/apt@2.6.1?os_distro=bookworm&os_name=debian&os_version=12
       Fixed version  : not fixed 
     
 
-   0C     0H     0M     1L  fast-xml-parser 5.3.6
-pkg:npm/fast-xml-parser@5.3.6
+   0C     0H     0M     1L  shadow 1:4.13+dfsg1-1+deb12u2
+pkg:deb/debian/shadow@1%3A4.13%2Bdfsg1-1%2Bdeb12u2?os_distro=bookworm&os_name=debian&os_version=12
 
-    x LOW CVE-2026-27942 [Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')]
-      https://scout.docker.com/v/CVE-2026-27942?s=github&n=fast-xml-parser&t=npm&vr=%3C5.3.8
-      Affected range : <5.3.8                                                              
-      Fixed version  : 5.3.8                                                               
-      CVSS Score     : 2.7                                                                 
-      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:U 
+    x LOW CVE-2007-5686
+      https://scout.docker.com/v/CVE-2007-5686?s=debian&n=shadow&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D1%3A4.13%2Bdfsg1-1%2Bdeb12u2
+      Affected range : <=1:4.13+dfsg1-1+deb12u2 
+      Fixed version  : not fixed                
+    
+
+   0C     0H     0M     1L  gcc-12 12.2.0-14+deb12u1
+pkg:deb/debian/gcc-12@12.2.0-14%2Bdeb12u1?os_distro=bookworm&os_name=debian&os_version=12
+
+    x LOW CVE-2022-27943
+      https://scout.docker.com/v/CVE-2022-27943?s=debian&n=gcc-12&ns=debian&t=deb&osn=debian&osv=12&vr=%3C%3D12.2.0-14%2Bdeb12u1
+      Affected range : <=12.2.0-14+deb12u1 
+      Fixed version  : not fixed           
     
 
 

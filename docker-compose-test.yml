@@ -33,7 +33,7 @@ services:
     networks:
       - esnet
     ports:
-      - 80:80
+      - 84:80
     environment:
       - CASS_LOOPBACK=http://cass/api/
       - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
