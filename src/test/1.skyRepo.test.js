@@ -67,7 +67,7 @@ describe('SkyRepo Adapter', function () {
     assert.strictEqual((await EcRepository.get(canonicalUrl)), null, 'Canonical URL based reference is not null after deleted.');
     EcRepository.repos = [repo2];
     assert.strictEqual((await EcRepository.get(canonicalUrl)), null, 'Registered URL based reference is not null after deleted.');
-  }).timeout(5000);
+  });
 
   it('Multiput', async () => {
     const repo = new EcRepository();
