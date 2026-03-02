@@ -22,7 +22,16 @@ jobs:
         run: docker compose -f docker-compose-test.yml up -d elasticsearch-cass
 
       - name: Build Images via Docker Compose
-        run: docker compose -f docker-compose-test.yml build --no-cache
+        run: docker compose -f docker-compose-test.yml build cass
+        
+      - name: Build Images via Docker Compose
+        run: docker compose -f docker-compose-test.yml build cass-alpine
+
+      - name: Build Images via Docker Compose
+        run: docker compose -f docker-compose-test.yml build cass-distroless
+
+      - name: Build Images via Docker Compose
+        run: docker compose -f docker-compose-test.yml build cass-standalone
 
       - name: Docker Scout CVE Scan (Node)
         uses: docker/scout-action@v1
