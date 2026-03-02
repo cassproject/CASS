@@ -49,7 +49,7 @@ jobs:
         env:
           branch: ${{ github.base_ref }}
           version: ${{ env.version }}
-        run: docker compose -f docker-compose-release.yml build --sbom=true --provenance=true --push
+        run: docker buildx bake -f docker-compose-release.yml --sbom=true --provenance=true --push
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
