@@ -94,7 +94,7 @@
     "spdy-fixes": "^4.0.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "undici": "^6.23.0",
+    "undici": "^6.24.0",
     "uuid": "^13.0.0",
     "ws": "^8.19.0"
   },
