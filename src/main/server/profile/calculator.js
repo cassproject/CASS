@@ -102,7 +102,8 @@ module.exports = class ProfileCalculator {
                 await Promise.all(coprocessors.map(async (coprocessor) => { await coprocessor.insertResources.call(this) }));
 
                 // Recursively add outside (aka related) frameworks to graph, based on framework's relations stored in graph's edges
-                await this.insertOutsideFrameworks([this.framework.shortId()]);
+                if (process.env.PROFILE_AVOID_OUTSIDE_FRAMEWORKS == null)
+                    await this.insertOutsideFrameworks([this.framework.shortId()]);
 
                 profileFrameworks[cacheKey] = cloneGraph(this.g);
                 this.log(`Computed graph structure. ${this.g.verticies.length} vertices`);

@@ -20,7 +20,13 @@ let postProcessEachVertexRepeating = function(vertex,vertices,topLevelVertices,i
 }
 let postProcessProfileBefore = function(profile,vertices,topLevelVertices,inEdges) {
 }
-let postProcessProfileEachElement = function(obj,inEdges,vertices,visited) {
+let postProcessProfileEachElement = function (obj, inEdges, vertices, visited) {
+    //Make sure the obj isn't in visited, to avoid infinite loops.
+    if (visited == null)
+        visited = new Set();
+    if (visited.has(obj.id))
+        return;
+    visited.add(obj.id);
     // Recur for each child
     for (const child of obj.children) {
         const childResults = postProcessProfileEachElement(
