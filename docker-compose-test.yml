@@ -4,7 +4,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:9.3.1
     container_name: elasticsearch-cass
     networks:
-      - esnet
+      - testnet
     environment:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
@@ -13,8 +13,8 @@ services:
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
-    ports:
-      - 9200:9200
+#    ports:
+#      - 9200:9200
     ulimits:
       memlock:
         soft: -1
@@ -31,7 +31,7 @@ services:
     platform: linux/amd64
     container_name: cass
     networks:
-      - esnet
+      - testnet
     ports:
       - 84:80
     environment:
@@ -55,7 +55,7 @@ services:
     platform: linux/amd64
     container_name: cass-alpine
     networks:
-      - esnet
+      - testnet
     ports:
       - 81:80
     environment:
@@ -79,7 +79,7 @@ services:
       dockerfile: docker/standalone/node/DockerfileDistroless
     container_name: cass-distroless
     networks:
-      - esnet
+      - testnet
     ports:
       - 82:80
     environment:
@@ -103,7 +103,7 @@ services:
     platform: linux/amd64
     container_name: cass-standalone
     networks:
-      - esnet
+      - testnet
     ports:
       - 83:80
     environment:
@@ -124,4 +124,4 @@ volumes:
   esdata1:
     driver: local
 networks:
-  esnet:
+  testnet:

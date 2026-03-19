@@ -59,7 +59,7 @@ let skyrepoMigrate = async function (after) {
         }, elasticEndpoint + '/_cluster/settings', 'application/json', elasticHeaders());
     }
     if ((elasticState.version.number.startsWith('9.') && elasticState.version.minimum_index_compatibility_version == '8.0.0')
-        || (elasticState.version.number.startsWith('8.19.0') && elasticState.version.minimum_index_compatibility_version == '7.0.0')
+        || (elasticState.version.number.startsWith('8.19') && elasticState.version.minimum_index_compatibility_version == '7.0.0')
         || (elasticState.version.number.startsWith('7.') && elasticState.version.minimum_index_compatibility_version == '6.0.0-beta1')) {
 
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Deleted pipelines: ' + JSON.stringify(await httpDelete(elasticEndpoint + '/_ingest/pipeline/*', elasticHeaders())));
@@ -93,7 +93,7 @@ let skyrepoMigrate = async function (after) {
                 if (!settings[index].settings.index.version.created.startsWith('8'))
                     continue;
             }
-            if ((elasticState.version.number.startsWith('8.19.0') && elasticState.version.minimum_index_compatibility_version == '7.0.0')
+            if ((elasticState.version.number.startsWith('8.19') && elasticState.version.minimum_index_compatibility_version == '7.0.0')
                 || (elasticState.version.number.startsWith('7.') && elasticState.version.minimum_index_compatibility_version == '6.0.0-beta1')) {
                 if (!settings[index].settings.index.version.created.startsWith('7') && settings[index].settings.index.version.created != '6081299' && settings[index].settings.index.version.created != '6082199' && settings[index].settings.index.version.created != '6082299' && settings[index].settings.index.version.created != '6082399')
                     continue;
@@ -181,8 +181,8 @@ let skyrepoMigrate = async function (after) {
                 let leftIndex = 1;
                 let rightIndex = 2;
                 while (leftIndex != rightIndex) {
-                    leftIndex = (await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))._all.primaries.docs.count;
-                    rightIndex = (await httpGet(elasticEndpoint + '/' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))._all.primaries.docs.count;
+                    leftIndex = (await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))?._all?.primaries?.docs?.count;
+                    rightIndex = (await httpGet(elasticEndpoint + '/' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))?._all?.primaries?.docs?.count;
                     if (leftIndex == rightIndex) break;
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, '5SkyrepMigrate', 'Waiting for documents to reindex... ' + leftIndex + ' / ' + rightIndex);
                     await httpGet(elasticEndpoint + '/_refresh', true, elasticHeaders());
@@ -199,7 +199,7 @@ let skyrepoMigrate = async function (after) {
                 let doc = {};
                 (mappings)['mappings'] = doc;
                 doc['enabled'] = false;
-                let result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
+                let result = await httpPut(mappings, elasticEndpoint + '/' + index, 'application/json', elasticHeaders());
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, '7SkyrepMigrate', JSON.stringify(result));
             } else if (index.endsWith('competency')) {
                 await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_mapping', true, elasticHeaders());
@@ -271,13 +271,14 @@ let skyrepoMigrate = async function (after) {
                 source: { index: '.temp.' + index.replace('https:..', '').replace(':', '.') },
                 dest: { index: index.replace('https:..', '').replace(':', '.'), version_type: 'external' },
             }, elasticEndpoint + '/_reindex', 'application/json', 'false', elasticHeaders()));
+            await new Promise(r => setTimeout(r, 1000));
             if (r.error != null) continue;
             {
                 let leftIndex = 1;
                 let rightIndex = 2;
                 while (leftIndex != rightIndex) {
-                    leftIndex = (await httpGet(elasticEndpoint + '/' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))._all.primaries.docs.count;
-                    rightIndex = (await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))._all.primaries.docs.count;
+                    leftIndex = (await httpGet(elasticEndpoint + '/' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))?._all?.primaries?.docs?.count;
+                    rightIndex = (await httpGet(elasticEndpoint + '/.temp.' + index.replace('https:..', '').replace(':', '.') + '/_stats', true, elasticHeaders()))?._all?.primaries?.docs?.count;
                     if (leftIndex == rightIndex) break;
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, '5SkyrepMigrate', 'Waiting for documents to reindex... ' + leftIndex + ' / ' + rightIndex);
                     await httpGet(elasticEndpoint + '/_refresh', true, elasticHeaders());

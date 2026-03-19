@@ -4,16 +4,15 @@ let personIndex = 0;
 let frameworksIndex = 0;
 
 global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'ProfileControllerLoad', "Loading auto profile calculator.");
-if (process.env.PROFILE_PPK != null)
-{
+if (process.env.PROFILE_PPK != null) {
     global.events.person.activePeople.push(JSON.stringify([process.env.PROFILE_PPK]));
 }
-let autoCalculatePeople = async ()=>{
+let autoCalculatePeople = async () => {
     if (going) return;
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileControllerCompute', "Auto-calculating profiles.");
     try {
         going = true;
-        for (keysIndex = 0;keysIndex < global.events.person.activePeople.length;keysIndex++) {
+        for (keysIndex = 0; keysIndex < global.events.person.activePeople.length; keysIndex++) {
             let keys = global.events.person.activePeople[keysIndex];
             let eim = new EcIdentityManager();
             keys = JSON.parse(keys);
@@ -23,12 +22,12 @@ let autoCalculatePeople = async ()=>{
                 i.displayName = "Identity from Controller";
                 eim.addIdentity(i);
             }
-            let frameworks = await repo.multiget(events.data.frameworks, null,null,eim);
+            let frameworks = await repo.multiget(events.data.frameworks, null, null, eim);
             let people = await EcPerson.search(repo, "*", null, null, { size: 10000 }, eim);
-            for (personIndex = 0;personIndex < people.length;personIndex++) {
+            for (personIndex = 0; personIndex < people.length; personIndex++) {
                 let person = people[personIndex];
                 await Promise.map(frameworks, async (framework) => {
-                    try{
+                    try {
                         await global.calculateProfile.call({
                             params: {
                                 subject: person.owner[0],
@@ -57,14 +56,19 @@ let autoCalculatePeople = async ()=>{
     }
 }
 
-global.events.server.periodic.subscribe(async (activePeople) => {
-    autoCalculatePeople();
+global.events.server.ready.subscribe(async (isReady) => {
+    if (isReady)
+        global.events.server.periodic.subscribe(async (activePeople) => {
+            autoCalculatePeople();
+        });
 });
 
 global.events.person.arrived.subscribe(async (activePeople) => {
-    keysIndex = 0;
-    personIndex = 0;
-    autoCalculatePeople();
+    if (activePeople.length > 0) {
+        keysIndex = 0;
+        personIndex = 0;
+        autoCalculatePeople();
+    }
 });
 
 let invalidateProfileByAssertion = async (data) => {

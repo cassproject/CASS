@@ -5,36 +5,16 @@
                    │               Analyzed Image               
 ───────────────────┼────────────────────────────────────────────
  Target            │  cass-cass-standalone:latest               
-   digest          │  15e9a0ae2f58                              
+   digest          │  4d5cb08f8915                              
    platform        │ linux/amd64                                
    provenance      │ https://github.com/elastic/elasticsearch   
                    │  https://github.com/elastic/elasticsearch/blob/840cd2a58b052d1632219ee0b8dcc0f364226287  
-   vulnerabilities │    0C     4H    17M     5L                 
+   vulnerabilities │    0C     2H    17M     4L                 
    size            │ 1.1 GB                                     
-   packages        │ 1357                                       
+   packages        │ 1358                                       
 
 
 ## Packages and Vulnerabilities
-
-   0C     2H     0M     0L  minimatch 10.2.2
-pkg:npm/minimatch@10.2.2
-
-    x HIGH CVE-2026-27904 [Inefficient Regular Expression Complexity]
-      https://scout.docker.com/v/CVE-2026-27904?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
-      Affected range : >=10.0.0                                     
-                     : <10.2.3                                      
-      Fixed version  : 10.2.3                                       
-      CVSS Score     : 7.5                                          
-      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
-    
-    x HIGH CVE-2026-27903 [Inefficient Algorithmic Complexity]
-      https://scout.docker.com/v/CVE-2026-27903?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
-      Affected range : >=10.0.0                                     
-                     : <10.2.3                                      
-      Fixed version  : 10.2.3                                       
-      CVSS Score     : 7.5                                          
-      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
-    
 
    0C     1H     0M     0L  com.fasterxml.jackson.core/jackson-core 2.15.0
 pkg:maven/com.fasterxml.jackson.core/jackson-core@2.15.0
@@ -137,39 +117,6 @@ pkg:deb/ubuntu/gnupg2@2.4.4-2ubuntu17.4?os_distro=noble&os_name=ubuntu&os_versio
       CVSS Vector    : CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L 
     
 
-   0C     0H     1M     0L  org.apache.logging.log4j/log4j-core 2.25.0
-pkg:maven/org.apache.logging.log4j/log4j-core@2.25.0
-
-    x MEDIUM CVE-2025-68161 [Improper Validation of Certificate with Host Mismatch]
-      https://scout.docker.com/v/CVE-2025-68161?s=github&n=log4j-core&ns=org.apache.logging.log4j&t=maven&vr=%3E%3D2.0-beta9%2C%3C2.25.3
-      Affected range : >=2.0-beta9                                                     
-                     : <2.25.3                                                         
-      Fixed version  : 2.25.3                                                          
-      CVSS Score     : 6.3                                                             
-      CVSS Vector    : CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:L/SA:N 
-    
-
-   0C     0H     1M     0L  org.apache.logging.log4j/log4j-core 2.19.0
-pkg:maven/org.apache.logging.log4j/log4j-core@2.19.0
-
-    x MEDIUM CVE-2025-68161 [Improper Validation of Certificate with Host Mismatch]
-      https://scout.docker.com/v/CVE-2025-68161?s=github&n=log4j-core&ns=org.apache.logging.log4j&t=maven&vr=%3E%3D2.0-beta9%2C%3C2.25.3
-      Affected range : >=2.0-beta9                                                     
-                     : <2.25.3                                                         
-      Fixed version  : 2.25.3                                                          
-      CVSS Score     : 6.3                                                             
-      CVSS Vector    : CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:L/SA:N 
-    
-
-   0C     0H     1M     0L  pam 1.5.3-5ubuntu5.5
-pkg:deb/ubuntu/pam@1.5.3-5ubuntu5.5?os_distro=noble&os_name=ubuntu&os_version=24.04
-
-    x MEDIUM CVE-2025-8941
-      https://scout.docker.com/v/CVE-2025-8941?s=ubuntu&n=pam&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
-      Affected range : >=0       
-      Fixed version  : not fixed 
-    
-
    0C     0H     1M     0L  org.apache.commons/commons-lang3 3.9
 pkg:maven/org.apache.commons/commons-lang3@3.9
 
@@ -187,6 +134,27 @@ pkg:deb/ubuntu/tar@1.35%2Bdfsg-3build1?os_distro=noble&os_name=ubuntu&os_version
 
     x MEDIUM CVE-2025-45582
       https://scout.docker.com/v/CVE-2025-45582?s=ubuntu&n=tar&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+
+   0C     0H     1M     0L  org.apache.logging.log4j/log4j-core 2.25.0
+pkg:maven/org.apache.logging.log4j/log4j-core@2.25.0
+
+    x MEDIUM CVE-2025-68161 [Improper Validation of Certificate with Host Mismatch]
+      https://scout.docker.com/v/CVE-2025-68161?s=github&n=log4j-core&ns=org.apache.logging.log4j&t=maven&vr=%3E%3D2.0-beta9%2C%3C2.25.3
+      Affected range : >=2.0-beta9                                                     
+                     : <2.25.3                                                         
+      Fixed version  : 2.25.3                                                          
+      CVSS Score     : 6.3                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:L/SA:N 
+    
+
+   0C     0H     1M     0L  pam 1.5.3-5ubuntu5.5
+pkg:deb/ubuntu/pam@1.5.3-5ubuntu5.5?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x MEDIUM CVE-2025-8941
+      https://scout.docker.com/v/CVE-2025-8941?s=ubuntu&n=pam&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
       Affected range : >=0       
       Fixed version  : not fixed 
     
@@ -213,24 +181,16 @@ pkg:maven/io.projectreactor.netty/reactor-netty-http@1.0.45
       CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N 
     
 
-   0C     0H     0M     1L  libgcrypt20 1.10.3-2build1
-pkg:deb/ubuntu/libgcrypt20@1.10.3-2build1?os_distro=noble&os_name=ubuntu&os_version=24.04
+   0C     0H     1M     0L  org.apache.logging.log4j/log4j-core 2.19.0
+pkg:maven/org.apache.logging.log4j/log4j-core@2.19.0
 
-    x LOW CVE-2024-2236
-      https://scout.docker.com/v/CVE-2024-2236?s=ubuntu&n=libgcrypt20&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
-      Affected range : >=0       
-      Fixed version  : not fixed 
-    
-
-   0C     0H     0M     1L  fast-xml-parser 5.3.6
-pkg:npm/fast-xml-parser@5.3.6
-
-    x LOW CVE-2026-27942 [Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')]
-      https://scout.docker.com/v/CVE-2026-27942?s=github&n=fast-xml-parser&t=npm&vr=%3C5.3.8
-      Affected range : <5.3.8                                                              
-      Fixed version  : 5.3.8                                                               
-      CVSS Score     : 2.7                                                                 
-      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:U 
+    x MEDIUM CVE-2025-68161 [Improper Validation of Certificate with Host Mismatch]
+      https://scout.docker.com/v/CVE-2025-68161?s=github&n=log4j-core&ns=org.apache.logging.log4j&t=maven&vr=%3E%3D2.0-beta9%2C%3C2.25.3
+      Affected range : >=2.0-beta9                                                     
+                     : <2.25.3                                                         
+      Fixed version  : 2.25.3                                                          
+      CVSS Score     : 6.3                                                             
+      CVSS Vector    : CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:L/SA:N 
     
 
    0C     0H     0M     1L  shadow 1:4.13+dfsg1-4ubuntu3.2
@@ -242,8 +202,17 @@ pkg:deb/ubuntu/shadow@1%3A4.13%2Bdfsg1-4ubuntu3.2?os_distro=noble&os_name=ubuntu
       Fixed version  : not fixed 
     
 
-   0C     0H     0M     1L  coreutils 9.4-3ubuntu6.1
-pkg:deb/ubuntu/coreutils@9.4-3ubuntu6.1?os_distro=noble&os_name=ubuntu&os_version=24.04
+   0C     0H     0M     1L  libgcrypt20 1.10.3-2build1
+pkg:deb/ubuntu/libgcrypt20@1.10.3-2build1?os_distro=noble&os_name=ubuntu&os_version=24.04
+
+    x LOW CVE-2024-2236
+      https://scout.docker.com/v/CVE-2024-2236?s=ubuntu&n=libgcrypt20&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
+      Affected range : >=0       
+      Fixed version  : not fixed 
+    
+
+   0C     0H     0M     1L  coreutils 9.4-3ubuntu6.2
+pkg:deb/ubuntu/coreutils@9.4-3ubuntu6.2?os_distro=noble&os_name=ubuntu&os_version=24.04
 
     x LOW CVE-2016-2781
       https://scout.docker.com/v/CVE-2016-2781?s=ubuntu&n=coreutils&ns=ubuntu&t=deb&osn=ubuntu&osv=24.04&vr=%3E%3D0
@@ -254,9 +223,9 @@ pkg:deb/ubuntu/coreutils@9.4-3ubuntu6.1?os_distro=noble&os_name=ubuntu&os_versio
     
 
 
-26 vulnerabilities found in 17 packages
+23 vulnerabilities found in 15 packages
   CRITICAL  0  
-  HIGH      4  
+  HIGH      2  
   MEDIUM    17 
-  LOW       5  
+  LOW       4  
 

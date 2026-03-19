@@ -5,34 +5,14 @@
                    │        Analyzed Image         
 ───────────────────┼───────────────────────────────
  Target            │  cass-cass-distroless:latest  
-   digest          │  50d2982d20b8                 
+   digest          │  b26e5ea18dd3                 
    platform        │ linux/amd64                   
-   vulnerabilities │    0C     2H     3M     1L    
+   vulnerabilities │    0C     0H     3M     0L    
    size            │ 110 MB                        
-   packages        │ 650                           
+   packages        │ 651                           
 
 
 ## Packages and Vulnerabilities
-
-   0C     2H     0M     0L  minimatch 10.2.2
-pkg:npm/minimatch@10.2.2
-
-    x HIGH CVE-2026-27904 [Inefficient Regular Expression Complexity]
-      https://scout.docker.com/v/CVE-2026-27904?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
-      Affected range : >=10.0.0                                     
-                     : <10.2.3                                      
-      Fixed version  : 10.2.3                                       
-      CVSS Score     : 7.5                                          
-      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
-    
-    x HIGH CVE-2026-27903 [Inefficient Algorithmic Complexity]
-      https://scout.docker.com/v/CVE-2026-27903?s=github&n=minimatch&t=npm&vr=%3E%3D10.0.0%2C%3C10.2.3
-      Affected range : >=10.0.0                                     
-                     : <10.2.3                                      
-      Fixed version  : 10.2.3                                       
-      CVSS Score     : 7.5                                          
-      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
-    
 
    0C     0H     3M     0L  jose 2.0.7
 pkg:npm/jose@2.0.7
@@ -59,21 +39,10 @@ pkg:npm/jose@2.0.7
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
     
 
-   0C     0H     0M     1L  fast-xml-parser 5.3.6
-pkg:npm/fast-xml-parser@5.3.6
 
-    x LOW CVE-2026-27942 [Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')]
-      https://scout.docker.com/v/CVE-2026-27942?s=github&n=fast-xml-parser&t=npm&vr=%3C5.3.8
-      Affected range : <5.3.8                                                              
-      Fixed version  : 5.3.8                                                               
-      CVSS Score     : 2.7                                                                 
-      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:U 
-    
-
-
-6 vulnerabilities found in 3 packages
+3 vulnerabilities found in 1 package
   CRITICAL  0 
-  HIGH      2 
+  HIGH      0 
   MEDIUM    3 
-  LOW       1 
+  LOW       0 
 

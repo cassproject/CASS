@@ -71,7 +71,7 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1000.0",
+    "@aws-sdk/client-s3": "^3.1011.0",
     "@xmldom/xmldom": "^0.9.8",
     "busboy": "^1.6.0",
     "cassproject": "^5.0.12",
@@ -94,36 +94,36 @@
     "spdy-fixes": "^4.0.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "undici": "^6.23.0",
+    "undici": "^6.24.1",
     "uuid": "^13.0.0",
     "ws": "^8.19.0"
   },
   "devDependencies": {
     "chai": "4.5.0",
     "concurrently": "^9.2.1",
-    "eslint": "^9.39.3",
+    "eslint": "^9.39.4",
     "eslint-config-google": "^0.14.0",
     "express-openapi-validator": "^5.6.2",
     "fake-indexeddb": "^6.2.5",
     "mocha": "^11.7.5",
     "nodemon": "^3.1.14",
     "nyc": "^17.1.0",
-    "sinon": "^21.0.1",
+    "sinon": "^21.0.3",
     "wait-on": "^9.0.4"
   },
   "packageManager": "npm@11.3.0+sha512.96eb611483f49c55f7fa74df61b588de9e213f80a256728e6798ddc67176c7b07e4a1cfc7de8922422cbce02543714367037536955221fa451b0c4fefaf20c66",
   "overrides": {
     "swagger-jsdoc": {
-      "minimatch": "^10.2.3",
+      "minimatch": "^10.2.4",
       "glob": "^13.0.6"
     },
     "spdy-fixes": {
-      "minimatch": "^10.2.3",
+      "minimatch": "^10.2.4",
       "glob": "^13.0.6",
       "serialize-javascript": "^7.0.3"
     },
     "glob": {
-      "minimatch": "^10.2.3"
+      "minimatch": "^10.2.4"
     }
   }
 }
