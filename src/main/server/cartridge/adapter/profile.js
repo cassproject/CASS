@@ -1,7 +1,7 @@
 const { StaticPool } = require('node-worker-threads-pool');
 
 const filePath = './src/main/server/profile/worker.js';
-require("./src/main/server/profile/util.js");
+require("../../profile/util.js");
 
 let pool = null;
 let profileInProgress = global.profileInProgress = {};
@@ -142,5 +142,5 @@ if (!global.disabledAdapters['profile']) {
         }
     });
 
-    require("./src/main/server/profile/controller.js");
+    require("../../profile/controller.js");
 }
