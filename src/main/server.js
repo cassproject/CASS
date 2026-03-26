@@ -71,6 +71,15 @@ let repo = global.repo = new EcRepository();
 repo.selectedServer = process.env.CASS_LOOPBACK || (envHttps ? 'https://localhost/api/' : 'http://localhost/api/');
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 
+global.selectedServerWithSlash = repo.selectedServer + (repo.selectedServer.endsWith('/') ? "" : "/");
+global.buildApiRoute = function(urlPath, queryParams) {
+    let url = global.selectedServerWithSlash + urlPath;
+    if (queryParams != null) {
+        url += "?" + new URLSearchParams(queryParams).toString();
+    }
+    return url;
+};
+
 const compression = require('compression')
 app.use(compression({}));
 
