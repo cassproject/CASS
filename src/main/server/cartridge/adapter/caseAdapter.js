@@ -402,7 +402,7 @@ cfPackages = async function (f) {
         repo = new EcRepository();
     repo.selectedServer = global.repo.selectedServer;
 
-    EcRepository.cache = {};
+    EcRepository.cacheBacking = {};
     var result = {};
     f = await cfGetFramework.call(this, f);
     var toPrecache = [];

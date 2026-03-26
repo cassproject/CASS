@@ -169,7 +169,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
 }
 
 async function cassFrameworkAsCeasn() {
-    EcRepository.cache = {};
+    EcRepository.cacheBacking = {};
     EcRepository.caching = true;
     var query = queryParse.call(this);
     var framework = null;

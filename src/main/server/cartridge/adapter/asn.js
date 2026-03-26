@@ -18,7 +18,7 @@ let asnContext = {
 };
 
 async function cassFrameworkAsAsn() {
-    EcRepository.cache = {};
+    EcRepository.cacheBacking = {};
     let query = queryParse.call(this);
     let framework = null;
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2asnTerms")), true));

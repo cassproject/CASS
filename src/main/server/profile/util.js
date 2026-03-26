@@ -21,7 +21,9 @@ let unknownPerson = new EcPerson();
 unknownPerson.generateId(global.repo.selectedServer);
 unknownPerson.name = 'Unknown Person';
 let anythingToPersonIsTolerant = true;
+let anythingToPersonCache = global.anythingToPersonCache = {};
 let anythingToPerson = global.anythingToPerson = async (subject) => {
+    if (anythingToPersonCache[subject]) return anythingToPersonCache[subject];
     // No/Invalid subject?
     if (subject == null) throw new Error('Parse Error');
 
@@ -36,12 +38,14 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
         try {
             person = await EcPerson.get(url);
         } catch (e) {
-            if (anythingToPersonIsTolerant) return unknownPerson;
+            if (anythingToPersonIsTolerant) 
+                return unknownPerson;
             error(e, 500);
         }
 
         if (person == null) {
-            if (anythingToPersonIsTolerant) return unknownPerson;
+            if (anythingToPersonIsTolerant) 
+                return unknownPerson;
             error('Person not found.', 400);
         }
 
@@ -61,16 +65,19 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
         } catch (e) {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, 'AnythingToPerson', e);
             if (e instanceof TypeError) {
-                if (anythingToPersonIsTolerant) return unknownPerson;
+                if (anythingToPersonIsTolerant) 
+                    return unknownPerson;
                 throw new Error('Parse Error');
             } else {
-                if (anythingToPersonIsTolerant) return unknownPerson;
+                if (anythingToPersonIsTolerant) 
+                    return unknownPerson;
                 throw new Error(e.message);
             }
         }
 
         if (person == null) {
-            if (anythingToPersonIsTolerant) return unknownPerson;
+            if (anythingToPersonIsTolerant) 
+                return unknownPerson;
             throw new Error('Could not find ' + subject);
         }
 
@@ -81,12 +88,14 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
         try {
             people = await EcPerson.search(repo, `email:"${subject}" OR username:"${subject}"`);
         } catch (e) {
-            if (anythingToPersonIsTolerant) return unknownPerson;
+            if (anythingToPersonIsTolerant) 
+                return unknownPerson;
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, 'AnythingToPerson', e);
             throw new Error(e.message);
         }
         if (people == null || people.length === 0) {
-            if (anythingToPersonIsTolerant) return unknownPerson;
+            if (anythingToPersonIsTolerant) 
+                return unknownPerson;
             throw new Error('No Person found for ' + subject);
         }
 
@@ -95,13 +104,16 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
 
     if (result != null) {
         if (result.personType != null && result.personType !== 'Person') {
-            if (anythingToPersonIsTolerant) return unknownPerson;
+            if (anythingToPersonIsTolerant) 
+                return unknownPerson;
             throw Error('No Person found for ' + subject);
         }
+        anythingToPersonCache[subject] = result;
         return result;
     }
 
-    if (anythingToPersonIsTolerant) return unknownPerson;
+    if (anythingToPersonIsTolerant) 
+        return unknownPerson;
     throw new Error('Parse Error');
 };
 module.exports = {

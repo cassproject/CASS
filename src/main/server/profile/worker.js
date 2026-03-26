@@ -97,17 +97,17 @@ parentPort.on('message', async (param) => {
         if (param.lastFlush != global.lastFlush) {
             global.lastFlush = param.lastFlush;
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", "Flushing cache (cause: new Assertions).");
-            EcRepository.cache = {};
+            EcRepository.cacheBacking = {};
         }
         if (param.flushCache == "true") {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", "Flushing cache.");
-            EcRepository.cache = {};
+            EcRepository.cacheBacking = {};
             global.allFrameworks = [];
             global.profileFrameworks = {};
         }
         if (userChanged) {
             EcCrypto.cache = {};
-            EcRepository.cache = {};
+            EcRepository.cacheBacking = {};
         }
 
         const memoryData = process.memoryUsage();
@@ -128,14 +128,13 @@ parentPort.on('message', async (param) => {
             }
             if (process.memoryUsage().heapUsed > 400 * 1024 * 1024) {
                 global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileWorkerRepositoryCacheCleared', "Hit high water memory mark, clearing repository cache.");
-                EcRepository.cache = {};
+                EcRepository.cacheBacking = {};
                 if (global.gc) global.gc();
             }
             if (global.gc) global.gc();
         }
 
-        if (process.env.PROFILE_PPK)
-        {
+        if (process.env.PROFILE_PPK) {
             global.agent = new EcIdentity();
             global.agent.ppk = EcPpk.fromPem(process.env.PROFILE_PPK);
             global.agent.displayName = "PROFILE_PPK";
