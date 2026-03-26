@@ -125,7 +125,6 @@ require('./server/shims/cassproject.js');
 require('./server/util.js');
 require('./server/skyRepo.js');
 require('./server/skyId.js');
-require('./server/profile/coordinator.js')();
 
 if (process.env.DISABLED_EDITOR != "true") {
     app.use(baseUrl, express.static('src/main/webapp/', { maxAge: 24 * 60 * 60 * 1000 }));
