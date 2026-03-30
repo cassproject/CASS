@@ -19,7 +19,7 @@
  */
 
 const endpointMultiDelete = async function () {
-    let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
+    let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null))) || [];
     const manyParseParams = {};
     for (const urlRemainder of ary) {
         manyParseParams[urlRemainder] = queryParse.call(this, urlRemainder.replace('data/', ''), null);

@@ -5,33 +5,53 @@
                    │       Analyzed Image        
 ───────────────────┼─────────────────────────────
  Target            │  cass-cass-alpine:latest    
-   digest          │  3a57dc5fe830               
+   digest          │  4d7b183ae97c               
    platform        │ linux/amd64                 
-   vulnerabilities │    0C     0H     4M     0L  
-   size            │ 187 MB                      
-   packages        │ 664                         
+   vulnerabilities │    0C     1H     6M     0L  
+   size            │ 182 MB                      
+   packages        │ 657                         
 
 
 ## Packages and Vulnerabilities
 
+   0C     1H     1M     0L  picomatch 4.0.3
+pkg:npm/picomatch@4.0.3
+
+    ✗ HIGH CVE-2026-33671 [Inefficient Regular Expression Complexity]
+      https://scout.docker.com/v/CVE-2026-33671?s=github&n=picomatch&t=npm&vr=%3E%3D4.0.0%2C%3C4.0.4
+      Affected range : >=4.0.0                                      
+                     : <4.0.4                                       
+      Fixed version  : 4.0.4                                        
+      CVSS Score     : 7.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
+    
+    ✗ MEDIUM CVE-2026-33672 [Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')]
+      https://scout.docker.com/v/CVE-2026-33672?s=github&n=picomatch&t=npm&vr=%3E%3D4.0.0%2C%3C4.0.4
+      Affected range : >=4.0.0                                      
+                     : <4.0.4                                       
+      Fixed version  : 4.0.4                                        
+      CVSS Score     : 5.3                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N 
+    
+
    0C     0H     3M     0L  jose 2.0.7
 pkg:npm/jose@2.0.7
 
-    x MEDIUM CVE-2021-29446 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+    ✗ MEDIUM CVE-2021-29446 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
       https://scout.docker.com/v/CVE-2021-29446?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
       Affected range : <3.11.4                                      
       Fixed version  : 3.11.4                                       
       CVSS Score     : 5.9                                          
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
     
-    x MEDIUM CVE-2021-29445 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+    ✗ MEDIUM CVE-2021-29445 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
       https://scout.docker.com/v/CVE-2021-29445?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
       Affected range : <3.11.4                                      
       Fixed version  : 3.11.4                                       
       CVSS Score     : 5.9                                          
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
     
-    x MEDIUM CVE-2021-29444 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+    ✗ MEDIUM CVE-2021-29444 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
       https://scout.docker.com/v/CVE-2021-29444?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
       Affected range : <3.11.4                                      
       Fixed version  : 3.11.4                                       
@@ -39,19 +59,31 @@ pkg:npm/jose@2.0.7
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
     
 
+   0C     0H     1M     0L  brace-expansion 5.0.4
+pkg:npm/brace-expansion@5.0.4
+
+    ✗ MEDIUM CVE-2026-33750 [Uncontrolled Resource Consumption]
+      https://scout.docker.com/v/CVE-2026-33750?s=github&n=brace-expansion&t=npm&vr=%3E%3D4.0.0%2C%3C5.0.5
+      Affected range : >=4.0.0                                      
+                     : <5.0.5                                       
+      Fixed version  : 5.0.5                                        
+      CVSS Score     : 6.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H 
+    
+
    0C     0H     1M     0L  busybox 1.37.0-r30
 pkg:apk/alpine/busybox@1.37.0-r30?os_name=alpine&os_version=3.23
 
-    x MEDIUM CVE-2025-60876
+    ✗ MEDIUM CVE-2025-60876
       https://scout.docker.com/v/CVE-2025-60876?s=alpine&n=busybox&ns=alpine&t=apk&osn=alpine&osv=3.23&vr=%3C%3D1.37.0-r30
       Affected range : <=1.37.0-r30 
       Fixed version  : not fixed    
     
 
 
-4 vulnerabilities found in 2 packages
+7 vulnerabilities found in 4 packages
   CRITICAL  0 
-  HIGH      0 
-  MEDIUM    4 
+  HIGH      1 
+  MEDIUM    6 
   LOW       0 
 

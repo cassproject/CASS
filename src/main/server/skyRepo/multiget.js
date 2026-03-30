@@ -154,7 +154,7 @@ const endpointManyGet = async function () {
 };
 
 const endpointMultiGet = async function () {
-    let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null)));
+    let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null))) || [];
     let idsFlag = fileToString((fileFromDatastream).call(this, 'ids', null));
     const lookup = {};
     const mget = {};

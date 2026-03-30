@@ -3,7 +3,7 @@ services:
   standalone-branch:
     build:
       context: .
-      dockerfile: docker/standalone/Dockerfile
+      dockerfile: docker/Dockerfile
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -11,7 +11,7 @@ services:
   standalone-version:
     build:
       context: .
-      dockerfile: docker/standalone/Dockerfile
+      dockerfile: docker/Dockerfile
       platforms:
         - "linux/amd64"
         - "linux/arm64"

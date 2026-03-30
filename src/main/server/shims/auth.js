@@ -334,7 +334,7 @@ app.use(async function (req, res, next) {
         let ppk = getPkCache[req.user.email];
         if (getPkCache[req.user.email] == null)
             ppk = getPkCache[req.user.email] = EcPpk.fromPem(process.env.AUTH_OVERRIDE_KEY || global.AUTH_OVERRIDE_KEY).toPem();
-        if (getPersonCache[ppk] == null)
+        if (getPersonCache[EcPpk.fromPem(ppk).toPk().toPem()] == null)
         {
             let p = new EcPerson();
             p.addOwner(EcPpk.fromPem(ppk).toPk());
@@ -344,7 +344,7 @@ app.use(async function (req, res, next) {
             p.identifier = req.user.sub;
             getPersonCache[EcPpk.fromPem(ppk).toPk().toPem()] = p;
         }
-        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CaSSFalsifyingIdentity", "Falsifying identity for testing purposes.", req.user);
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CaSSFalsifyingIdentity", "Falsifying identity for testing purposes.", req.user, EcPpk.fromPem(process.env.AUTH_OVERRIDE_KEY || global.AUTH_OVERRIDE_KEY).toPk().toPem());
     }
     if (req.user != null)
     {

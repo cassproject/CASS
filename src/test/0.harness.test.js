@@ -5,7 +5,7 @@ if (process.env.NODEV == null)
         if (isListening){
             console.log("Hijacking auditLogger to make test results easy to read.");
             global.auditLogger.oldReport = global.auditLogger.report;
-            // global.auditLogger.report = function (message, severity, category, facility) {};
+            global.auditLogger.report = function (message, severity, category, facility) {};
         }
     });
 

@@ -2,36 +2,114 @@
 
 ## Overview
 
-                   │        Analyzed Image         
-───────────────────┼───────────────────────────────
- Target            │  cass-cass-distroless:latest  
-   digest          │  b26e5ea18dd3                 
-   platform        │ linux/amd64                   
-   vulnerabilities │    0C     0H     3M     0L    
-   size            │ 110 MB                        
-   packages        │ 651                           
+                   │           Analyzed Image           
+───────────────────┼────────────────────────────────────
+ Target            │  cass-cass-distroless:latest       
+   digest          │  458bc29d7c29                      
+   platform        │ linux/amd64                        
+   vulnerabilities │    0C     2H     5M     0L     8?  
+   size            │ 94 MB                              
+   packages        │ 644                                
 
 
 ## Packages and Vulnerabilities
 
+   0C     1H     1M     0L  picomatch 4.0.3
+pkg:npm/picomatch@4.0.3
+
+    ✗ HIGH CVE-2026-33671 [Inefficient Regular Expression Complexity]
+      https://scout.docker.com/v/CVE-2026-33671?s=github&n=picomatch&t=npm&vr=%3E%3D4.0.0%2C%3C4.0.4
+      Affected range : >=4.0.0                                      
+                     : <4.0.4                                       
+      Fixed version  : 4.0.4                                        
+      CVSS Score     : 7.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H 
+    
+    ✗ MEDIUM CVE-2026-33672 [Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')]
+      https://scout.docker.com/v/CVE-2026-33672?s=github&n=picomatch&t=npm&vr=%3E%3D4.0.0%2C%3C4.0.4
+      Affected range : >=4.0.0                                      
+                     : <4.0.4                                       
+      Fixed version  : 4.0.4                                        
+      CVSS Score     : 5.3                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N 
+    
+
+   0C     1H     0M     0L     8?  node 24.14.0
+pkg:generic/node@24.14.0
+
+    ✗ HIGH CVE-2026-21637
+      https://scout.docker.com/v/CVE-2026-21637?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21717
+      https://scout.docker.com/v/BSA-2026-21717?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21716
+      https://scout.docker.com/v/BSA-2026-21716?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21715
+      https://scout.docker.com/v/BSA-2026-21715?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21714
+      https://scout.docker.com/v/BSA-2026-21714?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21713
+      https://scout.docker.com/v/BSA-2026-21713?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21712
+      https://scout.docker.com/v/BSA-2026-21712?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21711
+      https://scout.docker.com/v/BSA-2026-21711?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+    ✗ UNSPECIFIED BSA-2026-21710
+      https://scout.docker.com/v/BSA-2026-21710?s=docker&n=node&t=generic&vr=%3E%3D24.0.0%2C%3C24.14.1
+      Affected range : >=24.0.0 
+                     : <24.14.1 
+      Fixed version  : 24.14.1  
+    
+
    0C     0H     3M     0L  jose 2.0.7
 pkg:npm/jose@2.0.7
 
-    x MEDIUM CVE-2021-29446 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+    ✗ MEDIUM CVE-2021-29446 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
       https://scout.docker.com/v/CVE-2021-29446?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
       Affected range : <3.11.4                                      
       Fixed version  : 3.11.4                                       
       CVSS Score     : 5.9                                          
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
     
-    x MEDIUM CVE-2021-29445 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+    ✗ MEDIUM CVE-2021-29445 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
       https://scout.docker.com/v/CVE-2021-29445?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
       Affected range : <3.11.4                                      
       Fixed version  : 3.11.4                                       
       CVSS Score     : 5.9                                          
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
     
-    x MEDIUM CVE-2021-29444 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+    ✗ MEDIUM CVE-2021-29444 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
       https://scout.docker.com/v/CVE-2021-29444?s=gitlab&n=jose&t=npm&vr=%3C3.11.4
       Affected range : <3.11.4                                      
       Fixed version  : 3.11.4                                       
@@ -39,10 +117,23 @@ pkg:npm/jose@2.0.7
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N 
     
 
+   0C     0H     1M     0L  brace-expansion 5.0.4
+pkg:npm/brace-expansion@5.0.4
 
-3 vulnerabilities found in 1 package
-  CRITICAL  0 
-  HIGH      0 
-  MEDIUM    3 
-  LOW       0 
+    ✗ MEDIUM CVE-2026-33750 [Uncontrolled Resource Consumption]
+      https://scout.docker.com/v/CVE-2026-33750?s=github&n=brace-expansion&t=npm&vr=%3E%3D4.0.0%2C%3C5.0.5
+      Affected range : >=4.0.0                                      
+                     : <5.0.5                                       
+      Fixed version  : 5.0.5                                        
+      CVSS Score     : 6.5                                          
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H 
+    
+
+
+15 vulnerabilities found in 4 packages
+  CRITICAL     0 
+  HIGH         2 
+  MEDIUM       5 
+  LOW          0 
+  UNSPECIFIED  8 
 

@@ -33,7 +33,7 @@ describe('Profile API', function () {
         repo = new EcRepository();
         await repo.init(CASS_LOOPBACK);
         // Generate email prefix for unique test data
-        emailPrefix = 'testuser+' + new Date().getTime() + '@test.com';
+        emailPrefix = 'testuser' + new Date().getTime() + '@test.com';
 
         // Create User (Subject)
         user = new EcIdentity();
@@ -73,24 +73,34 @@ describe('Profile API', function () {
         c3.setName("Competency 3");
         c3.addOwner(agent.ppk.toPk());
 
-        framework.addCompetency(c1.id);
-        framework.addCompetency(c2.id);
-        framework.addCompetency(c3.id);
+        framework.addCompetency(c1.shortId());
+        framework.addCompetency(c2.shortId());
+        framework.addCompetency(c3.shortId());
 
         // Relation: C1 narrows C2
         let r1 = new EcAlignment();
         r1.generateId(repo.selectedServer);
-        r1.source = c1.id;
-        r1.target = c2.id;
+        r1.source = c1.shortId();
+        r1.target = c2.shortId();
         r1.relationType = "narrows";
         r1.addOwner(agent.ppk.toPk());
-        framework.addRelation(r1.id);
+        framework.addRelation(r1.shortId());
+
+        // Relation: C1 narrows C3
+        let r2 = new EcAlignment();
+        r2.generateId(repo.selectedServer);
+        r2.source = c1.shortId();
+        r2.target = c3.shortId();
+        r2.relationType = "narrows";
+        r2.addOwner(agent.ppk.toPk());
+        framework.addRelation(r2.shortId());
 
         // Save everything
         await repo.saveTo(c1);
         await repo.saveTo(c2);
         await repo.saveTo(c3);
         await repo.saveTo(r1);
+        await repo.saveTo(r2);
         await repo.saveTo(framework);
 
         // Create EcPerson for the user so anythingToPerson works
@@ -105,17 +115,18 @@ describe('Profile API', function () {
     it('Initial profile calculation (no assertions)', async () => {
         const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.id}&cache=false`;
         const res = await fetch(url);
-        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + await res.text());
-        const profile = await res.json();
+        let text = await res.text();
+        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+        const profile = JSON.parse(text);
         
         assert.equal(profile.id, framework.id);
         assert.equal(profile.children.length, 2); // C2 (parent of C1) and C3 (standalone)
         
         // Find C2 and check its children
-        const comp2 = profile.children.find(c => c.id === c2.id);
+        const comp2 = profile.children.find(c => c.id === c2.shortId());
         assert.isDefined(comp2);
         assert.equal(comp2.children.length, 1);
-        assert.equal(comp2.children[0].id, c1.id);
+        assert.equal(comp2.children[0].id, c1.shortId());
 
         // Check state
         assert.isFalse(comp2.state.hasPositiveEvidence);
@@ -125,23 +136,25 @@ describe('Profile API', function () {
     it('Add positive assertion for C1 and verify profile (multi-volley simulation)', async () => {
         let a = new EcAssertion();
         a.generateId(repo.selectedServer);
-        a.setSubject(user.ppk.toPk());
-        a.setAgent(agent.ppk.toPk());
-        a.competency = c1.id;
-        a.setAssertionDate(new Date().getTime());
-        a.setNegative(false);
-        a.addOwner(agent.ppk.toPk());
+        await a.addOwner(agent.ppk.toPk());
+        await a.addReader(user.ppk.toPk());
+        await a.setSubject(user.ppk.toPk());
+        await a.setAgent(agent.ppk.toPk());
+        a.competency = c1.shortId();
+        await a.setAssertionDate(new Date().getTime());
+        await a.setNegative(false);
         await repo.saveTo(a);
 
-        const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.id}&cache=false&flushCache=true`;
+        const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
         const res = await fetch(url);
-        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + await res.text());
-        const profile = await res.json();
+        let text = await res.text();
+        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+        const profile = JSON.parse(text);
 
         // C1 should have positive evidence
-        const comp2 = profile.children.find(c => c.id === c2.id);
-        const comp1 = comp2.children.find(c => c.id === c1.id);
-        
+        const comp2 = profile.children.find(c => c.id === c2.shortId());
+        const comp1 = comp2.children.find(c => c.id === c1.shortId());
+
         assert.isTrue(comp1.state.hasPositiveEvidence);
         assert.isTrue(comp1.state.latestEvidenceIsPositive);
 
@@ -152,65 +165,58 @@ describe('Profile API', function () {
     it('Add negative assertion for C2 and verify conflict', async () => {
         let a = new EcAssertion();
         a.generateId(repo.selectedServer);
-        a.setSubject(user.ppk.toPk());
-        a.setAgent(agent.ppk.toPk());
-        a.competency = c2.id;
-        a.setAssertionDate(new Date().getTime());
-        a.setNegative(true);
-        a.addOwner(agent.ppk.toPk());
+        await a.addOwner(agent.ppk.toPk());
+        await a.addReader(user.ppk.toPk());
+        await a.setSubject(user.ppk.toPk());
+        await a.setAgent(agent.ppk.toPk());
+        a.competency = c2.shortId();
+        await a.setAssertionDate(new Date().getTime());
+        await a.setNegative(true);
         await repo.saveTo(a);
 
-        const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.id}&cache=false&flushCache=true`;
+        const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
         const res = await fetch(url);
-        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + await res.text());
-        const profile = await res.json();
+        let text = await res.text();
+        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+        const profile = JSON.parse(text);
 
-        const comp2 = profile.children.find(c => c.id === c2.id);
+        const comp2 = profile.children.find(c => c.id === c2.shortId());
         assert.isTrue(comp2.state.hasNegativeEvidence);
         assert.isFalse(comp2.state.latestEvidenceIsPositive);
     });
 
     it('Multi-volley profile calculation with relations and assertions', async () => {
-        // C3 narrows C1
-        let r2 = new EcAlignment();
-        r2.generateId(repo.selectedServer);
-        r2.source = c3.id;
-        r2.target = c1.id;
-        r2.relationType = "narrows";
-        r2.addOwner(agent.ppk.toPk());
-        
-        framework.addRelation(r2.id);
-        await repo.saveTo(r2);
-        await repo.saveTo(framework);
-
         // Add assertion for C3
         let a = new EcAssertion();
         a.generateId(repo.selectedServer);
-        a.setSubject(user.ppk.toPk());
-        a.setAgent(agent.ppk.toPk());
-        a.competency = c3.id;
-        a.setAssertionDate(new Date().getTime());
-        a.setNegative(false);
-        a.addOwner(agent.ppk.toPk());
+        await a.addOwner(agent.ppk.toPk());
+        await a.addReader(user.ppk.toPk());
+        await a.setSubject(user.ppk.toPk());
+        await a.setAgent(agent.ppk.toPk());
+        a.competency = c3.shortId();
+        await a.setAssertionDate(new Date().getTime());
+        await a.setNegative(false);
         await repo.saveTo(a);
 
-        const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.id}&cache=false&flushCache=true`;
+        const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
         const res = await fetch(url);
-        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + await res.text());
-        const profile = await res.json();
+        let text = await res.text();
+        assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+        const profile = JSON.parse(text);
 
         // Structure: C2 -> narrows -> C1 -> narrows -> C3
         // In the profile tree, it should be C2 (top) -> C1 -> C3
-        const comp2 = profile.children.find(c => c.id === c2.id);
+        const comp2 = profile.children.find(c => c.id === c2.shortId());
         assert.equal(comp2.children.length, 1);
         const comp1 = comp2.children[0];
-        assert.equal(comp1.id, c1.id);
-        assert.equal(comp1.children.length, 1);
-        const comp3 = comp1.children[0];
-        assert.equal(comp3.id, c3.id);
+        assert.equal(comp1.id, c1.shortId());
+        assert.equal(comp1.children.length, 0);
+        const comp3 = profile.children.find(c => c.id === c3.shortId());
+        assert.equal(comp3.id, c3.shortId());
+        assert.equal(comp3.children.length, 1);
 
-        assert.isTrue(comp3.state.hasPositiveEvidence);
-        assert.isTrue(comp1.state.hasAnyChildrenWithPositiveEvidence);
+        assert.isTrue(comp1.state.hasPositiveEvidence);
+        assert.isTrue(comp3.state.hasAnyChildrenWithPositiveEvidence);
         assert.isTrue(comp2.state.hasAnyChildrenWithPositiveEvidence);
     });
 

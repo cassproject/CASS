@@ -19,31 +19,32 @@ let fetchAssertions = async function () {
             searchString += "competency:\"" + cs[i] + "\"";
         }
         searchString = `"${this.pem}" AND (${searchString})`;
-        return await repo.searchWithParams(searchString, {
+        let results = await repo.searchWithParams(searchString, {
             size: 10000,
             index_hint: "*assertion"
-        });
+        }, null, null, null, this.req?.eim || EcIdentityManager.default);
+        return results;
     }), { concurrency: 5 })).flat();
     assertions = assertions.map(x => new EcAssertion().copyFrom(x));
-        global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Searching for assertions, ${assertions.length} found.`);
-            let prevCount = assertions.length;
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Searching for assertions, ${assertions.length} found.`);
+    let prevCount = assertions.length;
     assertions = await Promise.all(assertions.map(async (a) => {
-                let subjectPk = await a.getSubject();
-                if (subjectPk == null) return null;
-                if (subjectPk.toPem() == this.pem)
-                    return a;
-                return null;
-            }));
+        let subjectPk = await a.getSubject();
+        if (subjectPk == null) return null;
+        if (subjectPk.toPem() == this.pem)
+            return a;
+        return null;
+    }));
     assertions = assertions.filter((x) => (x));
-            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
+    global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
     assertions.sort((a, b) => {
-                return b.id.localeCompare(a.id);
-            });
-            let concatAssertions = "";
-            for (let assertion of assertions)
-                concatAssertions += assertion.id;
-            assertionHash = EcCrypto.md5(concatAssertions);
-            return assertions;
+        return b.id.localeCompare(a.id);
+    });
+    let concatAssertions = "";
+    for (let assertion of assertions)
+        concatAssertions += assertion.id;
+    assertionHash = EcCrypto.md5(concatAssertions);
+    return assertions;
 }
 let insertResources = async function(){
     // Search for resource alignments
