@@ -22,7 +22,7 @@ let autoCalculatePeople = async () => {
                 i.displayName = "Identity from Controller";
                 eim.addIdentity(i);
             }
-            let frameworks = await repo.multiget(events.data.frameworks, null, null, eim);
+            let frameworks = await repo.multiget(global.events.data.frameworks, null, null, eim);
             let people = await EcPerson.search(repo, "*", null, null, { size: 10000 }, eim);
             for (personIndex = 0; personIndex < people.length; personIndex++) {
                 let person = people[personIndex];

@@ -11,7 +11,6 @@ let anythingToPem = global.anythingToPem = async (subject) => {
         if (EcArray.isArray(person)) {
             return person.map((p)=>p.owner[0]);
         }
-        console.log('anythingToPem resolved to person with owner: ' + JSON.stringify(person,null,2));
         return person.owner[0];
     }).catch((e) => {
         throw e;

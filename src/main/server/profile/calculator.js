@@ -132,32 +132,6 @@ module.exports = class ProfileCalculator {
         let profileKey = null;
         let storedProfile = null;
 
-        if (this.framework.id != null && PROFILE_REPOSITORY_CACHE) {
-            let frameworkIdHash = EcCrypto.md5(this.framework.id);
-            profileKey = calculatorVersion + "_" + frameworkIdHash + "_" + assertionHash + "_" + EcCrypto.md5(this.person.id) + "_" + coprocessorConfiguration;
-            let storedProfile = new EcRemoteLinkedData("https://schema.cassproject.org/0.4/", "StoredProfile");
-            storedProfile.assignId(repo.selectedServer, profileKey);
-
-            if (this.cache == true)
-                try {
-                    storedProfile = await EcRepository.get(storedProfile.shortId());
-                    if (storedProfile != null && this.precaching) {
-                        this.log("Cache hit (Repository)");
-                        return;
-                    }
-                    storedProfile = await EcEncryptedValue.fromEncryptedValue(storedProfile);
-                    this.log("Cache hit (Repository)");
-                    if (EcObject.isObject(storedProfile.result))
-                        return storedProfile.result;
-                    else
-                        return JSON.parse(storedProfile.result);
-                } catch (ex) {
-                    storedProfile = null;
-                }
-            else
-                storedProfile = null;
-        }
-
         // Wait for assertion search to finish, and get results
         assertions = await assertions;
         this.log("Received assertions.");
@@ -175,21 +149,6 @@ module.exports = class ProfileCalculator {
 
         let result = await this.postProcess();
 
-        if (profileKey != null && PROFILE_REPOSITORY_CACHE) {
-            let len = JSON.stringify(result).length;
-            if (len < 30 * 1024 * 1024) {
-                storedProfile = new EcRemoteLinkedData("https://schema.cassproject.org/0.4/", "StoredProfile");
-                storedProfile.assignId(repo.selectedServer, profileKey);
-                storedProfile.addOwner(EcIdentityManager.default.ids[0].ppk.toPk());
-                storedProfile.result = result;
-                this.log("Encrypting!");
-                storedProfile = await EcEncryptedValue.toEncryptedValue(storedProfile, false);
-                this.log("Encrypted! Saving!");
-                await repo.saveTo(storedProfile);
-                this.log("Saved!");
-            } else
-                global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculate", len);
-        }
         return result;
     }
 
@@ -430,10 +389,6 @@ module.exports = class ProfileCalculator {
 
 const cloneGraph = (g) => {
     let g2 = new EcFrameworkGraph();
-    for (let gx in g.metaVerticies)
-        g2.metaVerticies[gx] = Object.assign({}, g.metaVerticies[gx]);
-    for (let gx in g.metaEdges)
-        g2.metaEdges[gx] = Object.assign({}, g.metaEdges[gx]);
     g2.edges = [...g.edges];
     g2.verticies = [...g.verticies];
     Object.assign(g2.competencyMap, g.competencyMap);
@@ -442,5 +397,7 @@ const cloneGraph = (g) => {
     g2.frameworks.push(...g.frameworks);
     g2.repo = g.repo;
     g2.eim = g.eim;
+    Object.assign(g2.inEdgeCache, g.inEdgeCache);
+    Object.assign(g2.outEdgeCache, g.outEdgeCache);
     return g2;
 };
