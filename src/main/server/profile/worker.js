@@ -61,8 +61,6 @@ if (envHttps) {
 repo.selectedServerProxy = process.env.CASS_LOOPBACK_PROXY || null;
 
 EcRepository.caching = true;
-// EcRepository.cachingSearch = true;
-// EcCrypto.caching = true;
 
 const PRECACHE_ALL_FRAMEWORKS = true;
 global.allFrameworks = []; // Cache of all frameworks

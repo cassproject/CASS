@@ -57,14 +57,14 @@ let autoCalculatePeople = async () => {
 }
 
 global.events.server.ready.subscribe(async (isReady) => {
-    if (isReady)
+    if (isReady && process.env.AUTO_CALCULATE_PROFILES)
         global.events.server.periodic.subscribe(async (activePeople) => {
             autoCalculatePeople();
         });
 });
 
 global.events.person.arrived.subscribe(async (activePeople) => {
-    if (activePeople.length > 0) {
+    if (activePeople.length > 0 && process.env.AUTO_CALCULATE_PROFILES) {
         keysIndex = 0;
         personIndex = 0;
         autoCalculatePeople();

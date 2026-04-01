@@ -22,10 +22,13 @@ unknownPerson.generateId(global.repo.selectedServer);
 unknownPerson.name = 'Unknown Person';
 let anythingToPersonIsTolerant = true;
 let anythingToPersonCache = global.anythingToPersonCache = {};
+setInterval(function () {
+    anythingToPersonCache = {};
+}, 1000 * 60 * 60);
 let anythingToPerson = global.anythingToPerson = async (subject) => {
-    if (anythingToPersonCache[subject]) return anythingToPersonCache[subject];
     // No/Invalid subject?
     if (subject == null) throw new Error('Parse Error');
+    if (anythingToPersonCache[subject]) return anythingToPersonCache[subject];
 
     let result;
     if (EcArray.isArray(subject)) {
@@ -38,14 +41,18 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
         try {
             person = await EcPerson.get(url);
         } catch (e) {
-            if (anythingToPersonIsTolerant) 
+            if (anythingToPersonIsTolerant) {
+                anythingToPersonCache[subject] = unknownPerson;
                 return unknownPerson;
+            }
             error(e, 500);
         }
 
         if (person == null) {
-            if (anythingToPersonIsTolerant) 
+            if (anythingToPersonIsTolerant) {
+                anythingToPersonCache[subject] = unknownPerson;
                 return unknownPerson;
+            }
             error('Person not found.', 400);
         }
 
@@ -65,19 +72,25 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
         } catch (e) {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, 'AnythingToPerson', e);
             if (e instanceof TypeError) {
-                if (anythingToPersonIsTolerant) 
+                if (anythingToPersonIsTolerant) {
+                    anythingToPersonCache[subject] = unknownPerson;
                     return unknownPerson;
+                }
                 throw new Error('Parse Error');
             } else {
-                if (anythingToPersonIsTolerant) 
+                if (anythingToPersonIsTolerant) {
+                    anythingToPersonCache[subject] = unknownPerson;
                     return unknownPerson;
+                }
                 throw new Error(e.message);
             }
         }
 
         if (person == null) {
-            if (anythingToPersonIsTolerant) 
+            if (anythingToPersonIsTolerant) {
+                anythingToPersonCache[subject] = unknownPerson;
                 return unknownPerson;
+            }
             throw new Error('Could not find ' + subject);
         }
 
@@ -88,14 +101,18 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
         try {
             people = await EcPerson.search(repo, `email:"${subject}" OR username:"${subject}"`);
         } catch (e) {
-            if (anythingToPersonIsTolerant) 
+            if (anythingToPersonIsTolerant) {
+                anythingToPersonCache[subject] = unknownPerson;
                 return unknownPerson;
+            }
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.ERROR, 'AnythingToPerson', e);
             throw new Error(e.message);
         }
         if (people == null || people.length === 0) {
-            if (anythingToPersonIsTolerant) 
+            if (anythingToPersonIsTolerant) {
+                anythingToPersonCache[subject] = unknownPerson;
                 return unknownPerson;
+            }
             throw new Error('No Person found for ' + subject);
         }
 
@@ -105,7 +122,10 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
     if (result != null) {
         if (result.personType != null && result.personType !== 'Person') {
             if (anythingToPersonIsTolerant) 
+            {
+                anythingToPersonCache[subject] = unknownPerson;
                 return unknownPerson;
+            }
             throw Error('No Person found for ' + subject);
         }
         anythingToPersonCache[subject] = result;
@@ -113,7 +133,10 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
     }
 
     if (anythingToPersonIsTolerant) 
+    {
+        anythingToPersonCache[subject] = unknownPerson;
         return unknownPerson;
+    }
     throw new Error('Parse Error');
 };
 module.exports = {
