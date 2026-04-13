@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.6.20",
+  "version": "1.6.21",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "scripts": {
@@ -71,10 +71,10 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1029.0",
+    "@aws-sdk/client-s3": "^3.1030.0",
     "@xmldom/xmldom": "^0.9.9",
     "busboy": "^1.6.0",
-    "cassproject": "^5.0.13",
+    "cassproject": "^5.0.14",
     "check-disk-space": "^3.4.0",
     "compression": "^1.8.1",
     "cors": "^2.8.6",
