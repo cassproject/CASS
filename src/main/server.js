@@ -45,7 +45,7 @@ global.auditLogger = require('./server/shims/auditLogger.js');
 const express = require('express');
 let app = global.app = express();
 const https = require('https');
-const spdy = require('spdy-fixes');
+const http2compat = require('./server/shims/http2compat.js');
 require('cassproject');
 const fs = require('fs');
 global.v8 = require('v8');
@@ -103,6 +103,13 @@ if (process.env.CORS_ORIGINS != null || process.env.CORS_CREDENTIALS != null) {
 
 const cors = require('cors');
 app.use(cors(corsOptions));
+
+// Default req.isSpdy = false for non-HTTP/2 paths (plain HTTP, HTTPS-only).
+// The http2compat shim overrides this for actual HTTP/2 connections.
+app.use((req, res, next) => {
+    if (req.isSpdy === undefined) req.isSpdy = false;
+    next();
+});
 
 global.disabledAdapters = {};
 if (process.env.DISABLED_ADAPTERS) {
@@ -494,7 +501,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
             requestCert: process.env.REQUEST_CLIENT_SIDE_CERTIFICATE == 'true' || false,
             rejectUnauthorized: process.env.CLIENT_SIDE_CERTIFICATE_ONLY == 'true' || false,
             allowHTTP1: true,
-            secureProtocol: 'TLSv1_2_method',
+            minVersion: 'TLSv1.2',
         };
         // Load CRL Lists
         if (process.env.CRL_LISTS === 'true') {
@@ -508,7 +515,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
             }
         }
         if (envHttp2) {
-            global.server = spdy.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
+            global.server = http2compat.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         } else {
             global.server = https.createServer(options, app).listen(port, () => { global.events.server.listening.next(true); });
         }
