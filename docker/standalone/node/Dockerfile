@@ -51,6 +51,7 @@ RUN chown 1000:1000 /app/etc
 
 ARG TEST=false
 RUN if [ "$TEST" = "true" ] ; then export PORT=8081 && export CASS_LOOPBACK=http://localhost:8081/api/ && npm i && npm run mochaDev && npm ci --production --omit=dev ; fi
+RUN if [ "$TEST" = "true" ] ; then export PORT=8081 && export CASS_LOOPBACK=https://localhost:8081/api/ && npm i && npm run mochaDevHttps && npm ci --production --omit=dev ; fi
 RUN rm -f client.key client.crt
 
 EXPOSE 80

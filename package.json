@@ -22,7 +22,7 @@
     "dev:node": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&export PORT=8080|| set PORT=8080&&node src/main/server.js",
     "mocha": "export NODEV=true|| set NODEV=true&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
     "mochaDev": "export CLOSE=true|| set CLOSE=true&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
-    "mochaDevHttps": "export CLOSE=true|| set CLOSE=true&& export CASS_LOOPBACK=https://localhost/api/|| set CASS_LOOPBACK=https://localhost/api/&& export HTTPS=true|| set HTTPS=true&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
+    "mochaDevHttps": "export CLOSE=true|| set CLOSE=true&& export HTTPS=true|| set HTTPS=true&& export HTTPS_REJECT_UNAUTHORIZED=false|| set HTTPS_REJECT_UNAUTHORIZED=false&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
     "mochaEncryption": "mocha -b --exit --timeout 30000 node_modules/cassproject/src/com/eduworks/ec/crypto/*.test.js",
     "mochafast": "mocha -b --exit src/**/*.test.js",
     "mochaHttps": "export CASS_LOOPBACK=https://localhost/api/|| set CASS_LOOPBACK=https://localhost/api/&&npm run mocha",

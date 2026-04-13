@@ -247,6 +247,11 @@ function _dispatchHttp2Stream(server, stream, headers, app) {
     const res = new http.ServerResponse(req);
     res.assignSocket(socket);
 
+    // Forward H2 stream drain events through the socket so that
+    // backpressure-aware middleware (e.g. compression) can resume
+    // after stream.write() returns false.
+    stream.on('drain', () => socket.emit('drain'));
+
     // The standard ServerResponse serialises headers as raw HTTP/1.1 text
     // and writes them to the socket.  For HTTP/2 we need to intercept and
     // call stream.respond() instead.
@@ -302,11 +307,17 @@ function _dispatchHttp2Stream(server, stream, headers, app) {
     };
 
     // Intercept write to ensure headers go first.
+    // Must propagate backpressure so compression middleware can resume
+    // after stream.write() returns false (H2 flow control).
     const _origWrite = res.write;
     res.write = function write(chunk, encoding, cb) {
         if (!h2HeadersSent) _sendH2Headers();
         if (stream.destroyed) return false;
-        return stream.write(chunk, encoding, cb);
+        const ret = stream.write(chunk, encoding, cb);
+        if (!ret) {
+            stream.once('drain', () => res.emit('drain'));
+        }
+        return ret;
     };
 
     // Intercept end.
