@@ -59,7 +59,8 @@ ENV HTTP2=false
 USER elasticsearch:root
 
 ARG TEST=false
-RUN if [ "$TEST" = "true" ] ; then export PORT=8080 && export CASS_LOOPBACK=http://localhost:8080/api/ && cd CASS && npm i && (nohup /bin/tini -- /usr/local/bin/docker-entrypoint.sh > /dev/null 2>&1 & npm run mochaDev) && npm ci --production --omit=dev ; fi
+RUN if [ "$TEST" = "true" ] ; then export PORT=8080 && export CASS_LOOPBACK=http://localhost:8080/api/ && cd CASS && npm i && (nohup /bin/tini -- /usr/local/bin/docker-entrypoint.sh > /dev/null 2>&1 & (npm run mochaDev)) && npm ci --production --omit=dev ; fi
+RUN if [ "$TEST" = "true" ] ; then export PORT=8080 && export CASS_LOOPBACK=https://localhost:8080/api/ && cd CASS && npm i && (nohup /bin/tini -- /usr/local/bin/docker-entrypoint.sh > /dev/null 2>&1 & (npm run mochaDevHttps)) && npm ci --production --omit=dev ; fi
 RUN rm -f CASS/client.key CASS/client.crt
 
 ENTRYPOINT (cd CASS && node --force-fips src/main/server.js) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh

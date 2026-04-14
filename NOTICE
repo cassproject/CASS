@@ -54,7 +54,6 @@ MIT License:
   node-worker-threads-pool  - Worker thread pool  (https://github.com/nickyc975/node-worker-threads-pool)
   pure-uuid                 - UUID generation  (https://github.com/nicedoc/pure-uuid)
   rdflib                    - RDF library  (https://github.com/linkeddata/rdflib.js)
-  spdy-fixes                - HTTP/2 server  (https://github.com/nickyc975/spdy-fixes)
   swagger-jsdoc             - Swagger/OpenAPI doc generation  (https://github.com/Surnet/swagger-jsdoc)
   swagger-ui-express        - Swagger UI middleware  (https://github.com/scottie1984/swagger-ui-express)
   undici                    - HTTP client  (https://github.com/nodejs/undici)

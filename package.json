@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.6.20",
+  "version": "1.6.21",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "dev:node": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&export PORT=8080|| set PORT=8080&&node src/main/server.js",
     "mocha": "export NODEV=true|| set NODEV=true&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
     "mochaDev": "export CLOSE=true|| set CLOSE=true&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
+    "mochaDevHttps": "export CLOSE=true|| set CLOSE=true&& export HTTPS=true|| set HTTPS=true&& export HTTPS_REJECT_UNAUTHORIZED=false|| set HTTPS_REJECT_UNAUTHORIZED=false&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
     "mochaEncryption": "mocha -b --exit --timeout 30000 node_modules/cassproject/src/com/eduworks/ec/crypto/*.test.js",
     "mochafast": "mocha -b --exit src/**/*.test.js",
     "mochaHttps": "export CASS_LOOPBACK=https://localhost/api/|| set CASS_LOOPBACK=https://localhost/api/&&npm run mocha",
@@ -71,10 +72,10 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1029.0",
+    "@aws-sdk/client-s3": "^3.1030.0",
     "@xmldom/xmldom": "^0.9.9",
     "busboy": "^1.6.0",
-    "cassproject": "^5.0.13",
+    "cassproject": "^5.0.14",
     "check-disk-space": "^3.4.0",
     "compression": "^1.8.1",
     "cors": "^2.8.6",
@@ -91,7 +92,6 @@
     "pure-uuid": "^2.0.0",
     "rdflib": "^2.3.6",
     "rxjs": "^7.8.2",
-    "spdy-fixes": "^4.0.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "undici": "^6.24.1",
@@ -117,11 +117,7 @@
       "minimatch": "^10.2.4",
       "glob": "^13.0.6"
     },
-    "spdy-fixes": {
-      "minimatch": "^10.2.4",
-      "glob": "^13.0.6",
-      "serialize-javascript": "^7.0.5"
-    },
+
     "glob": {
       "minimatch": "^10.2.4"
     }

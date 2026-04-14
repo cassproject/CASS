@@ -31,11 +31,13 @@ const getCorsOrigins = function () {
     return corsOrigins;
 };
 let realCrypto = require('crypto');
+const cassVersion = require('../../../../package.json').version;
 const pingWithTime = function () {
     if (this.ctx?.req?.eim?.ids)
         global.events.person.doPing(this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()));
     return JSON.stringify({
         ping: 'pong',
+        version: cassVersion,
         time: new Date().getTime(),
         ssoViaP1: this.ctx.req.p1 ? true : null,
         ssoPublicKey: this.ctx.req.eim ? this.ctx.req.eim.ids[0].ppk.toPk().toPem() : undefined,
@@ -78,6 +80,7 @@ const pingWithTime = function () {
  *               description: Ping response
  *               required:
  *                 - ping
+ *                 - version
  *                 - time
  *                 - adminPublicKeys
  *                 - postMaxSize
@@ -87,6 +90,10 @@ const pingWithTime = function () {
  *                   type: string
  *                   description: Just a known value for ensuring the response isn't from something else.
  *                   example: pong
+ *                 version:
+ *                   type: string
+ *                   description: Current CASS server version from package.json.
+ *                   example: 1.6.21
  *                 time:
  *                   type: integer
  *                   description: The current number of milliseconds since the Unix epoch, for ensuring signature sheet signing can sign time-nonced signatures that will not be time-desynchronized with the server.
