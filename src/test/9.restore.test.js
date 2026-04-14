@@ -13,7 +13,8 @@ describe('Skyrepo Log Restore', function () {
         if (process.env.CLOSE)
         {
             console.log("CLOSE is set -- Closing server.");
-            process.exit(0);
+            server.close();
+            global.auditLogger.flush();
         }
     });
 });
