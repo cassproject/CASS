@@ -15,6 +15,7 @@ describe('Skyrepo Log Restore', function () {
             console.log("CLOSE is set -- Closing server.");
             server.close();
             global.auditLogger.flush();
+            process.exit(0);
         }
     });
 });
