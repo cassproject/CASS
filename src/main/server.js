@@ -359,7 +359,7 @@ const swaggerUiOptions = {
 
 const options = {
     definition: JSON.parse(fs.readFileSync('src/main/swagger.json') + ''),
-    apis: ['./src/**/*.js']
+    apis: ['./src/main/server/**/*.js']
 };
 const generatedSpec = swaggerJsdoc(options);
 
