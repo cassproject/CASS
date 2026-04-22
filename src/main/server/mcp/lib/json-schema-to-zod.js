@@ -62,7 +62,7 @@ function jsonSchemaToZod(jsonSchema) {
             if (jsonSchema.description) schema = schema.describe(jsonSchema.description);
             return schema;
         }
-        let schema = z.record(z.any());
+        let schema = z.record(z.string(), z.any());
         if (jsonSchema.description) schema = schema.describe(jsonSchema.description);
         return schema;
     }

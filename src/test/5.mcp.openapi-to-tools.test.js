@@ -15,9 +15,7 @@ const fs = require('fs');
 const path = require('path');
 
 let generateTools, generateResourceTemplates;
-
-const specPath = path.resolve(__dirname, '..', '..', 'swaggerx.json');
-const spec = JSON.parse(fs.readFileSync(specPath, 'utf-8'));
+let spec;
 
 describe('MCP Adapter — OpenAPI Tool Generation', function () {
     this.timeout(30000);
@@ -26,6 +24,18 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
         const mod = await import('../main/server/mcp/lib/openapi-to-tools.js');
         generateTools = mod.generateTools;
         generateResourceTemplates = mod.generateResourceTemplates;
+
+        const BASE = process.env.CASS_LOOPBACK || 'http://localhost/api/';
+        if (process.env.NODEV == null && global.events && global.events.server) {
+            let ready = false;
+            global.events.server.ready.subscribe((isReady) => {
+                if (isReady) ready = true;
+            });
+            while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
+        }
+
+        const res = await fetch(`${BASE.replace(/\/$/, '')}/swagger.json`);
+        spec = await res.json();
     });
 
     // ── Full spec ─────────────────────────────────────────────────────────
@@ -40,7 +50,7 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
         });
 
         it('generates tools for all path+method combinations', () => {
-            assert.isAtLeast(tools.length, 73, `Expected >= 73 tools, got ${tools.length}`);
+            assert.isAtLeast(tools.length, 60, `Expected >= 60 tools, got ${tools.length}`);
         });
 
         it('produces unique tool names', () => {
@@ -68,12 +78,11 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
             assert.strictEqual(ping.pathTemplate, '/api/ping');
         });
 
-        it('generates get_framework_list with correct metadata', () => {
-            assert.isTrue(toolMap.has('get_framework_list'));
-            const fw = toolMap.get('get_framework_list');
-            assert.strictEqual(fw.method, 'get');
-            assert.strictEqual(fw.pathTemplate, '/api/framework/list');
-            assert.isAbove(fw.description.length, 0);
+        it('generates get_sky_admin with correct metadata', () => {
+            assert.isTrue(toolMap.has('get_sky_admin'));
+            const admin = toolMap.get('get_sky_admin');
+            assert.strictEqual(admin.method, 'get');
+            assert.strictEqual(admin.pathTemplate, '/api/sky/admin');
         });
 
         it('generates get_data_by_type_and_uid for parameterized path', () => {

@@ -51,6 +51,9 @@ describe('OpenAPI / Swagger', function () {
             for (const [method, operation] of Object.entries(methods)) {
                 if (['parameters', 'summary', 'description'].includes(method)) continue;
 
+                // Skip MCP SSE endpoint as it keeps the connection open indefinitely
+                if (path === '/api/mcp' && method === 'get') continue;
+
                 // Build the URL — replace path params with a dummy value.
                 const url = BASE.replace(/\/api\/$/, '') +
                     path.replace(/\{[^}]+\}/g, 'test-placeholder');
@@ -74,6 +77,7 @@ describe('OpenAPI / Swagger', function () {
 
                 // Drain the body so the connection doesn't hang.
                 await res.text();
+                console.log(path, method, res.status, documentedCodes);
 
                 const statusStr = String(res.status);
                 const matched = documentedCodes.includes(statusStr) ||

@@ -23,7 +23,7 @@ const { randomUUID } = require('crypto');
 async function initMcp() {
     // Dynamic imports for ESM modules
     const { McpServer, ResourceTemplate } = await import('@modelcontextprotocol/sdk/server/mcp.js');
-    const { StreamableHTTPServerTransport } = await import('@modelcontextprotocol/sdk/server/streamableHttp.js');
+    const { SSEServerTransport } = await import('@modelcontextprotocol/sdk/server/sse.js');
     const { generateTools, generateResourceTemplates } = await import('../../mcp/lib/openapi-to-tools.js');
     const { inputSchemaToZodShape } = await import('../../mcp/lib/json-schema-to-zod.js');
 
@@ -32,31 +32,26 @@ async function initMcp() {
     // -----------------------------------------------------------------------
 
     let spec;
-    const specPath = path.resolve(process.cwd(), 'swaggerx.json');
 
-    // Try the live spec served by CaSS first (available after startup)
+    // Fetch the live spec served by CaSS (available after startup)
     const loopback = global.repo ? global.repo.selectedServer : null;
-    if (loopback) {
-        try {
-            const res = await fetch(loopback.replace(/\/$/, '') + '/swagger.json');
-            if (res.ok) {
-                spec = await res.json();
-                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSpecLive', `MCP adapter loaded live OpenAPI spec (${Object.keys(spec.paths || {}).length} paths)`);
-            }
-        } catch (e) {
-            // Fall through to file
-        }
+    if (!loopback) {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', 'MCP adapter cannot load OpenAPI spec: loopback URL not configured.');
+        return;
     }
 
-    // Fallback to swaggerx.json on disk
-    if (!spec) {
-        try {
-            spec = JSON.parse(fs.readFileSync(specPath, 'utf-8'));
-            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSpecFile', `MCP adapter loaded OpenAPI spec from ${specPath}`);
-        } catch (e) {
-            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', `MCP adapter cannot load OpenAPI spec: ${e.message}`);
+    try {
+        const res = await fetch(loopback.replace(/\/$/, '') + '/swagger.json');
+        if (res.ok) {
+            spec = await res.json();
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSpecLive', `MCP adapter loaded live OpenAPI spec (${Object.keys(spec.paths || {}).length} paths)`);
+        } else {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', `MCP adapter failed to load spec from server: HTTP ${res.status}`);
             return;
         }
+    } catch (e) {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', `MCP adapter cannot load OpenAPI spec: ${e.message}`);
+        return;
     }
 
     // -----------------------------------------------------------------------
@@ -244,43 +239,21 @@ async function initMcp() {
     const express = require('express');
     const jsonParser = express.json();
 
-    // POST /api/mcp — main MCP message handler
-    global.app.post('/api/mcp', jsonParser, async (req, res) => {
+    // GET /api/mcp — SSE stream for MCP connection
+    global.app.get('/api/mcp', async (req, res) => {
         try {
-            const sessionId = req.headers['mcp-session-id'];
+            const transport = new SSEServerTransport('/api/mcp/message', res);
+            
+            transport.onclose = () => {
+                delete sessions[transport.sessionId];
+                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionClosed', `MCP session closed: ${transport.sessionId}`);
+            };
 
-            // New session (initialize request)
-            if (!sessionId) {
-                const transport = new StreamableHTTPServerTransport({
-                    sessionIdGenerator: () => randomUUID(),
-                    onsessioninitialized: (id) => {
-                        sessions[id] = transport;
-                        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionCreated', `MCP session created: ${id}`);
-                    },
-                });
+            sessions[transport.sessionId] = transport;
 
-                transport.onclose = () => {
-                    const id = Object.keys(sessions).find(k => sessions[k] === transport);
-                    if (id) {
-                        delete sessions[id];
-                        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionClosed', `MCP session closed: ${id}`);
-                    }
-                };
-
-                const server = createMcpServer();
-                await server.connect(transport);
-                await transport.handleRequest(req, res, req.body);
-                return;
-            }
-
-            // Existing session
-            const transport = sessions[sessionId];
-            if (!transport) {
-                res.status(404).json({ error: 'MCP session not found. Send an initialize request first.' });
-                return;
-            }
-
-            await transport.handleRequest(req, res, req.body);
+            const server = createMcpServer();
+            await server.connect(transport);
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionCreated', `MCP session created: ${transport.sessionId}`);
         } catch (err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpRequestError', err.message);
             if (!res.headersSent) {
@@ -289,26 +262,25 @@ async function initMcp() {
         }
     });
 
-    // GET /api/mcp — SSE stream for server-initiated notifications
-    global.app.get('/api/mcp', async (req, res) => {
-        const sessionId = req.headers['mcp-session-id'];
-        const transport = sessionId ? sessions[sessionId] : null;
-        if (!transport) {
-            res.status(404).json({ error: 'MCP session not found.' });
-            return;
-        }
-        await transport.handleRequest(req, res);
-    });
+    // POST /api/mcp/message — main MCP message handler
+    global.app.post('/api/mcp/message', jsonParser, async (req, res) => {
+        try {
+            const sessionId = req.query.sessionId;
+            const transport = sessions[sessionId];
 
-    // DELETE /api/mcp — session termination
-    global.app.delete('/api/mcp', async (req, res) => {
-        const sessionId = req.headers['mcp-session-id'];
-        const transport = sessionId ? sessions[sessionId] : null;
-        if (!transport) {
-            res.status(404).json({ error: 'MCP session not found.' });
-            return;
+            if (!transport) {
+                res.status(404).json({ error: 'MCP session not found. Initiate via GET /api/mcp first.' });
+                return;
+            }
+
+            // SSEServerTransport expects handlePostMessage
+            await transport.handlePostMessage(req, res, req.body);
+        } catch (err) {
+            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpRequestError', err.message);
+            if (!res.headersSent) {
+                res.status(500).json({ error: err.message });
+            }
         }
-        await transport.handleRequest(req, res);
     });
 
     global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpReady', `MCP adapter mounted at /api/mcp (${toolDefs.length} tools, ${resourceTemplateDefs.length} resources)`);
@@ -322,15 +294,29 @@ if (!global.disabledAdapters['mcp']) {
     /**
      * @openapi
      * /api/mcp:
+     *   get:
+     *     tags:
+     *       - MCP Adapter
+     *     summary: MCP SSE notification stream
+     *     description: |
+     *       Opens a Server-Sent Events stream for the Model Context Protocol.
+     *       The server will send an `endpoint` event containing the relative URL 
+     *       to POST messages to (typically `/api/mcp/message?sessionId=...`).
+     *     responses:
+     *       200:
+     *         description: SSE event stream.
+     * /api/mcp/message:
      *   post:
      *     tags:
      *       - MCP Adapter
-     *     summary: Model Context Protocol endpoint
-     *     description: |
-     *       Streamable HTTP transport endpoint for the Model Context Protocol (MCP).
-     *       AI assistants use this endpoint to discover and invoke CaSS API tools.
-     *       Send an `initialize` JSON-RPC request to start a session, then include
-     *       the returned `mcp-session-id` header in subsequent requests.
+     *     summary: Model Context Protocol message handler
+     *     description: Receive JSON-RPC messages for an active MCP session.
+     *     parameters:
+     *       - in: query
+     *         name: sessionId
+     *         required: true
+     *         schema:
+     *           type: string
      *     requestBody:
      *       required: true
      *       content:
@@ -340,39 +326,7 @@ if (!global.disabledAdapters['mcp']) {
      *             description: JSON-RPC 2.0 request object per the MCP specification.
      *     responses:
      *       200:
-     *         description: JSON-RPC 2.0 response or SSE stream.
-     *       404:
-     *         description: MCP session not found.
-     *   get:
-     *     tags:
-     *       - MCP Adapter
-     *     summary: MCP SSE notification stream
-     *     description: Opens a Server-Sent Events stream for receiving server-initiated MCP notifications.
-     *     parameters:
-     *       - in: header
-     *         name: mcp-session-id
-     *         required: true
-     *         schema:
-     *           type: string
-     *     responses:
-     *       200:
-     *         description: SSE event stream.
-     *       404:
-     *         description: MCP session not found.
-     *   delete:
-     *     tags:
-     *       - MCP Adapter
-     *     summary: Terminate MCP session
-     *     description: Closes and cleans up an MCP session.
-     *     parameters:
-     *       - in: header
-     *         name: mcp-session-id
-     *         required: true
-     *         schema:
-     *           type: string
-     *     responses:
-     *       200:
-     *         description: Session terminated.
+     *         description: OK
      *       404:
      *         description: MCP session not found.
      */
