@@ -8,6 +8,7 @@
     "testWithCoverage": "npm run test:deps && nyc --reporter=lcov --reporter=text --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run mochaDev",
     "test:start": "node src/main/server.js",
     "test:deps": "docker compose up -d elasticsearch-cass",
+    "mcp:inspect": "npx -y @modelcontextprotocol/inspector --url http://localhost/api/mcp",
     "dev": "npm run dev:deps && npm run dev:nodemon",
     "dev:docker": "npm run dev:deps && npm run dev:nodemon:docker",
     "dev:https": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& npm run dev:nodemon",
@@ -73,6 +74,7 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1030.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@xmldom/xmldom": "^0.9.9",
     "busboy": "^1.6.0",
     "cassproject": "^5.0.14",
@@ -96,7 +98,8 @@
     "swagger-ui-express": "^5.0.1",
     "undici": "^6.24.1",
     "uuid": "^13.0.0",
-    "ws": "^8.20.0"
+    "ws": "^8.20.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "chai": "4.5.0",
@@ -117,7 +120,6 @@
       "minimatch": "^10.2.4",
       "glob": "^13.0.6"
     },
-
     "glob": {
       "minimatch": "^10.2.4"
     }
