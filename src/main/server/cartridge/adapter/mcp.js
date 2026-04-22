@@ -10,10 +10,6 @@
  * @see https://modelcontextprotocol.io/
  */
 
-const fs = require('fs');
-const path = require('path');
-const { randomUUID } = require('crypto');
-
 /**
  * Initialize the MCP adapter and mount routes on Express.
  *
@@ -26,10 +22,6 @@ async function initMcp() {
     const { SSEServerTransport } = await import('@modelcontextprotocol/sdk/server/sse.js');
     const { generateTools, generateResourceTemplates } = await import('../../mcp/lib/openapi-to-tools.js');
     const { inputSchemaToZodShape } = await import('../../mcp/lib/json-schema-to-zod.js');
-
-    // -----------------------------------------------------------------------
-    // 1. Load the OpenAPI spec — prefer the live generated spec from server.js
-    // -----------------------------------------------------------------------
 
     let spec;
 
@@ -297,6 +289,7 @@ if (!global.disabledAdapters['mcp']) {
      *   get:
      *     tags:
      *       - MCP Adapter
+     *     x-mcp-ignore: true
      *     summary: MCP SSE notification stream
      *     description: |
      *       Opens a Server-Sent Events stream for the Model Context Protocol.
@@ -309,6 +302,7 @@ if (!global.disabledAdapters['mcp']) {
      *   post:
      *     tags:
      *       - MCP Adapter
+     *     x-mcp-ignore: true
      *     summary: Model Context Protocol message handler
      *     description: Receive JSON-RPC messages for an active MCP session.
      *     parameters:

@@ -1952,6 +1952,7 @@ if (!global.disabledAdapters['ceasn']) {
      * @openapi
      * /api/ctdlasn/{id}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CEASN Adapter
      *     summary: Export a framework as CTDL-ASN JSON-LD (alias)
@@ -1971,6 +1972,7 @@ if (!global.disabledAdapters['ceasn']) {
      *             schema:
      *               type: object
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CEASN Adapter
      *     summary: Import a CTDL-ASN JSON-LD framework (alias)
@@ -2001,6 +2003,7 @@ if (!global.disabledAdapters['ceasn']) {
      * @openapi
      * /api/ctdlasn:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CEASN Adapter
      *     summary: CTDL-ASN root endpoint
@@ -2009,6 +2012,7 @@ if (!global.disabledAdapters['ceasn']) {
      *       200:
      *         description: CEASN JSON-LD graph or listing.
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CEASN Adapter
      *     summary: Import a CTDL-ASN framework (root)

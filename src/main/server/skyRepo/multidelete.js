@@ -63,9 +63,11 @@ const endpointMultiDelete = async function () {
  * @openapi
  * /api/sky/repo/multiDelete:
  *   post:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Repository
- *     description: 'Deletes multiple pieces of data simultaneously. See: https://stackoverflow.com/questions/68291244/how-to-format-a-json-array-in-the-request-body-of-a-multipart-form-data-request/68291856#68291856'
+ *     summary: Delete multiple records simultaneously
+ *     description: 'Deletes multiple pieces of data simultaneously. Note, testing this function via LLMs/Swagger often fails due to multipart array format requirements. See: https://stackoverflow.com/questions/68291244'
  *     requestBody:
  *       content:
  *         multipart/form-data:

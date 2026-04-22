@@ -508,6 +508,7 @@ let skyrepoReindex = async function () {
  * @openapi
  * /api/util/reindex:
  *   post:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Administration
  *     summary: Reindex all data in Elasticsearch
@@ -554,6 +555,7 @@ let skyrepoPurge = async function () {
  * @openapi
  * /api/util/purge:
  *   post:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Administration
  *     summary: Purge all Elasticsearch indices
@@ -653,6 +655,7 @@ skyrepoCull = async function () {
  * @openapi
  * /api/util/cull:
  *   post:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Administration
  *     summary: Remove old versioned records
@@ -760,6 +763,7 @@ skyrepoCullFast = async function () {
  * @openapi
  * /api/util/cullFast:
  *   post:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Administration
  *     summary: Fast cull of old versioned records

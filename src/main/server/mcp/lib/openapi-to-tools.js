@@ -122,9 +122,10 @@ function generateToolName(method, path) {
 }
 
 /**
- * Generate a human-readable description for a tool.
+ * Generate a human-readable description for a tool, including
+ * descriptions and examples of all parameters.
  */
-function generateDescription(method, path, operation) {
+function generateDescription(method, path, operation, spec) {
     const parts = [];
 
     if (operation.summary) {
@@ -139,7 +140,73 @@ function generateDescription(method, path, operation) {
         parts.push(`${method.toUpperCase()} ${path}`);
     }
 
-    return parts.join(' — ');
+    // Document parameters
+    const rawParams = operation.parameters || [];
+    if (rawParams.length > 0) {
+        parts.push('\nParameters:');
+        for (let param of rawParams) {
+            if (param['$ref']) {
+                try { param = resolveRef(spec, param['$ref']); } catch { continue; }
+            }
+            const name = param.name || 'unknown';
+            const location = param.in || '';
+            const schema = param.schema || {};
+            const typeStr = schemaTypeLabel(schema);
+            const required = param.required ? ' (required)' : '';
+
+            let line = `- ${name}${required}: ${typeStr}`;
+            if (location) line += ` [${location}]`;
+            if (param.description) line += ` — ${param.description}`;
+            if (param.example !== undefined) line += ` (e.g. ${JSON.stringify(param.example)})`;
+            else if (schema.example !== undefined) line += ` (e.g. ${JSON.stringify(schema.example)})`;
+            else if (schema.default !== undefined) line += ` (default: ${JSON.stringify(schema.default)})`;
+            parts.push(line);
+        }
+    }
+
+    // Document request body
+    if (operation.requestBody) {
+        const reqBody = operation.requestBody;
+        const content = reqBody.content || {};
+        const mediaType =
+            content['application/json'] ||
+            content['application/ld+json'] ||
+            content['multipart/form-data'] ||
+            Object.values(content)[0];
+
+        parts.push('\nRequest Body' + (reqBody.required ? ' (required)' : '') + ':');
+        if (reqBody.description) {
+            parts.push(`  ${reqBody.description}`);
+        }
+
+        if (mediaType && mediaType.schema) {
+            let bodySchema = mediaType.schema;
+            if (bodySchema['$ref']) {
+                try { bodySchema = resolveRef(spec, bodySchema['$ref']); } catch { /* use as-is */ }
+            }
+
+            // List body object properties if available
+            if (bodySchema.properties) {
+                const bodyRequired = new Set(bodySchema.required || []);
+                for (const [propName, propSchema] of Object.entries(bodySchema.properties)) {
+                    const typeStr = schemaTypeLabel(propSchema);
+                    const req = bodyRequired.has(propName) ? ' (required)' : '';
+                    let line = `- body.${propName}${req}: ${typeStr}`;
+                    if (propSchema.description) line += ` — ${propSchema.description}`;
+                    if (propSchema.example !== undefined) line += ` (e.g. ${JSON.stringify(propSchema.example)})`;
+                    parts.push(line);
+                }
+            } else {
+                parts.push(`  Type: ${schemaTypeLabel(bodySchema)}`);
+            }
+
+            if (mediaType.example !== undefined) {
+                parts.push(`  Example: ${JSON.stringify(mediaType.example)}`);
+            }
+        }
+    }
+
+    return parts.join('\n');
 }
 
 /**
@@ -156,8 +223,10 @@ export function generateTools(spec) {
             const operation = pathItem[method];
             if (!operation) continue;
 
+            if (operation['x-mcp-ignore'] === true) continue;
+
             const toolName = generateToolName(method, path);
-            const description = generateDescription(method, path, operation);
+            const description = generateDescription(method, path, operation, spec);
 
             // Build the parameter map and input schema properties.
             const parameterMap = {};

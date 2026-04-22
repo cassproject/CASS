@@ -8,7 +8,6 @@
     "testWithCoverage": "npm run test:deps && nyc --reporter=lcov --reporter=text --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run mochaDev",
     "test:start": "node src/main/server.js",
     "test:deps": "docker compose up -d elasticsearch-cass",
-    "mcp:inspect": "npx -y @modelcontextprotocol/inspector --url http://localhost/api/mcp",
     "dev": "npm run dev:deps && npm run dev:nodemon",
     "dev:docker": "npm run dev:deps && npm run dev:nodemon:docker",
     "dev:https": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& npm run dev:nodemon",

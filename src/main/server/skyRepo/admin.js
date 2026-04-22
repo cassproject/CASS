@@ -19,6 +19,11 @@
  */
 const fs = require('fs');
 
+if (process.env.INSECURE_SERVER_IS_ADMIN) {
+    process.env.PROFILE_PPK = EcPpk.fromPem(keyFor("skyAdmin2")).toPem();
+    console.warn("WARNING: INSECURE_SERVER_IS_ADMIN is enabled. This server will treat the built-in admin identity as an admin, granting it edit and delete capabilities over all data. This should never be enabled in a production environment.");
+}
+
 const skyrepoAdminPk = global.skyrepoAdminPk = function () {
     return EcPpk.fromPem(keyFor("skyAdmin2")).toPk().toPem();
 };
@@ -45,6 +50,7 @@ const endpointAdmin = function () {
  * @openapi
  * /api/sky/admin:
  *   get:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Infrastructure
  *     summary: Get admin public keys
