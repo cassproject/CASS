@@ -62,8 +62,11 @@ async function initMcp() {
     /**
      * Create and configure a fresh McpServer instance.
      * Called once per session so each client gets its own server state.
+     *
+     * @param {Object} sessionCtx - Mutable per-session context. The POST handler
+     *   updates sessionCtx.signatureSheet on each request from auth.js middleware.
      */
-    function createMcpServer() {
+    function createMcpServer(sessionCtx) {
         const server = new McpServer({
             name: 'cass-mcp-server',
             version: spec.info?.version || '1.0.0',
@@ -93,7 +96,7 @@ async function initMcp() {
                         `MCP tool invoked: ${def.name} | args: ${JSON.stringify(args)}`);
 
                     try {
-                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap, def.requestContentType);
+                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap, def.requestContentType, sessionCtx.signatureSheet);
                         const elapsed = Date.now() - startTime;
 
                         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolResult',
@@ -148,9 +151,14 @@ async function initMcp() {
                         }
 
                         let fetchUrl = cassUrl + apiPath.replace(/^\/api\//, '/').replace(/^\/api$/, '');
-                        const response = await fetch(fetchUrl, {
-                            headers: { 'Accept': 'application/ld+json, application/json' },
-                        });
+                        const fetchHeaders = { 'Accept': 'application/ld+json, application/json' };
+
+                        // Forward signature sheet for resource access
+                        if (sessionCtx.signatureSheet) {
+                            fetchHeaders['signatureSheet'] = sessionCtx.signatureSheet;
+                        }
+
+                        const response = await fetch(fetchUrl, { headers: fetchHeaders });
                         const body = await response.text();
 
                         return {
@@ -180,10 +188,16 @@ async function initMcp() {
     // 4. Internal HTTP caller (loopback to self)
     // -----------------------------------------------------------------------
 
-    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap, requestContentType) {
+    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap, requestContentType, signatureSheet) {
         let resolvedPath = pathTemplate;
         const queryParams = new URLSearchParams();
         const headers = { 'Accept': 'application/json' };
+
+        // Forward the signature sheet from the auth.js middleware.
+        // kbac.js reads this from req.headers.signatureSheet (line 97-98).
+        if (signatureSheet) {
+            headers['signatureSheet'] = signatureSheet;
+        }
 
         for (const [paramName, paramMeta] of Object.entries(parameterMap)) {
             const value = args[paramName];
@@ -264,7 +278,7 @@ async function initMcp() {
     }
 
     // -----------------------------------------------------------------------
-    // 5. Mount on Express — Streamable HTTP transport
+    // 5. Mount on Express — SSE transport with signature sheet forwarding
     // -----------------------------------------------------------------------
 
     const sessions = {};
@@ -276,15 +290,21 @@ async function initMcp() {
     global.app.get('/api/mcp', async (req, res) => {
         try {
             const transport = new SSEServerTransport('/api/mcp/message', res);
+
+            // Per-session context — auth.js sets req.headers.signatureSheet
+            // on every request. We capture it here and update it on each POST.
+            const sessionCtx = {
+                signatureSheet: req.headers.signaturesheet || req.headers.signatureSheet || null,
+            };
             
             transport.onclose = () => {
                 delete sessions[transport.sessionId];
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionClosed', `MCP session closed: ${transport.sessionId}`);
             };
 
-            sessions[transport.sessionId] = transport;
+            sessions[transport.sessionId] = { transport, sessionCtx };
 
-            const server = createMcpServer();
+            const server = createMcpServer(sessionCtx);
             await server.connect(transport);
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionCreated', `MCP session created: ${transport.sessionId}`);
         } catch (err) {
@@ -299,15 +319,20 @@ async function initMcp() {
     global.app.post('/api/mcp/message', jsonParser, async (req, res) => {
         try {
             const sessionId = req.query.sessionId;
-            const transport = sessions[sessionId];
+            const session = sessions[sessionId];
 
-            if (!transport) {
+            if (!session) {
                 res.status(404).json({ error: 'MCP session not found. Initiate via GET /api/mcp first.' });
                 return;
             }
 
+            // Update the session's signature sheet from the current request.
+            // auth.js middleware has already processed SSO/OIDC/JWT and set
+            // req.headers.signatureSheet by this point.
+            session.sessionCtx.signatureSheet = req.headers.signaturesheet || req.headers.signatureSheet || session.sessionCtx.signatureSheet;
+
             // SSEServerTransport expects handlePostMessage
-            await transport.handlePostMessage(req, res, req.body);
+            await session.transport.handlePostMessage(req, res, req.body);
         } catch (err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpRequestError', err.message);
             if (!res.headersSent) {
