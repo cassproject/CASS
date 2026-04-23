@@ -95,7 +95,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "undici": "^6.24.1",
-    "uuid": "^13.0.0",
+    "uuid": "^14.0.0",
     "ws": "^8.20.0"
   },
   "devDependencies": {
