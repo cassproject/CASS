@@ -323,6 +323,18 @@ const skyrepoPutParsed = async function (o, id, version, type) {
     if (o == null) {
         return;
     }
+
+    // Validate required JSON-LD fields
+    if (!o['@id']) {
+        error('Object must have an @id.', 400);
+    }
+    if (!o['@type']) {
+        error('Object must have an @type.', 400);
+    }
+    if (!o['@context']) {
+        error('Object must have an @context.', 400);
+    }
+
     await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may change it.', null, null);
     await skyrepoPutInternal.call(this, o, id, version, type);
     global.events.data.write.next([o], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))

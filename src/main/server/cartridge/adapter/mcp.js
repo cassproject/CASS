@@ -88,8 +88,16 @@ async function initMcp() {
                     inputSchema: zodShape,
                 },
                 async (args) => {
+                    const startTime = Date.now();
+                    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolCall',
+                        `MCP tool invoked: ${def.name} | args: ${JSON.stringify(args)}`);
+
                     try {
-                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap);
+                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap, def.requestContentType);
+                        const elapsed = Date.now() - startTime;
+
+                        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolResult',
+                            `MCP tool result: ${def.name} | ${result.method} ${result.url} | HTTP ${result.status} | ${result.body.length} bytes | ${elapsed}ms`);
 
                         if (result.status >= 400) {
                             return {
@@ -113,6 +121,9 @@ async function initMcp() {
                             content: [{ type: 'text', text: formattedBody }],
                         };
                     } catch (err) {
+                        const elapsed = Date.now() - startTime;
+                        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpToolError',
+                            `MCP tool error: ${def.name} | ${def.method.toUpperCase()} ${def.pathTemplate} | ${err.message} | ${elapsed}ms`);
                         return {
                             content: [{ type: 'text', text: `Failed to call CaSS API: ${err.message}` }],
                             isError: true,
@@ -169,7 +180,7 @@ async function initMcp() {
     // 4. Internal HTTP caller (loopback to self)
     // -----------------------------------------------------------------------
 
-    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap) {
+    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap, requestContentType) {
         let resolvedPath = pathTemplate;
         const queryParams = new URLSearchParams();
         const headers = { 'Accept': 'application/json' };
@@ -196,9 +207,39 @@ async function initMcp() {
         }
 
         let fetchBody = undefined;
+        const upperMethod = method.toUpperCase();
+
         if (args.body !== undefined && args.body !== null) {
+            if (requestContentType === 'multipart/form-data') {
+                // Construct multipart/form-data — CaSS reads named parts
+                // via fileFromDatastream(name). Each body property becomes
+                // a named form field.
+                const formData = new FormData();
+                const bodyObj = typeof args.body === 'string' ? JSON.parse(args.body) : args.body;
+
+                if (bodyObj && typeof bodyObj === 'object' && !Array.isArray(bodyObj)) {
+                    for (const [key, value] of Object.entries(bodyObj)) {
+                        if (value === undefined || value === null) continue;
+                        // Convert objects/arrays to JSON strings for the form field
+                        const fieldValue = typeof value === 'object' ? JSON.stringify(value) : String(value);
+                        formData.append(key, new Blob([fieldValue], { type: 'application/json' }), key);
+                    }
+                } else {
+                    // Single value — send as 'data' field
+                    const content = typeof bodyObj === 'object' ? JSON.stringify(bodyObj) : String(bodyObj);
+                    formData.append('data', new Blob([content], { type: 'application/json' }), 'data');
+                }
+
+                fetchBody = formData;
+                // Do NOT set Content-Type header — fetch sets it automatically
+                // with the correct multipart boundary
+            } else {
+                // Default: JSON body
+                headers['Content-Type'] = 'application/json';
+                fetchBody = typeof args.body === 'string' ? args.body : JSON.stringify(args.body);
+            }
+        } else if (['POST', 'PUT', 'PATCH'].includes(upperMethod)) {
             headers['Content-Type'] = 'application/json';
-            fetchBody = typeof args.body === 'string' ? args.body : JSON.stringify(args.body);
         }
 
         // Build URL — cassUrl already includes /api (e.g. http://localhost/api)
@@ -212,14 +253,14 @@ async function initMcp() {
         const qs = queryParams.toString();
         if (qs) url += '?' + qs;
 
-        const fetchOptions = { method: method.toUpperCase(), headers };
-        if (fetchBody && method.toUpperCase() !== 'GET' && method.toUpperCase() !== 'HEAD') {
+        const fetchOptions = { method: upperMethod, headers };
+        if (fetchBody && upperMethod !== 'GET' && upperMethod !== 'HEAD') {
             fetchOptions.body = fetchBody;
         }
 
         const response = await fetch(url, fetchOptions);
         const responseText = await response.text();
-        return { status: response.status, body: responseText };
+        return { status: response.status, body: responseText, url, method: upperMethod };
     }
 
     // -----------------------------------------------------------------------
@@ -229,7 +270,7 @@ async function initMcp() {
     const sessions = {};
 
     const express = require('express');
-    const jsonParser = express.json();
+    const jsonParser = express.json({ type: 'application/json' });
 
     // GET /api/mcp — SSE stream for MCP connection
     global.app.get('/api/mcp', async (req, res) => {

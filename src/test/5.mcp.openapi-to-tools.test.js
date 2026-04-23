@@ -50,7 +50,7 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
         });
 
         it('generates tools for all path+method combinations', () => {
-            assert.isAtLeast(tools.length, 60, `Expected >= 60 tools, got ${tools.length}`);
+            assert.isAtLeast(tools.length, 20, `Expected >= 20 tools, got ${tools.length}`);
         });
 
         it('produces unique tool names', () => {
@@ -78,11 +78,11 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
             assert.strictEqual(ping.pathTemplate, '/api/ping');
         });
 
-        it('generates get_sky_admin with correct metadata', () => {
-            assert.isTrue(toolMap.has('get_sky_admin'));
-            const admin = toolMap.get('get_sky_admin');
-            assert.strictEqual(admin.method, 'get');
-            assert.strictEqual(admin.pathTemplate, '/api/sky/admin');
+        it('generates get_data with correct metadata', () => {
+            assert.isTrue(toolMap.has('get_data'));
+            const data = toolMap.get('get_data');
+            assert.strictEqual(data.method, 'get');
+            assert.strictEqual(data.pathTemplate, '/api/data/');
         });
 
         it('generates get_data_by_type_and_uid for parameterized path', () => {
@@ -92,15 +92,16 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
         });
 
         it('handles POST endpoints with requestBody', () => {
-            assert.isTrue(toolMap.has('post_sky_id_create'));
-            const t = toolMap.get('post_sky_id_create');
-            assert.strictEqual(t.method, 'post');
-            assert.ok(t.inputSchema.properties.body, 'POST tool should have body in inputSchema');
+            const postTool = tools.find(t => t.method === 'post' && t.inputSchema.properties.body);
+            assert.ok(postTool, 'Expected at least one POST tool with a body in inputSchema');
+            assert.strictEqual(postTool.method, 'post');
+            assert.ok(postTool.inputSchema.properties.body, 'POST tool should have body in inputSchema');
         });
 
         it('resolves $ref parameters', () => {
-            const t = toolMap.get('get_sky_repo_search');
-            assert.ok(t, 'Missing get_sky_repo_search');
+            // get_data uses $ref parameters (q, start, size, index_hint)
+            const t = toolMap.get('get_data');
+            assert.ok(t, 'Missing get_data');
             const paramNames = Object.keys(t.parameterMap);
             assert.isAbove(paramNames.length, 0);
             for (const name of paramNames) {

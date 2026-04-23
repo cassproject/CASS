@@ -123,7 +123,7 @@ function generateToolName(method, path) {
 
 /**
  * Generate a human-readable description for a tool, including
- * descriptions and examples of all parameters.
+ * descriptions and examples of all parameters as MCP tool inputs.
  */
 function generateDescription(method, path, operation, spec) {
     const parts = [];
@@ -140,31 +140,33 @@ function generateDescription(method, path, operation, spec) {
         parts.push(`${method.toUpperCase()} ${path}`);
     }
 
-    // Document parameters
+    // Document parameters — presented as flat tool input arguments
     const rawParams = operation.parameters || [];
-    if (rawParams.length > 0) {
-        parts.push('\nParameters:');
-        for (let param of rawParams) {
-            if (param['$ref']) {
-                try { param = resolveRef(spec, param['$ref']); } catch { continue; }
-            }
-            const name = param.name || 'unknown';
-            const location = param.in || '';
-            const schema = param.schema || {};
-            const typeStr = schemaTypeLabel(schema);
-            const required = param.required ? ' (required)' : '';
+    const hasBody = !!operation.requestBody;
 
-            let line = `- ${name}${required}: ${typeStr}`;
-            if (location) line += ` [${location}]`;
-            if (param.description) line += ` — ${param.description}`;
-            if (param.example !== undefined) line += ` (e.g. ${JSON.stringify(param.example)})`;
-            else if (schema.example !== undefined) line += ` (e.g. ${JSON.stringify(schema.example)})`;
-            else if (schema.default !== undefined) line += ` (default: ${JSON.stringify(schema.default)})`;
-            parts.push(line);
-        }
+    if (rawParams.length > 0 || hasBody) {
+        parts.push('\nArguments:');
     }
 
-    // Document request body
+    for (let param of rawParams) {
+        if (param['$ref']) {
+            try { param = resolveRef(spec, param['$ref']); } catch { continue; }
+        }
+        const name = param.name || 'unknown';
+        const schema = param.schema || {};
+        const typeStr = schemaTypeLabel(schema);
+        const required = param.required ? ' (required)' : '';
+
+        let line = `- ${name}${required}: ${typeStr}`;
+        if (param.description) line += ` — ${param.description}`;
+        if (param.example !== undefined) line += ` (e.g. ${JSON.stringify(param.example)})`;
+        else if (schema.example !== undefined) line += ` (e.g. ${JSON.stringify(schema.example)})`;
+        else if (schema.default !== undefined) line += ` (default: ${JSON.stringify(schema.default)})`;
+        if (schema.enum) line += ` [values: ${schema.enum.join(', ')}]`;
+        parts.push(line);
+    }
+
+    // Document request body — passed as "body" argument
     if (operation.requestBody) {
         const reqBody = operation.requestBody;
         const content = reqBody.content || {};
@@ -174,7 +176,9 @@ function generateDescription(method, path, operation, spec) {
             content['multipart/form-data'] ||
             Object.values(content)[0];
 
-        parts.push('\nRequest Body' + (reqBody.required ? ' (required)' : '') + ':');
+        const bodyReqStr = reqBody.required ? ' (required)' : '';
+        parts.push(`- body${bodyReqStr}: object — The request payload to send.`);
+
         if (reqBody.description) {
             parts.push(`  ${reqBody.description}`);
         }
@@ -187,17 +191,16 @@ function generateDescription(method, path, operation, spec) {
 
             // List body object properties if available
             if (bodySchema.properties) {
+                parts.push('  Properties:');
                 const bodyRequired = new Set(bodySchema.required || []);
                 for (const [propName, propSchema] of Object.entries(bodySchema.properties)) {
                     const typeStr = schemaTypeLabel(propSchema);
                     const req = bodyRequired.has(propName) ? ' (required)' : '';
-                    let line = `- body.${propName}${req}: ${typeStr}`;
+                    let line = `  - ${propName}${req}: ${typeStr}`;
                     if (propSchema.description) line += ` — ${propSchema.description}`;
                     if (propSchema.example !== undefined) line += ` (e.g. ${JSON.stringify(propSchema.example)})`;
                     parts.push(line);
                 }
-            } else {
-                parts.push(`  Type: ${schemaTypeLabel(bodySchema)}`);
             }
 
             if (mediaType.example !== undefined) {
@@ -266,7 +269,8 @@ export function generateTools(spec) {
                 }
             }
 
-            // Process requestBody — add as a 'body' property.
+            // Determine the request content type from the spec
+            let requestContentType = null;
             if (operation.requestBody) {
                 const reqBody = operation.requestBody;
                 const content = reqBody.content || {};
@@ -294,6 +298,18 @@ export function generateTools(spec) {
                         requiredParams.push('body');
                     }
                 }
+
+                // Determine content type — use the first key in content
+                const contentTypes = Object.keys(content);
+                if (contentTypes.includes('multipart/form-data')) {
+                    requestContentType = 'multipart/form-data';
+                } else if (contentTypes.includes('application/json')) {
+                    requestContentType = 'application/json';
+                } else if (contentTypes.includes('application/ld+json')) {
+                    requestContentType = 'application/ld+json';
+                } else if (contentTypes.length > 0) {
+                    requestContentType = contentTypes[0];
+                }
             }
 
             // Build the final inputSchema
@@ -312,6 +328,7 @@ export function generateTools(spec) {
                 method,
                 pathTemplate: path,
                 parameterMap,
+                requestContentType,
             });
         }
     }
