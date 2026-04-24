@@ -1,0 +1,132 @@
+version: '3'
+services:
+  cass:
+    build:
+      context: .
+      dockerfile: docker/standalone/node/Dockerfile
+    platform: linux/amd64
+    container_name: cass
+    entrypoint: [ "node", "./src/main/server.js" ]
+    networks:
+      - esnet
+    ports:
+      - 80:80
+    environment:
+      - CASS_LOOPBACK=http://localhost/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - PORT=80
+      - CASS_OIDC_ENABLED=true # turns on open id login
+      - CASS_OIDC_ISSUER_BASE_URL=http://host.docker.internal:8080/realms/master/ # point at your keycloak realm
+      - CASS_OIDC_CLIENT_ID=cass # name of your keycloak client
+      - CASS_OIDC_SECRET=RYY4Mpns5xm1d9TT19ds7sV1Pd9lEslv # secret from your keycloak client
+      - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
+      - CASS_OIDC_EXTERNAL_ISSUER_URL=http://localhost:8080/realms/master/ # external URL for MCP OAuth metadata (host-reachable)
+      - CASS_SSO_ACCOUNT_REQUIRED=1
+      - CASS_IP_DENIED_REDIRECT=/api/login
+      # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
+      # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
+      # - CASS_BANNER_BACKGROUND_COLOR=yellow # valid css color value for background color of banner
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    user: "1000"
+    volumes:
+      - etc:/app/etc
+    depends_on: 
+      - elasticsearch-cass
+  cassl:
+    build:
+      context: .
+      dockerfile: docker/standalone/node/Dockerfile
+    platform: linux/amd64
+    container_name: cassl
+    networks:
+      - esnet
+    ports:
+      - 443:443
+    environment:
+      - CASS_LOOPBACK=https://localhost/api/
+      - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - HTTPS=true
+      - HTTP2=true
+      - NODE_EXTRA_CA_CERTS=ca.crt
+      - HTTPS_REJECT_UNAUTHORIZED=false
+      - CASS_OIDC_ENABLED=true # turns on open id login
+      - CASS_OIDC_ISSUER_BASE_URL=http://host.docker.internal:8080/realms/master/ # point at your keycloak realm
+      - CASS_OIDC_CLIENT_ID=cass # name of your keycloak client
+      - CASS_OIDC_SECRET=RYY4Mpns5xm1d9TT19ds7sV1Pd9lEslv # secret from your keycloak client
+      - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
+      - CASS_SSO_ACCOUNT_REQUIRED=1
+      # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
+      # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
+      # - CASS_BANNER_BACKGROUND_COLOR=yellow # valid css color value for background color of banner
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - etc:/app/etc
+    depends_on:
+      - elasticsearch-cass
+  elasticsearch-cass:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.3.1
+    container_name: elasticsearch-cass
+    networks:
+      - esnet
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+  # UNCOMMENT FOR KEYCLOAK IF USING OIDC
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    container_name: keycloak
+    command: start-dev
+    networks:
+      - esnet
+    ports:
+      - 8080:8080
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=password
+  # Sidecar that configures Keycloak after startup (idempotent).
+  # Creates the 'cass' OIDC client, sets MCP registration policies,
+  # configures token lifespan, and sets admin user email.
+  keycloak-init:
+    image: curlimages/curl:latest
+    container_name: keycloak-init
+    depends_on:
+      - keycloak
+    networks:
+      - esnet
+    environment:
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=password
+    volumes:
+      - ./keycloak/init-keycloak.sh:/init-keycloak.sh:ro
+    entrypoint: ["/bin/sh", "/init-keycloak.sh"]
+    restart: "no"
+volumes:
+  etc:
+    driver: local
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+
+networks:
+  esnet:

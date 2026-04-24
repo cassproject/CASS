@@ -26,7 +26,7 @@ async function initMcp() {
     let spec;
 
     // Fetch the live spec served by CaSS (available after startup)
-    const loopback = global.repo ? global.repo.selectedServer : null;
+    const loopback = process.env.CASS_LOOPBACK;
     if (!loopback) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', 'MCP adapter cannot load OpenAPI spec: loopback URL not configured.');
         return;
@@ -42,7 +42,7 @@ async function initMcp() {
             return;
         }
     } catch (e) {
-        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', `MCP adapter cannot load OpenAPI spec: ${e.message}`);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', `MCP adapter cannot load OpenAPI spec: ${e}`);
         return;
     }
 
@@ -93,10 +93,11 @@ async function initMcp() {
                 async (args) => {
                     const startTime = Date.now();
                     global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolCall',
-                        `MCP tool invoked: ${def.name} | args: ${JSON.stringify(args)}`);
+                        `MCP tool invoked: ${def.name} | args: ${JSON.stringify(args)} | sigSheet: ${sessionCtx.signatureSheet ? 'present (' + sessionCtx.signatureSheet.length + ' chars)' : 'MISSING'}`);
+
 
                     try {
-                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap, def.requestContentType, sessionCtx.signatureSheet);
+                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap, def.requestContentType, sessionCtx.signatureSheet, sessionCtx.authorization);
                         const elapsed = Date.now() - startTime;
 
                         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolResult',
@@ -157,6 +158,10 @@ async function initMcp() {
                         if (sessionCtx.signatureSheet) {
                             fetchHeaders['signatureSheet'] = sessionCtx.signatureSheet;
                         }
+                        // Forward Bearer token for identity/eim creation on loopback
+                        if (sessionCtx.authorization) {
+                            fetchHeaders['Authorization'] = sessionCtx.authorization;
+                        }
 
                         const response = await fetch(fetchUrl, { headers: fetchHeaders });
                         const body = await response.text();
@@ -188,7 +193,7 @@ async function initMcp() {
     // 4. Internal HTTP caller (loopback to self)
     // -----------------------------------------------------------------------
 
-    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap, requestContentType, signatureSheet) {
+    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap, requestContentType, signatureSheet, authorization) {
         let resolvedPath = pathTemplate;
         const queryParams = new URLSearchParams();
         const headers = { 'Accept': 'application/json' };
@@ -197,6 +202,13 @@ async function initMcp() {
         // kbac.js reads this from req.headers.signatureSheet (line 97-98).
         if (signatureSheet) {
             headers['signatureSheet'] = signatureSheet;
+        }
+
+        // Forward the Bearer token so the loopback request goes through
+        // the JWT bridge middleware, which populates req.oidc.user and
+        // triggers signature sheet / req.eim creation on the server side.
+        if (authorization) {
+            headers['Authorization'] = authorization;
         }
 
         for (const [paramName, paramMeta] of Object.entries(parameterMap)) {
@@ -295,6 +307,7 @@ async function initMcp() {
             // on every request. We capture it here and update it on each POST.
             const sessionCtx = {
                 signatureSheet: req.headers.signaturesheet || req.headers.signatureSheet || null,
+                authorization: req.headers.authorization || null,
             };
             
             transport.onclose = () => {
@@ -330,6 +343,7 @@ async function initMcp() {
             // auth.js middleware has already processed SSO/OIDC/JWT and set
             // req.headers.signatureSheet by this point.
             session.sessionCtx.signatureSheet = req.headers.signaturesheet || req.headers.signatureSheet || session.sessionCtx.signatureSheet;
+            session.sessionCtx.authorization = req.headers.authorization || session.sessionCtx.authorization;
 
             // SSEServerTransport expects handlePostMessage
             await session.transport.handlePostMessage(req, res, req.body);
