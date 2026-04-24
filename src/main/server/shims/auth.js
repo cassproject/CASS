@@ -431,6 +431,20 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 // we validate the JWT here and synthesize req.oidc.user from its claims
 // so the signature sheet flow works identically.
 // -----------------------------------------------------------------------
+const rateLimit = require('express-rate-limit');
+
+// Rate limiter for auth middleware — prevents brute-force token attempts.
+const authRateLimiter = rateLimit({
+    windowMs: parseInt(process.env.CASS_RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+    max: parseInt(process.env.CASS_RATE_LIMIT_MAX) || 100,                 // limit each IP to 100 requests per window
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests, please try again later.' },
+});
+if (process.env.CASS_RATE_LIMIT) {
+    app.use(authRateLimiter);
+}
+
 app.use(async function (req, res, next) {
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ') && (!req.oidc || !req.oidc.user)) {
@@ -638,6 +652,18 @@ let signatureSheetCache = {};
 
 if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
 {
+    // Rate limiter for IP allow / SSO guard — prevents brute-force access attempts.
+    const ipAllowRateLimiter = rateLimit({
+        windowMs: parseInt(process.env.CASS_RATE_LIMIT_WINDOW_MS) || 60 * 1000, // 1 minute
+        max: parseInt(process.env.CASS_RATE_LIMIT_MAX) || 2000,                 // higher limit since this also gates normal traffic
+        standardHeaders: true,
+        legacyHeaders: false,
+        message: { error: 'Too many requests, please try again later.' },
+    });
+    if (process.env.CASS_RATE_LIMIT) {
+        app.use(ipAllowRateLimiter);
+    }
+
     app.use(async function (req, res, next) {
         let debug = true;
         let ipFilter = process.env.CASS_IP_ALLOW || "";
