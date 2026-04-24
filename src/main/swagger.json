@@ -75,7 +75,7 @@
         },
         "name": "q",
         "allowReserved": true,
-        "description": "Query portion of Simple Query String per Elastic, see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax",
+        "description": "Query portion of Elastic Simple Query String querying against JSON-LD object formats, Ensure you use @type: to search for objects of specific types, such as Person objects. See https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax",
         "example": "name:* AND @type:Competency"
       },
       "uid": {

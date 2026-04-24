@@ -171,8 +171,10 @@ global.loadConfigurationFile = function (path, dflt) {
      * @openapi
      * /api/sky/id/salts:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - Basic Keystore
+     *     summary: Retrieve hashing salts
      *     description: Retrieves salt parameters from server for performing PBKDF2 hashing of usernames and passwords.
      *     responses:
      *       200:
@@ -218,6 +220,7 @@ global.loadConfigurationFile = function (path, dflt) {
      * @openapi
      * /api/sky/id/create:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - Basic Keystore
      *     summary: Create a new user identity
@@ -248,6 +251,7 @@ global.loadConfigurationFile = function (path, dflt) {
      * @openapi
      * /api/sky/id/commit:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - Basic Keystore
      *     summary: Update an existing user identity
@@ -281,6 +285,7 @@ global.loadConfigurationFile = function (path, dflt) {
      * @openapi
      * /api/sky/id/login:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - Basic Keystore
      *     summary: Log in and retrieve the encrypted keystore

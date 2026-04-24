@@ -152,10 +152,12 @@ const skyRepoSearch = async function () {
  * @openapi
  * /api/sky/repo/search:
  *   get:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Search
  *     deprecated: true
- *     description: Searches for data in the system.
+ *     summary: Search for data (deprecated)
+ *     description: Legacy endpoint to search for data in the CaSS repository. Deprecated in favor of the /api/data endpoint.
  *     parameters:
  *       - $ref: '#/components/parameters/q'
  *       - $ref: '#/components/parameters/start'
@@ -169,10 +171,12 @@ const skyRepoSearch = async function () {
  *             schema:
  *               $ref: '#/components/schemas/JsonLdArray'
  *   post:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Search
  *     deprecated: true
- *     description: Searches for data in the system.
+ *     summary: Search for data (deprecated)
+ *     description: Legacy endpoint to search for data in the CaSS repository using POST. Deprecated in favor of the /api/data endpoint.
  *     requestBody:
  *       content:
  *         multipart/form-data:

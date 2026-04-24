@@ -9,15 +9,16 @@
     "test:start": "node src/main/server.js",
     "test:deps": "docker compose up -d elasticsearch-cass",
     "dev": "npm run dev:deps && npm run dev:nodemon",
+    "dev:insecure": "export INSECURE_SERVER_IS_ADMIN=false|| set INSECURE_SERVER_IS_ADMIN=false&& npm run dev",
     "dev:docker": "npm run dev:deps && npm run dev:nodemon:docker",
     "dev:https": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& npm run dev:nodemon",
     "dev:clientSideCertificates": "npm run dev:deps && export HTTPS=true|| set HTTPS=true&& export HTTP2=false|| set HTTP2=false&& export HTTPS_REJECT_UNAUTHORIZED=false|| set HTTPS_REJECT_UNAUTHORIZED=false&& export REQUEST_CLIENT_SIDE_CERTIFICATE=true|| set REQUEST_CLIENT_SIDE_CERTIFICATE=true&& npm run dev:nodemon",
     "dev:jwt": "npm run dev:deps && export CASS_JWT_ENABLED=true|| set CASS_JWT_ENABLED=true&& npm run dev:nodemon",
     "dev:deps": "docker compose up -d elasticsearch-cass",
-    "dev:oidcdeps": "docker compose up --build -d elasticsearch-cass",
-    "dev:oidc": "npm run dev:oidcdeps && export CASS_OIDC_ENABLED=true|| set CASS_OIDC_ENABLED=true&& npm run dev:nodemon",
+    "dev:oidc": "npm run dev:deps && npm run dev:nodemon:docker:oidc",
     "dev:nodemon": "nodemon --watch ../cass-npm --watch . --max-old-space-size=512 --ignore etc src/main/server.js",
     "dev:nodemon:docker": "nodemon --ignore etc --exec \"docker compose up -d --build\"",
+    "dev:nodemon:docker:oidc": "nodemon --ignore etc --exec \"docker compose -f docker-compose.yml -f docker-compose-oidc.yml up -d --build\"",
     "dev:nyc": "nyc --reporter lcov node src/main/server.js",
     "dev:node": "export CASS_LOOPBACK=http://localhost:8080/api/|| set CASS_LOOPBACK=http://localhost:8080/api/&&export PORT=8080|| set PORT=8080&&node src/main/server.js",
     "mocha": "export NODEV=true|| set NODEV=true&& mocha -b --exit --timeout 30000 src/**/*.test.js node_modules/cassproject/**/*.test.js",
@@ -73,6 +74,7 @@
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1036.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@xmldom/xmldom": "^0.9.10",
     "busboy": "^1.6.0",
     "cassproject": "^5.0.14",
@@ -95,8 +97,9 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "undici": "^6.25.0",
-    "uuid": "^13.0.0",
-    "ws": "^8.20.0"
+    "uuid": "^14.0.0",
+    "ws": "^8.20.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "chai": "4.5.0",

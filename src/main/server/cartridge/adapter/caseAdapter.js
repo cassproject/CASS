@@ -526,6 +526,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFAssociationGroupings:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Association Groupings (not implemented)
@@ -540,6 +541,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFConcepts:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Concepts (not implemented)
@@ -610,6 +612,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFItemTypes:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Item Types (not implemented)
@@ -624,6 +627,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFLicenses:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Licenses (not implemented)
@@ -667,6 +671,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFRubrics:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Rubrics (not implemented)
@@ -681,6 +686,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFSubjects:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Subjects (not implemented)

@@ -44,6 +44,7 @@ services:
     environment:
       - CASS_LOOPBACK=https://cassl/api/
       - ELASTICSEARCH_ENDPOINT=http://elasticsearch-cass:9200
+      - HTTPS_REJECT_UNAUTHORIZED=false
       - HTTPS=true
       - HTTP2=true
       - NODE_EXTRA_CA_CERTS=ca.crt

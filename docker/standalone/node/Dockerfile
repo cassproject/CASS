@@ -55,4 +55,4 @@ RUN if [ "$TEST" = "true" ] ; then export PORT=8081 && export CASS_LOOPBACK=http
 RUN rm -f client.key client.crt
 
 EXPOSE 80
-ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]
+ENTRYPOINT [ "node", "./src/main/server.js" ]

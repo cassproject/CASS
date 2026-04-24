@@ -69,7 +69,8 @@ const pingWithTime = function () {
  *   get:
  *     tags:
  *       - Infrastructure
- *     description: Fetches server parameters along with information about you, if SSO is enabled.
+ *     summary: Check server status and parameters
+ *     description: Call this endpoint to verify that the server is online and to retrieve fundamental server configuration, time, and Single Sign-On (SSO) identity information if applicable. No parameters are required.
  *     responses:
  *       200:
  *         description: Success

@@ -1,7 +1,21 @@
 const fs = require('fs');
 const nodePath = require('path');
+const jose = require('jose');
 const sharedAdminCache = require("./util/sharedAdminCache.js");
 
+// Cached JWKS remote key set for Bearer token validation (MCP/API clients)
+let cachedJWKS = null;
+let jwksIssuer = null;
+function getJWKS() {
+    const issuerUrl = (process.env.CASS_OIDC_ISSUER_BASE_URL || '').replace(/\/$/, '');
+    if (!issuerUrl) return null;
+    // Recreate if issuer changed or not yet initialized
+    if (!cachedJWKS || jwksIssuer !== issuerUrl) {
+        jwksIssuer = issuerUrl;
+        cachedJWKS = jose.createRemoteJWKSet(new URL(issuerUrl + '/protocol/openid-connect/certs'));
+    }
+    return cachedJWKS;
+}
 let keyEim = null;
 
 let getPkCache = {};
@@ -156,6 +170,91 @@ if (process.env.CASS_OIDC_ENABLED || false)
         res.oidc.logout({
             returnTo: req.query.redirectUrl || '/'
         });
+    });
+
+    // -----------------------------------------------------------------------
+    // OAuth 2.0 Authorization Server Metadata (RFC 8414) for MCP clients.
+    //
+    // The MCP Authorization spec requires that when an MCP server returns 401,
+    // clients discover OAuth config at /.well-known/oauth-authorization-server
+    // on the MCP server's origin. This endpoint proxies the Keycloak OIDC
+    // discovery document and serves it as RFC 8414 metadata.
+    // -----------------------------------------------------------------------
+    let cachedOAuthMetadata = null;
+    let cachedOAuthMetadataExpiry = 0;
+
+    app.get('/.well-known/oauth-authorization-server', async (req, res) => {
+        try {
+            const now = Date.now();
+            // Cache for 5 minutes to avoid hammering Keycloak
+            if (cachedOAuthMetadata && now < cachedOAuthMetadataExpiry) {
+                res.json(cachedOAuthMetadata);
+                return;
+            }
+
+            const issuerBaseUrl = (process.env.CASS_OIDC_ISSUER_BASE_URL || '').replace(/\/$/, '');
+            if (!issuerBaseUrl) {
+                res.status(404).json({ error: 'OIDC issuer not configured' });
+                return;
+            }
+
+            // Fetch the OpenID Connect discovery document from Keycloak
+            const discoveryUrl = issuerBaseUrl + '/.well-known/openid-configuration';
+            const response = await fetch(discoveryUrl);
+            if (!response.ok) {
+                global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.ERROR, 'OAuthMetadataFetchError',
+                    `Failed to fetch OIDC discovery from ${discoveryUrl}: HTTP ${response.status}`);
+                res.status(502).json({ error: 'Failed to fetch upstream OIDC configuration' });
+                return;
+            }
+
+            const oidcConfig = await response.json();
+
+            // Filter scopes to only those Keycloak permits for dynamic client
+            // registration (default + optional client scopes). Raw Keycloak
+            // discovery includes internal scopes like 'service_account' that
+            // are NOT in the allowed-client-scopes policy and cause 403 errors.
+            const safeScopes = ['profile', 'email', 'offline_access', 'address', 'phone'];
+            const filteredScopes = (oidcConfig.scopes_supported || [])
+                .filter(s => safeScopes.includes(s));
+
+            // Rewrite Keycloak internal URLs to be externally reachable.
+            // CaSS fetches from Docker-internal hostname (e.g. host.docker.internal)
+            // but MCP clients on the host need localhost-reachable URLs.
+            const externalIssuer = process.env.CASS_OIDC_EXTERNAL_ISSUER_URL;
+            const rewriteUrl = (url) => {
+                if (!url || !externalIssuer) return url;
+                // Replace the issuer prefix in all endpoint URLs
+                const internalIssuer = oidcConfig.issuer;
+                if (url.startsWith(internalIssuer)) {
+                    return externalIssuer.replace(/\/$/, '') + url.substring(internalIssuer.length);
+                }
+                return url;
+            };
+
+            // Map OIDC discovery to RFC 8414 OAuth Authorization Server Metadata
+            cachedOAuthMetadata = {
+                issuer: externalIssuer ? externalIssuer.replace(/\/$/, '') : oidcConfig.issuer,
+                authorization_endpoint: rewriteUrl(oidcConfig.authorization_endpoint),
+                token_endpoint: rewriteUrl(oidcConfig.token_endpoint),
+                registration_endpoint: rewriteUrl(oidcConfig.registration_endpoint) || undefined,
+                jwks_uri: rewriteUrl(oidcConfig.jwks_uri),
+                scopes_supported: filteredScopes,
+                response_types_supported: ['code'],
+                grant_types_supported: ['authorization_code', 'refresh_token'],
+                token_endpoint_auth_methods_supported: oidcConfig.token_endpoint_auth_methods_supported,
+                code_challenge_methods_supported: oidcConfig.code_challenge_methods_supported || ['S256'],
+            };
+            cachedOAuthMetadataExpiry = now + 5 * 60 * 1000;
+
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, 'OAuthMetadataServed',
+                `Served OAuth Authorization Server Metadata (issuer: ${cachedOAuthMetadata.issuer})`);
+            res.json(cachedOAuthMetadata);
+        } catch (err) {
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.ERROR, 'OAuthMetadataError',
+                `Error serving OAuth metadata: ${err.message}`);
+            res.status(500).json({ error: 'Internal error fetching OAuth metadata' });
+        }
     });
 }
 
@@ -322,6 +421,51 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         next();
     });
 }
+
+// -----------------------------------------------------------------------
+// Bearer JWT → req.oidc.user bridge (for MCP/API clients).
+//
+// The signature sheet middleware below reads req.oidc.user to get the
+// email/name/sub for identity creation.  For browser-based OIDC sessions,
+// express-openid-connect populates this.  For Bearer-token clients (MCP),
+// we validate the JWT here and synthesize req.oidc.user from its claims
+// so the signature sheet flow works identically.
+// -----------------------------------------------------------------------
+app.use(async function (req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ') && (!req.oidc || !req.oidc.user)) {
+        const token = authHeader.substring(7);
+        const JWKS = getJWKS();
+        if (JWKS) {
+            try {
+                const issuerUrl = (process.env.CASS_OIDC_ISSUER_BASE_URL || '').replace(/\/$/, '');
+                const externalIssuerUrl = (process.env.CASS_OIDC_EXTERNAL_ISSUER_URL || '').replace(/\/$/, '');
+                const allowedIssuers = [issuerUrl, externalIssuerUrl].filter(Boolean);
+                const { payload } = await jose.jwtVerify(token, JWKS, {
+                    issuer: allowedIssuers.length > 0 ? allowedIssuers : undefined,
+                });
+                // Replace req.oidc entirely with a plain object.
+                // express-openid-connect's RequestContext defines .user as a
+                // getter-only property (no setter), so assigning to it silently
+                // fails. Using a plain object ensures the signature sheet
+                // middleware can read these values at req.oidc.user.
+                req.oidc = {
+                    user: {
+                        sub: payload.sub,
+                        name: payload.name || payload.preferred_username || payload.sub,
+                        email: payload.email || (payload.preferred_username ? payload.preferred_username + '@bearer' : payload.sub + '@bearer'),
+                        preferred_username: payload.preferred_username || payload.sub,
+                        groups: payload.groups || payload.realm_access?.roles || [],
+                    },
+                    isAuthenticated: () => true,
+                };
+            } catch (err) {
+                // Token invalid — let subsequent middleware handle it
+            }
+        }
+    }
+    next();
+});
 
 app.use(async function (req, res, next) {
     let email = null;
@@ -509,6 +653,8 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
         if (req.originalUrl == global.baseUrl + "/api/ping")
             { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //Health check is permitted
+        if (req.originalUrl == "/.well-known/oauth-authorization-server")
+            { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth discovery is permitted
         if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-client-ip']))
             { req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList, req.headers['x-forwarded-for']))
@@ -536,8 +682,36 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
         if (process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
         if (req.eim != null && req.eim.ids.length >= parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED))
             { req.permittedBy.push("Permitted by: " + 'sso ids > ' + process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length); allowed = true; } //In a permissioned group.
+
+        // Validate OAuth Bearer tokens (for MCP/API clients that authenticated via the OAuth flow).
+        if (!allowed && req.headers.authorization) {
+            const authHeader = req.headers.authorization;
+            if (authHeader.startsWith('Bearer ')) {
+                const token = authHeader.substring(7);
+                const JWKS = getJWKS();
+                if (JWKS) {
+                    try {
+                        const issuerUrl = (process.env.CASS_OIDC_ISSUER_BASE_URL || '').replace(/\/$/, '');
+                        const externalIssuerUrl = (process.env.CASS_OIDC_EXTERNAL_ISSUER_URL || '').replace(/\/$/, '');
+                        // Accept tokens issued with either the internal or external issuer URL
+                        const allowedIssuers = [issuerUrl, externalIssuerUrl].filter(Boolean);
+                        const { payload } = await jose.jwtVerify(token, JWKS, {
+                            issuer: allowedIssuers.length > 0 ? allowedIssuers : undefined,
+                        });
+                        req.permittedBy.push('Permitted by: Bearer token (sub: ' + payload.sub + ')');
+                        allowed = true;
+                        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, 'CassBearerTokenGranted',
+                            `Bearer token validated for sub=${payload.sub}, azp=${payload.azp || 'N/A'}`);
+                    } catch (err) {
+                        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, 'CassBearerTokenRejected',
+                            `Bearer token validation failed: ${err.message}`);
+                    }
+                }
+            }
+        }
+
         if (!allowed)
-        {            
+        {          
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.", JSON.stringify({
                 allowed,
                 headers:req.headers,
@@ -549,7 +723,36 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
                 },
                 eim: req.eim != null ? req.eim.ids.map(i=>i.displayName) : null
             }),"Use forwarding headers: x-client-ip, x-forwarded-for, cf-connecting-ip, fastly-client-ip, true-client-ip, x-real-ip, x-cluster-client-ip, x-forwarded");
-            if (process.env.CASS_IP_DENIED_REDIRECT)
+
+            // Detect API/MCP client requests via Accept header or MCP endpoint path.
+            // These clients expect JSON or SSE streams, not HTML redirects.
+            const acceptHeader = (req.headers['accept'] || '').toLowerCase();
+            const isMcpPath = req.originalUrl.startsWith(global.baseUrl + '/api/mcp');
+            const isApiClient = (acceptHeader.includes('text/event-stream')
+                || acceptHeader.includes('application/json'))
+                && isMcpPath;
+
+            if (isApiClient)
+            {
+                // Build the WWW-Authenticate header value.
+                // If OIDC is enabled, point to the issuer; otherwise use CASS_IP_DENIED_REDIRECT or a generic Bearer challenge.
+                let wwwAuth = 'Bearer';
+                if (process.env.CASS_OIDC_ENABLED && process.env.CASS_OIDC_ISSUER_BASE_URL) {
+                    wwwAuth = `Bearer realm="${process.env.CASS_OIDC_ISSUER_BASE_URL}"`;
+                } else if (process.env.CASS_IP_DENIED_REDIRECT) {
+                    wwwAuth = `Bearer realm="${process.env.CASS_IP_DENIED_REDIRECT}"`;
+                }
+
+                global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassApiClientDenied",
+                    `API/MCP client denied (returning 401 instead of redirect). Path: ${req.originalUrl}`);
+                res.set('WWW-Authenticate', wwwAuth);
+                res.status(401).json({
+                    error: 'Unauthorized',
+                    message: 'Authentication required. Provide a valid Bearer token.',
+                    login_url: process.env.CASS_IP_DENIED_REDIRECT || (global.baseUrl + '/api/login')
+                });
+            }
+            else if (process.env.CASS_IP_DENIED_REDIRECT)
             {
                 res.redirect(process.env.CASS_IP_DENIED_REDIRECT);
                 res.end();
@@ -561,7 +764,21 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             }
         }
         else
+        {
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassIpAllowGranted", "GRANTED BY CASS_IP_ALLOW.", JSON.stringify({
+                allowed,
+                permittedBy:req.permittedBy,
+                headers:req.headers,
+                connections:{
+                    connection:(req.connection != null && req.connection.remoteAddress != null) ? req.connection.remoteAddress:null,
+                    socket:(req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
+                    connectionSocket:(req.connection != null && req.connection.socket != null && req.connection.socket.remoteAddress != null) ? req.connection.socket.remoteAddress : null,
+                    info:(req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
+                },
+                eim: req.eim != null ? req.eim.ids.map(i=>i.displayName) : null
+            }),"Use forwarding headers: x-client-ip, x-forwarded-for, cf-connecting-ip, fastly-client-ip, true-client-ip, x-real-ip, x-cluster-client-ip, x-forwarded");
             next();
+        }
     });
 }
 

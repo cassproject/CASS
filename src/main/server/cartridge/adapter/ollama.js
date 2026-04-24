@@ -130,6 +130,7 @@ if (!global.disabledAdapters['ollama']) {
      * @openapi
      * /api/ollama/framework:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - Ollama Adapter
      *     summary: Generate a competency framework using a local Ollama LLM

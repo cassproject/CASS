@@ -152,7 +152,8 @@ const endpointData = async function () {
  *   get:
  *     tags:
  *       - Search
- *     description: Searches for data in the system.
+ *     summary: Search for data
+ *     description: Searches for data in the system using query parameters. Returns a JSON-LD array of matching objects.
  *     parameters:
  *       - $ref: '#/components/parameters/q'
  *       - $ref: '#/components/parameters/start'
@@ -166,9 +167,11 @@ const endpointData = async function () {
  *             schema:
  *               $ref: '#/components/schemas/JsonLdArray'
  *   post:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Search
- *     description: Searches for data in the system.
+ *     summary: Search for data (POST)
+ *     description: Searches for data in the system using a POST request. Useful when query parameters are too long for a GET request.
  *     requestBody:
  *       content:
  *         multipart/form-data:
@@ -185,7 +188,8 @@ const endpointData = async function () {
  *   get:
  *     tags:
  *       - Repository
- *     description: Retrieves data from the system.
+ *     summary: Retrieve data by UID
+ *     description: Retrieves data from the system using a unique identifier (GUID or MD5 of @id). Optionally fetches history.
  *     parameters:
  *       - $ref: '#/components/parameters/uid'
  *       - $ref: '#/components/parameters/history'
@@ -203,7 +207,8 @@ const endpointData = async function () {
  *   post:
  *     tags:
  *       - Repository
- *     description: Puts data into the system.
+ *     summary: Store data by UID
+ *     description: Puts data into the system using a specific unique identifier. Requires an appropriate payload.
  *     parameters:
  *       - $ref: '#/components/parameters/uid'
  *     requestBody:
@@ -225,7 +230,8 @@ const endpointData = async function () {
  *   get:
  *     tags:
  *       - Repository
- *     description: Searches for data in the system.
+ *     summary: Retrieve data by type and UID
+ *     description: Retrieves data from the system based on its type and unique identifier. Optionally fetches history.
  *     parameters:
  *       - $ref: '#/components/parameters/uid'
  *       - $ref: '#/components/parameters/type'
@@ -245,7 +251,8 @@ const endpointData = async function () {
  *   get:
  *     tags:
  *       - Repository
- *     description: Searches for data in the system.
+ *     summary: Retrieve specific version of data by type and UID
+ *     description: Retrieves a specific version of data from the system based on its type and unique identifier. Optionally fetches history.
  *     parameters:
  *       - $ref: '#/components/parameters/type'
  *       - $ref: '#/components/parameters/uid'
