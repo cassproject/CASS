@@ -94,7 +94,7 @@ CASS_CLIENT_JSON='{
   "publicClient": true,
   "directAccessGrantsEnabled": true,
   "standardFlowEnabled": true,
-  "implicitFlowEnabled": false,
+  "implicitFlowEnabled": true,
   "rootUrl": "http://localhost",
   "baseUrl": "/",
   "redirectUris": ["http://localhost/*", "http://localhost:80/*"],
@@ -158,7 +158,7 @@ if [ -n "$ALLOWED_SCOPES_ID" ]; then
     -H "Authorization: Bearer ${TOKEN}")
   # Replace the config values using sed
   UPDATED=$(echo "$EXISTING" | sed \
-    -e 's/"allowed-client-scopes":\[[^]]*\]/"allowed-client-scopes":["openid","profile","email","offline_access","address","phone"]/' \
+    -e 's/"allowed-client-scopes":\[[^]]*\]/"allowed-client-scopes":["profile","email","offline_access","address","phone"]/' \
     -e 's/"allow-default-scopes":\[[^]]*\]/"allow-default-scopes":["true"]/')
   HTTP_CODE=$(curl -sf -o /dev/null -w "%{http_code}" -X PUT "${KC_URL}/admin/realms/${REALM}/components/${ALLOWED_SCOPES_ID}" \
     -H "Authorization: Bearer ${TOKEN}" \

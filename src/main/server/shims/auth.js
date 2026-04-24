@@ -214,7 +214,7 @@ if (process.env.CASS_OIDC_ENABLED || false)
             // registration (default + optional client scopes). Raw Keycloak
             // discovery includes internal scopes like 'service_account' that
             // are NOT in the allowed-client-scopes policy and cause 403 errors.
-            const safeScopes = ['openid', 'profile', 'email', 'offline_access', 'address', 'phone'];
+            const safeScopes = ['profile', 'email', 'offline_access', 'address', 'phone'];
             const filteredScopes = (oidcConfig.scopes_supported || [])
                 .filter(s => safeScopes.includes(s));
 
