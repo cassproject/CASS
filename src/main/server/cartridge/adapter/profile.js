@@ -104,7 +104,8 @@ let profileCalculator = async function () {
  *   get:
  *     tags:
  *       - Profile
- *     summary: Computes the current state of the learner given a framework.
+ *     summary: Compute the current state of the learner
+ *     description: Computes the current state of the learner given a framework. Returns an object representing the learner's profile, including calculated competency levels.
  *     parameters:
  *       - $ref: '#/components/parameters/frameworkId'
  *       - $ref: '#/components/parameters/subject'

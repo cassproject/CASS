@@ -93,6 +93,7 @@ if (!global.disabledAdapters['jsonld']) {
 	 * @openapi
 	 * /api/jsonld:
 	 *   post:
+	 *     x-mcp-ignore: true
 	 *     tags:
 	 *       - JSON-LD Adapter
 	 *     summary: Import a JSON-LD or RDF document

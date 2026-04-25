@@ -499,6 +499,7 @@ if (!global.disabledAdapters['xapi']) {
      * @openapi
      * /api/xapi/statement:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - xAPI Adapter
      *     summary: Receive a single xAPI statement
@@ -521,6 +522,7 @@ if (!global.disabledAdapters['xapi']) {
      * @openapi
      * /api/xapi/statements:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - xAPI Adapter
      *     summary: Receive multiple xAPI statements
