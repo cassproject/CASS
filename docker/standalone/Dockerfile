@@ -1,15 +1,18 @@
-FROM --platform=linux/amd64 docker.elastic.co/elasticsearch/elasticsearch:8.19.12
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.19.12
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt install -qqy nodejs && apt upgrade -qqy && apt clean
 
 RUN openssl version
-RUN apt install -qqy build-essential checkinstall clang curl libssl-dev wget zlib1g-dev && cd /usr/local/src && wget https://www.openssl.org/source/openssl-3.1.2.tar.gz && tar xvf openssl-3.1.2.tar.gz && cd openssl-3.1.2 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips linux-x86_64 && make -j8 > make.log && make install > makeinstall.log && make install_ssldirs > makeinstallssldirs.log && make install_fips > makeinstallfips.log && cd / && apt remove -qqy build-essential checkinstall zlib1g-dev wget libssl-dev curl clang && rm -rf cd /usr/local/src/openssl-3.1.2 && apt autoremove -qqy && apt clean
+RUN apt install -qqy build-essential checkinstall clang curl libssl-dev wget zlib1g-dev && cd /usr/local/src && wget https://www.openssl.org/source/openssl-3.1.2.tar.gz && tar xvf openssl-3.1.2.tar.gz && cd openssl-3.1.2 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips && make -j8 > make.log && make install > makeinstall.log && make install_ssldirs > makeinstallssldirs.log && make install_fips > makeinstallfips.log && cd / && apt remove -qqy build-essential checkinstall zlib1g-dev wget libssl-dev curl clang && rm -rf cd /usr/local/src/openssl-3.1.2 && apt autoremove -qqy && apt clean
 RUN openssl version
 
 ENV OPENSSL_CONF=/usr/local/ssl/nodejs.cnf
-ENV OPENSSL_MODULES=/usr/local/ssl/lib64/ossl-modules
+# OPENSSL_MODULES path varies by architecture (lib64 on amd64, lib on arm64)
+RUN OSSL_MOD=$(find /usr/local/ssl -name 'ossl-modules' -type d | head -1) && \
+    ln -sfn "$OSSL_MOD" /usr/local/ssl/ossl-modules
+ENV OPENSSL_MODULES=/usr/local/ssl/ossl-modules
 
 RUN echo 'nodejs_conf = nodejs_init' >> /usr/local/ssl/nodejs.cnf
 RUN echo '.include /usr/local/ssl/fipsmodule.cnf' >> /usr/local/ssl/nodejs.cnf

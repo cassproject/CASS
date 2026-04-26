@@ -2,7 +2,7 @@
 # NOTE: Builder uses Debian (not Alpine) because the distroless runtime is Debian-based (glibc).
 # Alpine uses musl libc which produces incompatible binaries for the distroless glibc runtime.
 # The OpenSSL build pattern follows DockerfileAlpine's dual-version FIPS approach.
-FROM --platform=linux/amd64 node:24-slim AS builder
+FROM node:24-slim AS builder
 
 ARG OPENSSL_VALIDATED_VERSION=3.1.2
 ARG OPENSSL_VERSION=3.5.5
@@ -48,7 +48,12 @@ echo "activate = 1" >> /etc/ssl/nodejs.cnf
 ENV OPENSSL_FIPS=1
 ENV OPENSSL_CONF=/etc/ssl/nodejs.cnf
 ENV OPENSSL_MODULES=/usr/local/lib64/ossl-modules
-ENV LD_LIBRARY_PATH=/usr/local/lib64
+ENV LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
+
+# OPENSSL_MODULES path varies by architecture (lib64 on amd64, lib on arm64)
+RUN OSSL_MOD=$(find /usr/local -name 'ossl-modules' -type d | head -1) && \
+    ln -sfn "$OSSL_MOD" /usr/local/ossl-modules
+ENV OPENSSL_MODULES=/usr/local/ossl-modules
 
 RUN openssl version -d -a
 RUN node --force-fips -e "console.log('Node.js is running with FIPS:', process.versions.openssl, process.versions.node);"
@@ -74,7 +79,7 @@ RUN if [ "$TEST" = "true" ] ; then export PORT=8083 && export CASS_LOOPBACK=http
 RUN rm -f client.key client.crt
 
 # Stage 2: Distroless runtime - minimal image with no shell or package manager
-FROM --platform=linux/amd64 gcr.io/distroless/nodejs24-debian12
+FROM gcr.io/distroless/nodejs24-debian12
 
 # Copy FIPS OpenSSL libraries, modules, and configuration from builder
 COPY --from=builder /usr/local/lib /usr/local/lib
@@ -84,8 +89,8 @@ COPY --from=builder /etc/ssl/nodejs.cnf /etc/ssl/nodejs.cnf
 
 ENV OPENSSL_FIPS=1
 ENV OPENSSL_CONF=/etc/ssl/nodejs.cnf
-ENV OPENSSL_MODULES=/usr/local/lib64/ossl-modules
-ENV LD_LIBRARY_PATH=/usr/local/lib64
+ENV OPENSSL_MODULES=/usr/local/ossl-modules
+ENV LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
 
 # Copy application and dependencies from builder
 WORKDIR /app

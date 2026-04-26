@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:24-slim
+FROM node:24-slim
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt update && \ 
 apt dist-upgrade -y && \
 apt install -qqy build-essential checkinstall clang curl libssl-dev wget zlib1g-dev && \
@@ -6,7 +6,7 @@ cd /usr/local/src && \
 wget https://www.openssl.org/source/openssl-3.1.2.tar.gz && \
 tar xvf openssl-3.1.2.tar.gz && \
 cd openssl-3.1.2 && \
-./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips linux-x86_64 && \
+./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips && \
 make -j8 > make.log && \
 make install > makeinstall.log && \
 make install_ssldirs > makeinstallssldirs.log && \
@@ -28,7 +28,10 @@ echo "[default_sect]" >> /usr/local/ssl/nodejs.cnf && \
 echo "activate = 1" >> /usr/local/ssl/nodejs.cnf
 
 ENV OPENSSL_CONF=/usr/local/ssl/nodejs.cnf
-ENV OPENSSL_MODULES=/usr/local/ssl/lib64/ossl-modules
+# OPENSSL_MODULES path varies by architecture (lib64 on amd64, lib on arm64)
+RUN OSSL_MOD=$(find /usr/local/ssl -name 'ossl-modules' -type d | head -1) && \
+    ln -sfn "$OSSL_MOD" /usr/local/ssl/ossl-modules
+ENV OPENSSL_MODULES=/usr/local/ssl/ossl-modules
 
 RUN npm upgrade --global --production --omit=dev
 

@@ -1,5 +1,5 @@
 ARG nodeVersion=24
-FROM --platform=linux/amd64 node:$nodeVersion-alpine
+FROM node:$nodeVersion-alpine
 
 RUN apk update && apk upgrade --no-cache
 
@@ -40,7 +40,10 @@ echo "activate = 1" >> /etc/ssl/nodejs.cnf
 
 ENV OPENSSL_FIPS=1
 ENV OPENSSL_CONF=/etc/ssl/nodejs.cnf
-ENV OPENSSL_MODULES=/usr/local/lib64/ossl-modules
+# OPENSSL_MODULES path varies by architecture (lib64 on amd64, lib on arm64)
+RUN OSSL_MOD=$(find /usr/local -name 'ossl-modules' -type d | head -1) && \
+    ln -sfn "$OSSL_MOD" /usr/local/ossl-modules
+ENV OPENSSL_MODULES=/usr/local/ossl-modules
 
 RUN openssl version -d -a
 RUN node --force-fips -e "console.log('Node.js is running with FIPS:', process.versions.openssl, process.versions.node);"

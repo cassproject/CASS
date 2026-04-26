@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/Dockerfile
-    platform: linux/amd64
     container_name: cass
     entrypoint: [ "node", "./src/main/server.js" ]
     networks:
@@ -39,7 +38,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/Dockerfile
-    platform: linux/amd64
     container_name: cassl
     networks:
       - esnet
