@@ -28,7 +28,6 @@ services:
       args:
         - TEST=true
       dockerfile: docker/standalone/node/Dockerfile
-    platform: linux/amd64
     container_name: cass
     networks:
       - testnet
@@ -54,7 +53,6 @@ services:
       args:
         - TEST=true
       dockerfile: docker/standalone/node/DockerfileAlpine
-    platform: linux/amd64
     container_name: cass-alpine
     networks:
       - testnet
@@ -102,7 +100,6 @@ services:
       args:
         - TEST=true
       dockerfile: docker/standalone/Dockerfile
-    platform: linux/amd64
     container_name: cass-standalone
     networks:
       - testnet

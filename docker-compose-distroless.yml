@@ -54,7 +54,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/DockerfileDistroless
-    platform: linux/amd64
     container_name: cassl
     networks:
       - esnet
