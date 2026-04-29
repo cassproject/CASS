@@ -94,7 +94,7 @@
     "rxjs": "^7.8.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "undici": "^6.24.1",
+    "undici": "^8.1.0",
     "uuid": "^13.0.0",
     "ws": "^8.20.0"
   },
