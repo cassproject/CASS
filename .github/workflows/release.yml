@@ -71,7 +71,8 @@ jobs:
 
       - name: Update Submodules
         run: |
-          git submodule update --remote --branch gh-pages src/main/webapp
+          git submodule set-branch --branch gh-pages src/main/webapp
+          git submodule update --remote src/main/webapp
 
       - name: Update Changelog (Basic)
         run: |
