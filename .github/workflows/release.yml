@@ -69,14 +69,6 @@ jobs:
           jq ".info.version = \"${NEW_VERSION#v}\"" src/main/swagger.json > src/main/swagger.tmp.json
           mv src/main/swagger.tmp.json src/main/swagger.json
 
-      - name: Update Submodules
-        run: |
-          cd src/main/webapp
-          git fetch origin gh-pages
-          cd ../../..
-          git submodule set-branch --branch gh-pages src/main/webapp
-          git submodule update --remote src/main/webapp
-
       - name: Update Changelog (Basic)
         run: |
           echo -e "## Release ${{ env.new_version }}\n\n$(git log $(git describe --tags --abbrev=0)..HEAD --oneline)\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
