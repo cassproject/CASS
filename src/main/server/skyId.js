@@ -53,6 +53,7 @@ let skyIdCreate = async function () {
     if (existingAccount) error('Cannot create, account already exists.', 422);
 
     let encryptedPayload = new EcEncryptedValue();
+    encryptedPayload.assignId(repo.selectedServer, saltedId);
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = await EcAesCtrAsync.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
 
@@ -72,6 +73,7 @@ let skyIdCommit = async function () {
 
     let payload = { ...credentials, token, password: saltedPassword };
     let encryptedPayload = new EcEncryptedValue();
+    encryptedPayload.assignId(repo.selectedServer, saltedId);
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = await EcAesCtrAsync.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
 
@@ -110,6 +112,7 @@ let skyIdLogin = async function () {
     get.lastLogin = Date.now();
 
     let encryptedPayload = new EcEncryptedValue();
+    encryptedPayload.assignId(repo.selectedServer, saltedId);
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = await EcAesCtrAsync.encrypt(JSON.stringify(get), skyIdSecretKey, saltedId);
 
