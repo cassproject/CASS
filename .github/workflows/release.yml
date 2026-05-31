@@ -71,6 +71,9 @@ jobs:
 
       - name: Update Submodules
         run: |
+          cd src/main/webapp
+          git fetch origin gh-pages
+          cd ../../..
           git submodule set-branch --branch gh-pages src/main/webapp
           git submodule update --remote src/main/webapp
 
