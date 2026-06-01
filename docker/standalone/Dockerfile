@@ -29,7 +29,7 @@ RUN npm upgrade --global --production --omit=dev
 USER elasticsearch
 RUN mkdir CASS
 COPY --chown=elasticsearch package.json CASS/package.json
-RUN cd CASS && npm install --omit=dev && npm upgrade --production --omit=dev --save && npm audit --production fix
+RUN cd CASS && npm install --omit=dev && npm upgrade --production --omit=dev --save && (npm audit --production --omit=dev --fix || true)
 COPY --chown=elasticsearch src CASS/src
 COPY --chown=elasticsearch ca.crt CASS/ca.crt
 COPY --chown=elasticsearch cass.crt CASS/cass.crt

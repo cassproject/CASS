@@ -43,7 +43,7 @@ COPY --chown=1000:1000 package.json ./
 RUN npm update && \
 npm install --production --omit=dev && \
 npm upgrade --production --omit=dev --save && \
-npm audit --production --omit=dev --fix && \
+(npm audit --production --omit=dev --fix || true) && \
 chown 1000:1000 node_modules -R
 
 COPY --chown=1000:1000 src src

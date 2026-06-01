@@ -50,6 +50,7 @@ if (fs.readFileSync != null) {
 }
 
 let changeNameAndSaveAndCheck = async (rld) => {
+    rld = await EcEncryptedValue.fromEncryptedValue(rld);
     let newName = "Some Thing " + EcCrypto.generateUUID();
     rld.setName(newName);
     await repo.saveTo(rld);
@@ -57,6 +58,7 @@ let changeNameAndSaveAndCheck = async (rld) => {
 };
 
 let changeNameAndSaveAndCheckRepo = async (rld) => {
+    rld = await EcEncryptedValue.fromEncryptedValue(rld);
     let newName = "Some Thing " + EcCrypto.generateUUID();
     rld.setName(newName);
     await EcRepository.save(rld);
@@ -64,6 +66,7 @@ let changeNameAndSaveAndCheckRepo = async (rld) => {
 };
 
 let changeNameAndSaveAndCheckMultiput = async (rld) => {
+    rld = await EcEncryptedValue.fromEncryptedValue(rld);
     let newName = "Some Thing " + EcCrypto.generateUUID();
     rld.setName(newName);
     await repo.multiput([rld]);

@@ -73,6 +73,7 @@ const searchObj = async function (q, start, size, sort, track_scores) {
         const query_string2 = {};
         (should)['query_string'] = query_string2;
         (query_string2)['query'] = q2;
+        (query_string2)['fields'] = ['owner', 'reader', '@owner', '@reader'];
     }
     return s;
 };

@@ -144,11 +144,41 @@ let alignedCompetenciesCache = {};
 setInterval(function () {
     alignedCompetenciesCache = {};
 }, 1000 * 60 * 60);
-var getAlignedCompetencies = async function (objectId) {
+/**
+ *  Resolves a language map to a single string, preferring en-US, then en,
+ *  then the first available value. Returns null if the map is empty/null.
+ */
+var resolveLanguageMap = function (langMap) {
+    if (langMap == null) return null;
+    if (typeof langMap === "string") return langMap;
+    if (typeof langMap !== "object") return null;
+    if (langMap["en-US"] != null) return langMap["en-US"];
+    if (langMap["en"] != null) return langMap["en"];
+    var keys = Object.keys(langMap);
+    if (keys.length > 0) return langMap[keys[0]];
+    return null;
+}
+
+var getAlignedCompetencies = async function (objectId, xapiObject) {
     var results = [];
     if (alignedCompetenciesCache[objectId] != null)
         return alignedCompetenciesCache[objectId];
     let creativeWorks = await loopback.repositorySearch(global.repo, "@type:CreativeWork AND url:\"" + objectId + "\"", {});
+    if (creativeWorks.length === 0 && objectId != null && objectId.startsWith("http")) {
+        // No existing CreativeWork found for this xAPI object ID — create one with no alignments.
+        let cw = new schema.CreativeWork();
+        cw.assignId(global.repo.selectedServer, EcCrypto.md5(objectId));
+        cw.url = objectId;
+        let def = xapiObject?.definition;
+        cw.name = resolveLanguageMap(def?.name);
+        cw.description = resolveLanguageMap(def?.description);    
+        cw.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
+        await repo.saveTo(cw, null, null, xapiIm);
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiCreateCreativeWork", objectId);
+        if (process.env.XAPI_DEBUG) console.log("Created CreativeWork for xAPI object: " + objectId);
+        creativeWorks = [cw];
+    }
+    if (process.env.XAPI_DEBUG) console.log("Found " + creativeWorks.length + " CreativeWorks for xAPI object: " + objectId);
     for (let creativeWork of creativeWorks) {
         if (creativeWork.educationalAlignment == null) continue;
         if (!EcArray.isArray(creativeWork.educationalAlignment))
@@ -258,7 +288,8 @@ var xapiStatement = async function (s, accm) {
 
     if (s.object == null) return;
 
-    let alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id);
+    let alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id, s.object);
+    try{
     if (s?.object?.id != null && s?.object?.id.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.id), null, null, repo, xapiIm)) != null)
         alignedCompetencies.push({
             targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s.object.id)
@@ -267,6 +298,7 @@ var xapiStatement = async function (s, accm) {
         alignedCompetencies.push({
             targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo)
         });
+    } catch {}
     if (process.env.XAPI_DEBUG) console.log("Aligned Competencies: " + alignedCompetencies.length);
     let alreadyAligned = {};
     for (let i = 0; i < alignedCompetencies.length; i++) {
@@ -327,7 +359,7 @@ var xapiStatement = async function (s, accm) {
         if (accm != null)
             accm.push(a);
         else
-            EcRepository.save(a, (msg) => {
+            await EcRepository.save(a, (msg) => {
                 global.events.person.assertionAbout.next(actorPks);
                 global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSaveAssertion", msg);
             }, (error) => {

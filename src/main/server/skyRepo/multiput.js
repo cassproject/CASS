@@ -286,7 +286,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
     let recordsToGet = [...response.items];
     let oldIndexRecords = [];
     while (recordsToGet.length > 0)
-        oldIndexRecords.push(...(await skyrepoManyGetIndexRecords.call(this, recordsToGet.splice(0, 1000).filter((x) => !x.index.error && x.index._index !== 'permanent').map((x) => {
+        oldIndexRecords.push(...(await skyrepoManyGetIndexRecords.call(this, recordsToGet.splice(0, 500).filter((x) => !x.index.error && x.index._index !== 'permanent').map((x) => {
             let obj = x.index;
             const erld = new EcRemoteLinkedData(null, null);
             erld.copyFrom(map[obj._id].object);
