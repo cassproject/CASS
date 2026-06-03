@@ -128,20 +128,7 @@ COMPONENTS=$(curl -sf "${KC_URL}/admin/realms/${REALM}/components?type=org.keycl
   -H "Authorization: Bearer ${TOKEN}")
 
 # -- 4a. Update "Allowed Client Scopes" policy for anonymous registrations
-# Find the component ID by matching name + subType
 ALLOWED_SCOPES_ID=""
-# Parse components line-by-line looking for the right one
-TEMP_FILE=$(mktemp)
-echo "$COMPONENTS" > "$TEMP_FILE"
-
-# Use a simple approach: iterate through components by splitting on {"id"
-COMPONENT_IDS=""
-CURRENT_ID=""
-CURRENT_NAME=""
-CURRENT_SUBTYPE=""
-
-# Extract all anonymous Allowed Client Scopes component IDs
-# We use grep + sed since we don't have jq
 for id in $(echo "$COMPONENTS" | grep -o '"id":"[^"]*"' | sed 's/"id":"//;s/"//g'); do
   BLOCK=$(echo "$COMPONENTS" | grep -o "{[^}]*\"id\":\"${id}\"[^}]*}")
   NAME_MATCH=$(echo "$BLOCK" | grep -o '"name":"Allowed Client Scopes"' || true)
@@ -156,7 +143,6 @@ if [ -n "$ALLOWED_SCOPES_ID" ]; then
   echo "[init-keycloak]   Updating Allowed Client Scopes (${ALLOWED_SCOPES_ID})..."
   EXISTING=$(curl -sf "${KC_URL}/admin/realms/${REALM}/components/${ALLOWED_SCOPES_ID}" \
     -H "Authorization: Bearer ${TOKEN}")
-  # Replace the config values using sed
   UPDATED=$(echo "$EXISTING" | sed \
     -e 's/"allowed-client-scopes":\[[^]]*\]/"allowed-client-scopes":["profile","email","offline_access","address","phone"]/' \
     -e 's/"allow-default-scopes":\[[^]]*\]/"allow-default-scopes":["true"]/')
@@ -185,8 +171,9 @@ if [ -n "$TRUSTED_HOSTS_ID" ]; then
   echo "[init-keycloak]   Updating Trusted Hosts (${TRUSTED_HOSTS_ID})..."
   EXISTING=$(curl -sf "${KC_URL}/admin/realms/${REALM}/components/${TRUSTED_HOSTS_ID}" \
     -H "Authorization: Bearer ${TOKEN}")
+  # Added more common Docker gateway IPs to handle various environments
   UPDATED=$(echo "$EXISTING" | sed \
-    -e 's/"trusted-hosts":\[[^]]*\]/"trusted-hosts":["localhost","127.0.0.1","host.docker.internal"]/' \
+    -e 's/"trusted-hosts":\[[^]]*\]/"trusted-hosts":["localhost","127.0.0.1","host.docker.internal","172.17.0.1","172.18.0.1","172.19.0.1","172.20.0.1","172.21.0.1","172.22.0.1","172.23.0.1","172.24.0.1","172.25.0.1"]/' \
     -e 's/"host-sending-registration-request-must-match":\[[^]]*\]/"host-sending-registration-request-must-match":["false"]/' \
     -e 's/"client-uris-must-match":\[[^]]*\]/"client-uris-must-match":["true"]/')
   HTTP_CODE=$(curl -sf -o /dev/null -w "%{http_code}" -X PUT "${KC_URL}/admin/realms/${REALM}/components/${TRUSTED_HOSTS_ID}" \
@@ -198,5 +185,4 @@ else
   echo "[init-keycloak]   SKIP (Trusted Hosts policy not found)"
 fi
 
-rm -f "$TEMP_FILE"
 echo "[init-keycloak] Keycloak initialization complete."

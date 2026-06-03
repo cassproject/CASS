@@ -21,6 +21,7 @@ services:
       - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
       - CASS_OIDC_EXTERNAL_ISSUER_URL=http://localhost:8080/realms/master/ # external URL for MCP OAuth metadata (host-reachable)
       - CASS_SSO_ACCOUNT_REQUIRED=1
+      - CASS_IP_ALLOW=127.0.0.1,172.16.0.0/12,192.168.0.0/16,10.0.0.0/8
       - CASS_IP_DENIED_REDIRECT=/api/login
       # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
       # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
