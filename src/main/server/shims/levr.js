@@ -43,6 +43,16 @@ if (global.fileSave === undefined) {
 };
 
 if (global.bindWebService === undefined) {
+    // Express 5: wildcard params are returned as arrays under the named key.
+    // Join them back into a path string for legacy compatibility.
+    // Return null (not '') when no wildcard was matched, so that endpoint
+    // handlers that guard on `urlRemainder != null` continue to work.
+    function getWildcardRemainder(params) {
+        const remainder = params.splat;
+        if (Array.isArray(remainder)) return remainder.join('/') || null;
+        return remainder || null;
+    }
+
     global.bindWebService = function (endpoint, callback) {
         let get = async function (req, res) {
             let ctx = {
@@ -57,12 +67,12 @@ if (global.bindWebService === undefined) {
             try {
                 ctx.req = req;
                 ctx.res = res;
-                req.query.methodType = 'GET';
-                req.query.urlRemainder = req.params[0];
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                // Express 5: req.query is a read-only getter. Build params separately.
+                const params = { ...req.query, methodType: 'GET', urlRemainder: getWildcardRemainder(req.params) };
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(params)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 let result = await callback.call({
                     ctx: ctx,
-                    params: req.query,
+                    params: params,
                 });
                 if (typeof (result) == 'string') {
                     try {
@@ -99,9 +109,9 @@ if (global.bindWebService === undefined) {
             try {
                 ctx.req = req;
                 ctx.res = res;
-                req.query.methodType = 'PUT';
-                req.query.urlRemainder = req.params[0];
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                // Express 5: req.query is a read-only getter. Build params separately.
+                const params = { ...req.query, methodType: 'PUT', urlRemainder: getWildcardRemainder(req.params) };
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(params)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 req.setEncoding('utf8');
                 req.body = '';
                 req.on('data', function (chunk) {
@@ -114,7 +124,7 @@ if (global.bindWebService === undefined) {
                     }
                     let result = await callback.call({
                         ctx: ctx,
-                        params: req.query,
+                        params: params,
                         dataStreams: dataStreams,
                     });
                     if (typeof (result) == 'string') {
@@ -153,12 +163,12 @@ if (global.bindWebService === undefined) {
             try {
                 ctx.req = req;
                 ctx.res = res;
-                req.query.methodType = 'DELETE';
-                req.query.urlRemainder = req.params[0];
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                // Express 5: req.query is a read-only getter. Build params separately.
+                const params = { ...req.query, methodType: 'DELETE', urlRemainder: getWildcardRemainder(req.params) };
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(params)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 let result = await callback.call({
                     ctx: ctx,
-                    params: req.query,
+                    params: params,
                 });
                 if (typeof (result) == 'string') {
                     try {
@@ -204,8 +214,8 @@ if (global.bindWebService === undefined) {
                     }
                 }
                 const bb = busboy({ headers: req.headers, limits: { parts: 100, fieldSize: global.postMaxSize, fileSize: global.postMaxSize } });
-                req.query.methodType = 'POST';
-                req.query.urlRemainder = req.params[0];
+                // Express 5: req.query is a read-only getter. Build params separately.
+                const params = { ...req.query, methodType: 'POST', urlRemainder: getWildcardRemainder(req.params) };
                 let fields = {};
                 bb.on('file', (name, file, info) => {
                     const { filename, encoding, mimeType } = info;
@@ -216,13 +226,13 @@ if (global.bindWebService === undefined) {
                 });
                 bb.on('close', async () => {
                     try {
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostStart', endpoint + ' ' + (req.isSpdy ? 'spdy' : req.httpVersion) + ' Request: ' + JSON.stringify(req.query) + ' - Parts: ' + JSON.stringify(EcObject.keys(fields)), process.env.LOG_HEADERS ? req.headers : undefined);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostStart', endpoint + ' ' + (req.isSpdy ? 'spdy' : req.httpVersion) + ' Request: ' + JSON.stringify(params) + ' - Parts: ' + JSON.stringify(EcObject.keys(fields)), process.env.LOG_HEADERS ? req.headers : undefined);
                         for (let key in fields) {
                             fields[key] = await fields[key];
                         }
                         let result = await callback.call({
                             ctx: ctx,
-                            params: req.query,
+                            params: params,
                             dataStreams: fields,
                         });
                         if (typeof (result) == 'string') {
@@ -259,10 +269,12 @@ if (global.bindWebService === undefined) {
             }
         };
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassBindEndpoint', `Binding endpoint: /api${endpoint}`);
-        app.get(baseUrl + '/api' + endpoint, get);
-        app.post(baseUrl + '/api' + endpoint, post);
-        app.put(baseUrl + '/api' + endpoint, put);
-        app.delete(baseUrl + '/api' + endpoint, deleet);
+        // Express 5 (path-to-regexp v8): bare * wildcards must be named.
+        const e5Endpoint = endpoint.replace(/\/\*$/, '/*splat');
+        app.get(baseUrl + '/api' + e5Endpoint, get);
+        app.post(baseUrl + '/api' + e5Endpoint, post);
+        app.put(baseUrl + '/api' + e5Endpoint, put);
+        app.delete(baseUrl + '/api' + e5Endpoint, deleet);
     };
 };
 

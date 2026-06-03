@@ -697,12 +697,10 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             { req.permittedBy.push("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-forwarded'] != null && ipMatch(ipFilterList, req.headers['x-forwarded']))
             { req.permittedBy.push("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.connection?.remoteAddress != null && ipMatch(ipFilterList, req.connection.remoteAddress))
-            { req.permittedBy.push("Permitted by: " + 'connection' + ": " + req.connection.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
+        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList, req.socket.remoteAddress))
+            { req.permittedBy.push("Permitted by: " + 'connection' + ": " + req.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
         if (req.socket?.remoteAddress != null && ipMatch(ipFilterList, req.socket.remoteAddress))
             { req.permittedBy.push("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
-        if (req.connection?.socket?.remoteAddress != null && ipMatch(ipFilterList, req.connection.socket.remoteAddress))
-            { req.permittedBy.push("Permitted by: " + 'connectionSocket' + ": " + req.connection.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
         if (req.info?.remoteAddress != null && ipMatch(ipFilterList, req.info.remoteAddress))
             { req.permittedBy.push("Permitted by: " + 'info' + ": " + req.info.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
         if (process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
@@ -742,9 +740,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
                 allowed,
                 headers:req.headers,
                 connections:{
-                    connection:(req.connection != null && req.connection.remoteAddress != null) ? req.connection.remoteAddress:null,
                     socket:(req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                    connectionSocket:(req.connection != null && req.connection.socket != null && req.connection.socket.remoteAddress != null) ? req.connection.socket.remoteAddress : null,
                     info:(req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
                 },
                 eim: req.eim != null ? req.eim.ids.map(i=>i.displayName) : null
@@ -796,9 +792,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
                 permittedBy:req.permittedBy,
                 headers:req.headers,
                 connections:{
-                    connection:(req.connection != null && req.connection.remoteAddress != null) ? req.connection.remoteAddress:null,
                     socket:(req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                    connectionSocket:(req.connection != null && req.connection.socket != null && req.connection.socket.remoteAddress != null) ? req.connection.socket.remoteAddress : null,
                     info:(req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
                 },
                 eim: req.eim != null ? req.eim.ids.map(i=>i.displayName) : null

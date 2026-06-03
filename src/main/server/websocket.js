@@ -18,12 +18,24 @@
  * --END_LICENSE--
  */
 
-require('express-ws')(global.app, global.server);
+// Express 5: express-ws is abandoned and incompatible. Use ws directly.
+const { WebSocketServer } = require('ws');
+const wss = new WebSocketServer({ noServer: true });
+
+global.server.on('upgrade', (request, socket, head) => {
+    const url = new URL(request.url, 'http://localhost');
+    if (url.pathname === '/ws/custom') {
+        wss.handleUpgrade(request, socket, head, (ws) => {
+            wss.emit('connection', ws, request);
+        });
+    } else {
+        socket.destroy();
+    }
+});
+
 let wses = [];
-app.ws('/ws/custom', function (ws, req) {
+wss.on('connection', function (ws, req) {
     wses.push(ws);
-    if (this.ctx?.req?.eim?.ids)
-        global.events.person.doPing(this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()));
     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, "CassWsCustom", "Websocket connected.");
     ws.on('close', function (msg) {
         for (let i = 0; i < wses.length; i++)

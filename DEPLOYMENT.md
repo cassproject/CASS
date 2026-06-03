@@ -24,7 +24,7 @@ docker run -d --name elasticsearch \
   -e "xpack.security.http.ssl.enabled=false" \
   -e "xpack.security.transport.ssl.enabled=false" \
   -e "ES_JAVA_OPTS=-Xms2g -Xmx2g" \
-  docker.elastic.co/elasticsearch/elasticsearch:9.2.5
+  docker.elastic.co/elasticsearch/elasticsearch:9.4.2
 ```
 
 ### Install and Run CaSS
@@ -157,7 +157,7 @@ spec:
     spec:
       containers:
         - name: elasticsearch
-          image: docker.elastic.co/elasticsearch/elasticsearch:9.2.5
+          image: docker.elastic.co/elasticsearch/elasticsearch:9.4.2
           ports:
             - containerPort: 9200
           env:

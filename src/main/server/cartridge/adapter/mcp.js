@@ -26,7 +26,7 @@ async function initMcp() {
     let spec;
 
     // Fetch the live spec served by CaSS (available after startup)
-    const loopback = process.env.CASS_LOOPBACK;
+    const loopback = process.env.CASS_LOOPBACK || (process.env.HTTPS == 'true' ? 'https://localhost/api/' : 'http://localhost/api/');
     if (!loopback) {
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpSpecError', 'MCP adapter cannot load OpenAPI spec: loopback URL not configured.');
         return;

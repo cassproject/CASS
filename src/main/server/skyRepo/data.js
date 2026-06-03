@@ -271,3 +271,4 @@ const endpointData = async function () {
  *         description: "Failure to locate data due to permission or absence of data."
  */
 bindWebService('/data/*', endpointData);
+bindWebService('/data/', endpointData);
