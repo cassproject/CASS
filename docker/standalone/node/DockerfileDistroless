@@ -86,6 +86,8 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 COPY --from=builder /usr/local/lib64 /usr/local/lib64
 COPY --from=builder /usr/local/ssl /usr/local/ssl
 COPY --from=builder /etc/ssl/nodejs.cnf /etc/ssl/nodejs.cnf
+# COPY follows the symlink created in the builder, producing a real directory
+COPY --from=builder /usr/local/ossl-modules /usr/local/ossl-modules
 
 ENV OPENSSL_FIPS=1
 ENV OPENSSL_CONF=/etc/ssl/nodejs.cnf
@@ -96,8 +98,9 @@ ENV LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
 WORKDIR /app
 COPY --from=builder --chown=1000:1000 /app/node_modules node_modules
 COPY --from=builder --chown=1000:1000 /app/src src
-COPY --from=builder --chown=1000:1000 /app/ca.crt /app/cass.crt /app/cass.key /app/copyright.txt ./
+COPY --from=builder --chown=1000:1000 /app/package.json /app/ca.crt /app/cass.crt /app/cass.key /app/copyright.txt ./
 COPY --from=builder --chown=1000:1000 /app/etc etc
 
 EXPOSE 80
 ENTRYPOINT ["/nodejs/bin/node", "--force-fips", "./src/main/server.js"]
+
