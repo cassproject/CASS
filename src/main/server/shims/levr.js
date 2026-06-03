@@ -45,10 +45,12 @@ if (global.fileSave === undefined) {
 if (global.bindWebService === undefined) {
     // Express 5: wildcard params are returned as arrays under the named key.
     // Join them back into a path string for legacy compatibility.
+    // Return null (not '') when no wildcard was matched, so that endpoint
+    // handlers that guard on `urlRemainder != null` continue to work.
     function getWildcardRemainder(params) {
         const remainder = params.splat;
-        if (Array.isArray(remainder)) return remainder.join('/');
-        return remainder || '';
+        if (Array.isArray(remainder)) return remainder.join('/') || null;
+        return remainder || null;
     }
 
     global.bindWebService = function (endpoint, callback) {
