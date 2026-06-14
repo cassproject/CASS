@@ -1,8 +1,6 @@
 # CaSS — Competency and Skills System
 
-# System Design
-
-# Version 1.6.27
+# System Design Document
 
 # Document CASS-SDD-2026-001
 
@@ -26,13 +24,14 @@ Copyright © 2015–2026 Eduworks Corporation and other contributing parties. Li
 
 | Date | Version | Document Revision Description | Document Author |
 | :--: | :-----: | ----------------------------- | --------------- |
-| 2026-06-13 | 1.0 | Initial comprehensive system design document, generated from codebase analysis (v1.6.27), cass-npm (v5.0.15), cass-editor, and docs.cassproject.org. | Auto-generated |
+| 2026-06-13 | 1.0 | Initial comprehensive system design document, generated from codebase analysis, cass-npm, cass-editor, and docs.cassproject.org. | Auto-generated |
+| 2026-06-14 | 1.1 | Reviewed by lead architect. Removed transient version numbers, converted ASCII diagrams to Mermaid, expanded §3.10 Rules, removed OpenSearch references, corrected LEVR definition, clarified native crypto vs. node-forge fallback. | Ronald "Fritz" Ray |
 
 **APPROVALS**
 
 | Approval Date | Approved Version | Approver Role | Approver |
 | ------------- | ---------------- | ------------- | -------- |
-| | | | |
+| 2026-06-14 | 1.1 | Lead Architect / Developer | Ronald "Fritz" Ray |
 
 **SUPPLEMENTAL DOCUMENTS**
 
@@ -100,9 +99,9 @@ Copyright © 2015–2026 Eduworks Corporation and other contributing parties. Li
 | --------- | ----- |
 | **System Name** | Competency and Skills System (CaSS) |
 | **Project-Unique Identifier** | `cass` |
-| **Version / Release** | 1.6.27 |
+| **Version / Release** | Current |
 | **Repository** | https://github.com/cassproject/CASS |
-| **NPM Package** | `cassproject` v5.0.15 |
+| **NPM Package** | `cassproject` |
 | **License** | Apache License 2.0 |
 | **Organization** | Eduworks Corporation |
 | **Sponsor** | Advanced Distributed Learning (ADL) Initiative, U.S. Department of Defense |
@@ -125,7 +124,7 @@ CaSS is an open-source, federated infrastructure for the **definition, managemen
 
 ## 1.3 Document Overview
 
-This System Design Document (SDD) describes the complete architectural and detailed design of CaSS version 1.6.27. It covers system-wide design decisions (Section 3), architectural design including component decomposition and interface design (Section 4), detailed design of each software unit (Section 5), and requirements traceability (Section 6). Section 7 provides a glossary, acronyms, and supplementary notes. Appendixes provide reference tables for environment variables and data schemas.
+This System Design Document (SDD) describes the complete architectural and detailed design of CaSS. It covers system-wide design decisions (Section 3), architectural design including component decomposition and interface design (Section 4), detailed design of each software unit (Section 5), and requirements traceability (Section 6). Section 7 provides a glossary, acronyms, and supplementary notes. Appendixes provide reference tables for environment variables and data schemas.
 
 ---
 
@@ -149,13 +148,13 @@ This System Design Document (SDD) describes the complete architectural and detai
 | [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html) | 2014 | OIDC specification |
 | [W3C SKOS](https://www.w3.org/TR/skos-reference/) | 2009 | Simple Knowledge Organization System |
 | [Model Context Protocol](https://modelcontextprotocol.io/) | Current | Protocol for AI model–tool integration |
-| [CASS README.md](README.md) | 1.6.27 | Installation and getting started |
-| [CASS CONFIGURATION.md](CONFIGURATION.md) | 1.6.27 | Server configuration guide |
-| [CASS DEPLOYMENT.md](DEPLOYMENT.md) | 1.6.27 | Local, Docker, Kubernetes deployment |
-| [CASS ENVIRONMENT.md](ENVIRONMENT.md) | 1.6.27 | All 80+ environment variables |
-| [CASS FILE.md](FILE.md) | 1.6.27 | Project file structure reference |
-| [CASS CHANGELOG.md](CHANGELOG.md) | 1.6.27 | Release history |
-| [OpenAPI Spec (swagger.json)](src/main/swagger.json) | 1.6.27 | Machine-readable API specification |
+| [CASS README.md](README.md) | Current | Installation and getting started |
+| [CASS CONFIGURATION.md](CONFIGURATION.md) | Current | Server configuration guide |
+| [CASS DEPLOYMENT.md](DEPLOYMENT.md) | Current | Local, Docker, Kubernetes deployment |
+| [CASS ENVIRONMENT.md](ENVIRONMENT.md) | Current | All 80+ environment variables |
+| [CASS FILE.md](FILE.md) | Current | Project file structure reference |
+| [CASS CHANGELOG.md](CHANGELOG.md) | Current | Release history |
+| [OpenAPI Spec (swagger.json)](src/main/swagger.json) | Current | Machine-readable API specification |
 
 ---
 
@@ -178,7 +177,7 @@ This section documents system-wide design decisions that influence the architect
 
 1. **JSON-LD Responses.** All data retrieval operations return JSON-LD objects or arrays of JSON-LD objects, with KBAC-enforced access control applied before delivery.
 2. **Standards-Format Exports.** Export adapters produce data in CTDL-ASN JSON-LD, IMS CASE JSON, ASN XML/JSON, Open Badges 2.0 JSON, and CSV formats.
-3. **Computed Profiles.** The profile engine returns competency attainment profiles as structured JSON, computing mastery status from aggregated assertions.
+3. **Computed Profiles.** The profile engine returns competency attainment profiles as structured JSON, computing current state from aggregated assertions.
 4. **WebSocket Notifications.** Real-time `@id` broadcasts of saved objects to all connected WebSocket clients.
 5. **OpenAPI Specification.** A live, validated OpenAPI 3.0 specification is served at `GET /api/swagger.json` and rendered interactively at `/api/swagger`.
 6. **Health/Ping Responses.** `GET /api/ping` returns server version, SSO state, FIPS mode, banner/MOTD configuration, and server readiness.
@@ -235,7 +234,7 @@ CaSS supports four mutually exclusive authentication modes (only one active at a
 - **TLS/HTTPS** with HTTP/2 support (HTTP/1.1 fallback available via `HTTP2_SERVER=false`).
 - **Client certificate authentication (mTLS)** via `REQUEST_CLIENT_SIDE_CERTIFICATE`.
 - **Certificate Revocation List (CRL)** checking via `CRL_LISTS=true`.
-- **FIPS 140-3 compliance** with OpenSSL 3.1.2 compiled into Docker images.
+- **FIPS 140-3 compliance** with OpenSSL compiled into Docker images.
 
 ### 3.5.4 Additional Security Controls
 
@@ -257,18 +256,23 @@ CaSS supports four mutually exclusive authentication modes (only one active at a
 
 CaSS transitions through the following states during its lifecycle:
 
-```
-┌─────────┐    ┌────────────────┐    ┌──────────────┐    ┌──────────────┐    ┌───────┐
-│ Starting │───▶│ DB Connecting  │───▶│ Server       │───▶│ Adapters     │───▶│ Ready │
-│          │    │                │    │ Listening     │    │ Loading      │    │       │
-└─────────┘    └────────────────┘    └──────────────┘    └──────────────┘    └───────┘
-                                                                                 │
-                                                                                 ▼
-                                                                          ┌─────────────┐
-                                                                          │  Operating   │
-                                                                          │ (periodic    │
-                                                                          │  60s ticks)  │
-                                                                          └─────────────┘
+```mermaid
+stateDiagram-v2
+    [*] --> Starting
+    Starting --> DB_Connecting : server.init
+    DB_Connecting --> Server_Listening : database.connected
+    Server_Listening --> Adapters_Loading : server.listening
+    Adapters_Loading --> Ready : adapters loaded
+    Ready --> Operating : server.ready
+    Operating --> Operating : periodic 60s ticks
+    Operating --> Error : uncaught exception
+    Error --> [*] : process.exit(1)
+
+    state Operating {
+        [*] --> Steady
+        Steady --> Maintenance : server.periodic
+        Maintenance --> Steady : cleanup complete
+    }
 ```
 
 | State | RxJS Event | Description |
@@ -308,18 +312,50 @@ CaSS transitions through the following states during its lifecycle:
    - `explainer.js` — Generates human-readable explanations of computation results.
    - `template.js` — Extensibility template for custom coprocessors.
 2. **KBAC Signature Validation.** RSA signature verification using SHA-256 (preferred) or SHA-1, with timestamp freshness checking and configurable expiry windows.
-3. **Object Encryption.** AES-256 symmetric encryption for object payloads, with AES keys encrypted per-reader using RSA-OAEP. Implemented via `node-forge`.
+3. **Object Encryption.** AES-256 symmetric encryption for object payloads, with AES keys encrypted per-reader using RSA-OAEP. Implemented via Node.js native `crypto` (preferred) with `node-forge` as a fallback for operations not available natively.
 4. **Graph Traversal.** Framework competency relationships form directed graphs. The profile engine traverses these graphs to evaluate roll-up rules and dependency chains using `EcDirectedGraph` and `Hypergraph` structures.
 5. **Query Sanitization.** Search queries are sanitized to prevent Elasticsearch injection, with special character escaping and index hint validation.
 
 ## 3.10 Rules
 
-1. **JSON-LD Compliance.** All stored objects must be valid JSON-LD with `@context`, `@id`, and `@type` fields. The `@id` field serves as the globally unique, persistent URL identifier.
+### Data Shape Rules
+
+1. **JSON-LD Compliance.** All stored objects must be valid JSON-LD with `@context`, `@id`, and `@type` fields. The `@id` field serves as the globally unique, persistent URL identifier. Writes missing any of these three fields are rejected with HTTP 400.
 2. **Type Namespace Convention.** Object types follow dotted namespace conventions: `schema.cassproject.org.0.4.Framework`, `schema.cassproject.org.0.4.Competency`, etc. Elasticsearch indices are named by lowercased type namespaces.
-3. **Versioning.** CaSS-created objects use timestamps as version numbers. Externally imported objects increment from 1. All versions are stored in the `permanent` index; the current version is stored in the type-specific index.
-4. **Ownership Immutability.** Once an object's `@owner` field is set, only the owner(s) can modify or delete the object. Non-owners receive 401/403 errors.
-5. **Server Identity.** The server maintains its own RSA key pair (`etc/skyId.pem`) and acts as an identity for server-side operations (adapter imports, replication, profile computation).
-6. **Adapter Registration.** Protocol adapters are loaded dynamically via filesystem glob (`cartridge/adapter/*.js`). Each adapter self-registers its routes using the `bindWebService` LEVR compatibility function.
+3. **Language String Flattening.** Before indexing, JSON-LD language maps (e.g. `{"en": "Hello", "es": "Hola"}`) are flattened into arrays, and `{"@value": "text"}` objects are collapsed to their raw string values. This ensures Elasticsearch can full-text-search across all language variants.
+4. **Non-Indexable Stripping.** Before writing to the search index, `payload` and `secret` fields are removed from any nested `EncryptedValue` objects, and all `@signature` / `signature` fields are removed. The permanent index retains the full unmodified object.
+
+### Identity and Authentication Rules
+
+5. **Signature Sheet Extraction.** Identity is proven via signature sheets, which may arrive in the `signatureSheet` HTTP header *or* in a `signatureSheet` multipart form field. Both sources are merged, and each signature is independently validated.
+6. **Signature Validation.** Each signature must (a) have a valid type matching the known `EbacSignature` types, (b) include a non-null expiry timestamp that has not passed, and (c) pass RSA signature verification against its declared public key. SHA-256 signatures are preferred; SHA-1 signatures are accepted as a fallback unless `REJECT_SHA1=true`, in which case SHA-1 is rejected with HTTP 451.
+7. **Server Identity.** The server maintains its own RSA key pairs (`etc/*.pem`) that act as identities for server-side operations (adapter imports, replication, profile computation).
+8. **Admin Key Override.** The server's built-in admin key (`skyAdmin2`) can read and write any object regardless of `@owner` restrictions. When `AUTH_ALLOW_ENV_ADMINS=true`, additional user public keys can be granted admin-equivalent access. Admin overrides are audit-logged.
+9. **PEM Normalization.** When storing objects, `@owner` and `@reader` PEM keys containing newlines are normalized to their canonical single-line form via `EcPk.fromPem().toPem()`.
+
+### Access Control Rules
+
+10. **Ownership Immutability.** Once an object's `@owner` field is set, only the owner(s) can modify or delete the object. Non-owners receive HTTP 401.
+11. **`@reader` Filtering.** On retrieval, if an object has a non-empty `@reader` array *or* is an `EncryptedValue` type, the system checks whether any proven identity (from the signature sheet) appears in the object's `@owner` or `@reader` list, or is the admin key. If no match, the object is silently removed from results — the client receives no indication that the object exists (it acts as "not found" rather than "forbidden"). In SSO mode, the server additionally attempts to decrypt the object's secret on behalf of the authenticated user.
+12. **Recursive Reader Filtering.** Reader filtering is applied recursively: if any nested object within a response fails the reader check, that nested property is silently deleted from the parent object rather than failing the entire request.
+13. **Delete Requires Ownership.** Deleting an object requires proof of ownership (same rules as modification). Deletion removes the object from the type-specific index and the permanent base entry, but versioned permanent entries remain for auditability.
+
+### Versioning Rules
+
+14. **Versioning.** CaSS-created objects use timestamps as version numbers. When no version is supplied and the object already exists, the version is incremented from the existing version. Externally imported objects increment from 1. All versions are stored in the `permanent` index; the current version is stored in the type-specific index. Version conflicts (HTTP 409) trigger automatic retry with an incremented version.
+15. **Multi-ID Permanent Storage.** Each object is stored in the permanent index under multiple keys: its URL-derived ID, its GUID, and the MD5 hash of its short ID. This ensures retrieval regardless of which identifier is used.
+
+### Search Rules
+
+16. **Search Result Escalation.** When a search returns fewer results than requested (because reader filtering removed inaccessible objects), the system automatically re-queries with a larger window (up to 100× the filtered-out ratio, max 10,000) and truncates to the originally requested size. This prevents the caller from receiving unexpectedly small result sets due to invisible filtered objects.
+17. **Default Search Behavior.** If no query is provided, the search defaults to `*` (match all). Default page size is 50, default start offset is 0.
+
+### Extension Rules
+
+18. **Adapter Registration.** Protocol adapters are loaded dynamically via filesystem glob (`cartridge/adapter/*.js`). Each adapter self-registers its routes using the `bindWebService` LEVR compatibility function.
+19. **Rekey Forwarding Table.** When a `RekeyRequest` object is saved and passes verification, it is added to the `EcRemoteLinkedData.forwardingTable`, enabling transparent identity migration — subsequent requests for the old identity are forwarded to the new one.
+20. **Event Bus Notifications.** All data writes, deletes, and search results emit events via `global.events.data.{write|delete|found|any}`, enabling reactive subscribers (e.g. WebSocket push, adapter side-effects) to act on data changes without polling.
+
 
 ## 3.11 Error Handling
 
@@ -331,7 +367,7 @@ CaSS transitions through the following states during its lifecycle:
 
 ## 3.12 Data Storage
 
-1. **Primary Datastore: Elasticsearch 9.x (or OpenSearch).** All data is stored as JSON-LD documents in Elasticsearch indices. There is no SQL database and no ORM—direct HTTP calls to Elasticsearch's REST API via helper functions (`httpGet`, `httpPost`, `httpPut`, `httpDelete`).
+1. **Primary Datastore: Elasticsearch.** All data is stored as JSON-LD documents in Elasticsearch indices. There is no SQL database and no ORM—direct HTTP calls to Elasticsearch's REST API via helper functions (`httpGet`, `httpPost`, `httpPut`, `httpDelete`).
 2. **Index-per-Type.** Each JSON-LD type maps to a dedicated Elasticsearch index (e.g., `schema.cassproject.org.0.4.framework`, `schema.cassproject.org.0.4.competency`).
 3. **Version History.** All object versions are stored in a `permanent` index with external version typing. The current version is also stored in the type-specific index for fast retrieval.
 4. **Ephemeral Index.** TTL-based temporary data (signature sheet caches, transient computation state) is stored in an `ephemeral` index with mappings disabled. Periodic cleanup purges expired entries.
@@ -345,7 +381,7 @@ CaSS transitions through the following states during its lifecycle:
 3. **Multiple Authentication Modes.** The system supports four authentication backends (Key-Based, OIDC, JWT, P1) selectable via environment variables without code changes.
 4. **Configurable via Environment.** Over 80 environment variables allow extensive customization without modifying code. See [ENVIRONMENT.md](ENVIRONMENT.md).
 5. **Embeddable Editor.** The CaSS editor is designed to be embedded in third-party applications via `<iframe>`, with CSS inheritance and URL-parameter-based configuration.
-6. **Multi-Backend Support.** Elasticsearch 9.x and OpenSearch are both supported as storage backends via separate Docker Compose configurations.
+6. **Multi-Backend Support.** Multiple Docker Compose configurations are provided for different deployment scenarios (default, Alpine, Distroless, OIDC, etc.).
 7. **MCP Integration.** The server auto-generates Model Context Protocol (MCP) tool definitions from its OpenAPI specification, enabling AI agent integration without manual tool authoring.
 
 ## 3.14 Availability
@@ -360,7 +396,7 @@ CaSS transitions through the following states during its lifecycle:
 
 1. **Structured Module Organization.** Code is organized by functional concern: `skyRepo/` (data layer), `profile/` (computation), `shims/` (runtime infrastructure), `cartridge/adapter/` (protocol adapters).
 2. **OpenAPI-First API Documentation.** API documentation is auto-generated from JSDoc annotations via `swagger-jsdoc` and validated at startup, ensuring documentation stays synchronized with code.
-3. **Comprehensive Test Suite.** 19 test files covering CRUD, security levels (L0/L1/L2), SSO variants, profile calculation, adapter compliance, OpenAPI response validation, MCP tools, and backup/restore. Tests use Mocha + Chai + Sinon with NYC coverage.
+3. **Comprehensive Test Suite.** The automated test suite covers CRUD, caching levels (L0/L1/L2), SSO variants, profile calculation, adapter compliance, OpenAPI response validation, MCP tools, and backup/restore. Tests use Mocha + Chai + Sinon with NYC coverage.
 4. **CI/CD Automation.** GitHub Actions workflows for build/test, Docker publish, release automation, security scanning, and dependency review.
 5. **Admin Utilities.** Built-in admin endpoints for `reindex`, `purge`, and `cull` operations, protected by admin secret key.
 6. **Audit Logging.** Structured, filterable audit logging for operational observability.
@@ -388,61 +424,57 @@ CaSS transitions through the following states during its lifecycle:
 
 CaSS is composed of four major subsystems, with supporting infrastructure:
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         External Clients                                │
-│  (Browsers, LMS, LRS, Credential Engines, AI Agents, Partner Systems)  │
-└────────────────────┬───────────────┬────────────────────────────────────┘
-                     │ HTTPS/WS      │ MCP
-                     ▼               ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        CaSS Server (Node.js / Express 5)                │
-│                                                                         │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌────────────┐  │
-│  │  CaSS Editor │  │  REST API    │  │  Protocol    │  │   MCP      │  │
-│  │  (Static SPA)│  │  (SkyRepo)   │  │  Adapters    │  │   Server   │  │
-│  │  Vue.js 2    │  │  CRUD/Search │  │  xAPI, CASE  │  │  (AI Tools)│  │
-│  │              │  │  KBAC Auth   │  │  CTDL-ASN    │  │            │  │
-│  └──────────────┘  │  Identity    │  │  ASN, Badges │  └────────────┘  │
-│                    │  Batch Ops   │  │  PNA, SCD    │                   │
-│                    └──────┬───────┘  │  Ollama, MCP │                   │
-│                           │          │  Replication  │                   │
-│  ┌──────────────┐         │          └──────┬───────┘                   │
-│  │   Profile    │◄────────┤                 │                           │
-│  │   Engine     │         │                 │                           │
-│  │  (Workers)   │         │                 │                           │
-│  └──────────────┘         │                 │                           │
-│                           ▼                 ▼                           │
-│  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │                    Runtime Shims Layer                             │  │
-│  │   auth.js │ event.js │ levr.js │ cassproject.js │ auditLogger.js  │  │
-│  │   mailer.js │ jobs.js │ ephemeral.js │ http2compat.js │ stjs.js   │  │
-│  └───────────────────────────────────────────────┬───────────────────┘  │
-│                                                   │                     │
-└───────────────────────────────────────────────────┼─────────────────────┘
-                                                    │ HTTP
-                                                    ▼
-                                     ┌──────────────────────────┐
-                                     │   Elasticsearch 9.x      │
-                                     │   (or OpenSearch)         │
-                                     │                          │
-                                     │  ┌────────────────────┐  │
-                                     │  │ Type-specific       │  │
-                                     │  │ indices             │  │
-                                     │  │ (framework,         │  │
-                                     │  │  competency, ...)   │  │
-                                     │  ├────────────────────┤  │
-                                     │  │ permanent (history) │  │
-                                     │  ├────────────────────┤  │
-                                     │  │ ephemeral (TTL)     │  │
-                                     │  └────────────────────┘  │
-                                     └──────────────────────────┘
+```mermaid
+graph TB
+    subgraph Clients["External Clients (Browsers, LMS, LRS, Credential Engines, AI Agents, Partner Systems)"]
+    end
+
+    Clients -- "HTTPS / WebSocket / MCP" --> Server
+
+    subgraph Server["CaSS Server (Node.js / Express 5)"]
+        direction TB
+
+        subgraph AppLayer[" "]
+            direction LR
+            Editor["CaSS Editor\n(Static SPA, Vue 2)"]
+            API["REST API — SkyRepo\nCRUD, Search, KBAC Auth,\nIdentity, Batch Ops"]
+            Adapters["Protocol Adapters\nxAPI, CASE, CTDL-ASN,\nASN, Badges, PNA, SCD,\nOllama, Replication"]
+            MCP["MCP Server\n(AI Tools)"]
+        end
+
+        Profile["Profile Engine\n(Worker Threads)"]
+        API --> Profile
+
+        subgraph Shims["Runtime Shims Layer"]
+            direction LR
+            S1["auth.js"]
+            S2["event.js"]
+            S3["levr.js"]
+            S4["cassproject.js"]
+            S5["auditLogger.js"]
+            S6["mailer.js"]
+            S7["jobs.js"]
+            S8["ephemeral.js"]
+        end
+
+        API --> Shims
+        Adapters --> Shims
+    end
+
+    Shims -- "HTTP" --> ES
+
+    subgraph ES["Elasticsearch"]
+        direction TB
+        TypeIdx["Type-specific indices\n(framework, competency, ...)"]
+        Perm["permanent (history)"]
+        Ephem["ephemeral (TTL)"]
+    end
 ```
 
 ### Component Inventory
 
 1. **CaSS Server (cass)**
-   - **Version:** 1.6.27
+   - **Version:** Current
    - **Purpose:** Core application server providing REST API, data storage, authentication, profile computation, and protocol adaptation.
    - **Description:** A Node.js application built on Express 5, serving as the central hub for all CaSS operations. It manages JSON-LD objects in Elasticsearch, enforces KBAC security, and hosts the CaSS editor.
    - **Relations:** Depends on Elasticsearch for data storage; depends on `cassproject` npm for data model classes; hosts `cass-editor` as static files.
@@ -451,7 +483,7 @@ CaSS is composed of four major subsystems, with supporting infrastructure:
    - **Source:** [src/main/server.js](src/main/server.js)
 
 2. **CaSS Library (cassproject npm)**
-   - **Version:** 5.0.15
+   - **Version:** Current
    - **Purpose:** JavaScript/Node.js SDK providing typed data model classes, CRUD operations, cryptographic identity management, and import/export utilities.
    - **Description:** Published as the `cassproject` npm package. Provides the interoperability layer between client applications and the CaSS repository. All classes are registered as global properties on `require()`. Used both server-side (by the CaSS server itself) and client-side (by the CaSS editor and third-party integrations).
    - **Relations:** Used by CaSS Server (runtime dependency); used by CaSS Editor (bundled into client).
@@ -468,8 +500,7 @@ CaSS is composed of four major subsystems, with supporting infrastructure:
    - **Documentation:** [GitHub](https://github.com/cassproject/cass-editor)
    - **Source:** `src/main/webapp/` (pre-built output); source in separate repository.
 
-4. **Elasticsearch / OpenSearch**
-   - **Version:** Elasticsearch 9.4.2 (or OpenSearch 2.x)
+4. **Elasticsearch**
    - **Purpose:** Primary persistent data store and full-text search engine.
    - **Description:** Stores all JSON-LD objects in type-specific indices, version history in a `permanent` index, and temporary data in an `ephemeral` index. CaSS communicates with Elasticsearch via its HTTP REST API.
    - **Relations:** Used by CaSS Server for all data operations.
@@ -477,7 +508,7 @@ CaSS is composed of four major subsystems, with supporting infrastructure:
    - **Documentation:** [Elasticsearch Docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
 
 5. **Keycloak (optional)**
-   - **Version:** 24.x (as configured in `docker-compose-oidc.yml`)
+   - **Version:** Current (as configured in `docker-compose-oidc.yml`)
    - **Purpose:** OpenID Connect Identity Provider for SSO authentication.
    - **Description:** When OIDC is enabled, Keycloak handles user authentication and issues tokens that CaSS validates. A Keycloak initialization script is provided in `keycloak/`.
    - **Relations:** Used by CaSS Server `auth.js` shim when `CASS_OIDC_ENABLED=true`.
@@ -489,20 +520,20 @@ CaSS is composed of four major subsystems, with supporting infrastructure:
 
 | Resource | Minimum | Recommended |
 | -------- | ------- | ----------- |
-| **Runtime** | Node.js 24+ | Node.js 24 LTS |
+| **Runtime** | Node.js LTS | Node.js LTS |
 | **CPU** | 2 cores | 4+ cores |
 | **Memory** | 2 GB (1 GB Node.js + 1 GB Elasticsearch) | 8+ GB (4 GB Node.js + 4 GB Elasticsearch) |
 | **Disk** | 10 GB | 50+ GB (depends on data volume) |
 | **Network** | Standard TCP (ports 80, 443, 9200) | Low-latency connection between CaSS and Elasticsearch |
-| **OS** | Any OS supporting Node.js 24 and Docker | Linux (Debian Bookworm, Alpine) |
-| **Container Runtime** | Docker 20+ / Kubernetes 1.28+ | Docker 27+ / Kubernetes 1.30+ |
-| **Search Engine** | Elasticsearch 8.x or OpenSearch 2.x | Elasticsearch 9.4.2 |
+| **OS** | Any OS supporting Node.js and Docker | Linux (Debian Bookworm, Alpine) |
+| **Container Runtime** | Docker / Kubernetes | Docker / Kubernetes |
+| **Search Engine** | Elasticsearch | Elasticsearch (latest) |
 
 ### Minimum Client Requirements (CaSS Editor)
 
 | Resource | Minimum | Recommended |
 | -------- | ------- | ----------- |
-| **Browser** | Chrome 90+, Firefox 90+, Safari 14+, Edge 90+ | Latest Chrome, Firefox, or Edge |
+| **Browser** | Current versions of Chrome, Firefox, Safari, and Edge | Latest Chrome, Firefox, or Edge |
 | **JavaScript** | ES2020 support required | — |
 | **Network** | HTTP(S) connectivity to CaSS server | — |
 | **Screen** | 1024×768 | 1920×1080 |
@@ -535,43 +566,14 @@ CaSS is composed of four major subsystems, with supporting infrastructure:
 
 ### Request Processing Flow
 
-```
-Client Request
-      │
-      ▼
-┌─────────────────┐
-│ Express Middleware│
-│ (compression,    │
-│  CORS, headers)  │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Auth Middleware   │
-│ (OIDC/JWT/P1/    │
-│  Signature Sheet) │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐     ┌────────────────────┐
-│ Route Handler    │────▶│ KBAC Validation    │
-│ (data, search,   │     │ (owner/reader      │
-│  adapter, etc.)  │     │  permission check)  │
-└────────┬────────┘     └────────────────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Elasticsearch    │
-│ (get/put/search/ │
-│  delete)          │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Response         │
-│ (JSON-LD +       │
-│  compression)    │
-└─────────────────┘
+```mermaid
+flowchart TD
+    A["Client Request"] --> B["Express Middleware\n(compression, CORS, headers)"]
+    B --> C["Auth Middleware\n(OIDC / JWT / P1 / Signature Sheet)"]
+    C --> D["Route Handler\n(data, search, adapter, etc.)"]
+    D --> E["KBAC Validation\n(owner/reader permission check)"]
+    E --> F["Elasticsearch\n(get / put / search / delete)"]
+    F --> G["Response\n(JSON-LD + compression)"]
 ```
 
 ### Event Bus (RxJS Subjects)
@@ -589,31 +591,17 @@ The application-wide event bus (`global.events`) provides reactive, decoupled co
 
 ### 4.4.1 Interface Identification and Diagrams
 
-```
-┌──────────┐  REST/WS    ┌───────────┐  HTTP     ┌──────────────┐
-│ CaSS     │◄───────────▶│ CaSS      │◄─────────▶│ Elasticsearch│
-│ Editor   │  (IF-01)    │ Server    │  (IF-02)  │              │
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  OIDC       │           │  SMTP     ┌──────────────┐
-│ Keycloak │◄───────────▶│           │──────────▶│ Mail Server  │
-│ (IdP)    │  (IF-03)    │           │  (IF-06)  │              │
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  xAPI       │           │  S3 API   ┌──────────────┐
-│ LRS      │◄───────────▶│           │──────────▶│ AWS S3       │
-│          │  (IF-04)    │           │  (IF-07)  │              │
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  REST       │           │  REST     ┌──────────────┐
-│ Partner  │◄───────────▶│           │◄─────────▶│ Peer CaSS    │
-│ Systems  │  (IF-05)    │           │  (IF-08)  │ (Replication)│
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  MCP        │           │
-│ AI Agent │◄───────────▶│           │
-│          │  (IF-09)    │           │
-└──────────┘             └───────────┘
+```mermaid
+flowchart LR
+    Editor["CaSS Editor"] <-- "IF-01: REST/WS" --> Server["CaSS Server"]
+    IdP["Keycloak (IdP)"] <-- "IF-03: OIDC" --> Server
+    LRS["LRS"] <-- "IF-04: xAPI" --> Server
+    Partner["Partner Systems"] <-- "IF-05: REST" --> Server
+    AIAgent["AI Agent"] <-- "IF-09: MCP" --> Server
+    Server <-- "IF-02: HTTP" --> ES["Elasticsearch"]
+    Server -- "IF-06: SMTP" --> Mail["Mail Server"]
+    Server -- "IF-07: S3 API" --> S3["AWS S3"]
+    Server <-- "IF-08: REST" --> Peer["Peer CaSS (Replication)"]
 ```
 
 | Interface ID | Name | Interfacing Entities | Status |
@@ -723,7 +711,7 @@ Each standards adapter exposes its own REST endpoint namespace:
 
 **Project-unique identifier:** `CASS-SRV-CORE`  
 **Source:** [src/main/server.js](src/main/server.js) (539 lines)  
-**Language:** JavaScript (Node.js 24+, Express 5)
+**Language:** JavaScript (Node.js, Express 5)
 
 ### Design Decisions
 
@@ -787,22 +775,25 @@ SkyRepo is the data persistence layer—a JSON-LD object store backed by Elastic
 
 ### Logic: KBAC Permission Check (kbac.js)
 
-```
-Input: Request with signature sheet + target object
-  1. Extract signature sheets from request headers/body
-  2. For each signature:
-     a. Verify RSA signature against public key (SHA-256, fallback SHA-1)
-     b. Check timestamp freshness (not expired)
-     c. Add verified public key to "proven identities" set
-  3. If target object has @owner:
-     a. Check if any proven identity matches an @owner → allow write
-     b. If no match → deny write (401)
-  4. If target object has @reader:
-     a. Check if any proven identity matches a @reader → allow read
-     b. If server identity matches → allow read
-     c. If no match → return encrypted (unreadable) object
-  5. If no @owner/@reader → public access (allow all)
-Output: Authorized/denied response
+```mermaid
+flowchart TD
+    Input["Request with signature sheet + target object"] --> Extract["Extract signature sheets\nfrom request headers/body"]
+    Extract --> Verify["For each signature:\nVerify RSA signature (SHA-256, fallback SHA-1)\nCheck timestamp freshness\nAdd verified key to proven identities"]
+    Verify --> HasOwner{"Object has @owner?"}
+
+    HasOwner -- Yes --> OwnerMatch{"Any proven identity\nmatches an @owner?"}
+    OwnerMatch -- Yes --> AllowWrite["Allow write"]
+    OwnerMatch -- No --> DenyWrite["Deny write (401)"]
+
+    HasOwner -- No --> HasReader{"Object has @reader?"}
+
+    HasReader -- Yes --> ReaderMatch{"Any proven identity\nmatches a @reader?"}
+    ReaderMatch -- Yes --> AllowRead["Allow read"]
+    ReaderMatch -- No --> ServerMatch{"Server identity\nmatches?"}
+    ServerMatch -- Yes --> AllowRead
+    ServerMatch -- No --> Encrypted["Return encrypted\n(unreadable) object"]
+
+    HasReader -- No --> PublicAccess["Public access (allow all)"]
 ```
 
 ## 5.3 Profile Calculation Engine
@@ -840,30 +831,21 @@ Coprocessors are pluggable computation modules in `profile/coprocessors/`:
 
 ### Execution Model
 
-```
-GET /api/profile/latest?frameworkId=...&subject=...
-       │
-       ▼
-  controller.js
-       │  Parse parameters
-       ▼
-  coordinator.js
-       │  Check cache (TTL from PROFILE_TTL)
-       │  ┌─ Cache HIT → return cached result
-       │  └─ Cache MISS ↓
-       ▼
-  Spawn worker.js (via node-worker-threads-pool)
-       │  Worker loads cassproject, creates EcRepository
-       │  Fetches framework, competencies, assertions
-       ▼
-  Coprocessor Pipeline (sequential):
-       │  default.js → direct.js → conditions.js →
-       │  timeBounding.js → explainer.js
-       ▼
-  Return profile result
-       │  Store in cache if caching enabled
-       ▼
-  JSON response to client
+```mermaid
+flowchart TD
+    Req["GET /api/profile/latest\n?frameworkId=...&subject="] --> Ctrl["controller.js\nParse parameters"]
+    Ctrl --> Coord["coordinator.js\nCheck cache (PROFILE_TTL)"]
+    Coord -- "Cache HIT" --> Return["Return cached result"]
+    Coord -- "Cache MISS" --> Worker["Spawn worker.js\n(node-worker-threads-pool)"]
+    Worker --> Load["Worker loads cassproject\nFetches framework, competencies, assertions"]
+    Load --> P1["default.js"]
+    P1 --> P2["direct.js"]
+    P2 --> P3["conditions.js"]
+    P3 --> P4["timeBounding.js"]
+    P4 --> P5["explainer.js"]
+    P5 --> Cache["Store in cache if enabled"]
+    Cache --> Resp["JSON response to client"]
+    Return --> Resp
 ```
 
 ## 5.4 Runtime Shims
@@ -932,7 +914,7 @@ Adapters follow a cartridge pattern:
 
 **Project-unique identifier:** `CASS-LIB`  
 **Source:** `node_modules/cassproject/` (installed), [GitHub](https://github.com/cassproject/cass-npm)  
-**Version:** 5.0.15  
+**Version:** Current  
 **Language:** JavaScript
 
 ### Purpose
@@ -941,21 +923,42 @@ The `cassproject` npm package is the official JavaScript SDK. It provides typed 
 
 ### Class Hierarchy
 
-```
-EcLinkedData
-  └─ EcRemoteLinkedData
-       ├─ Competency → EcCompetency        (CRUD + alignment/level management)
-       ├─ Framework  → EcFramework          (CRUD + competency/relation management)
-       ├─ Assertion  → EcAssertion          (encrypted subject/agent)
-       ├─ Relation   → EcAlignment          (source→target with type)
-       ├─ Level      → EcLevel              (proficiency levels)
-       ├─ RollupRule → EcRollupRule         (aggregation rules)
-       ├─ Directory  → EcDirectory          (framework directories)
-       ├─ GeneralFile → EcFile              (file objects)
-       ├─ Concept    → EcConcept            (SKOS concepts)
-       ├─ ConceptScheme → EcConceptScheme   (SKOS concept schemes)
-       ├─ EncryptedValue → EcEncryptedValue (encrypted object wrapper)
-       └─ ... (180+ schema.org types, 40+ Credential Engine types, S3000L types)
+```mermaid
+classDiagram
+    EcLinkedData <|-- EcRemoteLinkedData
+    EcRemoteLinkedData <|-- Competency
+    EcRemoteLinkedData <|-- Framework
+    EcRemoteLinkedData <|-- Assertion
+    EcRemoteLinkedData <|-- Relation
+    EcRemoteLinkedData <|-- Level
+    EcRemoteLinkedData <|-- RollupRule
+    EcRemoteLinkedData <|-- Directory
+    EcRemoteLinkedData <|-- GeneralFile
+    EcRemoteLinkedData <|-- Concept
+    EcRemoteLinkedData <|-- ConceptScheme
+    EcRemoteLinkedData <|-- EncryptedValue
+
+    Competency <|-- EcCompetency
+    Framework <|-- EcFramework
+    Assertion <|-- EcAssertion
+    Relation <|-- EcAlignment
+    Level <|-- EcLevel
+    RollupRule <|-- EcRollupRule
+    Directory <|-- EcDirectory
+    GeneralFile <|-- EcFile
+    Concept <|-- EcConcept
+    ConceptScheme <|-- EcConceptScheme
+    EncryptedValue <|-- EcEncryptedValue
+
+    class EcCompetency { CRUD + alignment/level management }
+    class EcFramework { CRUD + competency/relation management }
+    class EcAssertion { encrypted subject/agent }
+    class EcAlignment { source → target with type }
+    class EcLevel { proficiency levels }
+    class EcRollupRule { aggregation rules }
+    class EcEncryptedValue { encrypted object wrapper }
+
+    note for EcRemoteLinkedData "Also includes 180+ schema.org types,\n40+ Credential Engine types, S3000L types"
 ```
 
 ### Key Classes
@@ -990,13 +993,13 @@ On `require("cassproject")`, all classes are registered as `global.*` properties
 
 ### Dependencies
 
-| Package | Version | Purpose |
-| ------- | ------- | ------- |
-| `node-forge` | ^1.4.0 | RSA/AES cryptography |
-| `jsonld` | ^9.0.0 | JSON-LD processing |
-| `papaparse` | ^5.5.3 | CSV parsing |
-| `base64-arraybuffer` | ^1.0.2 | Base64 encoding |
-| `web-worker` / `promise-worker` | 1.3.0 / ^2.0.1 | Web Worker polyfill |
+| Package | Purpose |
+| ------- | ------- |
+| `node-forge` | RSA/AES cryptography (fallback; native `crypto` preferred) |
+| `jsonld` | JSON-LD processing |
+| `papaparse` | CSV parsing |
+| `base64-arraybuffer` | Base64 encoding |
+| `web-worker` / `promise-worker` | Web Worker polyfill |
 
 ## 5.7 CaSS Editor (cass-editor)
 
@@ -1043,7 +1046,7 @@ The editor uses Webpack code-splitting to lazy-load route-level components:
 ### Client-Side Architecture
 
 - **`cassproject` SDK** bundled into the client handles all API communication, signature sheet generation, and cryptographic operations.
-- **Forge.js** (`node-forge`) provides client-side RSA/AES encryption for KBAC.
+- **Cryptography** is handled via the `cassproject` SDK, which prefers the native Web Crypto API / Node.js `crypto` module and falls back to `node-forge` for operations not available natively (e.g., certain RSA-OAEP and AES modes).
 - **xml2json.js** supports XML import parsing in the browser.
 - **Font Awesome 6** for icons; **Assistant** and **Roboto Condensed** for typography.
 
@@ -1075,14 +1078,14 @@ The MCP (Model Context Protocol) server enables AI agents to interact with CaSS 
 
 ### Execution Flow
 
-```
-AI Agent → MCP Client
-  → POST /api/mcp (Streamable HTTP)
-  → MCP SDK routes to tool handler
-  → openapi-to-tools maps tool name to API endpoint
-  → json-schema-to-zod validates parameters
-  → http-client executes internal API call
-  → Result returned as MCP tool response
+```mermaid
+flowchart LR
+    Agent["AI Agent"] --> Client["MCP Client"]
+    Client -- "POST /api/mcp\n(Streamable HTTP)" --> SDK["MCP SDK\nRoute to tool handler"]
+    SDK --> Map["openapi-to-tools\nMap tool name to API endpoint"]
+    Map --> Validate["json-schema-to-zod\nValidate parameters"]
+    Validate --> Call["http-client\nExecute internal API call"]
+    Call --> Response["MCP tool response"]
 ```
 
 ---
@@ -1099,7 +1102,7 @@ The following table maps key system requirements to the CaSS components that imp
 | **REQ-DATA-04** | Batch CRUD operations | `CASS-SRV-SKYREPO` (multiget.js, multiput.js, multidelete.js) |
 | **REQ-SEC-01** | Key-Based Access Control (KBAC) for all data operations | `CASS-SRV-SKYREPO` (kbac.js), `CASS-LIB` (EcIdentityManager, EcPpk, EcPk) |
 | **REQ-SEC-02** | Object-level encryption for privacy-sensitive data | `CASS-LIB` (EcEncryptedValue), `CASS-SRV-SKYREPO` (kbac.js — reader check) |
-| **REQ-SEC-03** | FIPS 140-3 cryptographic compliance | Docker images (OpenSSL 3.1.2), `CASS-LIB` (node-forge), `CASS-SRV-SKYREPO` (kbac.js — SHA-256) |
+| **REQ-SEC-03** | FIPS 140-3 cryptographic compliance | Docker images (OpenSSL), `CASS-LIB` (native crypto with node-forge fallback), `CASS-SRV-SKYREPO` (kbac.js — SHA-256) |
 | **REQ-SEC-04** | OIDC/SSO authentication | `CASS-SRV-SHIMS` (auth.js — express-openid-connect) |
 | **REQ-SEC-05** | TLS/HTTPS with HTTP/2 support | `CASS-SRV-CORE` (server.js — https, http2compat) |
 | **REQ-SEC-06** | Audit logging | `CASS-SRV-SHIMS` (auditLogger.js) |
@@ -1132,7 +1135,7 @@ The following table maps key system requirements to the CaSS components that imp
 
 ## 7.1 General Information
 
-This document was generated from automated analysis of the CaSS codebase (version 1.6.27), the `cassproject` npm package (version 5.0.15), the pre-built CaSS editor output, and publicly available documentation at [docs.cassproject.org](https://docs.cassproject.org) and [devs.cassproject.org](https://devs.cassproject.org).
+This document was generated from automated analysis of the CaSS codebase, the `cassproject` npm package, the pre-built CaSS editor output, and publicly available documentation at [docs.cassproject.org](https://docs.cassproject.org) and [devs.cassproject.org](https://devs.cassproject.org).
 
 The system was originally developed in Java and was re-architectured to Node.js in the 1.5.x series. Some design patterns (e.g., the `levr.js` compatibility shim, the `bindWebService` function, and the class inheritance hierarchy in `cassproject`) reflect this heritage.
 
@@ -1164,7 +1167,7 @@ The system was originally developed in Java and was re-architectured to Node.js 
 | JWT | JSON Web Token |
 | KBAC | Key-Based Access Control |
 | K8s | Kubernetes |
-| LEVR | Linked Expert Virtual Reality (legacy platform) |
+| LEVR | A functional, JSON-centric programming language (legacy platform) |
 | LMS | Learning Management System |
 | LRS | Learning Record Store |
 | MCP | Model Context Protocol |
@@ -1262,10 +1265,10 @@ See [ENVIRONMENT.md](ENVIRONMENT.md) for the complete reference of 80+ environme
 
 | Variant | Base Image | Dockerfile | Compose File | Notes |
 | ------- | ---------- | ---------- | ------------ | ----- |
-| **Default** | `node:24-slim` (Debian Bookworm) | `docker/standalone/node/Dockerfile` | `docker-compose.yml` | FIPS OpenSSL 3.1.2; recommended for production |
-| **Alpine** | `node:24-alpine` | `DockerfileAlpine` | `docker-compose-alpine.yml` | ~40% smaller image |
-| **Distroless** | `gcr.io/distroless/nodejs24-debian12` | `DockerfileDistroless` | `docker-compose-distroless.yml` | Minimal attack surface; no shell |
-| **OpenSearch** | `node:24-slim` | Same as default | `docker-compose-opensearch.yml` | OpenSearch instead of Elasticsearch |
+| **Default** | `node:lts-slim` (Debian) | `docker/standalone/node/Dockerfile` | `docker-compose.yml` | FIPS OpenSSL; recommended for production |
+| **Alpine** | `node:lts-alpine` | `DockerfileAlpine` | `docker-compose-alpine.yml` | ~40% smaller image |
+| **Distroless** | `gcr.io/distroless/nodejs-debian` | `DockerfileDistroless` | `docker-compose-distroless.yml` | Minimal attack surface; no shell |
+
 | **OIDC** | Same as default | Same as default | `docker-compose-oidc.yml` | Includes Keycloak for SSO |
 | **Platform One** | Iron Bank `nodejs16` | `DockerfileP1` | — | DoD Iron Bank hardened image |
 
@@ -1273,7 +1276,7 @@ See [ENVIRONMENT.md](ENVIRONMENT.md) for the complete reference of 80+ environme
 
 The complete, machine-readable OpenAPI 3.0 specification is maintained at [src/main/swagger.json](src/main/swagger.json) and served live at `GET /api/swagger.json`. Interactive documentation is available at `/api/swagger/`.
 
-The specification covers 57+ endpoints validated by the automated test suite (`4.swagger.test.js`, `4.swagger.schema.test.js`).
+The specification covers validated endpoints across the API surface, tested by the automated test suite (`4.swagger.test.js`, `4.swagger.schema.test.js`).
 
 ## Appendix E: Test Suite Coverage
 
@@ -1290,7 +1293,7 @@ The specification covers 57+ endpoints validated by the automated test suite (`4
 | `2.EcRepository.sso.l2.test.js` | SDK + SSO | EcRepository SSO variant, level 2 |
 | `3.profile.test.js` | Profile Engine | Profile calculation tests |
 | `3.xapi.test.js` | Adapter | xAPI adapter integration |
-| `4.swagger.test.js` | API Compliance | OpenAPI endpoint validation (57+ endpoints) |
+| `4.swagger.test.js` | API Compliance | OpenAPI endpoint validation |
 | `4.swagger.schema.test.js` | API Compliance | Response schema validation (Ajv) |
 | `5.mcp.*.test.js` | MCP | JSON-schema-to-zod + openapi-to-tools |
 | `8.asn.test.js` | Adapter | ASN import/export |

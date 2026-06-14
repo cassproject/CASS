@@ -1,99 +1,113 @@
 # CaSS
-Competency and Skills Service -- Competency Management
 
-Mainline: 1.6.x
+**Competency and Skills System** — Open-source competency framework management, assertion tracking, and learner profile computation.
 
-[High level documentation](https://docs.cassproject.org)  
-[Developer documentation](https://devs.cassproject.org)
+## Overview
 
-# Purpose of this Document
-This document is intended to act as a technical guide to the installation of CaSS.
+CaSS enables organizations across education, training, and workforce development to author competency frameworks, record assertions of individual competency attainment, compute learner profiles, and exchange competency data with external systems via standards-based protocol adapters.
 
-This installation of CaSS will provide several components that operate to provide a working system. It is composed of:
- * The CaSS Repository, a Node JS application.
- * The CaSS Library, a Javascript library that provides an interoperability layer between web applications and the CaSS Repository.
- * CaSS Embeddable Apps, a set of iframeable applications for branded web applications.
- * CaSS Adapters, which provide particular functionality, typically standards based (xAPI, CTDL-ASN, etc).
+The system is composed of:
 
-## Docker
+- **CaSS Server** — A Node.js/Express application providing the REST API, data persistence (via Elasticsearch), and protocol adapters.
+- **CaSS Library** — A JavaScript SDK ([`cassproject`](https://www.npmjs.com/package/cassproject)) providing data models, cryptographic identity management, and an interoperability layer for web applications.
+- **CaSS Editor** — A Vue.js single-page application for framework authoring, crosswalks, import/export, and user management.
+- **Protocol Adapters** — Pluggable cartridges providing standards-based interoperability (xAPI, CTDL-ASN, IMS CASE, Open Badges 2.0, ASN, MCP, and more).
 
-Docker images for standalone instances (based on Elasticsearch's container) and distributed/scalable instances (based on Node, Alpine Linux, and Distroless) can be found at:
+## Quick Start
 
-https://hub.docker.com/r/cassproject/cass
+### Docker (Recommended)
 
-# CaSS Libraries
-## From GitHub
+Docker images for standalone and distributed deployments are available on Docker Hub:
 
-https://github.com/cassproject/cass-npm
+> https://hub.docker.com/r/cassproject/cass
 
-## NPM
+Use the provided Docker Compose files for common configurations:
 
-https://www.npmjs.com/package/cassproject
+```bash
+docker compose up -d
+```
 
-# Installation
-## Ubuntu/Fedora Linux:
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed Docker, Kubernetes, and production deployment guidance.
 
-    wget https://raw.githubusercontent.com/cassproject/CaSS/master/scripts/cassInstall.sh
-    chmod +x cassInstall.sh
-    sudo ./cassInstall.sh
-    
-During the installation, you will be asked to select a version to install. Versions are listed at the top of this document.
+### Local Development
 
-# Post Installation
-To support open linked data, it is important that the objects created in CaSS have public, reliable URLs. For this:
+```bash
+git clone --recurse-submodules https://github.com/cassproject/CASS
+cd CASS
+npm install
+npm run dev        # Starts server with auto-restart on save
+```
 
- * Assign this server a domain name.
- * Enable HTTPS.
- * (Optional) Use a reverse proxy to control the endpoint closely.
+**Prerequisites:** Docker (pulls and runs Elasticsearch on port 9200).
 
-# Running Locally
-After cloning this repository (ensure you use git clone with --recurse-submodules!), you can run CaSS locally.
+### Running Tests
 
-Dependencies: Docker (will pull and run elasticsearch on port 9200)
+```bash
+npm test           # Runs the full test suite (do not run alongside npm run dev)
+```
 
-## Getting things up and running
+### Generating API Documentation
 
- * `git clone --recurse-submodules -b <branch> https://github.com/cassproject/CASS` - Get the code.
- * `npm i` - Install dependencies.
- * `npm run dev` - Starts server, restarts server on-save.
+```bash
+npm run docs       # Output deposited in /docs
+```
 
-## In a separate command line, if you want unit tests:
+### Production
 
- * `npm test` - Runs server, cass-npm and cass unit tests, runs them again on-save. Don't run with dev.
+Use containerized builds. See the Docker Compose files in the repository root for examples.
 
-## Generating documentation
-Will be deposited in `/docs`
+## Post-Installation
 
- * `npm run docs`
+To support open linked data, objects created in CaSS should have public, reliable URLs:
 
-## Running it like it's in prod
+1. Assign the server a domain name.
+2. Enable HTTPS (see [CONFIGURATION.md](CONFIGURATION.md)).
+3. *(Optional)* Use a reverse proxy to control the endpoint.
 
-Use containerized builds, see compose files in the root for examples.
+## FIPS 140-3 Support
 
-## A note on Elasticsearch and 1.5
-Due to the performance improvements in the 1.5 version of CaSS, we highly recommend using Elasticsearch 9 with it as it's better configured to handle the load than previous versions.
+FIPS is supported both client-side and server-side. It is recommended to use the Docker container builds for FIPS compliance.
 
-## Release Process
-The CaSS release process is automated via GitHub Actions. For detailed instructions on how to trigger a release, see [RELEASE.md](RELEASE.md).
+| → Server → | Legacy (pre-FIPS) | OpenSSL with `--force-fips` | OpenSSL with `--force-fips` and `REJECT_SHA1=true` |
+| --- | --- | --- | --- |
+| **Client / Library** | | | |
+| Legacy (pre-FIPS) | SHA-1 (no FIPS) | SHA-1 (verify only) | Incompatible |
+| Legacy + OpenSSL FIPS module | SHA-1 (partial FIPS) | SHA-1 (verify only) | Incompatible |
+| Current | SHA-1 (no FIPS) | SHA-1 (verify only\*), SHA-256 (FIPS) | SHA-256 (FIPS) |
+| Current + `FIPS=true` | SHA-1 (partial FIPS) | SHA-1 (verify only\*), SHA-256 (FIPS) | SHA-256 (FIPS) |
+| Current + `--force-fips` | Incompatible | SHA-256 (FIPS) | SHA-256 (FIPS) |
 
-### FIPS:
-FIPS is supported both client-side and server-side in CaSS. Here is the relevant compatibility table.
+> **Partial FIPS** — SHA-1 hashing is still used; all other cryptographic operations use the FIPS module.  
+> **Verify only** — Uses the exception permitting SHA-1 verification but not generation.  
+> **Verify only\*** — May fall back to SHA-1 verification if SHA-256 negotiation failed, but typically will not use SHA-1.
 
-Sources: https://openssl-library.org/post/2025-03-11-fips-140-3/
+Source: [OpenSSL FIPS 140-3 Announcement](https://openssl-library.org/post/2025-03-11-fips-140-3/)
 
-| --> Server --> | < 1.5.35 | >= 1.5.35 with <br> OpenSSL 3.1.2 and<br> --force-fips | >= 1.5.35 with <br>OpenSSL 3.1.2 and<br> --force-fips and<br> env REJECT_SHA1=true |
-| - | - | - | - |
-| **Client/Library** | |
-| < 1.5.35 | SHA-1 (no FIPS) | SHA-1 (Verify only) | Incompatible
-| < 1.5.35 and<br> OpenSSL 3.0.8 and<br> env FIPS=true | SHA-1 (partial FIPS) | SHA-1 (Verify only) | Incompatible
-| >= 1.5.35 | SHA-1 (no FIPS) | SHA-1 (Verify only*), SHA-256 (FIPS) | SHA-256 (FIPS)
-| >= 1.5.35 and<br> env FIPS=true | SHA-1 (partial FIPS) | SHA-1 (Verify only*), SHA-256 (FIPS) | SHA-256 (FIPS)
-| >= 1.5.35 and<br> --force-fips | Incompatible | SHA-256 (FIPS) | SHA-256 (FIPS)
+## Documentation
 
-To get FIPS, it is recommended to use the docker container builds.
+| Document | Description |
+| -------- | ----------- |
+| [REQUIREMENTS.md](REQUIREMENTS.md) | Software Requirements Specification (DI-IPSC-81433A) |
+| [DESIGN.md](DESIGN.md) | System Design Document (DI-IPSC-81435A) |
+| [CONFIGURATION.md](CONFIGURATION.md) | Server configuration guide |
+| [DEPLOYMENT.md](DEPLOYMENT.md) | Deployment guide (Docker, Kubernetes, bare metal) |
+| [ENVIRONMENT.md](ENVIRONMENT.md) | Environment variable reference |
+| [FILE.md](FILE.md) | Repository file structure reference |
+| [RELEASE.md](RELEASE.md) | Release process and automation |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Code of conduct |
+| [CHANGELOG.md](CHANGELOG.md) | Version history and release notes |
 
-Partial FIPS means that we are still violating FIPS by using SHA-1 hashing. All other cryptographic operations are using the FIPS module.
+### External Documentation
 
-Verify only uses the exception that permits SHA-1 verification but not generation.
+| Resource | URL |
+| -------- | --- |
+| User & Administrator Docs | https://docs.cassproject.org |
+| Developer Docs | https://devs.cassproject.org |
+| CaSS Library (GitHub) | https://github.com/cassproject/cass-npm |
+| CaSS Library (npm) | https://www.npmjs.com/package/cassproject |
+| Docker Images | https://hub.docker.com/r/cassproject/cass |
 
-Verify only* may fall back to SHA-1 verification if SHA-256 negotiation failed, but typically will not use SHA-1.
+## License
+
+[Apache License 2.0](LICENSE)

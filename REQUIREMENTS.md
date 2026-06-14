@@ -2,8 +2,6 @@
 
 # Software Requirements Specification
 
-# Version 1.6.27
-
 # Document CASS-SRS-2026-001
 
 # Eduworks Corporation
@@ -26,13 +24,14 @@ Copyright © 2015–2026 Eduworks Corporation and other contributing parties. Li
 
 | Date | Version | Document Revision Description | Document Author |
 | :--: | :-----: | ----------------------------- | --------------- |
-| 2026-06-13 | 1.0 | Initial comprehensive SRS, derived from codebase analysis (v1.6.27), cassproject npm (v5.0.15), cass-editor, test suite, OpenAPI spec, and docs.cassproject.org. | Auto-generated |
+| 2026-06-13 | 1.0 | Initial comprehensive SRS, derived from codebase analysis, cassproject npm package, cass-editor, test suite, OpenAPI spec, and docs.cassproject.org. | Auto-generated |
+| 2026-06-14 | 1.1 | Reviewed by lead architect. Removed transient version numbers, converted ASCII diagrams to Mermaid, removed OpenSearch references, corrected LEVR definition, clarified native crypto vs. node-forge fallback, distinguished identity management from session authentication (§3.2.4), expanded profile calculation requirements (§3.2.7, PROF-001–043). | Ronald "Fritz" Ray |
 
 **APPROVALS**
 
 | Approval Date | Approved Version | Approver Role | Approver |
 | ------------- | ---------------- | ------------- | -------- |
-| | | | |
+| 2026-06-14 | 1.1 | Lead Architect / Developer | Ronald "Fritz" Ray |
 
 **SUPPLEMENTAL DOCUMENTS**
 
@@ -86,9 +85,9 @@ Copyright © 2015–2026 Eduworks Corporation and other contributing parties. Li
 | **System Name** | Competency and Skills System (CaSS) |
 | **Project-Unique Identifier** | `cass` |
 | **CSCI Identifier** | CASS-CSCI-001 |
-| **Version / Release** | 1.6.27 |
+| **Version / Release** | Current |
 | **Repository** | https://github.com/cassproject/CASS |
-| **NPM Package Name** | `cassproject` v5.0.15 |
+| **NPM Package Name** | `cassproject` |
 | **License** | Apache License 2.0 |
 | **Organization** | Eduworks Corporation |
 | **Sponsor** | Advanced Distributed Learning (ADL) Initiative, U.S. Department of Defense |
@@ -97,7 +96,7 @@ Copyright © 2015–2026 Eduworks Corporation and other contributing parties. Li
 
 CaSS (Competency and Skills System) is an open-source, federated software system for the definition, management, exchange, and computation of competency data. It enables organizations across education, training, and workforce development to author competency frameworks, record assertions of individual competency attainment, compute learner profiles, and exchange competency data with external systems via standards-based protocol adapters.
 
-**History.** CaSS has been developed by Eduworks Corporation since 2015 under sponsorship from the ADL Initiative. Originally implemented in Java, the system was re-architectured to Node.js/Express in the 1.5.x series. The current version (1.6.x) uses Express 5, Elasticsearch 9.x, and a comprehensive JavaScript SDK (`cassproject` npm package).
+**History.** CaSS has been developed by Eduworks Corporation since 2015 under sponsorship from the ADL Initiative. Originally implemented in Java, the system was re-architectured to Node.js/Express in the 1.5.x series. The current version uses Express 5, Elasticsearch, and a comprehensive JavaScript SDK (`cassproject` npm package).
 
 **Stakeholders.**
 
@@ -113,7 +112,7 @@ CaSS (Competency and Skills System) is an open-source, federated software system
 
 ## 1.3 Document Overview
 
-This Software Requirements Specification (SRS) defines all functional, interface, security, performance, and quality requirements for CaSS version 1.6.27. Requirements are derived from analysis of the implemented codebase, the automated test suite (19 test files, 57+ validated endpoints), the OpenAPI 3.0 specification, and project documentation.
+This Software Requirements Specification (SRS) defines all functional, interface, security, performance, and quality requirements for CaSS. Requirements are derived from analysis of the implemented codebase, the automated test suite, the OpenAPI 3.0 specification, and project documentation.
 
 ### Requirements Form
 
@@ -162,8 +161,8 @@ Each requirement is annotated with one or more of:
 | [W3C SKOS](https://www.w3.org/TR/skos-reference/) | 2009 | Simple Knowledge Organization System |
 | [Model Context Protocol](https://modelcontextprotocol.io/) | Current | Protocol for AI model–tool integration |
 | [DESIGN.md](DESIGN.md) | 1.0 | CaSS System Design Document |
-| [ENVIRONMENT.md](ENVIRONMENT.md) | 1.6.27 | Environment variable reference |
-| [swagger.json](src/main/swagger.json) | 1.6.27 | OpenAPI 3.0 specification |
+| [ENVIRONMENT.md](ENVIRONMENT.md) | Current | Environment variable reference |
+| [swagger.json](src/main/swagger.json) | Current | OpenAPI 3.0 specification |
 
 ---
 
@@ -238,6 +237,12 @@ The system operates in the following states. Requirements in this specification 
 
 ### 3.2.4 Identity Management
 
+> [!IMPORTANT]
+> This section describes CaSS's **cryptographic identity management** system — the creation, storage, and retrieval of RSA key pairs that underpin Key-Based Access Control (KBAC). This is distinct from the **session-level authentication** mechanisms (OIDC, JWT, Platform One) implemented in `auth.js` and documented in [§3.8 Security — Authentication](#authentication). The two approaches serve different purposes:
+>
+> - **Identity Management (this section):** Client-side RSA key pair generation and encrypted credential storage. Users prove identity by signing requests with their private key. Keys are portable and not tied to any external identity provider.
+> - **Session Authentication (§3.8):** Server-side session management via external identity providers (OIDC/Keycloak, JWT, Platform One). When enabled, `auth.js` bridges these external sessions into the KBAC model by deterministically mapping authenticated users to server-managed RSA key pairs.
+
 | ID | Requirement | Priority | Evaluation Method |
 | :--- | :--- | :--- | :--- |
 | IDENT-001 | The system shall create an RSA key pair for a new identity via `POST /api/sky/id/create`, accepting `username`, `password`, and `credentials` fields. | Highest | Test |
@@ -276,21 +281,97 @@ The system operates in the following states. Requirements in this specification 
 | :--- | :--- | :--- | :--- |
 | PROF-001 | The system shall compute a learner's competency attainment profile via `GET /api/profile/latest`, accepting `frameworkId` (required) and `subject` (required) query parameters. | Highest | Test |
 | PROF-002 | The system shall return HTTP 400 if the `frameworkId` or `subject` parameter is missing from a profile request. | Highest | Test |
-| PROF-003 | The system shall accept optional `flushCache` (boolean), `cache` (boolean), and `targetDateTime` (integer, UTC milliseconds) parameters on profile requests. | High | Test |
+| PROF-003 | The system shall accept optional `flushCache` (boolean), `cache` (boolean), `startDate` (integer, UTC ms), `endDate` (integer, UTC ms), and `condition` (string or array) parameters on profile requests. | High | Test |
 | PROF-004 | The system shall aggregate positive assertions about a competency as positive evidence in the profile result. | Highest | Test |
-| PROF-005 | The system shall aggregate negative assertions (result.success=false or negative confidence) about a competency as negative evidence in the profile result. | Highest | Test |
-| PROF-006 | The system shall propagate competency evidence through framework relationships: when competency C2 "narrows" C1, positive evidence for C1 shall appear as child evidence in C2. | Highest | Test |
-| PROF-007 | The system shall support multi-competency profile computation, correctly handling frameworks with multiple competencies and relations. | High | Test |
-| PROF-008 | The system shall execute profile computation in worker threads (via `node-worker-threads-pool`) to prevent blocking the main event loop. | High | Inspection |
-| PROF-009 | Worker thread memory shall be configurable via the `WORKER_MAX_MEMORY` environment variable (default 1024 MB). | Medium | Inspection |
-| PROF-010 | The system shall cache computed profiles in the ephemeral store with a configurable TTL controlled by `PROFILE_TTL` (default 30 days / 2,592,000,000 ms). | High | Demonstration |
-| PROF-011 | When `flushCache=true`, the system shall bypass the cache and force recalculation. | High | Test |
-| PROF-012 | The system shall invalidate cached profiles for a subject when an Assertion referencing that subject is written or deleted. | High | Inspection |
-| PROF-013 | The system shall support a pluggable coprocessor pipeline for profile computation, executing coprocessors in sequence: default → direct → conditions → timeBounding → explainer. | High | Inspection |
-| PROF-014 | The `timeBounding` coprocessor shall filter assertions by date range when `targetDateTime` is provided, excluding assertions outside the valid temporal window. | Medium | Test |
-| PROF-015 | The `explainer` coprocessor shall produce human-readable explanations of how each competency's status was determined. | Medium | Inspection |
-| PROF-016 | When `AUTO_CALCULATE_PROFILES` is set, the system shall periodically (every 60 seconds) auto-calculate profiles for all active persons across all frameworks. | Low | Demonstration |
-| PROF-017 | The system shall limit concurrent framework calculations to 5 per person during auto-calculation. | Medium | Inspection |
+| PROF-005 | The system shall aggregate negative assertions (negative=true) about a competency as negative evidence in the profile result. | Highest | Test |
+
+#### Graph Construction
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-006 | The system shall construct a directed graph (`EcFrameworkGraph`) from the target framework's competencies (vertices) and relations (edges) before processing assertions. | Highest | Inspection |
+| PROF-007 | The system shall cache computed graph structures per framework and clone them for each profile request, avoiding redundant graph construction. | High | Inspection |
+| PROF-008 | Unless `PROFILE_AVOID_OUTSIDE_FRAMEWORKS` is set, the system shall recursively discover and add competencies from outside frameworks when a relation edge references a competency not present in the target framework. | High | Inspection |
+| PROF-009 | Outside framework discovery shall search for frameworks containing the referenced competency and add their competencies and relations to the graph, recursively processing any new edges introduced. | High | Inspection |
+| PROF-010 | The system shall search for `CreativeWork` resource alignments (`educationalAlignment.targetUrl`) matching graph competencies and attach matching resources to each competency's meta-vertex. | Medium | Inspection |
+
+#### Assertion Fetching and Filtering
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-011 | The system shall search for assertions matching the subject's PEM key across all competencies in the graph, querying in batches of 10 competencies with a concurrency limit of 5 and a result cap of 10,000 per batch. | Highest | Inspection |
+| PROF-012 | The system shall decrypt each assertion's `subject` field and discard any assertion whose decrypted subject does not match the profile target's public key. | Highest | Test |
+| PROF-013 | The system shall discard any assertion whose `expirationDate` is in the past (i.e., `expirationDate < current_time`). | Highest | Test |
+| PROF-014 | The system shall remove duplicate assertions (by `@id`) before processing. | High | Inspection |
+| PROF-015 | Assertions shall be sorted by `assertionDate` in ascending order (oldest first) so that the last assertion in the sorted list determines the `latestEvidenceIsPositive` state. | High | Inspection |
+
+#### Evidence Polarity and Signature Counting
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-016 | For each competency, the system shall track: `hasPositiveEvidence`, `hasNegativeEvidence`, `latestEvidenceIsPositive` (polarity of the most recent assertion by date), `distinctPositiveSignatures` (count of unique agents with positive assertions), and `distinctNegativeSignatures` (count of unique agents with negative assertions). | Highest | Inspection |
+| PROF-017 | When a competency specifies a `requiredSignatureCount`, the system shall set `isQualifiedAccordingToSignatures = true` only when `distinctPositiveSignatures > requiredSignatureCount`. | High | Inspection |
+| PROF-018 | Each assertion in the output shall include: `negative` (boolean), `grade` (if present), `subject` (person name), `agent` (person name), `competency` (competency name), `assertionDate`, `expirationDate`, `id`, `registration`, `evidence` (if present), and `condition` (if present). | High | Inspection |
+
+#### Relationship Propagation (narrows / isEquivalentTo)
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-019 | When competency C_child "narrows" C_parent, C_child shall be added as a child of C_parent in the profile tree, and C_child shall be removed from the top-level vertex set. | Highest | Test |
+| PROF-020 | For `narrows` edges, the system shall propagate goal status bidirectionally: if a child is a goal, the parent's `leadsToGoalTopDown` shall be set to true; if a parent is a goal, the child's `requiredForGoalBottomUp` shall be set to true. The same logic applies for high-priority goals. | High | Inspection |
+| PROF-021 | For `isEquivalentTo` edges, the system shall bidirectionally share evidence state properties between equivalent competencies (positive/negative evidence, goal flags, child evidence). | High | Inspection |
+| PROF-022 | The system shall iterate edge and vertex post-processing in a convergent loop, hashing the top-level vertex state after each pass and repeating until the hash stabilizes (fixed-point iteration). This ensures transitive evidence propagation through deep hierarchies. | Highest | Inspection |
+| PROF-023 | During convergent iteration, for each parent with `narrows` children, the system shall compute: `allChildrenLatestEvidenceIsPositive` (false if any child's latest evidence is negative or any child has no positive children) and `hasAnyChildrenWithPositiveEvidence` (true if any child or descendant has positive evidence). | High | Inspection |
+
+#### Goal Tracking and Resource Timeline
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-024 | Person objects may declare competency goals via `seeks[].itemOffered.serviceOutput.competency` (following schema.org conventions). The system shall mark matching competencies as `isGoal = true` and optionally `isHighPriorityGoal = true`. | Medium | Inspection |
+| PROF-025 | The profile output shall include a `timeline` array containing resource alignments (`CreativeWork` objects) for competencies that are goals or are required for goals. | Medium | Inspection |
+
+#### Summary Statistics
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-026 | For each competency and its subtree, the system shall compute summary percentages: `percentLastEvidenceIsPositive`, `percentAllEvidenceIsPositive`, and `percentHasPositiveEvidence`, each calculated as the weighted ratio of qualifying competencies over total tree weight. | High | Inspection |
+| PROF-027 | Summary statistics shall be computed recursively through the children hierarchy and across `isEquivalentTo` relationships, with cycle detection via a visited set. | High | Inspection |
+
+#### Output Pruning
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-028 | The system shall prune the profile tree to include only competencies that belong to the target framework. Competencies from outside frameworks that appear in the graph for propagation purposes shall be collapsed: their children are promoted to the parent level. | High | Inspection |
+| PROF-029 | The system shall support multi-competency profile computation, correctly handling frameworks with multiple competencies and relations. | High | Test |
+
+#### Execution Environment
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-030 | The system shall execute profile computation in worker threads (via `node-worker-threads-pool`) to prevent blocking the main event loop. | High | Inspection |
+| PROF-031 | Worker thread memory shall be configurable via the `WORKER_MAX_MEMORY` environment variable (default 1024 MB). | Medium | Inspection |
+
+#### Caching
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-032 | The system shall cache computed profiles in the ephemeral store with a configurable TTL controlled by `PROFILE_TTL` (default 30 days / 2,592,000,000 ms). | High | Demonstration |
+| PROF-033 | When `flushCache=true`, the system shall bypass the cache and force recalculation. | High | Test |
+| PROF-034 | The system shall invalidate cached profiles for a subject when an Assertion referencing that subject is written or deleted. | High | Inspection |
+| PROF-035 | When time-bounding parameters (`startDate`/`endDate`) are provided, the system shall disable caching for that request, as the result is specific to the time window. | Medium | Inspection |
+
+#### Coprocessor Pipeline
+
+| ID | Requirement | Priority | Evaluation Method |
+| :--- | :--- | :--- | :--- |
+| PROF-036 | The system shall support a pluggable coprocessor pipeline for profile computation. Coprocessors are dynamically discovered via filesystem glob (`coprocessors/*.js`), sorted by `order` property, and executed in sequence. Each coprocessor participates in lifecycle hooks: `fetchAssertions`, `insertResources`, `processAssertions`, `postProcessStart`, `postProcessEachVertex`, `postProcessEachEdge`, `postProcessEachEdgeRepeating`, `postProcessEachVertexRepeating`, `postProcessProfileBefore`, `postProcessProfileEachElement`, `postProcessProfileAfter`. | High | Inspection |
+| PROF-037 | The `timeBounding` coprocessor (order 50) shall filter assertions by date range when `startDate`/`endDate` parameters are provided, removing assertions with `assertionDate` outside the `[startDate, endDate]` window. | Medium | Test |
+| PROF-038 | The `conditions` coprocessor (order 60, disabled by default) shall evaluate competency `validCondition` references against assertion evidence using JSONPath expressions. When `condition` parameters are provided, assertions lacking matching conditions shall be removed. | Medium | Inspection |
+| PROF-039 | The `default` coprocessor (order 100) shall implement the core assertion fetching, subject verification, evidence aggregation, relationship propagation, and summary statistics described in PROF-011 through PROF-027. | Highest | Inspection |
+| PROF-040 | The `direct` coprocessor (order 200) shall annotate each competency with `hasDirectPositiveAssertion`, indicating whether the competency has at least one positive assertion whose `competency` field name-matches the vertex (as opposed to inherited evidence). | Medium | Inspection |
+| PROF-041 | The `explainer` coprocessor shall produce human-readable explanations of how each competency's status was determined. | Medium | Inspection |
+| PROF-042 | When `AUTO_CALCULATE_PROFILES` is set, the system shall periodically (every 60 seconds) auto-calculate profiles for all active persons across all frameworks. | Low | Demonstration |
+| PROF-043 | The system shall limit concurrent framework calculations to 5 per person during auto-calculation. | Medium | Inspection |
 
 ### 3.2.8 WebSocket Notifications
 
@@ -454,31 +535,18 @@ The system operates in the following states. Requirements in this specification 
 
 ### 3.3.1 Interface Identification and Diagrams
 
-```
-┌──────────┐  HTTPS/WS   ┌───────────┐  HTTP     ┌──────────────┐
-│ CaSS     │◄───────────▶│ CaSS      │◄─────────▶│ Elasticsearch│
-│ Editor   │  (IF-01)    │ Server    │  (IF-02)  │              │
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  OIDC       │           │  SMTP     ┌──────────────┐
-│ Identity │◄───────────▶│           │──────────▶│ Mail Server  │
-│ Provider │  (IF-03)    │           │  (IF-06)  │              │
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  xAPI       │           │  S3 API   ┌──────────────┐
-│ LRS      │◄───────────▶│           │──────────▶│ AWS S3       │
-│          │  (IF-04)    │           │  (IF-07)  │              │
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  REST       │           │  REST     ┌──────────────┐
-│ Partner  │◄───────────▶│           │◄─────────▶│ Peer CaSS    │
-│ Systems  │  (IF-05)    │           │  (IF-08)  │ (Replication)│
-└──────────┘             │           │           └──────────────┘
-                          │           │
-┌──────────┐  MCP        │           │  HTTP     ┌──────────────┐
-│ AI Agent │◄───────────▶│           │──────────▶│ Ollama LLM   │
-│          │  (IF-09)    │           │  (IF-10)  │              │
-└──────────┘             └───────────┘           └──────────────┘
+```mermaid
+flowchart LR
+    Editor["CaSS Editor"] <-- "IF-01: HTTPS/WS" --> Server["CaSS Server"]
+    IdP["Identity Provider"] <-- "IF-03: OIDC" --> Server
+    LRS["LRS"] <-- "IF-04: xAPI" --> Server
+    Partner["Partner Systems"] <-- "IF-05: REST" --> Server
+    AIAgent["AI Agent"] <-- "IF-09: MCP" --> Server
+    Server <-- "IF-02: HTTP" --> ES["Elasticsearch"]
+    Server -- "IF-06: SMTP" --> Mail["Mail Server"]
+    Server -- "IF-07: S3 API" --> S3["AWS S3"]
+    Server <-- "IF-08: REST" --> Peer["Peer CaSS (Replication)"]
+    Server -- "IF-10: HTTP" --> Ollama["Ollama LLM"]
 ```
 
 | Interface ID | Interfacing Entities | Fixed / Developing |
@@ -650,7 +718,7 @@ This paragraph is not applicable — all internal data requirements are specifie
 | SEC-031 | When a request targets a reader-protected object and no signature matches any reader, the system shall throw "Object not found or insufficient permissions" (effectively 403/404). | Highest | Test |
 | SEC-032 | Assertion objects shall encrypt the `subject` and `agent` fields individually with reader public keys, ensuring that unauthorized parties cannot determine whom an assertion is about. | Highest | Test |
 | SEC-033 | The system shall support multi-layer encryption: an already-encrypted object can be further encrypted, and decryption shall correctly unwrap all layers. | High | Test |
-| SEC-034 | Encrypted objects shall use AES-256 symmetric encryption for payloads, with AES keys encrypted per-reader using RSA-OAEP via `node-forge`. | Highest | Inspection |
+| SEC-034 | Encrypted objects shall use AES-256 symmetric encryption for payloads, with AES keys encrypted per-reader using RSA-OAEP. Native Node.js `crypto` / Web Crypto API is preferred, with `node-forge` as a fallback. | Highest | Inspection |
 | SEC-035 | When Platform One auth is enabled and `CASS_PLATFORM_ONE_AUTH_ANONYMIZE_USERS=true`, the system shall anonymize user identities in authentication flows. | Medium | Inspection |
 
 ### Transport Security
@@ -662,7 +730,7 @@ This paragraph is not applicable — all internal data requirements are specifie
 | SEC-042 | The system shall support client certificate authentication (mTLS) when `REQUEST_CLIENT_SIDE_CERTIFICATE=true`. | Medium | Inspection |
 | SEC-043 | The system shall support mandatory client certificates via `CLIENT_SIDE_CERTIFICATE_ONLY=true`, rejecting connections without valid client certificates. | Medium | Inspection |
 | SEC-044 | The system shall support Certificate Revocation List (CRL) checking via `CRL_LISTS=true`, loading CRLs from `src/main/server/crl/*.pem`. | Medium | Inspection |
-| SEC-045 | Docker images shall include FIPS 140-3 compliant OpenSSL 3.1.2 for cryptographic operations. | High | Inspection |
+| SEC-045 | Docker images shall include FIPS 140-3 compliant OpenSSL for cryptographic operations. | High | Inspection |
 
 ### Access Control
 
@@ -697,12 +765,12 @@ This paragraph is not applicable — all internal data requirements are specifie
 
 | ID | Requirement | Priority | Evaluation Method |
 | :--- | :--- | :--- | :--- |
-| ENV-001 | The system shall run on Node.js version 24 or later. | Highest | Test |
-| ENV-002 | The system shall require Elasticsearch 8.x, 9.x, or OpenSearch 2.x as the primary datastore. | Highest | Test |
-| ENV-003 | The system shall run on any operating system that supports Node.js 24 (Linux, macOS, Windows). | High | Demonstration |
-| ENV-004 | The system shall support containerized deployment via Docker 20+ with the provided Dockerfiles. | Highest | Demonstration |
-| ENV-005 | The system shall support orchestrated deployment via Kubernetes 1.28+. | High | Demonstration |
-| ENV-006 | The CaSS editor shall require a modern web browser with ES2020 JavaScript support (Chrome 90+, Firefox 90+, Safari 14+, Edge 90+). | High | Demonstration |
+| ENV-001 | The system shall run on a current LTS or later version of Node.js. | Highest | Test |
+| ENV-002 | The system shall require Elasticsearch as the primary datastore. | Highest | Test |
+| ENV-003 | The system shall run on any operating system that supports Node.js (Linux, macOS, Windows). | High | Demonstration |
+| ENV-004 | The system shall support containerized deployment via Docker with the provided Dockerfiles. | Highest | Demonstration |
+| ENV-005 | The system shall support orchestrated deployment via Kubernetes. | High | Demonstration |
+| ENV-006 | The CaSS editor shall require a modern web browser with ES2020 JavaScript support (current versions of Chrome, Firefox, Safari, and Edge). | High | Demonstration |
 
 ---
 
@@ -731,19 +799,19 @@ This paragraph is not applicable — all internal data requirements are specifie
 
 | ID | Requirement | Priority | Evaluation Method |
 | :--- | :--- | :--- | :--- |
-| SW-001 | The system shall use Express 5 (`express@^5.2.1`) as the web application framework. | Highest | Inspection |
-| SW-002 | The system shall use `cassproject` (`^5.0.15`) as the JavaScript SDK for data models and cryptography. | Highest | Inspection |
-| SW-003 | The system shall use `@modelcontextprotocol/sdk` (`^1.29.0`) for MCP server implementation. | High | Inspection |
-| SW-004 | The system shall use `node-forge` (via `cassproject`) for RSA and AES cryptographic operations. | Highest | Inspection |
-| SW-005 | The system shall use `rxjs` (`^7.8.2`) for the internal event bus. | High | Inspection |
-| SW-006 | The system shall use `ws` (`^8.21.0`) for WebSocket support. | High | Inspection |
-| SW-007 | The system shall use `swagger-jsdoc` (`^6.3.0`) and `swagger-ui-express` (`^5.0.1`) for OpenAPI documentation generation and rendering. | High | Inspection |
-| SW-008 | The system shall use `express-openid-connect` (`^3.0.0`) for OIDC/SSO integration. | High | Inspection |
-| SW-009 | The system shall use `express-jwt` (`^8.5.1`) for JWT authentication. | High | Inspection |
-| SW-010 | The system shall use `@aws-sdk/client-s3` (`^3.1061.0`) for AWS S3 operations in the PNA adapter. | Medium | Inspection |
+| SW-001 | The system shall use Express 5 (`express`) as the web application framework. | Highest | Inspection |
+| SW-002 | The system shall use `cassproject` as the JavaScript SDK for data models and cryptography. | Highest | Inspection |
+| SW-003 | The system shall use `@modelcontextprotocol/sdk` for MCP server implementation. | High | Inspection |
+| SW-004 | The system shall use native Node.js `crypto` (preferred) with `node-forge` (via `cassproject`) as a fallback for RSA and AES cryptographic operations. | Highest | Inspection |
+| SW-005 | The system shall use `rxjs` for the internal event bus. | High | Inspection |
+| SW-006 | The system shall use `ws` for WebSocket support. | High | Inspection |
+| SW-007 | The system shall use `swagger-jsdoc` and `swagger-ui-express` for OpenAPI documentation generation and rendering. | High | Inspection |
+| SW-008 | The system shall use `express-openid-connect` for OIDC/SSO integration. | High | Inspection |
+| SW-009 | The system shall use `express-jwt` for JWT authentication. | High | Inspection |
+| SW-010 | The system shall use `@aws-sdk/client-s3` for AWS S3 operations in the PNA adapter. | Medium | Inspection |
 | SW-011 | The CaSS editor shall use Vue.js 2 with Vue CLI and Webpack for the frontend build. | High | Inspection |
-| SW-012 | The CaSS editor shall use Forge.js (`node-forge`) for client-side RSA/AES cryptography. | Highest | Inspection |
-| SW-013 | The test suite shall use Mocha (`^11.7.6`), Chai (`4.5.0`), and Sinon (`^22.0.0`) with NYC (`^18.0.0`) for code coverage. | High | Inspection |
+| SW-012 | The CaSS editor shall use the native Web Crypto API (preferred) with `node-forge` as a fallback for client-side RSA/AES cryptography. | Highest | Inspection |
+| SW-013 | The test suite shall use Mocha, Chai, and Sinon with NYC for code coverage. | High | Inspection |
 
 ### 3.10.4 Computer Communications Requirements
 
@@ -762,11 +830,11 @@ This paragraph is not applicable — all internal data requirements are specifie
 
 | ID | Requirement | Priority | Evaluation Method |
 | :--- | :--- | :--- | :--- |
-| QUAL-001 | **Functionality.** The system shall pass all 57+ endpoint tests in the automated test suite (`4.swagger.test.js`) verifying that every documented API endpoint is functional and returns documented status codes. | Highest | Test |
+| QUAL-001 | **Functionality.** The system shall pass all endpoint tests in the automated test suite (`4.swagger.test.js`) verifying that every documented API endpoint is functional and returns documented status codes. | Highest | Test |
 | QUAL-002 | **Functionality.** The system shall pass all response schema validation tests (`4.swagger.schema.test.js`) verifying that 12 success endpoints and 4 error endpoints return payloads conforming to the OpenAPI schema. | Highest | Test |
 | QUAL-003 | **Reliability.** The system shall correctly operate at three security levels (L0: no cache, L1: L1 cache, L2: L2 cache), verified by the `EcRepository.l0/l1/l2.test.js` test suites covering create, save, encrypt, search, decrypt, and history operations. | Highest | Test |
 | QUAL-004 | **Reliability.** The system shall correctly handle SSO authentication at all three security levels, verified by `EcRepository.sso.l0/l1/l2.test.js`. | High | Test |
-| QUAL-005 | **Maintainability.** The system shall maintain a comprehensive automated test suite of 19 test files covering data CRUD, security, profiles, adapters, OpenAPI compliance, MCP tools, and backup/restore. | High | Inspection |
+| QUAL-005 | **Maintainability.** The system shall maintain a comprehensive automated test suite covering data CRUD, security, profiles, adapters, OpenAPI compliance, MCP tools, and backup/restore. | High | Inspection |
 | QUAL-006 | **Maintainability.** The system shall enforce API documentation synchronization by auto-generating the OpenAPI spec from code annotations and validating it at startup. | High | Test |
 | QUAL-007 | **Availability.** The system shall provide a lightweight health check at `GET /api/ping` suitable for Kubernetes readiness and liveness probes. | Highest | Test |
 | QUAL-008 | **Availability.** The system shall be stateless (all persistent state in Elasticsearch and `etc/` volume), enabling horizontal scaling via multiple replicas behind a load balancer. | High | Analysis |
@@ -787,13 +855,13 @@ This paragraph is not applicable — all internal data requirements are specifie
 | :--- | :--- | :--- | :--- |
 | CONST-001 | All stored data shall be valid JSON-LD with mandatory `@context`, `@id`, and `@type` fields. The `@id` field shall serve as the globally unique, persistent URL identifier. | Highest | Test |
 | CONST-002 | Object types shall follow dotted namespace conventions (e.g., `schema.cassproject.org.0.4.Framework`). Elasticsearch index names shall be derived from lowercased type namespaces. | Highest | Inspection |
-| CONST-003 | The system shall use the `cassproject` npm package (v5.0.15+) for all data model classes, ensuring client-server data model parity. | Highest | Inspection |
+| CONST-003 | The system shall use the `cassproject` npm package for all data model classes, ensuring client-server data model parity. | Highest | Inspection |
 | CONST-004 | The system shall use the Apache License 2.0 for all source code. | Highest | Inspection |
 | CONST-005 | The system shall use JavaScript (Node.js) as the sole server-side programming language. | Highest | Inspection |
 | CONST-006 | The system shall use Vue.js 2 for the CaSS editor frontend, with Webpack code-splitting for lazy-loaded route components. | High | Inspection |
 | CONST-007 | The system shall not use a SQL database or ORM; Elasticsearch shall be the sole persistent datastore, accessed exclusively via its HTTP REST API. | Highest | Inspection |
 | CONST-008 | The system shall use RSA key pairs as the fundamental identity primitive (not usernames/passwords as the cryptographic base). | Highest | Inspection |
-| CONST-009 | The system shall use `node-forge` as the cryptographic library for RSA and AES operations. | Highest | Inspection |
+| CONST-009 | The system shall use native `crypto` as the preferred cryptographic provider, with `node-forge` as a fallback for RSA and AES operations not available natively. | Highest | Inspection |
 | CONST-010 | The system shall dynamically discover and load protocol adapters at startup via filesystem glob (`cartridge/adapter/*.js`), not via static import. | High | Inspection |
 | CONST-011 | The CaSS editor shall be distributed as pre-built static files (via git submodule at `src/main/webapp/`), not requiring a build step during CaSS server deployment. | High | Inspection |
 | CONST-012 | The system shall register all `cassproject` SDK classes as `global.*` properties on `require("cassproject")`, without requiring explicit imports. | High | Inspection |
@@ -850,11 +918,11 @@ This paragraph is not applicable — all internal data requirements are specifie
 | ID | Requirement | Priority | Evaluation Method |
 | :--- | :--- | :--- | :--- |
 | PKG-001 | The system shall be distributable as a Docker image published to Docker Hub under `cassproject/cass`. | Highest | Demonstration |
-| PKG-002 | The system shall provide four Docker image variants: Default (Debian `node:24-slim`), Alpine (`node:24-alpine`), Distroless (`gcr.io/distroless/nodejs24-debian12`), and Platform One (Iron Bank `nodejs16`). | High | Inspection |
+| PKG-002 | The system shall provide four Docker image variants: Default (Debian `node:lts-slim`), Alpine (`node:lts-alpine`), Distroless (`gcr.io/distroless/nodejs-debian`), and Platform One (Iron Bank). | High | Inspection |
 | PKG-003 | Docker images shall run as non-root user (UID 1000). | High | Inspection |
 | PKG-004 | Docker images shall expose ports 80 (HTTP) and 443 (HTTPS). | Highest | Inspection |
 | PKG-005 | Docker images shall use `ENTRYPOINT ["node", "./src/main/server.js"]` as the container entry point. | Highest | Inspection |
-| PKG-006 | The system shall provide Docker Compose configurations for: default (`docker-compose.yml`), Alpine (`docker-compose-alpine.yml`), Distroless (`docker-compose-distroless.yml`), OpenSearch (`docker-compose-opensearch.yml`), OIDC (`docker-compose-oidc.yml`), template (`docker-compose-template.yml`), and test (`docker-compose-test.yml`). | High | Inspection |
+| PKG-006 | The system shall provide Docker Compose configurations for: default (`docker-compose.yml`), Alpine (`docker-compose-alpine.yml`), Distroless (`docker-compose-distroless.yml`), OIDC (`docker-compose-oidc.yml`), template (`docker-compose-template.yml`), and test (`docker-compose-test.yml`). | High | Inspection |
 | PKG-007 | Docker Compose configurations shall define two persistent volumes: `etc` (mapped to `/app/etc` for server keys/salts) and `esdata1` (for Elasticsearch data). | Highest | Inspection |
 | PKG-008 | The system shall provide Kubernetes manifests for production deployment, including: Elasticsearch StatefulSet, CaSS Deployment, PersistentVolumeClaim, Service, and Ingress. | High | Inspection |
 | PKG-009 | Kubernetes deployments shall configure readiness and liveness probes using `GET /api/ping`. | High | Inspection |
@@ -879,7 +947,7 @@ The following table traces each requirement category to the implementing system 
 | **Identity Mgmt** | IDENT-001 – IDENT-008 | CASS-SRV-CORE (skyId.js), persistent files (etc/) |
 | **Health Check** | HEALTH-001 – HEALTH-006 | CASS-SRV-SKYREPO (ping.js) |
 | **Admin Utilities** | ADMIN-001 – ADMIN-005 | CASS-SRV-SKYREPO (admin.js), CASS-SRV-CORE (util.js) |
-| **Profile Calc** | PROF-001 – PROF-017 | CASS-SRV-PROFILE (controller.js, coordinator.js, calculator.js, worker.js, coprocessors/*) |
+| **Profile Calc** | PROF-001 – PROF-043 | CASS-SRV-PROFILE (controller.js, coordinator.js, calculator.js, worker.js, coprocessors/*) |
 | **WebSocket** | WS-001 – WS-005 | CASS-SRV-CORE (websocket.js) |
 | **CTDL-ASN** | CEASN-001 – CEASN-005 | CASS-SRV-ADAPTERS (ceasn.js) |
 | **IMS CASE** | CASE-001 – CASE-009 | CASS-SRV-ADAPTERS (caseAdapter.js, caseIngest.js) |
@@ -934,7 +1002,7 @@ The following table maps requirements to the test files that verify them.
 | `2.EcRepository.sso.l0.test.js` | QUAL-004, SEC-008 |
 | `2.EcRepository.sso.l1.test.js` | QUAL-004, SEC-008 |
 | `2.EcRepository.sso.l2.test.js` | QUAL-004, SEC-008 |
-| `3.profile.test.js` | PROF-001–007, PROF-011 |
+| `3.profile.test.js` | PROF-001–005, PROF-012–013, PROF-019, PROF-029, PROF-033 |
 | `3.xapi.test.js` | XAPI-001, XAPI-003–013 |
 | `4.swagger.test.js` | API-001–002, API-005, QUAL-001 |
 | `4.swagger.schema.test.js` | API-006, QUAL-002, HEALTH-001, CASE-008 |
@@ -950,9 +1018,9 @@ The following table maps requirements to the test files that verify them.
 
 ## 5.1 General Information
 
-This Software Requirements Specification was generated from comprehensive analysis of the CaSS codebase (v1.6.27), the `cassproject` npm package (v5.0.15), the pre-built CaSS editor, the automated test suite, the OpenAPI specification, and publicly available documentation. Requirements were derived from:
+This Software Requirements Specification was generated from comprehensive analysis of the CaSS codebase, the `cassproject` npm package, the pre-built CaSS editor, the automated test suite, the OpenAPI specification, and publicly available documentation. Requirements were derived from:
 
-1. **Implemented behavior** verified by the automated test suite (19 files, 57+ endpoints).
+1. **Implemented behavior** verified by the automated test suite.
 2. **API contracts** defined in the OpenAPI 3.0 specification and JSDoc annotations.
 3. **Security rules** encoded in `kbac.js` (KBAC validation logic) and `auth.js` (authentication middleware).
 4. **Configuration surface** documented in `ENVIRONMENT.md` (80+ environment variables).
@@ -986,7 +1054,7 @@ Requirements that are currently implemented and passing all tests are marked as 
 | JWT | JSON Web Token |
 | KBAC | Key-Based Access Control |
 | K8s | Kubernetes |
-| LEVR | Linked Expert Virtual Reality (legacy platform) |
+| LEVR | A functional, JSON-centric programming language (legacy platform) |
 | LMS | Learning Management System |
 | LRS | Learning Record Store |
 | MCP | Model Context Protocol |
