@@ -43,6 +43,7 @@ Copyright © 2015–2026 Eduworks Corporation and other contributing parties. Li
 | | | [DEPLOYMENT.md](DEPLOYMENT.md) | Deployment Guide |
 | | | [ENVIRONMENT.md](ENVIRONMENT.md) | Environment Variable Reference |
 | | | [FILE.md](FILE.md) | File Structure Reference |
+| | | [DATABASE.md](DATABASE.md) | Database Design Description (DI-IPSC-81437A) |
 
 ---
 
@@ -356,6 +357,14 @@ stateDiagram-v2
 19. **Rekey Forwarding Table.** When a `RekeyRequest` object is saved and passes verification, it is added to the `EcRemoteLinkedData.forwardingTable`, enabling transparent identity migration — subsequent requests for the old identity are forwarded to the new one.
 20. **Event Bus Notifications.** All data writes, deletes, and search results emit events via `global.events.data.{write|delete|found|any}`, enabling reactive subscribers (e.g. WebSocket push, adapter side-effects) to act on data changes without polling.
 
+### Linked Data Extensibility Rules
+
+21. **Type-Agnostic Storage.** The storage layer shall accept any valid JSON-LD object regardless of whether a dedicated SDK class exists for its `@type`. Index derivation, KBAC enforcement, dual-write versioning, search indexing, and version history shall apply uniformly to all types.
+22. **Automatic Index Creation.** When an object with a previously unseen `@context`/`@type` combination is stored, the system shall automatically create a new Elasticsearch index named by the lowercased, dot-delimited fully-qualified type URL. No server restart or configuration change is required.
+23. **Officially Supported Types.** The CaSS SDK provides dedicated model classes for: `Framework`, `Competency`, `Relation`, `Assertion`, `Level`, `RollupRule`, `Directory`, `Person`, `Organization`, `CreativeWork`, `Concept`, `ConceptScheme`, and `EncryptedValue`. These types have custom index mappings and participate in higher-level features (profile calculation, adapter exports).
+24. **Unofficially Supported Types.** Types without dedicated SDK classes — including CTDL types (`ceterms:*`), CTDL-ASN types (`ceasn:*`), the full schema.org vocabulary, SKOS types, and any custom application-defined types — are stored and retrieved identically to official types. They receive CRUD, search, KBAC, and version history support, but do not participate in profile computation or adapter-specific processing unless a dedicated adapter is present.
+25. **No Schema Validation.** The system does not validate incoming objects against JSON-LD schemas, SHACL shapes, or ontology constraints. Objects are stored as-is, with Elasticsearch dynamic mapping applied to their fields.
+
 
 ## 3.11 Error Handling
 
@@ -383,6 +392,7 @@ stateDiagram-v2
 5. **Embeddable Editor.** The CaSS editor is designed to be embedded in third-party applications via `<iframe>`, with CSS inheritance and URL-parameter-based configuration.
 6. **Multi-Backend Support.** Multiple Docker Compose configurations are provided for different deployment scenarios (default, Alpine, Distroless, OIDC, etc.).
 7. **MCP Integration.** The server auto-generates Model Context Protocol (MCP) tool definitions from its OpenAPI specification, enabling AI agent integration without manual tool authoring.
+8. **Universal Linked Data Storage.** The storage layer is type-agnostic by design — any valid JSON-LD object with `@id`, `@type`, and `@context` can be stored, indexed, searched, and retrieved. The Elasticsearch index name is derived automatically from the object's type, so new types create new indices on first write without code changes. This means CaSS natively supports CTDL (`ceterms:Credential`, `ceterms:LearningOpportunityProfile`, etc.), CTDL-ASN (`ceasn:CompetencyFramework`, `ceasn:Competency`), the full schema.org vocabulary (~870 types), SKOS taxonomies (`Concept`, `ConceptScheme`), and any custom application-specific JSON-LD types. All stored types receive identical treatment: KBAC access control, dual-write versioning, full-text search, and version history apply uniformly.
 
 ## 3.14 Availability
 

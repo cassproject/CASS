@@ -89,6 +89,7 @@ Source: [OpenSSL FIPS 140-3 Announcement](https://openssl-library.org/post/2025-
 | -------- | ----------- |
 | [REQUIREMENTS.md](REQUIREMENTS.md) | Software Requirements Specification (DI-IPSC-81433A) |
 | [DESIGN.md](DESIGN.md) | System Design Document (DI-IPSC-81435A) |
+| [DATABASE.md](DATABASE.md) | Database Design Description (DI-IPSC-81437A) |
 | [CONFIGURATION.md](CONFIGURATION.md) | Server configuration guide |
 | [DEPLOYMENT.md](DEPLOYMENT.md) | Deployment guide (Docker, Kubernetes, bare metal) |
 | [ENVIRONMENT.md](ENVIRONMENT.md) | Environment variable reference |

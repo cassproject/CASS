@@ -42,6 +42,7 @@ Copyright © 2015–2026 Eduworks Corporation and other contributing parties. Li
 | | | [DEPLOYMENT.md](DEPLOYMENT.md) | Deployment Guide |
 | | | [ENVIRONMENT.md](ENVIRONMENT.md) | Environment Variable Reference |
 | | | [FILE.md](FILE.md) | File Structure Reference |
+| | | [DATABASE.md](DATABASE.md) | Database Design Description (DI-IPSC-81437A) |
 
 ---
 
@@ -212,6 +213,13 @@ The system operates in the following states. Requirements in this specification 
 | DATA-008 | The system shall emit a `database.afterSave` event via the RxJS event bus after every successful write or delete operation. | High | Test |
 | DATA-009 | The system shall support objects with globally unique, persistent URL identifiers as the `@id` field. | Highest | Test |
 | DATA-010 | The system shall support cross-repository object mobility: an object created on one repository shall be retrievable and updatable on another repository that knows the object's `@id`. | High | Test |
+| DATA-011 | The system shall accept and store any valid JSON-LD object regardless of whether a dedicated SDK model class exists for its `@type`. Storage, indexing, search, KBAC enforcement, and version history shall apply uniformly to all JSON-LD types. | Highest | Test |
+| DATA-012 | When an object with a previously unseen `@context`/`@type` combination is stored, the system shall automatically create a new Elasticsearch index derived from the fully-qualified type URL. No server restart or code change shall be required. | Highest | Test |
+| DATA-013 | The system shall provide dedicated SDK model classes and custom index mappings for officially supported types: `Framework`, `Competency`, `Relation`, `Assertion`, `Level`, `RollupRule`, `Directory`, `Person`, `Organization`, `CreativeWork`, `Concept`, `ConceptScheme`, and `EncryptedValue`. | High | Inspection |
+| DATA-014 | The system shall store and retrieve CTDL types (`ceterms:Credential`, `ceterms:CredentialOrganization`, `ceterms:LearningOpportunityProfile`, `ceterms:AssessmentProfile`, etc.) and CTDL-ASN types (`ceasn:CompetencyFramework`, `ceasn:Competency`) using the same CRUD, search, and access control mechanisms as officially supported types. | High | Test |
+| DATA-015 | The system shall store and retrieve schema.org types (`Person`, `Organization`, `CreativeWork`, `Course`, `AlignmentObject`, `Action`, and the full schema.org vocabulary) using the same CRUD, search, and access control mechanisms as officially supported types. | High | Test |
+| DATA-016 | The system shall store and retrieve SKOS types (`Concept`, `ConceptScheme`, `Collection`) and any custom application-defined JSON-LD types using the same CRUD, search, and access control mechanisms as officially supported types. | High | Test |
+| DATA-017 | The system shall not validate incoming JSON-LD objects against ontology schemas, SHACL shapes, or JSON-LD context definitions. Objects shall be stored as-is with Elasticsearch dynamic mapping applied to their fields. | High | Inspection |
 
 ### 3.2.2 Search
 
