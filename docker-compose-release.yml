@@ -6,7 +6,6 @@ services:
       dockerfile: docker/standalone/Dockerfile
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:${branch}
   standalone-version:
     build:
@@ -14,7 +13,6 @@ services:
       dockerfile: docker/standalone/Dockerfile
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:${version}
   node-branch:
     build:
@@ -22,7 +20,6 @@ services:
       dockerfile: docker/standalone/node/Dockerfile
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:node-${branch}
   node-version:
     build:
@@ -30,7 +27,6 @@ services:
       dockerfile: docker/standalone/node/Dockerfile
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:node-${version}
   alpine-branch:
     build:
@@ -38,7 +34,6 @@ services:
       dockerfile: docker/standalone/node/DockerfileAlpine
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:node-${branch}-alpine
   alpine-version:
     build:
@@ -46,7 +41,6 @@ services:
       dockerfile: docker/standalone/node/DockerfileAlpine
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:node-${version}-alpine
   distroless-branch:
     build:
@@ -54,7 +48,6 @@ services:
       dockerfile: docker/standalone/node/DockerfileDistroless
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:node-${branch}-distroless
   distroless-version:
     build:
@@ -62,5 +55,4 @@ services:
       dockerfile: docker/standalone/node/DockerfileDistroless
       platforms:
         - "linux/amd64"
-        - "linux/arm64"
     image: cassproject/cass:node-${version}-distroless
