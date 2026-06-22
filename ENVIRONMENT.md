@@ -67,6 +67,9 @@ These only apply when `HTTPS=true`.
 | `CASS_OIDC_CLIENT_ID` | `cass` | The OIDC client ID. |
 | `CASS_OIDC_SECRET` | *(built-in default)* | The OIDC client secret. |
 | `CASS_OIDC_SCOPE` | `openid profile email` | Space-separated OIDC scopes to request. |
+| `CASS_SESSION_MAX_AGE` | *(none)* | Absolute session timeout in seconds. If not set, session does not expire. |
+| `CASS_SESSION_INACTIVITY_TIMEOUT` | *(none)* | Inactivity timeout in seconds. If not set, session does not expire due to inactivity. |
+| `CASS_SESSION_VALIDATION_INTERVAL` | *(none)* | Interval in seconds between checks to the SSO provider to verify session validity. |
 
 ---
 

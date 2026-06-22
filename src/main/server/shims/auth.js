@@ -20,8 +20,8 @@ let keyEim = null;
 
 let getPkCache = {};
 let getPersonCache = {};
-var skyrepoAdminPpk = function() {
-    if (!fs.existsSync("etc/skyAdmin2.pem")) 
+var skyrepoAdminPpk = function () {
+    if (!fs.existsSync("etc/skyAdmin2.pem"))
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin2.pem");
     return EcPpk.fromPem(fileToString(fileLoad("etc/skyAdmin2.pem"))).toPem();
 };
@@ -43,37 +43,35 @@ function interpretAdminCSV(envCSV) {
 const allowEnvEmails = process.env.AUTH_ALLOW_ENV_ADMINS == "true";
 const envEmailArray = interpretAdminCSV(process.env.AUTH_ENV_ADMIN_EMAILS);
 
-let getPk = async(identifier) => {
+let getPk = async (identifier) => {
     if (getPkCache[identifier] != null)
         return getPkCache[identifier];
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'AuthLookingIdentifier', "Looking for " + identifier);
     if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
-        return loadConfigurationFile("keys/"+identifier, () => {
+        return loadConfigurationFile("keys/" + identifier, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
         });
-    if (keyEim == null)
-    {
+    if (keyEim == null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'AuthCreatingIdentifier', "Establishing skyId Elastic EIM.");
         keyEim = new EcIdentityManager();
         let i = new EcIdentity();
         i.displayName = "Key Manager";
-        i.ppk = EcPpk.fromPem(loadConfigurationFile("skyId.pem", function() {
+        i.ppk = EcPpk.fromPem(loadConfigurationFile("skyId.pem", function () {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.NOTICE, 'AuthGeneratingEIMFingerprint', "Generating SkyId Elastic EIM fingerprint.");
             return EcPpk.fromPem(rsaGenerate()).toPem();
         }));
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthEIMFingerprint', "SkyId Elastic EIM fingerprint: " + i.ppk.toPk().fingerprint());
         keyEim.addIdentity(i);
-    } 
+    }
     global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.DEBUG, "GetPk", "Looking for " + identifier);
-    let myKey = loadConfigurationFile("keys/"+identifier, () => {
+    let myKey = loadConfigurationFile("keys/" + identifier, () => {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFindKeyDirectoryFail', "Could not find " + identifier + " in file system.");
         return null;
     });
-    
+
     let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/api/"; // NOSONAR -- This is being used as a URI.
     let keypair = new EcRemoteLinkedData();
-    if (myKey != null)
-    {
+    if (myKey != null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileSystemKeypair', "Found file system keypair. Securing and saving to Elastic.");
         loadConfigurationFile("keys/backup/" + identifier, () => {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairBackupSaved', "Saved to backup location.");
@@ -81,44 +79,41 @@ let getPk = async(identifier) => {
         });
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairDeleted', "Deleting old keypair file.");
         global.pathCheck(identifier);
-        fs.unlinkSync("etc/keys/"+identifier);
+        fs.unlinkSync("etc/keys/" + identifier);
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
         keypair.addOwner(keyEim.ids[0].ppk.toPk());
-        keypair.assignId(identityPrefix,keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
+        keypair.assignId(identityPrefix, keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
         keypair.ppk = myKey;
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundElasticKeypairSaved', "Saving Elastic keypair to: " + keypair.shortId());
-        await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair),null,null,keyEim);
+        await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair), null, null, keyEim);
     }
-    if (myKey == null)
-    {
+    if (myKey == null) {
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
         keypair.assignId(identityPrefix, keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairRead', "Reading Elastic keypair from: " + keypair.shortId());
-        keypair = await EcRepository.get(keypair.shortId(),null,null,repo,keyEim);
+        keypair = await EcRepository.get(keypair.shortId(), null, null, repo, keyEim);
         if (keypair != null)
-            keypair = await EcEncryptedValue.fromEncryptedValue(keypair,null,null,keyEim);
+            keypair = await EcEncryptedValue.fromEncryptedValue(keypair, null, null, keyEim);
         if (keypair != null)
             myKey = keypair.ppk;
     }
-    if (myKey == null && repo.selectedServerProxy != null)
-    {
+    if (myKey == null && repo.selectedServerProxy != null) {
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
         keypair.assignId(identityPrefix, keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairRead2', "Reading Elastic keypair (again) from: " + keypair.shortId());
-        keypair = await EcRepository.get(keypair.shortId(),null,null,repo,keyEim);
+        keypair = await EcRepository.get(keypair.shortId(), null, null, repo, keyEim);
         if (keypair != null)
-            keypair = await EcEncryptedValue.fromEncryptedValue(keypair,null,null,keyEim);
+            keypair = await EcEncryptedValue.fromEncryptedValue(keypair, null, null, keyEim);
         if (keypair != null)
             myKey = keypair.ppk;
     }
-    if (myKey == null)
-    {
+    if (myKey == null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairCreate', "Could not find Elastic keypair. Generating a new one.");
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
@@ -127,16 +122,14 @@ let getPk = async(identifier) => {
         keypair.assignId(identityPrefix, keyEim.ids[0].ppk.toPk().fingerprint() + ":" + identifier);
         myKey = keypair.ppk = EcPpk.fromPem(rsaGenerate()).toPem();
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthElasticKeypairSave', "Saving Elastic keypair to: " + keypair.shortId());
-        await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair),null,null,keyEim);
+        await repo.saveTo(await EcEncryptedValue.toEncryptedValue(keypair), null, null, keyEim);
     }
     getPkCache[identifier] = myKey;
     return myKey;
 }
 
-if (process.env.CASS_OIDC_ENABLED || false)
-{
-    if (global.baseUrl != "")
-    {
+if (process.env.CASS_OIDC_ENABLED || false) {
+    if (global.baseUrl != "") {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassAuthBaseUrl", `BASE URL is ${global.baseURL} and this can cause problems with callbacks from SSO providers. You may need to modify your reverse proxy (if you have one) to match up callbacks. If you use the cass installer script, this requires taking /cass out of the Apache2 redirect.`);
     }
     const { auth } = require('express-openid-connect');
@@ -146,14 +139,15 @@ if (process.env.CASS_OIDC_ENABLED || false)
             baseURL: process.env.CASS_OIDC_BASE_URL || 'http://localhost/',
             clientID: process.env.CASS_OIDC_CLIENT_ID || 'cass',
             secret: process.env.CASS_OIDC_SECRET || 'a71b92d4-336e-4664-bc05-2226f76b4042',
-	        routes:{callback:global.baseUrl + "/callback"},
+            routes: { callback: global.baseUrl + "/callback" },
             authorizationParams: {
                 scope: process.env.CASS_OIDC_SCOPE || 'openid profile email'
             },
             authRequired: false,
             session: {
                 cookie: {
-                    sameSite: process.env.CORS_CREDENTIALS && process.env.CORS_CREDENTIALS.trim() == 'true' ? 'None' : 'Lax'
+                    sameSite: process.env.CORS_CREDENTIALS && process.env.CORS_CREDENTIALS.trim() == 'true' ? 'None' : 'Lax',
+                    maxAge: process.env.CASS_SESSION_MAX_AGE ? parseInt(process.env.CASS_SESSION_MAX_AGE) * 1000 : undefined
                 }
             }
         })
@@ -258,8 +252,7 @@ if (process.env.CASS_OIDC_ENABLED || false)
     });
 }
 
-if (process.env.CASS_JWT_ENABLED)
-{
+if (process.env.CASS_JWT_ENABLED) {
     var jwt = require('express-jwt');
     app.use(
         jwt({
@@ -270,8 +263,7 @@ if (process.env.CASS_JWT_ENABLED)
     );
 }
 
-if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
-{
+if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED) {
     /**
      * Extract the encoded JWT from the request's provided Authorization header.
      * @param {String} authHeader 
@@ -280,24 +272,24 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
     function parseHeader(authHeader) {
         if (!authHeader || !authHeader.startsWith("Bearer "))
             return null;
-    
+
         let tokenStr = authHeader.slice(7);
         let parsed = parseJwt(tokenStr);
-        
+
         return parsed;
     }
-    
+
     /**
      * Parse the JWT's body string into a JSON object.
      * @param {String} tokenStr 
      * @returns 
      */
-    function parseJwt (tokenStr) {
+    function parseJwt(tokenStr) {
         let parts = tokenStr.split('.');
         let bodyEncodedB64 = parts[1];
         let bodyDecodedStr = Buffer.from(bodyEncodedB64, 'base64').toString();
         let bodyDecoded = JSON.parse(bodyDecodedStr);
-    
+
         return bodyDecoded;
     }
 
@@ -326,14 +318,13 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         if (adjectives == null)
             adjectives = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_ADJECTIVES);
 
-        if (adjectives != null && adjectives.length > 0)
-        {
+        if (adjectives != null && adjectives.length > 0) {
             let uuidNumber = numberFromUUID(uuid);
             let index = uuidNumber % adjectives.length;
 
             return adjectives[index];
         }
-        
+
         return "Anonymous";
     }
 
@@ -342,8 +333,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         if (nouns == null)
             nouns = interpretEnvCSV(process.env.CASS_PLATFORM_ONE_AUTH_NOUNS);
 
-        if (nouns != null && nouns.length > 0)
-        {
+        if (nouns != null && nouns.length > 0) {
             let uuidNumber = numberFromUUID(uuid);
             let index = uuidNumber % nouns.length;
 
@@ -352,13 +342,13 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 
         return "User";
     }
-    
+
     /**
      * Validate whether this token has the expectd Platform One properties.
      * @param {Object} token 
      * @returns 
      */
-    function validateJwt (token) {
+    function validateJwt(token) {
 
         if (token == null)
             return false;
@@ -380,8 +370,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
         }
 
         let ignoreIssueTime = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME);
-        if (!ignoreIssueTime)
-        {
+        if (!ignoreIssueTime) {
             if (token.iat == undefined)
                 return false;
 
@@ -396,18 +385,16 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 
         return true;
     }
-    
+
     app.use((req, res, next) => {
-        
+
         let authHeader = req.get("Authorization");
         let token = parseHeader(authHeader);
 
         let seemsValid = validateJwt(token);
-        if (seemsValid)
-        {
+        if (seemsValid) {
             let shouldAnonymize = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_ANONYMIZE_USERS);
-            if (shouldAnonymize)
-            {
+            if (shouldAnonymize) {
                 let adjective = createAdjectiveFrom(token.sub);
                 let noun = createNounFrom(token.sub);
 
@@ -417,7 +404,7 @@ if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED)
 
             req.p1 = token;
         }
-        
+
         next();
     });
 }
@@ -486,17 +473,15 @@ app.use(async function (req, res, next) {
     let identifier = null;
     let name = null;
     let username = null;
-    if ((process.env.AUTH_OVERRIDE || global.AUTH_OVERRIDE) != null)
-    {
+    if ((process.env.AUTH_OVERRIDE || global.AUTH_OVERRIDE) != null) {
         req.user = JSON.parse(process.env.AUTH_OVERRIDE || global.AUTH_OVERRIDE);
         let ppk = getPkCache[req.user.email];
         if (getPkCache[req.user.email] == null)
             ppk = getPkCache[req.user.email] = EcPpk.fromPem(process.env.AUTH_OVERRIDE_KEY || global.AUTH_OVERRIDE_KEY).toPem();
-        if (getPersonCache[EcPpk.fromPem(ppk).toPk().toPem()] == null)
-        {
+        if (getPersonCache[EcPpk.fromPem(ppk).toPk().toPem()] == null) {
             let p = new EcPerson();
             p.addOwner(EcPpk.fromPem(ppk).toPk());
-            p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,EcPpk.fromPem(ppk).toPk().fingerprint());
+            p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy, EcPpk.fromPem(ppk).toPk().fingerprint());
             p.name = req.user.name;
             p.email = req.user.email;
             p.identifier = req.user.sub;
@@ -504,13 +489,10 @@ app.use(async function (req, res, next) {
         }
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CaSSFalsifyingIdentity", "Falsifying identity for testing purposes.", req.user, EcPpk.fromPem(process.env.AUTH_OVERRIDE_KEY || global.AUTH_OVERRIDE_KEY).toPk().toPem());
     }
-    if (req.user != null)
-    {
-        if (req.user.iat != null)
-        {
+    if (req.user != null) {
+        if (req.user.iat != null) {
             let secondsSinceEpoch = req.user.iat;
-            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
-            {
+            if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000) {
                 res.end("JWT token is expired.");
                 return;
             }
@@ -530,8 +512,7 @@ app.use(async function (req, res, next) {
         if (req.p1.sub != null)
             identifier = req.p1.sub;
     }
-    if (req.oidc?.user != null)
-    {
+    if (req.oidc?.user != null) {
         name = req.oidc.user.name;
         identifier = req.oidc.user.sub;
         email = req.oidc.user.email;
@@ -541,14 +522,12 @@ app.use(async function (req, res, next) {
     }
     if (req.client?.authorized) {
         let cert = req.socket.getPeerCertificate();
-        if (cert.subject != null)
-        {
+        if (cert.subject != null) {
             email = cert.subject.emailAddress;
             name = cert.subject.CN;
         }
     }
-    if (email != null)
-    {
+    if (email != null) {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.NETWORK, "CassAuthSigSheetCreating", `Securing Proxy: Creating signature sheet for request from ${email}.`);
         let eim = new EcIdentityManager();
         let myKey = await getPk(email);
@@ -584,18 +563,17 @@ app.use(async function (req, res, next) {
         }
         let p = getPersonCache[i.ppk.toPk().toPem()];
         if (p == null)
-            try{
-                p = await EcPerson.getByPk(repo,i.ppk.toPk(),null,null,eim);
+            try {
+                p = await EcPerson.getByPk(repo, i.ppk.toPk(), null, null, eim);
                 getPersonCache[i.ppk.toPk().toPem()] = p;
-            }catch(ex){
+            } catch (ex) {
                 global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthPersonNotFound", "Could not find person.", ex);
             }
-        if (p == null)
-        {
+        if (p == null) {
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthCreatingPerson", "Creating person.", i.ppk.toPk().fingerprint());
             p = new EcPerson();
             p.addOwner(i.ppk.toPk());
-            p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy,i.ppk.toPk().fingerprint());
+            p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy, i.ppk.toPk().fingerprint());
             p.name = name;
             p.email = email;
             p.identifier = identifier;
@@ -605,21 +583,19 @@ app.use(async function (req, res, next) {
         }
         //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!
         let signatureSheet = signatureSheetCache[p.shortId()];
-        if (signatureSheet != null)
-        {
+        if (signatureSheet != null) {
             let maxTimeout = 0;
             let ss = JSON.parse(signatureSheet);
             for (let o of ss)
-                maxTimeout = Math.max(maxTimeout,o.expiry);
-            if (maxTimeout < new Date().getTime()+20000)
+                maxTimeout = Math.max(maxTimeout, o.expiry);
+            if (maxTimeout < new Date().getTime() + 20000)
                 signatureSheet = null;
         }
-        if (signatureSheet == null)
-        {
+        if (signatureSheet == null) {
             let signatureServer = repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy;
 
             signatureSheet = await eim.signatureSheet(6000000, signatureServer, null, null, "SHA-256");
-            
+
             let considerUserAnAdmin = allowEnvEmails && envEmailArray.includes(email);
             if (considerUserAnAdmin && signatureSheet != null) {
 
@@ -628,12 +604,12 @@ app.use(async function (req, res, next) {
 
                 let signatureSheetObj = JSON.parse(signatureSheet);
                 let adminSignatureObj = JSON.parse(JSON.stringify(adminSignature));
-                
+
                 global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassSigSheetCreated", `Securing Proxy: Adding ADMIN signature for due to ENV config for ${email}.`, signatureSheet);
 
                 signatureSheetObj.push(adminSignatureObj);
                 signatureSheet = JSON.stringify(signatureSheetObj);
-                
+
                 let userPublicKeyStr = signatureSheetObj[0]["@owner"];
                 sharedAdminCache.addPublicKeyToKnownAdmins(userPublicKeyStr);
             }
@@ -650,8 +626,7 @@ app.use(async function (req, res, next) {
 });
 let signatureSheetCache = {};
 
-if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
-{
+if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED != null) {
     // Rate limiter for IP allow / SSO guard — prevents brute-force access attempts.
     const ipAllowRateLimiter = rateLimit({
         windowMs: parseInt(process.env.CASS_RATE_LIMIT_WINDOW_MS) || 60 * 1000, // 1 minute
@@ -665,47 +640,74 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
     }
 
     app.use(async function (req, res, next) {
+        if (process.env.CASS_SESSION_INACTIVITY_TIMEOUT) {
+            const timeoutMs = parseInt(process.env.CASS_SESSION_INACTIVITY_TIMEOUT) * 1000;
+            const now = Date.now();
+            if (req.oidc.session && req.oidc.session.lastActivity) {
+                if (now - req.oidc.session.lastActivity > timeoutMs) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, 'SessionInactivityTimeout', `Session expired due to inactivity for user: ${req.oidc.user?.email}`);
+                    return res.oidc.logout({ returnTo: '/api/login' });
+                }
+            }
+            req.oidc.session.lastActivity = now;
+        }
+
+        if (process.env.CASS_SESSION_VALIDATION_INTERVAL) {
+            const validationIntervalMs = parseInt(process.env.CASS_SESSION_VALIDATION_INTERVAL) * 1000;
+            const now = Date.now();
+
+            if (req.oidc.session) {
+                if (req.oidc.session.lastValidated && (now - req.oidc.session.lastValidated > validationIntervalMs)) {
+                    try {
+                        const accessToken = req.oidc.session.accessToken;
+                        const issuerBaseUrl = (process.env.CASS_OIDC_ISSUER_BASE_URL || '').replace(/\/$/, '');
+                        if (!accessToken || !issuerBaseUrl) {
+                            throw new Error('Missing token or issuer URL for validation');
+                        }
+
+                        const userInfoUrl = issuerBaseUrl + '/protocol/openid-connect/userinfo';
+                        const response = await fetch(userInfoUrl, {
+                            headers: { 'Authorization': `Bearer ${accessToken}` }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`SSO validation failed: HTTP ${response.status}`);
+                        }
+                        req.oidc.session.lastValidated = now;
+                    } catch (e) {
+                        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, 'SSOForcedExpiration', `SSO session expired or invalid for user: ${req.oidc.user?.email}. Error: ${e.message}`);
+                        return res.oidc.logout({ returnTo: '/api/login' });
+                    }
+                } else {
+                    req.oidc.session.lastValidated = now;
+                }
+            }
+        }
+
         let debug = true;
         let ipFilter = process.env.CASS_IP_ALLOW || "";
         ipFilter += ",::ffff:127.0.0.1";
         let ipFilterList = ipFilter.split(",");
         let allowed = false;
         req.permittedBy = [];
-        if (req.originalUrl == global.baseUrl + "/callback")
-            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO is permitted
-        if (req.originalUrl == global.baseUrl + "/login")
-            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
-        if (req.originalUrl == global.baseUrl + "/logout")
-            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
-        if (req.originalUrl == global.baseUrl + "/api/ping")
-            { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //Health check is permitted
-        if (req.originalUrl == "/.well-known/oauth-authorization-server")
-            { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth discovery is permitted
-        if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-client-ip']))
-            { req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList, req.headers['x-forwarded-for']))
-            { req.permittedBy.push("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList, req.headers['cf-connecting-ip']))
-            { req.permittedBy.push("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['fastly-client-ip'] != null && ipMatch(ipFilterList, req.headers['fastly-client-ip']))
-            { req.permittedBy.push("Permitted by: " + 'fastly-client-ip' + ": " + req.headers['fastly-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['true-client-ip'] != null && ipMatch(ipFilterList, req.headers['true-client-ip']))
-            { req.permittedBy.push("Permitted by: " + 'true-client-ip' + ": " + req.headers['true-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-real-ip'] != null && ipMatch(ipFilterList, req.headers['x-real-ip']))
-            { req.permittedBy.push("Permitted by: " + 'x-real-ip' + ": " + req.headers['x-real-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-cluster-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-cluster-client-ip']))
-            { req.permittedBy.push("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.headers['x-forwarded'] != null && ipMatch(ipFilterList, req.headers['x-forwarded']))
-            { req.permittedBy.push("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
-        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList, req.socket.remoteAddress))
-            { req.permittedBy.push("Permitted by: " + 'connection' + ": " + req.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
-        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList, req.socket.remoteAddress))
-            { req.permittedBy.push("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
-        if (req.info?.remoteAddress != null && ipMatch(ipFilterList, req.info.remoteAddress))
-            { req.permittedBy.push("Permitted by: " + 'info' + ": " + req.info.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
+        if (req.originalUrl == global.baseUrl + "/callback") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO is permitted
+        if (req.originalUrl == global.baseUrl + "/login") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
+        if (req.originalUrl == global.baseUrl + "/logout") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
+        if (req.originalUrl == global.baseUrl + "/api/ping") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //Health check is permitted
+        if (req.originalUrl == "/.well-known/oauth-authorization-server") { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth discovery is permitted
+        if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-client-ip'])) { req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList, req.headers['x-forwarded-for'])) { req.permittedBy.push("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList, req.headers['cf-connecting-ip'])) { req.permittedBy.push("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['fastly-client-ip'] != null && ipMatch(ipFilterList, req.headers['fastly-client-ip'])) { req.permittedBy.push("Permitted by: " + 'fastly-client-ip' + ": " + req.headers['fastly-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['true-client-ip'] != null && ipMatch(ipFilterList, req.headers['true-client-ip'])) { req.permittedBy.push("Permitted by: " + 'true-client-ip' + ": " + req.headers['true-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-real-ip'] != null && ipMatch(ipFilterList, req.headers['x-real-ip'])) { req.permittedBy.push("Permitted by: " + 'x-real-ip' + ": " + req.headers['x-real-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-cluster-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-cluster-client-ip'])) { req.permittedBy.push("Permitted by: " + 'x-cluster-client-ip' + ": " + req.headers['x-cluster-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.headers['x-forwarded'] != null && ipMatch(ipFilterList, req.headers['x-forwarded'])) { req.permittedBy.push("Permitted by: " + 'x-forwarded' + ": " + req.headers['x-forwarded']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
+        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList, req.socket.remoteAddress)) { req.permittedBy.push("Permitted by: " + 'connection' + ": " + req.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
+        if (req.socket?.remoteAddress != null && ipMatch(ipFilterList, req.socket.remoteAddress)) { req.permittedBy.push("Permitted by: " + 'socket' + ": " + req.socket.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
+        if (req.info?.remoteAddress != null && ipMatch(ipFilterList, req.info.remoteAddress)) { req.permittedBy.push("Permitted by: " + 'info' + ": " + req.info.remoteAddress); allowed = true; } //Remote address is permitted. (vpns, direct access)
         if (process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
-        if (req.eim != null && req.eim.ids.length >= parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED))
-            { req.permittedBy.push("Permitted by: " + 'sso ids > ' + process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length); allowed = true; } //In a permissioned group.
+            if (req.eim != null && req.eim.ids.length >= parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED)) { req.permittedBy.push("Permitted by: " + 'sso ids > ' + process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length); allowed = true; } //In a permissioned group.
 
         // Validate OAuth Bearer tokens (for MCP/API clients that authenticated via the OAuth flow).
         if (!allowed && req.headers.authorization) {
@@ -734,17 +736,16 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             }
         }
 
-        if (!allowed)
-        {          
+        if (!allowed) {
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.", JSON.stringify({
                 allowed,
-                headers:req.headers,
-                connections:{
-                    socket:(req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                    info:(req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
+                headers: req.headers,
+                connections: {
+                    socket: (req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
+                    info: (req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
                 },
-                eim: req.eim != null ? req.eim.ids.map(i=>i.displayName) : null
-            }),"Use forwarding headers: x-client-ip, x-forwarded-for, cf-connecting-ip, fastly-client-ip, true-client-ip, x-real-ip, x-cluster-client-ip, x-forwarded");
+                eim: req.eim != null ? req.eim.ids.map(i => i.displayName) : null
+            }), "Use forwarding headers: x-client-ip, x-forwarded-for, cf-connecting-ip, fastly-client-ip, true-client-ip, x-real-ip, x-cluster-client-ip, x-forwarded");
 
             // Detect API/MCP client requests via Accept header or MCP endpoint path.
             // These clients expect JSON or SSE streams, not HTML redirects.
@@ -754,8 +755,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
                 || acceptHeader.includes('application/json'))
                 && isMcpPath;
 
-            if (isApiClient)
-            {
+            if (isApiClient) {
                 // Build the WWW-Authenticate header value.
                 // If OIDC is enabled, point to the issuer; otherwise use CASS_IP_DENIED_REDIRECT or a generic Bearer challenge.
                 let wwwAuth = 'Bearer';
@@ -771,32 +771,29 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
                 res.status(401).json({
                     error: 'Unauthorized',
                     message: 'Authentication required. Provide a valid Bearer token.',
-                    login_url: process.env.CASS_IP_DENIED_REDIRECT || (global.baseUrl + '/api/login')
+                    login_url: process.env.CASS_IP_DENIED_REDIRECT || new URL('api/login', global.baseUrl).toString()
                 });
             }
-            else if (process.env.CASS_IP_DENIED_REDIRECT)
-            {
+            else if (process.env.CASS_IP_DENIED_REDIRECT) {
                 res.redirect(process.env.CASS_IP_DENIED_REDIRECT);
                 res.end();
             }
-            else
-            {
+            else {
                 res.status(403);
                 res.end();
             }
         }
-        else
-        {
+        else {
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassIpAllowGranted", "GRANTED BY CASS_IP_ALLOW.", JSON.stringify({
                 allowed,
-                permittedBy:req.permittedBy,
-                headers:req.headers,
-                connections:{
-                    socket:(req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                    info:(req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
+                permittedBy: req.permittedBy,
+                headers: req.headers,
+                connections: {
+                    socket: (req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
+                    info: (req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
                 },
-                eim: req.eim != null ? req.eim.ids.map(i=>i.displayName) : null
-            }),"Use forwarding headers: x-client-ip, x-forwarded-for, cf-connecting-ip, fastly-client-ip, true-client-ip, x-real-ip, x-cluster-client-ip, x-forwarded");
+                eim: req.eim != null ? req.eim.ids.map(i => i.displayName) : null
+            }), "Use forwarding headers: x-client-ip, x-forwarded-for, cf-connecting-ip, fastly-client-ip, true-client-ip, x-real-ip, x-cluster-client-ip, x-forwarded");
             next();
         }
     });
@@ -828,30 +825,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-var isNumeric = function(n) { return !isNaN(parseFloat(n)) && isFinite(n); };
+var isNumeric = function (n) { return !isNaN(parseFloat(n)) && isFinite(n); };
 
-var ipMatch = function(list,clientIp) {
-	if (clientIp && Address.isValid(clientIp)) {
-		// `Address.process` return the IP instance in IPv4 or IPv6 form.
-		// It will return IPv4 instance if it's a IPv4 mapped IPv6 address
-		clientIp = Address.process(clientIp);
-		return list.some(function(e) {
-			// IPv6 address has 128 bits and IPv4 has 32 bits.
-			// Setting the routing prefix to all bits in a CIDR address means only the specified address is allowed.
-			e = e || '';
-			e = e.indexOf('/') === -1 ? e + '/128' : e;
-			var range = e.split('/');
-			if (range.length === 2 && Address.isValid(range[0]) && isNumeric(range[1])) {
-				var ip = Address.process(range[0]);
-				var bit = parseInt(range[1], 10);
+var ipMatch = function (list, clientIp) {
+    if (clientIp && Address.isValid(clientIp)) {
+        // `Address.process` return the IP instance in IPv4 or IPv6 form.
+        // It will return IPv4 instance if it's a IPv4 mapped IPv6 address
+        clientIp = Address.process(clientIp);
+        return list.some(function (e) {
+            // IPv6 address has 128 bits and IPv4 has 32 bits.
+            // Setting the routing prefix to all bits in a CIDR address means only the specified address is allowed.
+            e = e || '';
+            e = e.indexOf('/') === -1 ? e + '/128' : e;
+            var range = e.split('/');
+            if (range.length === 2 && Address.isValid(range[0]) && isNumeric(range[1])) {
+                var ip = Address.process(range[0]);
+                var bit = parseInt(range[1], 10);
 
-				// `IP.kind()` return `'ipv4'` or `'ipv6'`. Only same type can be `match`.
-				if (clientIp.kind() === ip.kind()) {
-					return clientIp.match(ip, bit);
-				}
-			}
-			return false;
-		});
-	}
-	return false;
+                // `IP.kind()` return `'ipv4'` or `'ipv6'`. Only same type can be `match`.
+                if (clientIp.kind() === ip.kind()) {
+                    return clientIp.match(ip, bit);
+                }
+            }
+            return false;
+        });
+    }
+    return false;
 };

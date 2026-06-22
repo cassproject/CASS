@@ -144,6 +144,9 @@ environment:
   - CASS_OIDC_CLIENT_ID=cass
   - CASS_OIDC_SECRET=your-client-secret
   - CASS_OIDC_BASE_URL=http://localhost/
+  - CASS_SESSION_MAX_AGE=3600
+  - CASS_SESSION_INACTIVITY_TIMEOUT=900
+  - CASS_SESSION_VALIDATION_INTERVAL=300
 ```
 
 ### JWT Bearer Token

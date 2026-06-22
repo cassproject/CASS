@@ -42,8 +42,8 @@ const pingWithTime = function () {
         ssoViaP1: this.ctx.req.p1 ? true : null,
         ssoPublicKey: this.ctx.req.eim ? this.ctx.req.eim.ids[0].ppk.toPk().toPem() : undefined,
         ssoAdditionalPublicKeys: this.ctx.req.eim && this.ctx.req.eim.ids.length ? this.ctx.req.eim.ids.slice(1).map((identity) => identity.ppk.toPk().toPem()) : undefined,
-        ssoLogin: this.ctx.req.oidc ? (process.env.CASS_OIDC_BASE_URL || 'http://localhost/') + 'api/login' : undefined,
-        ssoLogout: this.ctx.req.oidc ? (process.env.CASS_OIDC_BASE_URL || 'http://localhost/') + 'api/logout' : undefined,
+        ssoLogin: this.ctx.req.oidc ? new URL('api/login', process.env.CASS_OIDC_BASE_URL || 'http://localhost/').toString() : undefined,
+        ssoLogout: this.ctx.req.oidc ? new URL('api/logout', process.env.CASS_OIDC_BASE_URL || 'http://localhost/').toString() : undefined,
         banner: process.env.CASS_BANNER_MESSAGE ? {
             message: process.env.CASS_BANNER_MESSAGE, // string
             color: process.env.CASS_BANNER_TEXT_COLOR, // valid css color value

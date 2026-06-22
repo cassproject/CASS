@@ -1,11 +1,11 @@
-version: '3'
+version: "3"
 services:
   cass:
     build:
       context: .
       dockerfile: docker/standalone/node/Dockerfile
     container_name: cass
-    entrypoint: [ "node", "./src/main/server.js" ]
+    entrypoint: ["node", "./src/main/server.js"]
     networks:
       - esnet
     ports:
@@ -20,6 +20,9 @@ services:
       - CASS_OIDC_SECRET=RYY4Mpns5xm1d9TT19ds7sV1Pd9lEslv # secret from your keycloak client
       - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
       - CASS_OIDC_EXTERNAL_ISSUER_URL=http://localhost:8080/realms/master/ # external URL for MCP OAuth metadata (host-reachable)
+      - CASS_SESSION_MAX_AGE=3600
+      - CASS_SESSION_INACTIVITY_TIMEOUT=900
+      - CASS_SESSION_VALIDATION_INTERVAL=300
       - CASS_SSO_ACCOUNT_REQUIRED=1
       - CASS_IP_ALLOW=127.0.0.1,172.16.0.0/12,192.168.0.0/16,10.0.0.0/8
       - CASS_IP_DENIED_REDIRECT=/api/login
@@ -33,7 +36,7 @@ services:
     user: "1000"
     volumes:
       - etc:/app/etc
-    depends_on: 
+    depends_on:
       - elasticsearch-cass
   cassl:
     build:
@@ -57,6 +60,9 @@ services:
       - CASS_OIDC_SECRET=RYY4Mpns5xm1d9TT19ds7sV1Pd9lEslv # secret from your keycloak client
       - CASS_OIDC_BASE_URL=http://localhost/ # where to redirect after login
       - CASS_SSO_ACCOUNT_REQUIRED=1
+      - CASS_SESSION_MAX_AGE=3600
+      - CASS_SESSION_INACTIVITY_TIMEOUT=900
+      - CASS_SESSION_VALIDATION_INTERVAL=300
       # - CASS_BANNER_MESSAGE=CUI # message to display in a banner
       # - CASS_BANNER_TEXT_COLOR=red # valid css color value for text color of banner message
       # - CASS_BANNER_BACKGROUND_COLOR=yellow # valid css color value for background color of banner
