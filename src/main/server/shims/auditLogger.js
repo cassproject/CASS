@@ -64,6 +64,7 @@ const InverseSeverity = {
 let logBuffers = [];
 let timeoutHandler;
 let previousHash = '';
+let lastLoggedMessage = '';
 
 
 let flush = function () {
@@ -102,6 +103,10 @@ let report = function (system, severity, message, ...data) {
         try {
             if (filterLogs(system, severity, message)) {
                 const msg = JSON.stringify({ date: new Date(), message, data, system, severity });
+                if (msg === lastLoggedMessage) {
+                    return;
+                }
+                lastLoggedMessage = msg;
                 logBuffers.push(hash(msg));
             }
             if (logBuffers.length > 1000) {
