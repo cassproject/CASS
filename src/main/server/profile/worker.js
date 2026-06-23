@@ -40,6 +40,8 @@
 const https = require('https');
 
 let app;
+// Undici 8.x's fetch doesn't recognize native FormData. Must load before cassproject.
+require('../shims/undici-compat');
 require("cassproject");
 
 const hashModuleRoot = require("node-object-hash");

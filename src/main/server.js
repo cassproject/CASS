@@ -40,6 +40,9 @@ global.fetch = async function (url, options) {
     return originalFetch(url, options);
 }
 
+// Undici 8.x's fetch doesn't recognize native FormData. Must load before cassproject.
+require('./server/shims/undici-compat');
+
 let startupDt = new Date();
 global.auditLogger = require('./server/shims/auditLogger.js');
 const express = require('express');
