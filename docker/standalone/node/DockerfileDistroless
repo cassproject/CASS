@@ -79,7 +79,7 @@ RUN if [ "$TEST" = "true" ] ; then export PORT=8083 && export CASS_LOOPBACK=http
 RUN rm -f client.key client.crt
 
 # Stage 2: Distroless runtime - minimal image with no shell or package manager
-FROM gcr.io/distroless/nodejs24-debian12
+FROM gcr.io/distroless/nodejs24-debian13
 
 # Copy FIPS OpenSSL libraries, modules, and configuration from builder
 COPY --from=builder /usr/local/lib /usr/local/lib
