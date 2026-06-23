@@ -132,6 +132,7 @@ global.filterResults = async function (o, dontDecryptInSso) {
                     break;
                 }
                 if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signature.owner))) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.SECURITY, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected in filterResults.');
                     foundSignature = true;
                     break;
                 }
@@ -221,7 +222,7 @@ global.validateSignaturesBulk = async function (map, errorMessage) {
                             break;
                         }
                         if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
-                            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected.');
+                            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected to validate bulk signatures.');
                             success = true;
                             break;
                         }
