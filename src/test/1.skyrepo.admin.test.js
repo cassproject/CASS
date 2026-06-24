@@ -25,5 +25,17 @@ if (process.env.NODEV == null)
             }
             assert.strictEqual(EcPpk.fromPem(fileToString(fileLoad('etc/skyAdmin2.pem'))).toPk().toPem(), skyrepoAdminPk(), 'skyrepoAdminPk should return the public key from the pem file');
         });
+
+        it('skyrepoAdminList does not throw when env admins are enabled', () => {
+            const prev = process.env.AUTH_ALLOW_ENV_ADMINS;
+            process.env.AUTH_ALLOW_ENV_ADMINS = 'true';
+            try {
+                const list = skyrepoAdminList();
+                assert.isArray(list, 'skyrepoAdminList() should return an array of admin public keys');
+            } finally {
+                if (prev === undefined) delete process.env.AUTH_ALLOW_ENV_ADMINS;
+                else process.env.AUTH_ALLOW_ENV_ADMINS = prev;
+            }
+        });
     });
 }
