@@ -145,9 +145,9 @@ if (process.env.CASS_OIDC_ENABLED || false) {
             },
             authRequired: false,
             session: {
+                rollingDuration: process.env.CASS_SESSION_MAX_AGE ? parseInt(process.env.CASS_SESSION_MAX_AGE) : undefined,
                 cookie: {
                     sameSite: process.env.CORS_CREDENTIALS && process.env.CORS_CREDENTIALS.trim() == 'true' ? 'None' : 'Lax',
-                    maxAge: process.env.CASS_SESSION_MAX_AGE ? parseInt(process.env.CASS_SESSION_MAX_AGE) * 1000 : undefined
                 }
             }
         })
@@ -640,17 +640,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
     }
 
     app.use(async function (req, res, next) {
-        if (process.env.CASS_SESSION_INACTIVITY_TIMEOUT) {
-            const timeoutMs = parseInt(process.env.CASS_SESSION_INACTIVITY_TIMEOUT) * 1000;
-            const now = Date.now();
-            if (req.oidc.session && req.oidc.session.lastActivity) {
-                if (now - req.oidc.session.lastActivity > timeoutMs) {
-                    global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, 'SessionInactivityTimeout', `Session expired due to inactivity for user: ${req.oidc.user?.email}`);
-                    return res.oidc.logout({ returnTo: '/api/login' });
-                }
-            }
-            req.oidc.session.lastActivity = now;
-        }
+
 
         if (process.env.CASS_SESSION_VALIDATION_INTERVAL) {
             const validationIntervalMs = parseInt(process.env.CASS_SESSION_VALIDATION_INTERVAL) * 1000;
