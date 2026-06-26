@@ -1,7 +1,12 @@
 const fs = require('fs');
 const nodePath = require('path');
 const busboy = require('busboy');
-const getStream = require('get-stream');
+const _getStream = require('get-stream');
+const getStream = typeof _getStream === 'function'
+    ? _getStream
+    : (_getStream.default || _getStream.getStream);
+// exposed for regression tests; the shim is otherwise loaded only for its global side effects.
+module.exports.getStream = getStream;
 const dns = require('dns').promises;
 
 // LEVR shims
