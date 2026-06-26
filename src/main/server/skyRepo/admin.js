@@ -18,6 +18,7 @@
  * --END_LICENSE--
  */
 const fs = require('fs');
+const sharedAdminCache = require('../shims/util/sharedAdminCache.js');
 
 if (process.env.INSECURE_SERVER_IS_ADMIN) {
     process.env.PROFILE_PPK = EcPpk.fromPem(keyFor("skyAdmin2")).toPem();
