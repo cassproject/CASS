@@ -167,20 +167,49 @@ if (process.env.CASS_OIDC_ENABLED || false) {
     });
 
     // -----------------------------------------------------------------------
+    // OAuth 2.0 Protected Resource Metadata (RFC 9728) for MCP clients.
+    //
+    // When an MCP server returns 401, clients discover the authorization
+    // server via /.well-known/oauth-protected-resource on the MCP server's
+    // origin. authorization_servers points to CaSS because CaSS proxies
+    // the RFC 8414 metadata (many providers don't serve it natively).
+    // -----------------------------------------------------------------------
+    app.get('/.well-known/oauth-protected-resource', (req, res) => {
+        const serverOrigin = (process.env.CASS_OIDC_BASE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+
+        if (!process.env.CASS_OIDC_ISSUER_BASE_URL) {
+            res.status(404).json({ error: 'OIDC issuer not configured' });
+            return;
+        }
+
+        const metadata = {
+            resource: serverOrigin,
+            authorization_servers: [serverOrigin],
+            scopes_supported: (process.env.CASS_OIDC_SCOPE || 'openid profile email').split(/\s+/),
+            bearer_methods_supported: ['header'],
+        };
+
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, 'OAuthProtectedResourceServed',
+            `Served OAuth Protected Resource Metadata (auth_server: ${serverOrigin})`);
+        res.json(metadata);
+    });
+
+    // -----------------------------------------------------------------------
     // OAuth 2.0 Authorization Server Metadata (RFC 8414) for MCP clients.
     //
-    // The MCP Authorization spec requires that when an MCP server returns 401,
-    // clients discover OAuth config at /.well-known/oauth-authorization-server
-    // on the MCP server's origin. This endpoint proxies the Keycloak OIDC
-    // discovery document and serves it as RFC 8414 metadata.
+    // Proxies the upstream OIDC discovery document and serves it as RFC 8414
+    // metadata. The issuer is set to the CaSS origin to match what we
+    // advertise in authorization_servers above (RFC 8414 §3.3).
     // -----------------------------------------------------------------------
     let cachedOAuthMetadata = null;
     let cachedOAuthMetadataExpiry = 0;
 
     app.get('/.well-known/oauth-authorization-server', async (req, res) => {
         try {
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, 'OAuthMetadataRequest',
+                `OAuth Authorization Server Metadata requested`);
+
             const now = Date.now();
-            // Cache for 5 minutes to avoid hammering Keycloak
             if (cachedOAuthMetadata && now < cachedOAuthMetadataExpiry) {
                 res.json(cachedOAuthMetadata);
                 return;
@@ -192,9 +221,8 @@ if (process.env.CASS_OIDC_ENABLED || false) {
                 return;
             }
 
-            // Fetch the OpenID Connect discovery document from Keycloak
             const discoveryUrl = issuerBaseUrl + '/.well-known/openid-configuration';
-            const response = await fetch(discoveryUrl);
+            const response = await fetch(discoveryUrl, { signal: AbortSignal.timeout(10000) });
             if (!response.ok) {
                 global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.ERROR, 'OAuthMetadataFetchError',
                     `Failed to fetch OIDC discovery from ${discoveryUrl}: HTTP ${response.status}`);
@@ -204,21 +232,15 @@ if (process.env.CASS_OIDC_ENABLED || false) {
 
             const oidcConfig = await response.json();
 
-            // Filter scopes to only those Keycloak permits for dynamic client
-            // registration (default + optional client scopes). Raw Keycloak
-            // discovery includes internal scopes like 'service_account' that
-            // are NOT in the allowed-client-scopes policy and cause 403 errors.
-            const safeScopes = ['profile', 'email', 'offline_access', 'address', 'phone'];
+            // Keep standard OAuth/OIDC scopes, drop provider-internal ones.
+            const safeScopes = ['openid', 'profile', 'email', 'offline_access', 'address', 'phone'];
             const filteredScopes = (oidcConfig.scopes_supported || [])
                 .filter(s => safeScopes.includes(s));
 
-            // Rewrite Keycloak internal URLs to be externally reachable.
-            // CaSS fetches from Docker-internal hostname (e.g. host.docker.internal)
-            // but MCP clients on the host need localhost-reachable URLs.
+            // Rewrite internal URLs to be externally reachable.
             const externalIssuer = process.env.CASS_OIDC_EXTERNAL_ISSUER_URL;
             const rewriteUrl = (url) => {
                 if (!url || !externalIssuer) return url;
-                // Replace the issuer prefix in all endpoint URLs
                 const internalIssuer = oidcConfig.issuer;
                 if (url.startsWith(internalIssuer)) {
                     return externalIssuer.replace(/\/$/, '') + url.substring(internalIssuer.length);
@@ -226,9 +248,11 @@ if (process.env.CASS_OIDC_ENABLED || false) {
                 return url;
             };
 
-            // Map OIDC discovery to RFC 8414 OAuth Authorization Server Metadata
+            // issuer MUST match authorization_servers from protected resource metadata.
+            const serverOrigin = (process.env.CASS_OIDC_BASE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+
             cachedOAuthMetadata = {
-                issuer: externalIssuer ? externalIssuer.replace(/\/$/, '') : oidcConfig.issuer,
+                issuer: serverOrigin,
                 authorization_endpoint: rewriteUrl(oidcConfig.authorization_endpoint),
                 token_endpoint: rewriteUrl(oidcConfig.token_endpoint),
                 registration_endpoint: rewriteUrl(oidcConfig.registration_endpoint) || undefined,
@@ -646,7 +670,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             const validationIntervalMs = parseInt(process.env.CASS_SESSION_VALIDATION_INTERVAL) * 1000;
             const now = Date.now();
 
-            if (req.oidc.session) {
+            if (req.oidc && req.oidc.session) {
                 if (req.oidc.session.lastValidated && (now - req.oidc.session.lastValidated > validationIntervalMs)) {
                     try {
                         const accessToken = req.oidc.session.accessToken;
@@ -685,6 +709,8 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
         if (req.originalUrl == global.baseUrl + "/logout") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
         if (req.originalUrl == global.baseUrl + "/api/ping") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //Health check is permitted
         if (req.originalUrl == "/.well-known/oauth-authorization-server") { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth discovery is permitted
+        if (req.originalUrl == "/.well-known/oauth-protected-resource") { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth resource metadata is permitted
+
         if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-client-ip'])) { req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList, req.headers['x-forwarded-for'])) { req.permittedBy.push("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList, req.headers['cf-connecting-ip'])) { req.permittedBy.push("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
@@ -727,7 +753,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
         }
 
         if (!allowed) {
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassIpAllowDenied", "DENIED BY CASS_IP_ALLOW.", JSON.stringify({
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassIpAllowDenied", "DENIED", JSON.stringify({
                 allowed,
                 headers: req.headers,
                 connections: {
@@ -741,16 +767,16 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             // These clients expect JSON or SSE streams, not HTML redirects.
             const acceptHeader = (req.headers['accept'] || '').toLowerCase();
             const isMcpPath = req.originalUrl.startsWith(global.baseUrl + '/api/mcp');
-            const isApiClient = (acceptHeader.includes('text/event-stream')
-                || acceptHeader.includes('application/json'))
-                && isMcpPath;
+            const isApiClient = isMcpPath
+                || ((acceptHeader.includes('text/event-stream')
+                    || acceptHeader.includes('application/json'))
+                    && req.originalUrl.startsWith(global.baseUrl + '/api/'));
 
             if (isApiClient) {
-                // Build the WWW-Authenticate header value.
-                // If OIDC is enabled, point to the issuer; otherwise use CASS_IP_DENIED_REDIRECT or a generic Bearer challenge.
+                const serverOrigin = (process.env.CASS_OIDC_BASE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
                 let wwwAuth = 'Bearer';
-                if (process.env.CASS_OIDC_ENABLED && process.env.CASS_OIDC_ISSUER_BASE_URL) {
-                    wwwAuth = `Bearer realm="${process.env.CASS_OIDC_ISSUER_BASE_URL}"`;
+                if (process.env.CASS_OIDC_ENABLED) {
+                    wwwAuth = `Bearer resource_metadata="${serverOrigin}/.well-known/oauth-protected-resource"`;
                 } else if (process.env.CASS_IP_DENIED_REDIRECT) {
                     wwwAuth = `Bearer realm="${process.env.CASS_IP_DENIED_REDIRECT}"`;
                 }
@@ -758,11 +784,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
                 global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassApiClientDenied",
                     `API/MCP client denied (returning 401 instead of redirect). Path: ${req.originalUrl}`);
                 res.set('WWW-Authenticate', wwwAuth);
-                res.status(401).json({
-                    error: 'Unauthorized',
-                    message: 'Authentication required. Provide a valid Bearer token.',
-                    login_url: process.env.CASS_IP_DENIED_REDIRECT || new URL('api/login', global.baseUrl).toString()
-                });
+                res.status(401).json({ error: 'Unauthorized' });
             }
             else if (process.env.CASS_IP_DENIED_REDIRECT) {
                 res.redirect(process.env.CASS_IP_DENIED_REDIRECT);
@@ -774,7 +796,7 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
             }
         }
         else {
-            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassIpAllowGranted", "GRANTED BY CASS_IP_ALLOW.", JSON.stringify({
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassIpAllowGranted", `GRANTED BY ${req.permittedBy}.`, JSON.stringify({
                 allowed,
                 permittedBy: req.permittedBy,
                 headers: req.headers,

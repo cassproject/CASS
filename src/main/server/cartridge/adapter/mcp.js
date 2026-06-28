@@ -19,9 +19,15 @@
 async function initMcp() {
     // Dynamic imports for ESM modules
     const { McpServer, ResourceTemplate } = await import('@modelcontextprotocol/sdk/server/mcp.js');
-    const { SSEServerTransport } = await import('@modelcontextprotocol/sdk/server/sse.js');
+    const { StreamableHTTPServerTransport } = await import('@modelcontextprotocol/sdk/server/streamableHttp.js');
     const { generateTools, generateResourceTemplates } = await import('../../mcp/lib/openapi-to-tools.js');
     const { inputSchemaToZodShape } = await import('../../mcp/lib/json-schema-to-zod.js');
+    const { AsyncLocalStorage } = require('async_hooks');
+
+    // AsyncLocalStorage propagates the Express request context (signatureSheet,
+    // authorization) into async MCP tool handler callbacks so that loopback
+    // calls carry the user's identity for kbac.js access control.
+    const mcpRequestContext = new AsyncLocalStorage();
 
     let spec;
 
@@ -56,17 +62,12 @@ async function initMcp() {
     global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolsGenerated', `MCP adapter generated ${toolDefs.length} tools, ${resourceTemplateDefs.length} resource templates`);
 
     // -----------------------------------------------------------------------
-    // 3. Build the MCP server with all tools and resources
+    // 3. Server factory — creates a fresh McpServer per session
     // -----------------------------------------------------------------------
 
-    /**
-     * Create and configure a fresh McpServer instance.
-     * Called once per session so each client gets its own server state.
-     *
-     * @param {Object} sessionCtx - Mutable per-session context. The POST handler
-     *   updates sessionCtx.signatureSheet on each request from auth.js middleware.
-     */
-    function createMcpServer(sessionCtx) {
+    const cassUrl = (global.repo ? global.repo.selectedServer : 'http://localhost/api/').replace(/\/$/, '');
+
+    function createMcpServer() {
         const server = new McpServer({
             name: 'cass-mcp-server',
             version: spec.info?.version || '1.0.0',
@@ -77,9 +78,7 @@ async function initMcp() {
             },
         });
 
-        // Register tools
-        const cassUrl = (global.repo ? global.repo.selectedServer : 'http://localhost/api/').replace(/\/$/, '');
-
+        // Register tools — each tool call loops back to the CaSS REST API
         for (const toolDef of toolDefs) {
             const zodShape = inputSchemaToZodShape(toolDef.inputSchema);
             const def = toolDef;
@@ -93,11 +92,10 @@ async function initMcp() {
                 async (args) => {
                     const startTime = Date.now();
                     global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolCall',
-                        `MCP tool invoked: ${def.name} | args: ${JSON.stringify(args)} | sigSheet: ${sessionCtx.signatureSheet ? 'present (' + sessionCtx.signatureSheet.length + ' chars)' : 'MISSING'}`);
-
+                        `MCP tool invoked: ${def.name} | args: ${JSON.stringify(args)}`);
 
                     try {
-                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap, def.requestContentType, sessionCtx.signatureSheet, sessionCtx.authorization);
+                        const result = await callCassInternal(cassUrl, def.method, def.pathTemplate, args, def.parameterMap, def.requestContentType);
                         const elapsed = Date.now() - startTime;
 
                         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpToolResult',
@@ -154,15 +152,6 @@ async function initMcp() {
                         let fetchUrl = cassUrl + apiPath.replace(/^\/api\//, '/').replace(/^\/api$/, '');
                         const fetchHeaders = { 'Accept': 'application/ld+json, application/json' };
 
-                        // Forward signature sheet for resource access
-                        if (sessionCtx.signatureSheet) {
-                            fetchHeaders['signatureSheet'] = sessionCtx.signatureSheet;
-                        }
-                        // Forward Bearer token for identity/eim creation on loopback
-                        if (sessionCtx.authorization) {
-                            fetchHeaders['Authorization'] = sessionCtx.authorization;
-                        }
-
                         const response = await fetch(fetchUrl, { headers: fetchHeaders });
                         const body = await response.text();
 
@@ -193,22 +182,20 @@ async function initMcp() {
     // 4. Internal HTTP caller (loopback to self)
     // -----------------------------------------------------------------------
 
-    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap, requestContentType, signatureSheet, authorization) {
+    async function callCassInternal(cassUrl, method, pathTemplate, args, parameterMap, requestContentType) {
         let resolvedPath = pathTemplate;
         const queryParams = new URLSearchParams();
         const headers = { 'Accept': 'application/json' };
 
-        // Forward the signature sheet from the auth.js middleware.
-        // kbac.js reads this from req.headers.signatureSheet (line 97-98).
-        if (signatureSheet) {
-            headers['signatureSheet'] = signatureSheet;
+        // Forward user identity from the original MCP request.
+        // signatureSheet is needed by kbac.js for access control.
+        // Authorization is needed by the JWT bridge middleware to populate req.eim.
+        const reqCtx = mcpRequestContext.getStore();
+        if (reqCtx?.signatureSheet) {
+            headers['signatureSheet'] = reqCtx.signatureSheet;
         }
-
-        // Forward the Bearer token so the loopback request goes through
-        // the JWT bridge middleware, which populates req.oidc.user and
-        // triggers signature sheet / req.eim creation on the server side.
-        if (authorization) {
-            headers['Authorization'] = authorization;
+        if (reqCtx?.authorization) {
+            headers['Authorization'] = reqCtx.authorization;
         }
 
         for (const [paramName, paramMeta] of Object.entries(parameterMap)) {
@@ -290,70 +277,85 @@ async function initMcp() {
     }
 
     // -----------------------------------------------------------------------
-    // 5. Mount on Express — SSE transport with signature sheet forwarding
+    // 5. Mount on Express — Streamable HTTP transport
+    //
+    // Modern MCP clients use the Streamable HTTP protocol which operates
+    // on a single endpoint:
+    //   POST /api/mcp   — JSON-RPC messages (initialize, tool calls, etc.)
+    //   GET  /api/mcp   — SSE stream for server-initiated notifications
+    //   DELETE /api/mcp  — close session
     // -----------------------------------------------------------------------
 
     const sessions = {};
+    const { randomUUID } = require('crypto');
 
     const express = require('express');
     const jsonParser = express.json({ type: 'application/json' });
 
-    // GET /api/mcp — SSE stream for MCP connection
-    global.app.get('/api/mcp', async (req, res) => {
+    // Handler for all HTTP methods on /api/mcp
+    async function handleMcpRequest(req, res) {
         try {
-            const transport = new SSEServerTransport('/api/mcp/message', res);
+            const sessionId = req.headers['mcp-session-id'];
 
-            // Per-session context — auth.js sets req.headers.signatureSheet
-            // on every request. We capture it here and update it on each POST.
-            const sessionCtx = {
-                signatureSheet: req.headers.signaturesheet || req.headers.signatureSheet || null,
-                authorization: req.headers.authorization || null,
-            };
-            
-            transport.onclose = () => {
-                delete sessions[transport.sessionId];
-                global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionClosed', `MCP session closed: ${transport.sessionId}`);
-            };
-
-            sessions[transport.sessionId] = { transport, sessionCtx };
-
-            const server = createMcpServer(sessionCtx);
-            await server.connect(transport);
-            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionCreated', `MCP session created: ${transport.sessionId}`);
-        } catch (err) {
-            global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpRequestError', err.message);
-            if (!res.headersSent) {
-                res.status(500).json({ error: err.message });
-            }
-        }
-    });
-
-    // POST /api/mcp/message — main MCP message handler
-    global.app.post('/api/mcp/message', jsonParser, async (req, res) => {
-        try {
-            const sessionId = req.query.sessionId;
-            const session = sessions[sessionId];
-
-            if (!session) {
-                res.status(404).json({ error: 'MCP session not found. Initiate via GET /api/mcp first.' });
+            if (sessionId && sessions[sessionId]) {
+                // Existing session — forward request to its transport,
+                // wrapping in request context so tool handlers can access
+                // the user's signatureSheet and authorization.
+                const ctx = {
+                    signatureSheet: req.headers.signaturesheet || req.headers['signatureSheet'],
+                    authorization: req.headers.authorization,
+                };
+                await mcpRequestContext.run(ctx, () =>
+                    sessions[sessionId].transport.handleRequest(req, res, req.body)
+                );
                 return;
             }
 
-            // Update the session's signature sheet from the current request.
-            // auth.js middleware has already processed SSO/OIDC/JWT and set
-            // req.headers.signatureSheet by this point.
-            session.sessionCtx.signatureSheet = req.headers.signaturesheet || req.headers.signatureSheet || session.sessionCtx.signatureSheet;
-            session.sessionCtx.authorization = req.headers.authorization || session.sessionCtx.authorization;
+            if (req.method === 'POST') {
+                // New session — create transport and MCP server
+                const transport = new StreamableHTTPServerTransport({
+                    sessionIdGenerator: () => randomUUID(),
+                });
 
-            // SSEServerTransport expects handlePostMessage
-            await session.transport.handlePostMessage(req, res, req.body);
+                transport.onclose = () => {
+                    if (transport.sessionId) {
+                        delete sessions[transport.sessionId];
+                    }
+                    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionClosed', `MCP session closed: ${transport.sessionId}`);
+                };
+
+                const server = createMcpServer();
+                await server.connect(transport);
+
+                // handleRequest processes the initialize and assigns sessionId
+                const ctx = {
+                    signatureSheet: req.headers.signaturesheet || req.headers['signatureSheet'],
+                    authorization: req.headers.authorization,
+                };
+                await mcpRequestContext.run(ctx, () =>
+                    transport.handleRequest(req, res, req.body)
+                );
+
+                if (transport.sessionId) {
+                    sessions[transport.sessionId] = { transport, server };
+                    global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpSessionCreated', `MCP session created: ${transport.sessionId}`);
+                }
+                return;
+            }
+
+            // GET or DELETE without a valid session ID
+            res.status(400).json({ error: 'Bad Request: No valid MCP session. Send an initialize request via POST first.' });
         } catch (err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpRequestError', err.message);
             if (!res.headersSent) {
                 res.status(500).json({ error: err.message });
             }
         }
-    });
+    }
+
+    global.app.post('/api/mcp', jsonParser, handleMcpRequest);
+    global.app.get('/api/mcp', handleMcpRequest);
+    global.app.delete('/api/mcp', handleMcpRequest);
 
     global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, 'McpReady', `MCP adapter mounted at /api/mcp (${toolDefs.length} tools, ${resourceTemplateDefs.length} resources)`);
 }
@@ -366,31 +368,23 @@ if (!global.disabledAdapters['mcp']) {
     /**
      * @openapi
      * /api/mcp:
-     *   get:
-     *     tags:
-     *       - MCP Adapter
-     *     x-mcp-ignore: true
-     *     summary: MCP SSE notification stream
-     *     description: |
-     *       Opens a Server-Sent Events stream for the Model Context Protocol.
-     *       The server will send an `endpoint` event containing the relative URL 
-     *       to POST messages to (typically `/api/mcp/message?sessionId=...`).
-     *     responses:
-     *       200:
-     *         description: SSE event stream.
-     * /api/mcp/message:
      *   post:
      *     tags:
      *       - MCP Adapter
      *     x-mcp-ignore: true
-     *     summary: Model Context Protocol message handler
-     *     description: Receive JSON-RPC messages for an active MCP session.
+     *     summary: MCP Streamable HTTP message handler
+     *     description: |
+     *       Send JSON-RPC 2.0 messages to the MCP server. The first POST
+     *       should contain an `initialize` request; the server returns
+     *       a session ID in the `Mcp-Session-Id` response header.
+     *       Subsequent requests must include the session ID in the
+     *       `Mcp-Session-Id` request header.
      *     parameters:
-     *       - in: query
-     *         name: sessionId
-     *         required: true
+     *       - in: header
+     *         name: Mcp-Session-Id
      *         schema:
      *           type: string
+     *         description: Session ID returned from the initialize response.
      *     requestBody:
      *       required: true
      *       content:
@@ -400,9 +394,41 @@ if (!global.disabledAdapters['mcp']) {
      *             description: JSON-RPC 2.0 request object per the MCP specification.
      *     responses:
      *       200:
-     *         description: OK
-     *       404:
-     *         description: MCP session not found.
+     *         description: JSON-RPC 2.0 response or SSE stream.
+     *       400:
+     *         description: Bad request.
+     *   get:
+     *     tags:
+     *       - MCP Adapter
+     *     x-mcp-ignore: true
+     *     summary: MCP SSE notification stream
+     *     description: |
+     *       Opens a Server-Sent Events stream for server-initiated
+     *       notifications. Requires a valid `Mcp-Session-Id` header.
+     *     parameters:
+     *       - in: header
+     *         name: Mcp-Session-Id
+     *         required: true
+     *         schema:
+     *           type: string
+     *     responses:
+     *       200:
+     *         description: SSE event stream.
+     *   delete:
+     *     tags:
+     *       - MCP Adapter
+     *     x-mcp-ignore: true
+     *     summary: Close MCP session
+     *     description: Terminates an active MCP session.
+     *     parameters:
+     *       - in: header
+     *         name: Mcp-Session-Id
+     *         required: true
+     *         schema:
+     *           type: string
+     *     responses:
+     *       200:
+     *         description: Session closed.
      */
     global.events.server.ready.subscribe(async (isReady) => {
         if (!isReady) return;
