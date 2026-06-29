@@ -372,6 +372,10 @@ var xapiStatementListener = async function () {
     let accm = [];
     if (process.env.XAPI_DEBUG) console.log(this.params, this.dataStreams, this?.ctx?.req?.rawHeaders, this?.ctx?.req?.headers);
     for (let val in this.dataStreams) {
+        //Convert datastream to JSON if it is a string
+        if (typeof this.dataStreams[val] === "string") {
+            this.dataStreams[val] = JSON.parse(this.dataStreams[val]);
+        }
         console.log(val, this.dataStreams[val], typeof this.dataStreams[val]);
         await xapiStatement(this.dataStreams[val], accm);
     }
