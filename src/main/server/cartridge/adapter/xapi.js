@@ -372,7 +372,7 @@ var xapiStatementListener = async function () {
     let accm = [];
     if (process.env.XAPI_DEBUG) console.log(this.params, this.dataStreams, this?.ctx?.req?.rawHeaders, this?.ctx?.req?.headers);
     for (let val in this.dataStreams) {
-        console.log(val, this.dataStreams[val]);
+        console.log(val, this.dataStreams[val], typeof this.dataStreams[val]);
         await xapiStatement(this.dataStreams[val], accm);
     }
     if (accm.length > 0) {
@@ -531,22 +531,270 @@ if (!global.disabledAdapters['xapi']) {
      * @openapi
      * /api/xapi/statement:
      *   post:
-     *     x-mcp-ignore: true
      *     tags:
      *       - xAPI Adapter
-     *     summary: Receive a single xAPI statement
+     *     summary: Receive a single xAPI statement and convert to CaSS assertions
      *     description: |
-     *       Accepts an xAPI statement via POST and converts it into CaSS
-     *       assertions based on aligned competencies. The statement should
-     *       be sent as form data.
+     *       Accepts an xAPI statement (Experience API / Tin Can API) and converts
+     *       it into CaSS competency assertions based on aligned competencies.
+     *
+     *       **How CaSS processes xAPI statements:**
+     *       1. The `actor` is resolved to a CaSS Person via their `mbox` (email)
+     *          or `account.name`. If no Person exists, one is created.
+     *       2. The `object.id` is matched against CaSS CreativeWork URLs to find
+     *          `educationalAlignment` entries linking to competencies. If the
+     *          object ID is itself a competency URL, it is used directly.
+     *          If no CreativeWork exists, one is auto-created for future alignment.
+     *       3. The `result` determines positive/negative assertion:
+     *          - `result.success: true` → positive assertion
+     *          - `result.success: false` → negative assertion
+     *          - `result.score.scaled > 0.7` → positive; `<= 0.7` → negative
+     *          - `result.response`: "Pass"/"At Expectation"/"Above Expectation" → positive;
+     *            "Fail"/"Below Expectation" → negative
+     *       4. An encrypted CaSS Assertion is created for each aligned competency,
+     *          owned by the `authority` and readable by the `actor`.
+     *       5. `context.registration` is preserved on the assertion for grouping.
+     *
+     *       **Required fields:** `actor`, `verb`, `object`, `result` (with at least
+     *       one of `success`, `score.scaled`, or `response`).
+     *
+     *       The statement should be sent as the request body in a named form-data
+     *       field. The field name is not significant — CaSS processes all data
+     *       streams attached to the request.
      *     requestBody:
+     *       required: true
      *       content:
      *         multipart/form-data:
      *           schema:
      *             type: object
+     *             properties:
+     *               statement:
+     *                 type: object
+     *                 description: A complete xAPI statement object.
+     *                 required:
+     *                   - actor
+     *                   - verb
+     *                   - object
+     *                   - result
+     *                 properties:
+     *                   id:
+     *                     type: string
+     *                     format: uuid
+     *                     description: Unique statement identifier (UUID). Used to generate deterministic assertion IDs.
+     *                     example: "12345678-1234-1234-1234-123456789012"
+     *                   actor:
+     *                     type: object
+     *                     description: |
+     *                       The learner or group who performed the activity.
+     *                       CaSS resolves the actor to a Person record via `mbox` (mailto: email)
+     *                       or `account.name`. If objectType is "Group", each member is resolved
+     *                       individually and a composite Person is created.
+     *                     properties:
+     *                       objectType:
+     *                         type: string
+     *                         enum: [Agent, Group]
+     *                         default: Agent
+     *                       name:
+     *                         type: string
+     *                         description: Display name of the actor.
+     *                         example: "Jane Doe"
+     *                       mbox:
+     *                         type: string
+     *                         description: "mailto: URI of the actor's email. Primary identifier for Person lookup."
+     *                         example: "mailto:jane.doe@example.com"
+     *                       account:
+     *                         type: object
+     *                         description: Alternative identifier when mbox is unavailable.
+     *                         properties:
+     *                           homePage:
+     *                             type: string
+     *                             example: "https://lms.example.com"
+     *                           name:
+     *                             type: string
+     *                             description: Account username or ID. Used as Person identifier lookup.
+     *                             example: "jdoe123"
+     *                       member:
+     *                         type: array
+     *                         description: Group members (only when objectType is "Group").
+     *                         items:
+     *                           type: object
+     *                           properties:
+     *                             name:
+     *                               type: string
+     *                             mbox:
+     *                               type: string
+     *                   verb:
+     *                     type: object
+     *                     description: |
+     *                       The action performed. CaSS does not filter by verb —
+     *                       any verb is accepted as long as a result is present.
+     *                       Common xAPI verbs include completed, passed, failed, scored, mastered.
+     *                     properties:
+     *                       id:
+     *                         type: string
+     *                         format: uri
+     *                         description: IRI identifying the verb.
+     *                         example: "http://adlnet.gov/expapi/verbs/completed"
+     *                       display:
+     *                         type: object
+     *                         description: Human-readable verb name as a language map.
+     *                         properties:
+     *                           en-US:
+     *                             type: string
+     *                             example: "completed"
+     *                   object:
+     *                     type: object
+     *                     description: |
+     *                       The activity or competency the statement is about.
+     *                       `object.id` is matched against CaSS CreativeWork URLs to find
+     *                       competency alignments. If object.id is itself a competency URL
+     *                       in CaSS, it is used directly. `object.definition.moreInfo` is
+     *                       also checked as a secondary competency URL.
+     *                     required:
+     *                       - id
+     *                     properties:
+     *                       id:
+     *                         type: string
+     *                         format: uri
+     *                         description: |
+     *                           IRI identifying the activity. This is matched against
+     *                           CreativeWork.url in CaSS to find aligned competencies.
+     *                           Can also be a direct CaSS competency URL.
+     *                         example: "https://lms.example.com/courses/cybersecurity-101/quiz-3"
+     *                       objectType:
+     *                         type: string
+     *                         default: Activity
+     *                       definition:
+     *                         type: object
+     *                         properties:
+     *                           name:
+     *                             type: object
+     *                             description: Language map for activity name.
+     *                             properties:
+     *                               en-US:
+     *                                 type: string
+     *                                 example: "Cybersecurity 101 - Quiz 3"
+     *                           description:
+     *                             type: object
+     *                             description: Language map for activity description.
+     *                             properties:
+     *                               en-US:
+     *                                 type: string
+     *                                 example: "Assessment of basic cybersecurity concepts"
+     *                           moreInfo:
+     *                             type: string
+     *                             format: uri
+     *                             description: |
+     *                               Secondary URL checked as a direct competency URL in CaSS.
+     *                               Use this to explicitly link a statement to a CaSS competency.
+     *                   result:
+     *                     type: object
+     *                     description: |
+     *                       The outcome of the activity. At least one of `success`,
+     *                       `score`, or `response` is required for CaSS to create an assertion.
+     *                       Determines whether the assertion is positive or negative.
+     *                     properties:
+     *                       success:
+     *                         type: boolean
+     *                         description: "true = positive assertion, false = negative assertion."
+     *                         example: true
+     *                       score:
+     *                         type: object
+     *                         description: Numeric score. `scaled > 0.7` = positive, `<= 0.7` = negative.
+     *                         properties:
+     *                           scaled:
+     *                             type: number
+     *                             minimum: 0
+     *                             maximum: 1
+     *                             description: "Normalized score between 0 and 1. Threshold is 0.7."
+     *                             example: 0.85
+     *                           raw:
+     *                             type: number
+     *                             description: Raw score value.
+     *                             example: 85
+     *                           min:
+     *                             type: number
+     *                             example: 0
+     *                           max:
+     *                             type: number
+     *                             example: 100
+     *                       response:
+     *                         type: string
+     *                         description: |
+     *                           Text response. Recognized values:
+     *                           - "Pass", "At Expectation", "Above Expectation" → positive
+     *                           - "Fail", "Below Expectation" → negative
+     *                         enum: [Pass, Fail, At Expectation, Above Expectation, Below Expectation]
+     *                       completion:
+     *                         type: boolean
+     *                         description: Whether the activity was completed (informational, not used for assertion logic).
+     *                   context:
+     *                     type: object
+     *                     description: Context for the statement. `registration` UUID is preserved on the assertion.
+     *                     properties:
+     *                       registration:
+     *                         type: string
+     *                         format: uuid
+     *                         description: UUID grouping related statements (e.g., a course attempt). Stored on the assertion.
+     *                         example: "ec531277-b9b7-4700-a81d-1a43e3be340e"
+     *                   authority:
+     *                     type: object
+     *                     description: |
+     *                       The agent asserting the truth of the statement (e.g., the LMS).
+     *                       Resolved to a CaSS Person via mbox/account, same as actor.
+     *                       The authority becomes an owner of the resulting assertion.
+     *                     properties:
+     *                       objectType:
+     *                         type: string
+     *                         default: Agent
+     *                       name:
+     *                         type: string
+     *                         example: "LMS System"
+     *                       mbox:
+     *                         type: string
+     *                         example: "mailto:admin@lms.example.com"
+     *                   timestamp:
+     *                     type: string
+     *                     format: date-time
+     *                     description: ISO 8601 timestamp of when the experience occurred. Used as the assertion date.
+     *                     example: "2026-06-28T12:00:00Z"
+     *           example:
+     *             statement:
+     *               id: "12345678-1234-1234-1234-123456789012"
+     *               actor:
+     *                 objectType: "Agent"
+     *                 name: "Jane Doe"
+     *                 mbox: "mailto:jane.doe@example.com"
+     *               verb:
+     *                 id: "http://adlnet.gov/expapi/verbs/passed"
+     *                 display:
+     *                   en-US: "passed"
+     *               object:
+     *                 id: "https://lms.example.com/courses/cybersecurity-101/final-exam"
+     *                 objectType: "Activity"
+     *                 definition:
+     *                   name:
+     *                     en-US: "Cybersecurity 101 Final Exam"
+     *                   description:
+     *                     en-US: "Final assessment for the Cybersecurity 101 course"
+     *               result:
+     *                 success: true
+     *                 score:
+     *                   scaled: 0.92
+     *                   raw: 92
+     *                   min: 0
+     *                   max: 100
+     *                 completion: true
+     *               context:
+     *                 registration: "ec531277-b9b7-4700-a81d-1a43e3be340e"
+     *               authority:
+     *                 objectType: "Agent"
+     *                 name: "Example LMS"
+     *                 mbox: "mailto:admin@lms.example.com"
+     *               timestamp: "2026-06-28T12:00:00Z"
      *     responses:
      *       200:
-     *         description: Statement processed and assertions created.
+     *         description: Statement processed and assertions created for each aligned competency.
      */
     bindWebService("/xapi/statement", xapiStatementListener);
 
