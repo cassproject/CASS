@@ -1,8 +1,7 @@
 const fs = require('fs');
-const nodePath = require('path');
 const jose = require('jose');
-const sharedAdminCache = require("./util/sharedAdminCache.js");
-
+const sharedAdminCache = require("./util/sharedAdminCache.js"); 
+const sanitize = require("sanitize-filename");
 // Cached JWKS remote key set for Bearer token validation (MCP/API clients)
 let cachedJWKS = null;
 let jwksIssuer = null;
@@ -73,13 +72,13 @@ let getPk = async (identifier) => {
     let keypair = new EcRemoteLinkedData();
     if (myKey != null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileSystemKeypair', "Found file system keypair. Securing and saving to Elastic.");
-        loadConfigurationFile("keys/backup/" + identifier, () => {
+        loadConfigurationFile("keys/backup/" + sanitize(identifier), () => {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairBackupSaved', "Saved to backup location.");
             return myKey;
         });
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileKeypairDeleted', "Deleting old keypair file.");
         global.pathCheck(identifier);
-        fs.unlinkSync("etc/keys/" + identifier);
+        fs.unlinkSync("etc/keys/" + sanitize(identifier));
         let keypair = new EcRemoteLinkedData();
         keypair.context = "https://schema.cassproject.org/0.4/";
         keypair.type = "KeyPair";
@@ -165,6 +164,16 @@ if (process.env.CASS_OIDC_ENABLED || false) {
             returnTo: req.query.redirectUrl || '/'
         });
     });
+    const { auth: auth2 } = require('express-oauth2-jwt-bearer');
+    app.use(
+        auth2({
+            issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL || 'https://dev.keycloak.eduworks.com/auth/realms/test-realm/',
+            secret: process.env.CASS_OIDC_SECRET,
+            audience: process.env.CASS_OIDC_AUDIENCE || 'account',
+            tokenSigningAlg: process.env.CASS_OIDC_ALG || 'HS256',
+            authRequired: false
+        })
+    );
 
     // -----------------------------------------------------------------------
     // OAuth 2.0 Protected Resource Metadata (RFC 9728) for MCP clients.
@@ -276,8 +285,23 @@ if (process.env.CASS_OIDC_ENABLED || false) {
     });
 }
 
-if (process.env.CASS_JWT_ENABLED) {
-    var jwt = require('express-jwt');
+if (process.env.CASS_JWT_ENABLED === 'true') {
+    var { expressjwt: jwt } = require("express-jwt");
+
+    if (process.env.CASS_JWT_SESSION_ENABLED === 'true') {
+        const session = require('express-session')
+        const MemoryStore = require('memorystore')(session)
+
+        app.use(session({
+            cookie: { maxAge: 2 * 60 * 60 * 1000 },
+            store: new MemoryStore({
+                checkPeriod: 2 * 60 * 60 * 1000 // prune expired entries every 24h
+            }),
+            resave: false,
+            secret: EcCrypto.generateUUID()
+        }))
+    }
+
     app.use(
         jwt({
             secret: process.env.CASS_JWT_SECRET || 'cass',
@@ -710,7 +734,6 @@ if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED !
         if (req.originalUrl == global.baseUrl + "/api/ping") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //Health check is permitted
         if (req.originalUrl == "/.well-known/oauth-authorization-server") { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth discovery is permitted
         if (req.originalUrl == "/.well-known/oauth-protected-resource") { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth resource metadata is permitted
-
         if (req.headers['x-client-ip'] != null && ipMatch(ipFilterList, req.headers['x-client-ip'])) { req.permittedBy.push("Permitted by: " + 'x-client-ip' + ": " + req.headers['x-client-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['x-forwarded-for'] != null && ipMatch(ipFilterList, req.headers['x-forwarded-for'])) { req.permittedBy.push("Permitted by: " + 'x-forwarded-for' + ": " + req.headers['x-forwarded-for']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
         if (req.headers['cf-connecting-ip'] != null && ipMatch(ipFilterList, req.headers['cf-connecting-ip'])) { req.permittedBy.push("Permitted by: " + 'cf-connecting-ip' + ": " + req.headers['cf-connecting-ip']); allowed = true; } //Indirect remote access is permitted (reverse proxies, etc)
