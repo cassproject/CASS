@@ -445,11 +445,11 @@ process.on('exit', () => {
     global.auditLogger.flush();
 });
 
-process.on('SIGTERM', function (code) {
+process.on('SIGTERM', function () {
     console.log('SIGTERM received...');
     server.close();
     global.auditLogger.flush();
-    process.exit(code || 1);
+    process.exit(0);
 });
 
 global.events.server.listening.subscribe(async (isListening) => {
