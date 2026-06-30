@@ -93,7 +93,7 @@
     "memorystore": "^1.6.8",
     "node-object-hash": "^3.1.1",
     "node-worker-threads-pool": "^1.5.1",
-    "nodemailer": "^9.0.1",
+    "nodemailer": "^9.0.2",
     "openapi-schema-validator": "^12.1.3",
     "pure-uuid": "^2.0.0",
     "rdflib": "^2.4.0",
