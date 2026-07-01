@@ -88,6 +88,7 @@ async function initMcp() {
                 {
                     description: def.description,
                     inputSchema: zodShape,
+                    annotations: def.annotations,
                 },
                 async (args) => {
                     const startTime = Date.now();

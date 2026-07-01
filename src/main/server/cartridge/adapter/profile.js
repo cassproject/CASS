@@ -105,6 +105,58 @@ let profileCalculator = async function () {
  *     tags:
  *       - Profile
  *     summary: Compute the current state of the learner
+ *     x-mcp-tool-name: get_learner_profile
+ *     x-mcp-description: >
+ *       Compute a learner's current competency profile against a framework.
+ *       This is the culmination of the evidence-to-competence pipeline -
+ *       xAPI statements create assertions, and this endpoint aggregates all
+ *       assertions for a person across a framework into a single profile
+ *       showing which competencies have positive evidence, negative evidence,
+ *       conflicts, or no evidence at all. The response is a tree of
+ *       competencies (matching the framework's hierarchy) where each node
+ *       has a state object summarizing the evidence. Use this to answer
+ *       questions like "what does this person know?", "what competencies
+ *       has this person demonstrated?", or "where are the gaps?".
+ *       REQUIRED PARAMETERS - frameworkId (the full URL or short ID of a
+ *       CaSS Framework) and subject (identifies the learner). The server
+ *       must be acting on behalf of a user with read access to the
+ *       assertions (via signatureSheet or PROFILE_PPK environment variable).
+ *     x-mcp-hints: >
+ *       SUBJECT IDENTIFICATION - The subject parameter accepts multiple
+ *       formats for identifying the learner. You can pass an email address
+ *       (e.g. jane.doe@example.com), a username, a full CaSS Person URL
+ *       (e.g. https://server/api/data/schema.org.Person/uid), or a PEM
+ *       public key. Email and username are looked up against CaSS Person
+ *       records. The Person must exist in CaSS (created automatically when
+ *       xAPI statements are processed via record_evidence).
+ *       FRAMEWORK ID - Pass the full URL of the framework, e.g.
+ *       https://server/api/data/schema.cassproject.org.0.4.Framework/uid.
+ *       You can find frameworks using search_data with
+ *       q=name:keyword AND type:Framework.
+ *       RESPONSE STRUCTURE - The response is a JSON object with a children
+ *       array forming a tree. Each node represents a competency and contains
+ *       id (the competency URL), name, description, children (sub-competencies),
+ *       and most importantly a state object with these boolean/numeric fields -
+ *       hasPositiveEvidence (at least one positive assertion exists),
+ *       hasNegativeEvidence (at least one negative assertion exists),
+ *       latestEvidenceIsPositive (true/false/null based on most recent assertion),
+ *       hasAnyChildrenWithPositiveEvidence (rollup from sub-competencies),
+ *       distinctPositiveSignatures and distinctNegativeSignatures (count of
+ *       unique authorities), isGoal and isHighPriorityGoal (from Person.seeks),
+ *       leadsToGoalTopDown and requiredForGoalBottomUp (graph propagation).
+ *       CACHING - By default profiles may be cached. Set flushCache=true to
+ *       force recalculation after new assertions have been created. Set
+ *       cache=true to explicitly opt into caching for faster responses.
+ *       TIME TRAVEL - Use targetDateTime (UTC milliseconds) to compute the
+ *       profile as it would have been at a past point in time, filtering
+ *       assertions by date.
+ *       TYPICAL WORKFLOW - (1) Use search_data to find the framework,
+ *       (2) Use search_data to find or identify the person,
+ *       (3) Call get_learner_profile with frameworkId and subject,
+ *       (4) Inspect each competency node's state to understand mastery.
+ *       PROACTIVE USAGE - After recording evidence with record_evidence,
+ *       call this endpoint with flushCache=true to retrieve the updated
+ *       profile and report the learner's current competency status.
  *     description: Computes the current state of the learner given a framework. Returns an object representing the learner's profile, including calculated competency levels.
  *     parameters:
  *       - $ref: '#/components/parameters/frameworkId'
@@ -119,8 +171,55 @@ let profileCalculator = async function () {
  *           application/json:
  *             schema:
  *               type: object
- *               description: Ping response
- *               additionalProperties: false
+ *               description: Learner competency profile tree with evidence state per competency.
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The framework URL this profile was computed against.
+ *                 children:
+ *                   type: array
+ *                   description: Top-level competencies in the framework hierarchy.
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: The competency URL.
+ *                       name:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       children:
+ *                         type: array
+ *                         description: Sub-competencies (recursive tree structure).
+ *                         items:
+ *                           type: object
+ *                       state:
+ *                         type: object
+ *                         description: Evidence summary for this competency.
+ *                         properties:
+ *                           hasPositiveEvidence:
+ *                             type: boolean
+ *                           hasNegativeEvidence:
+ *                             type: boolean
+ *                           latestEvidenceIsPositive:
+ *                             type: boolean
+ *                             nullable: true
+ *                           hasAnyChildrenWithPositiveEvidence:
+ *                             type: boolean
+ *                           distinctPositiveSignatures:
+ *                             type: integer
+ *                           distinctNegativeSignatures:
+ *                             type: integer
+ *                           isGoal:
+ *                             type: boolean
+ *                           isHighPriorityGoal:
+ *                             type: boolean
+ *                 msSpeed:
+ *                   type: integer
+ *                   description: Milliseconds taken to compute the profile.
+ *       400:
+ *         description: Missing required parameters or server not acting on behalf of a user.
  */
 
 let lastFlush = Date.now();

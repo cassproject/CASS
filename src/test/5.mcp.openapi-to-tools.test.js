@@ -71,11 +71,22 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
             }
         });
 
-        it('generates get_ping for GET /api/ping', () => {
-            assert.isTrue(toolMap.has('get_ping'));
-            const ping = toolMap.get('get_ping');
+        it('generates server_status for GET /api/ping (x-mcp-tool-name)', () => {
+            assert.isTrue(toolMap.has('server_status'), 'Expected tool name server_status from x-mcp-tool-name');
+            const ping = toolMap.get('server_status');
             assert.strictEqual(ping.method, 'get');
             assert.strictEqual(ping.pathTemplate, '/api/ping');
+            // The fields query parameter should be in the parameterMap
+            assert.ok(ping.parameterMap.fields, 'Expected fields parameter in parameterMap');
+            assert.strictEqual(ping.parameterMap.fields.location, 'query');
+            // The fields parameter should be in inputSchema
+            assert.ok(ping.inputSchema.properties.fields, 'Expected fields in inputSchema properties');
+            // Annotations should be correct for a read-only GET endpoint
+            assert.ok(ping.annotations, 'Expected annotations on server_status tool');
+            assert.strictEqual(ping.annotations.readOnlyHint, true);
+            assert.strictEqual(ping.annotations.destructiveHint, false);
+            assert.strictEqual(ping.annotations.idempotentHint, true);
+            assert.strictEqual(ping.annotations.openWorldHint, false);
         });
 
         it('generates get_data with correct metadata', () => {
@@ -193,6 +204,131 @@ describe('MCP Adapter — OpenAPI Tool Generation', function () {
             });
             assert.strictEqual(tools[0].parameterMap.q.location, 'query');
             assert.ok(tools[0].inputSchema.properties.q);
+        });
+    });
+
+    // ── x-mcp-* extension support ─────────────────────────────────────────
+
+    describe('x-mcp extensions', () => {
+        it('x-mcp-tool-name overrides auto-generated name', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/some/endpoint': { get: {
+                    summary: 'Some endpoint',
+                    'x-mcp-tool-name': 'custom_tool_name',
+                } } },
+            });
+            assert.strictEqual(tools[0].name, 'custom_tool_name');
+        });
+
+        it('falls back to auto-generated name when x-mcp-tool-name absent', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/some/endpoint': { get: {
+                    summary: 'Some endpoint',
+                } } },
+            });
+            assert.strictEqual(tools[0].name, 'get_some_endpoint');
+        });
+
+        it('x-mcp-description replaces summary/description in tool description', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/test': { get: {
+                    summary: 'Original summary',
+                    description: 'Original description',
+                    'x-mcp-description': 'MCP-optimized description for AI callers.',
+                } } },
+            });
+            assert.ok(tools[0].description.startsWith('MCP-optimized description for AI callers.'));
+            assert.ok(!tools[0].description.includes('Original summary'));
+        });
+
+        it('x-mcp-description preserves Arguments section', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/test': { get: {
+                    summary: 'Original',
+                    'x-mcp-description': 'MCP description.',
+                    parameters: [
+                        { name: 'q', in: 'query', schema: { type: 'string' }, description: 'Query' },
+                    ],
+                } } },
+            });
+            assert.ok(tools[0].description.includes('MCP description.'));
+            assert.ok(tools[0].description.includes('Arguments:'));
+            assert.ok(tools[0].description.includes('q'));
+        });
+
+        it('x-mcp-hints appends hints to description', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/test': { get: {
+                    summary: 'Test endpoint',
+                    'x-mcp-hints': 'Use fields=a,b for minimal response.',
+                } } },
+            });
+            assert.ok(tools[0].description.includes('Hints:'));
+            assert.ok(tools[0].description.includes('Use fields=a,b for minimal response.'));
+        });
+
+        it('x-mcp-ignore skips the operation', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/hidden': { get: {
+                    summary: 'Hidden',
+                    'x-mcp-ignore': true,
+                } } },
+            });
+            assert.strictEqual(tools.length, 0);
+        });
+
+        it('infers readOnly + idempotent annotations for GET', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/test': { get: { summary: 'Test' } } },
+            });
+            assert.deepStrictEqual(tools[0].annotations, {
+                readOnlyHint: true,
+                destructiveHint: false,
+                idempotentHint: true,
+                openWorldHint: false,
+            });
+        });
+
+        it('infers destructive annotations for DELETE', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/test': { delete: { summary: 'Delete' } } },
+            });
+            assert.strictEqual(tools[0].annotations.destructiveHint, true);
+            assert.strictEqual(tools[0].annotations.readOnlyHint, false);
+            assert.strictEqual(tools[0].annotations.idempotentHint, true);
+        });
+
+        it('infers non-idempotent annotations for POST', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/test': { post: { summary: 'Create' } } },
+            });
+            assert.strictEqual(tools[0].annotations.readOnlyHint, false);
+            assert.strictEqual(tools[0].annotations.idempotentHint, false);
+        });
+
+        it('x-mcp-annotations overrides inferred annotations', () => {
+            const tools = generateTools({
+                openapi: '3.0.0', info: { title: 'T', version: '1' },
+                paths: { '/api/test': { post: {
+                    summary: 'Idempotent create',
+                    'x-mcp-annotations': { idempotentHint: true, openWorldHint: true },
+                } } },
+            });
+            // POST defaults overridden by x-mcp-annotations
+            assert.strictEqual(tools[0].annotations.idempotentHint, true);
+            assert.strictEqual(tools[0].annotations.openWorldHint, true);
+            // Non-overridden values retain POST defaults
+            assert.strictEqual(tools[0].annotations.readOnlyHint, false);
+            assert.strictEqual(tools[0].annotations.destructiveHint, false);
         });
     });
 

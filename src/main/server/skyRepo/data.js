@@ -154,6 +154,26 @@ const endpointData = async function () {
  *       - Search
  *     summary: Search for data
  *     description: Searches for data in the system using query parameters. Returns a JSON-LD array of matching objects.
+ *     x-mcp-tool-name: search_data
+ *     x-mcp-description: >
+ *       Search the CaSS repository for JSON-LD objects. Returns an array of
+ *       matching objects. Use the 'q' parameter with Elasticsearch Simple Query
+ *       String syntax to filter results. Common patterns:
+ *       - Search by type: q=@type:Competency
+ *       - Search by name: q=name:leadership
+ *       - Combine: q=name:* AND @type:Framework
+ *       All objects in CaSS are JSON-LD and have @context, @id, and @type fields.
+ *       Common types include Framework, Competency, CreativeWork, Person, and
+ *       Assertion (using dotted namespace like schema.cassproject.org.0.4.Framework).
+ *     x-mcp-hints: >
+ *       Query syntax (Elasticsearch Simple Query String):
+ *       - Wildcard: q=* (all objects)
+ *       - By type: q=@type:Competency
+ *       - By name: q=name:leadership
+ *       - Boolean: q=name:math AND @type:Competency
+ *       - Phrase: q=name:"critical thinking"
+ *       Pagination: start=0, size=50 (default). Max size=10000.
+ *       Use index_hint to speed up typed searches (e.g. *competency).
  *     parameters:
  *       - $ref: '#/components/parameters/q'
  *       - $ref: '#/components/parameters/start'
@@ -190,6 +210,25 @@ const endpointData = async function () {
  *       - Repository
  *     summary: Retrieve data by UID
  *     description: Retrieves data from the system using a unique identifier (GUID or MD5 of @id). Optionally fetches history.
+ *     x-mcp-tool-name: get_object
+ *     x-mcp-description: >
+ *       Retrieve a single JSON-LD object from the CaSS repository by its unique
+ *       identifier. The uid is typically a GUID (e.g. ce-07c25f74-9119-11e8-b852-782bcb5df6ac)
+ *       or the MD5 hash of the object's full @id URL. The returned object is a
+ *       JSON-LD document with @context, @id, @type, and domain-specific fields.
+ *       Access-controlled objects may return 404 if the caller lacks permission.
+ *       Set history=true to retrieve all historical versions of the object.
+ *     x-mcp-hints: >
+ *       UID formats accepted:
+ *       - GUID: ce-07c25f74-9119-11e8-b852-782bcb5df6ac
+ *       - MD5 hash of @id: 5d1433859a739684cc88338f92cf59ad
+ *       The response is a JSON-LD object. Key fields:
+ *       - @id: the canonical URL identifier
+ *       - @type: the object type (e.g. schema.cassproject.org.0.4.Competency)
+ *       - @context: the JSON-LD context URL
+ *       - @owner: PEM public key(s) of the owner (controls write access)
+ *       If the object is encrypted, fields may be unreadable without the right key.
+ *       Use history=true to get an array of all versions sorted by timestamp.
  *     parameters:
  *       - $ref: '#/components/parameters/uid'
  *       - $ref: '#/components/parameters/history'
@@ -209,6 +248,26 @@ const endpointData = async function () {
  *       - Repository
  *     summary: Store data by UID
  *     description: Puts data into the system using a specific unique identifier. Requires an appropriate payload.
+ *     x-mcp-tool-name: save_object
+ *     x-mcp-description: >
+ *       Store or update a JSON-LD object in the CaSS repository at a specific
+ *       unique identifier. The request body must contain a valid JSON-LD object
+ *       with at minimum three fields (context, id, and type prefixed with @).
+ *       The uid in the URL path must correspond to the object's GUID or the MD5
+ *       hash of its full id URL. Objects may include an owner field (array of
+ *       PEM public keys) to restrict who can modify or delete them. If the
+ *       object already exists, this overwrites it (the caller must be an owner
+ *       or the object must have no owner). A signatureSheet is required for
+ *       write access to owned objects.
+ *     x-mcp-hints: >
+ *       The body must be sent as multipart/form-data with a 'data' field
+ *       containing the JSON-LD object. Three JSON-LD fields are required -
+ *       the context (e.g. https://schema.cassproject.org/0.4), the id which is
+ *       the canonical URL of the object and must match the uid, and the type
+ *       (e.g. schema.cassproject.org.0.4.Competency). All three are prefixed
+ *       with the at-sign (@context, @id, @type). Optional security fields
+ *       include owner, reader, signature, and signatureSha256 (also @-prefixed).
+ *       The signatureSheet field provides write authorization.
  *     parameters:
  *       - $ref: '#/components/parameters/uid'
  *     requestBody:
@@ -228,6 +287,7 @@ const endpointData = async function () {
  *         description: "Failure to locate data due to permission or absence of data."
  * /api/data/{type}/{uid}:
  *   get:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Repository
  *     summary: Retrieve data by type and UID

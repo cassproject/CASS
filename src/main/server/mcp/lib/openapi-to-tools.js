@@ -10,6 +10,66 @@
 const HTTP_METHODS = ['get', 'post', 'put', 'delete', 'patch'];
 
 /**
+ * Infer MCP tool annotations from the HTTP method.
+ *
+ * The MCP specification defines four annotation hints that help AI clients
+ * understand a tool's behavioral characteristics:
+ *
+ *   readOnlyHint      – true when the tool does not modify server state
+ *   destructiveHint   – true when the tool may irreversibly alter data
+ *   idempotentHint    – true when repeated identical calls have the same effect
+ *   openWorldHint     – true when the tool interacts with external entities
+ *
+ * The defaults returned by this function are conservative best-guesses
+ * derived from standard HTTP method semantics.  Endpoints can override
+ * any of these via the `x-mcp-annotations` OpenAPI extension.
+ *
+ * @param {string} method - Lowercase HTTP method (get, post, put, delete, patch).
+ * @returns {Object} MCP ToolAnnotations object.
+ */
+function inferAnnotations(method) {
+    switch (method) {
+    case 'get':
+        return {
+            readOnlyHint: true,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
+        };
+    case 'put':
+        return {
+            readOnlyHint: false,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
+        };
+    case 'delete':
+        return {
+            readOnlyHint: false,
+            destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+        };
+    case 'post':
+        return {
+            readOnlyHint: false,
+            destructiveHint: false,
+            idempotentHint: false,
+            openWorldHint: false,
+        };
+    case 'patch':
+        return {
+            readOnlyHint: false,
+            destructiveHint: false,
+            idempotentHint: false,
+            openWorldHint: false,
+        };
+    default:
+        return {};
+    }
+}
+
+/**
  * Resolve a JSON `$ref` pointer within the spec.
  * Only handles local references (#/components/…).
  *
@@ -140,6 +200,11 @@ function generateDescription(method, path, operation, spec) {
         parts.push(`${method.toUpperCase()} ${path}`);
     }
 
+    // Append x-mcp-hints if present — usage guidance for AI callers
+    if (operation['x-mcp-hints']) {
+        parts.push('\nHints:\n' + operation['x-mcp-hints'].trim());
+    }
+
     // Document parameters — presented as flat tool input arguments
     const rawParams = operation.parameters || [];
     const hasBody = !!operation.requestBody;
@@ -228,8 +293,38 @@ export function generateTools(spec) {
 
             if (operation['x-mcp-ignore'] === true) continue;
 
-            const toolName = generateToolName(method, path);
-            const description = generateDescription(method, path, operation, spec);
+            // Use x-mcp-tool-name override if provided, otherwise auto-generate
+            const toolName = operation['x-mcp-tool-name'] || generateToolName(method, path);
+
+            // Use x-mcp-description as the primary description when provided,
+            // falling back to the standard summary/description generation.
+            let description;
+            if (operation['x-mcp-description']) {
+                // Start with the MCP-specific description, then append
+                // the generated parameter documentation and hints.
+                const mcpDesc = operation['x-mcp-description'].trim();
+                const generated = generateDescription(method, path, operation, spec);
+                // Replace the first paragraph (summary/description) with the MCP one,
+                // but keep the Arguments/Hints sections from the generated description.
+                const argsIdx = generated.indexOf('\nArguments:');
+                const hintsIdx = generated.indexOf('\nHints:');
+                const firstSection = Math.min(
+                    argsIdx >= 0 ? argsIdx : Infinity,
+                    hintsIdx >= 0 ? hintsIdx : Infinity
+                );
+                if (firstSection < Infinity) {
+                    description = mcpDesc + generated.substring(firstSection);
+                } else {
+                    // No args or hints — check if there are hints to append
+                    if (operation['x-mcp-hints']) {
+                        description = mcpDesc + '\n\nHints:\n' + operation['x-mcp-hints'].trim();
+                    } else {
+                        description = mcpDesc;
+                    }
+                }
+            } else {
+                description = generateDescription(method, path, operation, spec);
+            }
 
             // Build the parameter map and input schema properties.
             const parameterMap = {};
@@ -325,6 +420,10 @@ export function generateTools(spec) {
                 name: toolName,
                 description,
                 inputSchema,
+                annotations: {
+                    ...inferAnnotations(method),
+                    ...(operation['x-mcp-annotations'] || {}),
+                },
                 method,
                 pathTemplate: path,
                 parameterMap,
