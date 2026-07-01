@@ -233,10 +233,10 @@ const endpointData = async function () {
  *       You can extract the UID from an object's @id URL — it is the
  *       last path segment.
  *       KEY RESPONSE FIELDS —
- *       @id: canonical URL identifier
- *       @type: object type (e.g. schema.cassproject.org.0.4.Competency)
- *       @context: JSON-LD context URL
- *       @owner: PEM public key(s) controlling write access
+ *       "@id" is the canonical URL identifier,
+ *       "@type" is the object type (e.g. schema.cassproject.org.0.4.Competency),
+ *       "@context" is the JSON-LD context URL,
+ *       "@owner" contains PEM public key(s) controlling write access.
  *       HISTORY — Set history=true to retrieve all versions of the
  *       object as an array sorted by timestamp.
  *     parameters:
@@ -273,10 +273,10 @@ const endpointData = async function () {
  *       SENDING DATA — The body must be sent as multipart/form-data with
  *       a field named 'data' containing the JSON-LD object.
  *       THREE REQUIRED FIELDS —
- *       @context: e.g. "https://schema.cassproject.org/0.4"
- *       @id: the canonical URL (the UID in the URL path must match)
- *       @type: e.g. "schema.cassproject.org.0.4.Competency"
- *       OWNERSHIP — Include @owner (array of PEM public keys) to
+ *       "@context" (e.g. "https://schema.cassproject.org/0.4"),
+ *       "@id" (the canonical URL, the UID in the URL path must match),
+ *       "@type" (e.g. "schema.cassproject.org.0.4.Competency").
+ *       OWNERSHIP — Include "@owner" (array of PEM public keys) to
  *       restrict who can modify or delete the object.
  *       AUTHORIZATION — Include a signatureSheet field to prove write
  *       access when updating owned objects.
