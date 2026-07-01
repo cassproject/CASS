@@ -249,6 +249,7 @@ const endpointData = async function () {
  *         description: "Failure to locate data due to permission or absence of data."
  * /api/data/{type}/{uid}/{version}:
  *   get:
+ *     x-mcp-ignore: true
  *     tags:
  *       - Repository
  *     summary: Retrieve specific version of data by type and UID

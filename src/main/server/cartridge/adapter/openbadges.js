@@ -258,6 +258,7 @@ if (!global.disabledAdapters['badge']) {
      * @openapi
      * /api/badge/pk:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - OpenBadges Adapter
      *     summary: Get the OpenBadges adapter public key
@@ -276,6 +277,7 @@ if (!global.disabledAdapters['badge']) {
      * @openapi
      * /api/badge/profile/{fingerprint}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - OpenBadges Adapter
      *     summary: Get an OpenBadges v2 Issuer profile
@@ -303,6 +305,7 @@ if (!global.disabledAdapters['badge']) {
      * @openapi
      * /api/badge/cryptographicKey/{fingerprint}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - OpenBadges Adapter
      *     summary: Get an OpenBadges v2 CryptographicKey
@@ -330,6 +333,7 @@ if (!global.disabledAdapters['badge']) {
      * @openapi
      * /api/badge/class/{competencyId}/{fingerprint}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - OpenBadges Adapter
      *     summary: Get an OpenBadges v2 BadgeClass
@@ -361,6 +365,7 @@ if (!global.disabledAdapters['badge']) {
      * @openapi
      * /api/badge/assertion/{id}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - OpenBadges Adapter
      *     summary: Get an OpenBadges v2 Assertion

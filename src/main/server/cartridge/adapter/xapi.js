@@ -499,6 +499,7 @@ if (!global.disabledAdapters['xapi']) {
      * @openapi
      * /api/xapi/tick:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - xAPI Adapter
      *     summary: Manually trigger one xAPI polling cycle
@@ -517,6 +518,7 @@ if (!global.disabledAdapters['xapi']) {
      * @openapi
      * /api/xapi/pk:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - xAPI Adapter
      *     summary: Get the xAPI adapter public key
@@ -829,6 +831,7 @@ if (!global.disabledAdapters['xapi']) {
      * @openapi
      * /api/xapi/endpoint:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - xAPI Adapter
      *     summary: Proxy-fetch statements from the configured LRS

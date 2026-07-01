@@ -585,6 +585,7 @@ if (!global.disabledAdapters['asn']) {
      * @openapi
      * /api/asn/{id}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - ASN Adapter
      *     summary: Export a framework as ASN RDF/XML
@@ -608,6 +609,7 @@ if (!global.disabledAdapters['asn']) {
      *       404:
      *         description: Framework not found.
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - ASN Adapter
      *     summary: Import an ASN-format framework into CaSS

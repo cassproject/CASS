@@ -1890,6 +1890,7 @@ if (!global.disabledAdapters['ceasn']) {
      * @openapi
      * /api/ceasn/{id}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CEASN Adapter
      *     summary: Export a framework as CE/ASN JSON-LD
@@ -1913,6 +1914,7 @@ if (!global.disabledAdapters['ceasn']) {
      *       404:
      *         description: Framework not found.
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CEASN Adapter
      *     summary: Import a CE/ASN JSON-LD framework

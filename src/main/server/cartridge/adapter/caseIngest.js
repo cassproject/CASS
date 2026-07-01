@@ -248,6 +248,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/harvest:
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CASE Adapter
      *     summary: Ingest CASE frameworks from a remote server
@@ -286,6 +287,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/getDocs:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - CASE Adapter
      *     summary: List CFDocuments from a remote CASE server

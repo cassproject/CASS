@@ -472,6 +472,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFDocuments:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Documents
@@ -499,6 +500,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFAssociations:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get a CF Association by ID
@@ -556,6 +558,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFItems:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get a CF Item by ID
@@ -583,6 +586,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFItemAssociations:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get CF Associations for a CF Item
@@ -642,6 +646,7 @@ if (!global.disabledAdapters['case']) {
      * @openapi
      * /api/ims/case/v1p0/CFPackages/{id}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - IMS CASE v1p0
      *     summary: Get a full CF Package

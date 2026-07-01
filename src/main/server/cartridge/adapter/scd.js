@@ -182,6 +182,7 @@ async function scdEndpoint() {
  * @openapi
  * /api/scd/{id}:
  *   get:
+ *     x-mcp-ignore: true
  *     tags:
  *       - SCD Adapter
  *     summary: Export a framework, competency, or relation in SCD format

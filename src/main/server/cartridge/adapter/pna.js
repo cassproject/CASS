@@ -195,6 +195,7 @@ if (!global.disabledAdapters['ce']) {
      * @openapi
      * /api/ce/pna/{id}:
      *   get:
+     *     x-mcp-ignore: true
      *     tags:
      *       - PNA Adapter
      *     summary: Get PNA index data for a framework
@@ -217,6 +218,7 @@ if (!global.disabledAdapters['ce']) {
      *             schema:
      *               type: object
      *   post:
+     *     x-mcp-ignore: true
      *     tags:
      *       - PNA Adapter
      *     summary: Publish PNA index to the Competency Explorer S3 registry
