@@ -163,8 +163,18 @@ var getAlignedCompetencies = async function (objectId, xapiObject) {
     var results = [];
     if (alignedCompetenciesCache[objectId] != null)
         return alignedCompetenciesCache[objectId];
+    try {
+        if (s?.object?.id != null && s?.object?.id.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.id), null, null, repo, xapiIm)) != null)
+            results.push({
+                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s.object.id)
+            });
+        if (s?.object?.definition?.moreInfo != null && s?.object?.definition?.moreInfo.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo))) != null)
+            results.push({
+                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo)
+            });
+    } catch { }
     let creativeWorks = await loopback.repositorySearch(global.repo, "@type:CreativeWork AND url:\"" + objectId + "\"", {});
-    if (creativeWorks.length === 0 && objectId != null && objectId.startsWith("http")) {
+    if (results.length == 0 && creativeWorks.length === 0 && objectId != null && objectId.startsWith("http")) {
         // No existing CreativeWork found for this xAPI object ID — create one with no alignments.
         let cw = new schema.CreativeWork();
         cw.assignId(global.repo.selectedServer, EcCrypto.md5(objectId));
@@ -289,16 +299,6 @@ var xapiStatement = async function (s, accm) {
     if (s.object == null) return;
 
     let alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id, s.object);
-    try{
-    if (s?.object?.id != null && s?.object?.id.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.id), null, null, repo, xapiIm)) != null)
-        alignedCompetencies.push({
-            targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s.object.id)
-        });
-    if (s?.object?.definition?.moreInfo != null && s?.object?.definition?.moreInfo.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo))) != null)
-        alignedCompetencies.push({
-            targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo)
-        });
-    } catch {}
     if (process.env.XAPI_DEBUG) console.log("Aligned Competencies: " + alignedCompetencies.length);
     let alreadyAligned = {};
     for (let i = 0; i < alignedCompetencies.length; i++) {
