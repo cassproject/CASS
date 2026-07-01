@@ -107,56 +107,41 @@ let profileCalculator = async function () {
  *     summary: Compute the current state of the learner
  *     x-mcp-tool-name: get_learner_profile
  *     x-mcp-description: >
- *       Compute a learner's current competency profile against a framework.
- *       This is the culmination of the evidence-to-competence pipeline -
- *       xAPI statements create assertions, and this endpoint aggregates all
- *       assertions for a person across a framework into a single profile
- *       showing which competencies have positive evidence, negative evidence,
- *       conflicts, or no evidence at all. The response is a tree of
- *       competencies (matching the framework's hierarchy) where each node
- *       has a state object summarizing the evidence. Use this to answer
- *       questions like "what does this person know?", "what competencies
- *       has this person demonstrated?", or "where are the gaps?".
- *       REQUIRED PARAMETERS - frameworkId (the full URL or short ID of a
- *       CaSS Framework) and subject (identifies the learner). The server
- *       must be acting on behalf of a user with read access to the
- *       assertions (via signatureSheet or PROFILE_PPK environment variable).
+ *       Use this tool to answer the question "what does this person know?"
+ *       Given a learner and a competency framework, this tool computes a
+ *       complete profile showing which competencies the learner has positive
+ *       evidence for, negative evidence for, or no evidence at all.
+ *       REQUIRED PARAMETERS - frameworkId (the full URL of a CaSS Framework)
+ *       and subject (identifies the learner by email, username, Person URL,
+ *       or PEM public key). Both are mandatory.
+ *       BOUNDARIES - Do NOT use this tool to search for frameworks or
+ *       people. Use search_data first to find the right frameworkId and
+ *       subject values. Do NOT use this tool to record evidence. Use
+ *       record_evidence to create assertions first, then call this tool
+ *       to see the updated profile.
  *     x-mcp-hints: >
- *       SUBJECT IDENTIFICATION - The subject parameter accepts multiple
- *       formats for identifying the learner. You can pass an email address
+ *       FINDING INPUTS - To get a frameworkId, call search_data with
+ *       q=@type:Framework and a keyword. To identify a subject, use an
+ *       email address directly, or call search_data to look up a Person
+ *       record.
+ *       SUBJECT FORMATS - The subject parameter accepts: an email address
  *       (e.g. jane.doe@example.com), a username, a full CaSS Person URL
  *       (e.g. https://server/api/data/schema.org.Person/uid), or a PEM
- *       public key. Email and username are looked up against CaSS Person
- *       records. The Person must exist in CaSS (created automatically when
- *       xAPI statements are processed via record_evidence).
- *       FRAMEWORK ID - Pass the full URL of the framework, e.g.
- *       https://server/api/data/schema.cassproject.org.0.4.Framework/uid.
- *       You can find frameworks using search_data with
- *       q=name:keyword AND type:Framework.
- *       RESPONSE STRUCTURE - The response is a JSON object with a children
- *       array forming a tree. Each node represents a competency and contains
- *       id (the competency URL), name, description, children (sub-competencies),
- *       and most importantly a state object with these boolean/numeric fields -
- *       hasPositiveEvidence (at least one positive assertion exists),
- *       hasNegativeEvidence (at least one negative assertion exists),
- *       latestEvidenceIsPositive (true/false/null based on most recent assertion),
- *       hasAnyChildrenWithPositiveEvidence (rollup from sub-competencies),
- *       distinctPositiveSignatures and distinctNegativeSignatures (count of
- *       unique authorities), isGoal and isHighPriorityGoal (from Person.seeks),
- *       leadsToGoalTopDown and requiredForGoalBottomUp (graph propagation).
- *       CACHING - By default profiles may be cached. Set flushCache=true to
- *       force recalculation after new assertions have been created. Set
- *       cache=true to explicitly opt into caching for faster responses.
- *       TIME TRAVEL - Use targetDateTime (UTC milliseconds) to compute the
- *       profile as it would have been at a past point in time, filtering
- *       assertions by date.
- *       TYPICAL WORKFLOW - (1) Use search_data to find the framework,
- *       (2) Use search_data to find or identify the person,
+ *       public key.
+ *       RESPONSE STRUCTURE - The response is a tree of competencies. Each
+ *       node contains id (competency URL), name, children (sub-competencies),
+ *       and a state object. Key state fields: hasPositiveEvidence (boolean),
+ *       hasNegativeEvidence (boolean), latestEvidenceIsPositive (true/false/null),
+ *       distinctPositiveSignatures and distinctNegativeSignatures (counts of
+ *       unique authorities), isGoal (boolean).
+ *       CACHING - Profiles may be cached. Set flushCache=true after recording
+ *       new evidence to force recalculation. Set cache=true for faster repeat
+ *       queries when freshness is not critical.
+ *       TYPICAL WORKFLOW - (1) Call search_data to find the framework,
+ *       (2) Identify the person (email or search for a Person record),
  *       (3) Call get_learner_profile with frameworkId and subject,
- *       (4) Inspect each competency node's state to understand mastery.
- *       PROACTIVE USAGE - After recording evidence with record_evidence,
- *       call this endpoint with flushCache=true to retrieve the updated
- *       profile and report the learner's current competency status.
+ *       (4) Inspect each competency node's state fields to determine mastery
+ *       and gaps.
  *     description: Computes the current state of the learner given a framework. Returns an object representing the learner's profile, including calculated competency levels.
  *     parameters:
  *       - $ref: '#/components/parameters/frameworkId'

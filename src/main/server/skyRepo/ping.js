@@ -90,12 +90,16 @@ const pingWithTime = function () {
  *     description: Call this endpoint to verify that the server is online and to retrieve fundamental server configuration, time, and Single Sign-On (SSO) identity information if applicable.
  *     x-mcp-tool-name: server_status
  *     x-mcp-description: >
- *       Retrieve CaSS server status, version, current time, and configuration.
- *       Use this tool to check whether the server is online, get the server
- *       version, synchronize timestamps for signature sheets, or discover
- *       SSO login/logout URLs. Pass the 'fields' parameter with a
+ *       Use this tool to verify the CaSS server is online, discover its
+ *       version, or retrieve login and SSO configuration. This should be the
+ *       first tool you call when starting a session or diagnosing connectivity
+ *       issues. This tool is read-only and never modifies data. Do NOT use
+ *       this tool to search for data or retrieve objects — use search_data or
+ *       get_object for those tasks. Pass the 'fields' parameter with a
  *       comma-separated list of field names to reduce the response size.
  *     x-mcp-hints: >
+ *       For most tasks, fields=version,time is sufficient. Only omit the
+ *       fields parameter if you need the full server configuration.
  *       Common field sets:
  *       - Health check: fields=ping
  *       - Version info: fields=version,time

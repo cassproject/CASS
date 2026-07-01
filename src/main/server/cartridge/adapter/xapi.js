@@ -542,92 +542,52 @@ if (!global.disabledAdapters['xapi']) {
      *     summary: Receive a single xAPI statement and convert to CaSS assertions
      *     x-mcp-tool-name: record_evidence
      *     x-mcp-description: >
-     *       Record evidence of a person's performance and convert it into
-     *       competency claims. This endpoint accepts an xAPI statement (a
-     *       standardized record of a learning experience) and automatically
-     *       creates encrypted competency assertions in the CaSS repository.
-     *       WHAT THIS DOES - An xAPI statement says "a person did something
-     *       and here is the outcome". CaSS converts that into "this person
-     *       does or does not possess this competency" by looking up which
-     *       competencies are aligned to the activity. The pipeline is (1)
-     *       the actor field identifies WHO - resolved to a CaSS Person via
-     *       email or account name, created automatically if not found, (2)
-     *       the object.id identifies WHAT - matched against CaSS CreativeWork
-     *       URLs to find educationalAlignment entries linking to competencies,
-     *       or used directly if it is itself a competency URL, (3) the result
-     *       determines the OUTCOME - positive or negative assertion based on
-     *       success, score, or text response, (4) one encrypted Assertion is
-     *       created per aligned competency, owned by the authority and readable
-     *       by the actor.
-     *       HOW TO DETERMINE POSITIVE vs NEGATIVE - CaSS checks result fields
-     *       in this priority order - result.success true means positive and
-     *       false means negative, result.score.scaled greater than 0.7 means
-     *       positive and 0.7 or below means negative, result.response of Pass
-     *       or At Expectation or Above Expectation means positive and Fail or
-     *       Below Expectation means negative. You must provide at least one of
-     *       these three fields or the statement will be silently ignored.
-     *       REQUIRED FIELDS - actor (with mbox or account.name), verb (with id),
-     *       object (with id), and result (with success, score.scaled, or response).
-     *       IMPORTANT - The statement must be sent as multipart/form-data. The
-     *       form field name does not matter - CaSS processes all attached data
-     *       streams. Send the JSON statement as the value of any named field.
+     *       Use this tool to record evidence that a person has demonstrated
+     *       (or failed to demonstrate) a competency. Send an xAPI statement
+     *       describing the experience and CaSS will automatically create
+     *       encrypted competency assertions.
+     *       HOW IT WORKS - (1) The actor (identified by email or account name)
+     *       is resolved to a CaSS Person (created automatically if needed).
+     *       (2) The object.id is matched against CaSS competencies, either
+     *       directly by URL or via a CreativeWork's educationalAlignment.
+     *       (3) The result determines positive or negative: result.success
+     *       true/false, result.score.scaled above/below 0.7, or
+     *       result.response of Pass/Fail. At least one result field is
+     *       required or the statement is silently ignored.
+     *       (4) An encrypted Assertion is created per aligned competency.
+     *       BOUNDARIES - Do NOT use this tool to directly create or modify
+     *       assertion objects in the repository. This tool handles the
+     *       entire pipeline automatically. Do NOT use this tool to query
+     *       what someone knows — use get_learner_profile for that.
+     *       IMPORTANT - The statement JSON must be sent as
+     *       multipart/form-data. The form field name does not matter.
      *     x-mcp-hints: >
-     *       MINIMAL COMPLETE EXAMPLE - To record that jane.doe passed a quiz
-     *       and should be credited with competency, send this JSON as a
-     *       multipart/form-data field named "statement" -
+     *       MINIMAL EXAMPLE -
      *       {"actor":{"mbox":"mailto:jane.doe@example.com","name":"Jane Doe"},
      *       "verb":{"id":"http://adlnet.gov/expapi/verbs/passed"},
      *       "object":{"id":"https://lms.example.com/quiz/123"},
      *       "result":{"success":true},
      *       "authority":{"mbox":"mailto:admin@lms.example.com","name":"Example LMS"},
      *       "timestamp":"2026-06-28T12:00:00Z"}.
-     *       COMPETENCY ALIGNMENT - For the assertion to link to a competency,
-     *       either (a) a CreativeWork must exist in CaSS with url matching
+     *       COMPETENCY ALIGNMENT - (a) A CreativeWork in CaSS with url matching
      *       object.id and educationalAlignment entries pointing to competencies,
-     *       or (b) object.id must be a direct CaSS competency URL like
-     *       https://your-cass-server/api/data/schema.cassproject.org.0.4.Competency/uid,
-     *       or (c) object.definition.moreInfo can be a direct competency URL.
-     *       If no CreativeWork exists, one is auto-created for future alignment.
-     *       ACTOR IDENTIFICATION - Use mbox with mailto prefix
-     *       (e.g. mailto:user@example.com) or account.name with account.homePage.
-     *       If no CaSS Person exists for this identity, one is created.
-     *       GROUP SUPPORT - Set actor.objectType to Group and provide a member
-     *       array of agents. A composite Person is created for the group.
-     *       AUTHORITY (IMPORTANT) - The authority identifies who or what is
-     *       making the claim or stating the evidence. This could be an LMS,
-     *       a proctor, an AI agent, or any system that observed the performance.
-     *       The authority agent is resolved to a CaSS Person (same as actor)
-     *       and becomes an owner of the resulting assertion, meaning only the
-     *       authority can later modify or delete it. Always set authority to
-     *       identify the source of the evidence. If omitted, only the xAPI
-     *       adapter's built-in identity owns the assertion.
-     *       REGISTRATION - context.registration UUID is preserved on the assertion
-     *       for grouping related statements (e.g. a course attempt).
-     *       STATEMENT ID - The id field (UUID) is used to generate deterministic
-     *       assertion IDs. Resubmitting a statement with the same id and competency
-     *       alignment will overwrite the previous assertion.
-     *       COMMON VERBS -
-     *       http://adlnet.gov/expapi/verbs/passed,
-     *       http://adlnet.gov/expapi/verbs/failed,
-     *       http://adlnet.gov/expapi/verbs/completed,
-     *       http://adlnet.gov/expapi/verbs/mastered,
-     *       http://adlnet.gov/expapi/verbs/scored.
-     *       CaSS does not filter by verb - any verb is accepted as long as
-     *       a result is present.
-     *       PROACTIVE USAGE - As an AI agent, you should create xAPI statements
-     *       whenever you observe evidence that a person has demonstrated a
-     *       competency. For example, if a user successfully completes a task,
-     *       answers a question correctly, produces a work product, or
-     *       demonstrates a skill during conversation, search CaSS for a
-     *       relevant competency (using search_data with q=name:keyword AND
-     *       type:Competency) and then call record_evidence with an xAPI
-     *       statement documenting what you observed. Use the verb
-     *       http://adlnet.gov/expapi/verbs/demonstrated for observed
-     *       competence. Set object.id to the competency URL directly so
-     *       the assertion links without needing a CreativeWork. Set the
-     *       authority to identify who stated the evidence, or you can use yourself as the source of the evidence
-     *       (e.g. mbox mailto:ai-agent@your-system.com, name Your AI Agent).
-     *       This turns every interaction into a potential learning record.
+     *       (b) object.id is itself a direct CaSS competency URL, or
+     *       (c) object.definition.moreInfo is a competency URL. If no
+     *       CreativeWork exists, one is auto-created for future alignment.
+     *       ACTOR - Use mbox with mailto: prefix or account.name with
+     *       account.homePage. Person is created automatically if not found.
+     *       AUTHORITY - Identifies who is making the claim (LMS, proctor, AI
+     *       agent). Resolved to a CaSS Person who becomes owner of the
+     *       assertion. Always set this to identify the evidence source.
+     *       COMMON VERBS - http://adlnet.gov/expapi/verbs/passed,
+     *       failed, completed, mastered, scored, demonstrated. CaSS does
+     *       not filter by verb — any verb works if a result is present.
+     *       AI AGENT GUIDANCE - When you observe someone demonstrate a
+     *       competency, search for it with search_data (q=name:keyword AND
+     *       type:Competency), then call record_evidence with verb
+     *       "demonstrated" and object.id set to the competency URL directly.
+     *       Call get_learner_profile with flushCache=true after to see
+     *       the updated profile.
      *     description: |
      *       Accepts an xAPI statement (Experience API / Tin Can API) and converts
      *       it into CaSS competency assertions based on aligned competencies.
