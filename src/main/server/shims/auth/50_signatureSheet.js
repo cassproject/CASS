@@ -78,6 +78,9 @@ module.exports = function (common) {
                     let i = new EcIdentity();
                     i.displayName = group.replaceAll(/_/g, " ").trim();
                     i.ppk = EcPpk.fromPem(myKey);
+                    if (group.toLowerCase().startsWith("admin")) {
+                        i.ppk = skyrepoAdminKey();
+                    }
                     eim.addIdentity(i);
                     let p = getPersonCache[i.ppk.toPk().toPem()];
                     if (p == null)
@@ -91,7 +94,7 @@ module.exports = function (common) {
                         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthCreatingPerson", "Creating organization.", i.ppk.toPk().fingerprint());
                         p = new EcPerson();
                         p.addOwner(i.ppk.toPk());
-                        p.ssoSignature = await EcRsaOaepAsync.sign(EcPpk.fromPem(skyrepoAdminPpk()), i.ppk.toPk().toPem());
+                        p.ssoSignature = await EcRsaOaepAsync.sign(skyrepoAdminKey(), i.ppk.toPk().toPem());
                         p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy, i.ppk.toPk().fingerprint());
                         p.name = group.replaceAll(/_/g, " ").replace("fp", "").replace("FP", "").replace("Cont", "Contributor").replace("Read", "Reader").trim();
                         await repo.saveTo(p);
@@ -118,7 +121,6 @@ module.exports = function (common) {
                 p.ssoSignature = await EcRsaOaepAsync.sign(EcPpk.fromPem(skyrepoAdminPpk()), i.ppk.toPk().toPem());
                 await repo.saveTo(p);
             }
-            //THIS IS NOT OK, THE KEY INTO THE CACHE SHOULD NOT BE THE SERVER NAME!!!!!!!!!!
             let signatureSheet = signatureSheetCache[p.shortId()];
             if (signatureSheet != null) {
                 let maxTimeout = 0;

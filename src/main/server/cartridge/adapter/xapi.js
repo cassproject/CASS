@@ -311,6 +311,7 @@ var xapiStatement = async function (s, accm) {
         let a = new EcAssertion();
         a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id + alignedCompetencies[i].targetUrl));
         a.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
+        a.addOwner(EcPk.fromPem(skyrepoAdminPk()));
         for (let authorityPk of authorityPks)
             await a.addOwner(authorityPk);
         for (let actorPk of actorPks) {

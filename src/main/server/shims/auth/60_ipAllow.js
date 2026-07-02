@@ -57,6 +57,7 @@ module.exports = function (common) {
             let ipFilterList = ipFilter.split(",");
             let allowed = false;
             req.permittedBy = [];
+            if (process.env.CASS_API_KEY != null && req.headers?.['authorization'] != null && req.headers['authorization'] == process.env.CASS_API_KEY) { req.permittedBy.push("Permitted by: " + 'bearer token'); allowed = true; } //Bearer token is permitted
             if (req.originalUrl == global.baseUrl + "/callback") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO is permitted
             if (req.originalUrl == global.baseUrl + "/login") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
             if (req.originalUrl == global.baseUrl + "/logout") { req.permittedBy.push("Permitted by: " + 'sso callback'); allowed = true; } //SSO redirect is permitted
