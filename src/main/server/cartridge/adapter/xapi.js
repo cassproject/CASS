@@ -164,13 +164,13 @@ var getAlignedCompetencies = async function (objectId, xapiObject) {
     if (alignedCompetenciesCache[objectId] != null)
         return alignedCompetenciesCache[objectId];
     try {
-        if (s?.object?.id != null && s?.object?.id.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.id), null, null, repo, xapiIm)) != null)
+        if (xapiObject?.id != null && xapiObject?.id.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.id), null, null, repo, xapiIm)) != null)
             results.push({
-                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s.object.id)
+                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(xapiObject.id)
             });
-        if (s?.object?.definition?.moreInfo != null && s?.object?.definition?.moreInfo.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo))) != null)
+        if (xapiObject?.definition?.moreInfo != null && xapiObject?.definition?.moreInfo.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.definition?.moreInfo))) != null)
             results.push({
-                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(s?.object?.definition?.moreInfo)
+                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.definition?.moreInfo)
             });
     } catch { }
     let creativeWorks = await loopback.repositorySearch(global.repo, "@type:CreativeWork AND url:\"" + objectId + "\"", {});
