@@ -519,6 +519,127 @@ describe('xAPI Adapter', function () {
         });
     });
 
+    describe('Direct competency URL as object.id', function () {
+        it('Submit xAPI statement with competency URL as object.id and verify positive assertion', async () => {
+            const stmt = buildXapiStatement({
+                objectId: c1.shortId(),
+                objectName: "Direct Competency C1",
+                result: { success: true }
+            });
+            await submitStatement(stmt);
+
+            const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
+            const res = await fetch(url);
+            let text = await res.text();
+            assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+            const profile = JSON.parse(text);
+
+            const comp2 = profile.children.find(c => c.id === c2.shortId());
+            assert.isDefined(comp2, 'C2 should be in profile children');
+            const comp1 = comp2.children.find(c => c.id === c1.shortId());
+            assert.isDefined(comp1, 'C1 should be a child of C2');
+            assert.isTrue(comp1.state.hasPositiveEvidence, 'C1 should have positive evidence from direct competency object.id');
+        });
+
+        it('Submit xAPI statement with competency URL as object.id and verify negative assertion', async () => {
+            const stmt = buildXapiStatement({
+                objectId: c3.shortId(),
+                objectName: "Direct Competency C3",
+                result: { success: false }
+            });
+            await submitStatement(stmt);
+
+            const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
+            const res = await fetch(url);
+            let text = await res.text();
+            assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+            const profile = JSON.parse(text);
+
+            const comp3 = profile.children.find(c => c.id === c3.shortId());
+            assert.isDefined(comp3, 'C3 should be in profile');
+            assert.isTrue(comp3.state.hasNegativeEvidence, 'C3 should have negative evidence from direct competency object.id');
+        });
+
+        it('Submit xAPI statement with score-based result using competency URL as object.id', async () => {
+            const stmt = buildXapiStatement({
+                objectId: c2.shortId(),
+                objectName: "Direct Competency C2 - Scored",
+                result: { score: { scaled: 0.95 } }
+            });
+            await submitStatement(stmt);
+
+            const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
+            const res = await fetch(url);
+            let text = await res.text();
+            assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+            const profile = JSON.parse(text);
+
+            const comp2 = profile.children.find(c => c.id === c2.shortId());
+            assert.isDefined(comp2, 'C2 should be in profile');
+            assert.isTrue(comp2.state.hasPositiveEvidence, 'C2 should have positive evidence from high score via direct competency URL');
+        });
+
+        it('No CreativeWork is auto-created when object.id is a valid competency URL', async () => {
+            // Search for CreativeWorks with url matching the competency ID
+            let creativeWorks = await repo.searchWithParams(
+                `@type:CreativeWork AND url:"${c1.shortId()}"`,
+                { size: 10 }
+            );
+            assert.strictEqual(creativeWorks.length, 0, 'No CreativeWork should be auto-created when object.id resolves to a competency');
+        });
+    });
+
+    describe('Competency URL via object.definition.moreInfo', function () {
+        it('Submit xAPI statement with moreInfo pointing to a competency and verify assertion', async () => {
+            const moreInfoActivityUrl = activityBaseUrl + 'moreinfo-test-' + new Date().getTime();
+            const stmt = buildXapiStatement({
+                objectId: moreInfoActivityUrl,
+                objectName: "Activity with moreInfo",
+                definition: {
+                    name: { "en-US": "Activity with moreInfo Competency Link" },
+                    description: { "en-US": "Tests moreInfo-based competency resolution" },
+                    moreInfo: c2.shortId()
+                },
+                result: { success: true }
+            });
+            await submitStatement(stmt);
+
+            const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
+            const res = await fetch(url);
+            let text = await res.text();
+            assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+            const profile = JSON.parse(text);
+
+            const comp2 = profile.children.find(c => c.id === c2.shortId());
+            assert.isDefined(comp2, 'C2 should be in profile');
+            assert.isTrue(comp2.state.hasPositiveEvidence, 'C2 should have positive evidence from moreInfo competency link');
+        });
+
+        it('Submit xAPI statement with moreInfo pointing to a different competency and verify negative assertion', async () => {
+            const moreInfoActivityUrl2 = activityBaseUrl + 'moreinfo-test2-' + new Date().getTime();
+            const stmt = buildXapiStatement({
+                objectId: moreInfoActivityUrl2,
+                objectName: "Activity with moreInfo to C3",
+                definition: {
+                    name: { "en-US": "Activity with moreInfo to C3" },
+                    moreInfo: c3.shortId()
+                },
+                result: { score: { scaled: 0.3 } }
+            });
+            await submitStatement(stmt);
+
+            const url = `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}&cache=false&flushCache=true`;
+            const res = await fetch(url);
+            let text = await res.text();
+            assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+            const profile = JSON.parse(text);
+
+            const comp3 = profile.children.find(c => c.id === c3.shortId());
+            assert.isDefined(comp3, 'C3 should be in profile');
+            assert.isTrue(comp3.state.hasNegativeEvidence, 'C3 should have negative evidence from low score via moreInfo');
+        });
+    });
+
     after(() => {
         delete global.AUTH_OVERRIDE;
         delete global.AUTH_OVERRIDE_KEY;
