@@ -160,18 +160,24 @@ var resolveLanguageMap = function (langMap) {
 }
 
 var getAlignedCompetencies = async function (objectId, xapiObject) {
-    var results = [];
+    let results = [];
     if (alignedCompetenciesCache[objectId] != null)
         return alignedCompetenciesCache[objectId];
     try {
-        if (xapiObject?.id != null && xapiObject?.id.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.id), null, null, repo, xapiIm)) != null)
+        if ((await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(objectId), null, null, repo, xapiIm)) != null)
+        {
+            if (process.env.XAPI_DEBUG) console.log("xAPI object is a competency: " + objectId);
             results.push({
-                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(xapiObject.id)
+                targetUrl: EcRemoteLinkedData.trimVersionFromUrl(objectId)
             });
+        }
         if (xapiObject?.definition?.moreInfo != null && xapiObject?.definition?.moreInfo.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.definition?.moreInfo))) != null)
+        {
+            if (process.env.XAPI_DEBUG) console.log("xAPI object has a moreInfo competency: " + xapiObject?.definition?.moreInfo);
             results.push({
                 targetUrl: EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.definition?.moreInfo)
             });
+        }
     } catch { }
     let creativeWorks = await loopback.repositorySearch(global.repo, "@type:CreativeWork AND url:\"" + objectId + "\"", {});
     if (results.length == 0 && creativeWorks.length === 0 && objectId != null && objectId.startsWith("http")) {
