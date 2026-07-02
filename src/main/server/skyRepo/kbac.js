@@ -147,7 +147,7 @@ global.filterResults = async function (o, dontDecryptInSso) {
                     eev.copyFrom(o);
                     o.decryptedSecret = await eev.decryptSecret(this.ctx.req.eim);
                 } catch (msg) {
-                    global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'CassDecryptError', 'We couldn\'t decrypt it, hope the client has better luck! -- ' + msg);
+                    global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'CassDecryptError', 'We couldn\'t decrypt it, hope the client has better luck! -- ' + msg);
                 }
             }
         }
