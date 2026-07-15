@@ -1,3 +1,4 @@
+let lastCleanup = 0;
 let subscription = global.events.database.connected.subscribe(async (connected) => {
     if (connected) {
         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralInit');
@@ -12,13 +13,12 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
 
         // Throttled cleanup state: only purge expired entries at most once per interval.
         const cleanupIntervalMs = parseInt(process.env.EPHEMERAL_CLEANUP_INTERVAL) || 60000;
-        let lastCleanup = 0;
 
         // Fire-and-forget cleanup of expired ephemeral entries.
         // Compares the document version (which stores the expiry timestamp) against the current time.
         function cleanupExpired() {
             const now = Date.now();
-            if (now - lastCleanup < cleanupIntervalMs) return;
+            if (now - cleanupIntervalMs < lastCleanup) return;
             lastCleanup = now;
             httpPost({
                 "query": {
@@ -98,4 +98,4 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
 
         subscription.unsubscribe();
     }
-});
+});
