@@ -8,15 +8,30 @@ on:
       - "1.5"
       - "1.6"
 
+env:
+  REGISTRY_IMAGE: cassproject/cass
+
 jobs:
-  publish-release:
+  build:
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.title, 'Release:')
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     permissions:
-      contents: write
-      packages: write
+      contents: read
 
     steps:
+      - name: Prepare
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -33,8 +48,61 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_ENV
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Images by Digest via Docker Compose
+        env:
+          branch: ${{ github.base_ref }}
+          version: ${{ env.version }}
+        run: |
+          docker buildx bake -f docker-compose-release.yml \
+            --sbom=true --provenance=true \
+            --set "*.platform=${{ matrix.platform }}" \
+            --set "*.tags=" \
+            --set "*.output=type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true" \
+            --metadata-file metadata.json
+
+      - name: Upload Bake Metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: bake-metadata-${{ env.PLATFORM_PAIR }}
+          path: metadata.json
+          if-no-files-found: error
+          retention-days: 1
+
+  publish-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get Version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_ENV
+
+      - name: Download Bake Metadata
+        uses: actions/download-artifact@v4
+        with:
+          path: metadata
+          pattern: bake-metadata-*
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -45,11 +113,21 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Images via Docker Compose
+      - name: Create Multi-Arch Manifests
         env:
           branch: ${{ github.base_ref }}
           version: ${{ env.version }}
-        run: docker buildx bake -f docker-compose-release.yml --sbom=true --provenance=true --push
+        run: |
+          docker buildx bake -f docker-compose-release.yml --print > bake-plan.json
+          for target in $(jq -r '.target | keys[]' bake-plan.json); do
+            tag=$(jq -r --arg t "$target" '.target[$t].tags[0]' bake-plan.json)
+            amd64=$(jq -r --arg t "$target" '.[$t]["containerimage.digest"]' metadata/bake-metadata-linux-amd64/metadata.json)
+            arm64=$(jq -r --arg t "$target" '.[$t]["containerimage.digest"]' metadata/bake-metadata-linux-arm64/metadata.json)
+            echo "Creating $tag from $amd64 + $arm64"
+            docker buildx imagetools create -t "$tag" \
+              "${{ env.REGISTRY_IMAGE }}@${amd64}" \
+              "${{ env.REGISTRY_IMAGE }}@${arm64}"
+          done
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
