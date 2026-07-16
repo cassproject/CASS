@@ -51,7 +51,9 @@ ENV OPENSSL_MODULES=/usr/local/lib64/ossl-modules
 ENV LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
 
 # OPENSSL_MODULES path varies by architecture (lib64 on amd64, lib on arm64)
-RUN OSSL_MOD=$(find /usr/local -name 'ossl-modules' -type d | head -1) && \
+# Ensure /usr/local/lib64 exists (absent on arm64) so the runtime-stage COPY never fails
+RUN mkdir -p /usr/local/lib64 && \
+    OSSL_MOD=$(find /usr/local -name 'ossl-modules' -type d | head -1) && \
     ln -sfn "$OSSL_MOD" /usr/local/ossl-modules
 ENV OPENSSL_MODULES=/usr/local/ossl-modules
 
