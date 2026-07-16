@@ -73,7 +73,7 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1086.0",
+    "@aws-sdk/client-s3": "^3.1088.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@xmldom/xmldom": "^0.9.10",
     "busboy": "^1.6.0",
