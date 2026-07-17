@@ -40,12 +40,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # CodeQL's CLI does not support linux/arm64, so the analysis steps run on amd64 only.
     - name: Initialize CodeQL
+      if: matrix.os == 'ubuntu-latest'
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
 
     - name: Autobuild
+      if: matrix.os == 'ubuntu-latest'
       uses: github/codeql-action/autobuild@v3
 
     - name: Build lcov.info
@@ -70,6 +73,5 @@ jobs:
         projectBaseDir: .
 
     - name: Perform CodeQL Analysis
+      if: matrix.os == 'ubuntu-latest'
       uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{ matrix.language }}/os:${{ matrix.os }}"
