@@ -4,6 +4,8 @@
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "scripts": {
+    "bakeSetup": "docker buildx create --name multiarch-builder --driver docker-container --use && docker buildx inspect --bootstrap",
+    "bakeTest": "docker bake -f docker-compose-release.yml --var version=1.6.test --var branch=1.6",
     "test": "npm run test:deps && npm run mochaDev",
     "testWithCoverage": "npm run test:deps && nyc --reporter=lcov --reporter=text --all --include 'src/main/**' --exclude 'node_modules/**' --exclude 'src/main/webapp/**' npm run mochaDev",
     "test:start": "node src/main/server.js",

@@ -4,9 +4,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/Dockerfile
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -15,9 +12,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/Dockerfile
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -26,9 +20,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/Dockerfile
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -37,9 +28,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/Dockerfile
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -48,9 +36,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/DockerfileAlpine
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -59,9 +44,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/DockerfileAlpine
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -70,9 +52,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/DockerfileDistroless
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"
@@ -81,9 +60,6 @@ services:
     build:
       context: .
       dockerfile: docker/standalone/node/DockerfileDistroless
-      args:
-        - BRANCH=${BRANCH:-1.6}
-        - VERSION=${VERSION:-1.6.xx}
       platforms:
         - "linux/amd64"
         - "linux/arm64"

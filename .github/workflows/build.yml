@@ -23,7 +23,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     permissions:
       actions: read
       contents: read
@@ -33,6 +33,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
+        os: [ ubuntu-latest, ubuntu-24.04-arm ]
         language: [ 'javascript' ]
 
     steps:
@@ -56,7 +57,7 @@ jobs:
     - run: npm run run:nyc
 
     - name: Analyze with SonarCloud
-      if: env.SONAR_TOKEN != ''
+      if: env.SONAR_TOKEN != '' && matrix.os == 'ubuntu-latest'
       uses: SonarSource/sonarqube-scan-action@v6.0.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -70,3 +71,5 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{ matrix.language }}/os:${{ matrix.os }}"
