@@ -1,3 +1,6 @@
 [submodule "src/main/webapp"]
 	path = src/main/webapp
 	url = https://github.com/cassproject/cass-editor.git
+[submodule "cass-editor"]
+	path = cass-editor
+	url = https://github.com/cassproject/cass-editor.git

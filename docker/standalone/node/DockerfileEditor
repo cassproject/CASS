@@ -1,0 +1,40 @@
+
+FROM node:24
+COPY cass-editor editor
+WORKDIR /editor
+ENV DOCS_BASE=/docs/
+RUN npm i && rm -rf dist && npm run docs:build && npm run build
+
+ARG nodeVersion=24
+FROM node:24-alpine
+
+RUN apk update && apk upgrade --no-cache
+RUN npm upgrade --global --production --omit=dev
+
+USER 1000:1000
+WORKDIR /app
+RUN chown 1000:1000 . -R
+COPY --chown=1000:1000 package.json ./
+
+RUN npm update && \
+npm install --production --omit=dev && \
+npm upgrade --production --omit=dev --save && \
+(npm audit --production --omit=dev --fix || true) && \
+chown 1000:1000 node_modules -R
+
+COPY --chown=1000:1000 src src
+COPY --chown=1000:1000 ca.crt cass.crt cass.key copyright.txt client.key client.crt ./
+
+RUN mkdir /app/etc
+RUN chown 1000:1000 /app/etc
+
+ARG TEST=false
+RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=http://localhost:8082/api/ && npm i && npm run mochaDev && npm ci --production --omit=dev ; fi
+RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=https://localhost:8082/api/ && npm i && npm run mochaDevHttps && npm ci --production --omit=dev ; fi
+RUN rm -f client.key client.crt
+
+RUN rm -f src/main/webapp
+COPY --from=0 editor/dist/ src/main/webapp
+
+EXPOSE 80
+ENTRYPOINT [ "node", "./src/main/server.js" ]
