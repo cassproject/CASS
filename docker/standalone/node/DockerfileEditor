@@ -1,9 +1,12 @@
 
 FROM node:24
+RUN mkdir editor
+COPY cass-editor/package.json editor/package.json
+RUN cd editor && npm i && mv node_modules node_mods
 COPY cass-editor editor
 WORKDIR /editor
 ENV DOCS_BASE=/docs/
-RUN npm i && rm -rf dist && npm run docs:build && npm run build
+RUN rm -rf node_modules && mv node_mods node_modules && rm -rf dist && npm i && npm run build
 
 ARG nodeVersion=24
 FROM node:24-alpine
@@ -33,7 +36,7 @@ RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=http
 RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=https://localhost:8082/api/ && npm i && npm run mochaDevHttps && npm ci --production --omit=dev ; fi
 RUN rm -f client.key client.crt
 
-RUN rm -f src/main/webapp
+RUN rm -rf src/main/webapp
 COPY --from=0 editor/dist/ src/main/webapp
 
 EXPOSE 80
