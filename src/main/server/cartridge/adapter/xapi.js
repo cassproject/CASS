@@ -304,7 +304,8 @@ var xapiStatement = async function (s, accm) {
 
     // The assertion agent is drawn from context.contextAgents (IEEE 9274.1.1),
     // falling back to context.instructor, then to the statement authority.
-    var agentPks = [];
+    // All resolved parties become owners of the assertion.
+    var contextAgentPks = [];
     let contextAgents = s.context?.contextAgents;
     if (contextAgents != null && !EcArray.isArray(contextAgents))
         contextAgents = [contextAgents];
@@ -312,13 +313,17 @@ var xapiStatement = async function (s, accm) {
         for (let contextAgent of contextAgents) {
             if (contextAgent?.agent == null) continue;
             if (contextAgent.objectType != null && contextAgent.objectType != "contextAgent") continue;
-            agentPks = agentPks.concat(await pkFromMbox.call(this, contextAgent.agent));
+            contextAgentPks = contextAgentPks.concat(await pkFromMbox.call(this, contextAgent.agent));
         }
-    if (agentPks.length == 0 && s.context?.instructor != null)
-        agentPks = await pkFromMbox.call(this, s.context.instructor);
+    var instructorPks = [];
+    if (s.context?.instructor != null)
+        instructorPks = await pkFromMbox.call(this, s.context.instructor);
+    var agentPks = contextAgentPks;
+    if (agentPks.length == 0)
+        agentPks = instructorPks;
     if (agentPks.length == 0)
         agentPks = authorityPks;
-    if (process.env.XAPI_DEBUG) console.log("Agent Pks: " + agentPks.length);
+    if (process.env.XAPI_DEBUG) console.log("Context Agent Pks: " + contextAgentPks.length + " Instructor Pks: " + instructorPks.length + " Agent Pks: " + agentPks.length);
 
     if (s.object == null) return;
 
@@ -332,6 +337,10 @@ var xapiStatement = async function (s, accm) {
         a.addOwner(EcPk.fromPem(skyrepoAdminPk()));
         for (let authorityPk of authorityPks)
             await a.addOwner(authorityPk);
+        for (let contextAgentPk of contextAgentPks)
+            await a.addOwner(contextAgentPk);
+        for (let instructorPk of instructorPks)
+            await a.addOwner(instructorPk);
         for (let actorPk of actorPks) {
             await a.addReader(actorPk);
         }
@@ -606,7 +615,9 @@ if (!global.disabledAdapters['xapi']) {
      *       assertion. Always set this to identify the evidence source.
      *       AGENT RESOLUTION - The assertion's agent is drawn from
      *       context.contextAgents (IEEE 9274.1.1 contextAgent Objects) first,
-     *       then context.instructor, then authority.
+     *       then context.instructor, then authority. All resolved
+     *       contextAgents, the instructor, and the authority become owners
+     *       of the assertion.
      *       COMMON VERBS - http://adlnet.gov/expapi/verbs/passed,
      *       failed, completed, mastered, scored, demonstrated. CaSS does
      *       not filter by verb — any verb works if a result is present.
@@ -637,7 +648,9 @@ if (!global.disabledAdapters['xapi']) {
      *          owned by the `authority` and readable by the `actor`.
      *       5. The assertion's agent (who is making the claim) is resolved from
      *          `context.contextAgents` (per IEEE 9274.1.1), falling back to
-     *          `context.instructor`, then to the statement `authority`.
+     *          `context.instructor`, then to the statement `authority`. All
+     *          resolved contextAgents, the instructor, and the authority are
+     *          granted ownership of the assertion.
      *       6. `context.registration` is preserved on the assertion for grouping.
      *
      *       **Required fields:** `actor`, `verb`, `object`, `result` (with at least
@@ -833,7 +846,8 @@ if (!global.disabledAdapters['xapi']) {
      *                           relationships between Agents and this statement. The first
      *                           contextAgent that resolves to a CaSS Person becomes the
      *                           assertion's agent, taking precedence over `instructor` and
-     *                           `authority`.
+     *                           `authority`. All resolved contextAgents become owners of
+     *                           the assertion.
      *                         items:
      *                           type: object
      *                           required:
@@ -863,7 +877,8 @@ if (!global.disabledAdapters['xapi']) {
      *                         type: object
      *                         description: |
      *                           Instructor Agent that the statement relates to. Used as the
-     *                           assertion's agent when no `contextAgents` entry resolves.
+     *                           assertion's agent when no `contextAgents` entry resolves,
+     *                           and granted ownership of the assertion when present.
      *                           Not recommended by IEEE 9274.1.1 — prefer `contextAgents`;
      *                           supported for backward compatibility.
      *                         properties:

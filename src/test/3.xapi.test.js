@@ -645,9 +645,9 @@ describe('xAPI Adapter', function () {
     describe('Assertion agent resolution (IEEE 9274.1.1)', function () {
         /**
          * Helper: Find the assertion created for a statement (by its unique
-         * context.registration), fetch the full object, and decrypt its agent.
+         * context.registration) and fetch the full object.
          */
-        async function getAssertionAgentPem(registration) {
+        async function getAssertionByRegistration(registration) {
             let assertions = await repo.searchWithParams(
                 `registration:"${registration}"`,
                 { size: 10, index_hint: "*assertion" }
@@ -657,6 +657,13 @@ describe('xAPI Adapter', function () {
             let full = await EcRepository.get(assertions[0].shortId());
             let a = new EcAssertion();
             a.copyFrom(full);
+            return a;
+        }
+
+        /**
+         * Helper: Decrypt the assertion's agent and return its PEM.
+         */
+        async function agentPemOf(a) {
             let agentPk = await a.getAgent();
             assert.isNotNull(agentPk, 'Should be able to decrypt the assertion agent');
             return agentPk.toPem();
@@ -680,8 +687,10 @@ describe('xAPI Adapter', function () {
             });
             await submitStatement(stmt);
 
-            const agentPem = await getAssertionAgentPem(registration);
-            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should be the contextAgent person');
+            const a = await getAssertionByRegistration(registration);
+            assert.strictEqual(await agentPemOf(a), agent.ppk.toPk().toPem(), 'Assertion agent should be the contextAgent person');
+            assert.include(a.owner, agent.ppk.toPk().toPem(), 'Resolved contextAgent should be an owner of the assertion');
+            assert.include(a.owner, user.ppk.toPk().toPem(), 'Resolved instructor should also be an owner of the assertion');
         });
 
         it('Agent falls back to context.instructor when contextAgents is absent', async () => {
@@ -696,8 +705,9 @@ describe('xAPI Adapter', function () {
             });
             await submitStatement(stmt);
 
-            const agentPem = await getAssertionAgentPem(registration);
-            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should be the instructor person');
+            const a = await getAssertionByRegistration(registration);
+            assert.strictEqual(await agentPemOf(a), agent.ppk.toPk().toPem(), 'Assertion agent should be the instructor person');
+            assert.include(a.owner, agent.ppk.toPk().toPem(), 'Resolved instructor should be an owner of the assertion');
         });
 
         it('Agent falls back to authority when neither contextAgents nor instructor is present', async () => {
@@ -710,8 +720,9 @@ describe('xAPI Adapter', function () {
             });
             await submitStatement(stmt);
 
-            const agentPem = await getAssertionAgentPem(registration);
-            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should be the authority person');
+            const a = await getAssertionByRegistration(registration);
+            assert.strictEqual(await agentPemOf(a), agent.ppk.toPk().toPem(), 'Assertion agent should be the authority person');
+            assert.include(a.owner, agent.ppk.toPk().toPem(), 'Resolved authority should be an owner of the assertion');
         });
 
         it('Non-contextAgent entries are skipped and resolution falls through to instructor', async () => {
@@ -730,8 +741,10 @@ describe('xAPI Adapter', function () {
             });
             await submitStatement(stmt);
 
-            const agentPem = await getAssertionAgentPem(registration);
-            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should skip the invalid entry and use the instructor');
+            const a = await getAssertionByRegistration(registration);
+            assert.strictEqual(await agentPemOf(a), agent.ppk.toPk().toPem(), 'Assertion agent should skip the invalid entry and use the instructor');
+            assert.include(a.owner, agent.ppk.toPk().toPem(), 'Resolved instructor should be an owner of the assertion');
+            assert.notInclude(a.owner, user.ppk.toPk().toPem(), 'Skipped non-contextAgent entry should not be granted ownership');
         });
     });
 
