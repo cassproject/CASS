@@ -302,6 +302,24 @@ var xapiStatement = async function (s, accm) {
     if (process.env.XAPI_DEBUG) console.log("Authority Pks: " + authorityPks.length);
     if (authorityPks.length == 0) return;
 
+    // The assertion agent is drawn from context.contextAgents (IEEE 9274.1.1),
+    // falling back to context.instructor, then to the statement authority.
+    var agentPks = [];
+    let contextAgents = s.context?.contextAgents;
+    if (contextAgents != null && !EcArray.isArray(contextAgents))
+        contextAgents = [contextAgents];
+    if (contextAgents != null)
+        for (let contextAgent of contextAgents) {
+            if (contextAgent?.agent == null) continue;
+            if (contextAgent.objectType != null && contextAgent.objectType != "contextAgent") continue;
+            agentPks = agentPks.concat(await pkFromMbox.call(this, contextAgent.agent));
+        }
+    if (agentPks.length == 0 && s.context?.instructor != null)
+        agentPks = await pkFromMbox.call(this, s.context.instructor);
+    if (agentPks.length == 0)
+        agentPks = authorityPks;
+    if (process.env.XAPI_DEBUG) console.log("Agent Pks: " + agentPks.length);
+
     if (s.object == null) return;
 
     let alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id, s.object);
@@ -352,7 +370,7 @@ var xapiStatement = async function (s, accm) {
         }
         global.events.person.assertionAbout.next(actorPks[0]);
         await a.setSubject(actorPks[0]);
-        await a.setAgent(authorityPks[0]);
+        await a.setAgent(agentPks[0]);
         a.competency = alignedCompetencies[i].targetUrl;
         a.framework = alignedCompetencies[i].educationalFramework;
         if (alreadyAligned[a.competency + a.framework] == true)
@@ -586,6 +604,9 @@ if (!global.disabledAdapters['xapi']) {
      *       AUTHORITY - Identifies who is making the claim (LMS, proctor, AI
      *       agent). Resolved to a CaSS Person who becomes owner of the
      *       assertion. Always set this to identify the evidence source.
+     *       AGENT RESOLUTION - The assertion's agent is drawn from
+     *       context.contextAgents (IEEE 9274.1.1 contextAgent Objects) first,
+     *       then context.instructor, then authority.
      *       COMMON VERBS - http://adlnet.gov/expapi/verbs/passed,
      *       failed, completed, mastered, scored, demonstrated. CaSS does
      *       not filter by verb — any verb works if a result is present.
@@ -614,7 +635,10 @@ if (!global.disabledAdapters['xapi']) {
      *            "Fail"/"Below Expectation" → negative
      *       4. An encrypted CaSS Assertion is created for each aligned competency,
      *          owned by the `authority` and readable by the `actor`.
-     *       5. `context.registration` is preserved on the assertion for grouping.
+     *       5. The assertion's agent (who is making the claim) is resolved from
+     *          `context.contextAgents` (per IEEE 9274.1.1), falling back to
+     *          `context.instructor`, then to the statement `authority`.
+     *       6. `context.registration` is preserved on the assertion for grouping.
      *
      *       **Required fields:** `actor`, `verb`, `object`, `result` (with at least
      *       one of `success`, `score.scaled`, or `response`).
@@ -791,19 +815,70 @@ if (!global.disabledAdapters['xapi']) {
      *                         description: Whether the activity was completed (informational, not used for assertion logic).
      *                   context:
      *                     type: object
-     *                     description: Context for the statement. `registration` UUID is preserved on the assertion.
+     *                     description: |
+     *                       Context for the statement. `registration` UUID is preserved on
+     *                       the assertion. `contextAgents` (IEEE 9274.1.1) or `instructor`
+     *                       may identify the agent making the claim — see the
+     *                       assertion agent resolution order above.
      *                     properties:
      *                       registration:
      *                         type: string
      *                         format: uuid
      *                         description: UUID grouping related statements (e.g., a course attempt). Stored on the assertion.
      *                         example: "ec531277-b9b7-4700-a81d-1a43e3be340e"
+     *                       contextAgents:
+     *                         type: array
+     *                         description: |
+     *                           Collection of contextAgent Objects (IEEE 9274.1.1) describing
+     *                           relationships between Agents and this statement. The first
+     *                           contextAgent that resolves to a CaSS Person becomes the
+     *                           assertion's agent, taking precedence over `instructor` and
+     *                           `authority`.
+     *                         items:
+     *                           type: object
+     *                           required:
+     *                             - objectType
+     *                             - agent
+     *                           properties:
+     *                             objectType:
+     *                               type: string
+     *                               enum: [contextAgent]
+     *                             agent:
+     *                               type: object
+     *                               description: An Agent Object, resolved to a CaSS Person via mbox/account, same as actor.
+     *                               properties:
+     *                                 name:
+     *                                   type: string
+     *                                   example: "Pat Instructor"
+     *                                 mbox:
+     *                                   type: string
+     *                                   example: "mailto:pat.instructor@example.com"
+     *                             relevantTypes:
+     *                               type: array
+     *                               description: Relevant Type IRIs categorizing the relationship.
+     *                               items:
+     *                                 type: string
+     *                                 format: uri
+     *                       instructor:
+     *                         type: object
+     *                         description: |
+     *                           Instructor Agent that the statement relates to. Used as the
+     *                           assertion's agent when no `contextAgents` entry resolves.
+     *                           Not recommended by IEEE 9274.1.1 — prefer `contextAgents`;
+     *                           supported for backward compatibility.
+     *                         properties:
+     *                           name:
+     *                             type: string
+     *                           mbox:
+     *                             type: string
      *                   authority:
      *                     type: object
      *                     description: |
      *                       The agent asserting the truth of the statement (e.g., the LMS).
      *                       Resolved to a CaSS Person via mbox/account, same as actor.
-     *                       The authority becomes an owner of the resulting assertion.
+     *                       The authority becomes an owner of the resulting assertion, and
+     *                       is used as the assertion's agent when neither
+     *                       `context.contextAgents` nor `context.instructor` resolves.
      *                     properties:
      *                       objectType:
      *                         type: string

@@ -13,6 +13,7 @@ describe('xAPI Adapter', function () {
     let framework;
     let c1, c2, c3;
     let emailPrefix;
+    let agentEmail;
     let activityBaseUrl;
 
     it('Waiting for server to be ready', async () => {
@@ -116,7 +117,8 @@ describe('xAPI Adapter', function () {
         let agentPerson = new EcPerson();
         agentPerson.assignId(repo.selectedServer, agent.ppk.toPk().fingerprint());
         agentPerson.addOwner(agent.ppk.toPk());
-        agentPerson.email = 'xapiagent' + new Date().getTime() + '@test.com';
+        agentEmail = 'xapiagent' + new Date().getTime() + '@test.com';
+        agentPerson.email = agentEmail;
         agentPerson.setName("xAPI Test Agent Person");
         await repo.saveTo(agentPerson);
 
@@ -637,6 +639,99 @@ describe('xAPI Adapter', function () {
             const comp3 = profile.children.find(c => c.id === c3.shortId());
             assert.isDefined(comp3, 'C3 should be in profile');
             assert.isTrue(comp3.state.hasNegativeEvidence, 'C3 should have negative evidence from low score via moreInfo');
+        });
+    });
+
+    describe('Assertion agent resolution (IEEE 9274.1.1)', function () {
+        /**
+         * Helper: Find the assertion created for a statement (by its unique
+         * context.registration), fetch the full object, and decrypt its agent.
+         */
+        async function getAssertionAgentPem(registration) {
+            let assertions = await repo.searchWithParams(
+                `registration:"${registration}"`,
+                { size: 10, index_hint: "*assertion" }
+            );
+            assert.isTrue(assertions.length > 0, 'Should find the assertion by registration');
+            // Search results have encrypted payloads stripped — fetch the full object.
+            let full = await EcRepository.get(assertions[0].shortId());
+            let a = new EcAssertion();
+            a.copyFrom(full);
+            let agentPk = await a.getAgent();
+            assert.isNotNull(agentPk, 'Should be able to decrypt the assertion agent');
+            return agentPk.toPem();
+        }
+
+        it('Agent is drawn from context.contextAgents first', async () => {
+            const registration = EcCrypto.generateUUID();
+            const stmt = buildXapiStatement({
+                objectId: c1.shortId(),
+                result: { success: true },
+                context: {
+                    registration: registration,
+                    contextAgents: [{
+                        objectType: "contextAgent",
+                        agent: { objectType: "Agent", mbox: "mailto:" + agentEmail, name: "xAPI Test Agent Person" },
+                        relevantTypes: ["https://w3id.org/xapi/acrossx/verbs/instructed"]
+                    }],
+                    // Instructor pointing elsewhere — contextAgents should win.
+                    instructor: { objectType: "Agent", mbox: "mailto:" + emailPrefix, name: "xAPI Test User" }
+                }
+            });
+            await submitStatement(stmt);
+
+            const agentPem = await getAssertionAgentPem(registration);
+            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should be the contextAgent person');
+        });
+
+        it('Agent falls back to context.instructor when contextAgents is absent', async () => {
+            const registration = EcCrypto.generateUUID();
+            const stmt = buildXapiStatement({
+                objectId: c1.shortId(),
+                result: { success: true },
+                context: {
+                    registration: registration,
+                    instructor: { objectType: "Agent", mbox: "mailto:" + agentEmail, name: "xAPI Test Agent Person" }
+                }
+            });
+            await submitStatement(stmt);
+
+            const agentPem = await getAssertionAgentPem(registration);
+            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should be the instructor person');
+        });
+
+        it('Agent falls back to authority when neither contextAgents nor instructor is present', async () => {
+            const registration = EcCrypto.generateUUID();
+            const stmt = buildXapiStatement({
+                objectId: c1.shortId(),
+                result: { success: true },
+                authorityEmail: agentEmail,
+                context: { registration: registration }
+            });
+            await submitStatement(stmt);
+
+            const agentPem = await getAssertionAgentPem(registration);
+            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should be the authority person');
+        });
+
+        it('Non-contextAgent entries are skipped and resolution falls through to instructor', async () => {
+            const registration = EcCrypto.generateUUID();
+            const stmt = buildXapiStatement({
+                objectId: c1.shortId(),
+                result: { success: true },
+                context: {
+                    registration: registration,
+                    contextAgents: [{
+                        objectType: "contextGroup",
+                        agent: { objectType: "Agent", mbox: "mailto:" + emailPrefix, name: "xAPI Test User" }
+                    }],
+                    instructor: { objectType: "Agent", mbox: "mailto:" + agentEmail, name: "xAPI Test Agent Person" }
+                }
+            });
+            await submitStatement(stmt);
+
+            const agentPem = await getAssertionAgentPem(registration);
+            assert.strictEqual(agentPem, agent.ppk.toPk().toPem(), 'Assertion agent should skip the invalid entry and use the instructor');
         });
     });
 
