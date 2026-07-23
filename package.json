@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.6.34",
+  "version": "1.6.35",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "scripts": {
@@ -75,7 +75,7 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1090.0",
+    "@aws-sdk/client-s3": "^3.1093.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@xmldom/xmldom": "^0.9.10",
     "busboy": "^1.6.0",
@@ -103,7 +103,7 @@
     "sanitize-filename": "^1.6.4",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
-    "undici": "^8.7.0",
+    "undici": "^8.8.0",
     "uuid": "^14.0.1",
     "ws": "^8.21.1",
     "zod": "^4.4.3"
@@ -117,8 +117,8 @@
     "mocha": "^11.7.6",
     "nodemon": "^3.1.14",
     "nyc": "^18.0.0",
-    "sinon": "^22.0.0",
-    "wait-on": "^9.0.10"
+    "sinon": "^22.1.0",
+    "wait-on": "^9.1.0"
   },
   "packageManager": "npm@11.3.0+sha512.96eb611483f49c55f7fa74df61b588de9e213f80a256728e6798ddc67176c7b07e4a1cfc7de8922422cbce02543714367037536955221fa451b0c4fefaf20c66",
   "overrides": {
