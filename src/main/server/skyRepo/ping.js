@@ -138,7 +138,7 @@ const pingWithTime = function () {
  *                 version:
  *                   type: string
  *                   description: Current CASS server version from package.json.
- *                   example: 1.6.21
+ *                   example: 1.7.0
  *                 time:
  *                   type: integer
  *                   description: The current number of milliseconds since the Unix epoch, for ensuring signature sheet signing can sign time-nonced signatures that will not be time-desynchronized with the server.

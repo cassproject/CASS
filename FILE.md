@@ -33,7 +33,7 @@ Files included in Docker container images and used for configuration. See also [
 | File | Purpose |
 |------|---------|
 | `Dockerfile` | Bundles Elasticsearch + Node.js in a single container. Runs both CaSS and ES via entrypoint. Legacy/convenience image. |
-| `docker-compose.yml` | Compose file for the pre-built standalone image (`cassproject/cass:1.6.9`). |
+| `docker-compose.yml` | Compose file for the pre-built standalone image (`cassproject/cass:1.7.0`). |
 
 ### Root-level Compose Files
 

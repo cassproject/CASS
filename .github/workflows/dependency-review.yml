@@ -10,7 +10,7 @@
 name: 'Dependency review'
 on:
   pull_request:
-    branches: [ "master","1.5","1.6" ]
+    branches: [ "master","1.5","1.6","1.7" ]
 
 # If using a dependency submission action in this workflow this permission will need to be set to:
 #
