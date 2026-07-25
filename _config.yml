@@ -1,4 +1,5 @@
 exclude:
+  - cass-editor
   - src/main/webapp/docs
   - src/main/webapp/node_modules
   - node_modules
