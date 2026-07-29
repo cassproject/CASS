@@ -9,10 +9,19 @@ module.exports = function (common) {
                 issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL || 'https://dev.keycloak.eduworks.com/auth/realms/test-realm/',
                 baseURL: process.env.CASS_OIDC_BASE_URL || 'http://localhost/',
                 clientID: process.env.CASS_OIDC_CLIENT_ID || 'cass',
+                // Confidential client secret (distinct from CASS_OIDC_SECRET,
+                // which remains the session-cookie / HS256 secret). Setting it
+                // enables the authorization code flow for providers that do not
+                // support the implicit flow (e.g. Dex).
+                clientSecret: process.env.CASS_OIDC_CLIENT_SECRET || undefined,
                 secret: process.env.CASS_OIDC_SECRET || 'a71b92d4-336e-4664-bc05-2226f76b4042',
                 routes: { callback: global.baseUrl + "/callback" },
                 authorizationParams: {
-                    scope: process.env.CASS_OIDC_SCOPE || 'openid profile email'
+                    scope: process.env.CASS_OIDC_SCOPE || 'openid profile email',
+                    // Default to the code flow when a client secret is present,
+                    // otherwise keep the historical implicit id_token flow.
+                    // CASS_OIDC_RESPONSE_TYPE overrides (id_token, code, code id_token).
+                    response_type: process.env.CASS_OIDC_RESPONSE_TYPE || (process.env.CASS_OIDC_CLIENT_SECRET ? 'code' : 'id_token'),
                 },
                 authRequired: false,
                 session: {
