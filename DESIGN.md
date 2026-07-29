@@ -711,7 +711,7 @@ Each standards adapter exposes its own REST endpoint namespace:
 
 **Description:** The MCP server auto-generates tool definitions from the CaSS OpenAPI specification. AI agents connecting via MCP can invoke CaSS API operations as "tools," enabling natural-language-driven competency management.
 
-**Implementation:** The MCP adapter (`mcp.js`) uses `@modelcontextprotocol/sdk` with OpenAPI-to-tools conversion (`openapi-to-tools.js`) and JSON Schema to Zod validation (`json-schema-to-zod.js`).
+**Implementation:** The MCP adapter (`mcp.js`) uses the MCP TypeScript SDK v2 (`@modelcontextprotocol/server` + `@modelcontextprotocol/node`) with OpenAPI-to-tools conversion (`openapi-to-tools.js`) and JSON Schema to Zod validation (`json-schema-to-zod.js`).
 
 ---
 
@@ -1084,7 +1084,7 @@ The MCP (Model Context Protocol) server enables AI agents to interact with CaSS 
 | `lib/openapi-to-tools.js` | Converts OpenAPI 3.0 endpoint definitions to MCP tool definitions (name, description, input schema) |
 | `lib/json-schema-to-zod.js` | Converts JSON Schema definitions to Zod validation schemas for runtime parameter validation |
 | `lib/http-client.js` | HTTP client wrapper for executing MCP tool calls against the CaSS REST API |
-| `adapter/mcp.js` | Express route handler mounting MCP at `/api/mcp` using `@modelcontextprotocol/sdk` Streamable HTTP transport |
+| `adapter/mcp.js` | Express route handler mounting MCP at `/api/mcp` using the MCP SDK v2 (`@modelcontextprotocol/server` + `@modelcontextprotocol/node`) Streamable HTTP transport |
 
 ### Execution Flow
 
