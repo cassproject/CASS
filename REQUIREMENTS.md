@@ -809,7 +809,7 @@ This paragraph is not applicable — all internal data requirements are specifie
 | :--- | :--- | :--- | :--- |
 | SW-001 | The system shall use Express 5 (`express`) as the web application framework. | Highest | Inspection |
 | SW-002 | The system shall use `cassproject` as the JavaScript SDK for data models and cryptography. | Highest | Inspection |
-| SW-003 | The system shall use `@modelcontextprotocol/sdk` for MCP server implementation. | High | Inspection |
+| SW-003 | The system shall use the MCP TypeScript SDK v2 (`@modelcontextprotocol/server` and `@modelcontextprotocol/node`) for MCP server implementation. | High | Inspection |
 | SW-004 | The system shall use native Node.js `crypto` (preferred) with `node-forge` (via `cassproject`) as a fallback for RSA and AES cryptographic operations. | Highest | Inspection |
 | SW-005 | The system shall use `rxjs` for the internal event bus. | High | Inspection |
 | SW-006 | The system shall use `ws` for WebSocket support. | High | Inspection |

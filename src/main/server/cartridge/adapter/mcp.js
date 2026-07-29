@@ -13,15 +13,16 @@
 /**
  * Initialize the MCP adapter and mount routes on Express.
  *
- * Uses dynamic import() to load the ESM-only MCP SDK modules
+ * Uses dynamic import() to load the MCP SDK v2 modules
+ * (@modelcontextprotocol/server + @modelcontextprotocol/node)
  * from within this CommonJS cartridge.
  */
 async function initMcp() {
     // Dynamic imports for ESM modules
-    const { McpServer, ResourceTemplate } = await import('@modelcontextprotocol/sdk/server/mcp.js');
-    const { StreamableHTTPServerTransport } = await import('@modelcontextprotocol/sdk/server/streamableHttp.js');
+    const { McpServer, ResourceTemplate, isInitializeRequest } = await import('@modelcontextprotocol/server');
+    const { NodeStreamableHTTPServerTransport } = await import('@modelcontextprotocol/node');
     const { generateTools, generateResourceTemplates } = await import('../../mcp/lib/openapi-to-tools.js');
-    const { inputSchemaToZodShape } = await import('../../mcp/lib/json-schema-to-zod.js');
+    const { inputSchemaToZodObject } = await import('../../mcp/lib/json-schema-to-zod.js');
     const { AsyncLocalStorage } = require('async_hooks');
 
     // AsyncLocalStorage propagates the Express request context (signatureSheet,
@@ -78,16 +79,17 @@ async function initMcp() {
             },
         });
 
-        // Register tools — each tool call loops back to the CaSS REST API
+        // Register tools — each tool call loops back to the CaSS REST API.
+        // SDK v2 takes a Standard Schema object (z.object) for inputSchema.
         for (const toolDef of toolDefs) {
-            const zodShape = inputSchemaToZodShape(toolDef.inputSchema);
+            const zodSchema = inputSchemaToZodObject(toolDef.inputSchema);
             const def = toolDef;
 
             server.registerTool(
                 def.name,
                 {
                     description: def.description,
-                    inputSchema: zodShape,
+                    inputSchema: zodSchema,
                     annotations: def.annotations,
                 },
                 async (args) => {
@@ -136,13 +138,18 @@ async function initMcp() {
             );
         }
 
-        // Register resource templates
+        // Register resource templates — SDK v2 renames resource() to
+        // registerResource() and takes a metadata config object.
         for (const resDef of resourceTemplateDefs) {
             const def = resDef;
 
-            server.resource(
+            server.registerResource(
                 def.name,
                 new ResourceTemplate(def.uriTemplate, { list: undefined }),
+                {
+                    description: def.description,
+                    mimeType: def.mimeType || 'application/ld+json',
+                },
                 async (uri, variables) => {
                     try {
                         let apiPath = def.pathTemplate;
@@ -312,9 +319,13 @@ async function initMcp() {
                 return;
             }
 
-            if (req.method === 'POST') {
-                // New session — create transport and MCP server
-                const transport = new StreamableHTTPServerTransport({
+            const isInit = Array.isArray(req.body)
+                ? req.body.some((m) => isInitializeRequest(m))
+                : isInitializeRequest(req.body);
+            if (req.method === 'POST' && isInit) {
+                // New session — create transport and MCP server.
+                // sessionIdGenerator turns stateful session mode on.
+                const transport = new NodeStreamableHTTPServerTransport({
                     sessionIdGenerator: () => randomUUID(),
                 });
 
@@ -344,7 +355,7 @@ async function initMcp() {
                 return;
             }
 
-            // GET or DELETE without a valid session ID
+            // Non-initialize POST, GET, or DELETE without a valid session ID
             res.status(400).json({ error: 'Bad Request: No valid MCP session. Send an initialize request via POST first.' });
         } catch (err) {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, 'McpRequestError', err.message);
