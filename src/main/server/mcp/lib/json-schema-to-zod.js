@@ -73,10 +73,10 @@ function jsonSchemaToZod(jsonSchema) {
 
 /**
  * Convert a tool's inputSchema (JSON Schema with properties) into
- * a Zod object shape suitable for McpServer.tool().
+ * a flat Zod shape object { key: ZodType, ... }.
  *
- * The MCP SDK expects a flat Zod shape object { key: ZodType, ... },
- * not a z.object() wrapper.
+ * Building block for inputSchemaToZodObject; kept exported for tests
+ * and callers that need the raw shape.
  *
  * @param {Object} inputSchema - JSON Schema with `properties` and optional `required`.
  * @returns {Object} A Zod shape object: { paramName: ZodType, ... }
@@ -96,4 +96,18 @@ export function inputSchemaToZodShape(inputSchema) {
     }
 
     return shape;
+}
+
+/**
+ * Convert a tool's inputSchema (JSON Schema with properties) into a
+ * z.object() schema for McpServer.registerTool().
+ *
+ * MCP SDK v2 expects a Standard Schema object (e.g. z.object({...}))
+ * rather than the raw Zod shape v1 accepted.
+ *
+ * @param {Object} inputSchema - JSON Schema with `properties` and optional `required`.
+ * @returns {import('zod').ZodObject}
+ */
+export function inputSchemaToZodObject(inputSchema) {
+    return z.object(inputSchemaToZodShape(inputSchema));
 }
