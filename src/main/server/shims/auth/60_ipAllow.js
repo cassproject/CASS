@@ -5,18 +5,7 @@ module.exports = function (common) {
     const { getJWKS, ipMatch } = common;
 
     if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED != null) {
-        // Rate limiter for IP allow / SSO guard — prevents brute-force access attempts.
-        const ipAllowRateLimiter = rateLimit({
-            windowMs: parseInt(process.env.CASS_RATE_LIMIT_WINDOW_MS) || 60 * 1000, // 1 minute
-            max: parseInt(process.env.CASS_RATE_LIMIT_MAX) || 2000,                 // higher limit since this also gates normal traffic
-            standardHeaders: true,
-            legacyHeaders: false,
-            message: { error: 'Too many requests, please try again later.' },
-        });
-        if (process.env.CASS_RATE_LIMIT) {
-            app.use(ipAllowRateLimiter);
-        }
-
+        console.log("IP allow / SSO guard middleware is active. CASS_IP_ALLOW:", process.env.CASS_IP_ALLOW, "CASS_SSO_ACCOUNT_REQUIRED:", process.env.CASS_SSO_ACCOUNT_REQUIRED);
         app.use(async function (req, res, next) {
 
             if (process.env.CASS_SESSION_VALIDATION_INTERVAL) {
