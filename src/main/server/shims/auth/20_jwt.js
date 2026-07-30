@@ -1,5 +1,7 @@
 module.exports = function (common) {
     if (process.env.CASS_JWT_ENABLED === 'true') {
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthJwtEnabled", `JWT authentication is enabled.`);
+
         var { expressjwt: jwt } = require("express-jwt");
 
         if (process.env.CASS_JWT_SESSION_ENABLED === 'true') {

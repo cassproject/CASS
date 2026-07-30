@@ -1,5 +1,6 @@
 module.exports = function (common) {
     if (process.env.CASS_OIDC_ENABLED || false) {
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthEnabled", `OIDC authentication is enabled.`);
         if (global.baseUrl != "") {
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassAuthBaseUrl", `BASE URL is ${global.baseURL} and this can cause problems with callbacks from SSO providers. You may need to modify your reverse proxy (if you have one) to match up callbacks. If you use the cass installer script, this requires taking /cass out of the Apache2 redirect.`);
         }

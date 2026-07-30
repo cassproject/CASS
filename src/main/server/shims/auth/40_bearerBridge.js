@@ -13,6 +13,7 @@ module.exports = function (common) {
     const { getJWKS } = common;
 
     app.use(async function (req, res, next) {
+        console.log("Bearer bridge middleware invoked for request:", req.method, req.originalUrl);
         const authHeader = req.headers.authorization;
         if (authHeader && authHeader.startsWith('Bearer ') && (!req.oidc || !req.oidc.user)) {
             const token = authHeader.substring(7);
@@ -45,6 +46,7 @@ module.exports = function (common) {
                 }
             }
         }
+        console.log("Bearer bridge middleware completed for request:", req.method, req.originalUrl);
         next();
     });
 };

@@ -1,5 +1,6 @@
 module.exports = function (common) {
     if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED) {
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthPlatformOneEnabled", `Platform One authentication is enabled.`);
         /**
          * Extract the encoded JWT from the request's provided Authorization header.
          * @param {String} authHeader 
