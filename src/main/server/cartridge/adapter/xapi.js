@@ -83,8 +83,15 @@ var personFromEmail = async function (mbox, name) {
         let people = null;
         people = await loopback.repositorySearch(global.repo, "@type:Person AND email:\"" + mbox + "\"", {});
         if (people != null) {
-            if (people.length >= 1)
+            if (people.length >= 1) {
+                //Sort by timestamp descending
+                people.sort((a, b) => {
+                    let aTime = a.getTimestamp() || 0;
+                    let bTime = b.getTimestamp() || 0;
+                    return bTime - aTime;
+                });
                 person = people[0];
+            }            
             else if (people.length == 0) {
                 var ppk = await EcPpk.generateKey();
                 person = new schema.Person();
