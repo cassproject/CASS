@@ -102,11 +102,12 @@ let report = function (system, severity, message, ...data) {
     if (process.env.PRODUCTION == 'true') {
         try {
             if (filterLogs(system, severity, message)) {
-                const msg = JSON.stringify({ date: new Date(), message, data, system, severity });
-                if (msg === lastLoggedMessage) {
+                const truncatedMsg = JSON.stringify({ message, data, system, severity })
+                if (truncatedMsg === lastLoggedMessage) {
                     return;
                 }
-                lastLoggedMessage = msg;
+                lastLoggedMessage = truncatedMsg;
+                const msg = JSON.stringify({ date: new Date(), message, data, system, severity });
                 logBuffers.push(hash(msg));
             }
             if (logBuffers.length > 1000) {
