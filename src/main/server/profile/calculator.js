@@ -118,7 +118,16 @@ module.exports = class ProfileCalculator {
         let assertionHash = null;
         // Search for assertions about the subject for later in the background
         let assertions = [];
-        await Promise.all(coprocessors.map(async (coprocessor) => { assertions = assertions.concat(await coprocessor.fetchAssertions.call(this)) }));
+        // NOTE: push into the shared array rather than reassigning it.
+        // `assertions = assertions.concat(await ...)` evaluates `assertions`
+        // BEFORE the await, so concurrent coprocessors each capture the
+        // original (empty) array and the last one to resolve overwrites
+        // everyone else's results.
+        await Promise.all(coprocessors.map(async (coprocessor) => {
+            const found = await coprocessor.fetchAssertions.call(this);
+            if (found != null && found.length > 0)
+                assertions.push(...found);
+        }));
         assertions = assertions.filter((x) => x); //Remove nulls.
         for (let i = 0; i < assertions.length; i++) //Remove duplicates.
         {
