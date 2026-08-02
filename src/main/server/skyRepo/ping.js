@@ -37,7 +37,7 @@ const pingWithTime = function () {
         global.events.person.doPing(this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()));
     const full = {
         ping: 'pong',
-        version: cassVersion,
+        version: process.env.VERSION || cassVersion,
         time: new Date().getTime(),
         ssoViaP1: this.ctx.req.p1 ? true : null,
         ssoPublicKey: this.ctx.req.eim ? this.ctx.req.eim.ids[0].ppk.toPk().toPem() : undefined,
