@@ -974,8 +974,10 @@ function conceptArrays(object) {
                                     if (k.indexOf("ceasn:dateModified") != 0)
                                         if (k.indexOf("ceasn:license") != 0)
                                             if (k.indexOf("ceasn:publicationStatusType") != 0)
-                                                if (k.indexOf("ceasn:publisher") != 0)
-                                                    if (k.indexOf("ceasn:publisherName") != 0)
+                                                // ceasn:publisher is repeatable and must export as an
+                                                // array (cass-editor#1427); only publisherName (a
+                                                // language map) stays excluded.
+                                                if (k !== "ceasn:publisherName")
                                                         if (k.indexOf("ceasn:rights") != 0)
                                                             if (k.indexOf("skos:broader") != 0)
                                                                 if (k.indexOf("skos:definition") != 0)
