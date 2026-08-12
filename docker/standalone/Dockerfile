@@ -10,7 +10,7 @@
 # RPM on purpose: the RPM declares a dependency on python3, which drags Python
 # and its transitive libraries into the image (the single largest cluster of OS
 # CVEs here) even though CaSS has no native modules and never needs node-gyp.
-FROM docker.elastic.co/elasticsearch/elasticsearch:9.5.0 AS build-deps
+FROM docker.elastic.co/elasticsearch/elasticsearch:9.4.5 AS build-deps
 USER root
 RUN microdnf install -y --nodocs gcc make perl-core zlib-devel tar xz diffutils && microdnf clean all
 RUN cd /usr/local/src && curl -fsSLO https://www.openssl.org/source/openssl-3.1.2.tar.gz && tar xf openssl-3.1.2.tar.gz && cd openssl-3.1.2 && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib enable-fips && make -j8 > make.log && make install > makeinstall.log && make install_ssldirs > makeinstallssldirs.log && make install_fips > makeinstallfips.log
@@ -30,7 +30,7 @@ RUN case "$TARGETARCH" in \
     && tar -xJf "node-${NODE_VERSION}-linux-${NARCH}.tar.xz" -C /opt/node --strip-components=1 \
     && rm -f node-*.tar.xz SHASUMS256.txt
 
-FROM docker.elastic.co/elasticsearch/elasticsearch:9.5.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:9.4.5
 
 USER root
 # Apply base-image security updates before the package manager is removed below.
