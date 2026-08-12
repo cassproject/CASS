@@ -43,7 +43,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
                 delete obj.index['_type'];
             }
             body += `${JSON.stringify(obj)}\n`;
-            body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs })}\n`;
+            body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs, baseId: id })}\n`;
 
             obj = {
                 'index': {
@@ -58,7 +58,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
                 delete obj.index['_type'];
             }
             body += `${JSON.stringify(obj)}\n`;
-            body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs })}\n`;
+            body += `${JSON.stringify({ data: JSON.stringify(x.object), writeMs: writeMs, baseId: id })}\n`;
         }
     }
     const response = await httpPost(body, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
@@ -366,11 +366,15 @@ const endpointMultiPut = async function () {
             (mappings)['mappings'] = permNoIndex;
 
             if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-                permNoIndex.enabled = false;
+                // Must match skyrepoPutInternalPermanent: 'dynamic: false' keeps
+                // the document body out of the mappings while still indexing
+                // baseId, which history queries by.
+                permNoIndex.dynamic = false;
+                permNoIndex.properties = global.PERMANENT_PROPERTIES || { baseId: { type: 'keyword' } };
             } else {
                 (permNoIndex)['permanent'] = doc;
+                doc['enabled'] = false;
             }
-            doc['enabled'] = false;
             const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
             if (global.skyrepoDebug) {
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepEndpointMultiput', JSON.stringify(result));

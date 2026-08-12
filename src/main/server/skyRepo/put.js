@@ -21,6 +21,16 @@ const { skyrepoGetPermanent } = require('./get');
 const { skyrepoDeleteInternalIndex } = require('./delete');
 let permanentCreated = false;
 
+/**
+ *  Indexed fields of the permanent index. Everything else in the document
+ *  (notably the serialized object in 'data') is stored in _source but left
+ *  unmapped by 'dynamic: false'. Shared with the migration in util.js so the
+ *  two cannot drift apart.
+ */
+const PERMANENT_PROPERTIES = global.PERMANENT_PROPERTIES = {
+    baseId: { type: 'keyword' },
+};
+
 const putUrl = function (o, id, version, type) {
     const typeFromObj = inferTypeFromObj(o, type);
     let versionPart = null;
@@ -160,11 +170,19 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
         (mappings)['mappings'] = permNoIndex;
 
         if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-            permNoIndex.enabled = false;
+            // 'dynamic: false' rather than 'enabled: false': both keep the
+            // document body out of the mappings (so version history cannot
+            // exhaust the index field limit), but 'dynamic' still allows the
+            // explicitly declared fields below to be indexed. baseId has to be
+            // searchable because history looks records up by it — an
+            // 'enabled: false' index indexes nothing at all, which previously
+            // forced history to script over the _id metadata field instead.
+            permNoIndex.dynamic = false;
+            permNoIndex.properties = PERMANENT_PROPERTIES;
         } else {
             (permNoIndex)['permanent'] = doc;
+            doc['enabled'] = false;
         }
-        doc['enabled'] = false;
         const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
         if (global.skyrepoDebug) {
             global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalPerm', JSON.stringify(result));
@@ -174,6 +192,11 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
     const data = {};
     (data)['data'] = JSON.stringify(o);
     data.writeMs = new Date().getTime();
+    // Indexed so version history can be retrieved with a term query. The
+    // document _id is `<baseId>.<version>`; storing the base separately avoids
+    // querying the _id metadata field, which requires fielddata that
+    // Elasticsearch no longer permits.
+    data.baseId = id;
     let url = putPermanentBaseUrl.call(this, o, id, version, type);
     let results = await httpPost(data, url, 'application/json', false, null, null, true, elasticHeaders());
     if (results === 409) {
