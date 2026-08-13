@@ -40,6 +40,7 @@
 const https = require('https');
 
 let app;
+require("./undici-compat")
 require("cassproject");
 
 const hashModuleRoot = require("node-object-hash");
