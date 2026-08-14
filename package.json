@@ -1,6 +1,6 @@
 {
   "name": "cass",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "description": "Competency and Skills System",
   "main": "src/main/server.js",
   "scripts": {
@@ -76,10 +76,10 @@
   },
   "homepage": "https://github.com/cassproject/CASS#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1108.0",
+    "@aws-sdk/client-s3": "^3.1109.0",
     "@modelcontextprotocol/node": "^2.0.0",
     "@modelcontextprotocol/server": "^2.0.0",
-    "@xmldom/xmldom": "^0.9.10",
+    "@xmldom/xmldom": "^0.9.11",
     "busboy": "^1.6.0",
     "cassproject": "^5.0.19",
     "check-disk-space": "^3.4.0",
@@ -87,7 +87,7 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "express-jwt": "^8.5.1",
-    "express-oauth2-jwt-bearer": "^1.9.1",
+    "express-oauth2-jwt-bearer": "^1.9.2",
     "express-openid-connect": "^3.4.0",
     "express-rate-limit": "^8.6.2",
     "express-session": "^1.19.0",
