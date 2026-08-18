@@ -45,8 +45,19 @@ var xapiEndpoint = async function (more, since, config) {
     }
     headers["X-Experience-API-Version"] = "1.0.1";
     if (process.env.XAPI_DEBUG) console.log(endpoint, headers);
-    let results = await fetch(endpoint, { method: "GET", headers: headers });
-    results = await results.json();
+    let response = await fetch(endpoint, { method: "GET", headers: headers });
+    // LRS error replies are often plain text (e.g. Veracity's "This does
+    // not seem to be a valid LRS." when the named LRS does not exist, or
+    // auth failures). Surface WHAT the LRS said once per poll instead of
+    // an anonymous JSON.parse stack trace.
+    let text = await response.text();
+    let results = null;
+    try {
+        results = JSON.parse(text);
+    } catch (ex) {
+        global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "XapiPollBadResponse", `${endpoint} returned ${response.status} with a non-JSON body: ${text.slice(0, 200)}`);
+        return null;
+    }
     if (process.env.XAPI_DEBUG) console.log(results);
     return results;
 }
@@ -194,7 +205,7 @@ var getAlignedCompetencies = async function (objectId, xapiObject) {
         cw.url = objectId;
         let def = xapiObject?.definition;
         cw.name = resolveLanguageMap(def?.name);
-        cw.description = resolveLanguageMap(def?.description);    
+        cw.description = resolveLanguageMap(def?.description);
         cw.addOwner(EcPpk.fromPem(xapiMePpk).toPk());
         await repo.saveTo(cw, null, null, xapiIm);
         global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiCreateCreativeWork", objectId);
