@@ -198,6 +198,17 @@ function createServer(options, app) {
     return server;
 }
 
+// Connection-specific headers that must not be forwarded into an HTTP/2
+// response (RFC 9113 §8.2.2).
+const H2_FORBIDDEN_HEADERS = new Set([
+    'connection',
+    'keep-alive',
+    'proxy-connection',
+    'transfer-encoding',
+    'upgrade',
+    'http2-settings',
+]);
+
 // ---- Stream → Express dispatch ----
 
 /**
@@ -269,13 +280,23 @@ function _dispatchHttp2Stream(server, stream, headers, app) {
         const h2h = {':status': res.statusCode || 200};
         const names = res.getHeaderNames();
         for (const name of names) {
+            // Connection-specific HTTP/1 headers are forbidden in HTTP/2
+            // (RFC 9113 §8.2.2) — stream.respond() throws on them, losing
+            // ALL headers. Handlers legitimately set these on HTTP/1
+            // responses (e.g. SSE's "Connection: keep-alive"), so strip
+            // them here like Node's own http2 compat layer does.
+            if (H2_FORBIDDEN_HEADERS.has(name.toLowerCase())) continue;
             h2h[name] = res.getHeader(name);
         }
 
         try {
             stream.respond(h2h, {endStream: false});
-        } catch (_) {
-            // stream may have been reset / destroyed
+        } catch (err) {
+            // Expected when the stream was reset / destroyed by the peer;
+            // anything else means the response is going out headerless.
+            if (!stream.destroyed) {
+                console.error('http2compat: stream.respond() failed, response sent without headers:', err);
+            }
         }
     }
 

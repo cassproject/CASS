@@ -1,5 +1,5 @@
 
-FROM node:24
+FROM node:26
 RUN mkdir editor
 COPY cass-editor/package.json editor/package.json
 RUN cd editor && npm i && mv node_modules node_mods
@@ -9,7 +9,7 @@ ENV DOCS_BASE=/docs/
 RUN rm -rf node_modules && mv node_mods node_modules && rm -rf dist && npm i && npm run build
 
 ARG nodeVersion=24
-FROM node:24-alpine
+FROM node:26-alpine
 
 RUN apk update && apk upgrade --no-cache
 RUN npm upgrade --global --production --omit=dev

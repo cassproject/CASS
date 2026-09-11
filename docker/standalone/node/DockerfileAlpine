@@ -1,4 +1,4 @@
-ARG nodeVersion=24
+ARG nodeVersion=26
 FROM node:$nodeVersion-alpine
 
 RUN apk update && apk upgrade --no-cache

@@ -1,4 +1,4 @@
-FROM node:24-slim
+FROM node:26-slim
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt update && \ 
 apt dist-upgrade -y && \
 apt install -qqy build-essential checkinstall clang curl libssl-dev wget zlib1g-dev && \
