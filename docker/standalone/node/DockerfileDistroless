@@ -2,7 +2,7 @@
 # NOTE: Builder uses Debian (not Alpine) because the distroless runtime is Debian-based (glibc).
 # Alpine uses musl libc which produces incompatible binaries for the distroless glibc runtime.
 # The OpenSSL build pattern follows DockerfileAlpine's dual-version FIPS approach.
-FROM node:24-slim AS builder
+FROM node:26-slim AS builder
 
 ARG OPENSSL_VALIDATED_VERSION=3.1.2
 ARG OPENSSL_VERSION=3.5.5
