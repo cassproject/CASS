@@ -100,7 +100,7 @@
     "nodemailer": "^9.1.1",
     "openapi-schema-validator": "^12.1.3",
     "pure-uuid": "^2.0.0",
-    "rdflib": "^2.4.0",
+    "rdflib": "^2.4.1",
     "rxjs": "^7.8.2",
     "sanitize-filename": "^1.6.4",
     "swagger-jsdoc": "^6.3.0",
