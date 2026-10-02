@@ -7,7 +7,7 @@ module.exports = function (common) {
         const { auth } = require('express-openid-connect');
         app.use(
             auth({
-                issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL || 'https://dev.keycloak.eduworks.com/auth/realms/test-realm/',
+                issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL || 'https://keycloak/auth/realms/test-realm/',
                 baseURL: process.env.CASS_OIDC_BASE_URL || 'http://localhost/',
                 clientID: process.env.CASS_OIDC_CLIENT_ID || 'cass',
                 // Confidential client secret (distinct from CASS_OIDC_SECRET,
@@ -15,7 +15,7 @@ module.exports = function (common) {
                 // enables the authorization code flow for providers that do not
                 // support the implicit flow (e.g. Dex).
                 clientSecret: process.env.CASS_OIDC_CLIENT_SECRET || undefined,
-                secret: process.env.CASS_OIDC_SECRET || 'a71b92d4-336e-4664-bc05-2226f76b4042',
+                secret: process.env.CASS_OIDC_SECRET || 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
                 routes: { callback: global.baseUrl + "/callback" },
                 authorizationParams: {
                     scope: process.env.CASS_OIDC_SCOPE || 'openid profile email',

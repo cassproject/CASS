@@ -30,6 +30,56 @@ var ceasnExportUriPrefixGraph = null;
 
 let UUID = require('pure-uuid');
 
+// Bundled copies of remote JSON-LD documents, used when the live fetch fails
+// (credreg.net refuses server-side clients behind a Cloudflare bot challenge; schema.cassproject.org can be down).
+const bundledContexts = {
+    "https://credreg.net/ctdlasn/schema/context/json": require('./contexts/credreg.net/ctdlasn.context.json'),
+    "https://credreg.net/ctdl/schema/context/json": require('./contexts/credreg.net/ctdl.context.json'),
+    "https://schema.cassproject.org/0.4": require('./contexts/schema.cassproject.org/0.4/context.json'),
+    "https://schema.cassproject.org/0.4/": require('./contexts/schema.cassproject.org/0.4/context.json'),
+    "https://schema.cassproject.org/0.4/skos": require('./contexts/schema.cassproject.org/0.4/skos/context.json'),
+    "https://schema.cassproject.org/0.4/skos/": require('./contexts/schema.cassproject.org/0.4/skos/context.json')
+};
+for (const name of ["cass2ceasn.json", "cass2ceasnConcepts.json", "cass2ceasnConceptsTerms", "cass2ceasnProgressions.json", "cass2ceasnProgressionsTerms", "cass2ceasnTerms", "cass2ceasncollection.json", "cass2ceasncollectionTerms", "ceasn2cass.json", "ceasn2cassTerms"])
+    bundledContexts["https://schema.cassproject.org/0.4/jsonld1.1/" + name] = require('./contexts/schema.cassproject.org/0.4/jsonld1.1/' + name.replace(/\.json$/, "") + '.json');
+const contextCacheTtl = 24 * 60 * 60 * 1000;
+const contextCache = {};
+
+async function fetchContextDocument(url) {
+    try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+        if (!response.ok)
+            throw new Error("HTTP " + response.status);
+        const doc = JSON.parse(await response.text());
+        if (doc == null || typeof doc !== "object")
+            throw new Error("Not a JSON object");
+        return doc;
+    } catch (err) {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, "CeasnContextFetch", url, err.message || err);
+        if (bundledContexts[url] != null)
+            return bundledContexts[url];
+        throw err;
+    }
+}
+
+// Fetches a JSON-LD context or terms document once per TTL, falling back to a bundled copy when available.
+async function getContextDocument(url) {
+    let entry = contextCache[url];
+    if (entry == null || Date.now() - entry.time > contextCacheTtl) {
+        entry = contextCache[url] = { time: Date.now(), promise: fetchContextDocument(url) };
+        entry.promise.catch(() => delete contextCache[url]);
+    }
+    return JSON.parse(JSON.stringify(await entry.promise));
+}
+
+// Resolve known contexts through the cache so jsonld expansion and compaction keep working when the hosts are unreachable.
+const nodeDocumentLoader = jsonld.documentLoaders.node();
+jsonld.documentLoader = async (url, options) => {
+    if (bundledContexts[url] != null)
+        return { contextUrl: null, document: await getContextDocument(url), documentUrl: url };
+    return await nodeDocumentLoader(url, options);
+};
+
 
 async function ceasnExportUriTransform(uri, frameworkUri) {
     if (ceasnExportUriPrefix == null || !uri)
@@ -169,7 +219,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
 }
 
 async function cassFrameworkAsCeasn() {
-    EcRepository.cacheBacking = {};
+    EcRepository.clearCache();
     EcRepository.caching = true;
     var query = queryParse.call(this);
     var framework = null;
@@ -223,8 +273,9 @@ async function cassFrameworkAsCeasn() {
     if (framework == null)
         error("Object not found or you did not supply sufficient permissions to access the object.", 404);
 
+    // Deep copy: the framework and competencies below may be shared EcRepository.cache instances, and this export mutates them.
     var f = new EcFramework();
-    f.copyFrom(framework);
+    f.copyFrom(JSON.parse(JSON.stringify(framework)));
     if (f.competency == null) f.competency = [];
     if (f.relation == null) f.relation = [];
 
@@ -240,8 +291,10 @@ async function cassFrameworkAsCeasn() {
     var competencies = {};
 
     for (var i = 0; i < f.competency.length; i++) {
-        var c = await EcCompetency.get(f.competency[i], null, null, repo);
-        if (c != null) {
+        var cached = await EcCompetency.get(f.competency[i], null, null, repo);
+        if (cached != null) {
+            var c = new EcCompetency();
+            c.copyFrom(JSON.parse(JSON.stringify(cached)));
             competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
@@ -379,8 +432,8 @@ async function cassFrameworkAsCeasn() {
         }
     }
 
-    var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
-    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")), true));
+    var ctx = JSON.stringify((await getContextDocument("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
+    const terms = JSON.parse(JSON.stringify((await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")), true));
     f.competency = [];
     let mappedCompetencies = [];
     for (let i = 0; i < allCompetencies.length; i += 100) {
@@ -712,18 +765,19 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
 }
 
 async function cassFrameworkAsCeasnCollection(framework) {
-    EcRepository.cache = new Object();
+    EcRepository.clearCache();
     EcRepository.caching = true;
 
-    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")), true));
-    const collectionTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollectionTerms")), true));
-    var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
-    const collectionContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json"))["@context"], true);
-    const cass2ceasn = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json"))["@context"], true);
-    const cetermsctx = JSON.stringify((await httpGet("https://credreg.net/ctdl/schema/context/json"))["@context"], true);
+    const terms = JSON.parse(JSON.stringify((await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnTerms")), true));
+    const collectionTerms = JSON.parse(JSON.stringify((await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollectionTerms")), true));
+    var ctx = JSON.stringify((await getContextDocument("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
+    const collectionContext = JSON.stringify((await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasncollection.json"))["@context"], true);
+    const cass2ceasn = JSON.stringify((await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasn.json"))["@context"], true);
+    const cetermsctx = JSON.stringify((await getContextDocument("https://credreg.net/ctdl/schema/context/json"))["@context"], true);
 
+    // Deep copy: the framework and competencies below may be shared EcRepository.cache instances, and this export mutates them.
     var f = new EcFramework();
-    f.copyFrom(framework);
+    f.copyFrom(JSON.parse(JSON.stringify(framework)));
     if (f.competency == null) f.competency = [];
     if (f.relation == null) f.relation = [];
 
@@ -739,8 +793,10 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var competencies = {};
 
     for (var i = 0; i < f.competency.length; i++) {
-        var c = await EcCompetency.get(f.competency[i], null, null, repo);
-        if (c != null) {
+        var cached = await EcCompetency.get(f.competency[i], null, null, repo);
+        if (cached != null) {
+            var c = new EcCompetency();
+            c.copyFrom(JSON.parse(JSON.stringify(cached)));
             competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
@@ -1158,8 +1214,8 @@ async function cassConceptSchemeAsCeasn(framework) {
         }
     }
 
-    var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
-    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnConceptsTerms")), true));
+    var ctx = JSON.stringify((await getContextDocument("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
+    const terms = JSON.parse(JSON.stringify((await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnConceptsTerms")), true));
 
     for (let i = 0; i < allConcepts.length; i += 100) {
         await Promise.all(allConcepts.slice(i, i + 100).map((id) => conceptPromise(id, concepts, cs, ctx, terms)));
@@ -1279,8 +1335,8 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
         }
     }
 
-    var ctx = JSON.stringify((await httpGet("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
-    const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnProgressionsTerms")), true));
+    var ctx = JSON.stringify((await getContextDocument("https://credreg.net/ctdlasn/schema/context/json"))["@context"], true);
+    const terms = JSON.parse(JSON.stringify((await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnProgressionsTerms")), true));
 
     for (let i = 0; i < allLevels.length; i += 100) {
         await Promise.all(allLevels.slice(i, i + 100).map((id) => levelPromise(id, levels, cs, ctx, terms)));
@@ -1518,31 +1574,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
 }
 
 async function importCeFrameworkToCass(frameworkObj, competencyList) {
-    const nodeDocumentLoader = jsonld.documentLoaders.node();
-    const cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4")), true);
-    const ceasn2cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json")), true);
-    const ceasn2cassTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassTerms")), true));
-
-    const customLoader = async (url) => {
-        if (url === "https://schema.cassproject.org/0.4") {
-            return {
-                contextUrl: null, // this is for a context via a link header
-                document: cassContext, // this is the actual document that was loaded
-                documentUrl: url // this is the actual context URL after redirects
-            };
-        }
-        if (url === "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json") {
-            return {
-                contextUrl: null, // this is for a context via a link header
-                document: ceasn2cassContext, // this is the actual document that was loaded
-                documentUrl: url // this is the actual context URL after redirects
-            };
-        }
-        // call the default documentLoader
-        return await nodeDocumentLoader(url);
-    };
-
-    jsonld.documentLoader = customLoader;
+    const ceasn2cassTerms = await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassTerms");
 
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
@@ -1711,31 +1743,7 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
 }
 
 async function importCeCollectionToCass(frameworkObj, competencyList) {
-    const nodeDocumentLoader = jsonld.documentLoaders.node();
-    const cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4")), true);
-    const ceasn2cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json")), true);
-    const ceasn2cassTerms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassTerms")), true));
-
-    const customLoader = async (url) => {
-        if (url === "https://schema.cassproject.org/0.4") {
-            return {
-                contextUrl: null, // this is for a context via a link header
-                document: cassContext, // this is the actual document that was loaded
-                documentUrl: url // this is the actual context URL after redirects
-            };
-        }
-        if (url === "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json") {
-            return {
-                contextUrl: null, // this is for a context via a link header
-                document: ceasn2cassContext, // this is the actual document that was loaded
-                documentUrl: url // this is the actual context URL after redirects
-            };
-        }
-        // call the default documentLoader
-        return await nodeDocumentLoader(url);
-    };
-
-    jsonld.documentLoader = customLoader;
+    const ceasn2cassTerms = await getContextDocument("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassTerms");
 
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 

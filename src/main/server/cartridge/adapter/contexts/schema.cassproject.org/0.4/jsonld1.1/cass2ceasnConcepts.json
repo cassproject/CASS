@@ -1,0 +1,189 @@
+{
+  "@context": {
+    "asn": "http://purl.org/asn/schema/core/",
+    "asnPublicationStatus": "http://purl.org/asn/scheme/ASNPublicationStatus/",
+    "asnscheme": "http://purl.org/asn/scheme/",
+    "case": "http://schema.imsglobal.org/ims/case/v1p0/",
+    "ceasn": "https://purl.org/ctdlasn/terms/",
+    "cass2": "http://schema.cassproject.org/0.2/",
+    "cass3": "https://schema.cassproject.org/0.4/cass2ceasn",
+    "ceterms": "https://purl.org/ctdl/terms/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dct": "http://purl.org/dc/terms/",
+    "gem": "http://purl.org/gem/elements/",
+    "gemq": "http://purl.org/gem/qualifiers/",
+    "loc": "http://www.loc.gov/loc.terms/",
+    "locr": "http://www.loc.gov/loc.terms/relators/",
+    "meta": "http://credreg.net/meta/terms/",
+    "publicationStatus": "https://credreg.net/ctdlasn/vocabs/publicationStatus/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "vs": "https://www.w3.org/2003/06/sw-vocab-status/ns",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "cc": "http://creativecommons.org/ns#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "owl": "http://www.w3.org/20.3/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "cass": "https://schema.cassproject.org/0.4/",
+    "ebac": "https://schema.cassproject.org/kbac/0.4/",
+    "general": "http://schema.eduworks.com/general/0.3/",
+    "schema": "https://schema.org/",
+    "@owner": {
+      "@id": "ebac:@owner",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "@reader": {
+      "@id": "ebac:@reader",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "skos:altLabel": {
+      "@id": "skos:altLabel",
+      "@language": "en-us"
+    },
+    "skos:notation": {
+      "@id": "skos:notation",
+      "@type": "xsd:string"
+    },
+    "skos:broader": {
+      "@id": "skos:broader",
+      "@type": "@id"
+    },
+    "skos:broadMatch": {
+      "@id": "skos:broadMatch",
+      "@type": "@id"
+    },
+    "skos:changeNote": {
+      "@id": "skos:changeNote",
+      "@language": "en-us"
+    },
+    "skos:closeMatch": {
+      "@id": "skos:closeMatch",
+      "@type": "@id"
+    },
+    "skos:definition": {
+      "@id": "skos:definition",
+      "@language": "en-us"
+    },
+    "skos:exactMatch": {
+      "@id": "skos:exactMatch",
+      "@type": "@id"
+    },
+    "skos:hiddenLabel": {
+      "@id": "skos:hiddenLabel",
+      "@language": "en-us"
+    },
+    "skos:inScheme": {
+      "@id": "skos:inScheme",
+      "@type": "@id"
+    },
+    "skos:narrower": {
+      "@id": "skos:narrower",
+      "@type": "@id"
+    },
+    "skos:narrowMatch": {
+      "@id": "skos:narrowMatch",
+      "@type": "@id"
+    },
+    "skos:note": {
+      "@id": "skos:note",
+      "@language": "en-us"
+    },
+    "skos:prefLabel": {
+      "@id": "skos:prefLabel",
+      "@language": "en-us"
+    },
+    "skos:related": {
+      "@id": "skos:related",
+      "@type": "@id"
+    },
+    "skos:topConceptOf": {
+      "@id": "skos:topConceptOf",
+      "@type": "@id"
+    },
+    "ceasn:conceptKeyword": {
+      "@id": "ceasn:conceptKeyword",
+      "@language": "en-us"
+    },
+    "ceasn:conceptTerm": {
+      "@id": "ceasn:conceptTerm",
+      "@type": "@id"
+    },
+    "ceasn:creator": {
+      "@id": "ceasn:creator",
+      "@type": "@id"
+    },
+    "ceasn:dateCopyrighted": {
+      "@id": "ceasn:dateCopyrighted",
+      "@type": "xsd:string"
+    },
+    "ceasn:repositoryDate": {
+      "@id": "ceasn:repositoryDate",
+      "@type": "xsd:date"
+    },
+    "ceasn:dateCreated": {
+      "@id": "ceasn:dateCreated",
+      "@type": "xsd:date"
+    },
+    "ceasn:dateModified": {
+      "@id": "ceasn:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "ceasn:description": {
+      "@id": "ceasn:description",
+      "@language": "en-us"
+    },
+    "skos:hasTopConcept": {
+      "@id": "skos:hasTopConcept",
+      "@type": "@id"
+    },
+    "skos:historyNote": {
+      "@id": "skos:historyNote",
+      "@language": "en-us"
+    },
+    "ceasn:license": {
+      "@id": "ceasn:license",
+      "@type": "@id"
+    },
+    "ceasn:publicationStatusType": {
+      "@id": "ceasn:publicationStatusType",
+      "@type": "@id"
+    },
+    "ceasn:publisher": {
+      "@id": "ceasn:publisher",
+      "@type": "@id"
+    },
+    "ceasn:publisherName": {
+      "@id": "ceasn:publisherName",
+      "@language": "en-us"
+    },
+    "ceasn:rights": {
+      "@id": "ceasn:rights",
+      "@language": "en-us"
+    },
+    "ceasn:rightsHolder": {
+      "@id": "ceasn:rightsHolder",
+      "@type": "@id"
+    },
+    "ceasn:name": {
+      "@id": "ceasn:name",
+      "@language": "en-us"
+    },
+    "meta:changeHistory": {
+      "@id": "meta:changeHistory",
+      "@type": "@id"
+    },
+    "ceasn:source": {
+      "@id": "ceasn:source",
+      "@type": "@id"
+    },
+    "ceterms:ctid": {
+      "@id": "ceterms:ctid",
+      "@type": "xsd:string"
+    },
+    "ceasn:inLanguage": {
+      "@id": "ceasn:inLanguage",
+      "@type": "xsd:language"
+    }
+  }
+}

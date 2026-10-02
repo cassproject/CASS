@@ -55,6 +55,20 @@ describe("CEASN Adapter", function () {
         assert(framework != null, "Framework saved to CaSS.");
     }).timeout(30000);
 
+    it('repeated conversion to CEASN is stable', async () => {
+        const frameworkId = "https://www.onetcenter.org/ctdlasn/resources/ce-07c264d7-9119-11e8-b852-782bcb5df6ac";
+        const guid = require("crypto").createHash("md5").update(frameworkId).digest("hex");
+        const exportCeasn = async () => {
+            const response = await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ctdlasn/${guid}`);
+            assert.equal(response.status, 200, "CEASN export succeeds.");
+            return await response.text();
+        };
+        const first = await exportCeasn();
+        const graph = JSON.parse(first)["@graph"];
+        assert(graph.some((node) => node["@id"] === frameworkId && node["@type"] === "ceasn:CompetencyFramework"), "Export contains the framework.");
+        assert.equal(await exportCeasn(), first, "Repeated exports are identical.");
+    }).timeout(60000);
+
     it('conversion from CEASN (Technology Skills)', async () => {
         let repo = new EcRepository();
         repo.selectedServer = process.env.CASS_LOOPBACK || "http://localhost/api/";

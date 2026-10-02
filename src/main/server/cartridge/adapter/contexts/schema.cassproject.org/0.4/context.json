@@ -1,0 +1,952 @@
+{
+  "@context": {
+    "@vocab": "https://schema.cassproject.org/0.4/",
+    "ceasn": "https://purl.org/ctdlasn/terms/",
+    "ceterms": "https://purl.org/ctdl/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "cass": "https://schema.cassproject.org/0.4/",
+    "ebac": "https://schema.cassproject.org/kbac/0.4/",
+    "general": "http://schema.eduworks.com/general/0.3/",
+    "schema": "http://schema.org/",
+    "asn": "http://purl.org/ASN/schema/core/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "gemq": "http://purl.org/gem/qualifiers/",
+    "loc": "http://www.loc.gov/loc.terms/relators/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "EncryptedValue": {
+      "@id": "ebac:EncryptedValue"
+    },
+    "@owner": {
+      "@id": "ebac:@owner",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "@reader": {
+      "@id": "ebac:@reader",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "@signature": {
+      "@id": "ebac:@signature"
+    },
+    "privateEncrypted": {
+      "@id": "ebac:privateEncrypted"
+    },
+    "name": {
+      "@id": "schema:name"
+    },
+    "title": {
+      "@id": "schema:title"
+    },
+    "weight": {
+      "@id": "ceasn:weight"
+    },
+    "creator": {
+      "@id": "schema:creator"
+    },
+    "author": {
+      "@id": "schema:author"
+    },
+    "description": {
+      "@id": "schema:description"
+    },
+    "validFrom": {
+      "@id": "schema:validFrom"
+    },
+    "validThrough": {
+      "@id": "schema:validThrough"
+    },
+    "url": {
+      "@id": "schema:url"
+    },
+    "sameAs": {
+      "@id": "schema:sameAs"
+    },
+    "source": {
+      "@id": "cass:source",
+      "@type": "@id"
+    },
+    "target": {
+      "@id": "cass:target",
+      "@type": "@id"
+    },
+    "competency": {
+      "@id": "cass:competency",
+      "@type": "@id"
+    },
+    "Competency": {
+      "@id": "cass:Competency"
+    },
+    "framework": {
+      "@id": "cass:framework",
+      "@type": "@id"
+    },
+    "directory": {
+      "@id": "cass:directory",
+      "@type": "@id"
+    },
+    "level": {
+      "@id": "cass:level",
+      "@type": "@id"
+    },
+    "relation": {
+      "@id": "cass:relation",
+      "@type": "@id"
+    },
+    "rollupRule": {
+      "@id": "cass:rollupRule",
+      "@type": "@id"
+    },
+    "confidence": {
+      "@id": "cass:confidence",
+      "@type": "schema:Float"
+    },
+    "evidence": {
+      "@id": "cass:evidence",
+      "@type": "schema:Thing"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "https://schema.cassproject.org/0.4/Level/title",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Level"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/title"
+        },
+        {
+          "@id": "http://schema.org/Text"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The title that one who holds this performance level may assume. e.g. \"Fast\""
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "title"
+      }
+    },
+    {
+      "@id": "http://schema.org/url",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Competency"
+      },
+      "http://schema.org/rangeIncludes": {
+        "@id": "http://schema.org/URL"
+      },
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Canonical URL of the competency."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "url"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/level",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/URL"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Level"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Specifies the URL of the level of performance the assertion is made at."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "level"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/negative",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.org/Boolean"
+        },
+        {
+          "@id": "http://schema.eduworks.com/ebac/0.3/EncryptedValue"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "True if the assertion is a claim that the subject cannot demonstrate the competency."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "negative"
+      }
+    },
+    {
+      "@id": "http://schema.org/name",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Level"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/RollupRule"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Framework"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Directory"
+        }
+      ],
+      "http://schema.org/rangeIncludes": {
+        "@id": "http://schema.org/Text"
+      },
+      "rdfs:comment": [
+        {
+          "@language": "en",
+          "@value": "Name of the competency."
+        },
+        {
+          "@language": "en",
+          "@value": "Name of the level."
+        },
+        {
+          "@language": "en",
+          "@value": "Name of the competency framework."
+        },
+        {
+          "@language": "en",
+          "@value": "Name of the rollup rule."
+        },
+        {
+          "@language": "en",
+          "@value": "Name of the directory."
+        }
+      ],
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "name"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Relation",
+      "@type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "A relation specifies an relationship between two competencies. With it, one can express super-sub relationships through the 'narrows' relation, pre-requisite relationships through the 'requires' relation, equivalence, and many more."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Relation"
+      },
+      "rdfs:subClassOf": {
+        "@id": "http://schema.org/CreativeWork"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Framework/relation",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Framework"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Relation"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URLs of relations included in the framework. May include relations to competencies outside the framework."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "relation"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/confidence",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": {
+        "@id": "http://schema.org/Float"
+      },
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The agent's confidence in the assertion."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "confidence"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Framework/rollupRule",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Framework"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/URL"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/RollupRule"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URLs of rollup rules included in the framework."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "rollupRule"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/decayFunction",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.eduworks.com/ebac/0.3/EncryptedValue"
+        },
+        {
+          "@id": "http://schema.org/Text"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t)."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "decayFunction"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/competency",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Specifies the URL of the competency the assertion is made about."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "competency"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion",
+      "@type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Assertion"
+      },
+      "rdfs:subClassOf": {
+        "@id": "http://schema.org/CreativeWork"
+      }
+    },
+    {
+      "@id": "http://schema.org/validFrom",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Relation"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/DateTime"
+        },
+        {
+          "@id": "http://schema.org/validFrom"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Date time in ISO 8601 format at which the relation may be observed."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "validFrom"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/RollupRule/competency",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/RollupRule"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Specifies the URL of the competency the rollup rule will determine."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "competency"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Framework/competency",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Framework"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URLs of competencies included in the framework."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "competency"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/RollupRule",
+      "@type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "When no direct evidence of an individual's competence is available, CASS uses assertion processing to estimate competence. Rollup Rules provide a means of encoding rules that govern when competence is warranted in the absence of direct evidence."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "RollupRule"
+      },
+      "rdfs:subClassOf": {
+        "@id": "http://schema.org/CreativeWork"
+      }
+    },
+    {
+      "@id": "http://schema.org/description",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Level"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/RollupRule"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Framework"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Directory"
+        }
+      ],
+      "http://schema.org/rangeIncludes": {
+        "@id": "http://schema.org/Text"
+      },
+      "rdfs:comment": [
+        {
+          "@language": "en",
+          "@value": "Description of the performance that the level describes."
+        },
+        {
+          "@language": "en",
+          "@value": "Description of the competency."
+        },
+        {
+          "@language": "en",
+          "@value": "Description of the framework."
+        },
+        {
+          "@language": "en",
+          "@value": "Description of the rollup rule."
+        },
+        {
+          "@language": "en",
+          "@value": "Description of the directory."
+        }
+      ],
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "description"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/subject",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.eduworks.com/ebac/0.3/EncryptedValue"
+        },
+        {
+          "@id": "https://purl.org/signature#publicKeyPem"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "An encrypted identifier of the individual whom the assertion is being made about."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "subject"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/RollupRule/rule",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/RollupRule"
+      },
+      "http://schema.org/rangeIncludes": {
+        "@id": "http://schema.org/Text"
+      },
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The rollup rule, encoded as source code understandable to the assertion processor."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "rule"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Competency/scope",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Competency"
+      },
+      "http://schema.org/rangeIncludes": {
+        "@id": "http://schema.org/Text"
+      },
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Scope in which the competency may be applied. e.g. Underwater."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "scope"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Level/competency",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Level"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Specifies the URL of the competency the level relates to."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "competency"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Relation/target",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Relation"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URL of the competency at the end of the relation."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "target"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/assertionDate",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.eduworks.com/ebac/0.3/EncryptedValue"
+        },
+        {
+          "@id": "http://schema.org/Integer"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Milliseconds since the epoch before the assertion was made."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "assertionDate"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/",
+      "http://www.w3.org/ns/rdfa#usesVocabulary": {
+        "@id": "http://schema.org/"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Framework/level",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Framework"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/URL"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Level"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URLs of levels included in the framework."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "level"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Framework",
+      "@type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "A Competency Framework or simply Framework is a collection of competencies and relations between competencies in the framework and potentially between competencies in the framework and competencies in other frameworks. In practice, a Framework represents competencies related to a specific job, task, organization, career, knowledge domain, etc."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Framework"
+      },
+      "rdfs:subClassOf": {
+        "@id": "http://schema.org/CreativeWork"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Relation/source",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Relation"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Competency"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URL of the competency at the beginning of the relation."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "source"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/framework",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/URL"
+        },
+        {
+          "@id": "https://schema.cassproject.org/0.4/Framework"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Specifies the URL of the framework the assertion was made in."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "framework"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/expirationDate",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.eduworks.com/ebac/0.3/EncryptedValue"
+        },
+        {
+          "@id": "http://schema.org/Integer"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Milliseconds since the epoch before the assertion expires."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "expirationDate"
+      }
+    },
+    {
+      "@id": "http://schema.org/validThrough",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Relation"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/DateTime"
+        },
+        {
+          "@id": "http://schema.org/validThrough"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Date time in ISO 8601 format at which the relation may no longer be observed."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "validThrough"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/evidence",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.org/Thing"
+        },
+        {
+          "@id": "http://schema.eduworks.com/ebac/0.3/EncryptedValue"
+        },
+        {
+          "@id": "http://schema.org/Text"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "An encrypted piece of evidence or reference to evidence."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "evidence"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Competency",
+      "@type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Competency"
+      },
+      "rdfs:subClassOf": {
+        "@id": "http://schema.org/CreativeWork"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Level",
+      "@type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "When an individual's performance in a competency can be measured, a level specifies milestones that an individual can reach, creating fine-grained distinction between the proficient and the adept."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Level"
+      },
+      "rdfs:subClassOf": {
+        "@id": "http://schema.org/CreativeWork"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Assertion/agent",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Assertion"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "http://schema.eduworks.com/ebac/0.3/EncryptedValue"
+        },
+        {
+          "@id": "https://purl.org/signature#publicKeyPem"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "An encrypted identifier of the individual who is making the assertion."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "agent"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Relation/relationType",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Relation"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/RelationType"
+        },
+        {
+          "@id": "http://schema.org/Text"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Enumerated string describing the relation. May be: 'narrows', 'desires', 'requires', 'isEnabledBy', 'isRelatedTo', or 'isEquivalentTo'."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "relationType"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Directory",
+      "@type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "A Directory represents a grouping of frameworks and resources."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Directory"
+      },
+      "rdfs:subClassOf": {
+        "@id": "http://schema.org/CreativeWork"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Directory/parentDirectory",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Directory"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Directory"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URL of the parent directory of this subdirectory."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "parentDirectory"
+      }
+    },
+    {
+      "@id": "https://schema.cassproject.org/0.4/Framework/directory",
+      "@type": "rdfs:Property",
+      "http://schema.org/domainIncludes": {
+        "@id": "https://schema.cassproject.org/0.4/Framework"
+      },
+      "http://schema.org/rangeIncludes": [
+        {
+          "@id": "https://schema.cassproject.org/0.4/Directory"
+        },
+        {
+          "@id": "http://schema.org/URL"
+        }
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "URL of the directory this framework is in."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "directory"
+      }
+    }
+  ]
+}

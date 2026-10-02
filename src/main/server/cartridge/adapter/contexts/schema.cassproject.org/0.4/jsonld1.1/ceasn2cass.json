@@ -1,0 +1,65 @@
+{
+  "@context": {
+    "@vocab": "https://schema.cassproject.org/0.4/",
+    "ceasn": "https://purl.org/ctdlasn/terms/",
+    "ceterms": "https://purl.org/ctdl/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "cass": "https://schema.cassproject.org/0.4/",
+    "ebac": "https://schema.cassproject.org/kbac/0.4/",
+    "general": "http://schema.eduworks.com/general/0.3/",
+    "schema": "http://schema.org/",
+    "asn": "http://purl.org/ASN/schema/core/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "gemq": "http://purl.org/gem/qualifiers/",
+    "loc": "http://www.loc.gov/loc.terms/relators/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "@owner": {
+      "@id": "ebac:@owner",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "@reader": {
+      "@id": "ebac:@reader",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "schema:name": {
+      "@id": "schema:name",
+      "@container": "@language"
+    },
+    "ceasn:competencyLabel": {
+      "@id": "ceasn:competencyLabel",
+      "@container": "@language"
+    },
+    "schema:description": {
+      "@id": "schema:description",
+      "@container": "@language"
+    },
+    "dcterms:type": {
+      "@id": "dcterms:type",
+      "@container": "@language"
+    },
+    "ceasn:repositoryDate": {
+      "@id": "ceasn:repositoryDate",
+      "@type": "xsd:date"
+    },
+    "schema:validFrom": {
+      "@id": "schema:validFrom",
+      "@type": "xsd:date"
+    },
+    "schema:validThrough": {
+      "@id": "schema:validThrough",
+      "@type": "xsd:date"
+    },
+    "schema:keywords": {
+      "@id": "schema:keywords",
+      "@language": "en-us",
+      "@container": "@language"
+    },
+    "ceasn:publisherName": {
+      "@id": "ceasn:publisherName",
+      "@container": "@language",
+      "@language": "en-us"
+    }
+  }
+}

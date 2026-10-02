@@ -1,0 +1,380 @@
+{
+  "@context": {
+    "asn": "http://purl.org/ASN/schema/core/",
+    "asnPublicationStatus": "http://purl.org/asn/scheme/ASNPublicationStatus/",
+    "asnscheme": "http://purl.org/asn/scheme/",
+    "case": "http://schema.imsglobal.org/ims/case/v1p0/",
+    "ceasn": "https://purl.org/ctdlasn/terms/",
+    "cass2": "http://schema.cassproject.org/0.2/",
+    "cass3": "https://schema.cassproject.org/0.4/cass2ceasn",
+    "ceterms": "https://purl.org/ctdl/terms/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dct": "http://purl.org/dc/terms/",
+    "gem": "http://purl.org/gem/elements/",
+    "gemq": "http://purl.org/gem/qualifiers/",
+    "loc": "http://www.loc.gov/loc.terms/",
+    "locr": "http://www.loc.gov/loc.terms/relators/",
+    "meta": "http://credreg.net/meta/terms/",
+    "publicationStatus": "https://credreg.net/ctdlasn/vocabs/publicationStatus/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "vs": "https://www.w3.org/2003/06/sw-vocab-status/ns",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "cc": "http://creativecommons.org/ns#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "owl": "http://www.w3.org/20.3/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "cass": "https://schema.cassproject.org/0.4/",
+    "ebac": "https://schema.cassproject.org/kbac/0.4/",
+    "general": "http://schema.eduworks.com/general/0.3/",
+    "schema": "https://schema.org/",
+    "ceasn:listID": {
+      "@id": "ceasn:listID",
+      "@type": "xsd:string"
+    },
+    "ceasn:altCodedNotation": {
+      "@id": "ceasn:altCodedNotation",
+      "@type": "xsd:string"
+    },
+    "ceasn:codedNotation": {
+      "@id": "ceasn:codedNotation",
+      "@type": "xsd:string"
+    },
+    "ceasn:localSubject": {
+      "@id": "ceasn:localSubject",
+      "@language": "en-us"
+    },
+    "ceasn:competencyLabel": {
+      "@id": "ceasn:competencyLabel",
+      "@language": "en-us"
+    },
+    "ceasn:competencyCategory": {
+      "@id": "ceasn:competencyCategory",
+      "@language": "en-us"
+    },
+    "ceasn:name": {
+      "@id": "ceasn:name",
+      "@language": "en-us"
+    },
+    "ceasn:weight": {
+      "@id": "ceasn:weight"
+    },
+    "ceasn:description": {
+      "@id": "ceasn:description",
+      "@language": "en-us"
+    },
+    "ceasn:author": {
+      "@id": "ceasn:author",
+      "@type": "xsd:string"
+    },
+    "ceasn:creator": {
+      "@id": "ceasn:creator",
+      "@type": "@id"
+    },
+    "ceasn:dateCopyrighted": {
+      "@id": "ceasn:dateCopyrighted",
+      "@type": "xsd:string"
+    },
+    "ceasn:isVersionOf": {
+      "@id": "ceasn:isVersionOf",
+      "@type": "@id"
+    },
+    "ceasn:educationLevelType": {
+      "@id": "ceasn:educationLevelType",
+      "@type": "@id"
+    },
+    "ceasn:publicationStatusType": {
+      "@id": "ceasn:publicationStatusType",
+      "@type": "@id"
+    },
+    "ceasn:complexityLevel": {
+      "@id": "ceasn:complexityLevel",
+      "@type": "@id"
+    },
+    "ceasn:rightsHolder": {
+      "@id": "ceasn:rightsHolder",
+      "@type": "@id"
+    },
+    "ceasn:conceptTerm": {
+      "@id": "ceasn:conceptTerm",
+      "@type": "@id"
+    },
+    "ceasn:dateCreated": {
+      "@id": "ceasn:dateCreated",
+      "@type": "xsd:date"
+    },
+    "ceasn:dateModified": {
+      "@id": "ceasn:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "ceasn:dateValidFrom": {
+      "@id": "ceasn:dateValidFrom",
+      "@type": "xsd:dateTime"
+    },
+    "ceasn:dateValidUntil": {
+      "@id": "ceasn:dateValidUntil",
+      "@type": "xsd:dateTime"
+    },
+    "ceasn:identifier": {
+      "@id": "ceasn:identifier",
+      "@type": "@id"
+    },
+    "ceasn:conceptKeyword": {
+      "@id": "ceasn:conceptKeyword",
+      "@language": "en-us"
+    },
+    "ceasn:license": {
+      "@id": "ceasn:license",
+      "@type": "@id"
+    },
+    "ceasn:publisher": {
+      "@id": "ceasn:publisher",
+      "@type": "@id"
+    },
+    "ceasn:rights": {
+      "@id": "ceasn:rights",
+      "@language": "en-us"
+    },
+    "ceasn:source": {
+      "@id": "ceasn:source",
+      "@type": "@id"
+    },
+    "ceterms:ctid": {
+      "@id": "ceterms:ctid"
+    },
+    "schema:validFrom": {
+      "@id": "schema:validFrom"
+    },
+    "schema:validThrough": {
+      "@id": "schema:validThrough"
+    },
+    "ceasn:isChildOf": {
+      "@id": "ceasn:isChildOf",
+      "@type": "@id"
+    },
+    "ceasn:crossSubjectReference": {
+      "@id": "ceasn:crossSubjectReference",
+      "@type": "@id"
+    },
+    "ceasn:comprisedOf": {
+      "@id": "ceasn:comprisedOf",
+      "@type": "@id"
+    },
+    "ceasn:derivedFrom": {
+      "@id": "ceasn:derivedFrom",
+      "@type": "@id"
+    },
+    "ceasn:alignFrom": {
+      "@id": "ceasn:alignFrom",
+      "@type": "@id"
+    },
+    "ceasn:alignTo": {
+      "@id": "ceasn:alignTo",
+      "@type": "@id"
+    },
+    "ceasn:isPartOf": {
+      "@id": "ceasn:isPartOf",
+      "@type": "@id"
+    },
+    "ceasn:isTopChildOf": {
+      "@id": "ceasn:isTopChildOf",
+      "@type": "@id"
+    },
+    "ceasn:hasTopChild": {
+      "@id": "ceasn:hasTopChild",
+      "@type": "@id"
+    },
+    "ceasn:hasChild": {
+      "@id": "ceasn:hasChild",
+      "@type": "@id"
+    },
+    "ceasn:narrowAlignment": {
+      "@id": "ceasn:narrowAlignment",
+      "@type": "@id"
+    },
+    "ceasn:broadAlignment": {
+      "@id": "ceasn:broadAlignment",
+      "@type": "@id"
+    },
+    "ceasn:prerequisiteAlignment": {
+      "@id": "ceasn:prerequisiteAlignment",
+      "@type": "@id"
+    },
+    "ceasn:minorAlignment": {
+      "@id": "ceasn:minorAlignment",
+      "@type": "@id"
+    },
+    "ceasn:majorAlignment": {
+      "@id": "ceasn:majorAlignment",
+      "@type": "@id"
+    },
+    "ceasn:publisherName": {
+      "@id": "ceasn:publisherName",
+      "@language": "en-us"
+    },
+    "skos:related": {
+      "@id": "skos:related",
+      "@type": "@id"
+    },
+    "ceasn:exactAlignment": {
+      "@id": "ceasn:exactAlignment",
+      "@type": "@id"
+    },
+    "ceasn:skillEmbodied": {
+      "@id": "ceasn:skillEmbodied",
+      "@type": "@id"
+    },
+    "ceasn:taskEmbodied": {
+      "@id": "ceasn:taskEmbodied",
+      "@type": "@id"
+    },
+    "ceasn:abilityEmbodied": {
+      "@id": "ceasn:abilityEmbodied",
+      "@type": "@id"
+    },
+    "ceasn:knowledgeEmbodied": {
+      "@id": "ceasn:knowledgeEmbodied",
+      "@type": "@id"
+    },
+    "cass:source": {
+      "@id": "cass:source",
+      "@type": "cass:Competency"
+    },
+    "cass:target": {
+      "@id": "cass:target",
+      "@type": "cass:Competency"
+    },
+    "ceasn:inLanguage": {
+      "@id": "ceasn:inLanguage",
+      "@type": "xsd:language"
+    },
+    "ceasn:repositoryDate": {
+      "@id": "ceasn:repositoryDate"
+    },
+    "cass:framework": {
+      "@id": "cass:framework",
+      "@type": "@id"
+    },
+    "cass:level": {
+      "@id": "cass:level",
+      "@type": "@id"
+    },
+    "cass:relation": {
+      "@id": "cass:relation",
+      "@type": "@id"
+    },
+    "cass:rollupRule": {
+      "@id": "cass:rollupRule",
+      "@type": "@id"
+    },
+    "cass:confidence": {
+      "@id": "cass:confidence",
+      "@type": "schema:Float"
+    },
+    "cass:evidence": {
+      "@id": "cass:evidence",
+      "@type": "schema:Thing"
+    },
+    "asn:hasProgressionModel": {
+      "@id": "asn:hasProgressionModel",
+      "@type": "@id"
+    },
+    "asn:hasProgressionLevel": {
+      "@id": "asn:hasProgressionLevel",
+      "@type": "@id"
+    },
+    "ceterms:environmentalHazardType": {
+      "@id": "ceterms:environmentalHazardType",
+      "@type": "@id"
+    },
+    "ceterms:performanceLevelType": {
+      "@id": "ceterms:performanceLevelType",
+      "@type": "@id"
+    },
+    "ceterms:physicalCapabilityType": {
+      "@id": "ceterms:physicalCapabilityType",
+      "@type": "@id"
+    },
+    "ceterms:sensoryCapabilityType": {
+      "@id": "ceterms:sensoryCapabilityType",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingResource": {
+      "@id": "ceasn:substantiatingResource",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingCompetencyFramework": {
+      "@id": "ceasn:substantiatingCompetencyFramework",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingCredential": {
+      "@id": "ceasn:substantiatingCredential",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingJob": {
+      "@id": "ceasn:substantiatingJob",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingOccupation": {
+      "@id": "ceasn:substantiatingOccupation",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingOrganization": {
+      "@id": "ceasn:substantiatingOrganization",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingTask": {
+      "@id": "ceasn:substantiatingTask",
+      "@type": "@id"
+    },
+    "ceasn:substantiatingWorkRole": {
+      "@id": "ceasn:substantiatingWorkRole",
+      "@type": "@id"
+    },
+    "ceasn:sourceDocumentation": {
+      "@id": "ceasn:sourceDocumentation",
+      "@type": "@id"
+    },
+    "ceasn:inferredCompetency": {
+      "@id": "ceasn:inferredCompetency",
+      "@type": "@id"
+    },
+    "ceterms:hasTask": {
+      "@id": "ceterms:hasTask",
+      "@type": "@id"
+    },
+    "ceterms:hasWorkforceDemand": {
+      "@id": "ceterms:hasWorkforceDemand",
+      "@type": "@id"
+    },
+    "ceterms:isMemberOf": {
+      "@id": "ceterms:isMemberOf",
+      "@type": "@id"
+    },
+    "ceterms:latestVersion": {
+      "@id": "ceterms:latestVersion",
+      "@type": "@id"
+    },
+    "ceterms:nextVersion": {
+      "@id": "ceterms:nextVersion",
+      "@type": "@id"
+    },
+    "ceterms:previousVersion": {
+      "@id": "ceterms:previousVersion",
+      "@type": "@id"
+    },
+    "ceterms:versionCode": {
+      "@id": "ceterms:versionCode",
+      "@type": "xsd:string"
+    },
+    "ceterms:hasGlossary": {
+      "@id": "ceterms:hasGlossary",
+      "@type": "@id"
+    },
+    "ceterms:sameAs": {
+      "@id": "ceterms:sameAs",
+      "@type": "@id"
+    }
+  }
+}

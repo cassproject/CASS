@@ -18,14 +18,14 @@ let asnContext = {
 };
 
 async function cassFrameworkAsAsn() {
-    EcRepository.cacheBacking = {};
+    EcRepository.clearCache();
     let query = queryParse.call(this);
     let framework = null;
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2asnTerms")), true));
     console.log(query);
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
-    if (framework == null || framework["@type"]?.contains("ramework"))
+    if (framework == null || !framework["@type"]?.contains("ramework"))
         framework = null;
     if (framework == null)
         framework = await loopback.frameworkGet(decodeURIComponent(this.params.id));
@@ -34,9 +34,10 @@ async function cassFrameworkAsAsn() {
         competency = await skyrepoGet.call(this, query);
         if (competency == null)
             competency = await loopback.competencyGet(decodeURIComponent(this.params.id));
-        else {
+        if (competency != null) {
+            // Deep copy: loopback results are shared EcRepository.cache instances, and this export mutates them.
             let c = new EcCompetency();
-            c.copyFrom(competency);
+            c.copyFrom(JSON.parse(JSON.stringify(competency)));
             competency = c;
         }
         if (competency != null) {
@@ -57,8 +58,9 @@ async function cassFrameworkAsAsn() {
     if (framework == null)
         error("Framework not found.", "404");
 
+    // Deep copy: the framework and competencies below may be shared EcRepository.cache instances, and this export mutates them.
     let f = new EcFramework();
-    f.copyFrom(framework);
+    f.copyFrom(JSON.parse(JSON.stringify(framework)));
     if (f.competency === undefined || f.competency == null) f.competency = [];
     if (f.relation === undefined || f.relation == null) f.relation = [];
 
@@ -74,8 +76,10 @@ async function cassFrameworkAsAsn() {
     let topLevelCompIds = []
     if (f.competency != null)
         for (let i = 0; i < f.competency.length; i++) {
-            let c = await loopback.competencyGet(f.competency[i]);
-            if (c == null) continue;
+            let cached = await loopback.competencyGet(f.competency[i]);
+            if (cached == null) continue;
+            let c = new EcCompetency();
+            c.copyFrom(JSON.parse(JSON.stringify(cached)));
             competencies[f.competency[i]] = c;
             if (competencies[f.competency[i]] == null)
                 error("Competency not found.", 404);

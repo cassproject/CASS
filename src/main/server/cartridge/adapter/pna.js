@@ -6,7 +6,7 @@ const { skyrepoGet } = require('../../skyRepo/get');
 //      https://docs.google.com/document/d/1w_0HDNIA9GZq76txOuS8e-OhmKJiHe9Azjuq1BfrxQ0/edit
 
 async function pnaEndpoint() {
-    EcRepository.cacheBacking = {};
+    EcRepository.clearCache();
     EcRepository.caching = true;
     let query = queryParse.call(this);
     let framework = null;

@@ -10,7 +10,7 @@ let profileCalculator = async function () {
     const subjectId = this.params.subject;
     const frameworkId = this.params.frameworkId;
     if (this.params.flushCache != null && this.params.flushCache) {
-        EcRepository.cacheBacking = {};
+        EcRepository.clearCache();
     }
 
     if (subjectId == null)

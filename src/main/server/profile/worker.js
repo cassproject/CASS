@@ -96,17 +96,17 @@ parentPort.on('message', async (param) => {
         if (param.lastFlush != global.lastFlush) {
             global.lastFlush = param.lastFlush;
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", "Flushing cache (cause: new Assertions).");
-            EcRepository.cacheBacking = {};
+            EcRepository.clearCache();
         }
         if (param.flushCache == "true") {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", "Flushing cache.");
-            EcRepository.cacheBacking = {};
+            EcRepository.clearCache();
             global.allFrameworks = [];
             global.profileFrameworks = {};
         }
         if (userChanged) {
             EcCrypto.cache = {};
-            EcRepository.cacheBacking = {};
+            EcRepository.clearCache();
         }
 
         const memoryData = process.memoryUsage();
@@ -127,7 +127,7 @@ parentPort.on('message', async (param) => {
             }
             if (process.memoryUsage().heapUsed > 400 * 1024 * 1024) {
                 global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileWorkerRepositoryCacheCleared', "Hit high water memory mark, clearing repository cache.");
-                EcRepository.cacheBacking = {};
+                EcRepository.clearCache();
                 if (global.gc) global.gc();
             }
             if (global.gc) global.gc();

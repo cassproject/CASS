@@ -1,0 +1,17 @@
+{
+  "ConceptScheme": "skos:ConceptScheme",
+  "Concept": "skos:Concept",
+  "@owner": "ebac:@owner",
+  "@reader": "ebac:@reader",
+  "@signature": "ebac:@signature",
+  "dcterms:creator": "ceasn:creator",
+  "dcterms:dateCopyrighted": "ceasn:dateCopyrighted",
+  "dcterms:description": "ceasn:description",
+  "dcterms:language": "ceasn:inLanguage",
+  "dcterms:license": "ceasn:license",
+  "dcterms:publisher": "ceasn:publisher",
+  "dcterms:rights": "ceasn:rights",
+  "dcterms:rightsHolder": "ceasn:rightsHolder",
+  "dcterms:title": "ceasn:name",
+  "dc:source": "ceasn:source"
+}

@@ -100,6 +100,11 @@ cfGetCompetency = async function (c) {
         }
         var c = new EcCompetency();
         c.copyFrom(competency);
+    } else {
+        // Copy: callers pass shared EcRepository.cache instances, and cfItems mutates the result.
+        var copy = new EcCompetency();
+        copy.copyFrom(c);
+        c = copy;
     }
     this[cache] = c;
     return c;
@@ -123,6 +128,11 @@ cfGetAlignment = async function (c) {
             cfError(404, "failure", "error", "Alignment not found.", "uuid", "unknownobject");
         c = new EcAlignment();
         c.copyFrom(competency);
+    } else {
+        // Copy: callers pass shared EcRepository.cache instances, and cfItemAssociations renames and deletes fields on the result.
+        var copy = new EcAlignment();
+        copy.copyFrom(c);
+        c = copy;
     }
     return c;
 };
@@ -402,7 +412,7 @@ cfPackages = async function (f) {
         repo = new EcRepository();
     repo.selectedServer = global.repo.selectedServer;
 
-    EcRepository.cacheBacking = {};
+    EcRepository.clearCache();
     var result = {};
     f = await cfGetFramework.call(this, f);
     var toPrecache = [];

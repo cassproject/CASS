@@ -1,0 +1,133 @@
+{
+  "@context": {
+    "asn": "http://purl.org/ASN/schema/core/",
+    "asnPublicationStatus": "http://purl.org/asn/scheme/ASNPublicationStatus/",
+    "asnscheme": "http://purl.org/asn/scheme/",
+    "case": "http://schema.imsglobal.org/ims/case/v1p0/",
+    "ceasn": "https://purl.org/ctdlasn/terms/",
+    "cass2": "http://schema.cassproject.org/0.2/",
+    "cass3": "https://schema.cassproject.org/0.4/cass2ceasn",
+    "ceterms": "https://purl.org/ctdl/terms/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dct": "http://purl.org/dc/terms/",
+    "gem": "http://purl.org/gem/elements/",
+    "gemq": "http://purl.org/gem/qualifiers/",
+    "loc": "http://www.loc.gov/loc.terms/",
+    "locr": "http://www.loc.gov/loc.terms/relators/",
+    "meta": "http://credreg.net/meta/terms/",
+    "publicationStatus": "https://credreg.net/ctdlasn/vocabs/publicationStatus/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "vs": "https://www.w3.org/2003/06/sw-vocab-status/ns",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "cc": "http://creativecommons.org/ns#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "owl": "http://www.w3.org/20.3/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "cass": "https://schema.cassproject.org/0.4/",
+    "ebac": "https://schema.cassproject.org/kbac/0.4/",
+    "general": "http://schema.eduworks.com/general/0.3/",
+    "schema": "https://schema.org/",
+    "@owner": {
+      "@id": "ebac:@owner",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "@reader": {
+      "@id": "ebac:@reader",
+      "@type": "https://purl.org/signature#publicKeyPem"
+    },
+    "ceterms:codedNotation": {
+      "@id": "ceterms:codedNotation",
+      "@type": "xsd:string"
+    },
+    "ceterms:name": {
+      "@id": "ceterms:name",
+      "@language": "en-us"
+    },
+    "ceterms:description": {
+      "@id": "ceterms:description",
+      "@language": "en-us"
+    },
+    "ceasn:repositoryDate": {
+      "@id": "ceasn:repositoryDate",
+      "@type": "xsd:date"
+    },
+    "ceasn:dateCreated": {
+      "@id": "ceasn:dateCreated",
+      "@type": "xsd:date"
+    },
+    "ceasn:dateModified": {
+      "@id": "ceasn:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "ceasn:license": {
+      "@id": "ceasn:license",
+      "@type": "@id"
+    },
+    "ceterms:hasMember": {
+      "@id": "ceterms:hasMember",
+      "@type": "@id"
+    },
+    "ceterms:classification": {
+      "@id": "ceterms:classification",
+      "@type": "@id"
+    },
+    "ceterms:dateEffective": {
+      "@id": "ceterms:dateEffective",
+      "@type": "xsd:date"
+    },
+    "ceterms:expirationDate": {
+      "@id": "ceterms:expirationDate",
+      "@type": "xsd:date"
+    },
+    "ceterms:inLanguage": {
+      "@id": "ceterms:inLanguage",
+      "@type": "xsd:language"
+    },
+    "ceterms:keyword": {
+      "@id": "ceterms:keyword",
+      "@language": "en-us"
+    },
+    "ceterms:ownedBy": {
+      "@id": "ceterms:ownedBy",
+      "@type": "@id"
+    },
+    "ceterms:subject": {
+      "@id": "ceterms:subject",
+      "@type": "@id"
+    },
+    "ceterms:subjectWebpage": {
+      "@id": "ceterms:subjectWebpage",
+      "@type": "@id"
+    },
+    "ceterms:collectionType": {
+      "@id": "ceterms:collectionType",
+      "@type": "@id"
+    },
+    "ceterms:membershipCondition": {
+      "@id": "ceterms:membershipCondition",
+      "@type": "@id"
+    },
+    "ceterms:latestVersion": {
+      "@id": "ceterms:latestVersion",
+      "@type": "@id"
+    },
+    "ceterms:nextVersion": {
+      "@id": "ceterms:nextVersion",
+      "@type": "@id"
+    },
+    "ceterms:previousVersion": {
+      "@id": "ceterms:previousVersion",
+      "@type": "@id"
+    },
+    "ceterms:versionCode": {
+      "@id": "ceterms:versionCode",
+      "@type": "xsd:string"
+    },
+    "ceterms:sameAs": {
+      "@id": "ceterms:sameAs",
+      "@type": "@id"
+    }
+  }
+}
