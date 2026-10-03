@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+const { isExcludedIndex } = require('./searchUtil');
 const deleteUrl = function (id, version, type) {
     const typeFromObj = inferTypeWithoutObj(type);
     let refreshPart = 'refresh=true';
@@ -54,6 +55,9 @@ const deletePermanentBaseUrl = function (id, version, type) {
 };
 
 const skyrepoDeleteInternalIndex = async function (id, version, type) {
+    if (isExcludedIndex(type)) {
+        return null;
+    }
     const url = deleteUrl.call(this, id, version, type);
     return await httpDelete(url, elasticHeaders());
 };

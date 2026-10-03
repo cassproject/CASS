@@ -19,6 +19,7 @@
  */
 const { skyrepoGetPermanent } = require('./get');
 const { skyrepoDeleteInternalIndex } = require('./delete');
+const { allIndices } = require('./searchUtil');
 let permanentCreated = false;
 
 const putUrl = function (o, id, version, type) {
@@ -191,7 +192,7 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
 
 const skyrepoGetIndexRecords = async function (id) {
     const hashId = EcCrypto.md5(id);
-    const microSearchUrl = elasticEndpoint + '/_search?version&q=@id:"' + id + '" OR @id:"' + hashId + '"';
+    const microSearchUrl = elasticEndpoint + '/' + allIndices() + '/_search?version&q=@id:"' + id + '" OR @id:"' + hashId + '"';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexRecords', microSearchUrl);

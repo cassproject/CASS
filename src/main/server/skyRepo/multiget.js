@@ -18,7 +18,7 @@
  * --END_LICENSE--
  */
 const { skyrepoGetParsed } = require('./get');
-const { searchUrl, searchObj } = require('./searchUtil');
+const { searchUrl, searchObj, allIndices } = require('./searchUtil');
 
 const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
     if (global.skyrepoDebug) {
@@ -48,7 +48,7 @@ const skyrepoManyGetIndexSearch = async function (ary) {
     while (ary.length > 0) {
         let batch = ary.splice(0, 10);
 
-        let microSearchUrl = elasticEndpoint + '/_search?version&q=';
+        let microSearchUrl = elasticEndpoint + '/' + allIndices() + '/_search?version&q=';
         microSearchUrl += batch.map(x => `_id:"${x.id}"`).join(" OR ");
 
         const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());

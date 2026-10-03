@@ -17,17 +17,32 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+// Indices whose names start with '@' belong to other applications that share the
+// Elasticsearch cluster. They must never be reachable through the CaSS API, whether
+// the caller relies on the default index set, supplies an index_hint, or targets an
+// index through the URL.
+const EXCLUDED_INDEX_PATTERN = '-@*';
+const isExcludedIndex = function (index) {
+    return index != null && String(index).trim().startsWith('@');
+};
+const excludeForeignIndices = function (indexExpression) {
+    return indexExpression + ',' + EXCLUDED_INDEX_PATTERN;
+};
+// Every CaSS-visible index (the search-index copies plus 'permanent'), minus foreign '@' indices.
+const allIndices = function () {
+    return excludeForeignIndices('*');
+};
 const searchUrl = function (urlRemainder, index_hint) {
     let url = elasticEndpoint;
     if (index_hint != null && index_hint.indexOf('permanent') != -1) {
         index_hint = null;
     }
     if (urlRemainder != null && urlRemainder != '' && urlRemainder != '/') {
-        url += urlRemainder.toLowerCase();
+        url += excludeForeignIndices(urlRemainder.toLowerCase().replace(/\/+$/, ''));
     } else if (index_hint == null) {
-        url += '/*,-permanent';
+        url += '/' + excludeForeignIndices('*,-permanent');
     } else {
-        url += '/' + index_hint;
+        url += '/' + excludeForeignIndices(index_hint);
     }
     if (!url.endsWith('/')) {
         url += '/';
@@ -79,5 +94,8 @@ const searchObj = async function (q, start, size, sort, track_scores) {
 };
 module.exports = {
     searchUrl,
-    searchObj
+    searchObj,
+    isExcludedIndex,
+    excludeForeignIndices,
+    allIndices
 }

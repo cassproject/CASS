@@ -18,6 +18,7 @@
  * --END_LICENSE--
  */
 const { skyrepoHistoryInternal } = require('./history');
+const { isExcludedIndex, allIndices } = require('./searchUtil');
 const getUrl = function (index, id, version, type) {
     let url = elasticEndpoint;
     url += '/' + index;
@@ -49,7 +50,7 @@ const skyrepoGetIndexInternal = async function (index, id, version, type) {
 };
 
 const skyrepoGetIndexSearch = async function (id, version, type) {
-    const microSearchUrl = elasticEndpoint + '/_search?version&q=_id:' + id + '';
+    const microSearchUrl = elasticEndpoint + '/' + allIndices() + '/_search?version&q=_id:' + id + '';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
     if (global.skyrepoDebug) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexSearch', microSearchUrl);
@@ -71,6 +72,9 @@ const skyrepoGetIndexSearch = async function (id, version, type) {
 
 const skyrepoGetIndex = async function (id, version, type) {
     if (type !== undefined && type != null && type != '') {
+        if (isExcludedIndex(type)) {
+            return null;
+        }
         const result = await skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
         return result;
     } else {
