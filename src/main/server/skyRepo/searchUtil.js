@@ -20,21 +20,27 @@
 // Indices whose names start with '@' belong to other applications that share the
 // Elasticsearch cluster. They must never be reachable through the CaSS API, whether
 // the caller relies on the default index set, supplies an index_hint, or targets an
-// index through the URL.
-const EXCLUDED_INDEX_PATTERN = '-@*';
+// index through the URL. The 'ephemeral' cache index is likewise never a search target.
+const EXCLUDED_INDEX_PATTERN = '-ephemeral,-@*';
+// Index hints that name a non-searchable index fall back to the default index set.
+const RESERVED_INDEX_NAMES = ['permanent', 'ephemeral'];
 const isExcludedIndex = function (index) {
-    return index != null && String(index).trim().startsWith('@');
+    if (index == null) {
+        return false;
+    }
+    const name = String(index).trim();
+    return name.startsWith('@') || name.toLowerCase() == 'ephemeral';
 };
 const excludeForeignIndices = function (indexExpression) {
     return indexExpression + ',' + EXCLUDED_INDEX_PATTERN;
 };
-// Every CaSS-visible index (the search-index copies plus 'permanent'), minus foreign '@' indices.
+// Every CaSS-visible index (the search-index copies plus 'permanent'), minus 'ephemeral' and foreign '@' indices.
 const allIndices = function () {
     return excludeForeignIndices('*');
 };
 const searchUrl = function (urlRemainder, index_hint) {
     let url = elasticEndpoint;
-    if (index_hint != null && index_hint.indexOf('permanent') != -1) {
+    if (index_hint != null && RESERVED_INDEX_NAMES.some((name) => index_hint.indexOf(name) != -1)) {
         index_hint = null;
     }
     if (urlRemainder != null && urlRemainder != '' && urlRemainder != '/') {
