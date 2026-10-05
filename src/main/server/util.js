@@ -27,6 +27,119 @@ let skyIdSecret = () => {
     });
 };
 
+/**
+ *  Number of documents in an index, or null if it does not exist.
+ */
+let skyrepoIndexDocCount = async function (index) {
+    const stats = await httpGet(elasticEndpoint + '/' + index + '/_stats', true, elasticHeaders());
+    return stats?._all?.primaries?.docs?.count;
+};
+
+/**
+ *  Polls until two indices hold the same number of documents, or the deadline
+ *  passes. Returns true only when the counts actually match — callers must not
+ *  delete a source index unless this returned true.
+ */
+let skyrepoAwaitReindex = async function (destination, source, label) {
+    const waitMs = (parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 3600) * 1000;
+    const deadline = new Date().getTime() + waitMs;
+    while (new Date().getTime() < deadline) {
+        await httpGet(elasticEndpoint + '/_refresh', true, elasticHeaders());
+        const destinationCount = await skyrepoIndexDocCount(destination);
+        const sourceCount = await skyrepoIndexDocCount(source);
+        if (destinationCount != null && sourceCount != null && destinationCount == sourceCount) {
+            return true;
+        }
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigratePermanent', label + ' ' + destinationCount + ' / ' + sourceCount);
+        await new Promise((r) => setTimeout(r, 10000));
+    }
+    return false;
+};
+
+/**
+ *  Migrates the permanent index so that version history can be retrieved with
+ *  a term query on an indexed baseId field.
+ *
+ *  The permanent index used to be created with 'enabled: false', which indexes
+ *  nothing, so history had to script over the _id metadata field. That needs
+ *  fielddata on _id — deprecated since Elasticsearch 7.6 and rejected by newer
+ *  versions even with indices.id_field_data.enabled set — which made history
+ *  fail with a script_exception that surfaced only as an empty result.
+ *
+ *  A root mapping's 'enabled' flag cannot be changed in place, so the index is
+ *  rebuilt through .temp.permanent using the same reindex-and-swap approach the
+ *  rest of this migration uses. baseId is derived from each document's _id,
+ *  which is written as `<baseId>.<version>`.
+ *
+ *  Safe to re-run: it is a no-op once baseId is mapped, and it resumes if a
+ *  previous attempt was interrupted midway. The source index is only ever
+ *  deleted after the copy is verified to hold the same number of documents.
+ */
+let skyrepoMigratePermanent = async function () {
+    const permanentMappings = {
+        mappings: {
+            dynamic: false,
+            properties: global.PERMANENT_PROPERTIES || { baseId: { type: 'keyword' } },
+        },
+    };
+    const baseIdScript = {
+        lang: 'painless',
+        source: 'int i = ctx._id.lastIndexOf(\'.\'); ctx._source.baseId = i > 0 ? ctx._id.substring(0, i) : ctx._id;',
+    };
+
+    const mapping = await httpGet(elasticEndpoint + '/permanent/_mapping', true, elasticHeaders());
+    const permanentExists = mapping != null && mapping.error == null && mapping.permanent != null;
+    const tempCount = await skyrepoIndexDocCount('.temp.permanent');
+
+    if (permanentExists && mapping.permanent.mappings?.properties?.baseId != null) {
+        return; // Already migrated.
+    }
+    if (!permanentExists && tempCount == null) {
+        return; // Nothing stored yet; the index is created with the current mapping on first write.
+    }
+
+    if (permanentExists) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigratePermanent', 'Adding indexed baseId to the permanent index. History is unavailable until this completes.');
+        // Discard any copy left by an interrupted attempt — permanent is intact, so it is authoritative.
+        if (tempCount != null) {
+            await httpDelete(elasticEndpoint + '/.temp.permanent', elasticHeaders());
+        }
+        await httpPut(permanentMappings, elasticEndpoint + '/.temp.permanent', 'application/json', elasticHeaders());
+        const forward = await httpPost({
+            source: { index: 'permanent' },
+            dest: { index: '.temp.permanent', version_type: 'external' },
+            script: baseIdScript,
+        }, elasticEndpoint + '/_reindex?wait_for_completion=false&refresh=true', 'application/json', 'false', elasticHeaders());
+        if (forward == null || forward.error != null) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Could not start reindex of permanent: ' + JSON.stringify(forward?.error));
+            return;
+        }
+        if (!(await skyrepoAwaitReindex('.temp.permanent', 'permanent', 'Copying permanent ->.temp.permanent...'))) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Timed out copying permanent. Nothing was deleted; migration will be retried on next startup.');
+            return;
+        }
+        await httpDelete(elasticEndpoint + '/permanent', elasticHeaders());
+    } else {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'SkyrepMigratePermanent', 'Resuming an interrupted permanent migration from .temp.permanent.');
+    }
+
+    await httpPut(permanentMappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
+    const back = await httpPost({
+        source: { index: '.temp.permanent' },
+        dest: { index: 'permanent', version_type: 'external' },
+    }, elasticEndpoint + '/_reindex?wait_for_completion=false&refresh=true', 'application/json', 'false', elasticHeaders());
+    if (back == null || back.error != null) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Could not start reindex back into permanent: ' + JSON.stringify(back?.error) + ' Data remains in .temp.permanent.');
+        return;
+    }
+    if (!(await skyrepoAwaitReindex('permanent', '.temp.permanent', 'Restoring .temp.permanent -> permanent...'))) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Timed out restoring permanent. Data remains in .temp.permanent and the migration will resume on next startup.');
+        return;
+    }
+    await httpDelete(elasticEndpoint + '/.temp.permanent', elasticHeaders());
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigratePermanent', 'Permanent index migrated; history now uses an indexed baseId.');
+};
+
 let skyrepoMigrate = async function (after) {
     let elasticState = await httpGet(elasticEndpoint + '/', true, elasticHeaders());
     if (elasticState == null) {
@@ -458,6 +571,7 @@ let skyrepoMigrate = async function (after) {
             global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'SkyrepMigrate', await httpDelete(elasticEndpoint + '/.temp.' + index, elasticHeaders()));
         }
     }
+    await skyrepoMigratePermanent();
     global.events.database.connected.next(true);
 };
 global.events.server.init.subscribe(skyrepoMigrate);

@@ -19,17 +19,17 @@
  */
 
 const skyrepoHistoryPermanent = async function (id, version, type) {
+    // Matches on the indexed baseId field written by skyrepoPutInternalPermanent.
+    // This previously scripted over doc['_id'], which required fielddata on the
+    // _id metadata field: deprecated since 7.6, gated behind the
+    // indices.id_field_data.enabled cluster setting, and rejected outright by
+    // newer Elasticsearch even when that setting is enabled. A term query on a
+    // real keyword field needs no fielddata, and does not scan every document.
     const query = {
         'size': 10000,
         'query': {
-            'script': {
-                'script': {
-                    'source': 'doc[\'_id\'][0].indexOf(params.param1+\'.\') > -1',
-                    'lang': 'painless',
-                    'params': {
-                        'param1': `${id}`,
-                    },
-                },
+            'term': {
+                'baseId': `${id}`,
             },
         },
     };
@@ -44,6 +44,10 @@ const skyrepoHistoryInternal = async function (id, version, type) {
         return null;
     }
     if ((result)['error'] != null) {
+        // Logged rather than silently swallowed: an Elasticsearch-side failure
+        // here is otherwise indistinguishable from "no history exists", and
+        // reaches the caller as a null with no explanation.
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'SkyrepoHistoryError', 'History query failed for ' + id + ': ' + JSON.stringify((result)['error']));
         return null;
     }
     if ((result).hits.total.value > 0) {
