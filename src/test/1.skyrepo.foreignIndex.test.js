@@ -371,6 +371,13 @@ describe('Foreign (@-prefixed) and ephemeral Elasticsearch indices are unreachab
                     assert.include(res.text, guid, `${query} should still find the CaSS object`);
                     assertNotLeaked(res, query);
                 }
+                for (const typePath of [COMPETENCY_TYPE, COMPETENCY_TYPE + '/']) {
+                    const query = `data/${typePath}?q=${encodeURIComponent('name:"' + name + '"')}`;
+                    const res = await apiGet(query);
+                    assert.strictEqual(res.status, 200, `${query} -> HTTP ${res.status}: ${res.text.substring(0, 300)}`);
+                    assert.include(res.text, guid, `${query} should find the CaSS object through the URL-named index`);
+                    assertNotLeaked(res, query);
+                }
             } finally {
                 await apiDeleteCompetency(guid);
             }

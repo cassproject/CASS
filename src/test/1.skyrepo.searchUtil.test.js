@@ -90,11 +90,30 @@ describe('skyRepo/searchUtil.js', function () {
         });
 
         it('an index named through the URL remainder is neutralised too', () => {
-            const url = searchUtil.searchUrl('@Foreign', null);
-            assert.isTrue(url.endsWith('@foreign' + EXCLUSION + '/_search'), 'remainder must be lowercased and carry the exclusions: ' + url);
-            assert.isTrue(searchUtil.searchUrl('@foreign/', null).endsWith('@foreign' + EXCLUSION + '/_search'), 'trailing slash must not defeat the exclusions');
-            assert.isTrue(searchUtil.searchUrl('ephemeral', null).endsWith('ephemeral' + EXCLUSION + '/_search'), 'ephemeral named in the URL is still excluded');
-            assert.isTrue(searchUtil.searchUrl('@foreign', '@foreign').endsWith('@foreign' + EXCLUSION + '/_search'), 'remainder takes precedence over index_hint and is still excluded');
+            const foreign = ep() + '/@foreign' + EXCLUSION + '/_search';
+            assert.strictEqual(searchUtil.searchUrl('@Foreign', null), foreign, 'remainder must be lowercased and carry the exclusions');
+            assert.strictEqual(searchUtil.searchUrl('@foreign/', null), foreign, 'trailing slash must not defeat the exclusions');
+            assert.strictEqual(searchUtil.searchUrl('/@foreign', null), foreign, 'a leading slash must not be doubled');
+            assert.strictEqual(searchUtil.searchUrl('ephemeral', null), ep() + '/ephemeral' + EXCLUSION + '/_search', 'ephemeral named in the URL is still excluded');
+            assert.strictEqual(searchUtil.searchUrl('@foreign', '@foreign'), foreign, 'remainder takes precedence over index_hint and is still excluded');
+        });
+
+        it('the index expression is always a path segment, never part of the URL authority', () => {
+            // Express 5 wildcard remainders have no leading slash; an '@' fused onto the
+            // endpoint would be parsed as userinfo and redirect the request to another host.
+            const expected = new URL(ep());
+            const cases = [
+                [null, null], [null, '@foreign'], [null, '*'],
+                ['@foreign', null], ['/@foreign/', null], ['ephemeral', null],
+                ['schema.cassproject.org.0.4.Competency', null], ['/schema.cassproject.org.0.4.Competency', null],
+            ];
+            for (const [remainder, hint] of cases) {
+                const url = new URL(searchUtil.searchUrl(remainder, hint));
+                const label = `remainder=${remainder} hint=${hint} produced ${url.href}`;
+                assert.strictEqual(url.host, expected.host, label);
+                assert.strictEqual(url.username, '', label);
+                assert.strictEqual(url.password, '', label);
+            }
         });
 
         it('every produced index expression ends with the exclusions', () => {
