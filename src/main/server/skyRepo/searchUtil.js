@@ -43,8 +43,11 @@ const searchUrl = function (urlRemainder, index_hint) {
     if (index_hint != null && RESERVED_INDEX_NAMES.some((name) => index_hint.indexOf(name) != -1)) {
         index_hint = null;
     }
-    if (urlRemainder != null && urlRemainder != '' && urlRemainder != '/') {
-        url += excludeForeignIndices(urlRemainder.toLowerCase().replace(/\/+$/, ''));
+    // Express 5 wildcard remainders arrive without a leading slash. Without the separator the
+    // index expression fuses with the endpoint, and any '@' in it is parsed as URL userinfo.
+    const remainderIndex = urlRemainder == null ? '' : String(urlRemainder).replace(/^\/+|\/+$/g, '');
+    if (remainderIndex != '') {
+        url += '/' + excludeForeignIndices(remainderIndex.toLowerCase());
     } else if (index_hint == null) {
         url += '/' + excludeForeignIndices('*,-permanent');
     } else {
