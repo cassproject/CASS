@@ -36,24 +36,98 @@ let skyrepoIndexDocCount = async function (index) {
 };
 
 /**
- *  Polls until two indices hold the same number of documents, or the deadline
- *  passes. Returns true only when the counts actually match — callers must not
- *  delete a source index unless this returned true.
+ *  True when both indices exist and destination holds the same number of
+ *  documents as source (or at least as many, when atLeast is set).
  */
-let skyrepoAwaitReindex = async function (destination, source, label) {
-    const waitMs = (parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 3600) * 1000;
-    const deadline = new Date().getTime() + waitMs;
+let skyrepoIndexCountsMatch = async function (destination, source, atLeast) {
+    await httpGet(elasticEndpoint + '/_refresh', true, elasticHeaders());
+    const destinationCount = await skyrepoIndexDocCount(destination);
+    const sourceCount = await skyrepoIndexDocCount(source);
+    return { matches: destinationCount != null && sourceCount != null && (atLeast ? destinationCount >= sourceCount : destinationCount == sourceCount), destinationCount, sourceCount };
+};
+
+/**
+ *  Waits for an asynchronous _reindex task. Returns { ok: true } only when the
+ *  task finished without failures and the two indices hold the same number of
+ *  documents — callers must not delete a source index otherwise. A failed task
+ *  returns as soon as it is seen, with the reason, instead of waiting out the
+ *  timeout. If the task cannot be read, falls back to comparing document counts
+ *  and gives up once the copy stops making progress.
+ */
+let skyrepoAwaitReindex = async function (task, destination, source, label, atLeast) {
+    const pollMs = 2000;
+    const deadline = new Date().getTime() + (parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 3600) * 1000;
+    let lastProgress = null;
+    let lastChange = new Date().getTime();
+    let polls = 0;
     while (new Date().getTime() < deadline) {
-        await httpGet(elasticEndpoint + '/_refresh', true, elasticHeaders());
-        const destinationCount = await skyrepoIndexDocCount(destination);
-        const sourceCount = await skyrepoIndexDocCount(source);
-        if (destinationCount != null && sourceCount != null && destinationCount == sourceCount) {
-            return true;
+        await new Promise((r) => setTimeout(r, pollMs));
+        const status = task != null ? await httpGet(elasticEndpoint + '/_tasks/' + task, true, elasticHeaders()) : null;
+        const taskReadable = status != null && status.task != null;
+        let progress;
+        if (taskReadable) {
+            if (status.completed) {
+                const failures = status.response?.failures || [];
+                if (status.error != null || failures.length > 0) {
+                    return { ok: false, reason: JSON.stringify(status.error || failures.slice(0, 3)) };
+                }
+                const counts = await skyrepoIndexCountsMatch(destination, source, atLeast);
+                if (counts.matches) return { ok: true };
+                return { ok: false, reason: 'Reindex finished but ' + destination + ' holds ' + counts.destinationCount + ' documents and ' + source + ' holds ' + counts.sourceCount + '.' };
+            }
+            const s = status.task.status || {};
+            progress = (s.created || 0) + (s.updated || 0) + (s.version_conflicts || 0) + (s.deleted || 0) + ' / ' + s.total;
+        } else {
+            const counts = await skyrepoIndexCountsMatch(destination, source, atLeast);
+            if (counts.matches) return { ok: true };
+            progress = counts.destinationCount + ' / ' + counts.sourceCount;
         }
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigratePermanent', label + ' ' + destinationCount + ' / ' + sourceCount);
-        await new Promise((r) => setTimeout(r, 10000));
+        // A running task gets five minutes without progress; counts alone (task unreadable) get one.
+        const stallMs = (taskReadable ? 5 * 60 : 60) * 1000;
+        if (progress !== lastProgress) {
+            lastProgress = progress;
+            lastChange = new Date().getTime();
+        } else if (new Date().getTime() - lastChange > stallMs) {
+            return { ok: false, reason: 'No progress for ' + (stallMs / 1000) + ' seconds at ' + progress + '.' };
+        }
+        if (polls++ % 5 == 0) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigratePermanent', label + ' ' + progress);
+        }
     }
-    return false;
+    return { ok: false, reason: 'Timed out at ' + lastProgress + '.' };
+};
+
+/**
+ *  Copies one index into another with an asynchronous _reindex in small
+ *  batches. If Elasticsearch runs out of memory for a batch (large documents on
+ *  a small heap), retries up to twice, each time with a quarter of the batch
+ *  size. Documents already present at the same version are skipped, so a retry
+ *  or a resumed copy continues where it left off.
+ */
+let skyrepoReindexInBatches = async function (source, destination, script, label, startBatch, atLeast) {
+    const batch = Math.max(1, startBatch || parseInt(process.env.PERMANENT_MIGRATION_BATCH) || 100);
+    const sizes = [...new Set([batch, Math.max(1, Math.floor(batch / 4)), Math.max(1, Math.floor(batch / 16))])];
+    let result;
+    for (const [attempt, size] of sizes.entries()) {
+        const body = {
+            conflicts: 'proceed',
+            source: { index: source, size: size },
+            dest: { index: destination, version_type: 'external' },
+        };
+        if (script != null) body.script = script;
+        const started = await httpPost(body, elasticEndpoint + '/_reindex?wait_for_completion=false&refresh=true', 'application/json', 'false', elasticHeaders());
+        if (started == null || started.error != null || started.task == null) {
+            return { ok: false, reason: 'Could not start reindex: ' + JSON.stringify(started?.error || started) };
+        }
+        result = await skyrepoAwaitReindex(started.task, destination, source, label + ' (batch ' + size + ')', atLeast);
+        // Memory pressure shows up as a circuit breaker when reading the batch or as a rejected bulk when writing it.
+        if (result.ok || !/circuit_breaking_exception|would be larger than configured breaker|es_rejected_execution_exception/.test(result.reason) || attempt == sizes.length - 1) {
+            return { ...result, size: size };
+        }
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'SkyrepMigratePermanent', label + ' ran out of Elasticsearch memory with batch ' + size + '; retrying with a smaller batch. ' + result.reason);
+        await new Promise((r) => setTimeout(r, 10000)); // Let Elasticsearch reclaim the failed batch's memory.
+    }
+    return result;
 };
 
 /**
@@ -91,49 +165,42 @@ let skyrepoMigratePermanent = async function () {
     const permanentExists = mapping != null && mapping.error == null && mapping.permanent != null;
     const tempCount = await skyrepoIndexDocCount('.temp.permanent');
 
-    if (permanentExists && mapping.permanent.mappings?.properties?.baseId != null) {
+    const migrated = permanentExists && mapping.permanent.mappings?.properties?.baseId != null;
+    if (migrated && tempCount == null) {
         return; // Already migrated.
     }
     if (!permanentExists && tempCount == null) {
         return; // Nothing stored yet; the index is created with the current mapping on first write.
     }
 
-    if (permanentExists) {
+    let restoreBatch = null;
+    if (permanentExists && !migrated) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigratePermanent', 'Adding indexed baseId to the permanent index. History is unavailable until this completes.');
         // Discard any copy left by an interrupted attempt — permanent is intact, so it is authoritative.
         if (tempCount != null) {
             await httpDelete(elasticEndpoint + '/.temp.permanent', elasticHeaders());
         }
         await httpPut(permanentMappings, elasticEndpoint + '/.temp.permanent', 'application/json', elasticHeaders());
-        const forward = await httpPost({
-            source: { index: 'permanent' },
-            dest: { index: '.temp.permanent', version_type: 'external' },
-            script: baseIdScript,
-        }, elasticEndpoint + '/_reindex?wait_for_completion=false&refresh=true', 'application/json', 'false', elasticHeaders());
-        if (forward == null || forward.error != null) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Could not start reindex of permanent: ' + JSON.stringify(forward?.error));
+        const forward = await skyrepoReindexInBatches('permanent', '.temp.permanent', baseIdScript, 'Copying permanent -> .temp.permanent...');
+        if (!forward.ok) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Copying permanent failed; nothing was deleted, CaSS continues on the un-migrated permanent index without history, and the migration will be retried on next startup. ' + forward.reason);
             return;
         }
-        if (!(await skyrepoAwaitReindex('.temp.permanent', 'permanent', 'Copying permanent ->.temp.permanent...'))) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Timed out copying permanent. Nothing was deleted; migration will be retried on next startup.');
-            return;
-        }
+        restoreBatch = forward.size; // Start the restore at the batch size that worked.
         await httpDelete(elasticEndpoint + '/permanent', elasticHeaders());
+        await httpPut(permanentMappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
     } else {
+        // permanent is missing or only partly restored; .temp.permanent holds the full copy. permanent may
+        // also hold documents written while CaSS ran after a failed restore, hence the at-least count check.
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'SkyrepMigratePermanent', 'Resuming an interrupted permanent migration from .temp.permanent.');
+        if (!permanentExists) {
+            await httpPut(permanentMappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
+        }
     }
 
-    await httpPut(permanentMappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
-    const back = await httpPost({
-        source: { index: '.temp.permanent' },
-        dest: { index: 'permanent', version_type: 'external' },
-    }, elasticEndpoint + '/_reindex?wait_for_completion=false&refresh=true', 'application/json', 'false', elasticHeaders());
-    if (back == null || back.error != null) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Could not start reindex back into permanent: ' + JSON.stringify(back?.error) + ' Data remains in .temp.permanent.');
-        return;
-    }
-    if (!(await skyrepoAwaitReindex('permanent', '.temp.permanent', 'Restoring .temp.permanent -> permanent...'))) {
-        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Timed out restoring permanent. Data remains in .temp.permanent and the migration will resume on next startup.');
+    const back = await skyrepoReindexInBatches('.temp.permanent', 'permanent', null, 'Restoring .temp.permanent -> permanent...', restoreBatch, true);
+    if (!back.ok) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'SkyrepMigratePermanent', 'Restoring permanent failed; data remains in .temp.permanent and the restore will resume on next startup. ' + back.reason);
         return;
     }
     await httpDelete(elasticEndpoint + '/.temp.permanent', elasticHeaders());
