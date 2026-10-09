@@ -4,7 +4,7 @@ Releases for CaSS are fully automated via GitHub Actions to ensure consistency, 
 
 ## 0. Check the tests locally
 1. `docker compose -f docker-compose-test.yml up -d elasticsearch-cass`
-2. `docker compose -f docker-compose-test.yml build`
+2. `docker buildx bake -f docker-compose-test.yml --allow=network.host --load cass cass-alpine cass-distroless cass-standalone` (the test builds reach Elasticsearch over the host network, which Compose's bake-based build will not grant on its own)
 3. `docker scout cves -o scan-node.txt cass-cass;docker scout cves -o scan-alpine.txt cass-cass-alpine;docker scout cves -o scan-distroless.txt cass-cass-distroless;docker scout cves -o scan-standalone.txt cass-cass-standalone`
 
 ## 1. Triggering a Release (Creating the PR)
