@@ -15,6 +15,8 @@ This document describes every environment variable used by CaSS.
 | `CASS_EXTERNAL_ENDPOINT` | Value of `CASS_LOOPBACK` | External endpoint used when generating IDs for new objects (e.g. in CEASN exports). |
 | `ELASTICSEARCH_ENDPOINT` | `http://localhost:9200` | Elasticsearch endpoint URL. |
 | `ELASTICSEARCH_AUTHORIZATION` | *(none)* | If set, sent as the `Authorization` header on all requests to Elasticsearch. |
+| `PERMANENT_MIGRATION_BATCH` | `100` | Documents per batch when the startup migration reindexes the `permanent` index. Lower it for large documents on a small Elasticsearch heap; if Elasticsearch runs out of memory for a batch, it is retried at a quarter and then a sixteenth of this size. |
+| `PERMANENT_MIGRATION_TIMEOUT` | `3600` | Seconds the startup migration of the `permanent` index may run before CaSS gives up and starts without it (a failed or stalled reindex gives up sooner). |
 | `HTTPS` | `false` | Set to `true` to enable HTTPS mode. Expects `cass.key`, `cass.crt`, and `ca.crt` files. |
 | `HTTP2_SERVER` | `true` | Set to `false` to use HTTPS/1.1 instead of HTTP/2 (SPDY) when `HTTPS=true`. |
 | `MAX_CONNECTIONS` | *(unlimited)* | Maximum simultaneous connections the server will accept. |
