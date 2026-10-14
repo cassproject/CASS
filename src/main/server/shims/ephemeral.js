@@ -50,12 +50,13 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
         // being written out as a nested document. Cached profiles are deep
         // competency trees, so storing them raw lets Elasticsearch's dynamic
         // mapping create a field per property and quickly exhaust the index's
-        // total-field limit. Dehydrating bounds every ephemeral document to two
+        // total-field limit. Dehydrating bounds every ephemeral document to a few
         // fields regardless of the index's mapping state.
-        function dehydrate(obj) {
+        function dehydrate(obj, until) {
             return {
                 data: JSON.stringify(obj),
                 writeMs: new Date().getTime(),
+                until: until,
             };
         }
 
@@ -114,15 +115,24 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
             return { deleted, method: 'scroll' };
         }
 
+        // The expiry time is the document version, and is also kept in the document (see put).
+        // cleanupExpired only runs once per interval, so reads also treat an expired document as missing.
+        function unexpired(doc) {
+            if (doc == null || doc._source == null) return null;
+            const until = doc._source.until != null ? Number(doc._source.until) : doc._version;
+            if (until != null && until < Date.now()) return null;
+            return rehydrate(doc._source);
+        }
+
         global.ephemeral = {
             get: async function (id) {
                 cleanupExpired();
-                return rehydrate((await httpGet(elasticEndpoint + '/ephemeral/_doc/' + id, 'application/json', elasticHeaders()))["_source"]);
+                return unexpired(await httpGet(elasticEndpoint + '/ephemeral/_doc/' + id, 'application/json', elasticHeaders()));
             },
             gets: async function (ids) {
                 cleanupExpired();
                 if (global.skyrepoDebug) {
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralGets', 'Fetching from ephemeral : ' + ids.length);
                 }
 
                 const mget = {};
@@ -132,14 +142,29 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
                 docs.push(...ids.map(id => ({ _index: 'ephemeral', _id: id })));
                 
                 let response = await httpPost(mget, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
-                response = response?.docs?.map(x => rehydrate(x._source));
+                response = response?.docs?.map(unexpired);
                 return response || [];
             },
+            // until is the expiry time in milliseconds and becomes the document's external version.
             put: async function (id, obj, until) {
-                return await httpPut(dehydrate(obj), elasticEndpoint + '/ephemeral/_doc/' + id + '?version=' + until + '&version_type=external', 'application/json', elasticHeaders());
+                until = Number(until);
+                if (!Number.isSafeInteger(until) || until <= 0) {
+                    throw new Error('Ephemeral expiry must be a time in milliseconds, got ' + JSON.stringify(arguments[2]));
+                }
+                const url = elasticEndpoint + '/ephemeral/_doc/' + id;
+                let result = await httpPut(dehydrate(obj, until), url + '?version=' + until + '&version_type=external', 'application/json', elasticHeaders());
+                // The stored version is at or above this expiry: the entry was cached with a longer lifetime,
+                // or its version was corrupted (a string expiry once concatenated digits into a version
+                // decades ahead), which would otherwise block every later write. The entry is only a cache,
+                // so overwrite it; the expiry kept in the document then governs reads. (Deleting first does
+                // not help: Elasticsearch remembers a deleted document's version for index.gc_deletes.)
+                if (result?.error?.type == 'version_conflict_engine_exception') {
+                    result = await httpPut(dehydrate(obj, until), url, 'application/json', elasticHeaders());
+                }
+                return result;
             },
             delete: async function (id) {
-                return await httpDelete(obj, elasticEndpoint + '/ephemeral/_doc/' + id, elasticHeaders())
+                return await httpDelete(elasticEndpoint + '/ephemeral/_doc/' + id, elasticHeaders());
             },
             deleteWith: async function (partOfId) {
                 if (!(await idScriptsUsable())) {

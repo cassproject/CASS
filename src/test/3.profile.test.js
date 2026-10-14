@@ -220,6 +220,97 @@ describe('Profile API', function () {
         assert.isTrue(comp2.state.hasAnyChildrenWithPositiveEvidence);
     });
 
+    describe('With PROFILE_CACHE=true', function () {
+        const saved = {};
+        const setEnv = (name, value) => {
+            if (!(name in saved)) saved[name] = process.env[name];
+            process.env[name] = value;
+        };
+        const profileUrl = (extra = '') => `${repo.selectedServer}profile/latest?subject=${emailPrefix}&frameworkId=${framework.shortId()}${extra}`;
+        const fetchProfile = async (extra) => {
+            const res = await fetch(profileUrl(extra));
+            const text = await res.text();
+            assert.strictEqual(res.status, 200, 'Failed to fetch profile: ' + text);
+            assert.isNotEmpty(text, 'profile response is empty');
+            return JSON.parse(text);
+        };
+
+        before(function () {
+            // The server runs in this process only without NODEV; otherwise its environment is out of reach.
+            if (process.env.NODEV != null || global.calculateProfile == null) this.skip();
+            setEnv('PROFILE_CACHE', 'true');
+        });
+
+        after(() => {
+            for (const [name, value] of Object.entries(saved)) {
+                if (value === undefined) delete process.env[name];
+                else process.env[name] = value;
+            }
+        });
+
+        it('concurrent requests for the same profile all receive it', async () => {
+            await fetchProfile('&flushCache=true'); // start from a known state
+            await new Promise((resolve) => setTimeout(resolve, 2500)); // past the post-invalidation settling window
+            // Start a computation, and only once it is under way send the other requests, which must wait for it.
+            const computing = fetchProfile('&flushCache=true');
+            const deadline = Date.now() + 10000;
+            while (Object.keys(global.profileInProgress).length == 0 && Date.now() < deadline) {
+                await new Promise((resolve) => setTimeout(resolve, 2));
+            }
+            assert.isNotEmpty(Object.keys(global.profileInProgress), 'the first request is computing');
+            const profiles = await Promise.all([computing, fetchProfile(), fetchProfile(), fetchProfile()]);
+            for (const profile of profiles) {
+                assert.equal(profile.id, framework.shortId());
+                assert.isArray(profile.children);
+            }
+        });
+
+        it('a cached profile reflects new evidence about its subject', async () => {
+            await new Promise((resolve) => setTimeout(resolve, 2500));
+            let profile = await fetchProfile('&flushCache=true');
+            let comp2 = profile.children.find(c => c.id === c2.shortId());
+            assert.isFalse(comp2.state.latestEvidenceIsPositive, 'C2 starts with negative latest evidence');
+            profile = await fetchProfile();
+            assert.isFalse(profile.children.find(c => c.id === c2.shortId()).state.latestEvidenceIsPositive);
+
+            let a = new EcAssertion();
+            a.generateId(repo.selectedServer);
+            await a.addOwner(agent.ppk.toPk());
+            await a.addReader(user.ppk.toPk());
+            await a.setSubject(user.ppk.toPk());
+            await a.setAgent(agent.ppk.toPk());
+            a.competency = c2.shortId();
+            await a.setAssertionDate(new Date().getTime() + 1000);
+            await a.setNegative(false);
+            await repo.saveTo(a);
+
+            let positive = false;
+            for (let i = 0; i < 20 && !positive; i++) {
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                profile = await fetchProfile();
+                positive = profile.children.find(c => c.id === c2.shortId()).state.latestEvidenceIsPositive;
+            }
+            assert.isTrue(positive, 'the new positive assertion shows in the profile without flushCache');
+        });
+
+        it('PROFILE_TTL is applied as a number of milliseconds', async () => {
+            setEnv('PROFILE_TTL', '60000');
+            await new Promise((resolve) => setTimeout(resolve, 2500));
+            const before = Date.now();
+            await fetchProfile('&flushCache=true');
+            await fetch(global.elasticEndpoint + '/ephemeral/_refresh', { method: 'POST', headers: global.elasticHeaders() });
+            const res = await fetch(global.elasticEndpoint + '/ephemeral/_search?size=1000&_source=until', { headers: global.elasticHeaders() });
+            const fingerprint = user.ppk.toPk().fingerprint();
+            const docs = (await res.json()).hits.hits.filter((h) => h._id.includes('|' + fingerprint + '|'));
+            assert.isNotEmpty(docs, 'the profile was cached');
+            // The expiry kept with the entry (its version may be older: it replaced a 24-hour entry).
+            for (const doc of docs) {
+                assert.isAtLeast(doc._source.until, before + 60000, doc._id);
+                assert.isAtMost(doc._source.until, Date.now() + 60000, doc._id);
+            }
+        });
+    });
+
     after(() => {
         delete global.AUTH_OVERRIDE;
         delete global.AUTH_OVERRIDE_KEY;
