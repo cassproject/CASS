@@ -138,7 +138,7 @@ describe('xAPI read position', function () {
         it('each configured LRS gets its own stable file', () => {
             const a = sinceFileFor({ xapiEndpoint: 'https://lrs-a.example.com/xapi/' });
             const b = sinceFileFor({ xapiEndpoint: 'https://lrs-b.example.com/xapi/' });
-            assert.match(a, /^etc\/adapter\.xapi\.since\.[0-9a-f]{32}\.txt$/);
+            assert.match(a, /^etc\/adapter\.xapi\.since\.[0-9a-f]{64}\.txt$/);
             assert.notEqual(a, b);
             assert.strictEqual(a, sinceFileFor({ xapiEndpoint: 'https://lrs-a.example.com/xapi/', xapiAuth: 'other' }));
         });

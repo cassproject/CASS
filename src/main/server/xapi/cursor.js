@@ -16,7 +16,7 @@ const LEGACY_SINCE_FILE = 'etc/adapter.xapi.since.txt';
 /** Since file for one configured LRS; the unconfigured (default) endpoint keeps the legacy file. */
 const sinceFileFor = (config) => {
     if (config == null || config.xapiEndpoint == null) return LEGACY_SINCE_FILE;
-    return 'etc/adapter.xapi.since.' + crypto.createHash('md5').update(config.xapiEndpoint).digest('hex') + '.txt';
+    return 'etc/adapter.xapi.since.' + crypto.createHash('sha256').update(config.xapiEndpoint).digest('hex') + '.txt';
 };
 
 class XapiCursor {
