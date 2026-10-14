@@ -398,6 +398,13 @@ if (process.env.VALIDATE_RESPONSES) {
 
 if (process.env.KILL) {
     app.get('/api/kill', (req, res, next) => {
+        const crypto = require('crypto');
+        const provided = Buffer.from(String(req.query.key || req.headers['x-kill-key'] || ''));
+        const expected = Buffer.from(String(process.env.KILL));
+        if (provided.length !== expected.length || !crypto.timingSafeEqual(provided, expected)) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'CassExitDenied', "Unauthorized kill attempt rejected.");
+            return res.status(403).end();
+        }
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, 'CassExit', "Kill received. Exiting process.");
         res.statusCode = 200;
         res.write("Killing process.");
