@@ -110,8 +110,10 @@ let invalidateProfileByAssertion = async (data) => {
     if (hasAssertion) {
         EcArray.removeDuplicates(subjects);
         for (let subject of subjects) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileControllerInvalidating', "Deleting profiles associated with " + EcPk.fromPem(subject).fingerprint());
-            global.ephemeral.deleteWith(`|${EcPk.fromPem(subject).fingerprint()}|`);
+            const fingerprint = EcPk.fromPem(subject).fingerprint();
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'ProfileControllerInvalidating', "Deleting profiles associated with " + fingerprint);
+            // Through the profile cache, so a profile already being computed from the old evidence is not cached.
+            global.profileCache.invalidate(fingerprint).catch((ex) => global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'ProfileControllerInvalidating', ex));
         }
     }
 }

@@ -1,4 +1,5 @@
 let loopback = require('../../shims/cassproject.js');
+const { pollStatements, sinceFileFor, LEGACY_SINCE_FILE } = require('../../xapi/cursor.js');
 var xapiMePpk = keyFor("xapiAdapter");
 
 var xapiConfig = function () {
@@ -22,10 +23,11 @@ var xapiConfigAutoExecute = xapiConfig;
 
 var xapiEndpoint = async function (more, since, config) {
     var endpoint;
+    // Oldest first, so the read position can advance as pages are processed (see xapi/cursor.js).
     if (config) {
-        endpoint = config.xapiEndpoint + "statements?format=exact&limit=" + (process.env.XAPI_STATEMENT_COUNT || 10);
+        endpoint = config.xapiEndpoint + "statements?format=exact&ascending=true&limit=" + (process.env.XAPI_STATEMENT_COUNT || 10);
     } else {
-        endpoint = xapiConfig.call(this).xapiEndpoint + "statements?format=exact&limit=0";
+        endpoint = xapiConfig.call(this).xapiEndpoint + "statements?format=exact&ascending=true&limit=0";
         if (!xapiConfig.call(this).enabled)
             return;
     }
@@ -456,34 +458,20 @@ xapiKey = function () {
 
 var xapiLoopEach = async function (since, config, sinceFilePath) {
     if (process.env.XAPI_DEBUG) console.log(since, config, sinceFilePath);
-    try {
-        var results = await xapiEndpoint.call(this, null, since, config);
-    } catch (ex) { console.log(ex); return; }
-    if (process.env.XAPI_DEBUG) console.log(results);
-    let accm = [];
-    while (results != null && results.statements != null && results.statements.length > 0) {
-        let lastRequested = new Date().toISOString();
-        for (var i = 0; i < results.statements.length; i++) {
-            await xapiStatement.call(this, results.statements[i], accm);
-        }
-        fileSave(lastRequested, sinceFilePath);
-        if (results.more != null && results.more != "")
-            results = await xapiEndpoint.call(this, results.more, null, config);
-        else
-            results = {};
-
-        if (accm > 500) {
-            if (accm.length > 0) {
-                console.log("Saving " + accm.length + " xAPI statements as assertions.");
-                await global.repo.multiput(accm, null, null, xapiIm);
-            }
-            accm = [];
-        }
-    }
-    if (accm.length > 0) {
-        console.log("Saving " + accm.length + " xAPI statements as assertions.");
-        await global.repo.multiput(accm, null, null, xapiIm);
-    }
+    await pollStatements({
+        firstPage: async () => {
+            try {
+                return await xapiEndpoint.call(this, null, since, config);
+            } catch (ex) { console.log(ex); return null; }
+        },
+        nextPage: (more) => xapiEndpoint.call(this, more, null, config),
+        processStatement: (statement, accm) => xapiStatement.call(this, statement, accm),
+        saveAssertions: async (accm) => {
+            console.log("Saving " + accm.length + " xAPI statements as assertions.");
+            await global.repo.multiput(accm, null, null, xapiIm);
+        },
+        saveSince: async (next) => fileSave(next, sinceFilePath),
+    });
 }
 
 let openid = require('openid-client');
@@ -512,8 +500,6 @@ var xapiLoop = async function () {
     ident.displayName = "xAPI Adapter";
     ident.ppk = EcPpk.fromPem(xapiMePpk);
     EcIdentityManager.default.addIdentity(ident);
-    var sinceFilePath = "etc/adapter.xapi.since.txt";
-    var since = null;
     let config = [];
     for (let key in process.env) {
         if (key.startsWith("XAPI_CONFIG_")) {
@@ -523,15 +509,15 @@ var xapiLoop = async function () {
             }
         }
     }
-    if (fileExists(sinceFilePath)) {
-        since = fileLoad(sinceFilePath);
-        since = fileToString(since);
-    }
+    // Each LRS keeps its own position: since values are LRS timestamps. A configured LRS without
+    // a file yet starts from the position all LRSs used to share.
+    const readSince = (path) => fileExists(path) ? fileToString(fileLoad(path)) : null;
     for (let each in config) {
-        await xapiLoopEach.call(this, since, config[each], sinceFilePath);
+        const sinceFilePath = sinceFileFor(config[each]);
+        await xapiLoopEach.call(this, readSince(sinceFilePath) ?? readSince(LEGACY_SINCE_FILE), config[each], sinceFilePath);
     }
     if (!config || config.length === 0) {
-        await xapiLoopEach.call(this, since, null, sinceFilePath);
+        await xapiLoopEach.call(this, readSince(LEGACY_SINCE_FILE), null, LEGACY_SINCE_FILE);
     }
 
 }

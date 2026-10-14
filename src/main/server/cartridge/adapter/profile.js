@@ -2,11 +2,21 @@ const { StaticPool } = require('node-worker-threads-pool');
 
 const filePath = './src/main/server/profile/worker.js';
 require("../../profile/util.js");
+const { ProfileCache, profileTtl, profileWorkers, workerMaxMemory } = require("../../profile/cache.js");
 
 let pool = null;
-let profileInProgress = global.profileInProgress = {};
+const profileCache = global.profileCache = new ProfileCache({
+    store: {
+        get: (id) => global.ephemeral.get(id),
+        put: (id, obj, until) => global.ephemeral.put(id, obj, until),
+        deleteWith: (partOfId) => global.ephemeral.deleteWith(partOfId),
+    },
+    log: (message, detail) => global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", message, detail),
+});
+let profileInProgress = global.profileInProgress = profileCache.inProgress;
 
 let profileCalculator = async function () {
+    const timer = new Date().getTime();
     const subjectId = this.params.subject;
     const frameworkId = this.params.frameworkId;
     if (this.params.flushCache != null && this.params.flushCache) {
@@ -27,9 +37,10 @@ let profileCalculator = async function () {
         query_agent_fingerprint.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().fingerprint()));
     }
     if (process.env.PROFILE_PPK != null) {
+        const profilePpk = EcPpk.fromPem(process.env.PROFILE_PPK);
         query_agent_ppk.push(process.env.PROFILE_PPK);
-        query_agent_pk.push(EcPpk.fromPem(query_agent_ppk).toPk().toPem());
-        query_agent_fingerprint.push(EcPpk.fromPem(query_agent_ppk).toPk().fingerprint());
+        query_agent_pk.push(profilePpk.toPk().toPem());
+        query_agent_fingerprint.push(profilePpk.toPk().fingerprint());
     }
 
     if (query_agent_ppk.length == 0)
@@ -53,48 +64,34 @@ let profileCalculator = async function () {
         lastFlush: lastFlush,
         params: paramsCopy
     };
-    // Perform caching check and establish cache key
-    p.cacheKey = `${EcRemoteLinkedData.trimVersionFromUrl(frameworkId).split("/").pop()}|${EcPk.fromPem(subject).fingerprint()}|-${query_agent_fingerprint.join('-')}|${EcCrypto.md5(JSON.stringify(p.params))}|general`;
-    if (this.params.flushCache == "true")
-        delete profileInProgress[p.cacheKey];
-    else if (process.env.PROFILE_CACHE == "true") {
-        if (profileInProgress[p.cacheKey] != null) { // Profile being computed elsewhere, delay
-            if (new Date().getTime() - profileInProgress[p.cacheKey] < 60000) { // Proceed if it seems stuck
-                global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Blocked - Profile computing elsewhere");
-                await setTimeout(() => profileCalculator.call(this), 100);
-                return;
-            }
-        }
-    }
+    // Establish the cache key; the subject's fingerprint lets new evidence invalidate it (see controller.js).
+    const fingerprint = EcPk.fromPem(subject).fingerprint();
+    p.cacheKey = `${EcRemoteLinkedData.trimVersionFromUrl(frameworkId).split("/").pop()}|${fingerprint}|-${query_agent_fingerprint.join('-')}|${EcCrypto.md5(JSON.stringify(p.params))}|general`;
 
-    // Return the profile if it's already been computed
-    const cached = await global.ephemeral.get(p.cacheKey);
-    if (cached != null && (this.params.flushCache !== "true" && (process.env.PROFILE_CACHE == "true" || this.params.cache == "true"))) {
-        cached.msSpeed = new Date().getTime() - p.timer;
-        if (this.params.autoComputed != true)
-            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
-        return JSON.stringify(cached);
-    }
-
-    // Mark this profile as currently being computed, in case another request is made for this profile
-    profileInProgress[p.cacheKey] = new Date().getTime();
-
-    let profile = null;
+    let result;
     try {
-        profile = await pool.exec(p);
-        if (profile.error == null) {
-            // if (process.env.PROFILE_CACHE == "true" || this.params.cache == "true")
-            await global.ephemeral.put(p.cacheKey, profile, new Date().getTime() + (process.env.PROFILE_TTL || 24 * 60 * 60 * 1000));
-            delete profileInProgress[p.cacheKey];
-            return JSON.stringify(profile);
-        }
+        result = await profileCache.get({
+            cacheKey: p.cacheKey,
+            fingerprint: fingerprint,
+            flush: this.params.flushCache == "true" || this.params.flushCache === true,
+            readCache: process.env.PROFILE_CACHE == "true" || this.params.cache == "true",
+            waitForOthers: process.env.PROFILE_CACHE == "true",
+            ttl: profileTtl(),
+        }, () => pool.exec(p));
     } catch (ex) {
         console.trace(ex);
         error(ex, 500);
     }
+    const profile = result.profile;
+    if (result.fromCache) {
+        profile.msSpeed = new Date().getTime() - timer;
+        if (this.params.autoComputed != true)
+            global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
+    }
     if (profile.error != null) {
         error(profile.error, 500);
     }
+    return JSON.stringify(profile);
 }
 
 /**
@@ -216,13 +213,13 @@ if (!global.disabledAdapters['profile']) {
 
     let workerData = {};
     pool = new StaticPool({
-        size: 1,
+        size: profileWorkers(),
         task: filePath,
         shareEnv: true,
         workerData: workerData,
         resourceLimits: {
-            maxYoungGenerationSizeMb: process.env.WORKER_MAX_MEMORY || 1024,
-            maxOldGenerationSizeMb: process.env.WORKER_MAX_MEMORY || 1024
+            maxYoungGenerationSizeMb: workerMaxMemory(),
+            maxOldGenerationSizeMb: workerMaxMemory()
         }
     });
 

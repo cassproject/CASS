@@ -184,8 +184,9 @@ These only apply when `HTTPS=true`.
 | Variable | Default | Description |
 |---|---|---|
 | `PROFILE_PPK` | *(none)* | PEM-encoded private key used by the profile computation agent. |
-| `PROFILE_CACHE` | *(none)* | Set to `true` to enable in-memory caching of computed profiles. |
-| `PROFILE_TTL` | `2592000000` (30 days in ms) | Time-to-live for cached profiles in milliseconds. |
+| `PROFILE_CACHE` | *(none)* | Set to `true` to answer profile requests from the profile cache (stored in Elasticsearch) and to have concurrent requests for the same profile wait for one computation instead of repeating it. Cached profiles are dropped when new assertions about their subject are written. |
+| `PROFILE_TTL` | `86400000` (24 hours in ms) | Time-to-live for cached profiles in milliseconds. |
+| `PROFILE_WORKERS` | `1` | Number of worker threads computing profiles in parallel. Each worker keeps its own caches and is limited by `WORKER_MAX_MEMORY`. |
 | `PROFILE_REPOSITORY_CACHE` | `false` | Enables repository-level caching during profile computation. |
 | `WORKER_MAX_MEMORY` | `1024` | Maximum memory (in MB) allocated to each profile computation worker thread. |
 
@@ -200,6 +201,7 @@ These only apply when `HTTPS=true`.
 | `XAPI_ENABLED` | *(none)* | Set to any truthy value to enable the xAPI adapter. |
 | `XAPI_DEBUG` | *(none)* | If set, enables verbose debug logging for xAPI operations. |
 | `XAPI_STATEMENT_COUNT` | `10` | Number of xAPI statements to fetch per request. |
+| `XAPI_CONFIG_<name>` | *(none)* | JSON `{"xapiEndpoint", "xapiHostname", "xapiAuth"}` for an LRS to poll; set one per LRS. Each LRS's read position (the `stored` time of the last statement processed) is kept in `etc/adapter.xapi.since.<md5 of xapiEndpoint>.txt`, starting from `etc/adapter.xapi.since.txt` when that file does not exist yet. |
 
 ### xAPI OIDC Client
 
