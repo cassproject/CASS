@@ -748,6 +748,86 @@ describe('xAPI Adapter', function () {
         });
     });
 
+    describe('Lookup caching and batched saves', function () {
+        // The adapter's own module instance, so its repository searches can be counted.
+        const loopback = require('../main/server/shims/cassproject.js');
+        let searches = null;
+        let originalSearch;
+        const lrsAuthority = { objectType: "Agent", account: { homePage: "https://lrs.example.com", name: "lrs-api-key-" + Date.now() } };
+        const assertionsFor = async (registration) => repo.searchWithParams(`registration:"${registration}"`, { size: 100, index_hint: "*assertion" });
+
+        before(function () {
+            if (process.env.NODEV != null || global.events?.server == null) this.skip();
+            originalSearch = loopback.repositorySearch;
+            loopback.repositorySearch = function (repository, query, ...rest) {
+                if (searches != null) searches.push(query);
+                return originalSearch.call(this, repository, query, ...rest);
+            };
+        });
+
+        after(() => {
+            if (originalSearch != null) loopback.repositorySearch = originalSearch;
+        });
+
+        it('statements from a known learner, with an LRS account as authority, need no searches once warm', async () => {
+            const statement = () => {
+                const stmt = buildXapiStatement({ objectId: c1.shortId(), result: { success: true } });
+                stmt.authority = lrsAuthority;
+                return stmt;
+            };
+            await submitStatement(statement());
+            searches = [];
+            await submitStatement(statement());
+            await submitStatement(statement());
+            const made = searches;
+            searches = null;
+            assert.deepEqual(made, [], 'no Person or CreativeWork searches for the second and third statements');
+        });
+
+        it('a new learner\'s Person is created once, cached for the batch\'s other statements, and saved with them', async () => {
+            const newEmail = 'xapinew' + Date.now() + '@test.com';
+            const registration = EcCrypto.generateUUID();
+            const batch = [1, 2, 3].map((n) => {
+                const stmt = buildXapiStatement({ objectId: c1.shortId(), result: { success: true }, context: { registration } });
+                stmt.actor = { objectType: "Agent", mbox: "mailto:" + newEmail, name: "New Learner " + n };
+                stmt.authority = lrsAuthority;
+                return stmt;
+            });
+            searches = [];
+            await submitStatement(batch);
+            const made = searches;
+            searches = null;
+            assert.lengthOf(made.filter((q) => q.includes(newEmail)), 1, 'the new learner is searched for once');
+
+            const people = await originalSearch.call(loopback, global.repo, `@type:Person AND email:"${newEmail}"`, {});
+            assert.lengthOf(people, 1, 'exactly one Person, saved with the batch');
+            assert.strictEqual(people[0].name, "New Learner 1");
+            assert.lengthOf(await assertionsFor(registration), 3);
+        });
+
+        it('a changed CreativeWork alignment applies to the next statement, not an hour later', async () => {
+            const activityUrl = activityBaseUrl + 'realigned-' + Date.now();
+            let cw = new schema.CreativeWork();
+            cw.assignId(repo.selectedServer, EcCrypto.md5(activityUrl));
+            cw.url = activityUrl;
+            cw.name = "Activity realigned from C1 to C3";
+            cw.educationalAlignment = [{ targetUrl: c1.shortId(), educationalFramework: framework.shortId() }];
+            cw.addOwner(agent.ppk.toPk());
+            await repo.saveTo(cw);
+
+            const first = EcCrypto.generateUUID();
+            await submitStatement(buildXapiStatement({ objectId: activityUrl, result: { success: true }, context: { registration: first } }));
+            assert.deepEqual((await assertionsFor(first)).map((a) => a.competency), [c1.shortId()]);
+
+            cw.educationalAlignment = [{ targetUrl: c3.shortId(), educationalFramework: framework.shortId() }];
+            await repo.saveTo(cw);
+
+            const second = EcCrypto.generateUUID();
+            await submitStatement(buildXapiStatement({ objectId: activityUrl, result: { success: true }, context: { registration: second } }));
+            assert.deepEqual((await assertionsFor(second)).map((a) => a.competency), [c3.shortId()]);
+        });
+    });
+
     describe('Polling an LRS (XAPI_CONFIG_*)', function () {
         this.timeout(150000);
         const http = require('http');
