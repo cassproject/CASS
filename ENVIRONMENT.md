@@ -199,7 +199,7 @@ These only apply when `HTTPS=true`.
 | `XAPI_ENDPOINT` | *(config file)* | xAPI Learning Record Store endpoint URL. |
 | `XAPI_AUTH` | *(config file)* | Authorization header value for xAPI LRS requests. |
 | `XAPI_ENABLED` | *(none)* | Set to any truthy value to enable the xAPI adapter. |
-| `XAPI_DEBUG` | *(none)* | If set, enables verbose debug logging for xAPI operations. |
+| `XAPI_DEBUG` | *(none)* | Set to `true` (or `1`, `yes`, `on`) for verbose debug logging of xAPI operations; any other value, including `false`, leaves it off. LRS credentials and authorization headers are redacted from the output. |
 | `XAPI_STATEMENT_COUNT` | `10` | Number of xAPI statements to fetch per request. |
 | `XAPI_CONFIG_<name>` | *(none)* | JSON `{"xapiEndpoint", "xapiHostname", "xapiAuth"}` for an LRS to poll; set one per LRS. Each LRS's read position (the `stored` time of the last statement processed) is kept in `etc/adapter.xapi.since.<SHA-256 of xapiEndpoint>.txt`, starting from `etc/adapter.xapi.since.txt` when that file does not exist yet. |
 
