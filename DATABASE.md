@@ -784,11 +784,20 @@ flowchart TD
 ```
 
 Special index types receive their custom mappings during the migration:
-- `permanent` / `ephemeral`: `mappings.enabled: false`
+- `permanent`: `dynamic: false` with an indexed `baseId` keyword (used by version history)
+- `ephemeral`: `mappings.enabled: false`
 - `*assertion`: `@version: long`, `confidence: float`, `assertionDateDecrypted: long`
 - `*competency`: `@version: long`, `ceasn:codedNotation: text+keyword`
 - `*conceptscheme`: `@version: long`, `skos:hasTopConcept: text+keyword`
 - All others: `@version: long`, preserving `total_fields.limit`
+
+### Start-up time
+
+Migrations run when CaSS starts, before it opens its port: `/api/ping` does not answer, and readiness probes fail, until they finish. An upgrade that triggers one takes the service down for that long, so plan for it.
+
+- Migrations are safe to interrupt. The source index is only deleted after its copy is verified, and an interrupted migration resumes on the next start.
+- **`permanent` (CaSS 1.7.10 and later, once):** adds the indexed `baseId`. Every document is copied out and back, so the time grows with the size of `permanent`. One installation reported about an hour for 13.9 million documents (roughly 4–5 minutes per million); your hardware and document sizes will differ. `PERMANENT_MIGRATION_BATCH` and `PERMANENT_MIGRATION_TIMEOUT` (see [ENVIRONMENT.md](ENVIRONMENT.md)) control the batch size and how long CaSS waits before starting without it.
+- To estimate the downtime beforehand, check the document count with `GET <elasticsearch>/permanent/_count`.
 
 ## Appendix B: Data Flow — Write Operation
 

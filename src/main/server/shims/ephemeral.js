@@ -99,11 +99,13 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
         const idFielddataRefused = (result) => JSON.stringify(result || '').includes('id_field_data');
         const post = (body, url, contentType = 'application/json') => httpPost(body, url, contentType, false, null, null, true, elasticHeaders());
 
-        async function deleteByIdScroll(partOfId) {
+        async function deleteByIdScroll(parts) {
             let deleted = 0;
             let res = await post({ size: 1000, _source: false, query: { match_all: {} } }, elasticEndpoint + '/ephemeral/_search?scroll=1m');
+            const scrollIds = new Set();
             while (res?.hits?.hits?.length > 0) {
-                const ids = res.hits.hits.map((h) => h._id).filter((id) => String(id).includes(partOfId));
+                if (res._scroll_id) scrollIds.add(res._scroll_id);
+                const ids = res.hits.hits.map((h) => h._id).filter((id) => parts.some((part) => String(id).includes(part)));
                 if (ids.length > 0) {
                     const bulk = ids.map((id) => JSON.stringify({ delete: { _index: 'ephemeral', _id: id } })).join('\n') + '\n';
                     await post(bulk, elasticEndpoint + '/_bulk', 'application/x-ndjson');
@@ -111,6 +113,11 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
                 }
                 if (!res._scroll_id) break;
                 res = await post({ scroll: '1m', scroll_id: res._scroll_id }, elasticEndpoint + '/_search/scroll');
+            }
+            if (res?._scroll_id) scrollIds.add(res._scroll_id);
+            // Release the scroll now rather than holding a search context open for a minute per call.
+            if (scrollIds.size > 0) {
+                await httpDelete(elasticEndpoint + '/_search/scroll/' + [...scrollIds].join(','), elasticHeaders());
             }
             return { deleted, method: 'scroll' };
         }
@@ -166,9 +173,12 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
             delete: async function (id) {
                 return await httpDelete(elasticEndpoint + '/ephemeral/_doc/' + id, elasticHeaders());
             },
+            // Deletes every entry whose id contains the given text, or any of the given texts.
             deleteWith: async function (partOfId) {
+                const parts = (Array.isArray(partOfId) ? partOfId : [partOfId]).filter((part) => part != null && part !== '');
+                if (parts.length === 0) return;
                 if (!(await idScriptsUsable())) {
-                    const result = await deleteByIdScroll(partOfId);
+                    const result = await deleteByIdScroll(parts);
                     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralDeleteOld', JSON.stringify(result));
                     return;
                 }
@@ -178,10 +188,10 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
                             "filter": {
                                 "script": {
                                     "script": {
-                                        "source": "doc._id.value.contains(params.param1)",
+                                        "source": "String id = doc._id.value; for (String part : params.parts) { if (id.contains(part)) { return true; } } return false;",
                                         "lang": "painless",
                                         "params": {
-                                            "param1": partOfId
+                                            "parts": parts
                                         }
                                     }
                                 }
@@ -191,7 +201,7 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
                 }, elasticEndpoint + '/ephemeral/_delete_by_query', 'application/json', false, null, null, true, elasticHeaders());
                 if (idFielddataRefused(result)) {
                     idScripts = false;
-                    result = await deleteByIdScroll(partOfId);
+                    result = await deleteByIdScroll(parts);
                 }
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.DEBUG, 'EphemeralDeleteOld', JSON.stringify(result));
             }

@@ -299,14 +299,18 @@ describe('Profile API', function () {
             const before = Date.now();
             await fetchProfile('&flushCache=true');
             await fetch(global.elasticEndpoint + '/ephemeral/_refresh', { method: 'POST', headers: global.elasticHeaders() });
-            const res = await fetch(global.elasticEndpoint + '/ephemeral/_search?size=1000&_source=until', { headers: global.elasticHeaders() });
+            const res = await fetch(global.elasticEndpoint + '/ephemeral/_search?size=1000&_source=until,data', { headers: global.elasticHeaders() });
             const fingerprint = user.ppk.toPk().fingerprint();
             const docs = (await res.json()).hits.hits.filter((h) => h._id.includes('|' + fingerprint + '|'));
             assert.isNotEmpty(docs, 'the profile was cached');
-            // The expiry kept with the entry (its version may be older: it replaced a 24-hour entry).
+            // Fresh for PROFILE_TTL, then served stale (while recomputing) for up to as long again.
+            // The expiry is the one kept with the entry: its version may be older, as it replaced a 24-hour entry.
             for (const doc of docs) {
-                assert.isAtLeast(doc._source.until, before + 60000, doc._id);
-                assert.isAtMost(doc._source.until, Date.now() + 60000, doc._id);
+                const { freshUntil } = JSON.parse(doc._source.data);
+                assert.isAtLeast(freshUntil, before + 60000, doc._id);
+                assert.isAtMost(freshUntil, Date.now() + 60000, doc._id);
+                assert.isAtLeast(doc._source.until, before + 2 * 60000, doc._id);
+                assert.isAtMost(doc._source.until, Date.now() + 2 * 60000, doc._id);
             }
         });
     });

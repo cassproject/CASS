@@ -135,6 +135,28 @@ describe('Ephemeral store', function () {
         assert.deepEqual(await global.ephemeral.get(other), { id: other });
     });
 
+    it('deleteWith takes several texts and removes entries containing any of them in one call', async () => {
+        const stamp = Date.now();
+        const a = newId('many-a') + '|FPA' + stamp + '|';
+        const b = newId('many-b') + '|FPB' + stamp + '|';
+        const other = newId('many-other') + '|FPC' + stamp + '|';
+        ids.push(a, b, other);
+        for (const id of [a, b, other]) await global.ephemeral.put(id, { id }, Date.now() + 60000);
+        await fetch(global.elasticEndpoint + '/ephemeral/_refresh', { method: 'POST', headers: global.elasticHeaders() });
+        await global.ephemeral.deleteWith(['|FPA' + stamp + '|', '|FPB' + stamp + '|']);
+        assert.isNull(await global.ephemeral.get(a));
+        assert.isNull(await global.ephemeral.get(b));
+        assert.deepEqual(await global.ephemeral.get(other), { id: other });
+    });
+
+    it('deleteWith leaves no scroll contexts open', async () => {
+        const open = async () => (await (await fetch(global.elasticEndpoint + '/_nodes/stats/indices/search', { headers: global.elasticHeaders() })).json());
+        const contexts = (stats) => Object.values(stats.nodes).reduce((n, node) => n + node.indices.search.scroll_current, 0);
+        const before = contexts(await open());
+        for (let i = 0; i < 5; i++) await global.ephemeral.deleteWith('|nothing-matches-' + Date.now() + '|');
+        assert.isAtMost(contexts(await open()), before);
+    });
+
     after(async () => {
         if (global.ephemeral == null) return;
         for (const id of ids) {
