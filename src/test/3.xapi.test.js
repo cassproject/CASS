@@ -748,6 +748,106 @@ describe('xAPI Adapter', function () {
         });
     });
 
+    describe('Polling an LRS (XAPI_CONFIG_*)', function () {
+        this.timeout(150000);
+        const http = require('http');
+        const fs = require('fs');
+        const { sinceFileFor } = require('../main/server/xapi/cursor.js');
+
+        // A minimal LRS: since is exclusive on stored, a query's result set is fixed when it is made,
+        // and a new statement is stored every time a page is served (so during the adapter's poll).
+        const lrs = { statements: [], cursors: {}, arrivalsLeft: 0, lastStored: 0, requests: [] };
+        let server, config, registration, sinceFile;
+        const savedEnv = {};
+
+        const storeStatement = () => {
+            const ms = Math.max(Date.now(), lrs.lastStored + 1);
+            lrs.lastStored = ms;
+            lrs.statements.push({
+                ...buildXapiStatement({ objectId: c1.shortId(), objectName: "LRS polling", result: { success: true }, context: { registration } }),
+                stored: new Date(ms).toISOString(),
+            });
+        };
+
+        const servePage = (list, offset, limit) => {
+            const statements = list.slice(offset, offset + limit);
+            let more = "";
+            if (offset + limit < list.length) {
+                const token = "c" + Object.keys(lrs.cursors).length;
+                lrs.cursors[token] = { list, offset: offset + limit, limit };
+                more = "/xapi/statements?more=" + token;
+            }
+            if (lrs.arrivalsLeft > 0) {
+                lrs.arrivalsLeft--;
+                storeStatement();
+            }
+            return { statements, more };
+        };
+
+        const countAssertions = async () => (await repo.searchWithParams(`registration:"${registration}"`, { size: 100, index_hint: "*assertion" })).length;
+
+        before(async function () {
+            if (process.env.NODEV != null || !global.events || !global.events.server) this.skip();
+            registration = EcCrypto.generateUUID();
+            server = http.createServer((req, res) => {
+                const url = new URL(req.url, "http://localhost");
+                lrs.requests.push(url.search);
+                let body;
+                if (url.searchParams.get("more") != null) {
+                    const cursor = lrs.cursors[url.searchParams.get("more")];
+                    body = servePage(cursor.list, cursor.offset, cursor.limit);
+                } else {
+                    const since = url.searchParams.get("since");
+                    const sinceMs = since == null ? -Infinity : Date.parse(since);
+                    const list = lrs.statements.filter((s) => Date.parse(s.stored) > sinceMs)
+                        .sort((a, b) => Date.parse(a.stored) - Date.parse(b.stored));
+                    if (url.searchParams.get("ascending") !== "true") list.reverse();
+                    body = servePage(list, 0, parseInt(url.searchParams.get("limit")) || 10);
+                }
+                res.writeHead(200, { "Content-Type": "application/json" });
+                res.end(JSON.stringify(body));
+            });
+            await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+            const port = server.address().port;
+            config = { xapiEndpoint: `http://127.0.0.1:${port}/xapi/`, xapiHostname: `http://127.0.0.1:${port}`, xapiAuth: "Basic dGVzdDp0ZXN0" };
+            sinceFile = sinceFileFor(config);
+            for (const name of ["XAPI_STATEMENT_COUNT", "XAPI_CONFIG_CASS_TEST_LRS"]) savedEnv[name] = process.env[name];
+        });
+
+        after(async () => {
+            for (const [name, value] of Object.entries(savedEnv)) {
+                if (value === undefined) delete process.env[name];
+                else process.env[name] = value;
+            }
+            if (server != null) await new Promise((resolve) => server.close(resolve));
+            if (sinceFile != null && fs.existsSync(sinceFile)) fs.unlinkSync(sinceFile);
+        });
+
+        it('turns every statement into an assertion, including those stored while a poll is reading pages', async () => {
+            for (let i = 0; i < 4; i++) storeStatement();
+            lrs.arrivalsLeft = 8;
+            process.env.XAPI_STATEMENT_COUNT = "2";
+            process.env.XAPI_CONFIG_CASS_TEST_LRS = JSON.stringify(config);
+
+            let count = 0;
+            const deadline = Date.now() + 120000;
+            while (Date.now() < deadline && (lrs.arrivalsLeft > 0 || count < lrs.statements.length)) {
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                count = await countAssertions();
+            }
+            delete process.env.XAPI_CONFIG_CASS_TEST_LRS;
+
+            assert.strictEqual(lrs.statements.length, 12);
+            assert.strictEqual(count, 12, 'every statement in the LRS became an assertion');
+            assert.isTrue(lrs.requests.some((q) => q.includes("ascending=true")), 'pages are requested oldest first');
+        });
+
+        it('saves the stored time of the last statement read as this LRS\'s position', async () => {
+            assert.isTrue(fs.existsSync(sinceFile), 'a since file for this LRS was written');
+            assert.strictEqual(fs.readFileSync(sinceFile, "utf8"), lrs.statements[lrs.statements.length - 1].stored);
+        });
+    });
+
     after(() => {
         delete global.AUTH_OVERRIDE;
         delete global.AUTH_OVERRIDE_KEY;
