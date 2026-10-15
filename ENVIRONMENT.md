@@ -185,7 +185,7 @@ These only apply when `HTTPS=true`.
 |---|---|---|
 | `PROFILE_PPK` | *(none)* | PEM-encoded private key used by the profile computation agent. |
 | `PROFILE_CACHE` | *(none)* | Set to `true` to answer profile requests from the profile cache (stored in Elasticsearch) and to have concurrent requests for the same profile wait for one computation instead of repeating it. Cached profiles are dropped when new assertions about their subject are written. |
-| `PROFILE_TTL` | `86400000` (24 hours in ms) | Time-to-live for cached profiles in milliseconds. |
+| `PROFILE_TTL` | `86400000` (24 hours in ms) | How long a cached profile is fresh, in milliseconds. After that, until it is twice this old, it is still returned at once while a fresh one is computed in the background; a profile dropped because of new evidence is always recomputed before it is returned. |
 | `PROFILE_WORKERS` | `1` | Number of worker threads computing profiles in parallel. Each worker keeps its own caches and is limited by `WORKER_MAX_MEMORY`. |
 | `PROFILE_REPOSITORY_CACHE` | `false` | Enables repository-level caching during profile computation. |
 | `WORKER_MAX_MEMORY` | `1024` | Maximum memory (in MB) allocated to each profile computation worker thread. |
