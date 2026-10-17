@@ -106,6 +106,8 @@ The compose files define two volumes:
 > [!CAUTION]
 > Back up both volumes before destroying containers. Losing `etc` means losing all server keys. Losing `esdata1` means losing all stored data.
 
+CaSS writes its keys to `/app/etc` on first start, so that directory must be writable by the user CaSS runs as. The images run as uid 1000, and `/app/etc` is also writable by group 0, so arbitrary uids in group 0 (as OpenShift assigns) work too. When running as another user, or when mounting a volume there that is owned by root, make the volume writable by that user: in Kubernetes, set `securityContext.fsGroup` (see below). Otherwise CaSS stops at startup with "CaSS cannot write /app/etc/…".
+
 ### Custom TLS Certificates
 
 Mount your own certificates:
@@ -239,6 +241,8 @@ spec:
       labels:
         app: cass
     spec:
+      securityContext:
+        fsGroup: 1000   # makes the cass-etc volume writable by CaSS (uid 1000)
       containers:
         - name: cass
           image: cassproject/cass:latest
