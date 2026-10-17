@@ -168,7 +168,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
             }
         }
 
-        c = await jsonLdCompact(c.toJson(), ctx);
+        c = await ceCompact(c.toJson(), ctx);
         if (socList) {
             c["socList"] = socList;
         }
@@ -522,7 +522,7 @@ async function cassFrameworkAsCeasn() {
             }
         }
     }
-    f = await jsonLdCompact(f.toJson(), ctx);
+    f = await ceCompact(f.toJson(), ctx);
     if (socList) {
         f["socList"] = socList;
     }
@@ -646,6 +646,29 @@ function stripNonCe(f) {
     return orderFields(f);
 }
 
+// CTDL properties whose values are URLs ("@type": "@id" in the CTDL-ASN/CTDL contexts) are compacted
+// only if their values are node references. CaSS objects store such values as plain strings, which are
+// literals unless CaSS's own context declares the property (e.g. ceterms:recognizedForIndustry is not
+// declared). A literal does not match the CTDL term, so compaction kept the full IRI and stripNonCe
+// then dropped the property. Given as {"@id"} it compacts to the CTDL term.
+function ceIdReferences(value) {
+    if (EcArray.isArray(value)) return value.map(ceIdReferences);
+    if (typeof value === "string") return { "@id": value };
+    return value;
+}
+
+async function ceCompact(json, targetContext) {
+    const context = typeof targetContext === "string" ? JSON.parse(targetContext) : targetContext;
+    const o = JSON.parse(json);
+    for (const k of Object.keys(o)) {
+        if (!/^(ceterms|ceasn|asn):/.test(k)) continue;
+        const definition = context[k];
+        if (definition != null && definition["@type"] === "@id")
+            o[k] = ceIdReferences(o[k]);
+    }
+    return jsonLdCompact(JSON.stringify(o), targetContext);
+}
+
 function orderFields(object) {
     var ordered = {};
     Object.keys(object).sort().forEach(function (key) { // NOSONAR programmatic sort is necessary
@@ -715,7 +738,7 @@ async function competencyInCollectionPromise(compId, competencies, allCompetenci
                 c[each] = "ceasn:Competency";
             }
         }
-        c = await jsonLdCompact(c.toJson(), ctx);
+        c = await ceCompact(c.toJson(), ctx);
         if (socList) {
             c["socList"] = socList;
         }
@@ -948,7 +971,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
         }
     }
 
-    f = await jsonLdCompact(f.toJson(), JSON.parse(cetermsctx));
+    f = await ceCompact(f.toJson(), JSON.parse(cetermsctx));
     if (socList) {
         f["socList"] = socList;
     }
@@ -1097,7 +1120,7 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
                     c[each] = "skos:Concept";
                 }
             }
-            concepts[obj] = concepts[id] = await jsonLdCompact(c.toJson(), ctx);
+            concepts[obj] = concepts[id] = await ceCompact(c.toJson(), ctx);
 
             if (concepts[id]["ceterms:ctid"] == null) {
                 if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
@@ -1150,7 +1173,7 @@ async function levelPromise(obj, levels, cs, ctx, terms) {
                     c[each] = "asn:ProgressionLevel";
                 }
             }
-            levels[obj] = levels[id] = await jsonLdCompact(c.toJson(), ctx);
+            levels[obj] = levels[id] = await ceCompact(c.toJson(), ctx);
 
             if (levels[id]["ceterms:ctid"] == null) {
                 if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
@@ -1238,7 +1261,7 @@ async function cassConceptSchemeAsCeasn(framework) {
             cs[each] = "skos:ConceptScheme";
         }
     }
-    cs = await jsonLdCompact(cs.toJson(), ctx);
+    cs = await ceCompact(cs.toJson(), ctx);
     if (cs["ceasn:inLanguage"] == null) {
         cs["ceasn:inLanguage"] = "en";
     }
@@ -1359,7 +1382,7 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
             cs[each] = "asn:ProgressionModel";
         }
     }
-    cs = await jsonLdCompact(cs.toJson(), ctx);
+    cs = await ceCompact(cs.toJson(), ctx);
     if (cs["ceasn:inLanguage"] == null) {
         cs["ceasn:inLanguage"] = "en";
     }

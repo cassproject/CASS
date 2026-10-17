@@ -80,6 +80,36 @@ describe("CEASN Adapter", function () {
         assert(framework != null, "Framework saved to CaSS.");
     }).timeout(300000);
 
+    it('exports CTDL properties whose values are URLs (ceterms:recognizedForIndustry)', async () => {
+        const server = process.env.CASS_LOOPBACK || "http://localhost/api/";
+        const repo = new EcRepository();
+        repo.selectedServer = server;
+        const framework = new EcFramework();
+        framework.generateId(server);
+        framework.setName("Recognized for industry");
+        const competency = new EcCompetency();
+        competency.generateId(server);
+        competency.setName("Recognized competency");
+        framework.addCompetency(competency.shortId());
+        // As the editor saves them: compact IRIs with plain string values.
+        framework["ceterms:recognizedForIndustry"] = "https://www.naics.com/naics-code-description/?code=54";
+        competency["ceterms:recognizedForIndustry"] = ["https://www.naics.com/naics-code-description/?code=5415", "https://www.naics.com/naics-code-description/?code=5416"];
+        await repo.multiput([competency, framework]);
+
+        const guid = framework.getGuid();
+        const response = await fetch(`${server}ceasn/${guid}`);
+        assert.equal(response.status, 200, "CEASN export succeeds.");
+        const graph = JSON.parse(await response.text())["@graph"];
+        const exportedFramework = graph.find((node) => node["@type"] === "ceasn:CompetencyFramework");
+        const exportedCompetency = graph.find((node) => node["@type"] === "ceasn:Competency");
+        assert.deepEqual([].concat(exportedFramework["ceterms:recognizedForIndustry"]), ["https://www.naics.com/naics-code-description/?code=54"]);
+        assert.deepEqual([].concat(exportedCompetency["ceterms:recognizedForIndustry"]).sort(), [
+            "https://www.naics.com/naics-code-description/?code=5415",
+            "https://www.naics.com/naics-code-description/?code=5416"
+        ]);
+        assert(!Object.keys(exportedCompetency).some((k) => k.startsWith("https://purl.org/ctdl")), "No uncompacted CTDL IRIs.");
+    }).timeout(60000);
+
     // it('Reimport after delete', async () => {
     //     let repo = new EcRepository();
     //     repo.selectedServer = "http://localhost/api/";
