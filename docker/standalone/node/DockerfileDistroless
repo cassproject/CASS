@@ -79,6 +79,9 @@ ARG TEST=false
 RUN if [ "$TEST" = "true" ] ; then export PORT=8083 && export CASS_LOOPBACK=http://localhost:8083/api/ && npm i && npm run mochaDev && npm ci --production --omit=dev ; fi
 RUN if [ "$TEST" = "true" ] ; then export PORT=8083 && export CASS_LOOPBACK=https://localhost:8083/api/ && npm i && npm run mochaDevHttps && npm ci --production --omit=dev ; fi
 RUN rm -f client.key client.crt
+# Let any uid in group 0 write CaSS's keys and salts too, e.g. the arbitrary uids of OpenShift and
+# other Kubernetes platforms (cass-editor#1429). Modes carry over to the runtime image.
+RUN chgrp -R 0 /app/etc && chmod -R g=u /app/etc
 
 # Stage 2: Distroless runtime - minimal image with no shell or package manager
 FROM gcr.io/distroless/nodejs24-debian13
@@ -101,7 +104,10 @@ WORKDIR /app
 COPY --from=builder --chown=1000:1000 /app/node_modules node_modules
 COPY --from=builder --chown=1000:1000 /app/src src
 COPY --from=builder --chown=1000:1000 /app/package.json /app/ca.crt /app/cass.crt /app/cass.key /app/copyright.txt ./
-COPY --from=builder --chown=1000:1000 /app/etc etc
+COPY --from=builder --chown=1000:0 /app/etc etc
+
+# The distroless base runs as root; run as uid 1000 like the other CaSS images.
+USER 1000:1000
 
 EXPOSE 80
 ENTRYPOINT ["/nodejs/bin/node", "--force-fips", "./src/main/server.js"]
