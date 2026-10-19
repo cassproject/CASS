@@ -281,7 +281,7 @@ The system operates in the following states. Requirements in this specification 
 | ADMIN-002 | The system shall expose `POST /api/util/reindex` to trigger Elasticsearch reindexing, protected by admin-only authentication. | High | Demonstration |
 | ADMIN-003 | The system shall expose `POST /api/util/purge` to purge all data from Elasticsearch, protected by admin-only authentication. | Medium | Demonstration |
 | ADMIN-004 | The system shall expose `POST /api/util/cull` and `POST /api/util/cullFast` to remove orphaned data, protected by admin-only authentication. | Medium | Demonstration |
-| ADMIN-005 | When `KILL` environment variable is set, the system shall expose `GET /api/kill` to terminate the server process. This endpoint shall only be available in test/development environments. | Low | Test |
+| ADMIN-005 | When `KILL` environment variable is set, the system shall expose `GET /api/kill` to terminate the server process, only for requests that present the value of `KILL` (`X-Kill-Key` header or `key` query parameter), compared in constant time; other requests shall receive 403. This endpoint shall only be available in test/development environments. | Low | Test |
 
 ### 3.2.7 Profile Calculation
 

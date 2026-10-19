@@ -18,7 +18,7 @@ This document describes every environment variable used by CaSS.
 | `HTTPS` | `false` | Set to `true` to enable HTTPS mode. Expects `cass.key`, `cass.crt`, and `ca.crt` files. |
 | `HTTP2_SERVER` | `true` | Set to `false` to use HTTPS/1.1 instead of HTTP/2 (SPDY) when `HTTPS=true`. |
 | `MAX_CONNECTIONS` | *(unlimited)* | Maximum simultaneous connections the server will accept. |
-| `KILL` | *(none)* | If set, exposes a `GET /api/kill` endpoint that terminates the server process. Used for testing. |
+| `KILL` | *(none)* | If set, exposes a `GET /api/kill` endpoint that terminates the server process. The value is the key the caller must send, in the `X-Kill-Key` header (preferred; query strings end up in access logs) or as `?key=`; other requests get 403. Use a long random secret: a flag such as `true` logs a warning at startup. Used for testing. |
 | `POST_MAX_SIZE` | *(default)* | Maximum request body size in bytes for POST requests. |
 | `SKYREPO_DEBUG` | `false` | Enables debug logging for the SkyRepo data layer. |
 | `PRODUCTION` | *(none)* | Set to `true` to enable production-mode logging (writes to file in addition to stdout). |
