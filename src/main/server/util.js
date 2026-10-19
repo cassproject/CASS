@@ -56,7 +56,7 @@ let skyrepoIndexCountsMatch = async function (destination, source, atLeast) {
  */
 let skyrepoAwaitReindex = async function (task, destination, source, label, atLeast) {
     const pollMs = 2000;
-    const deadline = new Date().getTime() + (parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 3600) * 1000;
+    const deadline = new Date().getTime() + (parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 36000) * 1000;
     let lastProgress = null;
     let lastChange = new Date().getTime();
     let polls = 0;
