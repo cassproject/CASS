@@ -1,7 +1,6 @@
 require("cassproject");
-let chai = require("chai");
+const { assert } = require('chai');
 
-var assert = chai.assert;
 
 // Regression tests for cass-editor#1427: a Progression Model (ConceptScheme
 // with subType "Progression") exported through /api/ceasn/<id> must emit

@@ -1,4 +1,4 @@
-const chai = require('chai');
+const { assert } = require('chai');
 const sinon = require('sinon');
 const fs = require('fs');
 require('cassproject');
@@ -15,9 +15,6 @@ if (process.env.NODEV == null)
         return process.hrtime();
     };
 
-    const should = chai.should();
-    const expect = chai.expect;
-    const assert = chai.assert;
     describe('Skyrepo Admin.js', function () {
         it('Files match', async () => {
             if (!fs.existsSync('etc/skyAdmin2.pem')) {

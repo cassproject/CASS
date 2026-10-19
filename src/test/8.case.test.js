@@ -1,4 +1,3 @@
-let chai = require("chai");
 
 let hrtime = function () {
     try {
@@ -9,9 +8,6 @@ let hrtime = function () {
     return process.hrtime();
 };
 
-var should = chai.should();
-var expect = chai.expect;
-var assert = chai.assert;
 
 
 describe("CASE Adapter", function () {

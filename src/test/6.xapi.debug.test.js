@@ -2,8 +2,7 @@
  * Unit tests for src/main/server/xapi/debug.js — XAPI_DEBUG parsing and credential redaction.
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 const { isXapiDebug, redact, debugLog } = require('../main/server/xapi/debug.js');
 
 describe('xAPI debug logging', function () {

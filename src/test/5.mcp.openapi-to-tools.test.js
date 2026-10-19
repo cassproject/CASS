@@ -9,8 +9,7 @@
  * server to be running — they test the converter logic directly.
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 const fs = require('fs');
 const path = require('path');
 

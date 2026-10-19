@@ -1,5 +1,4 @@
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 require('cassproject');
 
 // Two kinds of Elasticsearch index must stay invisible to the CaSS API:

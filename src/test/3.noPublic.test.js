@@ -1,6 +1,5 @@
-let chai = require("chai");
+const { assert } = require('chai');
 require("cassproject");
-const assert = chai.assert;
 
 // NO_PUBLIC=true: writes without a signature sheet are refused; signed writes and reads still work.
 describe("NO_PUBLIC", function () {

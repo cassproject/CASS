@@ -1,5 +1,5 @@
 const EcRepository = require("cassproject/src/org/cassproject/ebac/repository/EcRepository");
-let chai = require("chai");
+const { assert } = require('chai');
 
 let hrtime = function () {
     try {
@@ -10,9 +10,6 @@ let hrtime = function () {
     return process.hrtime();
 };
 
-var should = chai.should();
-var expect = chai.expect;
-var assert = chai.assert;
 
 describe("CEASN Adapter", function () {
     this.timeout(30000);
