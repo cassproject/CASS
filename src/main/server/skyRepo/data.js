@@ -112,6 +112,7 @@ const endpointData = async function () {
     const type = parseParams['type'];
     const version = parseParams['version'];
     if (methodType == 'DELETE') {
+        await (requireSignedWrite).call(this);
         const oldObj = await (skyrepoDelete).call(this, id, version, type);
         if (oldObj == null) {
             return null;
@@ -132,6 +133,7 @@ const endpointData = async function () {
             o = (tryFormatOutput).call(this, o, expand, null);
             return o;
         }
+        await (requireSignedWrite).call(this);
         await (skyrepoPutParsed).call(this, o, id, version, type);
         global.events.database.afterSave.next(o);
         return null;

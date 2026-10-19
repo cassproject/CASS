@@ -105,6 +105,16 @@ global.signatureSheet = async function () {
     this.ctx.put('signatureSheet', sigSheet);
     return sigSheet;
 };
+// NO_PUBLIC=true: write endpoints refuse requests that carry no signature sheet, i.e. anonymous or
+// unauthenticated callers. Server-side processes (adapters, migrations) write without a request
+// and are unaffected.
+global.requireSignedWrite = async function () {
+    if (process.env.NO_PUBLIC !== 'true') return;
+    const signatures = await (signatureSheet).call(this);
+    if (signatures == null || signatures.length === 0) {
+        error('This server does not accept changes from anonymous requests. Sign in and try again.', 401);
+    }
+};
 const eevPrototype = new EcEncryptedValue();
 global.filterResults = async function (o, dontDecryptInSso) {
     if (o == null)
