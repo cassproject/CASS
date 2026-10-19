@@ -72,5 +72,11 @@ RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=http
 RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=https://localhost:8082/api/ && npm i && npm run mochaDevHttps && npm ci --production --omit=dev ; fi
 RUN rm -f client.key client.crt
 
+# Let any uid in group 0 write CaSS's keys and salts too, e.g. the arbitrary uids of OpenShift and
+# other Kubernetes platforms (cass-editor#1429). /app/etc is otherwise owned by uid 1000.
+USER root
+RUN chgrp -R 0 /app/etc && chmod -R g=u /app/etc
+USER 1000:1000
+
 EXPOSE 80
 ENTRYPOINT [ "node", "--force-fips", "./src/main/server.js" ]
