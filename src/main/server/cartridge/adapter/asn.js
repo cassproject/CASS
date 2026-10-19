@@ -577,7 +577,7 @@ function asnEndpoint() {
     if (this.params.methodType == "GET")
         return cassFrameworkAsAsn.call(this);
     else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
-        return asnFrameworkToCass.call(this);
+        return (requireSignedWrite).call(this).then(() => asnFrameworkToCass.call(this));
     else if (this.params.methodType == "DELETE") {
         error("Not Yet Implemented.", "405");
         return "Not Yet Implemented";

@@ -121,6 +121,7 @@ These only apply when `HTTPS=true`.
 | `CASS_IP_ALLOW` | *(none)* | Comma-separated list of allowed IP addresses/ranges. Requests from other IPs are denied. |
 | `CASS_IP_DENIED_REDIRECT` | *(none)* | URL to redirect to when an IP is denied access. |
 | `CASS_SSO_ACCOUNT_REQUIRED` | *(none)* | Minimum number of identities (normally from an SSO login) a request must carry to be permitted; others are denied as for `CASS_IP_ALLOW`, and either setting can admit a request. Login, logout, the SSO callback, `/api/ping` and OAuth discovery stay open. |
+| `NO_PUBLIC` | *(none)* | `true` refuses (401) writes without a signature sheet: `POST`/`DELETE` `/api/data/…`, `multiPut`, `multiDelete`, and the CTDL-ASN, ASN and CASE imports. Reads and account creation are unaffected. |
 | `CASS_API_KEY` | *(none)* | A request whose `Authorization` header equals this value passes the IP / account checks. |
 | `CASS_RATE_LIMIT` | *(none)* | If set, rate-limits requests per client IP in the authentication middleware. |
 | `CASS_RATE_LIMIT_WINDOW_MS` | `900000` | Rate-limit window, in milliseconds. |

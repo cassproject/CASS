@@ -405,6 +405,15 @@ Only requests from users with at least this many identities (normally an SSO log
 |----------|---------|
 | `CASS_API_KEY` | A request whose `Authorization` header equals this value passes the IP / account checks (for server-to-server clients). |
 
+### Refusing Anonymous Changes
+
+```yaml
+environment:
+  - NO_PUBLIC=true
+```
+
+Refuses (401) any request that would create, change or delete data without a signature sheet, i.e. from an anonymous or signed-out user: `POST`/`DELETE` `/api/data/…`, `/api/sky/repo/multiPut`, `/api/sky/repo/multiDelete`, and the CTDL-ASN, ASN and CASE imports. Reads are unaffected, and so is account creation (`/api/sky/id/…`). In the editor, signed-out users can browse but not save.
+
 ### Rate Limiting
 
 ```yaml

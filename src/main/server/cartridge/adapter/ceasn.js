@@ -1887,8 +1887,10 @@ async function ceasnFrameworkToCass() {
 async function ceasnEndpoint() {
     if (this.params.methodType == "GET")
         return await cassFrameworkAsCeasn.call(this);
-    else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
+    else if (this.params.methodType == "POST" || this.params.methodType == "PUT") {
+        await (requireSignedWrite).call(this);
         return await ceasnFrameworkToCass.call(this);
+    }
     else if (this.params.methodType == "DELETE")
         error("Not Yet Implemented.", "405");
     else

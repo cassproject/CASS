@@ -382,6 +382,7 @@ const endpointMultiPut = async function () {
             permanentCreated = true;
         }
         await ((signatureSheet).call(this));
+        await (requireSignedWrite).call(this);
 
         const uniques = {};
         for (let x of ary) {

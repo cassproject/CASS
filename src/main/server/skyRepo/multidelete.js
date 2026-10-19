@@ -28,6 +28,7 @@ const endpointMultiDelete = async function () {
         return [];
     }
     await (signatureSheet).call(this);
+    await (requireSignedWrite).call(this);
     const { succeeded: oldObjs, failed } = await validateSignaturesBulk.call(this, manyParseParams, 'Only an owner of an object may delete it.');
 
     let deleteBody = '';

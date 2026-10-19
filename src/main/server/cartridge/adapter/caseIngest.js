@@ -194,6 +194,7 @@ testSuiteCase = async function () {
 
 var cassContext = null;
 ingestCase = async function () {
+    await (requireSignedWrite).call(this);
     if (testCase == true) {
         return await testSuiteCase.call(this);
     }
