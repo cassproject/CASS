@@ -40,10 +40,31 @@ try {
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'PostMaxSize', 'Error setting POST max size from environment variable, using default value.', e);
 }
 
+// CaSS keeps generated keys, salts and adapter state in etc/ under its working directory, so that
+// directory must be writable by the user CaSS runs as. Turns a permission error into one that says so.
+const explainWriteError = function (error, target) {
+    if (!['EACCES', 'EPERM', 'EROFS'].includes(error.code)) return error;
+    const etc = nodePath.resolve('etc');
+    const user = typeof process.getuid === 'function' ? ` (uid ${process.getuid()}, gid ${process.getgid()})` : '';
+    const explained = new Error(`CaSS cannot write ${nodePath.resolve(target)} (${error.code}). ` +
+        `CaSS keeps its generated keys and salts in ${etc}, which must be writable by the user CaSS runs as${user}. ` +
+        `The CaSS images let uid 1000 and group 0 write there. When running as another user, or with a volume mounted on ${etc}, ` +
+        `make that directory writable by that user (in Kubernetes, for example with securityContext.fsGroup).`);
+    explained.code = error.code;
+    explained.cause = error;
+    return explained;
+};
+module.exports.explainWriteError = explainWriteError;
+global.explainWriteError = explainWriteError;
+
 if (global.fileSave === undefined) {
     global.fileSave = function (text, filepath) {
         global.pathCheck(filepath);
-        fs.writeFileSync(filepath, text);
+        try {
+            fs.writeFileSync(filepath, text);
+        } catch (error) {
+            throw explainWriteError(error, filepath);
+        }
     };
 };
 

@@ -127,7 +127,11 @@ global.loadConfigurationFile = function (path, dflt) {
     global.pathCheck(path);
     const ensureDirectoryExists = (dirPath) => {
         if (!fs.existsSync(dirPath)) {
-            fs.mkdirSync(dirPath, { recursive: true });
+            try {
+                fs.mkdirSync(dirPath, { recursive: true });
+            } catch (error) {
+                throw global.explainWriteError(error, dirPath);
+            }
         }
     };
 
