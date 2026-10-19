@@ -345,7 +345,7 @@ environment:
 
 | Variable | Purpose |
 |----------|---------|
-| `KILL` | Exposes `GET /api/kill` to terminate the server |
+| `KILL` | Exposes `GET /api/kill` to terminate the server. The value is the key callers must send (`X-Kill-Key` header, or `?key=`); use a long random secret. |
 | `AUTH_OVERRIDE` | JSON user object injected into all requests |
 | `AUTH_OVERRIDE_KEY` | PEM private key for the override user |
 | `VALIDATE_RESPONSES` | Enables `express-openapi-validator` middleware for response schema validation |

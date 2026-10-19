@@ -397,7 +397,20 @@ if (process.env.VALIDATE_RESPONSES) {
 }
 
 if (process.env.KILL) {
+    const crypto = require('crypto');
+    // KILL is the key /api/kill requires (X-Kill-Key header or ?key=), no longer just an on switch.
+    // A flag-like or short value would make the endpoint easy to call, so say so at startup.
+    if (/^(true|yes|on|1)$/i.test(process.env.KILL) || process.env.KILL.length < 16) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'CassKillWeakKey',
+            "KILL is the key that GET /api/kill requires (X-Kill-Key header or ?key=). Set it to a long random secret, not a flag like 'true'.");
+    }
     app.get('/api/kill', (req, res, next) => {
+        const provided = Buffer.from(String(req.headers['x-kill-key'] || req.query.key || ''));
+        const expected = Buffer.from(String(process.env.KILL));
+        if (provided.length !== expected.length || !crypto.timingSafeEqual(provided, expected)) {
+            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, 'CassExitDenied', "Unauthorized kill attempt rejected.");
+            return res.status(403).end();
+        }
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.EMERGENCY, 'CassExit', "Kill received. Exiting process.");
         res.statusCode = 200;
         res.write("Killing process.");
