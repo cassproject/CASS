@@ -16,13 +16,17 @@ This document describes every environment variable used by CaSS.
 | `ELASTICSEARCH_ENDPOINT` | `http://localhost:9200` | Elasticsearch endpoint URL. |
 | `ELASTICSEARCH_AUTHORIZATION` | *(none)* | If set, sent as the `Authorization` header on all requests to Elasticsearch. |
 | `PERMANENT_MIGRATION_BATCH` | `100` | Documents per batch when the startup migration reindexes the `permanent` index. Lower it for large documents on a small Elasticsearch heap; if Elasticsearch runs out of memory for a batch, it is retried at a quarter and then a sixteenth of this size. |
-| `PERMANENT_MIGRATION_TIMEOUT` | `3600` | Seconds the startup migration of the `permanent` index may run before CaSS gives up and starts without it (a failed or stalled reindex gives up sooner). |
+| `PERMANENT_MIGRATION_TIMEOUT` | `36000` | Seconds the startup migration of the `permanent` index may run before CaSS gives up and starts without it (a failed or stalled reindex gives up sooner). |
 | `HTTPS` | `false` | Set to `true` to enable HTTPS mode. Expects `cass.key`, `cass.crt`, and `ca.crt` files. |
 | `HTTP2_SERVER` | `true` | Set to `false` to use HTTPS/1.1 instead of HTTP/2 (SPDY) when `HTTPS=true`. |
 | `MAX_CONNECTIONS` | *(unlimited)* | Maximum simultaneous connections the server will accept. |
 | `KILL` | *(none)* | If set, exposes a `GET /api/kill` endpoint that terminates the server process. Used for testing. |
-| `POST_MAX_SIZE` | *(default)* | Maximum request body size in bytes for POST requests. |
+| `POST_MAX_SIZE` | `52428800` (50 MB) | Maximum request body size in bytes for POST requests. |
+| `VERSION` | *(package version)* | Version reported by `GET /api/ping`. |
+| `EPHEMERAL_CLEANUP_INTERVAL` | `60000` | Milliseconds between purges of expired ephemeral data. |
+| `FETCH_ALLOW_LIST` | *(none)* | Comma-separated URLs CaSS may send outgoing requests to; an entry ending in `*` allows any URL starting with it. Other requests fail and are logged as `FetchBlocked`. Unset allows all. |
 | `SKYREPO_DEBUG` | `false` | Enables debug logging for the SkyRepo data layer. |
+| `VALIDATE_RESPONSES` | *(none)* | If set, validates API responses against the OpenAPI spec (`express-openapi-validator`). For testing. |
 | `PRODUCTION` | *(none)* | Set to `true` to enable production-mode logging (writes to file in addition to stdout). |
 
 ---
@@ -71,9 +75,11 @@ These only apply when `HTTPS=true`.
 | `CASS_OIDC_SECRET` | *(built-in default)* | Secret used to sign the session cookie (and HS256 bearer-token validation). Not the OIDC client secret — see `CASS_OIDC_CLIENT_SECRET`. |
 | `CASS_OIDC_RESPONSE_TYPE` | `id_token`, or `code` when `CASS_OIDC_CLIENT_SECRET` is set | Overrides the OIDC response type. One of `id_token`, `code`, `code id_token`. |
 | `CASS_OIDC_SCOPE` | `openid profile email` | Space-separated OIDC scopes to request. |
-| `CASS_SESSION_MAX_AGE` | *(none)* | Absolute session timeout in seconds. If not set, session does not expire. |
-| `CASS_SESSION_INACTIVITY_TIMEOUT` | *(none)* | Inactivity timeout in seconds. If not set, session does not expire due to inactivity. |
-| `CASS_SESSION_VALIDATION_INTERVAL` | *(none)* | Interval in seconds between checks to the SSO provider to verify session validity. |
+| `CASS_OIDC_AUDIENCE` | `account` | Audience required of OIDC bearer tokens. |
+| `CASS_OIDC_ALG` | `HS256` | Signing algorithm expected of OIDC bearer tokens. |
+| `CASS_OIDC_EXTERNAL_ISSUER_URL` | *(none)* | Issuer URL as browsers and API clients see it, when it differs from `CASS_OIDC_ISSUER_BASE_URL`. Discovery URLs are rewritten to it, and tokens from either issuer are accepted. |
+| `CASS_SESSION_MAX_AGE` | *(1 day)* | Seconds a session stays valid without activity; each request extends it (rolling duration). |
+| `CASS_SESSION_VALIDATION_INTERVAL` | *(none)* | Seconds between checks of the session against the SSO provider's userinfo endpoint; a failed check logs the user out. Applies when `CASS_IP_ALLOW` or `CASS_SSO_ACCOUNT_REQUIRED` is set. |
 
 ---
 
@@ -84,6 +90,7 @@ These only apply when `HTTPS=true`.
 | `CASS_JWT_ENABLED` | *(none)* | Set to any truthy value to enable JWT bearer token authentication. |
 | `CASS_JWT_SECRET` | `cass` | Secret used to verify JWT signatures. |
 | `CASS_JWT_ALGORITHM` | `HS256` | JWT signing algorithm. |
+| `CASS_JWT_SESSION_ENABLED` | *(none)* | `true` keeps a 2-hour in-memory session per client alongside JWT authentication. |
 
 ---
 
@@ -113,7 +120,12 @@ These only apply when `HTTPS=true`.
 | `AUTH_OVERRIDE_KEY` | *(none)* | PEM-encoded private key associated with the `AUTH_OVERRIDE` user. |
 | `CASS_IP_ALLOW` | *(none)* | Comma-separated list of allowed IP addresses/ranges. Requests from other IPs are denied. |
 | `CASS_IP_DENIED_REDIRECT` | *(none)* | URL to redirect to when an IP is denied access. |
-| `CASS_SSO_ACCOUNT_REQUIRED` | *(none)* | Minimum number of SSO identity records a user must have to be permitted access. |
+| `CASS_SSO_ACCOUNT_REQUIRED` | *(none)* | Minimum number of identities (normally from an SSO login) a request must carry to be permitted; others are denied as for `CASS_IP_ALLOW`, and either setting can admit a request. Login, logout, the SSO callback, `/api/ping` and OAuth discovery stay open. |
+| `CASS_API_KEY` | *(none)* | A request whose `Authorization` header equals this value passes the IP / account checks. |
+| `CASS_RATE_LIMIT` | *(none)* | If set, rate-limits requests per client IP in the authentication middleware. |
+| `CASS_RATE_LIMIT_WINDOW_MS` | `900000` | Rate-limit window, in milliseconds. |
+| `CASS_RATE_LIMIT_MAX` | `100` | Requests allowed per IP per window. |
+| `INSECURE_SERVER_IS_ADMIN` | *(none)* | If set, the server's own `skyAdmin2` key is an admin and profile computation runs as it. For isolated testing only. |
 | `STATIC_NOAUTH` | *(none)* | Set to `true` to serve static files without requiring authentication. Changes the auth module load order. |
 | `ALLOW_SANCTIONED_REPLAY` | *(none)* | Set to `true` to allow sanctioned replay of data operations (for replication/migration). |
 | `REJECT_SHA1` | *(none)* | If set, rejects cryptographic operations that use SHA-1 signatures. |
@@ -175,7 +187,7 @@ These only apply when `HTTPS=true`.
 | `LOG_HEADERS` | *(none)* | If set, includes HTTP request headers in audit log entries. |
 | `LOG_FILTERED_CATEGORIES` | *(none)* | Comma-separated list of log categories to suppress (e.g. `NETWORK,SYSTEM`). |
 | `LOG_FILTERED_SEVERITIES` | *(none)* | Comma-separated list of log severities to suppress (e.g. `DEBUG,INFO`). |
-| `LOG_FILTERED_MESSAGES` | *(none)* | Comma-separated list of log message substrings to suppress. |
+| `LOG_FILTERED_MESSAGES` | *(none)* | Comma-separated log message codes to suppress (e.g. `CassHttpGetSuccess`). |
 
 ---
 
@@ -188,6 +200,8 @@ These only apply when `HTTPS=true`.
 | `PROFILE_TTL` | `86400000` (24 hours in ms) | How long a cached profile is fresh, in milliseconds. After that, until it is twice this old, it is still returned at once while a fresh one is computed in the background; a profile dropped because of new evidence is always recomputed before it is returned. |
 | `PROFILE_WORKERS` | `1` | Number of worker threads computing profiles in parallel. Each worker keeps its own caches and is limited by `WORKER_MAX_MEMORY`. |
 | `PROFILE_REPOSITORY_CACHE` | `false` | Enables repository-level caching during profile computation. |
+| `AUTO_CALCULATE_PROFILES` | *(none)* | If set, recomputes the profiles of active people in the background. |
+| `PROFILE_AVOID_OUTSIDE_FRAMEWORKS` | *(none)* | If set, profile computation does not add frameworks related to the one being computed. |
 | `WORKER_MAX_MEMORY` | `1024` | Maximum memory (in MB) allocated to each profile computation worker thread. |
 
 ---
