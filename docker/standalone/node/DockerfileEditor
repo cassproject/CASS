@@ -1,5 +1,6 @@
-
-FROM node:26
+# Builds the editor. Alpine: the full node image carries many OS packages with known CVEs, and
+# this stage only needs node and npm (its output is copied into the runtime image below).
+FROM node:26-alpine AS editor-build
 RUN mkdir editor
 COPY cass-editor/package.json editor/package.json
 RUN cd editor && npm i && mv node_modules node_mods
@@ -8,7 +9,6 @@ WORKDIR /editor
 ENV DOCS_BASE=/docs/
 RUN rm -rf node_modules && mv node_mods node_modules && rm -rf dist && npm i && npm run build
 
-ARG nodeVersion=24
 FROM node:26-alpine
 
 RUN apk update && apk upgrade --no-cache
@@ -37,7 +37,7 @@ RUN if [ "$TEST" = "true" ] ; then export PORT=8082 && export CASS_LOOPBACK=http
 RUN rm -f client.key client.crt
 
 RUN rm -rf src/main/webapp
-COPY --from=0 editor/dist/ src/main/webapp
+COPY --from=editor-build --chown=1000:1000 /editor/dist/ src/main/webapp
 
 # Let any uid in group 0 write CaSS's keys and salts too, e.g. the arbitrary uids of OpenShift and
 # other Kubernetes platforms (cass-editor#1429). /app/etc is otherwise owned by uid 1000.
