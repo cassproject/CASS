@@ -1,0 +1,166 @@
+name: Editor E2E (release candidate)
+
+# Runs the CaSS editor's end-to-end suite (the cass-editor submodule's Playwright tests) against the
+# CaSS server image built from a release PR, before that PR is merged and publish.yml pushes images.
+on:
+  pull_request:
+    branches:
+      - "1.5"
+      - "1.6"
+      - "1.7"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: editor-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  image:
+    name: Build release candidate image
+    # Release PRs come from release.yml's release/draft-* branches.
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'release/draft-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      has_suite: ${{ steps.suite.outputs.present }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Older lines pin an editor without the Playwright suite; nothing to run there.
+      - name: Check for the editor E2E suite
+        id: suite
+        run: |
+          if [ -f cass-editor/playwright.config.js ] && [ -f cass-editor/e2e/docker-compose.yml ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::cass-editor at this commit has no E2E suite; skipping."
+          fi
+
+      - uses: docker/setup-buildx-action@v3
+        if: steps.suite.outputs.present == 'true'
+
+      # The alpine image, as published (TEST=false: the server tests run in build.yml and scan.yml).
+      - name: Build image
+        if: steps.suite.outputs.present == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/standalone/node/DockerfileAlpine
+          tags: cass-release-candidate:e2e
+          outputs: type=docker,dest=${{ runner.temp }}/cass-release-candidate.tar
+          cache-from: type=gha,scope=editor-e2e-alpine
+          cache-to: type=gha,mode=max,scope=editor-e2e-alpine
+
+      - uses: actions/upload-artifact@v4
+        if: steps.suite.outputs.present == 'true'
+        with:
+          name: cass-release-candidate-image
+          path: ${{ runner.temp }}/cass-release-candidate.tar
+          retention-days: 1
+
+  e2e:
+    name: Editor E2E (shard ${{ matrix.shard }}/4)
+    needs: [image]
+    if: needs.image.outputs.has_suite == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    env:
+      CASS_IMAGE: cass-release-candidate:e2e
+    defaults:
+      run:
+        working-directory: cass-editor
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: cass-release-candidate-image
+          path: ${{ runner.temp }}
+
+      - name: Load image
+        run: docker load --input "${{ runner.temp }}/cass-release-candidate.tar"
+
+      - uses: actions/setup-node@v4
+        with:
+          # Vite 7 requires Node 20.19+ / 22.12+
+          node-version: '22.x'
+          cache: npm
+          cache-dependency-path: cass-editor/package-lock.json
+
+      # No lifecycle scripts: the dependencies the tests use ship prebuilt binaries.
+      - run: npm ci --ignore-scripts
+
+      - name: Start the release candidate and Elasticsearch
+        run: docker compose -f e2e/docker-compose.yml up -d --wait
+
+      # The Playwright version locked in package-lock.json (npx could fetch another one).
+      - run: ./node_modules/.bin/playwright install --with-deps chromium
+
+      - name: Run tests
+        run: ./node_modules/.bin/playwright test --shard=${{ matrix.shard }}/4 --reporter=blob,list
+
+      - name: CaSS logs
+        if: failure()
+        run: docker compose -f e2e/docker-compose.yml logs --tail=300 cass
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: editor-blob-report-${{ matrix.shard }}
+          path: cass-editor/blob-report
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: editor-results-${{ matrix.shard }}
+          path: cass-editor/e2e/results
+          retention-days: 7
+
+  report:
+    name: Editor E2E report
+    needs: [e2e]
+    if: ${{ !cancelled() && needs.e2e.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cass-editor
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: npm
+          cache-dependency-path: cass-editor/package-lock.json
+
+      - run: npm ci --ignore-scripts
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: cass-editor/all-blob-reports
+          pattern: editor-blob-report-*
+          merge-multiple: true
+
+      - name: Merge shard reports
+        run: ./node_modules/.bin/playwright merge-reports --reporter=html,github ./all-blob-reports
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: editor-e2e-html-report
+          path: cass-editor/playwright-report
+          retention-days: 14
