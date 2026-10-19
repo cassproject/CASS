@@ -1,106 +1,205 @@
 ## Release v1.7.13
 
-
+* (SECURITY) `GET /api/kill` now requires the value of `KILL` as a key, sent in the `X-Kill-Key` header or as `?key=`; other requests get 403. BREAKING for anyone calling `/api/kill`: set `KILL` to a long random secret and send it. A flag-like value such as `true` logs a warning at startup.
+* Added `NO_PUBLIC`: when `true`, requests that would create, change or delete data without a signature sheet (anonymous or signed-out users) are refused with 401. Reads and account creation are unaffected.
+* CTDL-ASN exports keep CTDL properties whose values are URLs, such as `ceterms:recognizedForIndustry` (cass-editor#1426).
+* Docker: `/app/etc` is writable by group 0, so the images run under arbitrary non-root UIDs (e.g. OpenShift). The distroless image now runs as uid 1000 instead of root. A permission error writing `etc/` now says which directory must be writable and how (cass-editor#1429).
+* Docker: the editor image builds the editor on `node:26-alpine` instead of the full `node:26` image, removing most build-stage CVEs (cass-editor#1430).
+* The startup migration of the `permanent` index may run for up to 10 hours (`PERMANENT_MIGRATION_TIMEOUT` now defaults to 36000 seconds).
+* Documented every environment variable in `CONFIGURATION.md` and `ENVIRONMENT.md`.
+* Updated editor: end-to-end test suite and the bugs it found, CSV imports ignore empty rows (cass-editor#1428), Recognized For Industry property (cass-editor#1426), dependency security updates (cass-editor#1430).
+* Updated libraries.
 
 ## Release v1.7.12
 
-
+* Profile computation serves the previous profile while it recomputes, and coalesces repeated invalidations, instead of stalling requests.
+* xAPI adapter: coordinates with the profile cache and keeps each LRS's read position. Per-LRS position files are named by SHA-256. Lookups are cached, saves are batched, and debug logging was added.
 
 ## Release v1.7.11
 
-
+* Updated libraries.
 
 ## Release v1.7.10
 
-
+* Ephemeral data cleanup works on Elasticsearch 9.5+ (deletes by id without needing `_id` fielddata).
+* Index names that are URLs are always sent to Elasticsearch as single path segments.
+* The startup migration of the `permanent` index no longer hangs on small Elasticsearch heaps: it reindexes in batches (`PERMANENT_MIGRATION_BATCH`) and gives up after `PERMANENT_MIGRATION_TIMEOUT`.
+* Image builds use `docker buildx bake`.
 
 ## Release v1.7.9
 
-
+* The `permanent` index is migrated to an explicit `baseId` field, which history queries use.
+* Elasticsearch 9.5.3.
 
 ## Release v1.7.8
 
-
+* HTTP/2 responses send all valid headers.
+* Adapters are more resilient, and exports no longer modify the objects they export.
+* (SECURITY) The CaSS API can no longer reach Elasticsearch indices other than its own, including `ephemeral`.
+* cassproject 5.0.20, nodemailer 10, jsonpath-plus 11, mocha 12, Elasticsearch 9.4.6.
+* Updated libraries.
 
 ## Release v1.7.7
 
-
+* xAPI adapter reports LRS responses that are not JSON instead of crashing.
 
 ## Release v1.7.6
 
-
+* Fixed FormData uploads with undici 8.x, and removed the undici compatibility shim.
+* Elasticsearch 9.4.5.
 
 ## Release v1.7.5
 
-
+* Elasticsearch 9.x, with a reworked Docker build.
+* Profile computation is more stable, HTTP fetches are more compatible, and the profile cache key uses stable parameters.
+* Ephemeral documents are stored dehydrated to stay within Elasticsearch's field limits.
+* Updated editor.
+* Updated libraries.
 
 ## Release v1.7.4
 
-
+* Updated editor.
 
 ## Release v1.7.3
 
-
+* MCP: SDK v2, with adapter tests.
+* OIDC: authorization code flow and confidential clients (`CASS_OIDC_CLIENT_SECRET`).
+* When a person has duplicate records, the latest one is used.
+* Authentication configuration is logged at startup, and the rate limiters were refined.
+* Fixed the profile coprocessor losing results when merging assertions.
+* Repeated log messages are deduplicated regardless of timestamp.
+* `GET /api/ping` reports `VERSION` when it is set.
+* CTDL-ASN exports give `ceasn:publisher` as an array for progression models and concept schemes.
+* Updated editor.
 
 ## Release v1.7.2
 
-
+* Updated libraries.
 
 ## Release v1.7.1
 
-
+* Version 1.7 (continues from 1.6.34).
+* xAPI assertions: the agent is resolved through a hierarchy, and every party in it owns the assertion.
+* Docker environment for editor development (`npm run dev:editor`).
+* ARM builds included in CI analysis.
+* Updated editor.
 
 ## Release v1.6.34
 
-
+* Fixed Docker ARM64 builds (missing `/usr/local/lib64`).
 
 ## Release v1.6.33
 
-
+* Ephemeral data cleanup is throttled.
+* Multi-architecture Docker images.
 
 ## Release v1.6.32
 
-
+* OAuth2 JWT bearer authentication, and improved session management.
+* Authentication middleware split into separate modules.
+* (SECURITY) Strengthened administrative controls and API authentication.
+* The server exits cleanly on SIGTERM.
+* MCP: adapter endpoints can opt out of MCP (`x-mcp-ignore`), and tool definitions and descriptions use more of the OpenAPI metadata.
+* xAPI: stringified data streams are parsed, and competencies aligned directly to an xAPI object are found.
+* The audit logger keeps full error data; `CassDecryptError` is logged at a lower severity.
+* ARM64 builds.
+* Updated libraries.
 
 ## Release v1.6.31
 
-
+* MCP adapter uses Streamable HTTP, with improved OAuth discovery.
+* OpenAPI documentation for the xAPI statement endpoint.
 
 ## Release v1.6.30
 
-
+* Fixed a ReferenceError on `GET /api/ping`.
+* Fixed multipart file uploads crashing.
+* Expired ephemeral entries are cleared only before a read, at most once per cleanup interval (#497).
 
 ## Release v1.6.29
 
-
+* Distroless image on Debian 13.
+* undici 8.x, with a FormData compatibility shim.
+* Improved audit logging, and streamlined OIDC session management.
+* Updated libraries.
 
 ## Release v1.6.28
 
-
+* Configurable OIDC session management (`CASS_SESSION_MAX_AGE`, `CASS_SESSION_VALIDATION_INTERVAL`).
+* Added system design, software requirements and database design documents (`DESIGN.md`, `REQUIREMENTS.md`, `DATABASE.md`), and updated the project documentation.
+* Release images are built for amd64 only.
+* Updated libraries.
 
 ## Release v1.6.27
 
-
+* Express 5.
+* Elasticsearch 9.4.2.
+* The MCP adapter has a default loopback URL.
+* Refined Docker builds for testing and the distroless image.
+* Updated libraries.
 
 ## Release v1.6.26
 
-
+* Updated libraries.
 
 ## Release v1.6.25
 
-
+* xAPI integration improvements.
+* Updated libraries.
 
 ## Release v1.6.24
 
-
+* Release process: removed the npm audit minimum.
 
 ## Release v1.6.23
 
-
+* Model Context Protocol (MCP) adapter (`/api/mcp`): OAuth2/OIDC authentication and discovery, signature sheets forwarded through MCP sessions, and administrative endpoints filtered out.
+* Rate limiting for authentication and IP-restricted routes (`CASS_RATE_LIMIT`).
+* Multi-architecture Docker builds.
+* Encrypted SkyId payloads are given IDs.
+* Updated libraries.
 
 ## Release v1.6.22
 
+* `GET /api/ping` includes the server version.
+* A native HTTP/2 compatibility shim replaces `spdy-fixes`; HTTPS is tested in the Docker builds.
+* Narrowed the search path for the Swagger API documentation.
 
+## Release v1.6.21
+
+* Updated libraries.
+
+## Release v1.6.20
+
+* Faster profile computation, with person lookup caching.
+
+## Release v1.6.19
+
+* Re-release of 1.6.18.
+
+## Release v1.6.18
+
+* Release configuration: standalone Dockerfile paths.
+
+## Release v1.6.17
+
+* Profile computation moved into an adapter, with person lookup caching and integration tests.
+* Updated libraries.
+
+## Release v1.6.16
+
+* Profile computation can no longer recurse infinitely, and can skip related outside frameworks (`PROFILE_AVOID_OUTSIDE_FRAMEWORKS`).
+* The release process runs local tests and CVE scans.
+* Updated libraries.
+
+## Release v1.6.15
+
+* CI: improved builds, test coverage and security scanning.
+
+## Release v1.6.14
+
+* Automated release process (GitHub Actions), with tests in the Docker builds and image vulnerability scanning.
+* (SECURITY) minimatch 3.1.5.
 
 # Change Log
 
