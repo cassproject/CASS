@@ -1,6 +1,5 @@
-const chai = require('chai');
+const { assert } = require('chai');
 
-const assert = chai.assert;
 
 const BASE = process.env.CASS_LOOPBACK || 'http://localhost/api/';
 

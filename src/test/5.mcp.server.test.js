@@ -7,8 +7,7 @@
  * templates, and session termination.
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 
 const CASS_LOOPBACK = process.env.CASS_LOOPBACK || 'http://localhost/api/';
 const MCP_URL = CASS_LOOPBACK.replace(/\/$/, '') + '/mcp';

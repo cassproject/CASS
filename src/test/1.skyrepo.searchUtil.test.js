@@ -1,5 +1,4 @@
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 
 // Pure unit tests for the Elasticsearch URL builder. No server or Elasticsearch needed.
 // Two kinds of index must never be part of the index expression CaSS sends to Elasticsearch:

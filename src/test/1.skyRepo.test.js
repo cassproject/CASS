@@ -1,4 +1,4 @@
-const chai = require('chai');
+const { assert } = require('chai');
 const sinon = require('sinon');
 const fs = require('fs');
 require('cassproject');
@@ -12,9 +12,6 @@ const hrtime = function () {
   return process.hrtime();
 };
 
-const should = chai.should();
-const expect = chai.expect;
-const assert = chai.assert;
 describe('SkyRepo Adapter', function () {
   it('Waiting for server to be ready', async () => {
     if (process.env.NODEV != null) return;

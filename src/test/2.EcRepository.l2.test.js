@@ -1,7 +1,7 @@
 const fs = require('fs');
 const https = require('https');
 require('fake-indexeddb/auto');
-let chai = require("chai");
+const { assert } = require('chai');
 require("cassproject");
 
 let hrtime = function () {
@@ -19,9 +19,6 @@ let hrtime = function () {
     }
 };
 
-let should = chai.should();
-let expect = chai.expect;
-let assert = chai.assert;
 
 after(() => EcRsaOaepAsyncWorker.teardown());
 

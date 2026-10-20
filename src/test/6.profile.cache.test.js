@@ -3,8 +3,7 @@
  * coordination for /api/profile/latest, driven with an in-memory store and a fake clock.
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 const { ProfileCache, profileTtl, profileWorkers, workerMaxMemory, DAY_MS, STALE_LIMIT } = require('../main/server/profile/cache.js');
 
 /** In-memory stand-in for global.ephemeral: entries disappear at `until`. */

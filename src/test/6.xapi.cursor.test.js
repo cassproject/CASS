@@ -3,8 +3,7 @@
  * simulated LRS that keeps receiving statements while a poll is reading pages.
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 const { XapiCursor, pollStatements, sinceFileFor, LEGACY_SINCE_FILE } = require('../main/server/xapi/cursor.js');
 
 /**

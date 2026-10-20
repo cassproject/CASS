@@ -5,8 +5,7 @@
  * adapter to translate OpenAPI parameter schemas into Zod types.
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 
 let inputSchemaToZodShape;
 

@@ -3,8 +3,7 @@
  * entries only change between batches.
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 const { BatchCache } = require('../main/server/xapi/lookups.js');
 
 describe('xAPI lookup cache', function () {

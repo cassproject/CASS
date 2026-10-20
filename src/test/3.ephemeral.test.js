@@ -3,8 +3,7 @@
  * in-process server's global.ephemeral. Skipped when the server runs out of process (NODEV).
  */
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 
 describe('Ephemeral store', function () {
     this.timeout(60000);

@@ -1,9 +1,8 @@
-const chai = require('chai');
+const { assert } = require('chai');
 require('cassproject');
 const { Readable } = require('stream');
 if (process.env.NODEV == null)
 {
-    const assert = chai.assert;
 
     describe('shims/levr.js', function () {
         it('exposes a getStream that reads a stream to a string', async () => {

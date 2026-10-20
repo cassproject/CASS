@@ -1,6 +1,6 @@
 const fs = require('fs');
 const https = require('https');
-let chai = require("chai");
+const { assert } = require('chai');
 const EcPpk = require('cassproject/src/com/eduworks/ec/crypto/EcPpk');
 require("cassproject");
 
@@ -19,9 +19,6 @@ let hrtime = function () {
     }
 };
 
-let should = chai.should();
-let expect = chai.expect;
-let assert = chai.assert;
 
 after(() => EcRsaOaepAsyncWorker.teardown());
 
