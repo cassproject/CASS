@@ -14,7 +14,7 @@ if (process.env.NODEV == null) {
     describe('Auth guard (CASS_IP_ALLOW / CASS_SSO_ACCOUNT_REQUIRED)', function () {
         let saved;
         let guard;
-        let logged;
+        let logged = [];
         let report;
 
         const useEnv = (env) => {
