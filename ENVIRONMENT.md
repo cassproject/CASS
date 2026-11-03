@@ -118,7 +118,9 @@ These only apply when `HTTPS=true`.
 | `AUTH_ENV_ADMIN_EMAILS` | *(none)* | Comma-separated list of email addresses granted admin privileges when `AUTH_ALLOW_ENV_ADMINS=true`. |
 | `AUTH_OVERRIDE` | *(none)* | JSON string representing a user object to inject into all requests. **Testing/development only.** |
 | `AUTH_OVERRIDE_KEY` | *(none)* | PEM-encoded private key associated with the `AUTH_OVERRIDE` user. |
-| `CASS_IP_ALLOW` | *(none)* | Comma-separated list of allowed IP addresses/ranges. Requests from other IPs are denied. |
+| `CASS_IP_ALLOW` | *(none)* | Comma-separated list of allowed IP addresses/ranges (CIDR). Matched against the connecting address; behind a reverse proxy, see `CASS_TRUSTED_PROXIES`. Requests from other addresses are denied. Loopback connections are always allowed. |
+| `CASS_TRUSTED_PROXIES` | *(none)* | Comma-separated addresses/ranges of reverse proxies trusted to report the client address in `CASS_CLIENT_IP_HEADER`. Without it, client-address headers are ignored. |
+| `CASS_CLIENT_IP_HEADER` | `x-forwarded-for` | The header trusted proxies put the client address in. For `X-Forwarded-For`, the rightmost entry that is not a trusted proxy is used. Other headers must carry a single address. A forwarded address never counts as loopback. |
 | `CASS_IP_DENIED_REDIRECT` | *(none)* | URL to redirect to when an IP is denied access. |
 | `CASS_SSO_ACCOUNT_REQUIRED` | *(none)* | Minimum number of identities (normally from an SSO login) a request must carry to be permitted; others are denied as for `CASS_IP_ALLOW`, and either setting can admit a request. Login, logout, the SSO callback, `/api/ping` and OAuth discovery stay open. |
 | `NO_PUBLIC` | *(none)* | `true` refuses (401) writes without a signature sheet: `POST`/`DELETE` `/api/data/…`, `multiPut`, `multiDelete`, and the CTDL-ASN, ASN and CASE imports. Reads and account creation are unaffected. |

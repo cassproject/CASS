@@ -390,7 +390,14 @@ When configured, CaSS sends email alerts for disk space warnings and critical er
 environment:
   - CASS_IP_ALLOW=10.0.0.0/8,192.168.1.0/24
   - CASS_IP_DENIED_REDIRECT=https://example.com/access-denied
+  - CASS_TRUSTED_PROXIES=10.0.0.0/8                  # Reverse proxies allowed to report the client address
+  - CASS_CLIENT_IP_HEADER=x-forwarded-for            # The one header those proxies set (default)
 ```
+
+`CASS_IP_ALLOW` is matched against the address of the connection itself. Behind a reverse proxy or load balancer, that is the proxy: list the proxy addresses in `CASS_TRUSTED_PROXIES`, and CaSS then takes the client address from `CASS_CLIENT_IP_HEADER`, only on connections from those proxies. For `X-Forwarded-For` it uses the rightmost entry that is not a trusted proxy; entries further left were written by the client. Other client-address headers (`X-Client-IP`, `X-Real-IP`, `CF-Connecting-IP` and so on) are ignored, and a forwarded address never counts as loopback. Connections from loopback (CaSS calling itself) are always allowed.
+
+> [!IMPORTANT]
+> Since 1.7.14, client-address headers are honoured only from `CASS_TRUSTED_PROXIES`. Installations that allowlist client addresses through a reverse proxy must set it.
 
 ### Requiring a Signed-In Account
 

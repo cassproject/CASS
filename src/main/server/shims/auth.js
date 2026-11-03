@@ -201,3 +201,6 @@ fs.readdirSync(authDir)
     .filter(f => f.endsWith('.js'))
     .sort()
     .forEach(mod => require(path.join(authDir, mod))(common));
+
+// For tests that load an auth module on its own.
+module.exports = { common };
