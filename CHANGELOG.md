@@ -1,3 +1,7 @@
+## Release v1.7.14
+
+
+
 ## Release v1.7.13
 
 * (SECURITY) `GET /api/kill` now requires the value of `KILL` as a key, sent in the `X-Kill-Key` header or as `?key=`; other requests get 403. BREAKING for anyone calling `/api/kill`: set `KILL` to a long random secret and send it. A flag-like value such as `true` logs a warning at startup.
