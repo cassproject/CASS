@@ -531,11 +531,16 @@ var xapiLoop = async function () {
             // token_endpoint_auth_method (default "client_secret_basic")
         }); // => Client
 
-        tokenSet = await client.grant({
-            resource: 'urn:example:third-party-api',
-            grant_type: 'client_credentials'
-        });
-        debugLog(tokenSet);
+        let grantRequest = {
+            resource: process.env.OIDC_CLIENT_RESOURCE,
+            scope: process.env.OIDC_CLIENT_SCOPE,
+            grant_type: process.env.OIDC_CLIENT_GRANT_TYPE
+        };
+        if (grantRequest.resource == null || grantRequest.resource.trim() == '')
+            delete grantRequest.resource;
+        if (grantRequest.scope == null || grantRequest.scope.trim() == '')
+            delete grantRequest.scope;
+        tokenSet = await client.grant(grantRequest);
     }
 
     var ident = new EcIdentity();

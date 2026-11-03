@@ -125,7 +125,7 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
         // The expiry time is the document version, and is also kept in the document (see put).
         // cleanupExpired only runs once per interval, so reads also treat an expired document as missing.
         function unexpired(doc) {
-            if (doc == null || doc._source == null) return null;
+            if (doc?._source == null) return null;
             const until = doc._source.until != null ? Number(doc._source.until) : doc._version;
             if (until != null && until < Date.now()) return null;
             return rehydrate(doc._source);
