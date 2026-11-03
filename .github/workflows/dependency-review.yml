@@ -36,4 +36,6 @@ jobs:
           comment-summary-in-pr: always
         #   fail-on-severity: moderate
           deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
+          # node-forge is (BSD-3-Clause OR GPL-2.0); CaSS uses it under BSD-3-Clause.
+          allow-dependencies-licenses: pkg:npm/node-forge
         #   retry-on-snapshot-warnings: true

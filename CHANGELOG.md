@@ -1,3 +1,9 @@
+## Release v1.7.14
+
+* (SECURITY) cassproject 5.0.22, with node-forge 1.4.2. Signature checks on rekeyed data require an explicit match.
+* check-disk-space 4. It is ESM-only and is loaded with `import()`, so the disk-space job still runs on every supported Node version.
+* Dependency review accepts node-forge, which is licensed `BSD-3-Clause OR GPL-2.0`; CaSS uses it under BSD-3-Clause.
+
 ## Release v1.7.13
 
 * (SECURITY) `GET /api/kill` now requires the value of `KILL` as a key, sent in the `X-Kill-Key` header or as `?key=`; other requests get 403. BREAKING for anyone calling `/api/kill`: set `KILL` to a long random secret and send it. A flag-like value such as `true` logs a warning at startup.
