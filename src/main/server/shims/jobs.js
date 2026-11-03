@@ -1,10 +1,10 @@
-const checkDiskSpace = require('check-disk-space').default
 const sendMail = require('./mailer.js').sendMail;
 
 let counter = 0;
 global.events.server.periodic.subscribe(async () => {
     if (counter++ % 60 == 0)
     try {
+        const { checkDiskSpace } = await import('check-disk-space'); // ESM-only since 4.0
         let diskSpace = await checkDiskSpace(__dirname);
         let capacity = Math.round((diskSpace.free / diskSpace.size) * 100);
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, "CassDiskSpace", capacity+"% free.");
