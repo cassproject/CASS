@@ -82,7 +82,7 @@
     "@xmldom/xmldom": "^0.9.12",
     "busboy": "^1.6.0",
     "cassproject": "^5.0.20",
-    "check-disk-space": "^3.4.0",
+    "check-disk-space": "^4.0.0",
     "compression": "^1.8.2",
     "cors": "^2.8.6",
     "express": "^5.3.0",
