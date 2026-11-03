@@ -78,7 +78,7 @@ module.exports = function (common) {
                     let i = new EcIdentity();
                     i.displayName = group.replaceAll(/_/g, " ").trim();
                     i.ppk = EcPpk.fromPem(myKey);
-                    if (group.toLowerCase().startsWith("admin")) {
+                    if (group != null && process.env.SKYREPO_ADMIN_GROUP != null && group.toLowerCase() == process.env.SKYREPO_ADMIN_GROUP?.toLowerCase()) {
                         i.ppk = skyrepoAdminKey();
                     }
                     eim.addIdentity(i);
