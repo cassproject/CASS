@@ -1,0 +1,153 @@
+# Update dependencies: run by hand (Actions > Update dependencies > Run workflow, or the button on the intranet
+# Projects page). Finds every npm project in the repository (any directory with a package.json that declares
+# dependencies, not only the root), updates each one, and opens a pull request with the result.
+#
+# The same file is used in every repository on the Projects page; the canonical copy is in
+# Eduworks-Administration/eduworks. Change it there and copy it out, so the repositories don't drift.
+#
+# Updates only rewrite package.json and package-lock.json: nothing is installed and no package scripts run here.
+# Pull requests opened with the workflow token don't start other workflows, so CI runs once someone pushes to
+# the branch, or closes and reopens the pull request.
+name: Update dependencies
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        description: "How far to update: within the existing version ranges, to the latest minor, or to the latest (including majors)"
+        type: choice
+        default: within ranges
+        options: [within ranges, minor, latest]
+      path:
+        description: Only update projects under this directory (blank for the whole repository)
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-dependencies-${{ github.ref }}
+
+env:
+  NODE_VERSION: "24"
+  NCU: npm-check-updates@23.1.1
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Find npm projects
+        env:
+          ONLY: ${{ inputs.path }}
+        run: |
+          # Tracked package.json files outside node_modules and vendored copies (vendor/, vendors/) that declare
+          # dependencies. Members of an npm workspace are updated through the workspace root.
+          git ls-files -z -- '*package.json' | node -e '
+            const fs = require("fs"), path = require("path")
+            const only = (process.env.ONLY || "").replace(/^\.?\/+|\/+$/g, "")
+            const dirs = fs.readFileSync(0, "utf8").split("\0")
+              .filter((f) => path.basename(f) === "package.json")
+              .filter((f) => !f.split("/").some((s) => s === "node_modules" || s === "vendor" || s === "vendors"))
+              .map((f) => [path.dirname(f), JSON.parse(fs.readFileSync(f, "utf8"))])
+            const workspaces = dirs.filter(([, p]) => p.workspaces).map(([d]) => d)
+            const inWorkspace = (d) => workspaces.some((w) => w !== d && (w === "." || d.startsWith(w + "/")))
+            for (const [d, p] of dirs) {
+              const deps = Object.keys({ ...p.dependencies, ...p.devDependencies, ...p.optionalDependencies }).length
+              if (!deps || inWorkspace(d)) continue
+              if (only && d !== only && !d.startsWith(only + "/")) continue
+              console.log(d)
+            }' > "$RUNNER_TEMP/projects"
+          echo "Projects:"; sed 's/^/  /' "$RUNNER_TEMP/projects"
+          [ -s "$RUNNER_TEMP/projects" ] || { echo "::error::No npm projects found${ONLY:+ under $ONLY}"; exit 1; }
+
+      - name: Update
+        env:
+          LEVEL: ${{ inputs.level }}
+        run: |
+          # One project failing (e.g. a dependency conflict) doesn't stop the others; it's reported in the PR.
+          : > "$RUNNER_TEMP/updated"; : > "$RUNNER_TEMP/unchanged"; : > "$RUNNER_TEMP/failed"
+          flags="--package-lock-only --ignore-scripts --no-audit --no-fund"
+          while IFS= read -r dir; do
+            echo "::group::$dir"
+            had_lock=false; [ -f "$dir/package-lock.json" ] && had_lock=true
+            if (
+              cd "$dir"
+              case "$LEVEL" in
+                "within ranges") npm update --save $flags ;;
+                minor) npx -y "$NCU" -u --target minor && npm install $flags ;;
+                latest) npx -y "$NCU" -u && npm install $flags ;;
+              esac
+            ); then
+              # Projects without a lockfile stay without one: only their package.json ranges change.
+              $had_lock || rm -f "$dir/package-lock.json"
+              if git diff --quiet -- "$dir/package.json" "$dir/package-lock.json"; then
+                echo "$dir" >> "$RUNNER_TEMP/unchanged"
+              else
+                echo "$dir" >> "$RUNNER_TEMP/updated"
+              fi
+            else
+              echo "::warning::$dir: update failed"
+              git checkout -- "$dir" 2>/dev/null
+              $had_lock || rm -f "$dir/package-lock.json"
+              echo "$dir" >> "$RUNNER_TEMP/failed"
+            fi
+            echo "::endgroup::"
+          done < "$RUNNER_TEMP/projects"
+
+      - name: Open pull request
+        env:
+          LEVEL: ${{ inputs.level }}
+          TOKEN: ${{ github.token }}
+        run: |
+          list() { if [ -s "$1" ]; then sed 's/.*/- `&`/' "$1"; else echo "- (none)"; fi; }
+          {
+            echo "Dependency update (**$LEVEL**), run by @$GITHUB_ACTOR from the [Update dependencies workflow]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            echo
+            echo "### Updated"; list "$RUNNER_TEMP/updated"
+            echo; echo "### Failed (left unchanged; see the run log)"; list "$RUNNER_TEMP/failed"
+            echo; echo "### Already up to date"; list "$RUNNER_TEMP/unchanged"
+            echo
+            echo "Only package.json and package-lock.json were changed; nothing was installed or built."
+            echo "CI doesn't start on pull requests opened by a workflow: close and reopen this pull request (or push to it) to run it."
+          } > "$RUNNER_TEMP/body.md"
+          cat "$RUNNER_TEMP/body.md" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ ! -s "$RUNNER_TEMP/updated" ]; then
+            echo "Nothing to update."
+            [ ! -s "$RUNNER_TEMP/failed" ] || exit 1
+            exit 0
+          fi
+
+          branch="dependencies/$(echo "$LEVEL" | tr ' ' '-')-$(date -u +%Y%m%d)-$GITHUB_RUN_NUMBER"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          while IFS= read -r dir; do git add -- "$dir/package.json" "$dir/package-lock.json" 2>/dev/null || git add -- "$dir/package.json"; done < "$RUNNER_TEMP/updated"
+          git commit -q -m "Update dependencies ($LEVEL)" -m "$(cat "$RUNNER_TEMP/updated")"
+          git push -q origin "$branch"
+
+          node -e '
+            const fs = require("fs")
+            console.log(JSON.stringify({
+              title: `Update dependencies (${process.env.LEVEL})`,
+              head: process.argv[1], base: process.env.GITHUB_REF_NAME,
+              body: fs.readFileSync(process.env.RUNNER_TEMP + "/body.md", "utf8"),
+            }))' "$branch" > "$RUNNER_TEMP/pr.json"
+          if url=$(curl -fsS -X POST -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" \
+              "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls" -d @"$RUNNER_TEMP/pr.json" | node -pe 'JSON.parse(require("fs").readFileSync(0)).html_url' 2>/dev/null); then
+            echo "Opened $url"; echo "**Pull request:** $url" >> "$GITHUB_STEP_SUMMARY"
+          else
+            # The organization may not allow workflows to open pull requests; the branch is pushed either way.
+            compare="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/$GITHUB_REF_NAME...$branch?expand=1"
+            echo "::warning::Couldn't open the pull request; open it from $compare"
+            echo "**Open the pull request:** $compare" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          [ ! -s "$RUNNER_TEMP/failed" ] || exit 1
