@@ -486,7 +486,7 @@ ident.ppk = EcPpk.fromPem(xapiMePpk);
 let xapiIm = new EcIdentityManager();
 EcIdentityManager.default.addIdentity(ident);
 xapiIm.addIdentity(ident);
-xapiKey = function () {
+const xapiKey = function () {
     return ident.ppk.toPk().toPem();
 }
 

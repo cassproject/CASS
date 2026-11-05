@@ -682,7 +682,7 @@ if (global.jsonLdToTurtle === undefined) {
     };
 };
 
-toTurtleInternal = function (o) {
+const toTurtleInternal = function (o) {
     return new Promise(async function (resolve, reject) { // NOSONAR -- Blends async and callback, which needs direct promise access.
         let rdf = await jsonld.toRDF(o, { format: 'application/n-quads' });
         let store = $rdf.graph();

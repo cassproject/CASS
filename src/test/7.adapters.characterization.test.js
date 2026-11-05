@@ -384,6 +384,27 @@ describe('Adapter output (characterization)', function () {
         }
     });
 
+    describe('Module scope', function () {
+        // These were assigned without a declaration, so every request shared them through the global object.
+        const formerGlobals = [
+            'cfError', 'cfGetFramework', 'cfGetCompetency', 'cfGetAlignment', 'cfClean', 'cfDocuments', 'cfAssociations',
+            'cfAssociationGroupings', 'cfConcepts', 'cfItems', 'cfItemAssociations', 'cfItemTypes', 'cfLicenses',
+            'cfPackages', 'cfRubrics', 'cfSubjects', 'result', 't',
+            'stripCassNamespace', 'setDateCreated', 'getTimestamp', 'convertCFDocumentToFramework',
+            'convertCFAssociationIntoRelation', 'convertCFItemIntoCompetency', 'embedCFPackageIntoFramework',
+            'testSuiteCase', 'ingestCase', 'getDocuments',
+            'badgeSetup', 'badgeKey', 'badgeGetPerson', 'badgeCryptographicKey', 'badgeProfile', 'badgeSubject',
+            'badgeClass', 'badgeAssertion', 'openbadgeCheckId',
+            'guid', 'xapiKey', 'assertionHash', 'people', 'toTurtleInternal', 'skyrepoCull', 'skyrepoCullFast'
+        ];
+
+        it('adapters, profile helpers and utilities leave nothing on the global object', () => {
+            // The tests above have exercised each of these code paths.
+            const leaked = formerGlobals.filter((name) => Object.prototype.hasOwnProperty.call(global, name));
+            assert.deepEqual(leaked, []);
+        });
+    });
+
     describe('Turtle', function () {
         it('jsonLdToTurtle serializes JSON-LD', async () => {
             const turtle = await global.jsonLdToTurtle({

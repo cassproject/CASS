@@ -765,7 +765,7 @@ let skyrepoPurge = async function () {
  */
 bindWebService('/util/purge', skyrepoPurge);
 
-skyrepoCull = async function () {
+const skyrepoCull = async function () {
     if (this.params.secret.trim() !== skyIdSecret().trim()) {
         error('You must provide secret=`cat skyId.secret` to invoke reindex.', 401);
     }
@@ -863,7 +863,7 @@ skyrepoCull = async function () {
  *         description: Invalid or missing secret.
  */
 bindWebService('/util/cull', skyrepoCull);
-skyrepoCullFast = async function () {
+const skyrepoCullFast = async function () {
     if (this.params.secret.trim() !== skyIdSecret().trim()) {
         error('You must provide secret=`cat skyId.secret` to invoke reindex.', 401);
     }

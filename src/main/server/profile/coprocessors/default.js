@@ -40,10 +40,6 @@ let fetchAssertions = async function () {
     assertions.sort((a, b) => {
         return b.id.localeCompare(a.id);
     });
-    let concatAssertions = "";
-    for (let assertion of assertions)
-        concatAssertions += assertion.id;
-    assertionHash = EcCrypto.md5(concatAssertions);
     return assertions;
 }
 let insertResources = async function () {

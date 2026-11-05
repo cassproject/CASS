@@ -169,7 +169,7 @@ parentPort.on('message', async (param) => {
             }
 
             if (workerData.allFrameworks != null) {
-                allFrameworks = [];
+                global.allFrameworks = [];
                 for (let framework of workerData.allFrameworks) {
                     let f = new EcFramework();
                     f.copyFrom(framework);
@@ -180,7 +180,7 @@ parentPort.on('message', async (param) => {
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", `cache updated with ${cacheInsertCounter} items`);
         }
         if (allFrameworks.length == 0) {
-            allFrameworks = await EcFramework.search(repo, "@type:Framework", null, null, { size: 10000 });
+            global.allFrameworks = await EcFramework.search(repo, "@type:Framework", null, null, { size: 10000 });
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "WorkerMessage", `Profile Calculator: Fetched ${allFrameworks.length} frameworks for determining network effects.`);
         }
 

@@ -64,7 +64,7 @@ let anythingToPerson = global.anythingToPerson = async (subject) => {
         try {
             person = await EcPerson.getByPk(repo, EcPk.fromPem(subject)).catch(() => {});
             if (person == null) {
-                people = await EcPerson.search(repo, `owner:"${subject}"`);
+                let people = await EcPerson.search(repo, `owner:"${subject}"`);
                 people = people.filter((p) => p.owner[0] == subject);
                 if (people.length > 0) person = people[0];
                 if (people.length > 1) global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, 'AnythingToPerson', `Looking for person, found people! ${people.length}`);

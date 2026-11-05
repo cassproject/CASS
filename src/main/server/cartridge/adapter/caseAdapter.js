@@ -2,7 +2,7 @@ let loopback = require('../../shims/cassproject.js');
 const { skyrepoGet } = require('../../skyRepo/get');
 const { skyrepoSearch } = require('../../skyRepo/search');
 
-cfError = function (code, codeMajor, severity, description, codeMinor, codeMinorValue) {
+const cfError = function (code, codeMajor, severity, description, codeMinor, codeMinorValue) {
     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CaseAdapterError', {
         "imsx_codeMajor": codeMajor,
         "imsx_severity": severity,
@@ -31,7 +31,7 @@ cfError = function (code, codeMajor, severity, description, codeMinor, codeMinor
     }));
 }
 
-cfGetFramework = async function (f) {
+const cfGetFramework = async function (f) {
     var query = queryParse.call(this);
     if (f == null || f === undefined || !EcObject.isObject(f)) {
         if (f == null)
@@ -64,7 +64,7 @@ var cfGetContext = function () {
         this.cfContext = JSON.stringify(httpGet("https://schema.cassproject.org/imscasev1p0_context_v1p0.jsonld"));
     return this.cfContext;
 }
-cfGetCompetency = async function (c) {
+const cfGetCompetency = async function (c) {
     var cache = JSON.stringify(c)
     if (this[cache] != null)
         return this[cache];
@@ -109,7 +109,7 @@ cfGetCompetency = async function (c) {
     this[cache] = c;
     return c;
 };
-cfGetAlignment = async function (c) {
+const cfGetAlignment = async function (c) {
     var query = queryParse.call(this);
     var url = null;
     if (!EcObject.isObject(c)) {
@@ -136,7 +136,7 @@ cfGetAlignment = async function (c) {
     }
     return c;
 };
-cfClean = function (o) {
+const cfClean = function (o) {
     o = JSON.parse(JSON.stringify(o));
     for (var key in o) {
         if (key.contains("/"))
@@ -169,7 +169,7 @@ cfClean = function (o) {
     429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
     500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfDocuments = async function (f, terms) {
+const cfDocuments = async function (f, terms) {
     f = await cfGetFramework.call(this, f);
     if (f == null) {
         var aggResults = [];
@@ -220,7 +220,7 @@ cfDocuments = async function (f, terms) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfAssociations = async function () {
+const cfAssociations = async function () {
     return await cfItemAssociations.call(this);
 }
 /*Errors:
@@ -231,7 +231,7 @@ cfAssociations = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfAssociationGroupings = async function () {
+const cfAssociationGroupings = async function () {
     error("Not yet implemented.", 501)
 }
 /*Errors:
@@ -242,7 +242,7 @@ cfAssociationGroupings = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfConcepts = async function () {
+const cfConcepts = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -253,10 +253,9 @@ cfConcepts = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItems = async function (f, fw, terms) {
+const cfItems = async function (f, fw, terms) {
     var query = queryParse.call(this);
     f = await cfGetCompetency.call(this, f);
-    result = {};
     var shortId = f.shortId();
     var guid = f.getGuid();
     if (guid.startsWith("ce-"))
@@ -298,7 +297,7 @@ cfItems = async function (f, fw, terms) {
         var parent = skyrepoSearch.call(this, "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
-        t = parent[0];
+        const t = parent[0];
         parent[0] = new EcFramework();
         parent[0].copyFrom(t);
     }
@@ -318,10 +317,9 @@ cfItems = async function (f, fw, terms) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItemAssociations = async function (f, fw, terms) {
+const cfItemAssociations = async function (f, fw, terms) {
     var query = queryParse.call(this);
     f = await cfGetAlignment.call(this, f);
-    result = {};
     var timestamp = f.getTimestamp();
     var guid = f.getGuid();
     var shortId = f.shortId();
@@ -340,7 +338,7 @@ cfItemAssociations = async function (f, fw, terms) {
         var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
-        t = parent[0];
+        const t = parent[0];
         fw = new EcFramework();
         fw.copyFrom(t);
     }
@@ -384,7 +382,7 @@ cfItemAssociations = async function (f, fw, terms) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItemTypes = async function () {
+const cfItemTypes = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -395,7 +393,7 @@ cfItemTypes = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfLicenses = async function () {
+const cfLicenses = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -407,7 +405,7 @@ cfLicenses = async function () {
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
 var repo;
-cfPackages = async function (f) {
+const cfPackages = async function (f) {
     if (repo == null)
         repo = new EcRepository();
     repo.selectedServer = global.repo.selectedServer;
@@ -462,7 +460,7 @@ cfPackages = async function (f) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfRubrics = async function () {
+const cfRubrics = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -473,7 +471,7 @@ cfRubrics = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfSubjects = async function () {
+const cfSubjects = async function () {
     error("Not yet implemented.", 501)
 }
 
