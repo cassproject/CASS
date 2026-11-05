@@ -129,6 +129,12 @@ describe('skyRepo/searchUtil.js', function () {
             }
         });
 
+        it('handles a remainder of many slashes in linear time', () => {
+            const start = Date.now();
+            searchUtil.searchUrl('/'.repeat(50000) + 'x' + '/'.repeat(50000) + 'x', null);
+            assert.isBelow(Date.now() - start, 1000);
+        });
+
         it('every produced index expression ends with the exclusions', () => {
             const cases = [
                 [null, null], [null, 'permanent'], [null, 'ephemeral'], [null, '*'], [null, '@*'], [null, '@foreign'],

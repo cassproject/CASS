@@ -37,6 +37,12 @@ describe('MCP Adapter — http-client', function () {
         assert.strictEqual(url, '/ping');
     });
 
+    it('trims a base URL of many slashes in linear time', () => {
+        const start = Date.now();
+        buildRequest('get', '/api/ping', {}, params, { baseUrl: 'http://cass.test' + '/'.repeat(50000) + 'x' + '/'.repeat(50000) + 'x' });
+        assert.isBelow(Date.now() - start, 1000);
+    });
+
     it('trims trailing slashes from CASS_URL', async () => {
         const saved = process.env.CASS_URL;
         process.env.CASS_URL = 'http://env.test/api//';

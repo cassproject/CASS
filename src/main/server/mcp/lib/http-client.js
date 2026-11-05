@@ -12,7 +12,18 @@
  * Set CASS_DEBUG=true to log all requests and responses to stderr.
  */
 
-const CASS_URL = (process.env.CASS_URL || 'http://localhost/api').replace(/\/+$/, '');
+/**
+ * Remove trailing slashes. A loop, because /\/+$/ backtracks quadratically on long runs of slashes.
+ * @param {string} s
+ * @returns {string}
+ */
+function trimTrailingSlashes(s) {
+    let end = s.length;
+    while (end > 0 && s[end - 1] === '/') end--;
+    return s.slice(0, end);
+}
+
+const CASS_URL = trimTrailingSlashes(process.env.CASS_URL || 'http://localhost/api');
 const DEBUG = process.env.CASS_DEBUG === 'true';
 
 /** Max characters of response body to show in debug output. */
@@ -42,7 +53,7 @@ function debug(...args) {
  * @returns {{ url: string, fetchOptions: Object }}
  */
 export function buildRequest(method, pathTemplate, args, parameterMap, options = {}) {
-    const baseUrl = (options.baseUrl || CASS_URL).replace(/\/+$/, '');
+    const baseUrl = trimTrailingSlashes(options.baseUrl || CASS_URL);
 
     let resolvedPath = pathTemplate;
     const queryParams = new URLSearchParams();
