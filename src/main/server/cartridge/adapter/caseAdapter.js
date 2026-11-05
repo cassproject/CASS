@@ -201,7 +201,7 @@ const cfDocuments = async function (f, terms) {
         }
     }
     let f2 = cfClean(f);
-    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFDocuments/" + guid;
@@ -279,7 +279,7 @@ const cfItems = async function (f, fw, terms) {
         }
     }
     let f2 = cfClean(f);
-    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     if (f2.title != null)
         f2.fullStatement = f2.title;
@@ -344,7 +344,7 @@ const cfItemAssociations = async function (f, fw, terms) {
     }
     else
         parent = [fw];
-    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     f2.associationType = { "isEquivalentTo": "exactMatchOf", "narrows": "isChildOf" }[f2["case:relationType"]];
     delete f2["case:relationType"];
     if (f2["case:destinationNodeURI"] == null) return null;
@@ -423,7 +423,7 @@ const cfPackages = async function (f) {
     repo.precache(toPrecache, function (results) { });
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2caseTerms")), true));
 
-    result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     result.CFDocument = JSON.parse(await cfDocuments.call(this, f, terms));
     delete result.CFDocument["@context"];
     result.CFItems = [];

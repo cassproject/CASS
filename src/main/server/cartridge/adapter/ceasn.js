@@ -13,10 +13,10 @@ var asnContext = {
     "dct": "http://purl.org/dc/terms/",
     "gem": "http://purl.org/gem/elements/",
     "gemq": "http://purl.org/gem/qualifiers/",
-    "loc": "http://www.loc.gov/loc.terms/",
-    "locr": "http://www.loc.gov/loc.terms/relators/",
-    "meta": "http://credreg.net/meta/terms/",
-    "publicationStatus": "http://credreg.net/ctdlasn/vocabs/publicationStatus/",
+    "loc": "http://www.loc.gov/loc.terms/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
+    "locr": "http://www.loc.gov/loc.terms/relators/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
+    "meta": "http://credreg.net/meta/terms/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
+    "publicationStatus": "http://credreg.net/ctdlasn/vocabs/publicationStatus/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "schema": "http://schema.org/",
