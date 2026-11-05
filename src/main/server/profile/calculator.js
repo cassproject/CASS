@@ -473,3 +473,5 @@ const cloneGraph = (g) => {
     Object.assign(g2.outEdgeCache, g.outEdgeCache);
     return g2;
 };
+// For tests.
+module.exports.getPersistentSafeHash = getPersistentSafeHash;

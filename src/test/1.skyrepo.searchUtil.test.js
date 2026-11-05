@@ -115,6 +115,20 @@ describe('skyRepo/searchUtil.js', function () {
             }
         });
 
+        it('strips every leading and trailing slash from the remainder, and only those', () => {
+            const cases = [
+                ['competency', 'competency'], ['/competency', 'competency'], ['competency/', 'competency'],
+                ['///competency///', 'competency'], ['/a/b/', 'a/b'], ['a//b', 'a//b'],
+                ['/', null], ['////', null], ['', null], [12, '12'],
+            ];
+            for (const [remainder, index] of cases) {
+                const expected = index == null
+                    ? DEFAULT()
+                    : ep() + '/' + index + EXCLUSION + '/_search';
+                assert.strictEqual(searchUtil.searchUrl(remainder, null), expected, `remainder=${JSON.stringify(remainder)}`);
+            }
+        });
+
         it('every produced index expression ends with the exclusions', () => {
             const cases = [
                 [null, null], [null, 'permanent'], [null, 'ephemeral'], [null, '*'], [null, '@*'], [null, '@foreign'],
