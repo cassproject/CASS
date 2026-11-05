@@ -1,5 +1,5 @@
-# Update dependencies: run by hand (Actions > Update dependencies > Run workflow, or the button on the intranet
-# Projects page). Finds every npm project in the repository (any directory with a package.json that declares
+# Update dependencies: runs weekly (Mondays, within ranges) and by hand (Actions > Update dependencies > Run
+# workflow, or the button on the intranet Projects page). Finds every npm project in the repository (any directory with a package.json that declares
 # dependencies, not only the root), updates each one, and opens a pull request with the result.
 #
 # The same file is used in every repository on the Projects page; the canonical copy is in
@@ -7,10 +7,13 @@
 #
 # Updates only rewrite package.json and package-lock.json: nothing is installed and no package scripts run here.
 # Pull requests opened with the workflow token don't start other workflows, so CI runs once someone pushes to
-# the branch, or closes and reopens the pull request.
+# the branch, or closes and reopens the pull request. The weekly run keeps one pull request (branch
+# dependencies/weekly) and refreshes it each week instead of opening another; manual runs each open their own.
 name: Update dependencies
 
 on:
+  schedule:
+    - cron: "0 13 * * 1" # Mondays 13:00 UTC
   workflow_dispatch:
     inputs:
       level:
@@ -70,10 +73,10 @@ jobs:
 
       - name: Update
         env:
-          LEVEL: ${{ inputs.level }}
+          LEVEL: ${{ inputs.level || 'within ranges' }} # scheduled runs have no inputs
         run: |
           # One project failing (e.g. a dependency conflict) doesn't stop the others; it's reported in the PR.
-          : > "$RUNNER_TEMP/updated"; : > "$RUNNER_TEMP/unchanged"; : > "$RUNNER_TEMP/failed"
+          : > "$RUNNER_TEMP/updated"; : > "$RUNNER_TEMP/unchanged"; : > "$RUNNER_TEMP/failed"; : > "$RUNNER_TEMP/fresh"
           flags="--package-lock-only --ignore-scripts --no-audit --no-fund"
           while IFS= read -r dir; do
             echo "::group::$dir"
@@ -81,10 +84,16 @@ jobs:
             if (
               cd "$dir"
               case "$LEVEL" in
-                "within ranges") npm update --save $flags ;;
-                minor) npx -y "$NCU" -u --target minor && npm install $flags ;;
-                latest) npx -y "$NCU" -u && npm install $flags ;;
+                minor) npx -y "$NCU" -u --target minor || exit 1 ;;
+                latest) npx -y "$NCU" -u || exit 1 ;;
               esac
+              if [ "$LEVEL" = "within ranges" ]; then npm update --save $flags; else npm install $flags; fi || {
+                # Resolving on top of the old lockfile can conflict with stale entries (ERESOLVE on a peer the
+                # project no longer needs); resolving from scratch usually succeeds. Flagged in the PR for review.
+                $had_lock || exit 1
+                echo "::notice::$dir: conflict with the existing lockfile; resolving from scratch"
+                rm -f package-lock.json && npm install $flags && echo "$dir" >> "$RUNNER_TEMP/fresh"
+              }
             ); then
               # Projects without a lockfile stay without one: only their package.json ranges change.
               $had_lock || rm -f "$dir/package-lock.json"
@@ -104,14 +113,21 @@ jobs:
 
       - name: Open pull request
         env:
-          LEVEL: ${{ inputs.level }}
+          LEVEL: ${{ inputs.level || 'within ranges' }} # scheduled runs have no inputs
           TOKEN: ${{ github.token }}
         run: |
           list() { if [ -s "$1" ]; then sed 's/.*/- `&`/' "$1"; else echo "- (none)"; fi; }
           {
-            echo "Dependency update (**$LEVEL**), run by @$GITHUB_ACTOR from the [Update dependencies workflow]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            if [ "$GITHUB_EVENT_NAME" = schedule ]; then by="the weekly schedule"; else by="@$GITHUB_ACTOR"; fi
+            echo "Dependency update (**$LEVEL**), run by $by from the [Update dependencies workflow]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
             echo
             echo "### Updated"; list "$RUNNER_TEMP/updated"
+            if [ -s "$RUNNER_TEMP/fresh" ]; then
+              echo; echo "### Lockfile rebuilt from scratch (review more closely)"
+              echo "These conflicted with entries in their existing package-lock.json, so it was regenerated; every"
+              echo "transitive dependency may have moved, not only the ones listed in package.json."
+              list "$RUNNER_TEMP/fresh"
+            fi
             echo; echo "### Failed (left unchanged; see the run log)"; list "$RUNNER_TEMP/failed"
             echo; echo "### Already up to date"; list "$RUNNER_TEMP/unchanged"
             echo
@@ -121,19 +137,35 @@ jobs:
           cat "$RUNNER_TEMP/body.md" >> "$GITHUB_STEP_SUMMARY"
 
           if [ ! -s "$RUNNER_TEMP/updated" ]; then
-            echo "Nothing to update."
-            [ ! -s "$RUNNER_TEMP/failed" ] || exit 1
+            if [ -s "$RUNNER_TEMP/failed" ]; then
+              echo "::error::No project was updated, and these failed: $(paste -sd, "$RUNNER_TEMP/failed") (see the Update step)"
+              exit 1
+            fi
+            echo "Already up to date."
             exit 0
           fi
 
-          branch="dependencies/$(echo "$LEVEL" | tr ' ' '-')-$(date -u +%Y%m%d)-$GITHUB_RUN_NUMBER"
+          if [ "$GITHUB_EVENT_NAME" = schedule ]; then
+            branch=dependencies/weekly # rebuilt from the default branch every week
+          else
+            branch="dependencies/$(echo "$LEVEL" | tr ' ' '-')-$(date -u +%Y%m%d)-$GITHUB_RUN_NUMBER"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "$branch"
           while IFS= read -r dir; do git add -- "$dir/package.json" "$dir/package-lock.json" 2>/dev/null || git add -- "$dir/package.json"; done < "$RUNNER_TEMP/updated"
           git commit -q -m "Update dependencies ($LEVEL)" -m "$(cat "$RUNNER_TEMP/updated")"
-          git push -q origin "$branch"
+          git push -q --force origin "$branch"
 
+          api() { curl -fsS -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" "$@"; }
+          # The weekly branch's pull request, if still open, picks up the new commit.
+          existing=$(api "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls?state=open&head=${GITHUB_REPOSITORY%%/*}:$branch" |
+            node -pe 'JSON.parse(require("fs").readFileSync(0))[0]?.html_url ?? ""' 2>/dev/null || true)
+          if [ -n "$existing" ]; then
+            echo "Updated $existing"; echo "**Pull request (updated):** $existing" >> "$GITHUB_STEP_SUMMARY"
+            [ ! -s "$RUNNER_TEMP/failed" ] || exit 1
+            exit 0
+          fi
           node -e '
             const fs = require("fs")
             console.log(JSON.stringify({
@@ -141,8 +173,7 @@ jobs:
               head: process.argv[1], base: process.env.GITHUB_REF_NAME,
               body: fs.readFileSync(process.env.RUNNER_TEMP + "/body.md", "utf8"),
             }))' "$branch" > "$RUNNER_TEMP/pr.json"
-          if url=$(curl -fsS -X POST -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" \
-              "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls" -d @"$RUNNER_TEMP/pr.json" | node -pe 'JSON.parse(require("fs").readFileSync(0)).html_url' 2>/dev/null); then
+          if url=$(api -X POST "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls" -d @"$RUNNER_TEMP/pr.json" | node -pe 'JSON.parse(require("fs").readFileSync(0)).html_url' 2>/dev/null); then
             echo "Opened $url"; echo "**Pull request:** $url" >> "$GITHUB_STEP_SUMMARY"
           else
             # The organization may not allow workflows to open pull requests; the branch is pushed either way.
