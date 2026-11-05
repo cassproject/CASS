@@ -34,7 +34,7 @@ module.exports = function (common) {
         app.use(async function (req, res, next) {
 
             if (process.env.CASS_SESSION_VALIDATION_INTERVAL) {
-                const validationIntervalMs = parseInt(process.env.CASS_SESSION_VALIDATION_INTERVAL) * 1000;
+                const validationIntervalMs = Number.parseInt(process.env.CASS_SESSION_VALIDATION_INTERVAL) * 1000;
                 const now = Date.now();
 
                 if (req.oidc && req.oidc.session) {
@@ -86,7 +86,7 @@ module.exports = function (common) {
             if (req.originalUrl == "/.well-known/oauth-authorization-server") { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth discovery is permitted
             if (req.originalUrl == "/.well-known/oauth-protected-resource") { req.permittedBy.push("Permitted by: " + 'oauth discovery'); allowed = true; } //MCP OAuth resource metadata is permitted
             if (process.env.CASS_SSO_ACCOUNT_REQUIRED != null)
-                if (req.eim != null && req.eim.ids.length >= parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED)) { req.permittedBy.push("Permitted by: " + 'sso ids > ' + process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length); allowed = true; } //In a permissioned group.
+                if (req.eim != null && req.eim.ids.length >= Number.parseInt(process.env.CASS_SSO_ACCOUNT_REQUIRED)) { req.permittedBy.push("Permitted by: " + 'sso ids > ' + process.env.CASS_SSO_ACCOUNT_REQUIRED + ": " + req.eim.ids.length); allowed = true; } //In a permissioned group.
 
             // Validate OAuth Bearer tokens (for MCP/API clients that authenticated via the OAuth flow).
             if (!allowed && req.headers.authorization) {

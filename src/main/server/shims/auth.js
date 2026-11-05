@@ -154,7 +154,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-var isNumeric = function (n) { return !isNaN(parseFloat(n)) && isFinite(n); };
+var isNumeric = function (n) { return !Number.isNaN(Number.parseFloat(n)) && Number.isFinite(Number(n)); };
 
 var ipMatch = function (list, clientIp) {
     if (clientIp && Address.isValid(clientIp)) {
@@ -169,7 +169,7 @@ var ipMatch = function (list, clientIp) {
             var range = e.split('/');
             if (range.length === 2 && Address.isValid(range[0]) && isNumeric(range[1])) {
                 var ip = Address.process(range[0]);
-                var bit = parseInt(range[1], 10);
+                var bit = Number.parseInt(range[1], 10);
 
                 // `IP.kind()` return `'ipv4'` or `'ipv6'`. Only same type can be `match`.
                 if (clientIp.kind() === ip.kind()) {

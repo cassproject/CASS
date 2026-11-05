@@ -56,7 +56,7 @@ let skyrepoIndexCountsMatch = async function (destination, source, atLeast) {
  */
 let skyrepoAwaitReindex = async function (task, destination, source, label, atLeast) {
     const pollMs = 2000;
-    const deadline = new Date().getTime() + (parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 36000) * 1000;
+    const deadline = new Date().getTime() + (Number.parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 36000) * 1000;
     let lastProgress = null;
     let lastChange = new Date().getTime();
     let polls = 0;
@@ -105,7 +105,7 @@ let skyrepoAwaitReindex = async function (task, destination, source, label, atLe
  *  or a resumed copy continues where it left off.
  */
 let skyrepoReindexInBatches = async function (source, destination, script, label, startBatch, atLeast) {
-    const batch = Math.max(1, startBatch || parseInt(process.env.PERMANENT_MIGRATION_BATCH) || 100);
+    const batch = Math.max(1, startBatch || Number.parseInt(process.env.PERMANENT_MIGRATION_BATCH) || 100);
     const sizes = [...new Set([batch, Math.max(1, Math.floor(batch / 4)), Math.max(1, Math.floor(batch / 16))])];
     let result;
     for (const [attempt, size] of sizes.entries()) {
@@ -806,7 +806,7 @@ skyrepoCull = async function () {
                 let latest = await httpGet(elasticEndpoint + '/permanent/_doc/' + latestId + ".", global.elasticHeaders());
                 if (latest != null && latest._source != null) {
                     let latestVersion = EcRemoteLinkedData.getVersionFromUrl(JSON.parse(latest._source.data)["@id"]);
-                    let version = parseInt(id.substring(id.indexOf('.') + 1));
+                    let version = Number.parseInt(id.substring(id.indexOf('.') + 1));
                     if (version != null && latestVersion != null && version < latestVersion) {
                         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'SkyrepoCullLatestDeleted', " Deleting: " + id, " version: " + version + " latest: " + latestVersion);
                         resultsData.deletedRevision++;

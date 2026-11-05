@@ -1532,7 +1532,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
                 timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }
@@ -1673,7 +1673,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
                 timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }
@@ -1726,7 +1726,7 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
                 timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }
@@ -1834,7 +1834,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
                 timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }

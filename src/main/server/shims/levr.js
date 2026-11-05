@@ -34,7 +34,7 @@ if (global.fileToString === undefined) {
 global.postMaxSize = 52428800;
 try {
     if (process.env.POST_MAX_SIZE != null) {
-        global.postMaxSize = parseInt(process.env.POST_MAX_SIZE);
+        global.postMaxSize = Number.parseInt(process.env.POST_MAX_SIZE);
     }
 } catch (e) {
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'PostMaxSize', 'Error setting POST max size from environment variable, using default value.', e);

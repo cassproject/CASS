@@ -202,7 +202,7 @@ let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdge
     //TODO meta.inFrameworks = [...new Set(global.competencyFrameworkMap[vertex.shortId()])],
     meta.type = schema.Thing.getDisplayStringFrom(vertex["dcterms:type"]);
     if (vertex.requiredSignatureCount != null)
-        meta.requiredSignatureCount = parseInt(vertex.requiredSignatureCount);
+        meta.requiredSignatureCount = Number.parseInt(vertex.requiredSignatureCount);
     meta.children = [];
     
     const state = {
@@ -257,7 +257,7 @@ let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdge
     // CHECKME This was requiredQualifierCount before, assumed it was a typo
     // Insert requiredSignatureCount if it exists on competency
     if (vertex.requiredSignatureCount != null) {
-        meta.requiredDistinctPositiveSignatures = parseInt(vertex.requiredSignatureCount);
+        meta.requiredDistinctPositiveSignatures = Number.parseInt(vertex.requiredSignatureCount);
         state.isQualifiedAccordingToSignatures =
             state.distinctPositiveSignatures > meta.requiredDistinctPositiveSignatures;
     }

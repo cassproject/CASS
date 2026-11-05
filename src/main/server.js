@@ -541,7 +541,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
     }
 
     if (typeof process.env.MAX_CONNECTIONS !== 'undefined') {
-        global.server.maxConnections = parseInt(process.env.MAX_CONNECTIONS);
+        global.server.maxConnections = Number.parseInt(process.env.MAX_CONNECTIONS);
     }
     server.on('connection', function (socket) {
         socket.setKeepAlive(true);

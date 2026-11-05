@@ -29,13 +29,13 @@ const endpointData = async function () {
     let start = 0;
     if (this.params.start !== undefined) {
         if (this.params.start != null) {
-            start = parseInt(this.params.start);
+            start = Number.parseInt(this.params.start);
         }
     }
     let size = 50;
     if (this.params.size !== undefined) {
         if (this.params.size != null) {
-            size = parseInt(this.params.size);
+            size = Number.parseInt(this.params.size);
         }
     }
     if (this.params.refresh !== undefined) {

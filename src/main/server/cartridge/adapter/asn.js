@@ -464,7 +464,7 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                         timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/") + 1);
                     }
                     if (timestamp != null) {
-                        date = new Date(parseInt(timestamp)).toISOString();
+                        date = new Date(Number.parseInt(timestamp)).toISOString();
                     }
                     else {
                         date = new Date().toISOString();
@@ -518,7 +518,7 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                         timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/") + 1);
                     }
                     if (timestamp != null) {
-                        date = new Date(parseInt(timestamp)).toISOString();
+                        date = new Date(Number.parseInt(timestamp)).toISOString();
                     }
                     else {
                         date = new Date().toISOString();

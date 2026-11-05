@@ -4,9 +4,9 @@ let fetchAssertions = async function () {
     let startDate = null;
     let endDate = null;
     if (params.startDate != null)
-        startDate = new Date(parseInt(params.startDate));
+        startDate = new Date(Number.parseInt(params.startDate));
     if (params.endDate != null)
-        endDate = new Date(parseInt(params.endDate));
+        endDate = new Date(Number.parseInt(params.endDate));
     if (startDate == null && endDate == null)
         return;
     this.cache = false;
@@ -19,9 +19,9 @@ let processAssertions = async function () {
     let startDate = null;
     let endDate = null;
     if (params.startDate != null)
-        startDate = new Date(parseInt(params.startDate));
+        startDate = new Date(Number.parseInt(params.startDate));
     if (params.endDate != null)
-        endDate = new Date(parseInt(params.endDate));
+        endDate = new Date(Number.parseInt(params.endDate));
     if (startDate == null && endDate == null)
         return;
     global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassProcessAssertions", `Here I am doing additional processing over assertions and removing those that are before ${startDate} or after ${endDate}.`);
