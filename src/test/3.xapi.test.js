@@ -15,7 +15,7 @@ describe('xAPI Adapter', function () {
     let agentEmail;
     let activityBaseUrl;
 
-    it('Waiting for server to be ready', async () => {
+    before(async function () {
         if (process.env.NODEV != null) return;
         if (!global.events || !global.events.server) return;
         let ready = false;
@@ -123,6 +123,7 @@ describe('xAPI Adapter', function () {
 
         // Wait for Elasticsearch to index
         
+        assert.isNotNull(await EcRepository.get(agentPerson.shortId()), "agentPerson was saved");
     });
 
     /**
@@ -192,6 +193,7 @@ describe('xAPI Adapter', function () {
 
             // Wait for Elasticsearch to index
             
+            assert.isNotNull(await EcRepository.get(cw.shortId()), "cw was saved");
         });
 
         it('Submit positive xAPI statement and verify assertion is created', async () => {
@@ -261,6 +263,7 @@ describe('xAPI Adapter', function () {
             await repo.saveTo(cw);
 
             
+            assert.isNotNull(await EcRepository.get(cw.shortId()), "cw was saved");
         });
 
         it('Submit positive xAPI statement and verify assertions for both C2 and C3', async () => {
@@ -308,6 +311,7 @@ describe('xAPI Adapter', function () {
             }];
             cw.addOwner(agent.ppk.toPk());
             await repo.saveTo(cw);
+            assert.isNotNull(await EcRepository.get(cw.shortId()), "cw was saved");
         });
 
         it('Submit xAPI statement with high score (>0.7) and verify positive assertion', async () => {
@@ -447,6 +451,7 @@ describe('xAPI Adapter', function () {
             }];
             cw.addOwner(agent.ppk.toPk());
             await repo.saveTo(cw);            
+            assert.isNotNull(await EcRepository.get(cw.shortId()), "cw was saved");
         });
 
         it('Submit xAPI statement with result.response "Pass" and verify positive assertion', async () => {

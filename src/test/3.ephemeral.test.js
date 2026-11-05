@@ -16,7 +16,7 @@ describe('Ephemeral store', function () {
     };
     const esDoc = async (id) => (await fetch(global.elasticEndpoint + '/ephemeral/_doc/' + id, { headers: global.elasticHeaders() })).json();
 
-    it('Waiting for server to be ready', async function () {
+    before(async function () {
         if (process.env.NODEV != null || !global.events || !global.events.server) this.skip();
         let ready = false;
         global.events.server.ready.subscribe((isReady) => { if (isReady) ready = true; });

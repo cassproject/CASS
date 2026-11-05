@@ -7,7 +7,7 @@ describe('OpenAPI / Swagger', function () {
     this.timeout(60000);
     let spec;
 
-    it('Waiting for server to be ready', async () => {
+    before(async function () {
         if (process.env.NODEV != null) return;
         if (!global.events || !global.events.server) return;
         let ready = false;

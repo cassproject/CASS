@@ -14,7 +14,7 @@ describe("CEASN Progression Model export", function () {
     let scheme = null;
     const publisherUrl = "https://credentialengineregistry.org/resources/ce-11111111-2222-3333-4444-555555555555";
 
-    it('Waiting for server to be ready', async () => {
+    before(async function () {
         if (process.env.NODEV != null) return;
         let ready = false;
         global.events.server.ready.subscribe(function (isReady) {
