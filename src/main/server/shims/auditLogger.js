@@ -78,7 +78,7 @@ let flush = function () {
             }
         }
     } catch (e) {
-        sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
+        void sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
     }
 };
 
@@ -118,7 +118,7 @@ let report = function (system, severity, message, ...data) {
                 }
             }
         } catch (e) {
-            sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
+            void sendMail(`CaSS Server`, 'Logging Failure', `The CaSS Server at ${process.env.CASS_LOOPBACK} experience a logging failure: ${e}.`);
         }
     } else {
         if (data.length == 1) {

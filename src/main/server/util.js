@@ -212,7 +212,7 @@ let skyrepoMigrate = async function (after) {
     if (elasticState == null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Waiting for Elasticsearch to appear at ' + elasticEndpoint + '...');
         setTimeout(function () {
-            skyrepoMigrate(after);
+            void skyrepoMigrate(after);
         }, 1000);
         return;
     }
@@ -227,7 +227,7 @@ let skyrepoMigrate = async function (after) {
     if (health != 'yellow' && health != 'green') {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'SkyrepMigrate', 'Waiting for cluster health...', health);
         setTimeout(function () {
-            skyrepoMigrate(after);
+            void skyrepoMigrate(after);
         }, 1000);
         return;
     }

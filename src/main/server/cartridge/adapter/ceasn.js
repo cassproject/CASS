@@ -1226,7 +1226,7 @@ async function cassConceptSchemeAsCeasn(framework) {
                             concepts[subC.id] = subC;
                             allConcepts.push(subC.id);
                             if (subC["skos:narrower"]) {
-                                getSubConcepts(subC);
+                                await getSubConcepts(subC);
                             }
                         }
                     }
