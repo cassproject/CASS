@@ -128,9 +128,66 @@ describe('Adapter output (characterization)', function () {
             assert.deepEqual(pkg.CFDefinitions, { CFConcepts: [], CFSubject: [], CFLicenses: [], CFItemTypes: [], CFAssociationGroupings: [] });
         });
 
-        it('CFPackages for an unknown framework fails', async () => {
+        it('CFPackages for an unknown framework is a 404 with an IMS status body', async () => {
             const res = await getText('ims/case/v1p0/CFPackages/' + EcCrypto.generateUUID(), { Accept: 'application/json' });
-            assert.notStrictEqual(res.status, 200);
+            assert.strictEqual(res.status, 404);
+            assert.include(res.text, '"imsx_description":"Framework not found."');
+        });
+
+        // The single-object endpoints return what the package embeds for the same object.
+        let pkg;
+        const embedded = async () => {
+            if (pkg == null) pkg = await getJson('ims/case/v1p0/CFPackages/' + framework.getGuid());
+            return pkg;
+        };
+        const sameAsEmbedded = (actual, expected) => {
+            // Only the standalone form carries the CASE context.
+            assert.strictEqual(actual['@context'], 'http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld');
+            delete actual['@context'];
+            assert.deepEqual(actual, expected);
+        };
+
+        it('CFDocuments/{id} and CFDocuments?id= return the document', async () => {
+            const { CFDocument } = await embedded();
+            sameAsEmbedded(await getJson('ims/case/v1p0/CFDocuments/' + framework.getGuid()), CFDocument);
+            sameAsEmbedded(await getJson('ims/case/v1p0/CFDocuments?id=' + framework.getGuid()), CFDocument);
+        });
+
+        it('CFDocuments without an identifier lists documents as a CFDocumentSet', async () => {
+            const set = await getJson('ims/case/v1p0/CFDocuments');
+            assert.deepEqual(Object.keys(set), ['CFDocuments']);
+            assert.include(set.CFDocuments.map((d) => d.identifier), framework.getGuid());
+        });
+
+        it('CFItems/{id} returns the item and finds its document', async () => {
+            const { CFItems } = await embedded();
+            const expected = CFItems.find((i) => i.identifier === parent.getGuid());
+            sameAsEmbedded(await getJson('ims/case/v1p0/CFItems/' + parent.getGuid()), expected);
+        });
+
+        it('CFAssociations/{id} and CFItemAssociations/{id} return the association and find its document', async () => {
+            const { CFAssociations } = await embedded();
+            const expected = { ...CFAssociations[0] };
+            for (const path of ['CFAssociations/', 'CFItemAssociations/']) {
+                const actual = await getJson('ims/case/v1p0/' + path + relation.getGuid());
+                delete actual.lastChangeDateTime;
+                const want = { ...expected };
+                delete want.lastChangeDateTime;
+                sameAsEmbedded(actual, want);
+            }
+        });
+
+        it('an unknown identifier is a 404 on every single-object endpoint', async () => {
+            for (const path of ['CFDocuments/', 'CFItems/', 'CFAssociations/', 'CFItemAssociations/']) {
+                const res = await getText('ims/case/v1p0/' + path + EcCrypto.generateUUID(), { Accept: 'application/json' });
+                assert.strictEqual(res.status, 404, path + ' ' + res.text);
+            }
+        });
+
+        it('getDocs can read CaSS\'s own CFDocuments', async () => {
+            const res = await getText('ims/case/getDocs?url=' + encodeURIComponent(repo.selectedServer));
+            assert.strictEqual(res.status, 200, res.text);
+            assert.include(JSON.parse(res.text).CFDocuments.map((d) => d.identifier), framework.getGuid());
         });
     });
 
@@ -274,9 +331,13 @@ describe('Adapter output (characterization)', function () {
             assert.strictEqual(key.owner, repo.selectedServer + 'data/' + fingerprint);
         });
 
-        it('/badge/profile for an unknown person fails', async () => {
-            const res = await getText('badge/profile/' + EcCrypto.md5(EcCrypto.generateUUID()));
-            assert.notStrictEqual(res.status, 200);
+        it('/badge/profile and /badge/cryptographicKey for an unknown person are a 405', async () => {
+            const unknown = EcCrypto.md5(EcCrypto.generateUUID());
+            const profile = await getText('badge/profile/' + unknown);
+            assert.strictEqual(profile.status, 405);
+            assert.include(profile.text, 'Insufficient data available to generate issuer.');
+            const key = await getText('badge/cryptographicKey/' + unknown);
+            assert.strictEqual(key.status, 405);
         });
 
         it('/badge/class describes a competency as a badge class', async () => {
@@ -322,6 +383,29 @@ describe('Adapter output (characterization)', function () {
             const scd = await getJson('scd/' + outside.getGuid());
             assert.deepEqual(scd.competencyDefinition, [repo.selectedServer + 'scd/' + EcCrypto.md5('https://elsewhere.example.com/competency/42')]);
             assert.deepEqual(scd.resourceAssociation, [repo.selectedServer + 'scd/' + relation.getGuid()]);
+        });
+
+        it('a framework with no relations leaves resourceAssociation out', async () => {
+            const lonely = new EcFramework();
+            lonely.generateId(repo.selectedServer);
+            lonely.setName('Framework without relations');
+            lonely.addOwner(owner.ppk.toPk());
+            lonely.addCompetency(parent.shortId());
+            await repo.saveTo(lonely);
+            const scd = await getJson('scd/' + lonely.getGuid());
+            assert.deepEqual(scd.competencyDefinition, [repo.selectedServer + 'scd/' + parent.getGuid()]);
+            assert.notProperty(scd, 'resourceAssociation');
+        });
+
+        it('a competency is described with the frameworks it belongs to', async () => {
+            const scd = await getJson('scd/' + parent.getGuid());
+            assert.strictEqual(scd.competencyStatement, 'Parent Competency');
+            assert.include(scd.competencyFramework, repo.selectedServer + 'scd/' + framework.getGuid());
+        });
+
+        it('an unknown identifier is a 404', async () => {
+            const res = await getText('scd/' + EcCrypto.generateUUID(), { Accept: 'application/json' });
+            assert.strictEqual(res.status, 404);
         });
     });
 

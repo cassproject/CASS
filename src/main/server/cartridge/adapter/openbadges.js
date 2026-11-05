@@ -16,7 +16,7 @@ const badgeKey = function () {
 
 
 const badgeGetPerson = async function (fingerprint) {
-    var person = await loopback.repositoryGet(global.repo.selectedServer + "data/" + fingerprint);
+    var person = await loopback.repositoryGet(global.repo.selectedServer + "data/" + fingerprint).catch(() => null);
     if (person == null)
         return null;
 
