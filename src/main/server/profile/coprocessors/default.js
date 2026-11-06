@@ -89,9 +89,9 @@ let insertResources = async function () {
             if (metaVertex.resources == null)
                 metaVertex.resources = [];
 
-                // Trim alignments, add to metaVertex (once)
-                if (!metaVertex.resources.some(r => r.id === resource.id))
-                    metaVertex.resources.push(resource);
+            // Trim alignments, add to metaVertex (once)
+            if (!metaVertex.resources.some(r => r.id === resource.id))
+                metaVertex.resources.push(resource);
             }
         }
     }
