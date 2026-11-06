@@ -85,7 +85,7 @@ let profileCalculator = async function () {
     const profile = result.profile;
     if (result.fromCache) {
         profile.msSpeed = Date.now() - timer;
-        if (this.params.autoComputed != true)
+        if (Number(this.params.autoComputed) !== 1)
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
     }
     if (profile.error != null) {

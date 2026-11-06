@@ -47,7 +47,7 @@ let getPk = async (identifier) => {
     if (getPkCache[identifier] != null)
         return getPkCache[identifier];
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'AuthLookingIdentifier', "Looking for " + identifier);
-    if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
+    if (Number(process.env.CASS_ELASTIC_KEYSTORE) !== 1 && process.env.CASS_ELASTIC_KEYSTORE != 'true')
         return loadConfigurationFile("keys/" + identifier, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
         });

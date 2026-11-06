@@ -600,7 +600,7 @@ async function cassFrameworkAsCeasn() {
 
 function stripNonCe(f) {
     for (var k in f) {
-        if (EcObject.isObject(f[k]) == false)
+        if (!EcObject.isObject(f[k]))
             if (!k.startsWith("@"))
                 if (!k.startsWith("ceterms:ctid"))
                     if (!k.startsWith("ceasn:description"))
@@ -629,12 +629,12 @@ function stripNonCe(f) {
                                                                                                                 if (!k.startsWith("ceterms:previousVersion"))
                                                                                                                     if (!k.startsWith("ceterms:nextVersion"))
                                                                                                                         if (!k.startsWith("ceterms:latestVersion"))
-                                                                                                                            if (EcArray.isArray(f[k]) == false)
+                                                                                                                            if (!EcArray.isArray(f[k]))
                                                                                                                                 f[k] = [f[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
         if (k === "ceasn:publisherName" || k === "ceasn:conceptKeyword" || k === "ceasn:comment" || k === "ceterms:keyword") {
             Object.keys(f[k]).forEach(function (key) {
-                if (EcArray.isArray(f[k][key]) == false)
+                if (!EcArray.isArray(f[k][key]))
                     f[k][key] = [f[k][key]];
             });
         }
@@ -1043,7 +1043,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
 
 function conceptArrays(object) {
     for (var k in object) {
-        if (EcObject.isObject(object[k]) == false)
+        if (!EcObject.isObject(object[k]))
             if (!k.startsWith("@"))
                 if (!k.startsWith("ceterms:ctid"))
                     if (!k.startsWith("ceasn:description"))
@@ -1067,7 +1067,7 @@ function conceptArrays(object) {
                                                                                     if (!k.startsWith("ceterms:precededBy"))
                                                                                         if (!k.startsWith("ceasn:inProgressionModel"))
                                                                                             if (!k.startsWith("skos:topConceptOf"))
-                                                                                                if (EcArray.isArray(object[k]) == false)
+                                                                                                if (!EcArray.isArray(object[k]))
                                                                                                     object[k] = [object[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
         if (k === "skos:changeNote" || k === "ceasn:conceptKeyword" || k === "skos:note" || k === "skos:hiddenLabel" || k === "skos:altLabel") {
@@ -1490,7 +1490,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
                 if (owner != null)
                     r.addOwner(EcPk.fromPem(owner));
 
-                if (relationshipMap[r.source + r.target] != true) {
+                if (!relationshipMap[r.source + r.target]) {
                     relationshipMap[r.source + r.target] = true;
                     listToSave.push(r);
                     cassRelationships.push(r.shortId());

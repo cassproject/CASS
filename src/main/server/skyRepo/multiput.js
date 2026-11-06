@@ -359,7 +359,7 @@ const endpointMultiPut = async function () {
     const results = [];
     if (ary != null) {
         // The following is also in skyrepoPutInternalPermanent. Adding it here avoids trying to create the permanent index for each object in multiput.
-        if (permanentCreated != true) {
+        if (!permanentCreated) {
             const mappings = {};
             const permNoIndex = {};
             const doc = {};

@@ -137,7 +137,7 @@ const badgeClass = async function (competencyId, fingerprint, assertion) {
         competencyAlignment.educationalFramework = assertion.framework;
 
     competencyId = global.repo.selectedServer + "badge/class/" + competency.getGuid() + "/" + fingerprint;
-    if (competency.id.startsWith(global.repo.selectedServer) == false) {
+    if (!competency.id.startsWith(global.repo.selectedServer)) {
         var md5 = forge.md.md5.create();
         md5.update(competency.id);
         competencyId = global.repo.selectedServer + "badge/class/" + md5.digest().toHex() + "/" + fingerprint;

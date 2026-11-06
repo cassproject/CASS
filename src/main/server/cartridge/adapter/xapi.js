@@ -316,7 +316,7 @@ var xapiStatement = async function (s, accm) {
     var negative = false;
     if (s.result.success != null) {
         var scaled = 1.0;
-        if (s.result.success == true)
+        if (Number(s.result.success) === 1)
             negative = false;
         else
             negative = true;
@@ -436,7 +436,7 @@ var xapiStatement = async function (s, accm) {
         // competency->framework backfill to fill.
         const alignedFramework = alignedCompetencies[i].educationalFramework;
         a.framework = /^https?:\/\//i.test(alignedFramework) ? alignedFramework : undefined;
-        if (alreadyAligned[a.competency + a.framework] == true)
+        if (alreadyAligned[a.competency + a.framework])
             continue;
         alreadyAligned[a.competency + a.framework] = true;
         await a.setEvidence([JSON.stringify(s)]);

@@ -164,7 +164,7 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
 };
 
 const skyrepoPutInternalPermanent = async function (o, id, version, type) {
-    if (permanentCreated != true) {
+    if (!permanentCreated) {
         const mappings = {};
         const permNoIndex = {};
         const doc = {};

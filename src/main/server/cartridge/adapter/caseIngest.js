@@ -195,7 +195,7 @@ const testSuiteCase = async function () {
 var cassContext = null;
 const ingestCase = async function () {
     await (requireSignedWrite).call(this);
-    if (testCase == true) {
+    if (testCase) {
         return await testSuiteCase.call(this);
     }
     cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/", true, { "Accept": "application/json" }))["@context"]);
