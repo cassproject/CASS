@@ -2,11 +2,11 @@ let loopback = require('../../shims/cassproject.js');
 const { pollStatements, sinceFileFor, LEGACY_SINCE_FILE } = require('../../xapi/cursor.js');
 const { BatchCache } = require('../../xapi/lookups.js');
 const { debugLog } = require('../../xapi/debug.js');
-var xapiMePpk = keyFor("xapiAdapter");
+const xapiMePpk = keyFor("xapiAdapter");
 
-var xapiConfig = function () {
+const xapiConfig = function () {
     if (this.xapiConfig != null) return this.xapiConfig;
-    var xapiConfigFilePath = "etc/adapter.xapi.json";
+    const xapiConfigFilePath = "etc/adapter.xapi.json";
     if (!fileExists(xapiConfigFilePath))
         fileSave(JSON.stringify({
             xapiEndpoint: "",
@@ -21,10 +21,10 @@ var xapiConfig = function () {
     debugLog(this.xapiConfig);
     return this.xapiConfig;
 }
-var xapiConfigAutoExecute = xapiConfig;
+const xapiConfigAutoExecute = xapiConfig;
 
-var xapiEndpoint = async function (more, since, config) {
-    var endpoint;
+const xapiEndpoint = async function (more, since, config) {
+    let endpoint;
     // Oldest first, so the read position can advance as pages are processed (see xapi/cursor.js).
     if (config) {
         endpoint = config.xapiEndpoint + "statements?format=exact&ascending=true&limit=" + (process.env.XAPI_STATEMENT_COUNT || 10);
@@ -41,7 +41,7 @@ var xapiEndpoint = async function (more, since, config) {
         } else {
             endpoint = xapiConfig.call(this).xapiHostname + more;
         }
-    var headers = {};
+    const headers = {};
     if (config) {
         headers["Authorization"] = config.xapiAuth;
     } else {
@@ -66,7 +66,7 @@ var xapiEndpoint = async function (more, since, config) {
     return results;
 }
 
-var getMbox = function (agentObject) {
+const getMbox = function (agentObject) {
     if (agentObject == null)
         return [];
     if (EcArray.isArray(agentObject))
@@ -77,7 +77,7 @@ var getMbox = function (agentObject) {
             agents = agents.concat(getMbox(agent));
         return agents;
     }
-    var email = agentObject.mbox;
+    const email = agentObject.mbox;
     if (email != null)
         return [{ mbox: email, name: agentObject.name }];
     if (agentObject.account != null)
@@ -94,7 +94,7 @@ const xapiMePk = EcPpk.fromPem(xapiMePpk).toPk();
  * Saves an object the adapter created or changed: with the batch's assertions when there is a
  * batch (accm), otherwise straight away.
  */
-var saveWithBatch = async function (obj, accm) {
+const saveWithBatch = async function (obj, accm) {
     if (accm != null)
         accm.push(obj);
     else
@@ -102,7 +102,7 @@ var saveWithBatch = async function (obj, accm) {
     global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.INFO, "XapiSavePerson");
 }
 
-var personFromEmail = async function (mbox, name, accm) {
+const personFromEmail = async function (mbox, name, accm) {
     if (mbox == null) return null;
     mbox = mbox.replace("mailto:", "");
     const person = await lookups.get("person:" + mbox, async () => {
@@ -119,7 +119,7 @@ var personFromEmail = async function (mbox, name, accm) {
                 return people[0];
             }
             // A new learner. The Person is saved with this batch and found in the cache until then.
-            var ppk = await EcPpk.generateKey();
+            const ppk = await EcPpk.generateKey();
             const created = new schema.Person();
             created.assignId(repo.selectedServer, ppk.toPk().fingerprint());
             created.addOwner(ppk.toPk());
@@ -141,16 +141,16 @@ var personFromEmail = async function (mbox, name, accm) {
     return person;
 }
 
-var pkFromMbox = async function (xapiPerson, accm) {
-    var mboxes = getMbox.call(this, xapiPerson);
+const pkFromMbox = async function (xapiPerson, accm) {
+    const mboxes = getMbox.call(this, xapiPerson);
     let results = [];
     for (let mbox of mboxes) {
         if (mbox == null)
             continue;
-        var person = await personFromEmail.call(this, mbox.mbox, mbox.name, accm);
+        const person = await personFromEmail.call(this, mbox.mbox, mbox.name, accm);
         if (person == null)
             continue;
-        var pk = null;
+        let pk = null;
         for (const owner of person.owner)
             if (EcPk.fromPem(owner).fingerprint() == person.getGuid())
                 pk = EcPk.fromPem(owner);
@@ -164,7 +164,7 @@ var pkFromMbox = async function (xapiPerson, accm) {
  *  Resolves a language map to a single string, preferring en-US, then en,
  *  then the first available value. Returns null if the map is empty/null.
  */
-var resolveLanguageMap = function (langMap) {
+const resolveLanguageMap = function (langMap) {
     if (langMap == null) return null;
     if (typeof langMap === "string") return langMap;
     if (typeof langMap !== "object") return null;
@@ -175,11 +175,11 @@ var resolveLanguageMap = function (langMap) {
     return null;
 }
 
-var getAlignedCompetencies = async function (objectId, xapiObject, accm) {
+const getAlignedCompetencies = async function (objectId, xapiObject, accm) {
     return await lookups.get("aligned:" + objectId, () => findAlignedCompetencies.call(this, objectId, xapiObject, accm));
 }
 
-var findAlignedCompetencies = async function (objectId, xapiObject, accm) {
+const findAlignedCompetencies = async function (objectId, xapiObject, accm) {
     let results = [];
     try {
         if ((await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(objectId), null, null, repo, xapiIm)) != null)
@@ -231,7 +231,7 @@ var findAlignedCompetencies = async function (objectId, xapiObject, accm) {
  * Applies writes by others to the lookup cache at the end of the batch: a changed Person
  * replaces the cached one, a changed CreativeWork or Competency drops its activity's alignments.
  */
-var noteRepositoryChanges = function (data, deleted) {
+const noteRepositoryChanges = function (data, deleted) {
     if (!EcArray.isArray(data)) data = [data];
     for (let datum of data) {
         datum = datum?.object ? datum.object : datum;
@@ -305,7 +305,7 @@ let getSubjects = global.getSubjects = async function () {
 }
 
 let defaultAuthority = null;
-var xapiStatement = async function (s, accm) {
+const xapiStatement = async function (s, accm) {
     if (s == null) return;
     if (EcArray.isArray(s))
         await Promise.map(s, async (st) => {
@@ -313,7 +313,7 @@ var xapiStatement = async function (s, accm) {
         }, { concurrency: 1 });
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
-    var negative = false;
+    let negative = false;
     if (s.result.success != null) {
         var scaled = 1.0;
         negative = Number(s.result.success) !== 1;
@@ -337,10 +337,10 @@ var xapiStatement = async function (s, accm) {
     } else
         return;
 
-    var actorPks = await pkFromMbox.call(this, s.actor, accm);
+    let actorPks = await pkFromMbox.call(this, s.actor, accm);
     debugLog("Actor Pks: " + actorPks.length);
     if (actorPks.length == 0) return;
-    var authorityPks = await pkFromMbox.call(this, s.authority, accm);
+    const authorityPks = await pkFromMbox.call(this, s.authority, accm);
     EcArray.setAdd(authorityPks, xapiMePk);
     debugLog("Authority Pks: " + authorityPks.length);
     if (authorityPks.length == 0) return;
@@ -348,7 +348,7 @@ var xapiStatement = async function (s, accm) {
     // The assertion agent is drawn from context.contextAgents (IEEE 9274.1.1),
     // falling back to context.instructor, then to the statement authority.
     // All resolved parties become owners of the assertion.
-    var contextAgentPks = [];
+    let contextAgentPks = [];
     let contextAgents = s.context?.contextAgents;
     if (contextAgents != null && !EcArray.isArray(contextAgents))
         contextAgents = [contextAgents];
@@ -358,10 +358,10 @@ var xapiStatement = async function (s, accm) {
             if (contextAgent.objectType != null && contextAgent.objectType != "contextAgent") continue;
             contextAgentPks = contextAgentPks.concat(await pkFromMbox.call(this, contextAgent.agent, accm));
         }
-    var instructorPks = [];
+    let instructorPks = [];
     if (s.context?.instructor != null)
         instructorPks = await pkFromMbox.call(this, s.context.instructor, accm);
-    var agentPks = contextAgentPks;
+    let agentPks = contextAgentPks;
     if (agentPks.length == 0)
         agentPks = instructorPks;
     if (agentPks.length == 0)
@@ -449,7 +449,7 @@ var xapiStatement = async function (s, accm) {
     }
 }
 
-var xapiStatementListener = async function () {
+const xapiStatementListener = async function () {
     let accm = [];
     debugLog(this.params, this.dataStreams, this?.ctx?.req?.rawHeaders, this?.ctx?.req?.headers);
     let saved = false;
@@ -473,7 +473,7 @@ var xapiStatementListener = async function () {
     }
 }
 
-var ident = new EcIdentity();
+const ident = new EcIdentity();
 ident.displayName = "xAPI Adapter";
 ident.ppk = EcPpk.fromPem(xapiMePpk);
 let xapiIm = new EcIdentityManager();
@@ -484,7 +484,7 @@ const xapiKey = function () {
 }
 
 
-var xapiLoopEach = async function (since, config, sinceFilePath) {
+const xapiLoopEach = async function (since, config, sinceFilePath) {
     debugLog(since, config, sinceFilePath);
     let saved = false;
     lookups.beginBatch();
@@ -510,7 +510,7 @@ var xapiLoopEach = async function (since, config, sinceFilePath) {
 }
 
 let openid = require('openid-client');
-var xapiLoop = async function () {
+const xapiLoop = async function () {
     let tokenSet = null;
     if (process.env.OIDC_CLIENT_ENDPOINT != null) {
         const oidcIssuer = await openid.Issuer.discover(process.env.OIDC_CLIENT_ENDPOINT);
@@ -536,7 +536,7 @@ var xapiLoop = async function () {
         tokenSet = await client.grant(grantRequest);
     }
 
-    var ident = new EcIdentity();
+    const ident = new EcIdentity();
     ident.displayName = "xAPI Adapter";
     ident.ppk = EcPpk.fromPem(xapiMePpk);
     EcIdentityManager.default.addIdentity(ident);

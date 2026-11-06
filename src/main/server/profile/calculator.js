@@ -434,7 +434,7 @@ module.exports = class ProfileCalculator {
         };
 
         // Add top-level vertices to profile's children - they store references to all other children
-        for (var vertexKey in topLevelVertices) {
+        for (const vertexKey in topLevelVertices) {
             profile.children = profile.children.concat(topLevelVertices[vertexKey]);
         }
         // Get summary statistics for results

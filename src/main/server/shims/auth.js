@@ -20,7 +20,7 @@ let keyEim = null;
 
 let getPkCache = {};
 let getPersonCache = {};
-var skyrepoAdminPpk = function () {
+const skyrepoAdminPpk = function () {
     if (!fs.existsSync("etc/skyAdmin2.pem"))
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin2.pem");
     return EcPpk.fromPem(fileToString(fileLoad("etc/skyAdmin2.pem"))).toPem();
@@ -127,7 +127,7 @@ let getPk = async (identifier) => {
     return myKey;
 }
 
-var Address = require('ipaddr.js');
+const Address = require('ipaddr.js');
 
 //Source: https://github.com/KennyTangHK/express-ip-access-control/blob/master/LICENSE
 /*
@@ -156,7 +156,7 @@ SOFTWARE.
 // A CIDR prefix length is plain decimal digits; parseFloat would also take ' 8', '8.9' and '0x8'.
 var isPrefixLength = function (n) { return /^\d+$/.test(n); };
 
-var ipMatch = function (list, clientIp) {
+const ipMatch = function (list, clientIp) {
     if (clientIp && Address.isValid(clientIp)) {
         // `Address.process` return the IP instance in IPv4 or IPv6 form.
         // It will return IPv4 instance if it's a IPv4 mapped IPv6 address
@@ -166,10 +166,10 @@ var ipMatch = function (list, clientIp) {
             // Setting the routing prefix to all bits in a CIDR address means only the specified address is allowed.
             let e = entry || '';
             e = e.includes('/') ? e : e + '/128';
-            var range = e.split('/');
+            const range = e.split('/');
             if (range.length === 2 && Address.isValid(range[0]) && isPrefixLength(range[1])) {
-                var ip = Address.process(range[0]);
-                var bit = Number.parseInt(range[1], 10);
+                const ip = Address.process(range[0]);
+                const bit = Number.parseInt(range[1], 10);
 
                 // `IP.kind()` return `'ipv4'` or `'ipv6'`. Only same type can be `match`.
                 if (clientIp.kind() === ip.kind()) {
