@@ -76,7 +76,7 @@ module.exports = function installSignatureSheet(common) {
                 for (const group of req.oidc?.user?.groups ?? []) {
                     let myKey = await getPk(group);
                     let i = new EcIdentity();
-                    i.displayName = group.replaceAll(/_/g, " ").trim();
+                    i.displayName = group.replaceAll('_', " ").trim();
                     i.ppk = EcPpk.fromPem(myKey);
                     if (group != null && process.env.SKYREPO_ADMIN_GROUP != null && group.toLowerCase() == process.env.SKYREPO_ADMIN_GROUP?.toLowerCase()) {
                         i.ppk = skyrepoAdminKey();
@@ -96,7 +96,7 @@ module.exports = function installSignatureSheet(common) {
                         p.addOwner(i.ppk.toPk());
                         p.ssoSignature = await EcRsaOaepAsync.sign(skyrepoAdminKey(), i.ppk.toPk().toPem());
                         p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy, i.ppk.toPk().fingerprint());
-                        p.name = group.replaceAll(/_/g, " ").replace("fp", "").replace("FP", "").replace("Cont", "Contributor").replace("Read", "Reader").trim();
+                        p.name = group.replaceAll('_', " ").replace("fp", "").replace("FP", "").replace("Cont", "Contributor").replace("Read", "Reader").trim();
                         await repo.saveTo(p);
                     }
                 }
