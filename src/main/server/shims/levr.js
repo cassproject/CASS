@@ -1,5 +1,5 @@
-const fs = require('fs');
-const nodePath = require('path');
+const fs = require('node:fs');
+const nodePath = require('node:path');
 const busboy = require('busboy');
 const _getStream = require('get-stream');
 const getStream = typeof _getStream === 'function'
@@ -7,7 +7,7 @@ const getStream = typeof _getStream === 'function'
     : (_getStream.default || _getStream.getStream);
 // exposed for regression tests; the shim is otherwise loaded only for its global side effects.
 module.exports.getStream = getStream;
-const dns = require('dns').promises;
+const dns = require('node:dns').promises;
 
 // LEVR shims
 if (global.fileLoad === undefined) {
@@ -699,6 +699,6 @@ if (global.jsonLdToNQuads === undefined) {
 };
 
 // Shim to allow require of modules that are intended to be used to import.
-require('module').Module._extensions['.js'] = function (module, filename) {
-    module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
+require('node:module').Module._extensions['.js'] = function (module, filename) {
+    module._compile(require('node:fs').readFileSync(filename, 'utf8'), filename);
 };

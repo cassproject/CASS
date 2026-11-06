@@ -15,8 +15,8 @@ const calculatorVersion = 4;
 // Library (node-object-hash) for generating hashes of JS objects.
 // Used to determine when rippling properties are done being computed.
 const hashSortCoerce = hasher({ sort: false, coerce: false });
-const process = require('process');
-const crypto = require('crypto');
+const process = require('node:process');
+const crypto = require('node:crypto');
 
 /**
   * Memory-efficient, recursive-resistant object hasher.
@@ -88,7 +88,7 @@ const PROFILE_REPOSITORY_CACHE = process.env.PROFILE_REPOSITORY_CACHE || false;
 
 //Coprocessor Initialization
 let glob = require('glob');
-let path = require('path');
+let path = require('node:path');
 let PRECACHE_ALL_FRAMEWORKS = false;
 
 let coprocessors = [];

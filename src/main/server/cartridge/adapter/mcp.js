@@ -23,7 +23,7 @@ async function initMcp() {
     const { NodeStreamableHTTPServerTransport } = await import('@modelcontextprotocol/node');
     const { generateTools, generateResourceTemplates } = await import('../../mcp/lib/openapi-to-tools.js');
     const { inputSchemaToZodObject } = await import('../../mcp/lib/json-schema-to-zod.js');
-    const { AsyncLocalStorage } = require('async_hooks');
+    const { AsyncLocalStorage } = require('node:async_hooks');
 
     // AsyncLocalStorage propagates the Express request context (signatureSheet,
     // authorization) into async MCP tool handler callbacks so that loopback
@@ -295,7 +295,7 @@ async function initMcp() {
     // -----------------------------------------------------------------------
 
     const sessions = {};
-    const { randomUUID } = require('crypto');
+    const { randomUUID } = require('node:crypto');
 
     const express = require('express');
     const jsonParser = express.json({ type: 'application/json' });

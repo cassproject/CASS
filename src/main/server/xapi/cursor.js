@@ -9,7 +9,7 @@
  * Kept free of server globals so it can be unit-tested against a simulated LRS.
  */
 
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 
 const LEGACY_SINCE_FILE = 'etc/adapter.xapi.since.txt';
 

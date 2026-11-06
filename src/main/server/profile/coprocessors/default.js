@@ -1,5 +1,5 @@
 let glob = require('glob');
-let path = require('path');
+let path = require('node:path');
 let util = require(path.resolve(glob.sync( 'src/main/server/profile/util.js' )[0]));
 
 //Each of these is being called such that using 'this' refers to the profileProcessor.

@@ -30,7 +30,7 @@ const getCorsOrigins = function () {
     }
     return corsOrigins;
 };
-let realCrypto = require('crypto');
+let realCrypto = require('node:crypto');
 const cassVersion = require('../../../../package.json').version;
 const pingWithTime = function () {
     if (this.ctx?.req?.eim?.ids)

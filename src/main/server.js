@@ -44,13 +44,13 @@ let startupDt = new Date();
 global.auditLogger = require('./server/shims/auditLogger.js');
 const express = require('express');
 let app = global.app = express();
-const https = require('https');
+const https = require('node:https');
 const http2compat = require('./server/shims/http2compat.js');
 require('cassproject');
-const fs = require('fs');
-global.v8 = require('v8');
+const fs = require('node:fs');
+global.v8 = require('node:v8');
 let glob = require('glob');
-let path = require('path');
+let path = require('node:path');
 const sendMail = require('./server/shims/mailer.js').sendMail;
 
 process.on('uncaughtException', async (err) => {
@@ -479,7 +479,7 @@ global.events.server.listening.subscribe(async (isListening) => {
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassStartupTime', `Startup time ${(Date.now() - startupDt.getTime())} ms`);
     let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassHeapSize', `Total Heap Size ${totalHeapSizeInGB}GB`);
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('node:crypto').getFips()}`);
     global.events.server.ready.next(true);
 });
 

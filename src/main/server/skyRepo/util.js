@@ -17,8 +17,8 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-const fs = require('fs');
-const nodePath = require('path');
+const fs = require('node:fs');
+const nodePath = require('node:path');
 
 let cwdAtStart = process.cwd();
 global.pathCheck = function (p) {
