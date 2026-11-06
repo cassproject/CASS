@@ -115,8 +115,8 @@ global.inferTypeFromObj = function (o, atType) {
     }
     fullType = fullType.replace('http://', '');
     fullType = fullType.replace('https://', '');
-    fullType = fullType.replace(/\//g, '.');
-    fullType = fullType.replace(/:/g, '.');
+    fullType = fullType.replaceAll('/', '.');
+    fullType = fullType.replaceAll(':', '.');
     return fullType;
 };
 
