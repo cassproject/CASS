@@ -192,7 +192,7 @@ module.exports = class ProfileCalculator {
             if (found != null && found.length > 0)
                 assertions.push(...found);
         }));
-        assertions = assertions.filter((x) => x); //Remove nulls.
+        assertions = assertions.filter(Boolean); //Remove nulls.
         for (let i = 0; i < assertions.length; i++) //Remove duplicates.
         {
             for (let j = i; j < assertions.length; j++) {

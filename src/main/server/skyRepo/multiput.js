@@ -293,7 +293,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             if (erld.id != null) {
                 return erld.shortId();
             }
-        }).filter((x) => x))));
+        }).filter(Boolean))));
 
     const recordsToDelete = [];
 

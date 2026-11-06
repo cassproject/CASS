@@ -129,7 +129,7 @@ global.filterResults = async function (o, dontDecryptInSso) {
                 }
                 return null;
             }
-        }))).filter((x) => x);
+        }))).filter(Boolean);
     } else if (EcObject.isObject(o)) {
         delete o.decryptedSecret;
         const rld = new EcRemoteLinkedData().copyFrom(o);

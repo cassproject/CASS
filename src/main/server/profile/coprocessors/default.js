@@ -35,7 +35,7 @@ let fetchAssertions = async function () {
             return a;
         return null;
     }));
-    assertions = assertions.filter((x) => (x));
+    assertions = assertions.filter(Boolean);
     global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
     assertions.sort((a, b) => {
         return b.id.localeCompare(a.id);
@@ -111,7 +111,7 @@ let processAssertions = async function () {
         if (metaVertex.negativeAssertion != null)
             assertions = assertions.concat(metaVertex.negativeAssertion);
 
-        let competencyIds = [...new Set(assertions.map(x => x.competency))].filter(x => x);
+        let competencyIds = [...new Set(assertions.map(x => x.competency))].filter(Boolean);
         await repo.precache(competencyIds);
 
         await Promise.map(assertions, async (a) => {
