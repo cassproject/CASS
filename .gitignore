@@ -61,3 +61,6 @@ coverage/lcov-report/main/
 
 swaggerx.json
 *.cpuprofile
+
+# c8 working files
+coverage/tmp/
