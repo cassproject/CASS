@@ -51,12 +51,6 @@ function inferAnnotations(method) {
             openWorldHint: false,
         };
     case 'post':
-        return {
-            readOnlyHint: false,
-            destructiveHint: false,
-            idempotentHint: false,
-            openWorldHint: false,
-        };
     case 'patch':
         return {
             readOnlyHint: false,

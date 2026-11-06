@@ -314,28 +314,17 @@ const xapiStatement = async function (s, accm) {
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
     let negative = false;
+    let scaled = 1.0;
     if (s.result.success != null) {
-        var scaled = 1.0;
         negative = Number(s.result.success) !== 1;
     } else if (s.result.score != null) {
-        var scaled = s.result.score.scaled;
+        scaled = s.result.score.scaled;
         negative = !(scaled > 0.7);
-    } else if (s.result.response == "Pass") {
-        var scaled = 1.0;
-    } else if (s.result.response == "Fail") {
-        var scaled = 1.0;
+    } else if (s.result.response == "Fail" || s.result.response == "Below Expectation") {
         negative = true;
-    } else if (s.result.response == "At Expectation") {
-        var scaled = 1.0;
-        negative = false;
-    } else if (s.result.response == "Above Expectation") {
-        var scaled = 1.0;
-        negative = false;
-    } else if (s.result.response == "Below Expectation") {
-        var scaled = 1.0;
-        negative = true;
-    } else
+    } else if (s.result.response != "Pass" && s.result.response != "At Expectation" && s.result.response != "Above Expectation") {
         return;
+    }
 
     let actorPks = await pkFromMbox.call(this, s.actor, accm);
     debugLog("Actor Pks: " + actorPks.length);
