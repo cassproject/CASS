@@ -1,6 +1,6 @@
 let loopback = require('../../shims/cassproject.js');
 
-badgeSetup = function () {
+const badgeSetup = function () {
     this.setup = true;
 
     EcRepository.caching = false;
@@ -10,13 +10,13 @@ badgeSetup = function () {
     EcIdentityManager.default.addIdentity(identity);
 }
 
-badgeKey = function () {
+const badgeKey = function () {
     return EcPpk.fromPem(keyFor("adapter.openbadges.private")).toPk().toPem();
 }
 
 
-badgeGetPerson = async function (fingerprint) {
-    var person = await loopback.repositoryGet(global.repo.selectedServer + "data/" + fingerprint);
+const badgeGetPerson = async function (fingerprint) {
+    var person = await loopback.repositoryGet(global.repo.selectedServer + "data/" + fingerprint).catch(() => null);
     if (person == null)
         return null;
 
@@ -28,7 +28,7 @@ badgeGetPerson = async function (fingerprint) {
     return person;
 }
 
-badgeCryptographicKey = async function (fingerprint) {
+const badgeCryptographicKey = async function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
         fingerprint = this.params.urlRemainder.replace("/", "");
@@ -45,7 +45,7 @@ badgeCryptographicKey = async function (fingerprint) {
     });
 };
 
-badgeProfile = async function (fingerprint) {
+const badgeProfile = async function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
         fingerprint = this.params.urlRemainder.replace("/", "");
@@ -70,7 +70,7 @@ badgeProfile = async function (fingerprint) {
     })
 };
 
-badgeSubject = async function (fingerprint) {
+const badgeSubject = async function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
         fingerprint = this.params.urlRemainder.replace("/", "");
@@ -116,7 +116,7 @@ badgeSubject = async function (fingerprint) {
     }
 };
 
-badgeClass = async function (competencyId, fingerprint, assertion) {
+const badgeClass = async function (competencyId, fingerprint, assertion) {
     badgeSetup.call(this);
 
     var competency = null;
@@ -161,7 +161,7 @@ badgeClass = async function (competencyId, fingerprint, assertion) {
     });
 };
 
-badgeAssertion = async function () {
+const badgeAssertion = async function () {
     badgeSetup.call(this);
 
     var query = queryParse.call(this);
@@ -218,7 +218,7 @@ badgeAssertion = async function () {
     return JSON.stringify(result);
 }
 
-openbadgeCheckId = async function () {
+const openbadgeCheckId = async function () {
     badgeSetup.call(this);
 
     var a = new EcAssertion();

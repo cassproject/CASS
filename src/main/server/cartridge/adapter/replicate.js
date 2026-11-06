@@ -90,7 +90,7 @@ global.replicate = async function(last){
 
 global.events.server.listening.subscribe(async (isListening) => {
     if (!isListening) return;
-    global.replicate();
+    void global.replicate();
 });
 
 let reconnectMs = 1000;

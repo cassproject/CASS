@@ -9,7 +9,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 // Environment variables are strings; anything that is not a positive integer falls back to the default.
 const positiveInt = (value, fallback) => {
-    const n = parseInt(value);
+    const n = Number.parseInt(value);
     return Number.isFinite(n) && n >= 1 ? n : fallback;
 };
 

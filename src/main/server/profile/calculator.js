@@ -23,6 +23,12 @@ const crypto = require('crypto');
   * @param {Object|Array} obj - The data to hash.
   * @param {string} algorithm - Hash algorithm (default: sha256).
   */
+// The order sort() uses by default (UTF-16 code units). localeCompare would order keys differently and change the hash.
+const compareCodeUnits = (a, b) => {
+    if (a < b) return -1;
+    return a > b ? 1 : 0;
+};
+
 function getPersistentSafeHash(obj, algorithm = 'sha256') {
     const hash = crypto.createHash(algorithm);
     const seenIds = new Set();
@@ -61,7 +67,7 @@ function getPersistentSafeHash(obj, algorithm = 'sha256') {
         }
 
         // 4. Handle Objects (Deterministic Key Sorting)
-        const keys = Object.keys(val).sort();
+        const keys = Object.keys(val).sort(compareCodeUnits);
         hash.update('o:{');
         for (const key of keys) {
             hash.update(`${key}:`);
@@ -473,3 +479,5 @@ const cloneGraph = (g) => {
     Object.assign(g2.outEdgeCache, g.outEdgeCache);
     return g2;
 };
+// For tests.
+module.exports.getPersistentSafeHash = getPersistentSafeHash;

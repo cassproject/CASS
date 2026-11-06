@@ -44,7 +44,7 @@ module.exports = function (common) {
         /** @param {String} uuid */
         function numberFromUUID(uuid) {
             let hex = Buffer.from(uuid).toString("hex");
-            return parseInt(hex, 16);
+            return Number.parseInt(hex, 16);
         }
 
         let adjectives = null;

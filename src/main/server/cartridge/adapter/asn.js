@@ -4,12 +4,12 @@ const { skyrepoPut } = require('../../skyRepo/put');
 
 let asnContext = {
     asn: "http://purl.org/ASN/schema/core/",
-    cc: "http://creativecommons.org/ns#",
+    cc: "http://creativecommons.org/ns#", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
     dc: "http://purl.org/dc/elements/1.1/",
     dcterms: "http://purl.org/dc/terms/",
     foaf: "http://xmlns.com/foaf/0.1/",
     gemq: "http://purl.org/gem/qualifiers/",
-    loc: "http://www.loc.gov/loc.terms/relators/",
+    loc: "http://www.loc.gov/loc.terms/relators/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
     owl: "http://www.w3.org/2002/07/owl#",
     rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     rdfs: "http://www.w3.org/2000/01/rdf-schema#",
@@ -397,7 +397,7 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
 
         if (context != undefined) {
             const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassConceptsTerms")), true));
-            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json" ||
+            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json" || // NOSONAR -- matches the context IRIs documents declare
                 context == "https://credreg.net/ctdlasn/schema/context/json" || context == "https://credreg.net/ctdl/schema/context/json") {
                 context = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cassConcepts.json";
                 for (let each in graphObj) {
@@ -464,7 +464,7 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                         timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/") + 1);
                     }
                     if (timestamp != null) {
-                        date = new Date(parseInt(timestamp)).toISOString();
+                        date = new Date(Number.parseInt(timestamp)).toISOString();
                     }
                     else {
                         date = new Date().toISOString();
@@ -518,7 +518,7 @@ async function importConceptPromise(graphObj, conceptSchemeId, context, skosIden
                         timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/") + 1);
                     }
                     if (timestamp != null) {
-                        date = new Date(parseInt(timestamp)).toISOString();
+                        date = new Date(Number.parseInt(timestamp)).toISOString();
                     }
                     else {
                         date = new Date().toISOString();

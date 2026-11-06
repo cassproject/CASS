@@ -184,7 +184,7 @@ global.queryParse = function (urlRemainder) {
         (result)['id'] = split[1];
     }
     if (split.length == 3) {
-        (result)['version'] = split[2] == '' ? null : parseInt(split[2]);
+        (result)['version'] = split[2] == '' ? null : Number.parseInt(split[2]);
     }
     return result;
 };

@@ -12,7 +12,7 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
         }
 
         // Throttled cleanup state: only purge expired entries at most once per interval.
-        const cleanupIntervalMs = parseInt(process.env.EPHEMERAL_CLEANUP_INTERVAL) || 60000;
+        const cleanupIntervalMs = Number.parseInt(process.env.EPHEMERAL_CLEANUP_INTERVAL) || 60000;
 
         // Fire-and-forget cleanup of expired ephemeral entries.
         // Compares the document version (which stores the expiry timestamp) against the current time.
@@ -87,7 +87,7 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
             if (idScripts != null) return idScripts;
             try {
                 const state = await httpGet(elasticEndpoint + '/', true, elasticHeaders());
-                const [major, minor] = String(state?.version?.number || '').split('.').map((n) => parseInt(n, 10));
+                const [major, minor] = String(state?.version?.number || '').split('.').map((n) => Number.parseInt(n, 10));
                 idScripts = Number.isFinite(major) && (major < 9 || (major === 9 && minor < 5));
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.INFO, 'EphemeralIdStrategy',
                     `Elasticsearch ${state?.version?.number}: ephemeral deletes by id ${idScripts ? 'script' : 'scroll and bulk delete'}.`);

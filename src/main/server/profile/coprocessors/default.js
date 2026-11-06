@@ -40,10 +40,6 @@ let fetchAssertions = async function () {
     assertions.sort((a, b) => {
         return b.id.localeCompare(a.id);
     });
-    let concatAssertions = "";
-    for (let assertion of assertions)
-        concatAssertions += assertion.id;
-    assertionHash = EcCrypto.md5(concatAssertions);
     return assertions;
 }
 let insertResources = async function () {
@@ -202,7 +198,7 @@ let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdge
     //TODO meta.inFrameworks = [...new Set(global.competencyFrameworkMap[vertex.shortId()])],
     meta.type = schema.Thing.getDisplayStringFrom(vertex["dcterms:type"]);
     if (vertex.requiredSignatureCount != null)
-        meta.requiredSignatureCount = parseInt(vertex.requiredSignatureCount);
+        meta.requiredSignatureCount = Number.parseInt(vertex.requiredSignatureCount);
     meta.children = [];
     
     const state = {
@@ -257,7 +253,7 @@ let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdge
     // CHECKME This was requiredQualifierCount before, assumed it was a typo
     // Insert requiredSignatureCount if it exists on competency
     if (vertex.requiredSignatureCount != null) {
-        meta.requiredDistinctPositiveSignatures = parseInt(vertex.requiredSignatureCount);
+        meta.requiredDistinctPositiveSignatures = Number.parseInt(vertex.requiredSignatureCount);
         state.isQualifiedAccordingToSignatures =
             state.distinctPositiveSignatures > meta.requiredDistinctPositiveSignatures;
     }

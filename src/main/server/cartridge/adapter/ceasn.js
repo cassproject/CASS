@@ -13,10 +13,10 @@ var asnContext = {
     "dct": "http://purl.org/dc/terms/",
     "gem": "http://purl.org/gem/elements/",
     "gemq": "http://purl.org/gem/qualifiers/",
-    "loc": "http://www.loc.gov/loc.terms/",
-    "locr": "http://www.loc.gov/loc.terms/relators/",
-    "meta": "http://credreg.net/meta/terms/",
-    "publicationStatus": "http://credreg.net/ctdlasn/vocabs/publicationStatus/",
+    "loc": "http://www.loc.gov/loc.terms/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
+    "locr": "http://www.loc.gov/loc.terms/relators/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
+    "meta": "http://credreg.net/meta/terms/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
+    "publicationStatus": "http://credreg.net/ctdlasn/vocabs/publicationStatus/", // NOSONAR -- namespace IRI, an identifier rather than a fetched URL
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "schema": "http://schema.org/",
@@ -1226,7 +1226,7 @@ async function cassConceptSchemeAsCeasn(framework) {
                             concepts[subC.id] = subC;
                             allConcepts.push(subC.id);
                             if (subC["skos:narrower"]) {
-                                getSubConcepts(subC);
+                                await getSubConcepts(subC);
                             }
                         }
                     }
@@ -1532,7 +1532,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
                 timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }
@@ -1673,7 +1673,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
                 timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }
@@ -1726,7 +1726,7 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
                 timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }
@@ -1834,7 +1834,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
                 timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
-                date = new Date(parseInt(timestamp)).toISOString();
+                date = new Date(Number.parseInt(timestamp)).toISOString();
             } else {
                 date = new Date().toISOString();
             }

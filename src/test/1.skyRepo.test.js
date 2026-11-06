@@ -13,7 +13,7 @@ const hrtime = function () {
 };
 
 describe('SkyRepo Adapter', function () {
-  it('Waiting for server to be ready', async () => {
+  before(async function () {
     if (process.env.NODEV != null) return;
     let ready = false;
     global.events.server.ready.subscribe(function (isReady) {
@@ -25,9 +25,7 @@ describe('SkyRepo Adapter', function () {
     });
     while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
   });
-  it('Search auto-extends', async () => {
-
-  });
+  it('Search auto-extends');
 
   it('Server Move', async () => {
     // Initial creation.

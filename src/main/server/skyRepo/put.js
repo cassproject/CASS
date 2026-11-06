@@ -149,8 +149,8 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
         }
     }
     try {
-        (o)['@version'] = parseInt(version);
-        if (isNaN((o)['@version'])) {
+        (o)['@version'] = Number.parseInt(version);
+        if (Number.isNaN(Number((o)['@version']))) {
             (o)['@version'] = new Date().getTime();
         }
     } catch (ex) {
@@ -247,7 +247,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         }
     }
     const oldPermanent = await skyrepoGetPermanent(id, version, type);
-    if (isNaN(version)) {
+    if (Number.isNaN(Number(version))) {
         version = null;
     }
     let chosenVersion = version;
@@ -257,7 +257,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         chosenVersion = erld.getTimestamp();
     }
     if (chosenVersion == null) {
-        if (oldPermanent != null && oldPermanent['_version'] != null && !isNaN(oldPermanent['_version'])) {
+        if (oldPermanent != null && oldPermanent['_version'] != null && !Number.isNaN(Number(oldPermanent['_version']))) {
             chosenVersion = oldPermanent['_version'] + 1;
         } else {
             chosenVersion = 1;

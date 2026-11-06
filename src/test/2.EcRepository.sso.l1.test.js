@@ -75,7 +75,7 @@ let newId1 = null;
 describe("EcRepository (SSO L1 Cache)", () => {
     let id = null;
     let rld = null;
-    it('Waiting for server to be ready', async () => {
+    before(async function () {
         if (process.env.NODEV != null) return;
         let ready = false;
         global.events.server.ready.subscribe(function (isReady) {
@@ -178,6 +178,8 @@ describe("EcRepository (SSO L1 Cache)", () => {
         rld.addOwner(newId1.ppk.toPk());
         rld.setName("Some Thing");
         rld.setDescription("Some Description");
+        assert.strictEqual(rld.getName(), "Some Thing");
+        assert.isTrue(rld.hasOwner(newId1.ppk.toPk()));
     });
     it('save (ecrepository)', async () => {
         await changeNameAndSaveAndCheckRepo(rld);
@@ -227,6 +229,8 @@ describe("EcRepository (SSO L1 Cache)", () => {
         rld.addOwner(newId1.ppk.toPk());
         rld.setName("Some Thing");
         rld.setDescription("Some Description");
+        assert.strictEqual(rld.getName(), "Some Thing");
+        assert.isTrue(rld.hasOwner(newId1.ppk.toPk()));
     });
     it('save (multiput)', async () => {
         await changeNameAndSaveAndCheckMultiput(rld);
@@ -276,6 +280,8 @@ describe("EcRepository (SSO L1 Cache)", () => {
         rld.addOwner(newId1.ppk.toPk());
         rld.setName("Some Thing");
         rld.setDescription("Some Description");
+        assert.strictEqual(rld.getName(), "Some Thing");
+        assert.isTrue(rld.hasOwner(newId1.ppk.toPk()));
     });
     it('registered save (to)', async () => {
         await changeNameAndSaveAndCheck(rld);
@@ -322,6 +328,8 @@ describe("EcRepository (SSO L1 Cache)", () => {
         rld.addOwner(newId1.ppk.toPk());
         rld.setName("Some Thing");
         rld.setDescription("Some Description");
+        assert.strictEqual(rld.getName(), "Some Thing");
+        assert.isTrue(rld.hasOwner(newId1.ppk.toPk()));
     });
     it('registered save (multiput)', async () => {
         await changeNameAndSaveAndCheckMultiput(rld);
@@ -432,5 +440,7 @@ describe("EcRepository (SSO L1 Cache)", () => {
         EcRepository.caching = false;
         EcRepository.cachingL2 = false;
         delete global.AUTH_OVERRIDE;
+        assert.isFalse(EcRepository.caching);
+        assert.isFalse(EcRepository.cachingL2);
     });
 });

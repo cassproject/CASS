@@ -13,7 +13,7 @@ describe('Profile API', function () {
     let c1, c2, c3;
     let emailPrefix;
 
-    it('Waiting for server to be ready', async () => {
+    before(async function () {
         if (process.env.NODEV != null) return;
         if (!global.events || !global.events.server) return;
         let ready = false;
@@ -108,6 +108,7 @@ describe('Profile API', function () {
         person.email = emailPrefix;
         person.setName("Test Person");
         await repo.saveTo(person);
+        assert.isNotNull(await EcRepository.get(person.shortId()), "person was saved");
     });
 
     it('Initial profile calculation (no assertions)', async () => {

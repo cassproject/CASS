@@ -198,7 +198,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             let id = x['_id'].split('.')[0];
             let chosenVersion = map[id].version;
             if (chosenVersion == null) {
-                if (x != null && x['_version'] != null && !isNaN(x['_version'])) {
+                if (x != null && x['_version'] != null && !Number.isNaN(Number(x['_version']))) {
                     chosenVersion = x['_version'] + 1;
                 } else {
                     chosenVersion = 1;
@@ -237,8 +237,8 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             }
         }
         try {
-            (o)['@version'] = parseInt(x.version);
-            if (isNaN((o)['@version'])) {
+            (o)['@version'] = Number.parseInt(x.version);
+            if (Number.isNaN(Number((o)['@version']))) {
                 (o)['@version'] = new Date().getTime();
             }
         } catch (ex) {
@@ -396,7 +396,7 @@ const endpointMultiPut = async function () {
                 id = ld.getGuid();
             }
             let version = ld.getTimestamp();
-            if (isNaN(version)) {
+            if (Number.isNaN(Number(version))) {
                 version = null;
             }
             const type = ld.getDottedType();
@@ -411,7 +411,7 @@ const endpointMultiPut = async function () {
         const uniqueAry = Object.values(uniques);
 
         while (uniqueAry.length > 0) {
-            results.push(...(await endpointMultiPutBulk.call({ ctx: this.ctx, dataStreams: this.dataStreams, params: { ary: uniqueAry.splice(0, parseInt(process.env.MULTIPUT_BATCH_SIZE || 100)) } })).filter((x) => x != null));
+            results.push(...(await endpointMultiPutBulk.call({ ctx: this.ctx, dataStreams: this.dataStreams, params: { ary: uniqueAry.splice(0, Number.parseInt(process.env.MULTIPUT_BATCH_SIZE || 100)) } })).filter((x) => x != null));
         }
     }
     await httpGet(elasticEndpoint + '/_all/_refresh', true, elasticHeaders());

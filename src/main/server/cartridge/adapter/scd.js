@@ -38,6 +38,7 @@ function getGuid(id) {
 }
 
 function transformUrl(url) {
+    let guid;
     if (EcRepository.shouldTryUrl(url) === false && url.indexOf(this.repo.selectedServer) === -1) {
         guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(url));
     } else {
@@ -56,12 +57,10 @@ async function cassFrameworkAsScd(framework) {
         }
     }
     removeFields(f, frameworkTerms);
-    for (let i = 0; i < f.competencyDefinition.length; i++) {
-        f.competencyDefinition[i] = transformUrl(f.competencyDefinition[i]);
-    }
-    for (let i = 0; i < f.resourceAssociation.length; i++) {
-        f.resourceAssociation[i] = transformUrl(f.resourceAssociation[i]);
-    }
+    if (f.competencyDefinition != null)
+        f.competencyDefinition = f.competencyDefinition.map(transformUrl);
+    if (f.resourceAssociation != null)
+        f.resourceAssociation = f.resourceAssociation.map(transformUrl);
     return JSON.stringify(f, null, 2);
 }
 
@@ -121,11 +120,11 @@ async function cassToScd() {
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
     if (framework == null && this.params.id != null) {
-        framework = await EcFramework.get(decodeURIComponent(this.params.id), null, null, repo);
+        framework = await EcFramework.get(decodeURIComponent(this.params.id), null, null, repo).catch(() => null);
     }
     if (framework == null && this.params.urlRemainder != null) {
         var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
-        framework = await EcFramework.get(id, null, null, repo);
+        framework = await EcFramework.get(id, null, null, repo).catch(() => null);
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
         framework = null;
@@ -134,7 +133,7 @@ async function cassToScd() {
     } else if (framework == null) {
         competency = await skyrepoGet.call(this, query);
         if (competency == null && this.params.id != null)
-            competency = await EcCompetency.get(decodeURIComponent(this.params.id), null, null, repo);
+            competency = await EcCompetency.get(decodeURIComponent(this.params.id), null, null, repo).catch(() => null);
         else if (competency != null && competency["@type"].contains("ompetency")) {
             var c = new EcCompetency();
             c.copyFrom(competency);
@@ -142,16 +141,16 @@ async function cassToScd() {
         }
         if (competency == null && this.params.urlRemainder != null) {
             var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
-            competency = await EcCompetency.get(id, null, null, repo);
+            competency = await EcCompetency.get(id, null, null, repo).catch(() => null);
         }
-        if (competency.type == null || !competency.type.contains("ompetency"))
+        if (competency != null && (competency.type == null || !competency.type.contains("ompetency")))
             competency = null;
         if (competency != null) {
             return await cassCompetencyAsScd(competency);
         } else {
             relation = await skyrepoGet.call(this, query);
             if (relation == null && this.params.id != null)
-                relation = await EcAlignment.get(decodeURIComponent(this.params.id), null, null, repo);
+                relation = await EcAlignment.get(decodeURIComponent(this.params.id), null, null, repo).catch(() => null);
             else if (relation != null) {
                 var r = new EcAlignment();
                 r.copyFrom(relation);
@@ -159,7 +158,7 @@ async function cassToScd() {
             }
             if (relation == null && this.params.urlRemainder != null) {
                 var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
-                relation = await EcAlignment.get(id, null, null, repo);
+                relation = await EcAlignment.get(id, null, null, repo).catch(() => null);
             }
             if (relation != null) {
                 return await cassRelationAsScd(relation);

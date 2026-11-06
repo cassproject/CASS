@@ -2,7 +2,17 @@ let loopback = require('../../shims/cassproject.js');
 const { skyrepoGet } = require('../../skyRepo/get');
 const { skyrepoSearch } = require('../../skyRepo/search');
 
-cfError = function (code, codeMajor, severity, description, codeMinor, codeMinorValue) {
+// The CASE endpoints take the identifier as a path segment (/CFDocuments/{id}) or as ?id=.
+const caseQuery = function () {
+    if (this.params.urlRemainder != null && this.params.urlRemainder !== '' && this.params.urlRemainder !== '/')
+        return queryParse.call(this);
+    return { id: this.params.id };
+};
+// The CaSS-to-CASE property names. Callers inside a package pass them in; the endpoints fetch them.
+const caseTerms = async function () {
+    return JSON.parse(JSON.stringify(await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2caseTerms"), true));
+};
+const cfError = function (code, codeMajor, severity, description, codeMinor, codeMinorValue) {
     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CaseAdapterError', {
         "imsx_codeMajor": codeMajor,
         "imsx_severity": severity,
@@ -16,7 +26,7 @@ cfError = function (code, codeMajor, severity, description, codeMinor, codeMinor
             ]
         }
     }, code);
-    throw new Error(JSON.stringify({
+    error(JSON.stringify({
         "imsx_codeMajor": codeMajor,
         "imsx_severity": severity,
         "imsx_description": description,
@@ -28,26 +38,23 @@ cfError = function (code, codeMajor, severity, description, codeMinor, codeMinor
                 }
             ]
         }
-    }));
+    }), code);
 }
 
-cfGetFramework = async function (f) {
-    var query = queryParse.call(this);
+const cfGetFramework = async function (f) {
+    var query = caseQuery.call(this);
     if (f == null || f === undefined || !EcObject.isObject(f)) {
         if (f == null)
             f = await skyrepoGet.call(this, query);
         if (f == null || f["@type"] == null || !f["@type"].contains("ramework"))
             f = null;
         if (f == null && this.params.id != null)
-            f = await loopback.frameworkGet(decodeURIComponent(this.params.id));
-        if (f == null)
-            f = await loopback.frameworkGet(query.id);
+            f = await loopback.frameworkGet(decodeURIComponent(this.params.id)).catch(() => null);
+        if (f == null && query.id != null)
+            f = await loopback.frameworkGet(query.id).catch(() => null);
         if (f == null) {
-            var result = null;
-            EcFramework.search(repo, "@id:" + query.id, function (success) {
-                result = success;
-            });
-            if (result.length > 0) {
+            var result = await loopback.frameworkSearch(global.repo, "@id:\"" + query.id + "\"");
+            if (result && result.length > 0) {
                 f = new EcFramework();
                 f.copyFrom(result[0]);
             }
@@ -64,12 +71,12 @@ var cfGetContext = function () {
         this.cfContext = JSON.stringify(httpGet("https://schema.cassproject.org/imscasev1p0_context_v1p0.jsonld"));
     return this.cfContext;
 }
-cfGetCompetency = async function (c) {
+const cfGetCompetency = async function (c) {
     var cache = JSON.stringify(c)
     if (this[cache] != null)
         return this[cache];
     this[cache] = null;
-    var query = queryParse.call(this);
+    var query = caseQuery.call(this);
     var url = null;
     if (!EcObject.isObject(c)) {
         url = c;
@@ -82,14 +89,11 @@ cfGetCompetency = async function (c) {
         if (competency == null || competency["@type"] == null || !competency["@type"].contains("ompetency"))
             competency = null;
         if (competency == null && url != null)
-            competency = await loopback.competencyGet(url);
+            competency = await loopback.competencyGet(url).catch(() => null);
         if (competency == null && url != null)
-            competency = await loopback.competencyGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url));
+            competency = await loopback.competencyGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url)).catch(() => null);
         if (competency == null) {
-            var result = null;
-            EcCompetency.search(repo, "@id:" + query.id, function (success) {
-                result = success;
-            });
+            var result = await EcCompetency.search(global.repo, "@id:\"" + query.id + "\"");
             if (result && result.length > 0) {
                 competency = new EcCompetency();
                 competency.copyFrom(result[0]);
@@ -109,8 +113,8 @@ cfGetCompetency = async function (c) {
     this[cache] = c;
     return c;
 };
-cfGetAlignment = async function (c) {
-    var query = queryParse.call(this);
+const cfGetAlignment = async function (c) {
+    var query = caseQuery.call(this);
     var url = null;
     if (!EcObject.isObject(c)) {
         url = c;
@@ -121,9 +125,9 @@ cfGetAlignment = async function (c) {
         if (competency == null)
             competency = await skyrepoGet.call(this, query);
         if (competency == null && url != null)
-            competency = await loopback.alignmentGet(url);
+            competency = await loopback.alignmentGet(url).catch(() => null);
         if (competency == null && url != null)
-            competency = await loopback.alignmentGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url));
+            competency = await loopback.alignmentGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url)).catch(() => null);
         if (competency == null)
             cfError(404, "failure", "error", "Alignment not found.", "uuid", "unknownobject");
         c = new EcAlignment();
@@ -136,7 +140,7 @@ cfGetAlignment = async function (c) {
     }
     return c;
 };
-cfClean = function (o) {
+const cfClean = function (o) {
     o = JSON.parse(JSON.stringify(o));
     for (var key in o) {
         if (key.contains("/"))
@@ -169,21 +173,22 @@ cfClean = function (o) {
     429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
     500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfDocuments = async function (f, terms) {
-    f = await cfGetFramework.call(this, f);
-    if (f == null) {
+const cfDocuments = async function (f, terms) {
+    if (terms == null)
+        terms = await caseTerms();
+    if (f == null && caseQuery.call(this).id == null) {
         var aggResults = [];
-        var me = this;
-        let frameworks = loopback.frameworkSearch(repo, "*", { size: 5000 });
+        let frameworks = await loopback.frameworkSearch(global.repo, "*", { size: 5000 });
         if (frameworks == null)
             error("Could not reach repository", 500);
         for (var i = 0; i < frameworks.length; i++) {
-            var fw = await cfDocuments.call(me, frameworks[i], terms);
+            var fw = await cfDocuments.call(this, frameworks[i], terms);
             if (fw != null)
                 aggResults.push(JSON.parse(fw));
         }
-        return JSON.stringify(aggResults, null, 2);
+        return JSON.stringify({ CFDocuments: aggResults }, null, 2);
     }
+    f = await cfGetFramework.call(this, f);
     var name = f.getName();
     if (f.id == null) return null;
     var guid = f.getGuid();
@@ -201,7 +206,7 @@ cfDocuments = async function (f, terms) {
         }
     }
     let f2 = cfClean(f);
-    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFDocuments/" + guid;
@@ -220,7 +225,7 @@ cfDocuments = async function (f, terms) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfAssociations = async function () {
+const cfAssociations = async function () {
     return await cfItemAssociations.call(this);
 }
 /*Errors:
@@ -231,7 +236,7 @@ cfAssociations = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfAssociationGroupings = async function () {
+const cfAssociationGroupings = async function () {
     error("Not yet implemented.", 501)
 }
 /*Errors:
@@ -242,7 +247,7 @@ cfAssociationGroupings = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfConcepts = async function () {
+const cfConcepts = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -253,10 +258,10 @@ cfConcepts = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItems = async function (f, fw, terms) {
-    var query = queryParse.call(this);
+const cfItems = async function (f, fw, terms) {
+    if (terms == null)
+        terms = await caseTerms();
     f = await cfGetCompetency.call(this, f);
-    result = {};
     var shortId = f.shortId();
     var guid = f.getGuid();
     if (guid.startsWith("ce-"))
@@ -280,7 +285,7 @@ cfItems = async function (f, fw, terms) {
         }
     }
     let f2 = cfClean(f);
-    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     if (f2.title != null)
         f2.fullStatement = f2.title;
@@ -295,10 +300,10 @@ cfItems = async function (f, fw, terms) {
     f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
-        var parent = skyrepoSearch.call(this, "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
+        var parent = await skyrepoSearch.call(this, "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
-        t = parent[0];
+        const t = parent[0];
         parent[0] = new EcFramework();
         parent[0].copyFrom(t);
     }
@@ -318,10 +323,10 @@ cfItems = async function (f, fw, terms) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItemAssociations = async function (f, fw, terms) {
-    var query = queryParse.call(this);
+const cfItemAssociations = async function (f, fw, terms) {
+    if (terms == null)
+        terms = await caseTerms();
     f = await cfGetAlignment.call(this, f);
-    result = {};
     var timestamp = f.getTimestamp();
     var guid = f.getGuid();
     var shortId = f.shortId();
@@ -337,16 +342,17 @@ cfItemAssociations = async function (f, fw, terms) {
     let f2 = f;
     f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFAssociations/" + guid;
     if (fw == null) {
-        var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
+        var parent = await skyrepoSearch.call(this, "relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
-        t = parent[0];
+        const t = parent[0];
         fw = new EcFramework();
         fw.copyFrom(t);
+        parent[0] = fw;
     }
     else
         parent = [fw];
-    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     f2.associationType = { "isEquivalentTo": "exactMatchOf", "narrows": "isChildOf" }[f2["case:relationType"]];
     delete f2["case:relationType"];
     if (f2["case:destinationNodeURI"] == null) return null;
@@ -384,7 +390,7 @@ cfItemAssociations = async function (f, fw, terms) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItemTypes = async function () {
+const cfItemTypes = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -395,7 +401,7 @@ cfItemTypes = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfLicenses = async function () {
+const cfLicenses = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -407,7 +413,7 @@ cfLicenses = async function () {
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
 var repo;
-cfPackages = async function (f) {
+const cfPackages = async function (f) {
     if (repo == null)
         repo = new EcRepository();
     repo.selectedServer = global.repo.selectedServer;
@@ -425,7 +431,7 @@ cfPackages = async function (f) {
     repo.precache(toPrecache, function (results) { });
     const terms = JSON.parse(JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2caseTerms")), true));
 
-    result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"; // NOSONAR -- the context IRI the CASE 1.0 specification defines
     result.CFDocument = JSON.parse(await cfDocuments.call(this, f, terms));
     delete result.CFDocument["@context"];
     result.CFItems = [];
@@ -462,7 +468,7 @@ cfPackages = async function (f) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfRubrics = async function () {
+const cfRubrics = async function () {
     error("Not yet implemented.", 501)
 }
 /*
@@ -473,7 +479,7 @@ cfRubrics = async function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfSubjects = async function () {
+const cfSubjects = async function () {
     error("Not yet implemented.", 501)
 }
 
@@ -505,6 +511,7 @@ if (!global.disabledAdapters['case']) {
      *               type: object
      */
     bindWebService("/ims/case/v1p0/CFDocuments", cfDocuments);
+    bindWebService("/ims/case/v1p0/CFDocuments/*", cfDocuments);
 
     /**
      * @openapi
@@ -533,6 +540,7 @@ if (!global.disabledAdapters['case']) {
      *               type: object
      */
     bindWebService("/ims/case/v1p0/CFAssociations", cfAssociations);
+    bindWebService("/ims/case/v1p0/CFAssociations/*", cfAssociations);
 
     /**
      * @openapi
@@ -591,6 +599,7 @@ if (!global.disabledAdapters['case']) {
      *               type: object
      */
     bindWebService("/ims/case/v1p0/CFItems", cfItems);
+    bindWebService("/ims/case/v1p0/CFItems/*", cfItems);
 
     /**
      * @openapi
@@ -621,6 +630,7 @@ if (!global.disabledAdapters['case']) {
      *                 type: object
      */
     bindWebService("/ims/case/v1p0/CFItemAssociations", cfItemAssociations);
+    bindWebService("/ims/case/v1p0/CFItemAssociations/*", cfItemAssociations);
 
     /**
      * @openapi

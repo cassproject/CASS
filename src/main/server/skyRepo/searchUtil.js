@@ -38,6 +38,14 @@ const excludeForeignIndices = function (indexExpression) {
 const allIndices = function () {
     return excludeForeignIndices('*');
 };
+// Removes leading and trailing slashes. A loop, because /\/+$/ backtracks quadratically on long runs of slashes.
+const trimSlashes = function (s) {
+    let start = 0;
+    let end = s.length;
+    while (start < end && s[start] === '/') start++;
+    while (end > start && s[end - 1] === '/') end--;
+    return s.slice(start, end);
+};
 const searchUrl = function (urlRemainder, index_hint) {
     let url = elasticEndpoint;
     if (index_hint != null && RESERVED_INDEX_NAMES.some((name) => index_hint.indexOf(name) != -1)) {
@@ -45,7 +53,7 @@ const searchUrl = function (urlRemainder, index_hint) {
     }
     // Express 5 wildcard remainders arrive without a leading slash. Without the separator the
     // index expression fuses with the endpoint, and any '@' in it is parsed as URL userinfo.
-    const remainderIndex = urlRemainder == null ? '' : String(urlRemainder).replace(/^\/+|\/+$/g, '');
+    const remainderIndex = urlRemainder == null ? '' : trimSlashes(String(urlRemainder));
     if (remainderIndex != '') {
         url += '/' + excludeForeignIndices(remainderIndex.toLowerCase());
     } else if (index_hint == null) {

@@ -40,7 +40,7 @@ var caseInterface = {
     }
 }
 
-stripCassNamespace = function (o) {
+const stripCassNamespace = function (o) {
     if (typeof o["@context"] === "string" && o["@context"].indexOf("://schema.cassproject.org") == -1)
         return o;
     var keys = EcObject.keys(o);
@@ -54,12 +54,12 @@ stripCassNamespace = function (o) {
     return o;
 }
 
-setDateCreated = function (object) {
+const setDateCreated = function (object) {
     if (object["ceasn:dateCreated"] == null && (object)["schema:dateCreated"] == null) {
         var timestamp = getTimestamp(object);
         var date;
         if (timestamp != null) {
-            date = new Date(parseInt(timestamp)).toISOString();
+            date = new Date(Number.parseInt(timestamp)).toISOString();
         } else {
             date = new Date().toISOString();
         }
@@ -67,7 +67,7 @@ setDateCreated = function (object) {
     }
 };
 
-getTimestamp = function (object) {
+const getTimestamp = function (object) {
     var timestamp = object["id"].substring(object["id"].lastIndexOf("/") + 1);
     if (timestamp.matches("[0-9]+")) {
         return Integer.parseInt(timestamp);
@@ -76,7 +76,7 @@ getTimestamp = function (object) {
     }
 };
 
-convertCFDocumentToFramework = async function (document, terms) {
+const convertCFDocumentToFramework = async function (document, terms) {
     var f = new EcFramework();
     f.assignId(document.identifier);
     if (document.subjectURI != null)
@@ -104,7 +104,7 @@ convertCFDocumentToFramework = async function (document, terms) {
     return f;
 }
 
-convertCFAssociationIntoRelation = async function (a, terms) {
+const convertCFAssociationIntoRelation = async function (a, terms) {
     a["@type"] = "Relation";
     a["@context"] = caseToCassSchema;
     a.originNodeURI = a.originNodeURI.uri;
@@ -126,7 +126,7 @@ convertCFAssociationIntoRelation = async function (a, terms) {
     return r;
 }
 
-convertCFItemIntoCompetency = async function (a, terms) {
+const convertCFItemIntoCompetency = async function (a, terms) {
     a["@type"] = "Competency";
     a["@context"] = caseToCassSchema;
     delete a.CFDocumentURI;
@@ -155,7 +155,7 @@ convertCFItemIntoCompetency = async function (a, terms) {
 }
 
 //Returns array of objects to save.
-embedCFPackageIntoFramework = async function (f, document, terms) {
+const embedCFPackageIntoFramework = async function (f, document, terms) {
     var p = await caseInterface.CFPackages.call(this, document.CFPackageURI.identifier);
     var results = [f];
     var i = 0;
@@ -176,7 +176,7 @@ embedCFPackageIntoFramework = async function (f, document, terms) {
     return results;
 }
 
-testSuiteCase = async function () {
+const testSuiteCase = async function () {
     var targetUrl = this.params.caseEndpoint;
     this.targetUrl = targetUrl;
     await caseInterface.CFAssociationGroupings.call(this, this.params.dId);
@@ -193,7 +193,7 @@ testSuiteCase = async function () {
 }
 
 var cassContext = null;
-ingestCase = async function () {
+const ingestCase = async function () {
     await (requireSignedWrite).call(this);
     if (testCase == true) {
         return await testSuiteCase.call(this);
@@ -237,7 +237,7 @@ ingestCase = async function () {
     return JSON.stringify(dx, null, 2);
 }
 
-getDocuments = async function () {
+const getDocuments = async function () {
     var url = this.params.url;
     url += "ims/case/v1p0/CFDocuments";
     var results = await httpGet(url, true, { "Accept": "application/json" });

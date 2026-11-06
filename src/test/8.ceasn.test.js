@@ -14,7 +14,7 @@ let hrtime = function () {
 describe("CEASN Adapter", function () {
     this.timeout(30000);
 
-    it('Waiting for server to be ready', async () => {
+    before(async function () {
         if (process.env.NODEV != null) return;
         let ready = false;
         global.events.server.ready.subscribe(function (isReady) {
@@ -27,18 +27,21 @@ describe("CEASN Adapter", function () {
         while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
     });
     before(async () => {
-        try {
-            await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}data/70d27b782c062d1280b240890141dcf6`);
-        } catch (err) {
+        // Import the O*NET framework the conversion test reads, unless an earlier run left it behind.
+        const loopback = process.env.CASS_LOOPBACK || "http://localhost/api/";
+        const existing = await fetch(`${loopback}data/70d27b782c062d1280b240890141dcf6`);
+        if (!existing.ok) {
             let onet = await (await fetch("https://www.onetcenter.org/ctdlasn/graph/ce-07c25f74-9119-11e8-b852-782bcb5df6ac")).json();
             const formData = new FormData();
             formData.append('data', JSON.stringify(onet));
-            await fetch("http://localhost/api/ctdlasn", { method: 'POST', body: formData });
+            await fetch(`${loopback}ctdlasn`, { method: 'POST', body: formData });
         }
     });
 
     it('conversion to CEASN', async () => {
-        await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ceasn/70d27b782c062d1280b240890141dcf6`)
+        const res = await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}ceasn/70d27b782c062d1280b240890141dcf6`);
+        assert.strictEqual(res.status, 200);
+        assert.isArray((await res.json())['@graph']);
     }).timeout(30000);
 
     it('conversion from CEASN', async () => {

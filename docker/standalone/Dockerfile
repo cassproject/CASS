@@ -131,4 +131,5 @@ RUN rm -rf /opt/node/lib/node_modules/npm /opt/node/bin/npm /opt/node/bin/npx \
     && rm -rf /root/.npm /usr/share/elasticsearch/.npm /tmp/*
 USER elasticsearch:root
 
-ENTRYPOINT (cd CASS && node --force-fips src/main/server.js) & /bin/tini -- /usr/local/bin/docker-entrypoint.sh
+COPY --chmod=755 docker/standalone/entrypoint.sh /usr/local/bin/cass-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/cass-entrypoint.sh"]

@@ -34,7 +34,7 @@ if (global.fileToString === undefined) {
 global.postMaxSize = 52428800;
 try {
     if (process.env.POST_MAX_SIZE != null) {
-        global.postMaxSize = parseInt(process.env.POST_MAX_SIZE);
+        global.postMaxSize = Number.parseInt(process.env.POST_MAX_SIZE);
     }
 } catch (e) {
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, 'PostMaxSize', 'Error setting POST max size from environment variable, using default value.', e);
@@ -682,7 +682,7 @@ if (global.jsonLdToTurtle === undefined) {
     };
 };
 
-toTurtleInternal = function (o) {
+const toTurtleInternal = function (o) {
     return new Promise(async function (resolve, reject) { // NOSONAR -- Blends async and callback, which needs direct promise access.
         let rdf = await jsonld.toRDF(o, { format: 'application/n-quads' });
         let store = $rdf.graph();
