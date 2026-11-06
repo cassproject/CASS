@@ -70,7 +70,6 @@ let getPk = async (identifier) => {
     });
 
     let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/api/"; // NOSONAR -- This is being used as a URI.
-    let keypair = new EcRemoteLinkedData();
     if (myKey != null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileSystemKeypair', "Found file system keypair. Securing and saving to Elastic.");
         loadConfigurationFile("keys/backup/" + sanitize(identifier), () => {

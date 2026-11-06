@@ -1625,7 +1625,6 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     }
 
     if (frameworkObj != null) {
-        var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"]));
 
         frameworkObj["@context"] = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json";
         for (let each in frameworkObj) {

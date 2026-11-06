@@ -73,7 +73,6 @@ async function cassFrameworkAsAsn() {
 
     let allCompetencies = JSON.parse(JSON.stringify(f.competency));
     let competencies = {};
-    let topLevelCompIds = []
     if (f.competency != null)
         for (const competencyId of f.competency) {
             let cached = await loopback.competencyGet(competencyId);

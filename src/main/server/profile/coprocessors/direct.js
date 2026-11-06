@@ -29,7 +29,7 @@ let postProcessProfileEachElement = function (obj, inEdges, vertices, visited) {
     visited.add(obj.id);
     // Recur for each child
     for (const child of obj.children) {
-        const childResults = postProcessProfileEachElement(
+        postProcessProfileEachElement(
             child, inEdges, vertices, visited
         );
     }

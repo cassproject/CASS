@@ -309,7 +309,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         for (let record of recordsToDelete) {
             deleteBody += `${JSON.stringify({ delete: { _index: record._index, _id: record._id } })}\n`;
         }
-        const deleteResponse = await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+        await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
     }
 
     return failed;
@@ -320,7 +320,7 @@ const skyrepoPutParsedBulk = async function (ary) {
         map[x.id] = x;
     }
 
-    const { succeeded, failed } = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
+    const { failed } = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
     // Everything failed already
     if (Object.values(map).length === 0) {
         return failed;

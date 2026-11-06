@@ -179,7 +179,6 @@ module.exports = class ProfileCalculator {
             this.log(`Provided graph structure. ${this.g.verticies.length} vertices`);
         }
 
-        let assertionHash = null;
         // Search for assertions about the subject for later in the background
         let assertions = [];
         // NOTE: push into the shared array rather than reassigning it.
@@ -202,8 +201,6 @@ module.exports = class ProfileCalculator {
             }
         }
 
-        let profileKey = null;
-        let storedProfile = null;
 
         // Wait for assertion search to finish, and get results
         assertions = await assertions;
