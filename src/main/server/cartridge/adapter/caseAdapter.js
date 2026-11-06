@@ -46,7 +46,7 @@ const cfGetFramework = async function (f) {
     if (f == null || f === undefined || !EcObject.isObject(f)) {
         if (f == null)
             f = await skyrepoGet.call(this, query);
-        if (f == null || f["@type"] == null || !f["@type"].contains("ramework"))
+        if (!f?.["@type"]?.contains("ramework"))
             f = null;
         if (f == null && this.params.id != null)
             f = await loopback.frameworkGet(decodeURIComponent(this.params.id)).catch(() => null);
@@ -86,7 +86,7 @@ const cfGetCompetency = async function (c) {
         var competency = null;
         if (competency == null)
             competency = await skyrepoGet.call(this, query);
-        if (competency == null || competency["@type"] == null || !competency["@type"].contains("ompetency"))
+        if (!competency?.["@type"]?.contains("ompetency"))
             competency = null;
         if (competency == null && url != null)
             competency = await loopback.competencyGet(url).catch(() => null);

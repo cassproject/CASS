@@ -25,7 +25,7 @@ async function cassFrameworkAsAsn() {
     console.log(query);
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
-    if (framework == null || !framework["@type"]?.contains("ramework"))
+    if (!framework?.["@type"]?.contains("ramework"))
         framework = null;
     if (framework == null)
         framework = await loopback.frameworkGet(decodeURIComponent(this.params.id));

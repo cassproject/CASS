@@ -120,8 +120,8 @@ module.exports = function (common) {
                     allowed,
                     headers: loggedHeaders(req.headers),
                     connections: {
-                        socket: (req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                        info: (req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
+                        socket: req.socket?.remoteAddress ?? null,
+                        info: req.info?.remoteAddress ?? null
                     },
                     eim: req.eim != null ? req.eim.ids.map(i => i.displayName) : null
                 }), `Client address header (from CASS_TRUSTED_PROXIES only): ${clientIpHeader}`);
@@ -164,8 +164,8 @@ module.exports = function (common) {
                     permittedBy: req.permittedBy,
                     headers: loggedHeaders(req.headers),
                     connections: {
-                        socket: (req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                        info: (req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
+                        socket: req.socket?.remoteAddress ?? null,
+                        info: req.info?.remoteAddress ?? null
                     },
                     eim: req.eim != null ? req.eim.ids.map(i => i.displayName) : null
                 }), `Client address header (from CASS_TRUSTED_PROXIES only): ${clientIpHeader}`);

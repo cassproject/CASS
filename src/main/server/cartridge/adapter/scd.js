@@ -126,7 +126,7 @@ async function cassToScd() {
         var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
         framework = await EcFramework.get(id, null, null, repo).catch(() => null);
     }
-    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
+    if (!framework?.["@type"]?.contains("ramework"))
         framework = null;
     if (framework != null) {
         return await cassFrameworkAsScd(framework);
@@ -134,7 +134,7 @@ async function cassToScd() {
         competency = await skyrepoGet.call(this, query);
         if (competency == null && this.params.id != null)
             competency = await EcCompetency.get(decodeURIComponent(this.params.id), null, null, repo).catch(() => null);
-        else if (competency != null && competency["@type"].contains("ompetency")) {
+        else if (competency?.["@type"].contains("ompetency")) {
             var c = new EcCompetency();
             c.copyFrom(competency);
             competency = c;
@@ -143,7 +143,7 @@ async function cassToScd() {
             var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
             competency = await EcCompetency.get(id, null, null, repo).catch(() => null);
         }
-        if (competency != null && (competency.type == null || !competency.type.contains("ompetency")))
+        if (competency != null && !competency.type?.contains("ompetency"))
             competency = null;
         if (competency != null) {
             return await cassCompetencyAsScd(competency);

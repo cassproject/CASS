@@ -217,7 +217,7 @@ const H2_FORBIDDEN_HEADERS = new Set([
  */
 function _dispatchHttp2Stream(server, stream, headers, app) {
     const session = stream.session;
-    if (!session || !session.socket) return;
+    if (!session?.socket) return;
 
     // --- Socket ---
     const socket = new Http2SocketProxy(stream, session);

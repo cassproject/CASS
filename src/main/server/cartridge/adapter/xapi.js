@@ -189,7 +189,7 @@ var findAlignedCompetencies = async function (objectId, xapiObject, accm) {
                 targetUrl: EcRemoteLinkedData.trimVersionFromUrl(objectId)
             });
         }
-        if (xapiObject?.definition?.moreInfo != null && xapiObject?.definition?.moreInfo.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.definition?.moreInfo))) != null)
+        if (xapiObject?.definition?.moreInfo?.startsWith("http") && (await EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(xapiObject?.definition?.moreInfo))) != null)
         {
             debugLog("xAPI object has a moreInfo competency: " + xapiObject?.definition?.moreInfo);
             results.push({
@@ -199,7 +199,7 @@ var findAlignedCompetencies = async function (objectId, xapiObject, accm) {
     } catch { }
     let creativeWorks = await loopback.repositorySearch(global.repo, "@type:CreativeWork AND url:\"" + objectId + "\"", {});
     if (creativeWorks == null) return undefined; // The search failed; try again next time.
-    if (results.length == 0 && creativeWorks.length === 0 && objectId != null && objectId.startsWith("http")) {
+    if (results.length == 0 && creativeWorks.length === 0 && objectId?.startsWith("http")) {
         // No existing CreativeWork found for this xAPI object ID — create one with no alignments.
         let cw = new schema.CreativeWork();
         cw.assignId(global.repo.selectedServer, EcCrypto.md5(objectId));

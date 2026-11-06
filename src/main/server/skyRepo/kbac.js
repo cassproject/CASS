@@ -124,7 +124,7 @@ global.filterResults = async function (o, dontDecryptInSso) {
             try {
                 return await filterResults.call(this, x, dontDecryptInSso);
             } catch (ex) {
-                if (ex != null && !ex.toString().includes(objectNotFoundError)) {
+                if (ex?.toString().includes(objectNotFoundError) === false) {
                     throw ex;
                 }
                 return null;

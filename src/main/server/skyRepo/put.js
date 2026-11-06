@@ -238,7 +238,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
     // Securing Proxy: Sign data that is to be saved.
     const erld = new EcRemoteLinkedData(null, null);
     erld.copyFrom(o);
-    if (this.ctx && this.ctx.req && this.ctx.req.eim != null) {
+    if (this.ctx?.req?.eim != null) {
         try {
             await this.ctx.req.eim.sign(erld);
             o = JSON.parse(erld.toJson());
@@ -257,7 +257,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         chosenVersion = erld.getTimestamp();
     }
     if (chosenVersion == null) {
-        if (oldPermanent != null && oldPermanent['_version'] != null && !Number.isNaN(Number(oldPermanent['_version']))) {
+        if (oldPermanent?.['_version'] != null && !Number.isNaN(Number(oldPermanent['_version']))) {
             chosenVersion = oldPermanent['_version'] + 1;
         } else {
             chosenVersion = 1;

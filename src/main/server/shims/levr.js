@@ -114,12 +114,12 @@ if (global.bindWebService === undefined) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
             } catch (ex) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpGetError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
-                if (ex && ex.status !== undefined && ex.status != null) {
+                if (ex?.status != null) {
                     res.status(ex.status);
                 } else {
                     res.status(500);
                 }
-                res.end(ex && ex.data ? ex.data : ex + '');
+                res.end(ex?.data ? ex.data : ex + '');
             }
         };
         let put = async function (req, res) {

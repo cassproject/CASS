@@ -176,7 +176,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
 
         const erld = new EcRemoteLinkedData(null, null);
         erld.copyFrom(x.object);
-        if (this.ctx && this.ctx.req && this.ctx.req.eim != null) {
+        if (this.ctx?.req?.eim != null) {
             try {
                 await this.ctx.req.eim.sign(erld);
                 x.object = JSON.parse(erld.toJson());
@@ -198,7 +198,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             let id = x['_id'].split('.')[0];
             let chosenVersion = map[id].version;
             if (chosenVersion == null) {
-                if (x != null && x['_version'] != null && !Number.isNaN(Number(x['_version']))) {
+                if (x?.['_version'] != null && !Number.isNaN(Number(x['_version']))) {
                     chosenVersion = x['_version'] + 1;
                 } else {
                     chosenVersion = 1;

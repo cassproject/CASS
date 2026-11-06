@@ -95,10 +95,10 @@ const convertCFDocumentToFramework = async function (document, terms) {
     }
     f.copyFrom(document);
     if ((f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined)
-        && EcFramework.template != null && EcFramework.template["schema:inLanguage"] != null) {
+        && EcFramework.template?.["schema:inLanguage"] != null) {
         f["schema:inLanguage"] = EcFramework.template["schema:inLanguage"];
     }
-    if (EcFramework.template != null && EcFramework.template["schema:dateCreated"] != null) {
+    if (EcFramework.template?.["schema:dateCreated"] != null) {
         setDateCreated(f);
     }
     return f;
@@ -148,7 +148,7 @@ const convertCFItemIntoCompetency = async function (a, terms) {
     }
     var r = new EcCompetency();
     r.copyFrom(a);
-    if (EcCompetency.template != null && EcCompetency.template["schema:dateCreated"] != null) {
+    if (EcCompetency.template?.["schema:dateCreated"] != null) {
         setDateCreated(r);
     }
     return r;

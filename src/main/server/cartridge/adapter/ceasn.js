@@ -225,13 +225,13 @@ async function cassFrameworkAsCeasn() {
     var framework = null;
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
-    if (framework != null && framework["@type"] != null && framework["@type"].contains("oncept") && framework.subType === "Progression") {
+    if (framework?.["@type"]?.contains("oncept") && framework.subType === "Progression") {
         return await cassConceptSchemeAsCeasnProgression(framework);
     }
-    if (framework != null && framework["@type"] != null && framework["@type"].contains("oncept")) {
+    if (framework?.["@type"]?.contains("oncept")) {
         return await cassConceptSchemeAsCeasn(framework);
     }
-    if (framework != null && framework.subType === "Collection") {
+    if (framework?.subType === "Collection") {
         return await cassFrameworkAsCeasnCollection(framework);
     }
     if (framework == null && this.params.id != null) {
@@ -241,7 +241,7 @@ async function cassFrameworkAsCeasn() {
         let id = global.repo.selectedServer + "data" + (this.params.urlRemainder.startsWith("/") ? "" : "/") + this.params.urlRemainder;
         framework = await EcFramework.get(id, null, null, repo);
     }
-    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
+    if (!framework?.["@type"]?.contains("ramework"))
         framework = null;
     var competency = null;
     if (framework == null) {
@@ -445,7 +445,7 @@ async function cassFrameworkAsCeasn() {
         f["ceasn:hasTopChild"] = [];
     }
     for (let c of competencies) {
-        if (c && c["@id"]) {
+        if (c?.["@id"]) {
             if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
                 f["ceasn:hasTopChild"].push(await ceasnExportUriTransform(c["@id"]));
             }
@@ -663,7 +663,7 @@ async function ceCompact(json, targetContext) {
     for (const k of Object.keys(o)) {
         if (!/^(ceterms|ceasn|asn):/.test(k)) continue;
         const definition = context[k];
-        if (definition != null && definition["@type"] === "@id")
+        if (definition?.["@type"] === "@id")
             o[k] = ceIdReferences(o[k]);
     }
     return jsonLdCompact(JSON.stringify(o), targetContext);
@@ -1084,7 +1084,7 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
     try {
         var c = concepts[obj];
         delete concepts[obj];
-        if (c != null && c.id != null) {
+        if (c?.id != null) {
             var id = c.id;
             concepts[id] = c;
             delete concepts[id]["owner"];
@@ -1478,7 +1478,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
         var canonicalId = asnComp["@id"];
 
         var childComps = asnComp["ceasn:hasChild"];
-        if (childComps != null && childComps.length != null) {
+        if (childComps?.length != null) {
             for (var i = 0; i < childComps.length; i++) {
                 var r = new EcAlignment();
                 r.source = EcRemoteLinkedData.trimVersionFromUrl(childComps[i]);
@@ -1612,7 +1612,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
 
     if (frameworkObj != null) {
         var topChild = frameworkObj["ceasn:hasTopChild"] ? frameworkObj["ceasn:hasTopChild"] : frameworkObj["ceasn:hasChild"];
-        if (topChild != null && topChild.length != null) {
+        if (topChild?.length != null) {
             for (var i = 0; i < topChild.length; i++) {
                 cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(topChild[i]));
             }
@@ -1856,7 +1856,7 @@ async function ceasnFrameworkToCass() {
     var data = fileFromDatastream.call(this, "data");
     if (data === undefined || data == null) {
         data = fileFromDatastream.call(this, "file");
-        if (data && data.path) {
+        if (data?.path) {
             data = await fsPromises.readFile(data.path, { encoding: 'utf8' });
         }
     }

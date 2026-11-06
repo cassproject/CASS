@@ -78,7 +78,7 @@ function inferAnnotations(method) {
  * @returns {Object} The resolved object.
  */
 function resolveRef(spec, ref) {
-    if (!ref || !ref.startsWith('#/')) return ref;
+    if (!ref?.startsWith('#/')) return ref;
     const parts = ref.substring(2).split('/');
     let current = spec;
     for (const part of parts) {
@@ -248,7 +248,7 @@ function generateDescription(method, path, operation, spec) {
             parts.push(`  ${reqBody.description}`);
         }
 
-        if (mediaType && mediaType.schema) {
+        if (mediaType?.schema) {
             let bodySchema = mediaType.schema;
             if (bodySchema['$ref']) {
                 try { bodySchema = resolveRef(spec, bodySchema['$ref']); } catch { /* use as-is */ }
@@ -375,7 +375,7 @@ export function generateTools(spec) {
                     content['multipart/form-data'] ||
                     Object.values(content)[0];
 
-                if (mediaType && mediaType.schema) {
+                if (mediaType?.schema) {
                     let bodySchema = mediaType.schema;
                     if (bodySchema['$ref']) {
                         bodySchema = resolveRef(spec, bodySchema['$ref']);

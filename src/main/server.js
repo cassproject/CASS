@@ -160,7 +160,7 @@ let customJsStr = `
     let swaggerBody = document.getElementById('swagger-ui');
 `;
 
-if (banner && banner.message) {
+if (banner?.message) {
     customJsStr += `
         let header = document.createElement('div');
         header.textContent = "${banner.message}";
@@ -174,7 +174,7 @@ if (banner && banner.message) {
     `;
 }
 
-if (motd && motd.message) {
+if (motd?.message) {
     customJsStr += `
         let modal = document.createElement('div');
         modal.innerHTML = '<div id="motd-modal" class="modal is-active" data-v-248059c4=""><div class="modal-background"></div><div class="modal-card" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription"><header id="modalTitle" class="modal-card-head"><p class="modal-card-title">${motd.title}</p><button class="delete close-modal" aria-label="close">&times;</button></header><section id="modalDescription" class="modal-card-body">${motd.message}</section><footer class="modal-card-foot"><div class="buttons is-right"><button class="button close-modal"> Cancel </button></div></footer></div></div>';

@@ -21,7 +21,7 @@
 // When CORS_CREDENTIALS is true, inform the cass client that all requests to the urls specified in CORS_ORIGINS should be made with credentials
 const getCorsOrigins = function () {
     let corsOrigins;
-    if (process.env.CORS_CREDENTIALS != null && process.env.CORS_CREDENTIALS.trim() == 'true' && process.env.CORS_ORIGINS != null) {
+    if (process.env.CORS_CREDENTIALS?.trim() == 'true' && process.env.CORS_ORIGINS != null) {
         try {
             corsOrigins = process.env.CORS_ORIGINS.split(',').map((x) => x.trim());
         } catch (e) {
@@ -41,7 +41,7 @@ const pingWithTime = function () {
         time: new Date().getTime(),
         ssoViaP1: this.ctx.req.p1 ? true : null,
         ssoPublicKey: this.ctx.req.eim ? this.ctx.req.eim.ids[0].ppk.toPk().toPem() : undefined,
-        ssoAdditionalPublicKeys: this.ctx.req.eim && this.ctx.req.eim.ids.length ? this.ctx.req.eim.ids.slice(1).map((identity) => identity.ppk.toPk().toPem()) : undefined,
+        ssoAdditionalPublicKeys: this.ctx.req.eim?.ids.length ? this.ctx.req.eim.ids.slice(1).map((identity) => identity.ppk.toPk().toPem()) : undefined,
         ssoLogin: this.ctx.req.oidc ? new URL('api/login', process.env.CASS_OIDC_BASE_URL || 'http://localhost/').toString() : undefined,
         ssoLogout: this.ctx.req.oidc ? new URL('api/logout', process.env.CASS_OIDC_BASE_URL || 'http://localhost/').toString() : undefined,
         banner: process.env.CASS_BANNER_MESSAGE ? {
