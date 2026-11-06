@@ -1716,7 +1716,7 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
         if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
             var timestamp;
             var date;
-            if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+            if (!c.id.substring(c.id.lastIndexOf("/")).matches(String.raw`\/[0-9]+`)) {
                 timestamp = null;
             } else {
                 timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
@@ -1824,7 +1824,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
         if (f["schema:dateCreated"] == null || f["schema:dateCreated"] === undefined) {
             var timestamp;
             var date;
-            if (!f.id.substring(f.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+            if (!f.id.substring(f.id.lastIndexOf("/")).matches(String.raw`\/[0-9]+`)) {
                 timestamp = null;
             } else {
                 timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
