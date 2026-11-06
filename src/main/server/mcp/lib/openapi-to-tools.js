@@ -314,13 +314,11 @@ export function generateTools(spec) {
                 );
                 if (firstSection < Infinity) {
                     description = mcpDesc + generated.substring(firstSection);
+                } else if (operation['x-mcp-hints']) {
+                    // No args or hints — append the hints
+                    description = mcpDesc + '\n\nHints:\n' + operation['x-mcp-hints'].trim();
                 } else {
-                    // No args or hints — check if there are hints to append
-                    if (operation['x-mcp-hints']) {
-                        description = mcpDesc + '\n\nHints:\n' + operation['x-mcp-hints'].trim();
-                    } else {
-                        description = mcpDesc;
-                    }
+                    description = mcpDesc;
                 }
             } else {
                 description = generateDescription(method, path, operation, spec);
