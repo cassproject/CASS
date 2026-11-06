@@ -636,13 +636,9 @@ if (global.jsonLdCompact === undefined) {
         try {
             finalTargetContext = JSON.parse(finalTargetContext);
         } catch (ex) { }
-        try {
-            let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
-            (o)['@context'] = finalTargetContext;
-            return o;
-        } catch (s) {
-            throw s;
-        }
+        let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
+        (o)['@context'] = finalTargetContext;
+        return o;
     };
 };
 
