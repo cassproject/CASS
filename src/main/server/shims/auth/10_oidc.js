@@ -124,9 +124,9 @@ module.exports = function installOidc(common) {
                 const oidcConfig = await response.json();
 
                 // Keep standard OAuth/OIDC scopes, drop provider-internal ones.
-                const safeScopes = ['openid', 'profile', 'email', 'offline_access', 'address', 'phone'];
+                const safeScopes = new Set(['openid', 'profile', 'email', 'offline_access', 'address', 'phone']);
                 const filteredScopes = (oidcConfig.scopes_supported || [])
-                    .filter(s => safeScopes.includes(s));
+                    .filter(s => safeScopes.has(s));
 
                 // Rewrite internal URLs to be externally reachable.
                 const externalIssuer = process.env.CASS_OIDC_EXTERNAL_ISSUER_URL;
