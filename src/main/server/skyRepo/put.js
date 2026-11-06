@@ -298,7 +298,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', 'Updated to ' + chosenVersion);
             }
             // Used to replay replication / database log files without "just jamming the data in"
-            if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
+            if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || Number(this.ctx.sanctionedReplay) !== 1) {
                 await skyrepoPutInternal.call(this, o, id, chosenVersion + 1, type, true);
             }
             break;

@@ -106,7 +106,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
 
             // Used to replay replication / database log files without "just jamming the data in"
             if (Object.values(retries).length > 0)
-                if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
+                if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || Number(this.ctx.sanctionedReplay) !== 1) {
                     const newFailed = await skyrepoPutInternalBulk.call(this, retries);
                     for (let key of Object.keys(newFailed)) {
                         failed[key] = true;
