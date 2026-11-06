@@ -20,12 +20,10 @@ const sinceFileFor = (config) => {
 };
 
 class XapiCursor {
-    constructor() {
-        this.latest = null; // The latest `stored` value seen, as the LRS wrote it.
-        this.latestMs = null;
-        this.earlier = null; // The latest `stored` value strictly before `latest`.
-        this.inOrder = true; // Whether statements arrived oldest first, so a partial poll can be resumed.
-    }
+    latest = null; // The latest `stored` value seen, as the LRS wrote it.
+    latestMs = null;
+    earlier = null; // The latest `stored` value strictly before `latest`.
+    inOrder = true; // Whether statements arrived oldest first, so a partial poll can be resumed.
 
     observe(statement) {
         const ms = Date.parse(statement?.stored);
