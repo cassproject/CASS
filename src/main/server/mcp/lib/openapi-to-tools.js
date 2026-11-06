@@ -165,7 +165,7 @@ function generateToolName(method, path) {
     cleaned = cleaned.replace(/([a-z])([A-Z])/g, '$1_$2');
 
     // Replace slashes and other separators with underscores
-    cleaned = cleaned.replace(/[\/\-\.]+/g, '_');
+    cleaned = cleaned.replace(/[/\-.]+/g, '_');
 
     // Remove trailing/leading/double underscores
     cleaned = cleaned.replace(/_+/g, '_').replace(/^_|_$/g, '');
