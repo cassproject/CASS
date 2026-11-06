@@ -63,7 +63,7 @@ let skyrepoAwaitReindex = async function (task, destination, source, label, atLe
     while (Date.now() < deadline) {
         await new Promise((r) => setTimeout(r, pollMs));
         const status = task != null ? await httpGet(elasticEndpoint + '/_tasks/' + task, true, elasticHeaders()) : null;
-        const taskReadable = status != null && status.task != null;
+        const taskReadable = status?.task != null;
         let progress;
         if (taskReadable) {
             if (status.completed) {

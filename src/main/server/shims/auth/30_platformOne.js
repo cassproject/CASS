@@ -7,7 +7,7 @@ module.exports = function installPlatformOne(common) {
          * @returns 
          */
         function parseHeader(authHeader) {
-            if (!authHeader || !authHeader.startsWith("Bearer "))
+            if (!authHeader?.startsWith("Bearer "))
                 return null;
 
             let tokenStr = authHeader.slice(7);

@@ -1652,7 +1652,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
             f.addOwner(EcPk.fromPem(owner));
 
         if (f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined) {
-            if (EcFramework.template != null && EcFramework.template["schema:inLanguage"] != null) {
+            if (EcFramework.template?.["schema:inLanguage"] != null) {
                 f["schema:inLanguage"] = EcFramework.template["schema:inLanguage"];
             }
             else {
@@ -1777,7 +1777,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
 
     if (frameworkObj != null) {
         var topChild = frameworkObj["ceterms:hasMember"];
-        if (topChild != null && topChild.length != null) {
+        if (topChild?.length != null) {
             for (const child of topChild) {
                 cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(child));
             }

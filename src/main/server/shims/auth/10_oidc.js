@@ -28,7 +28,7 @@ module.exports = function installOidc(common) {
                 session: {
                     rollingDuration: process.env.CASS_SESSION_MAX_AGE ? Number.parseInt(process.env.CASS_SESSION_MAX_AGE) : undefined,
                     cookie: {
-                        sameSite: process.env.CORS_CREDENTIALS && process.env.CORS_CREDENTIALS.trim() == 'true' ? 'None' : 'Lax',
+                        sameSite: process.env.CORS_CREDENTIALS?.trim() == 'true' ? 'None' : 'Lax',
                     }
                 }
             })

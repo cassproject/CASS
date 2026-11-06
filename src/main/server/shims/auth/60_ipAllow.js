@@ -37,7 +37,7 @@ module.exports = function installIpAllow(common) {
                 const validationIntervalMs = Number.parseInt(process.env.CASS_SESSION_VALIDATION_INTERVAL) * 1000;
                 const now = Date.now();
 
-                if (req.oidc && req.oidc.session) {
+                if (req.oidc?.session) {
                     if (req.oidc.session.lastValidated && (now - req.oidc.session.lastValidated > validationIntervalMs)) {
                         try {
                             const accessToken = req.oidc.session.accessToken;
