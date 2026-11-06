@@ -540,7 +540,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
         global.server = app.listen(port, () => { global.events.server.listening.next(true); });
     }
 
-    if (typeof process.env.MAX_CONNECTIONS !== 'undefined') {
+    if (process.env.MAX_CONNECTIONS !== undefined) {
         global.server.maxConnections = Number.parseInt(process.env.MAX_CONNECTIONS);
     }
     server.on('connection', function (socket) {
