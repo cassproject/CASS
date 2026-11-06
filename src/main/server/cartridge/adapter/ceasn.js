@@ -829,7 +829,7 @@ async function cassFrameworkAsCeasnCollection(framework) {
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
         if (r.relationType == Relation.NARROWS) {
-            if (allCompetencies.indexOf(r.target) == -1 || allCompetencies.indexOf(r.source) == -1) {
+            if (!allCompetencies.includes(r.target) || !allCompetencies.includes(r.source)) {
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
                 if (competencies[r.source] != null)
