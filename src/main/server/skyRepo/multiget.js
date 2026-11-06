@@ -197,11 +197,10 @@ const endpointMultiGet = async function () {
         ary[i] = lookup[ary[i]];
     }
     if (ary != null) {
-        const me = this;
         const forEachResults = [];
         while (ary.length > 0)
-            forEachResults.push(...await Promise.all(ary.splice(0, 100).map(function (hit) {
-                return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit }, dataStreams: me.dataStreams }, idsFlag != null ? true : null);
+            forEachResults.push(...await Promise.all(ary.splice(0, 100).map((hit) => {
+                return endpointSingleGet.call({ ctx: this.ctx, params: { obj: hit }, dataStreams: this.dataStreams }, idsFlag != null ? true : null);
             })));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
