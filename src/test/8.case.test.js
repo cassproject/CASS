@@ -13,18 +13,6 @@ let hrtime = function () {
 describe("CASE Adapter", function () {
     this.timeout(30000);
 
-    it('Waiting for server to be ready', async () => {
-        if (process.env.NODEV != null) return;
-        let ready = false;
-        global.events.server.ready.subscribe(function (isReady) {
-            if (!isReady) {
-                console.log('Server not ready. Skipping tests.');
-                return;
-            }
-            ready = true;
-        });
-        while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
-    });
     before(async () => {
         try {
             await fetch(`${process.env.CASS_LOOPBACK || "http://localhost/api/"}data/70d27b782c062d1280b240890141dcf6`);
@@ -35,6 +23,18 @@ describe("CASE Adapter", function () {
             formData.append('data', JSON.stringify(onet));
             await fetch("http://localhost/api/ctdlasn", { method: 'POST', body: formData });
         }
+    });
+    it('Waiting for server to be ready', async function () {
+        if (process.env.NODEV != null) this.skip();
+        let ready = false;
+        global.events.server.ready.subscribe(function (isReady) {
+            if (!isReady) {
+                console.log('Server not ready. Skipping tests.');
+                return;
+            }
+            ready = true;
+        });
+        while (!ready) { await new Promise((resolve) => setTimeout(resolve, 100)); }
     });
 
     it('conversion to CASE', async () => {
