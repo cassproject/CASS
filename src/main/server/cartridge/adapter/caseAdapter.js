@@ -2,6 +2,16 @@ let loopback = require('../../shims/cassproject.js');
 const { skyrepoGet } = require('../../skyRepo/get');
 const { skyrepoSearch } = require('../../skyRepo/search');
 
+// The CASE endpoints take the identifier as a path segment (/CFDocuments/{id}) or as ?id=.
+const caseQuery = function () {
+    if (this.params.urlRemainder != null && this.params.urlRemainder !== '' && this.params.urlRemainder !== '/')
+        return queryParse.call(this);
+    return { id: this.params.id };
+};
+// The CaSS-to-CASE property names. Callers inside a package pass them in; the endpoints fetch them.
+const caseTerms = async function () {
+    return JSON.parse(JSON.stringify(await httpGet("https://schema.cassproject.org/0.4/jsonld1.1/cass2caseTerms"), true));
+};
 const cfError = function (code, codeMajor, severity, description, codeMinor, codeMinorValue) {
     global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CaseAdapterError', {
         "imsx_codeMajor": codeMajor,
@@ -16,7 +26,7 @@ const cfError = function (code, codeMajor, severity, description, codeMinor, cod
             ]
         }
     }, code);
-    throw new Error(JSON.stringify({
+    error(JSON.stringify({
         "imsx_codeMajor": codeMajor,
         "imsx_severity": severity,
         "imsx_description": description,
@@ -28,26 +38,23 @@ const cfError = function (code, codeMajor, severity, description, codeMinor, cod
                 }
             ]
         }
-    }));
+    }), code);
 }
 
 const cfGetFramework = async function (f) {
-    var query = queryParse.call(this);
+    var query = caseQuery.call(this);
     if (f == null || f === undefined || !EcObject.isObject(f)) {
         if (f == null)
             f = await skyrepoGet.call(this, query);
         if (f == null || f["@type"] == null || !f["@type"].contains("ramework"))
             f = null;
         if (f == null && this.params.id != null)
-            f = await loopback.frameworkGet(decodeURIComponent(this.params.id));
-        if (f == null)
-            f = await loopback.frameworkGet(query.id);
+            f = await loopback.frameworkGet(decodeURIComponent(this.params.id)).catch(() => null);
+        if (f == null && query.id != null)
+            f = await loopback.frameworkGet(query.id).catch(() => null);
         if (f == null) {
-            var result = null;
-            EcFramework.search(repo, "@id:" + query.id, function (success) {
-                result = success;
-            });
-            if (result.length > 0) {
+            var result = await loopback.frameworkSearch(global.repo, "@id:\"" + query.id + "\"");
+            if (result && result.length > 0) {
                 f = new EcFramework();
                 f.copyFrom(result[0]);
             }
@@ -69,7 +76,7 @@ const cfGetCompetency = async function (c) {
     if (this[cache] != null)
         return this[cache];
     this[cache] = null;
-    var query = queryParse.call(this);
+    var query = caseQuery.call(this);
     var url = null;
     if (!EcObject.isObject(c)) {
         url = c;
@@ -82,14 +89,11 @@ const cfGetCompetency = async function (c) {
         if (competency == null || competency["@type"] == null || !competency["@type"].contains("ompetency"))
             competency = null;
         if (competency == null && url != null)
-            competency = await loopback.competencyGet(url);
+            competency = await loopback.competencyGet(url).catch(() => null);
         if (competency == null && url != null)
-            competency = await loopback.competencyGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url));
+            competency = await loopback.competencyGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url)).catch(() => null);
         if (competency == null) {
-            var result = null;
-            EcCompetency.search(repo, "@id:" + query.id, function (success) {
-                result = success;
-            });
+            var result = await EcCompetency.search(global.repo, "@id:\"" + query.id + "\"");
             if (result && result.length > 0) {
                 competency = new EcCompetency();
                 competency.copyFrom(result[0]);
@@ -110,7 +114,7 @@ const cfGetCompetency = async function (c) {
     return c;
 };
 const cfGetAlignment = async function (c) {
-    var query = queryParse.call(this);
+    var query = caseQuery.call(this);
     var url = null;
     if (!EcObject.isObject(c)) {
         url = c;
@@ -121,9 +125,9 @@ const cfGetAlignment = async function (c) {
         if (competency == null)
             competency = await skyrepoGet.call(this, query);
         if (competency == null && url != null)
-            competency = await loopback.alignmentGet(url);
+            competency = await loopback.alignmentGet(url).catch(() => null);
         if (competency == null && url != null)
-            competency = await loopback.alignmentGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url));
+            competency = await loopback.alignmentGet(global.repo.selectedServer + "data/" + EcCrypto.md5(url)).catch(() => null);
         if (competency == null)
             cfError(404, "failure", "error", "Alignment not found.", "uuid", "unknownobject");
         c = new EcAlignment();
@@ -170,20 +174,21 @@ const cfClean = function (o) {
     500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
 const cfDocuments = async function (f, terms) {
-    f = await cfGetFramework.call(this, f);
-    if (f == null) {
+    if (terms == null)
+        terms = await caseTerms();
+    if (f == null && caseQuery.call(this).id == null) {
         var aggResults = [];
-        var me = this;
-        let frameworks = loopback.frameworkSearch(repo, "*", { size: 5000 });
+        let frameworks = await loopback.frameworkSearch(global.repo, "*", { size: 5000 });
         if (frameworks == null)
             error("Could not reach repository", 500);
         for (var i = 0; i < frameworks.length; i++) {
-            var fw = await cfDocuments.call(me, frameworks[i], terms);
+            var fw = await cfDocuments.call(this, frameworks[i], terms);
             if (fw != null)
                 aggResults.push(JSON.parse(fw));
         }
-        return JSON.stringify(aggResults, null, 2);
+        return JSON.stringify({ CFDocuments: aggResults }, null, 2);
     }
+    f = await cfGetFramework.call(this, f);
     var name = f.getName();
     if (f.id == null) return null;
     var guid = f.getGuid();
@@ -254,7 +259,8 @@ const cfConcepts = async function () {
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
 const cfItems = async function (f, fw, terms) {
-    var query = queryParse.call(this);
+    if (terms == null)
+        terms = await caseTerms();
     f = await cfGetCompetency.call(this, f);
     var shortId = f.shortId();
     var guid = f.getGuid();
@@ -294,7 +300,7 @@ const cfItems = async function (f, fw, terms) {
     f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
-        var parent = skyrepoSearch.call(this, "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
+        var parent = await skyrepoSearch.call(this, "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
         const t = parent[0];
@@ -318,7 +324,8 @@ const cfItems = async function (f, fw, terms) {
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
 const cfItemAssociations = async function (f, fw, terms) {
-    var query = queryParse.call(this);
+    if (terms == null)
+        terms = await caseTerms();
     f = await cfGetAlignment.call(this, f);
     var timestamp = f.getTimestamp();
     var guid = f.getGuid();
@@ -335,12 +342,13 @@ const cfItemAssociations = async function (f, fw, terms) {
     let f2 = f;
     f2.uri = global.repo.selectedServer + "ims/case/v1p0/CFAssociations/" + guid;
     if (fw == null) {
-        var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
+        var parent = await skyrepoSearch.call(this, "relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
         const t = parent[0];
         fw = new EcFramework();
         fw.copyFrom(t);
+        parent[0] = fw;
     }
     else
         parent = [fw];
@@ -503,6 +511,7 @@ if (!global.disabledAdapters['case']) {
      *               type: object
      */
     bindWebService("/ims/case/v1p0/CFDocuments", cfDocuments);
+    bindWebService("/ims/case/v1p0/CFDocuments/*", cfDocuments);
 
     /**
      * @openapi
@@ -531,6 +540,7 @@ if (!global.disabledAdapters['case']) {
      *               type: object
      */
     bindWebService("/ims/case/v1p0/CFAssociations", cfAssociations);
+    bindWebService("/ims/case/v1p0/CFAssociations/*", cfAssociations);
 
     /**
      * @openapi
@@ -589,6 +599,7 @@ if (!global.disabledAdapters['case']) {
      *               type: object
      */
     bindWebService("/ims/case/v1p0/CFItems", cfItems);
+    bindWebService("/ims/case/v1p0/CFItems/*", cfItems);
 
     /**
      * @openapi
@@ -619,6 +630,7 @@ if (!global.disabledAdapters['case']) {
      *                 type: object
      */
     bindWebService("/ims/case/v1p0/CFItemAssociations", cfItemAssociations);
+    bindWebService("/ims/case/v1p0/CFItemAssociations/*", cfItemAssociations);
 
     /**
      * @openapi

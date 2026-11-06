@@ -34,7 +34,7 @@ describe('Number coercion (characterization)', function () {
     });
 });
 
-describe('ipMatch (characterization)', function () {
+describe('ipMatch', function () {
     let ipMatch;
 
     before(function () {
@@ -46,9 +46,12 @@ describe('ipMatch (characterization)', function () {
         // [allow list, client address, expected]
         [['10.0.0.0/8'], '10.1.2.3', true],
         [['10.0.0.0/8'], '11.1.2.3', false],
-        [['10.0.0.0/ 8'], '10.1.2.3', true],
-        [['10.0.0.0/8.9'], '10.1.2.3', true],
-        [['10.0.0.0/0x8'], '10.1.2.3', true],
+        [['10.0.0.0/ 8'], '10.1.2.3', false],
+        [['10.0.0.0/8.9'], '10.1.2.3', false],
+        [['10.0.0.0/0x8'], '10.1.2.3', false],
+        [['10.0.0.0/08'], '10.1.2.3', true],
+        [['10.0.0.0/-8'], '10.1.2.3', false],
+        [['10.0.0.0/8 '], '10.1.2.3', false],
         [['10.0.0.0/abc'], '10.1.2.3', false],
         [['10.0.0.0/'], '10.1.2.3', false],
         [['10.0.0.0/Infinity'], '10.1.2.3', false],

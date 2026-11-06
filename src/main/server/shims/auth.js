@@ -154,7 +154,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-var isNumeric = function (n) { return !Number.isNaN(Number.parseFloat(n)) && Number.isFinite(Number(n)); };
+// A CIDR prefix length is plain decimal digits; parseFloat would also take ' 8', '8.9' and '0x8'.
+var isPrefixLength = function (n) { return /^[0-9]+$/.test(n); };
 
 var ipMatch = function (list, clientIp) {
     if (clientIp && Address.isValid(clientIp)) {
@@ -167,7 +168,7 @@ var ipMatch = function (list, clientIp) {
             e = e || '';
             e = e.indexOf('/') === -1 ? e + '/128' : e;
             var range = e.split('/');
-            if (range.length === 2 && Address.isValid(range[0]) && isNumeric(range[1])) {
+            if (range.length === 2 && Address.isValid(range[0]) && isPrefixLength(range[1])) {
                 var ip = Address.process(range[0]);
                 var bit = Number.parseInt(range[1], 10);
 
