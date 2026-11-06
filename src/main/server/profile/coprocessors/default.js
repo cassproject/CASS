@@ -181,6 +181,7 @@ let processAssertions = async function () {
     });
 }
 let postProcessStart = async function (vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }  
 let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdges) {
     if (inEdges.equivalent == null)
