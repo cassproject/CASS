@@ -29,17 +29,14 @@ let profileCalculator = async function () {
         error("Framework not identified or does not exist.", 400);
 
     let query_agent_fingerprint = [];
-    let query_agent_pk = [];
     let query_agent_ppk = [];
     if (this?.ctx?.req?.eim) {
-        query_agent_pk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().toPem()));
         query_agent_ppk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPem()));
         query_agent_fingerprint.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().fingerprint()));
     }
     if (process.env.PROFILE_PPK != null) {
         const profilePpk = EcPpk.fromPem(process.env.PROFILE_PPK);
         query_agent_ppk.push(process.env.PROFILE_PPK);
-        query_agent_pk.push(profilePpk.toPk().toPem());
         query_agent_fingerprint.push(profilePpk.toPk().fingerprint());
     }
 
