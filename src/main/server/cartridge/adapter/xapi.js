@@ -170,7 +170,7 @@ const resolveLanguageMap = function (langMap) {
     if (typeof langMap !== "object") return null;
     if (langMap["en-US"] != null) return langMap["en-US"];
     if (langMap["en"] != null) return langMap["en"];
-    var keys = Object.keys(langMap);
+    const keys = Object.keys(langMap);
     if (keys.length > 0) return langMap[keys[0]];
     return null;
 }
@@ -268,8 +268,8 @@ let setSubjects = global.setSubjects = async function (pks) {
         await this.setSubject(pks[0]);
         return;
     }
-    var owners = [];
-    var readers = null;
+    let owners = [];
+    let readers = null;
     if (this.reader == null) readers = [];
     else readers = JSON.parse(JSON.stringify(this.reader));
     if (this.owner != null) owners = owners.concat(this.owner);
@@ -384,7 +384,7 @@ const xapiStatement = async function (s, accm) {
                 return found == null ? undefined : (found[0] || null);
             });
             if (groupPerson == null) {
-                var ppk = await EcPpk.generateKey();
+                const ppk = await EcPpk.generateKey();
                 groupPerson = new schema.Person();
                 groupPerson.assignId(global.repo.selectedServer, ppk.toPk().fingerprint());
                 groupPerson.identifier = groupMd5;
