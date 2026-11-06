@@ -943,7 +943,6 @@ async function cassFrameworkAsCeasnCollection(framework) {
 
     if (f.description == null)
         f.description = f.name;
-    framework = f;
     delete f.competency;
     var guid = f.getGuid();
     var uuid = new UUID(3, "nil", f.shortId()).format();
