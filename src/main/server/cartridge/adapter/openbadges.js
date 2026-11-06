@@ -79,10 +79,10 @@ const badgeSubject = async function (fingerprint) {
         error("Insufficient data available to generate identityObject.", 405);
 
     if (person.email != null) {
-        var sha = forge.md.sha256.create();
-        var salt = fingerprint;
+        const sha = forge.md.sha256.create();
+        const salt = fingerprint;
         sha.update(person.email + salt);
-        var hashed = "sha256$" + sha.digest().toHex();
+        const hashed = "sha256$" + sha.digest().toHex();
         return JSON.stringify({
             type: "email",
             identity: hashed,

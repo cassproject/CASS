@@ -817,14 +817,14 @@ async function cassFrameworkAsCeasnCollection(framework) {
     for (const competencyId of f.competency) {
         var cached = await EcCompetency.get(competencyId, null, null, repo);
         if (cached != null) {
-            var c = new EcCompetency();
+            const c = new EcCompetency();
             c.copyFrom(JSON.parse(JSON.stringify(cached)));
             competencies[competencyId] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
 
     for (const relationId of f.relation) {
-        var r = await EcAlignment.get(f.relation[i], null, null, repo);
+        const r = await EcAlignment.get(relationId, null, null, repo);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
