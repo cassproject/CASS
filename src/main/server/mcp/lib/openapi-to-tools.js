@@ -420,7 +420,7 @@ export function generateTools(spec) {
                 inputSchema,
                 annotations: {
                     ...inferAnnotations(method),
-                    ...(operation['x-mcp-annotations'] || {}),
+                    ...operation['x-mcp-annotations'],
                 },
                 method,
                 pathTemplate: path,
