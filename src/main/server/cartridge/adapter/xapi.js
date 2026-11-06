@@ -246,7 +246,7 @@ var noteRepositoryChanges = function (data, deleted) {
                 else lookups.replaceLater("person:" + key, p);
             }
         } else if (d.isAny(new schema.CreativeWork().getTypes())) {
-            for (let url of [].concat(datum.url ?? datum["schema:url"] ?? []))
+            for (let url of [datum.url ?? datum["schema:url"] ?? []].flat())
                 if (typeof url === "string") lookups.invalidate("aligned:" + url);
         } else if (d.isAny(new EcCompetency().getTypes())) {
             if (d.id != null) lookups.invalidate("aligned:" + EcRemoteLinkedData.trimVersionFromUrl(d.id));
