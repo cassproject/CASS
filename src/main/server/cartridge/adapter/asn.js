@@ -75,13 +75,13 @@ async function cassFrameworkAsAsn() {
     let competencies = {};
     let topLevelCompIds = []
     if (f.competency != null)
-        for (let i = 0; i < f.competency.length; i++) {
-            let cached = await loopback.competencyGet(f.competency[i]);
+        for (const competencyId of f.competency) {
+            let cached = await loopback.competencyGet(competencyId);
             if (cached == null) continue;
             let c = new EcCompetency();
             c.copyFrom(JSON.parse(JSON.stringify(cached)));
-            competencies[f.competency[i]] = c;
-            if (competencies[f.competency[i]] == null)
+            competencies[competencyId] = c;
+            if (competencies[competencyId] == null)
                 error("Competency not found.", 404);
         }
 

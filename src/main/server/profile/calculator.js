@@ -58,8 +58,8 @@ function getPersistentSafeHash(obj, algorithm = 'sha256') {
         // 3. Handle Arrays
         if (Array.isArray(val)) {
             hash.update('a:[');
-            for (let i = 0; i < val.length; i++) {
-                process(val[i]);
+            for (const item of val) {
+                process(item);
                 hash.update(',');
             }
             hash.update(']');
@@ -448,8 +448,8 @@ module.exports = class ProfileCalculator {
         }
 
         let newChildren = [];
-        for (let i = 0; i < profile.children.length; i++)
-            newChildren = newChildren.concat(pruneNonFrameworkData(profile.children[i]));
+        for (const child of profile.children)
+            newChildren = newChildren.concat(pruneNonFrameworkData(child));
 
         profile.children = newChildren;
 

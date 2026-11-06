@@ -111,8 +111,7 @@ const putPermanentBaseUrl = function (o, id, version, type) {
 const removeNonIndexables = function (o) {
     if (o != null && EcObject.isObject(o)) {
         const keys = EcObject.keys(o);
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
+        for (const key of keys) {
             removeNonIndexables((o)[key]);
         }
         if (o.type == 'EncryptedValue' || o['@type'] == 'EncryptedValue') {
@@ -123,8 +122,8 @@ const removeNonIndexables = function (o) {
         delete (o)['@signature'];
     } else if (o != null && EcArray.isArray(o)) {
         const a = o;
-        for (let i = 0; i < a.length; i++) {
-            removeNonIndexables(a[i]);
+        for (const item of a) {
+            removeNonIndexables(item);
         }
     }
 };

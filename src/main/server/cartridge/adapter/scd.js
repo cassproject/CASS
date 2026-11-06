@@ -73,8 +73,8 @@ async function cassCompetencyAsScd(c) {
     }
     if (frameworks) {
         c.frameworks = [];
-        for (let i = 0; i < frameworks.length; i++) {
-            c.frameworks.push(transformUrl(frameworks[i]["id"]));
+        for (const framework of frameworks) {
+            c.frameworks.push(transformUrl(framework["id"]));
         }
     }
     for (let each in c) {

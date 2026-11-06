@@ -290,17 +290,17 @@ async function cassFrameworkAsCeasn() {
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
 
-    for (var i = 0; i < f.competency.length; i++) {
-        var cached = await EcCompetency.get(f.competency[i], null, null, repo);
+    for (const competencyId of f.competency) {
+        var cached = await EcCompetency.get(competencyId, null, null, repo);
         if (cached != null) {
             var c = new EcCompetency();
             c.copyFrom(JSON.parse(JSON.stringify(cached)));
-            competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
+            competencies[competencyId] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
 
-    for (var i = 0; i < f.relation.length; i++) {
-        var r = await EcAlignment.get(f.relation[i], null, null, repo);
+    for (const relationId of f.relation) {
+        var r = await EcAlignment.get(relationId, null, null, repo);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
@@ -564,8 +564,8 @@ async function cassFrameworkAsCeasn() {
             continue;
         }
         var found = false;
-        for (var j = 0; j < results.length; j++)
-            if (results[j]["@id"] == competencies[k]["@id"]) {
+        for (const result of results)
+            if (result["@id"] == competencies[k]["@id"]) {
                 found = true;
                 break;
             }
@@ -1213,15 +1213,15 @@ async function cassConceptSchemeAsCeasn(framework) {
     var concepts = {};
     var allConcepts = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
 
-    for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
-        var c = await EcConcept.get(cs["skos:hasTopConcept"][i], null, null, repo);
+    for (const topConcept of cs["skos:hasTopConcept"]) {
+        var c = await EcConcept.get(topConcept, null, null, repo);
         if (c != null) {
-            concepts[cs["skos:hasTopConcept"][i]] = concepts[c.id] = c;
+            concepts[topConcept] = concepts[c.id] = c;
             if (c["skos:narrower"]) {
                 async function getSubConcepts(c) {
                     repo.precache(c["skos:narrower"], function () { });
-                    for (var j = 0; j < c["skos:narrower"].length; j++) {
-                        var subC = await EcConcept.get(c["skos:narrower"][j], null, null, repo);
+                    for (const narrower of c["skos:narrower"]) {
+                        var subC = await EcConcept.get(narrower, null, null, repo);
                         if (subC != null) {
                             concepts[subC.id] = subC;
                             allConcepts.push(subC.id);
@@ -1295,8 +1295,8 @@ async function cassConceptSchemeAsCeasn(framework) {
     for (var k in concepts) {
         var c = concepts[k];
         var found = false;
-        for (var j = 0; j < results.length; j++) {
-            if (results[j]["@id"] == concepts[k]["@id"]) {
+        for (const result of results) {
+            if (result["@id"] == concepts[k]["@id"]) {
                 found = true;
                 break;
             }
@@ -1334,10 +1334,10 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
     var levels = {};
     var allLevels = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
 
-    for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
-        var c = await EcConcept.get(cs["skos:hasTopConcept"][i], null, null, repo);
+    for (const topConcept of cs["skos:hasTopConcept"]) {
+        var c = await EcConcept.get(topConcept, null, null, repo);
         if (c != null) {
-            levels[cs["skos:hasTopConcept"][i]] = levels[c.id] = c;
+            levels[topConcept] = levels[c.id] = c;
             // if (c["skos:narrower"]) {
             //     async function getSubConcepts(c) {
             //         repo.precache(c["skos:narrower"], function () { });
@@ -1479,9 +1479,9 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
 
         var childComps = asnComp["ceasn:hasChild"];
         if (childComps?.length != null) {
-            for (var i = 0; i < childComps.length; i++) {
+            for (const childComp of childComps) {
                 var r = new EcAlignment();
-                r.source = EcRemoteLinkedData.trimVersionFromUrl(childComps[i]);
+                r.source = EcRemoteLinkedData.trimVersionFromUrl(childComp);
                 r.target = EcRemoteLinkedData.trimVersionFromUrl(canonicalId);
                 r.relationType = Relation.NARROWS;
                 r.generateId(global.repo.selectedServer);
@@ -1613,8 +1613,8 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     if (frameworkObj != null) {
         var topChild = frameworkObj["ceasn:hasTopChild"] ? frameworkObj["ceasn:hasTopChild"] : frameworkObj["ceasn:hasChild"];
         if (topChild?.length != null) {
-            for (var i = 0; i < topChild.length; i++) {
-                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(topChild[i]));
+            for (const child of topChild) {
+                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(child));
             }
         }
     }

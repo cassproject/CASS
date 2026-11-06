@@ -151,9 +151,9 @@ var pkFromMbox = async function (xapiPerson, accm) {
         if (person == null)
             continue;
         var pk = null;
-        for (var i = 0; i < person.owner.length; i++)
-            if (EcPk.fromPem(person.owner[i]).fingerprint() == person.getGuid())
-                pk = EcPk.fromPem(person.owner[i]);
+        for (const owner of person.owner)
+            if (EcPk.fromPem(owner).fingerprint() == person.getGuid())
+                pk = EcPk.fromPem(owner);
         if (pk != null)
             results.push(pk);
     }
@@ -221,8 +221,8 @@ var findAlignedCompetencies = async function (objectId, xapiObject, accm) {
         if (creativeWork.educationalAlignment == null) continue;
         if (!EcArray.isArray(creativeWork.educationalAlignment))
             creativeWork.educationalAlignment = [creativeWork.educationalAlignment];
-        for (var i = 0; i < creativeWork.educationalAlignment.length; i++)
-            results.push(creativeWork.educationalAlignment[i]);
+        for (const alignment of creativeWork.educationalAlignment)
+            results.push(alignment);
     }
     return results;
 }
@@ -380,9 +380,9 @@ var xapiStatement = async function (s, accm) {
     let alignedCompetencies = await getAlignedCompetencies.call(this, s.object.id, s.object, accm);
     debugLog("Aligned Competencies: " + alignedCompetencies.length);
     let alreadyAligned = {};
-    for (let i = 0; i < alignedCompetencies.length; i++) {
+    for (const alignedCompetency of alignedCompetencies) {
         let a = new EcAssertion();
-        a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id + alignedCompetencies[i].targetUrl));
+        a.assignId(global.repo.selectedServer, EcCrypto.md5(s.id + alignedCompetency.targetUrl));
         a.addOwner(xapiMePk);
         a.addOwner(EcPk.fromPem(skyrepoAdminPk()));
         for (let authorityPk of authorityPks)
@@ -428,13 +428,13 @@ var xapiStatement = async function (s, accm) {
         global.events.person.assertionAbout.next(actorPks[0]);
         await a.setSubject(actorPks[0]);
         await a.setAgent(agentPks[0]);
-        a.competency = alignedCompetencies[i].targetUrl;
+        a.competency = alignedCompetency.targetUrl;
         // educationalFramework is schema.org Text: newer alignments carry
         // the framework @id, legacy ones a display name. assertion.framework
         // must be a framework id (vision/search and bayes match on it), so
         // only a URI is usable; otherwise leave it unset for the vision
         // competency->framework backfill to fill.
-        const alignedFramework = alignedCompetencies[i].educationalFramework;
+        const alignedFramework = alignedCompetency.educationalFramework;
         a.framework = /^https?:\/\//i.test(alignedFramework) ? alignedFramework : undefined;
         if (alreadyAligned[a.competency + a.framework])
             continue;

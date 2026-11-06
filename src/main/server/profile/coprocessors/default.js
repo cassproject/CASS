@@ -69,8 +69,7 @@ let insertResources = async function () {
         if (results == null) continue;
         global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultInsertResources", `Searching for alignments, ${results.length} found.`);
 
-        for (let i = 0; i < results.length; i++) {
-            const resource = results[i];
+        for (const resource of results) {
             // educationalAlignment is written as an array by the mapping
             // tools and the xAPI adapter; older records may carry a single
             // object. Attach the resource to EVERY aligned vertex present

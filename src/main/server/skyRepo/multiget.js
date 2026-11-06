@@ -160,8 +160,8 @@ const endpointMultiGet = async function () {
     const mget = {};
     const docs = [];
     (mget)['docs'] = docs;
-    for (let i = 0; i < ary.length; i++) {
-        const urlRemainder = ary[i].replace('data/', '');
+    for (const entry of ary) {
+        const urlRemainder = entry.replace('data/', '');
         const parseParams = queryParse.call(this, urlRemainder, null);
         const id = parseParams['id'];
         lookup[id] = urlRemainder;
@@ -183,8 +183,7 @@ const endpointMultiGet = async function () {
     const resultDocs = (response)['docs'];
     let results = [];
     if (resultDocs != null) {
-        for (let i = 0; i < resultDocs.length; i++) {
-            const doc = resultDocs[i];
+        for (const doc of resultDocs) {
             if (doc['found']) {
                 delete lookup[doc['_id'].substring(0, doc['_id'].indexOf('.'))];
                 results.push(JSON.parse(doc['_source']['data']));
