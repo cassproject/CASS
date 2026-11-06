@@ -392,7 +392,7 @@ const xapiStatement = async function (s, accm) {
                 await groupPerson.addOwner(xapiMePk);
                 let theNames = (await Promise.all(actorPks.map((pk) => EcPerson.getByPk(repo, pk, null, null, xapiIm))));
                 debugLog(theNames);
-                groupPerson.name = theNames.map(x => x.name).filter(x => x).join(", ");
+                groupPerson.name = theNames.map(x => x.name).filter(Boolean).join(", ");
                 if (groupPerson.name == "")
                     groupPerson.name = null;
                 for (let authorityPk of authorityPks)
