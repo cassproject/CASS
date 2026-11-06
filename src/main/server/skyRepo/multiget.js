@@ -210,7 +210,7 @@ const endpointMultiGet = async function () {
             }
         }
     }
-    if (idsFlag != null ? true : false) {
+    if (idsFlag != null) {
         results = results.map((x) => x['@id']);
     }
     return JSON.stringify(results);

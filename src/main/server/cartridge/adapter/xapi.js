@@ -17,7 +17,7 @@ var xapiConfig = function () {
     this.xapiConfig = JSON.parse(fileToString(fileLoad(xapiConfigFilePath)));
     this.xapiConfig.xapiEndpoint = process.env.XAPI_ENDPOINT || this.xapiConfig.xapiEndpoint;
     this.xapiConfig.xapiAuth = process.env.XAPI_AUTH || this.xapiConfig.xapiAuth;
-    this.xapiConfig.enabled = (process.env.XAPI_ENABLED ? true : false) || this.xapiConfig.xapiEnabled;
+    this.xapiConfig.enabled = Boolean(process.env.XAPI_ENABLED) || this.xapiConfig.xapiEnabled;
     debugLog(this.xapiConfig);
     return this.xapiConfig;
 }
