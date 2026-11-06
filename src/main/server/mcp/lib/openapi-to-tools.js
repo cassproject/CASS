@@ -466,10 +466,8 @@ export function generateResourceTemplates(spec) {
         mimeType: 'application/ld+json',
         method: 'GET',
         pathTemplate: '/api/data/{type}/{uid}/{version}',
-    });
-
-    // Template for fetching any object by uid alone
-    templates.push({
+    }, {
+        // Template for fetching any object by uid alone
         uriTemplate: 'cass://data/{uid}',
         name: 'CaSS Object by UID',
         description: 'Retrieve a JSON-LD object from CaSS by its UID (type auto-detected).',
