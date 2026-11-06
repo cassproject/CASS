@@ -457,7 +457,6 @@ async function cassFrameworkAsCeasn() {
 
     if (f.description == null)
         f.description = f.name;
-    framework = f;
     delete f.competency;
     var guid = f.getGuid();
     var uuid = new UUID(3, "nil", f.shortId()).format();
@@ -1246,7 +1245,6 @@ async function cassConceptSchemeAsCeasn(framework) {
 
     cs.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnConcepts.json";
 
-    framework = cs;
     var guid = cs.getGuid();
     var uuid = new UUID(3, "nil", cs.shortId()).format();
     var csId = cs.id;
@@ -1293,7 +1291,6 @@ async function cassConceptSchemeAsCeasn(framework) {
     cs = conceptArrays(cs);
     results.push(cs);
     for (var k in concepts) {
-        var c = concepts[k];
         var found = false;
         for (const result of results) {
             if (result["@id"] == concepts[k]["@id"]) {
