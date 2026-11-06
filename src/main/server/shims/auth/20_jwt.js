@@ -1,4 +1,4 @@
-module.exports = function (common) {
+module.exports = function installJwt(common) {
     if (process.env.CASS_JWT_ENABLED === 'true') {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthJwtEnabled", `JWT authentication is enabled.`);
 

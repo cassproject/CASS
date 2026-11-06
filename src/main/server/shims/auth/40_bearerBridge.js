@@ -9,7 +9,7 @@
 // -----------------------------------------------------------------------
 const jose = require('jose');
 
-module.exports = function (common) {
+module.exports = function installBearerBridge(common) {
     const { getJWKS } = common;
 
     app.use(async function (req, res, next) {

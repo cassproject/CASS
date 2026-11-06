@@ -1,4 +1,4 @@
-module.exports = function (common) {
+module.exports = function installOidc(common) {
     if (process.env.CASS_OIDC_ENABLED) {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthEnabled", `OIDC authentication is enabled.`);
         if (global.baseUrl != "") {

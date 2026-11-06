@@ -1,6 +1,6 @@
 const sharedAdminCache = require("../util/sharedAdminCache.js");
 
-module.exports = function (common) {
+module.exports = function installSignatureSheet(common) {
     const { getPk, getPkCache, getPersonCache, skyrepoAdminPpk, skyrepoAdminKey, allowEnvEmails, envEmailArray } = common;
 
     let signatureSheetCache = {};

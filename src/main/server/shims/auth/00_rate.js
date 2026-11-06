@@ -1,6 +1,6 @@
 const rateLimit = require('express-rate-limit');
 
-module.exports = function (common) {
+module.exports = function installRateLimit(common) {
     if (process.env.CASS_RATE_LIMIT) {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthRateLimit", `Rate limiting is enabled for auth middleware. Window: ${process.env.CASS_RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000} ms, Max: ${process.env.CASS_RATE_LIMIT_MAX || 100} requests.`);
 

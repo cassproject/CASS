@@ -1,4 +1,4 @@
-module.exports = function (common) {
+module.exports = function installPlatformOne(common) {
     if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED) {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthPlatformOneEnabled", `Platform One authentication is enabled.`);
         /**

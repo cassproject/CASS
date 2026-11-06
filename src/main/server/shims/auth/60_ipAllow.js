@@ -1,7 +1,7 @@
 const jose = require('jose');
 const rateLimit = require('express-rate-limit');
 
-module.exports = function (common) {
+module.exports = function installIpAllow(common) {
     const { getJWKS, ipMatch } = common;
 
     if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED != null) {
