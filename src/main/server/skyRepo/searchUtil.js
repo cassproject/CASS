@@ -48,7 +48,7 @@ const trimSlashes = function (s) {
 };
 const searchUrl = function (urlRemainder, index_hint) {
     let url = elasticEndpoint;
-    if (index_hint != null && RESERVED_INDEX_NAMES.some((name) => index_hint.indexOf(name) != -1)) {
+    if (index_hint != null && RESERVED_INDEX_NAMES.some((name) => index_hint.includes(name))) {
         index_hint = null;
     }
     // Express 5 wildcard remainders arrive without a leading slash. Without the separator the

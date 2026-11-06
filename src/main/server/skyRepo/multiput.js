@@ -223,7 +223,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
             let owners = (o)['owner'];
             for (let i = 0; i < owners.length; i++) {
-                if (owners[i].indexOf('\n') != -1) {
+                if (owners[i].includes('\n')) {
                     owners[i] = EcPk.fromPem(owners[i]).toPem();
                 }
             }
@@ -231,7 +231,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         if ((o)['reader'] != null && EcArray.isArray((o)['reader'])) {
             let owners = (o)['reader'];
             for (let i = 0; i < owners.length; i++) {
-                if (owners[i].indexOf('\n') != -1) {
+                if (owners[i].includes('\n')) {
                     owners[i] = EcPk.fromPem(owners[i]).toPem();
                 }
             }
@@ -244,7 +244,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         } catch (ex) {
             (o)['@version'] = new Date().getTime();
         }
-        if (x.type != null && x.type.indexOf('EncryptedValue') != -1) {
+        if (x.type != null && x.type.includes('EncryptedValue')) {
             delete (o)['payload'];
             delete (o)['secret'];
         }
@@ -390,7 +390,7 @@ const endpointMultiPut = async function () {
             const o = x;
             ld.copyFrom(o);
             let id = null;
-            if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServerProxy) == -1 && ld.id.indexOf(repo.selectedServer) == -1) {
+            if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && !ld.id.includes(repo.selectedServerProxy) && !ld.id.includes(repo.selectedServer)) {
                 id = EcCrypto.md5(ld.shortId());
             } else {
                 id = ld.getGuid();

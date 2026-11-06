@@ -124,7 +124,7 @@ global.filterResults = async function (o, dontDecryptInSso) {
             try {
                 return await filterResults.call(this, x, dontDecryptInSso);
             } catch (ex) {
-                if (ex != null && ex.toString().indexOf(objectNotFoundError) == -1) {
+                if (ex != null && !ex.toString().includes(objectNotFoundError)) {
                     throw ex;
                 }
                 return null;
@@ -137,7 +137,7 @@ global.filterResults = async function (o, dontDecryptInSso) {
             const signatures = await (signatureSheet).call(this);
             let foundSignature = false;
             for (let signature of signatures) {
-                if (JSON.stringify(o).indexOf(signature.owner) != -1) {
+                if (JSON.stringify(o).includes(signature.owner)) {
                     foundSignature = true;
                     break;
                 }

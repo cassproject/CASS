@@ -166,7 +166,7 @@ var ipMatch = function (list, clientIp) {
             // IPv6 address has 128 bits and IPv4 has 32 bits.
             // Setting the routing prefix to all bits in a CIDR address means only the specified address is allowed.
             e = e || '';
-            e = e.indexOf('/') === -1 ? e + '/128' : e;
+            e = e.includes('/') ? e : e + '/128';
             var range = e.split('/');
             if (range.length === 2 && Address.isValid(range[0]) && isPrefixLength(range[1])) {
                 var ip = Address.process(range[0]);

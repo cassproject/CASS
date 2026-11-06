@@ -95,7 +95,7 @@ global.getTypeFromObject = function (o) {
     if (type == null) {
         return null;
     }
-    if (type.indexOf('http') != -1) {
+    if (type.includes('http')) {
         return type;
     }
     if (context == null) {

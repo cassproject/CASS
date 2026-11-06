@@ -41,7 +41,7 @@ var caseInterface = {
 }
 
 const stripCassNamespace = function (o) {
-    if (typeof o["@context"] === "string" && o["@context"].indexOf("://schema.cassproject.org") == -1)
+    if (typeof o["@context"] === "string" && !o["@context"].includes("://schema.cassproject.org"))
         return o;
     var keys = EcObject.keys(o);
     for (var i = 0; i < keys.length; i++) {

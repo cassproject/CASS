@@ -135,7 +135,7 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
     if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
         let owners = (o)['owner'];
         for (let i = 0; i < owners.length; i++) {
-            if (owners[i].indexOf('\n') != -1) {
+            if (owners[i].includes('\n')) {
                 owners[i] = EcPk.fromPem(owners[i]).toPem();
             }
         }
@@ -143,7 +143,7 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
     if ((o)['reader'] != null && EcArray.isArray((o)['reader'])) {
         let owners = (o)['reader'];
         for (let i = 0; i < owners.length; i++) {
-            if (owners[i].indexOf('\n') != -1) {
+            if (owners[i].includes('\n')) {
                 owners[i] = EcPk.fromPem(owners[i]).toPem();
             }
         }

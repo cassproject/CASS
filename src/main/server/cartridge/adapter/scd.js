@@ -39,7 +39,7 @@ function getGuid(id) {
 
 function transformUrl(url) {
     let guid;
-    if (EcRepository.shouldTryUrl(url) === false && url.indexOf(this.repo.selectedServer) === -1) {
+    if (EcRepository.shouldTryUrl(url) === false && !url.includes(this.repo.selectedServer)) {
         guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(url));
     } else {
         guid = getGuid(url);

@@ -106,7 +106,7 @@ var personFromEmail = async function (mbox, name, accm) {
     if (mbox == null) return null;
     mbox = mbox.replace("mailto:", "");
     const person = await lookups.get("person:" + mbox, async () => {
-        if (mbox.indexOf("@") != -1) {
+        if (mbox.includes("@")) {
             const people = await loopback.repositorySearch(global.repo, "@type:Person AND email:\"" + mbox + "\"", {});
             if (people == null) return undefined; // The search failed; try again next time.
             if (people.length >= 1) {
@@ -134,7 +134,7 @@ var personFromEmail = async function (mbox, name, accm) {
         if (people == null) return undefined;
         return people.length >= 1 ? people[0] : null;
     });
-    if (person != null && person.name == null && name != null && mbox.indexOf("@") != -1) {
+    if (person != null && person.name == null && name != null && mbox.includes("@")) {
         person.name = name;
         await saveWithBatch(person, accm);
     }

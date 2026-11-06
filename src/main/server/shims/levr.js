@@ -337,7 +337,7 @@ if (global.httpGet === undefined) {
                 const response = await fetch(url, { headers: headers });
                 let result = null;
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
+                if (contentType && contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();
@@ -408,7 +408,7 @@ if (global.httpDelete === undefined) {
             const response = await fetch(url, { headers: headers, method: 'DELETE' });
             let result = null;
             const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
+            if (contentType && contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -470,7 +470,7 @@ if (global.httpPut === undefined) {
             });
             let result = null;
             const _contentType = response.headers.get("content-type");
-            if (_contentType && _contentType.indexOf("application/json") !== -1) {
+            if (_contentType && _contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -535,7 +535,7 @@ if (global.httpPost === undefined) {
 
                 let result = null;
                 const _contentType = response.headers.get("content-type");
-                if (_contentType && _contentType.indexOf("application/json") !== -1) {
+                if (_contentType && _contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();

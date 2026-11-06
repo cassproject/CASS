@@ -135,7 +135,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
         var uuid = new UUID(3, "nil", c.shortId()).format();
 
         // If schema:identifier is not a URI, remove from translation
-        if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
+        if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && !c["schema:identifier"].includes("http")) {
             delete c["schema:identifier"];
         } else if (c["schema:identifier"] != null) {
             if (!EcArray.isArray(c["schema:identifier"])) {
@@ -305,7 +305,7 @@ async function cassFrameworkAsCeasn() {
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
         if (r.relationType == Relation.NARROWS) {
-            if (allCompetencies.indexOf(r.target) == -1 || allCompetencies.indexOf(r.source) == -1) {
+            if (!allCompetencies.includes(r.target) || !allCompetencies.includes(r.source)) {
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
                 if (competencies[r.source] != null)
@@ -463,7 +463,7 @@ async function cassFrameworkAsCeasn() {
     var uuid = new UUID(3, "nil", f.shortId()).format();
 
     //If schema:publisher field is not a URI, put data in ceasn:publisherName field
-    if (f["schema:publisher"] != null && !EcArray.isArray(f["schema:publisher"]) && f["schema:publisher"].indexOf("http") == -1) {
+    if (f["schema:publisher"] != null && !EcArray.isArray(f["schema:publisher"]) && !f["schema:publisher"].includes("http")) {
         if (!EcArray.isArray(f["ceasn:publisherName"])) {
             f["ceasn:publisherName"] = [];
         }
@@ -482,7 +482,7 @@ async function cassFrameworkAsCeasn() {
     }
 
     //If schema:identifier is not a URI, remove from translation
-    if (f["schema:identifier"] != null && !EcArray.isArray(f["schema:identifier"]) && f["schema:identifier"].indexOf("http") == -1) {
+    if (f["schema:identifier"] != null && !EcArray.isArray(f["schema:identifier"]) && !f["schema:identifier"].includes("http")) {
         delete f["schema:identifier"];
     } else if (f["schema:identifier"] != null) {
         if (!EcArray.isArray(f["schema:identifier"])) {
@@ -638,7 +638,7 @@ function stripNonCe(f) {
                     f[k][key] = [f[k][key]];
             });
         }
-        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("asn:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1 || k.indexOf("cipList") != -1)
+        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("asn:") == 0 || k.indexOf("@") == 0 || k.includes("socList") || k.includes("naicsList") || k.includes("cipList"))
             ;
         else
             delete f[k];
