@@ -316,19 +316,12 @@ var xapiStatement = async function (s, accm) {
     var negative = false;
     if (s.result.success != null) {
         var scaled = 1.0;
-        if (Number(s.result.success) === 1)
-            negative = false;
-        else
-            negative = true;
+        negative = Number(s.result.success) !== 1;
     } else if (s.result.score != null) {
         var scaled = s.result.score.scaled;
-        if (scaled > 0.7)
-            negative = false;
-        else
-            negative = true;
+        negative = !(scaled > 0.7);
     } else if (s.result.response == "Pass") {
         var scaled = 1.0;
-        negative = false;
     } else if (s.result.response == "Fail") {
         var scaled = 1.0;
         negative = true;
