@@ -192,7 +192,7 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
     }
     const data = {};
     (data)['data'] = JSON.stringify(o);
-    data.writeMs = new Date().getTime();
+    data.writeMs = Date.now();
     // Indexed so version history can be retrieved with a term query. The
     // document _id is `<baseId>.<version>`; storing the base separately avoids
     // querying the _id metadata field, which requires fielddata that

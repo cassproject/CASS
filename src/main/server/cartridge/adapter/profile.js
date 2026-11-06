@@ -16,7 +16,7 @@ const profileCache = global.profileCache = new ProfileCache({
 let profileInProgress = global.profileInProgress = profileCache.inProgress;
 
 let profileCalculator = async function () {
-    const timer = new Date().getTime();
+    const timer = Date.now();
     const subjectId = this.params.subject;
     const frameworkId = this.params.frameworkId;
     if (this.params.flushCache != null && this.params.flushCache) {
@@ -84,7 +84,7 @@ let profileCalculator = async function () {
     }
     const profile = result.profile;
     if (result.fromCache) {
-        profile.msSpeed = new Date().getTime() - timer;
+        profile.msSpeed = Date.now() - timer;
         if (this.params.autoComputed != true)
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
     }

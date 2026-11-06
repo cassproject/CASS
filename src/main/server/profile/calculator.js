@@ -105,8 +105,8 @@ coprocessors.sort((a, b) => { return a.order - b.order });
 
 module.exports = class ProfileCalculator {
     constructor() {
-        this.timer = new Date().getTime(); // Time at start of execution
-        this.timerTotal = new Date().getTime(); // Time at start of execution
+        this.timer = Date.now(); // Time at start of execution
+        this.timerTotal = Date.now(); // Time at start of execution
         this.res = undefined;
         this.cacheKey = undefined;
         this.after = undefined;
@@ -123,14 +123,14 @@ module.exports = class ProfileCalculator {
 
     /** Prints current operation to the console. (Consider outputting to a log file if needed) */
     log(msg) {
-        const ms = new Date().getTime() - this.timer;
-        const msTotal = new Date().getTime() - this.timerTotal;
+        const ms = Date.now() - this.timer;
+        const msTotal = Date.now() - this.timerTotal;
         if (TRACE_SOURCE) global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator",
             `${blue}${this.fingerprint}${reset}\n` +
             `${orange}${this.framework.getName()}${reset}\n` +
             `${gray}(${ms}ms)${reset}\n`
         )
-        this.timer = new Date().getTime();
+        this.timer = Date.now();
         global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator", `${msg} (${ms} ms step, ${msTotal} ms total, ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} MB used))`);
     }
 

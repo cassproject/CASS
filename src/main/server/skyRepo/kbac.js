@@ -42,7 +42,7 @@ const signatureSheetEach = async function (obj) {
     if (signature.expiry == null) {
         error('Missing expiry date.', 422);
     }
-    const now = new Date().getTime();
+    const now = Date.now();
     if (signature.expiry < now) {
         // Used to replay replication / database log files without "just jamming the data in"
         if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {

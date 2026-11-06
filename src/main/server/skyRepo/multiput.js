@@ -27,7 +27,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
     let body = '';
 
     for (let x of Object.values(map)) {
-        let writeMs = new Date().getTime();
+        let writeMs = Date.now();
 
         for (let id of x.permanentIds) {
             let obj = {

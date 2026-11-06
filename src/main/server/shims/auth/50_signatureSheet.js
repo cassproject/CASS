@@ -127,7 +127,7 @@ module.exports = function (common) {
                 let ss = JSON.parse(signatureSheet);
                 for (let o of ss)
                     maxTimeout = Math.max(maxTimeout, o.expiry);
-                if (maxTimeout < new Date().getTime() + 20000)
+                if (maxTimeout < Date.now() + 20000)
                     signatureSheet = null;
             }
             if (signatureSheet == null) {
