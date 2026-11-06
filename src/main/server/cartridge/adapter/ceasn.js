@@ -814,16 +814,16 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
 
-    for (var i = 0; i < f.competency.length; i++) {
-        var cached = await EcCompetency.get(f.competency[i], null, null, repo);
+    for (const competencyId of f.competency) {
+        var cached = await EcCompetency.get(competencyId, null, null, repo);
         if (cached != null) {
             var c = new EcCompetency();
             c.copyFrom(JSON.parse(JSON.stringify(cached)));
-            competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
+            competencies[competencyId] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
 
-    for (var i = 0; i < f.relation.length; i++) {
+    for (const relationId of f.relation) {
         var r = await EcAlignment.get(f.relation[i], null, null, repo);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
@@ -1007,8 +1007,8 @@ async function cassFrameworkAsCeasnCollection(framework) {
     for (var k in competencies) {
         var c = competencies[k];
         var found = false;
-        for (var j = 0; j < results.length; j++)
-            if (results[j]["@id"] == competencies[k]["@id"]) {
+        for (const result of results)
+            if (result["@id"] == competencies[k]["@id"]) {
                 found = true;
                 break;
             }
@@ -1778,8 +1778,8 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
     if (frameworkObj != null) {
         var topChild = frameworkObj["ceterms:hasMember"];
         if (topChild != null && topChild.length != null) {
-            for (var i = 0; i < topChild.length; i++) {
-                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(topChild[i]));
+            for (const child of topChild) {
+                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(child));
             }
         }
     }
