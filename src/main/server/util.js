@@ -56,11 +56,11 @@ let skyrepoIndexCountsMatch = async function (destination, source, atLeast) {
  */
 let skyrepoAwaitReindex = async function (task, destination, source, label, atLeast) {
     const pollMs = 2000;
-    const deadline = new Date().getTime() + (Number.parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 36000) * 1000;
+    const deadline = Date.now() + (Number.parseInt(process.env.PERMANENT_MIGRATION_TIMEOUT) || 36000) * 1000;
     let lastProgress = null;
-    let lastChange = new Date().getTime();
+    let lastChange = Date.now();
     let polls = 0;
-    while (new Date().getTime() < deadline) {
+    while (Date.now() < deadline) {
         await new Promise((r) => setTimeout(r, pollMs));
         const status = task != null ? await httpGet(elasticEndpoint + '/_tasks/' + task, true, elasticHeaders()) : null;
         const taskReadable = status != null && status.task != null;

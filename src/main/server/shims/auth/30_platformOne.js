@@ -112,7 +112,7 @@ module.exports = function installPlatformOne(common) {
                     return false;
 
                 let secondsSinceEpoch = token.iat;
-                if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
+                if (secondsSinceEpoch * 1000 < Date.now() + 20000)
                     return false;
             }
 

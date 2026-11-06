@@ -29,7 +29,7 @@ module.exports = function installSignatureSheet(common) {
         if (req.user != null) {
             if (req.user.iat != null) {
                 let secondsSinceEpoch = req.user.iat;
-                if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000) {
+                if (secondsSinceEpoch * 1000 < Date.now() + 20000) {
                     res.end("JWT token is expired.");
                     return;
                 }
