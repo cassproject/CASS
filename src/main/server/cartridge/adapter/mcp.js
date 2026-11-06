@@ -227,7 +227,7 @@ async function initMcp() {
             }
         }
 
-        let fetchBody = undefined;
+        let fetchBody;
         const upperMethod = method.toUpperCase();
 
         if (args.body !== undefined && args.body !== null) {

@@ -1871,8 +1871,8 @@ async function ceasnFrameworkToCass() {
         // jsonLd = rdfToJsonLd(text);
     }
 
-    var frameworkObj = undefined;
-    var collectionObj = undefined;
+    var frameworkObj;
+    var collectionObj;
     var competencyList = [];
 
     if (jsonLd["@graph"] != undefined && jsonLd["@graph"] != "") {
