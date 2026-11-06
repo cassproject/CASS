@@ -168,7 +168,7 @@ let postProcessProfileBefore = function (profile, vertices, topLevelVertices, in
 // Function to perform post-processing on each element of the profile
 let postProcessProfileEachElement = function (obj, inEdges, vertices, visited) {
 	for (const child of obj.children) {
-		const childResults = postProcessProfileEachElement(
+		postProcessProfileEachElement(
 			child, inEdges, vertices, visited
 		);
 	}

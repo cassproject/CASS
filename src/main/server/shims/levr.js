@@ -244,7 +244,7 @@ if (global.bindWebService === undefined) {
                 const params = { ...req.query, methodType: 'POST', urlRemainder: getWildcardRemainder(req.params) };
                 let fields = {};
                 bb.on('file', (name, file, info) => {
-                    const { filename, encoding, mimeType } = info;
+                    const { filename } = info;
                     fields[name || filename] = getStream(file, { encoding: 'binary' });
                 });
                 bb.on('field', (name, val, info) => {
