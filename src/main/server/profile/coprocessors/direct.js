@@ -10,7 +10,7 @@ let postProcessStart = async function(vertices,topLevelVertices, inEdges) {
 let postProcessEachVertex = function(vertex,vertices,topLevelVertices,inEdges) {
     vertices[vertex.id].state.hasDirectPositiveAssertion = false;
     if (vertices[vertex.id].assertions != null)
-        vertices[vertex.id].state.hasDirectPositiveAssertion = vertices[vertex.id].assertions.filter(a=>a.competency == vertex.getName()).length > 0;
+        vertices[vertex.id].state.hasDirectPositiveAssertion = vertices[vertex.id].assertions.some(a=>a.competency == vertex.getName());
 }   
 let postProcessEachEdge = function(edge,vertices,topLevelVertices,inEdges) {
 }
