@@ -9,23 +9,21 @@
  * Kept free of server globals so it can be unit-tested against a simulated LRS.
  */
 
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 
 const LEGACY_SINCE_FILE = 'etc/adapter.xapi.since.txt';
 
 /** Since file for one configured LRS; the unconfigured (default) endpoint keeps the legacy file. */
 const sinceFileFor = (config) => {
-    if (config == null || config.xapiEndpoint == null) return LEGACY_SINCE_FILE;
+    if (config?.xapiEndpoint == null) return LEGACY_SINCE_FILE;
     return 'etc/adapter.xapi.since.' + crypto.createHash('sha256').update(config.xapiEndpoint).digest('hex') + '.txt';
 };
 
 class XapiCursor {
-    constructor() {
-        this.latest = null; // The latest `stored` value seen, as the LRS wrote it.
-        this.latestMs = null;
-        this.earlier = null; // The latest `stored` value strictly before `latest`.
-        this.inOrder = true; // Whether statements arrived oldest first, so a partial poll can be resumed.
-    }
+    latest = null; // The latest `stored` value seen, as the LRS wrote it.
+    latestMs = null;
+    earlier = null; // The latest `stored` value strictly before `latest`.
+    inOrder = true; // Whether statements arrived oldest first, so a partial poll can be resumed.
 
     observe(statement) {
         const ms = Date.parse(statement?.stored);

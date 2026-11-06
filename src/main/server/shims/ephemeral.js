@@ -207,7 +207,7 @@ let subscription = global.events.database.connected.subscribe(async (connected) 
             }
         }
 
-        global.ephemeral.put('test', { test: 'test' }, new Date().getTime() + 10000);
+        global.ephemeral.put('test', { test: 'test' }, Date.now() + 10000);
 
         subscription.unsubscribe();
     }

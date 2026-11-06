@@ -160,8 +160,8 @@ const endpointMultiGet = async function () {
     const mget = {};
     const docs = [];
     (mget)['docs'] = docs;
-    for (let i = 0; i < ary.length; i++) {
-        const urlRemainder = ary[i].replace('data/', '');
+    for (const entry of ary) {
+        const urlRemainder = entry.replace('data/', '');
         const parseParams = queryParse.call(this, urlRemainder, null);
         const id = parseParams['id'];
         lookup[id] = urlRemainder;
@@ -183,8 +183,7 @@ const endpointMultiGet = async function () {
     const resultDocs = (response)['docs'];
     let results = [];
     if (resultDocs != null) {
-        for (let i = 0; i < resultDocs.length; i++) {
-            const doc = resultDocs[i];
+        for (const doc of resultDocs) {
             if (doc['found']) {
                 delete lookup[doc['_id'].substring(0, doc['_id'].indexOf('.'))];
                 results.push(JSON.parse(doc['_source']['data']));
@@ -198,11 +197,10 @@ const endpointMultiGet = async function () {
         ary[i] = lookup[ary[i]];
     }
     if (ary != null) {
-        const me = this;
         const forEachResults = [];
         while (ary.length > 0)
-            forEachResults.push(...await Promise.all(ary.splice(0, 100).map(function (hit) {
-                return endpointSingleGet.call({ ctx: me.ctx, params: { obj: hit }, dataStreams: me.dataStreams }, idsFlag != null ? true : null);
+            forEachResults.push(...await Promise.all(ary.splice(0, 100).map((hit) => {
+                return endpointSingleGet.call({ ctx: this.ctx, params: { obj: hit }, dataStreams: this.dataStreams }, idsFlag != null ? true : null);
             })));
         for (let i = 0; i < forEachResults.length; i++) {
             if (forEachResults[i] != null) {
@@ -210,7 +208,7 @@ const endpointMultiGet = async function () {
             }
         }
     }
-    if (idsFlag != null ? true : false) {
+    if (idsFlag != null) {
         results = results.map((x) => x['@id']);
     }
     return JSON.stringify(results);

@@ -17,8 +17,8 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-const fs = require('fs');
-const nodePath = require('path');
+const fs = require('node:fs');
+const nodePath = require('node:path');
 
 let cwdAtStart = process.cwd();
 global.pathCheck = function (p) {
@@ -95,7 +95,7 @@ global.getTypeFromObject = function (o) {
     if (type == null) {
         return null;
     }
-    if (type.indexOf('http') != -1) {
+    if (type.includes('http')) {
         return type;
     }
     if (context == null) {
@@ -115,8 +115,8 @@ global.inferTypeFromObj = function (o, atType) {
     }
     fullType = fullType.replace('http://', '');
     fullType = fullType.replace('https://', '');
-    fullType = fullType.replace(/\//g, '.');
-    fullType = fullType.replace(/:/g, '.');
+    fullType = fullType.replaceAll('/', '.');
+    fullType = fullType.replaceAll(':', '.');
     return fullType;
 };
 

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const nodePath = require('path');
+const fs = require('node:fs');
+const nodePath = require('node:path');
 const busboy = require('busboy');
 const _getStream = require('get-stream');
 const getStream = typeof _getStream === 'function'
@@ -7,7 +7,7 @@ const getStream = typeof _getStream === 'function'
     : (_getStream.default || _getStream.getStream);
 // exposed for regression tests; the shim is otherwise loaded only for its global side effects.
 module.exports.getStream = getStream;
-const dns = require('dns').promises;
+const dns = require('node:dns').promises;
 
 // LEVR shims
 if (global.fileLoad === undefined) {
@@ -89,7 +89,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -111,15 +111,15 @@ if (global.bindWebService === undefined) {
                 } else {
                     res.end();
                 }
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
             } catch (ex) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpGetError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
-                if (ex && ex.status !== undefined && ex.status != null) {
+                if (ex?.status != null) {
                     res.status(ex.status);
                 } else {
                     res.status(500);
                 }
-                res.end(ex && ex.data ? ex.data : ex + '');
+                res.end(ex?.data ? ex.data : ex + '');
             }
         };
         let put = async function (req, res) {
@@ -131,7 +131,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -164,7 +164,7 @@ if (global.bindWebService === undefined) {
                     } else {
                         res.end();
                     }
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 });
             } catch (ex) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPutError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
@@ -185,7 +185,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -207,7 +207,7 @@ if (global.bindWebService === undefined) {
                 } else {
                     res.end();
                 }
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
             } catch (ex) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpDeleteError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 if (ex.status !== undefined && ex.status != null) {
@@ -229,7 +229,7 @@ if (global.bindWebService === undefined) {
                 req: req,
                 res: res,
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 if (req.headers['content-type'] != null) {
                     req.headers['content-type'] = req.headers['content-type'].replace('multipart/mixed', 'multipart/form-data');
@@ -244,7 +244,7 @@ if (global.bindWebService === undefined) {
                 const params = { ...req.query, methodType: 'POST', urlRemainder: getWildcardRemainder(req.params) };
                 let fields = {};
                 bb.on('file', (name, file, info) => {
-                    const { filename, encoding, mimeType } = info;
+                    const { filename } = info;
                     fields[name || filename] = getStream(file, { encoding: 'binary' });
                 });
                 bb.on('field', (name, val, info) => {
@@ -272,7 +272,7 @@ if (global.bindWebService === undefined) {
                         } else {
                             res.end();
                         }
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (new Date().getTime() - ms) + 'ms' + (result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB') : '') + ') ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (Date.now() - ms) + 'ms' + (result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB') : '') + ') ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
                     } catch (ex) {
                         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPostError', ex, `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, process.env.LOG_HEADERS ? req.headers : undefined, ex.toString());
                         if (ex.status !== undefined && ex.status != null) {
@@ -337,7 +337,7 @@ if (global.httpGet === undefined) {
                 const response = await fetch(url, { headers: headers });
                 let result = null;
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
+                if (contentType && contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();
@@ -408,7 +408,7 @@ if (global.httpDelete === undefined) {
             const response = await fetch(url, { headers: headers, method: 'DELETE' });
             let result = null;
             const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
+            if (contentType && contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -470,7 +470,7 @@ if (global.httpPut === undefined) {
             });
             let result = null;
             const _contentType = response.headers.get("content-type");
-            if (_contentType && _contentType.indexOf("application/json") !== -1) {
+            if (_contentType && _contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -535,7 +535,7 @@ if (global.httpPost === undefined) {
 
                 let result = null;
                 const _contentType = response.headers.get("content-type");
-                if (_contentType && _contentType.indexOf("application/json") !== -1) {
+                if (_contentType && _contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();
@@ -636,13 +636,9 @@ if (global.jsonLdCompact === undefined) {
         try {
             finalTargetContext = JSON.parse(finalTargetContext);
         } catch (ex) { }
-        try {
-            let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
-            (o)['@context'] = finalTargetContext;
-            return o;
-        } catch (s) {
-            throw s;
-        }
+        let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
+        (o)['@context'] = finalTargetContext;
+        return o;
     };
 };
 
@@ -699,6 +695,6 @@ if (global.jsonLdToNQuads === undefined) {
 };
 
 // Shim to allow require of modules that are intended to be used to import.
-require('module').Module._extensions['.js'] = function (module, filename) {
-    module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
+require('node:module').Module._extensions['.js'] = function (module, filename) {
+    module._compile(require('node:fs').readFileSync(filename, 'utf8'), filename);
 };

@@ -24,7 +24,7 @@ let relationTranslation = {
 let relationTerms = ["id", "associationType", "source", "destination", "weight", "competencyFramework"];
 
 function removeFields(o, terms) {
-    for (var k in o) {
+    for (const k in o) {
         if (!terms.includes(k)) {
             delete o[k];
         }
@@ -32,14 +32,14 @@ function removeFields(o, terms) {
 }
 
 function getGuid(id) {
-    var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
-    var parts = shortId.split("/");
+    const shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
+    const parts = shortId.split("/");
     return parts[parts.length - 1];
 }
 
 function transformUrl(url) {
     let guid;
-    if (EcRepository.shouldTryUrl(url) === false && url.indexOf(this.repo.selectedServer) === -1) {
+    if (EcRepository.shouldTryUrl(url) === false && !url.includes(this.repo.selectedServer)) {
         guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(url));
     } else {
         guid = getGuid(url);
@@ -48,7 +48,7 @@ function transformUrl(url) {
 }
 
 async function cassFrameworkAsScd(framework) {
-    var f = new EcFramework();
+    const f = new EcFramework();
     f.copyFrom(framework);
     for (let each in f) {
         if (frameworkTranslation[each]) {
@@ -73,8 +73,8 @@ async function cassCompetencyAsScd(c) {
     }
     if (frameworks) {
         c.frameworks = [];
-        for (let i = 0; i < frameworks.length; i++) {
-            c.frameworks.push(transformUrl(frameworks[i]["id"]));
+        for (const framework of frameworks) {
+            c.frameworks.push(transformUrl(framework["id"]));
         }
     }
     for (let each in c) {
@@ -113,20 +113,20 @@ async function cassRelationAsScd(r) {
 }
 
 async function cassToScd() {
-    var query = queryParse.call(this);
-    var framework = null;
-    var competency = null;
-    var relation = null;
+    const query = queryParse.call(this);
+    let framework = null;
+    let competency = null;
+    let relation = null;
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
     if (framework == null && this.params.id != null) {
         framework = await EcFramework.get(decodeURIComponent(this.params.id), null, null, repo).catch(() => null);
     }
     if (framework == null && this.params.urlRemainder != null) {
-        var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
+        const id = global.repo.selectedServer + "data" + this.params.urlRemainder;
         framework = await EcFramework.get(id, null, null, repo).catch(() => null);
     }
-    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
+    if (!framework?.["@type"]?.contains("ramework"))
         framework = null;
     if (framework != null) {
         return await cassFrameworkAsScd(framework);
@@ -134,16 +134,16 @@ async function cassToScd() {
         competency = await skyrepoGet.call(this, query);
         if (competency == null && this.params.id != null)
             competency = await EcCompetency.get(decodeURIComponent(this.params.id), null, null, repo).catch(() => null);
-        else if (competency != null && competency["@type"].contains("ompetency")) {
-            var c = new EcCompetency();
+        else if (competency?.["@type"].contains("ompetency")) {
+            const c = new EcCompetency();
             c.copyFrom(competency);
             competency = c;
         }
         if (competency == null && this.params.urlRemainder != null) {
-            var id = global.repo.selectedServer + "data" + this.params.urlRemainder;
+            const id = global.repo.selectedServer + "data" + this.params.urlRemainder;
             competency = await EcCompetency.get(id, null, null, repo).catch(() => null);
         }
-        if (competency != null && (competency.type == null || !competency.type.contains("ompetency")))
+        if (competency != null && !competency.type?.contains("ompetency"))
             competency = null;
         if (competency != null) {
             return await cassCompetencyAsScd(competency);

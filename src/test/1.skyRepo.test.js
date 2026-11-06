@@ -113,12 +113,12 @@ describe('SkyRepo Adapter', function () {
     const getThingByShortId1a = await EcRepository.get(thing1.shortId());
     assert.strictEqual(thing1.shortId(), getThingByShortId1a.shortId());
     assert.isBelow(parseInt(thing1id.split('/').pop()), parseInt(getThingByShortId1a.id.split('/').pop()));
-    assert.strictEqual('Thing 1a', getThingByShortId1a.name);
+    assert.strictEqual(getThingByShortId1a.name, 'Thing 1a');
 
     const getThingByShortId2a = await EcRepository.get(thing2.shortId());
     assert.strictEqual(thing2.shortId(), getThingByShortId2.shortId());
     assert.isBelow(parseInt(thing2id.split('/').pop()), parseInt(getThingByShortId2a.id.split('/').pop()));
-    assert.strictEqual('Thing 2a', getThingByShortId2a.name);
+    assert.strictEqual(getThingByShortId2a.name, 'Thing 2a');
 
     // Test with short IDs
     thing1.generateShortId(repo.selectedServer);

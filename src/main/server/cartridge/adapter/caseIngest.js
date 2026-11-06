@@ -41,11 +41,10 @@ var caseInterface = {
 }
 
 const stripCassNamespace = function (o) {
-    if (typeof o["@context"] === "string" && o["@context"].indexOf("://schema.cassproject.org") == -1)
+    if (typeof o["@context"] === "string" && !o["@context"].includes("://schema.cassproject.org"))
         return o;
     var keys = EcObject.keys(o);
-    for (var i = 0; i < keys.length; i++) {
-        var k = keys[i];
+    for (const k of keys) {
         if (k.indexOf("cass:") == 0) {
             o[k.replace("cass:", "")] = o[k];
             delete o[k];
@@ -95,10 +94,10 @@ const convertCFDocumentToFramework = async function (document, terms) {
     }
     f.copyFrom(document);
     if ((f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined)
-        && EcFramework.template != null && EcFramework.template["schema:inLanguage"] != null) {
+        && EcFramework.template?.["schema:inLanguage"] != null) {
         f["schema:inLanguage"] = EcFramework.template["schema:inLanguage"];
     }
-    if (EcFramework.template != null && EcFramework.template["schema:dateCreated"] != null) {
+    if (EcFramework.template?.["schema:dateCreated"] != null) {
         setDateCreated(f);
     }
     return f;
@@ -148,7 +147,7 @@ const convertCFItemIntoCompetency = async function (a, terms) {
     }
     var r = new EcCompetency();
     r.copyFrom(a);
-    if (EcCompetency.template != null && EcCompetency.template["schema:dateCreated"] != null) {
+    if (EcCompetency.template?.["schema:dateCreated"] != null) {
         setDateCreated(r);
     }
     return r;
@@ -195,7 +194,7 @@ const testSuiteCase = async function () {
 var cassContext = null;
 const ingestCase = async function () {
     await (requireSignedWrite).call(this);
-    if (testCase == true) {
+    if (testCase) {
         return await testSuiteCase.call(this);
     }
     cassContext = JSON.stringify((await httpGet("https://schema.cassproject.org/0.4/", true, { "Accept": "application/json" }))["@context"]);
@@ -221,14 +220,13 @@ const ingestCase = async function () {
     else
         documents = await caseInterface.CFDocuments.call(this);
     var dx;
-    for (var i = 0; i < documents.CFDocuments.length; i++) {
-        var document = documents.CFDocuments[i];
+    for (const document of documents.CFDocuments) {
         var f = await convertCFDocumentToFramework(document, terms);
         var listToSave = await embedCFPackageIntoFramework.call(this, f, document, terms);
-        for (var j = 0; j < listToSave.length; j++) {
-            listToSave[j].addOwner(caseIdentity.ppk.toPk());
+        for (const toSave of listToSave) {
+            toSave.addOwner(caseIdentity.ppk.toPk());
             if (owner != null)
-                listToSave[j].addOwner(EcPk.fromPem(owner));
+                toSave.addOwner(EcPk.fromPem(owner));
         }
         await repo.multiput(listToSave, function (results) { }, (error) => {
             global.auditLogger.report(global.auditLogger.LogCategory.ADAPTER, global.auditLogger.Severity.ERROR, "CaseIngestCaseError", error);

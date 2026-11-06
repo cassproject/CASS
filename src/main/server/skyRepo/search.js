@@ -47,7 +47,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
             searchResults = await (filterResults).call(this, hits.map((h) => h._source), true);
             global.events.data.found.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
             global.events.data.any.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-            searchResults = searchResults.map((x) => x['@id']).filter(x => x);
+            searchResults = searchResults.map((x) => x['@id']).filter(Boolean);
         } catch (ex) {
             if (ex.toString().indexOf('Signature Violation') != -1) {
                 throw ex;
@@ -70,7 +70,7 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
             hit += id;
             hits[i] = hit;
         }
-        searchResults = (await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits }, dataStreams: this.dataStreams })).filter(x => x);
+        searchResults = (await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits }, dataStreams: this.dataStreams })).filter(Boolean);
     }
     // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
     originalSize = originalSize || size;

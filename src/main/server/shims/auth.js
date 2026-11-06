@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const jose = require('jose');
 const sanitize = require("sanitize-filename");
 
@@ -20,7 +20,7 @@ let keyEim = null;
 
 let getPkCache = {};
 let getPersonCache = {};
-var skyrepoAdminPpk = function () {
+const skyrepoAdminPpk = function () {
     if (!fs.existsSync("etc/skyAdmin2.pem"))
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin2.pem");
     return EcPpk.fromPem(fileToString(fileLoad("etc/skyAdmin2.pem"))).toPem();
@@ -47,7 +47,7 @@ let getPk = async (identifier) => {
     if (getPkCache[identifier] != null)
         return getPkCache[identifier];
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.DEBUG, 'AuthLookingIdentifier', "Looking for " + identifier);
-    if (process.env.CASS_ELASTIC_KEYSTORE != true && process.env.CASS_ELASTIC_KEYSTORE != 'true')
+    if (Number(process.env.CASS_ELASTIC_KEYSTORE) !== 1 && process.env.CASS_ELASTIC_KEYSTORE != 'true')
         return loadConfigurationFile("keys/" + identifier, () => {
             return EcPpk.fromPem(rsaGenerate()).toPem();
         });
@@ -70,7 +70,6 @@ let getPk = async (identifier) => {
     });
 
     let identityPrefix = process.env.CASS_ELASTIC_KEYSTORE_ENDPOINT || "http://identity/api/"; // NOSONAR -- This is being used as a URI.
-    let keypair = new EcRemoteLinkedData();
     if (myKey != null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'AuthFoundFileSystemKeypair', "Found file system keypair. Securing and saving to Elastic.");
         loadConfigurationFile("keys/backup/" + sanitize(identifier), () => {
@@ -128,7 +127,7 @@ let getPk = async (identifier) => {
     return myKey;
 }
 
-var Address = require('ipaddr.js');
+const Address = require('ipaddr.js');
 
 //Source: https://github.com/KennyTangHK/express-ip-access-control/blob/master/LICENSE
 /*
@@ -155,22 +154,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 // A CIDR prefix length is plain decimal digits; parseFloat would also take ' 8', '8.9' and '0x8'.
-var isPrefixLength = function (n) { return /^[0-9]+$/.test(n); };
+var isPrefixLength = function (n) { return /^\d+$/.test(n); };
 
-var ipMatch = function (list, clientIp) {
+const ipMatch = function (list, clientIp) {
     if (clientIp && Address.isValid(clientIp)) {
         // `Address.process` return the IP instance in IPv4 or IPv6 form.
         // It will return IPv4 instance if it's a IPv4 mapped IPv6 address
         clientIp = Address.process(clientIp);
-        return list.some(function (e) {
+        return list.some(function (entry) {
             // IPv6 address has 128 bits and IPv4 has 32 bits.
             // Setting the routing prefix to all bits in a CIDR address means only the specified address is allowed.
-            e = e || '';
-            e = e.indexOf('/') === -1 ? e + '/128' : e;
-            var range = e.split('/');
+            let e = entry || '';
+            e = e.includes('/') ? e : e + '/128';
+            const range = e.split('/');
             if (range.length === 2 && Address.isValid(range[0]) && isPrefixLength(range[1])) {
-                var ip = Address.process(range[0]);
-                var bit = Number.parseInt(range[1], 10);
+                const ip = Address.process(range[0]);
+                const bit = Number.parseInt(range[1], 10);
 
                 // `IP.kind()` return `'ipv4'` or `'ipv6'`. Only same type can be `match`.
                 if (clientIp.kind() === ip.kind()) {

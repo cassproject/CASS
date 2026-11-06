@@ -25,7 +25,7 @@ async function cassFrameworkAsAsn() {
     console.log(query);
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
-    if (framework == null || !framework["@type"]?.contains("ramework"))
+    if (!framework?.["@type"]?.contains("ramework"))
         framework = null;
     if (framework == null)
         framework = await loopback.frameworkGet(decodeURIComponent(this.params.id));
@@ -73,15 +73,14 @@ async function cassFrameworkAsAsn() {
 
     let allCompetencies = JSON.parse(JSON.stringify(f.competency));
     let competencies = {};
-    let topLevelCompIds = []
     if (f.competency != null)
-        for (let i = 0; i < f.competency.length; i++) {
-            let cached = await loopback.competencyGet(f.competency[i]);
+        for (const competencyId of f.competency) {
+            let cached = await loopback.competencyGet(competencyId);
             if (cached == null) continue;
             let c = new EcCompetency();
             c.copyFrom(JSON.parse(JSON.stringify(cached)));
-            competencies[f.competency[i]] = c;
-            if (competencies[f.competency[i]] == null)
+            competencies[competencyId] = c;
+            if (competencies[competencyId] == null)
                 error("Competency not found.", 404);
         }
 

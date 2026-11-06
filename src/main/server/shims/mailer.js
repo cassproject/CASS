@@ -31,11 +31,9 @@ let sendMail = async function(from, subject, text, html) {
         } catch (e) {
             global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.ERROR, "CassMailerError", e);
         }
-    } else {
-        if (!mailerNotConfigured) {
-            global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, "CassMailerConfig", "Mailer is not configured.");
-            mailerNotConfigured = true;
-        }
+    } else if (!mailerNotConfigured) {
+        global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.WARNING, "CassMailerConfig", "Mailer is not configured.");
+        mailerNotConfigured = true;
     }
 }
 

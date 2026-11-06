@@ -15,8 +15,8 @@ if (process.env.NODEV == null)
 // process.env.XAPI_DEBUG = 'true'; // Enable debug logging for XAPI during tests
 
 describe('SkyRepo Adapter', function () {
-  it('Waiting for server to be ready', async () => {
-    if (process.env.NODEV != null) return;
+  it('Waiting for server to be ready', async function () {
+    if (process.env.NODEV != null) this.skip();
     let ready = false;
     global.events.server.ready.subscribe(function (isReady) {
       if (!isReady) {

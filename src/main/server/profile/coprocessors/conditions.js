@@ -4,10 +4,12 @@ const { JSONPath } = require('jsonpath-plus');
 
 // Function to fetch assertions (currently empty)
 let fetchAssertions = async function () {
+	// Nothing to do at this stage.
 }
 
 // Function to insert resources (currently empty)
 let insertResources = async function () {
+	// Nothing to do at this stage.
 }
 
 // Cache for conditions
@@ -135,32 +137,38 @@ let processAssertions = async function () {
 
 // Function to perform post-processing at the start (currently empty)
 let postProcessStart = async function (vertices, topLevelVertices, inEdges) {
+	// Nothing to do at this stage.
 }
 
 // Function to perform post-processing on each vertex (currently empty)
 let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdges) {
+	// Nothing to do at this stage.
 }
 
 // Function to perform post-processing on each edge (currently empty)
 let postProcessEachEdge = function (edge, vertices, topLevelVertices, inEdges) {
+	// Nothing to do at this stage.
 }
 
 // Function to perform repeating post-processing on each edge (currently empty)
 let postProcessEachEdgeRepeating = function (edge, vertices, topLevelVertices, inEdges) {
+	// Nothing to do at this stage.
 }
 
 // Function to perform repeating post-processing on each vertex (currently empty)
 let postProcessEachVertexRepeating = function (vertex, vertices, topLevelVertices, inEdges) {
+	// Nothing to do at this stage.
 }
 
 // Function to perform pre-processing on the profile (currently empty)
 let postProcessProfileBefore = function (profile, vertices, topLevelVertices, inEdges) {
+	// Nothing to do at this stage.
 }
 
 // Function to perform post-processing on each element of the profile
 let postProcessProfileEachElement = function (obj, inEdges, vertices, visited) {
 	for (const child of obj.children) {
-		const childResults = postProcessProfileEachElement(
+		postProcessProfileEachElement(
 			child, inEdges, vertices, visited
 		);
 	}
@@ -169,6 +177,7 @@ let postProcessProfileEachElement = function (obj, inEdges, vertices, visited) {
 
 // Function to perform post-processing after the profile (currently empty)
 let postProcessProfileAfter = function (o, profile) {
+	// Nothing to do at this stage.
 }
 
 // Export the module with its functions and properties
