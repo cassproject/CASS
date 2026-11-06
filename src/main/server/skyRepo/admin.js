@@ -70,7 +70,7 @@ const endpointAdmin = function () {
  */
 bindWebService('/sky/admin', endpointAdmin);
 
-return module.exports = {
+module.exports = {
     skyrepoAdminPk,
     skyrepoAdminList,
     // endpointAdmin

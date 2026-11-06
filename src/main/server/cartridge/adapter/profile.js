@@ -209,7 +209,8 @@ global.profileFlush = () => {
 }
 
 if (!global.disabledAdapters['profile']) {
-    bindWebService("/profile/latest", global.calculateProfile = profileCalculator);
+    global.calculateProfile = profileCalculator;
+    bindWebService("/profile/latest", profileCalculator);
 
     let workerData = {};
     pool = new StaticPool({
