@@ -155,7 +155,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 // A CIDR prefix length is plain decimal digits; parseFloat would also take ' 8', '8.9' and '0x8'.
-var isPrefixLength = function (n) { return /^[0-9]+$/.test(n); };
+var isPrefixLength = function (n) { return /^\d+$/.test(n); };
 
 var ipMatch = function (list, clientIp) {
     if (clientIp && Address.isValid(clientIp)) {
