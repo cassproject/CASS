@@ -196,12 +196,16 @@ const common = {
     ipMatch,
 };
 
-// Load auth modules from auth/ directory in alphabetical order
+// Load auth modules from auth/ directory in filename order. The numeric prefixes set the
+// order the middleware runs in, so compare by code unit; localeCompare could reorder them.
 const authDir = path.join(__dirname, 'auth');
-fs.readdirSync(authDir)
+const authModules = fs.readdirSync(authDir)
     .filter(f => f.endsWith('.js'))
-    .sort()
-    .forEach(mod => require(path.join(authDir, mod))(common));
+    .sort((a, b) => {
+        if (a < b) return -1;
+        return a > b ? 1 : 0;
+    });
+authModules.forEach(mod => require(path.join(authDir, mod))(common));
 
 // For tests that load an auth module on its own.
-module.exports = { common };
+module.exports = { common, authModules };
