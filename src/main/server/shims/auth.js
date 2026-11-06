@@ -162,10 +162,10 @@ var ipMatch = function (list, clientIp) {
         // `Address.process` return the IP instance in IPv4 or IPv6 form.
         // It will return IPv4 instance if it's a IPv4 mapped IPv6 address
         clientIp = Address.process(clientIp);
-        return list.some(function (e) {
+        return list.some(function (entry) {
             // IPv6 address has 128 bits and IPv4 has 32 bits.
             // Setting the routing prefix to all bits in a CIDR address means only the specified address is allowed.
-            e = e || '';
+            let e = entry || '';
             e = e.includes('/') ? e : e + '/128';
             var range = e.split('/');
             if (range.length === 2 && Address.isValid(range[0]) && isPrefixLength(range[1])) {
