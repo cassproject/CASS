@@ -208,5 +208,80 @@ if (process.env.NODEV == null)
             const response = await fetch(base + '/levrtest/forbidden', { method: 'POST', body: form });
             assert.strictEqual(response.status, 403);
         });
+
+        it('answers 500 to a POST whose body is neither JSON nor form data, without calling the handler', async () => {
+            const r = await send('/levrtest/echo', { type: 'text/plain', body: 'hello' });
+            assert.strictEqual(r.status, 500);
+            assert.strictEqual(calls, 0);
+        });
+
+        describe('when the audit logger itself fails', function () {
+            let realReport;
+            let realConsoleError;
+            let consoleErrors;
+            beforeEach(() => {
+                realReport = global.auditLogger.report;
+                realConsoleError = console.error;
+                consoleErrors = [];
+                console.error = (...args) => { consoleErrors.push(args); };
+            });
+            afterEach(() => {
+                global.auditLogger.report = realReport;
+                console.error = realConsoleError;
+            });
+
+            it("still answers with the handler's error, and writes the failure to the console", async () => {
+                global.auditLogger.report = function (category, severity, ...rest) {
+                    // Only the request-failure log: error() itself also logs, at SYSTEM.
+                    if (category === global.auditLogger.LogCategory.NETWORK && severity === global.auditLogger.Severity.ERROR) {
+                        throw new Error('log store unavailable');
+                    }
+                    return realReport.call(this, category, severity, ...rest);
+                };
+                const r = await send('/levrtest/forbidden', { body: '{}' });
+                assert.strictEqual(r.status, 403);
+                assert.strictEqual(consoleErrors.length, 1);
+                assert.strictEqual(consoleErrors[0][0].message, 'log store unavailable');
+            });
+
+            it('answers 500 to a PUT when even the start of the request cannot be logged', async () => {
+                global.auditLogger.report = function () { throw new Error('log store unavailable'); };
+                const r = await send('/levrtest/echo', { method: 'PUT', body: '{}' });
+                assert.strictEqual(r.status, 500);
+                assert.strictEqual(calls, 0);
+                assert.isAtLeast(consoleErrors.length, 1);
+            });
+        });
+    });
+
+    describe('shims/levr.js sendError', function () {
+        const { sendError } = require('../main/server/shims/levr');
+
+        it('answers 500 when the error status cannot be set', () => {
+            const res = {
+                headersSent: false, writableEnded: false, statusCode: 200,
+                status() { throw new TypeError('bad status'); },
+                end() { this.writableEnded = true; },
+            };
+            sendError(res, { status: 403, data: 'Not allowed.' });
+            assert.strictEqual(res.statusCode, 500);
+            assert.isTrue(res.writableEnded);
+        });
+
+        it('does not throw when the connection is already gone', () => {
+            const res = {
+                headersSent: false, writableEnded: false,
+                status() { throw new TypeError('bad status'); },
+                end() { throw new Error('socket closed'); },
+            };
+            assert.doesNotThrow(() => sendError(res, { status: 400 }));
+        });
+
+        it('only ends a response whose headers were already sent', () => {
+            let ended = 0;
+            const res = { headersSent: true, writableEnded: false, status() { throw new Error('must not be called'); }, end() { ended++; } };
+            sendError(res, { status: 400 });
+            assert.strictEqual(ended, 1);
+        });
     });
 }
