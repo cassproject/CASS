@@ -74,10 +74,12 @@ describe('Server odds and ends', function () {
 
     describe('websocket /ws/custom', function () {
         const WebSocket = require('ws');
+        // Trust the development CA that signs the server's certificate, rather than skipping verification.
+        const fs = require('node:fs');
         const wsUrl = (path) => loopback.replace(/^http/, 'ws').replace(/\/api\/?$/, '') + path;
 
         it('announces the id of each saved object to connected clients, and forgets them on close', async () => {
-            const ws = new WebSocket(wsUrl('/ws/custom'), { rejectUnauthorized: false });
+            const ws = new WebSocket(wsUrl('/ws/custom'), { ca: fs.readFileSync('ca.crt') });
             await new Promise((resolve, reject) => { ws.once('open', resolve); ws.once('error', reject); });
             const t = new schema.Thing();
             t.generateId(repo.selectedServer);
@@ -92,7 +94,7 @@ describe('Server odds and ends', function () {
         });
 
         it('refuses an upgrade on any other path', async () => {
-            const ws = new WebSocket(wsUrl('/ws/elsewhere'), { rejectUnauthorized: false });
+            const ws = new WebSocket(wsUrl('/ws/elsewhere'), { ca: fs.readFileSync('ca.crt') });
             const outcome = await new Promise((resolve) => {
                 ws.once('open', () => resolve('open'));
                 ws.once('error', () => resolve('error'));
