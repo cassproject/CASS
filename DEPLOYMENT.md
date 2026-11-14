@@ -91,7 +91,7 @@ Override environment variables in the compose file or via a `.env` file:
 CASS_OIDC_ENABLED=true
 CASS_OIDC_ISSUER_BASE_URL=https://keycloak.example.com/auth/realms/master/
 CASS_OIDC_CLIENT_ID=cass
-CASS_OIDC_SECRET=your-secret
+CASS_OIDC_SECRET=a-long-random-session-secret
 ```
 
 ### Persistent Data
@@ -362,7 +362,7 @@ metadata:
   namespace: cass
 type: Opaque
 stringData:
-  CASS_OIDC_SECRET: "your-client-secret"
+  CASS_OIDC_SECRET: "a-long-random-session-secret"
   SMTP_PASS: "your-smtp-password"
 ```
 

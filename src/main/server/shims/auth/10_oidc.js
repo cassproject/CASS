@@ -4,10 +4,20 @@ module.exports = function installOidc(common) {
         if (global.baseUrl != "") {
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassAuthBaseUrl", `BASE URL is ${global.baseURL} and this can cause problems with callbacks from SSO providers. You may need to modify your reverse proxy (if you have one) to match up callbacks. If you use the cass installer script, this requires taking /cass out of the Apache2 redirect.`);
         }
+        // The issuer and the session secret have no safe defaults: refuse to
+        // start rather than trust an identity provider or a cookie key nobody
+        // configured.
+        const missing = ['CASS_OIDC_ISSUER_BASE_URL', 'CASS_OIDC_SECRET'].filter((name) => !process.env[name]?.trim());
+        if (missing.length > 0) {
+            const message = `OIDC authentication is enabled (CASS_OIDC_ENABLED), but ${missing.join(' and ')} ${missing.length > 1 ? 'are' : 'is'} not set. Set ${missing.length > 1 ? 'them' : 'it'} and restart CaSS.`;
+            global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.EMERGENCY, "CassAuthMisconfigured", message);
+            throw new Error(message);
+        }
+        const tokenSigningAlg = process.env.CASS_OIDC_ALG || 'HS256';
         const { auth } = require('express-openid-connect');
         app.use(
             auth({
-                issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL || 'https://keycloak/auth/realms/test-realm/',
+                issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL,
                 baseURL: process.env.CASS_OIDC_BASE_URL || 'http://localhost/',
                 clientID: process.env.CASS_OIDC_CLIENT_ID || 'cass',
                 // Confidential client secret (distinct from CASS_OIDC_SECRET,
@@ -15,7 +25,7 @@ module.exports = function installOidc(common) {
                 // enables the authorization code flow for providers that do not
                 // support the implicit flow (e.g. Dex).
                 clientSecret: process.env.CASS_OIDC_CLIENT_SECRET || undefined,
-                secret: process.env.CASS_OIDC_SECRET || 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+                secret: process.env.CASS_OIDC_SECRET,
                 routes: { callback: global.baseUrl + "/callback" },
                 authorizationParams: {
                     scope: process.env.CASS_OIDC_SCOPE || 'openid profile email',
@@ -49,10 +59,13 @@ module.exports = function installOidc(common) {
         const { auth: auth2 } = require('express-oauth2-jwt-bearer');
         app.use(
             auth2({
-                issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL || 'https://dev.keycloak.eduworks.com/auth/realms/test-realm/',
-                secret: process.env.CASS_OIDC_SECRET,
+                issuerBaseURL: process.env.CASS_OIDC_ISSUER_BASE_URL,
+                // Only symmetric (HS*) tokens are checked with CASS_OIDC_SECRET;
+                // the library refuses a secret alongside an asymmetric algorithm,
+                // whose keys come from the issuer instead.
+                secret: tokenSigningAlg.startsWith('HS') ? process.env.CASS_OIDC_SECRET : undefined,
                 audience: process.env.CASS_OIDC_AUDIENCE || 'account',
-                tokenSigningAlg: process.env.CASS_OIDC_ALG || 'HS256',
+                tokenSigningAlg,
                 authRequired: false
             })
         );
