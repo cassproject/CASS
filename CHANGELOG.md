@@ -1,3 +1,17 @@
+## Release v1.7.15
+
+* Node 26: MCP tool calls over HTTPS (HTTP/2) are answered again. Node 26 closes a request's socket once its body is read, which made the response look disconnected before the handler replied.
+* Request bodies that are not valid JSON or multipart form data are answered with 400, and JSON bodies larger than `POST_MAX_SIZE` with 413, without calling the endpoint. An endpoint's errors are answered with their status, or 500.
+* CASE: `CFDocuments`, `CFItems`, `CFAssociations` and `CFItemAssociations` work when called directly, taking the identifier as `/{id}` or `?id=`. `CFDocuments` without one lists every framework as a `CFDocumentSet`. Unknown objects return 404 with the IMS status body.
+* SCD: frameworks without competencies or relations export instead of failing, and unknown identifiers return 404. OpenBadges: an unknown person returns 405 instead of 500.
+* CEASN concept scheme exports include every level of narrower concepts.
+* SCD export and the profile person lookup no longer share state between concurrent requests.
+* Standalone image: `docker stop` shuts Elasticsearch down cleanly.
+* cassproject 5.0.23.
+* (SECURITY) minimatch 11 for glob and swagger-jsdoc (GHSA-g3hv-75wg-m249). CaSS only matches fixed patterns, and its glob and OpenAPI results are unchanged.
+* Development: coverage is measured with c8 (including ES modules and worker threads), many new tests, SonarQube/SonarCloud findings resolved, and an Update dependencies workflow that runs weekly.
+* Updated libraries.
+
 ## Release v1.7.14
 
 * (SECURITY) cassproject 5.0.22, with node-forge 1.4.2. Signature checks on rekeyed data require an explicit match.
