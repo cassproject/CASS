@@ -111,8 +111,7 @@ const putPermanentBaseUrl = function (o, id, version, type) {
 const removeNonIndexables = function (o) {
     if (o != null && EcObject.isObject(o)) {
         const keys = EcObject.keys(o);
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
+        for (const key of keys) {
             removeNonIndexables((o)[key]);
         }
         if (o.type == 'EncryptedValue' || o['@type'] == 'EncryptedValue') {
@@ -123,8 +122,8 @@ const removeNonIndexables = function (o) {
         delete (o)['@signature'];
     } else if (o != null && EcArray.isArray(o)) {
         const a = o;
-        for (let i = 0; i < a.length; i++) {
-            removeNonIndexables(a[i]);
+        for (const item of a) {
+            removeNonIndexables(item);
         }
     }
 };
@@ -135,7 +134,7 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
     if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
         let owners = (o)['owner'];
         for (let i = 0; i < owners.length; i++) {
-            if (owners[i].indexOf('\n') != -1) {
+            if (owners[i].includes('\n')) {
                 owners[i] = EcPk.fromPem(owners[i]).toPem();
             }
         }
@@ -143,7 +142,7 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
     if ((o)['reader'] != null && EcArray.isArray((o)['reader'])) {
         let owners = (o)['reader'];
         for (let i = 0; i < owners.length; i++) {
-            if (owners[i].indexOf('\n') != -1) {
+            if (owners[i].includes('\n')) {
                 owners[i] = EcPk.fromPem(owners[i]).toPem();
             }
         }
@@ -164,7 +163,7 @@ const skyrepoPutInternalIndex = async function (o, id, version, type) {
 };
 
 const skyrepoPutInternalPermanent = async function (o, id, version, type) {
-    if (permanentCreated != true) {
+    if (!permanentCreated) {
         const mappings = {};
         const permNoIndex = {};
         const doc = {};
@@ -192,7 +191,7 @@ const skyrepoPutInternalPermanent = async function (o, id, version, type) {
     }
     const data = {};
     (data)['data'] = JSON.stringify(o);
-    data.writeMs = new Date().getTime();
+    data.writeMs = Date.now();
     // Indexed so version history can be retrieved with a term query. The
     // document _id is `<baseId>.<version>`; storing the base separately avoids
     // querying the _id metadata field, which requires fielddata that
@@ -238,7 +237,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
     // Securing Proxy: Sign data that is to be saved.
     const erld = new EcRemoteLinkedData(null, null);
     erld.copyFrom(o);
-    if (this.ctx && this.ctx.req && this.ctx.req.eim != null) {
+    if (this.ctx?.req?.eim != null) {
         try {
             await this.ctx.req.eim.sign(erld);
             o = JSON.parse(erld.toJson());
@@ -257,7 +256,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         chosenVersion = erld.getTimestamp();
     }
     if (chosenVersion == null) {
-        if (oldPermanent != null && oldPermanent['_version'] != null && !Number.isNaN(Number(oldPermanent['_version']))) {
+        if (oldPermanent?.['_version'] != null && !Number.isNaN(Number(oldPermanent['_version']))) {
             chosenVersion = oldPermanent['_version'] + 1;
         } else {
             chosenVersion = 1;
@@ -299,7 +298,7 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', 'Updated to ' + chosenVersion);
             }
             // Used to replay replication / database log files without "just jamming the data in"
-            if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
+            if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || Number(this.ctx.sanctionedReplay) !== 1) {
                 await skyrepoPutInternal.call(this, o, id, chosenVersion + 1, type, true);
             }
             break;

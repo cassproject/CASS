@@ -95,7 +95,7 @@ const skyrepoGetInternal = async function (id, version, type) {
     if ((result)['error'] != null) {
         return null;
     }
-    if ((result)['found'] == true) {
+    if ((result)['found'] === true) {
         return JSON.parse(((result)['_source'])['data']);
     }
     if (global.skyrepoDebug) {
@@ -108,7 +108,7 @@ const skyrepoGetInternal = async function (id, version, type) {
     if ((result)['error'] != null) {
         return null;
     }
-    if ((result)['found'] == true || (result)['_source'] != null) {
+    if ((result)['found'] === true || (result)['_source'] != null) {
         return (result)['_source'];
     }
     return null;
@@ -140,7 +140,7 @@ const skyrepoGet = async function (parseParams) {
 
 const skyrepoGetParsed = async function (id, version, type, dontDecrypt, history) {
     let filtered = null;
-    if (history == true || history == 'true') {
+    if (Number(history) === 1 || history == 'true') {
         filtered = await skyrepoHistoryInternal.call(this, id, version, type);
         filtered = await (filterResults).call(this, filtered, dontDecrypt);
     } else {

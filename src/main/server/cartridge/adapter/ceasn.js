@@ -1,7 +1,7 @@
 let loopback = require('../../shims/cassproject.js');
 const { skyrepoGet } = require('../../skyRepo/get');
 
-const fsPromises = require('fs').promises;
+const fsPromises = require('node:fs').promises;
 
 var asnContext = {
     "asn": "http://purl.org/asn/schema/core/",
@@ -135,7 +135,7 @@ async function competencyPromise(compId, competencies, allCompetencies, f, ctx, 
         var uuid = new UUID(3, "nil", c.shortId()).format();
 
         // If schema:identifier is not a URI, remove from translation
-        if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
+        if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && !c["schema:identifier"].includes("http")) {
             delete c["schema:identifier"];
         } else if (c["schema:identifier"] != null) {
             if (!EcArray.isArray(c["schema:identifier"])) {
@@ -225,13 +225,13 @@ async function cassFrameworkAsCeasn() {
     var framework = null;
     if (framework == null)
         framework = await skyrepoGet.call(this, query);
-    if (framework != null && framework["@type"] != null && framework["@type"].contains("oncept") && framework.subType === "Progression") {
+    if (framework?.["@type"]?.contains("oncept") && framework.subType === "Progression") {
         return await cassConceptSchemeAsCeasnProgression(framework);
     }
-    if (framework != null && framework["@type"] != null && framework["@type"].contains("oncept")) {
+    if (framework?.["@type"]?.contains("oncept")) {
         return await cassConceptSchemeAsCeasn(framework);
     }
-    if (framework != null && framework.subType === "Collection") {
+    if (framework?.subType === "Collection") {
         return await cassFrameworkAsCeasnCollection(framework);
     }
     if (framework == null && this.params.id != null) {
@@ -241,7 +241,7 @@ async function cassFrameworkAsCeasn() {
         let id = global.repo.selectedServer + "data" + (this.params.urlRemainder.startsWith("/") ? "" : "/") + this.params.urlRemainder;
         framework = await EcFramework.get(id, null, null, repo);
     }
-    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
+    if (!framework?.["@type"]?.contains("ramework"))
         framework = null;
     var competency = null;
     if (framework == null) {
@@ -290,22 +290,22 @@ async function cassFrameworkAsCeasn() {
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
 
-    for (var i = 0; i < f.competency.length; i++) {
-        var cached = await EcCompetency.get(f.competency[i], null, null, repo);
+    for (const competencyId of f.competency) {
+        var cached = await EcCompetency.get(competencyId, null, null, repo);
         if (cached != null) {
             var c = new EcCompetency();
             c.copyFrom(JSON.parse(JSON.stringify(cached)));
-            competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
+            competencies[competencyId] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
 
-    for (var i = 0; i < f.relation.length; i++) {
-        var r = await EcAlignment.get(f.relation[i], null, null, repo);
+    for (const relationId of f.relation) {
+        var r = await EcAlignment.get(relationId, null, null, repo);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
         if (r.relationType == Relation.NARROWS) {
-            if (allCompetencies.indexOf(r.target) == -1 || allCompetencies.indexOf(r.source) == -1) {
+            if (!allCompetencies.includes(r.target) || !allCompetencies.includes(r.source)) {
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
                 if (competencies[r.source] != null)
@@ -445,7 +445,7 @@ async function cassFrameworkAsCeasn() {
         f["ceasn:hasTopChild"] = [];
     }
     for (let c of competencies) {
-        if (c && c["@id"]) {
+        if (c?.["@id"]) {
             if (!c["ceasn:isChildOf"] || c["ceasn:isChildOf"] == null) {
                 f["ceasn:hasTopChild"].push(await ceasnExportUriTransform(c["@id"]));
             }
@@ -457,13 +457,12 @@ async function cassFrameworkAsCeasn() {
 
     if (f.description == null)
         f.description = f.name;
-    framework = f;
     delete f.competency;
     var guid = f.getGuid();
     var uuid = new UUID(3, "nil", f.shortId()).format();
 
     //If schema:publisher field is not a URI, put data in ceasn:publisherName field
-    if (f["schema:publisher"] != null && !EcArray.isArray(f["schema:publisher"]) && f["schema:publisher"].indexOf("http") == -1) {
+    if (f["schema:publisher"] != null && !EcArray.isArray(f["schema:publisher"]) && !f["schema:publisher"].includes("http")) {
         if (!EcArray.isArray(f["ceasn:publisherName"])) {
             f["ceasn:publisherName"] = [];
         }
@@ -482,7 +481,7 @@ async function cassFrameworkAsCeasn() {
     }
 
     //If schema:identifier is not a URI, remove from translation
-    if (f["schema:identifier"] != null && !EcArray.isArray(f["schema:identifier"]) && f["schema:identifier"].indexOf("http") == -1) {
+    if (f["schema:identifier"] != null && !EcArray.isArray(f["schema:identifier"]) && !f["schema:identifier"].includes("http")) {
         delete f["schema:identifier"];
     } else if (f["schema:identifier"] != null) {
         if (!EcArray.isArray(f["schema:identifier"])) {
@@ -564,8 +563,8 @@ async function cassFrameworkAsCeasn() {
             continue;
         }
         var found = false;
-        for (var j = 0; j < results.length; j++)
-            if (results[j]["@id"] == competencies[k]["@id"]) {
+        for (const result of results)
+            if (result["@id"] == competencies[k]["@id"]) {
                 found = true;
                 break;
             }
@@ -600,45 +599,45 @@ async function cassFrameworkAsCeasn() {
 
 function stripNonCe(f) {
     for (var k in f) {
-        if (EcObject.isObject(f[k]) == false)
-            if (k.indexOf("@") != 0)
-                if (k.indexOf("ceterms:ctid") != 0)
-                    if (k.indexOf("ceasn:description") != 0)
-                        if (k.indexOf("ceasn:name") != 0)
-                            if (k.indexOf("ceasn:weight") != 0)
-                                if (k.indexOf("ceasn:derivedFrom") != 0)
-                                    if (k.indexOf("ceasn:isTopChildOf") != 0)
-                                        if (k.indexOf("ceasn:isPartOf") != 0)
-                                            if (k.indexOf("ceasn:conceptKeywords") != 0)
-                                                if (k.indexOf("ceasn:listID") != 0)
-                                                    if (k.indexOf("ceasn:isVersionOf") != 0)
-                                                        if (k.indexOf("ceasn:dateCopyrighted") != 0)
-                                                            if (k.indexOf("ceasn:repositoryDate") != 0)
-                                                                if (k.indexOf("ceasn:dateCreated") != 0)
-                                                                    if (k.indexOf("ceasn:dateModified") != 0)
-                                                                        if (k.indexOf("ceasn:dateValidFrom") != 0)
-                                                                            if (k.indexOf("ceasn:dateValidUntil") != 0)
-                                                                                if (k.indexOf("ceasn:rights") != 0)
-                                                                                    if (k.indexOf("ceasn:license") != 0)
-                                                                                        if (k.indexOf("ceasn:rightsHolder") != 0)
-                                                                                            if (k.indexOf("ceasn:publicationStatusType") != 0)
-                                                                                                if (k.indexOf("ceasn:codedNotation") != 0)
-                                                                                                    if (k.indexOf("ceasn:competencyText") != 0)
-                                                                                                        if (k.indexOf("ceterms:subjectWebpage") != 0)
-                                                                                                            if (k.indexOf("asn:hasProgressionLevel") != 0)
-                                                                                                                if (k.indexOf("ceterms:previousVersion") != 0)
-                                                                                                                    if (k.indexOf("ceterms:nextVersion") != 0)
-                                                                                                                        if (k.indexOf("ceterms:latestVersion") != 0)
-                                                                                                                            if (EcArray.isArray(f[k]) == false)
+        if (!EcObject.isObject(f[k]))
+            if (!k.startsWith("@"))
+                if (!k.startsWith("ceterms:ctid"))
+                    if (!k.startsWith("ceasn:description"))
+                        if (!k.startsWith("ceasn:name"))
+                            if (!k.startsWith("ceasn:weight"))
+                                if (!k.startsWith("ceasn:derivedFrom"))
+                                    if (!k.startsWith("ceasn:isTopChildOf"))
+                                        if (!k.startsWith("ceasn:isPartOf"))
+                                            if (!k.startsWith("ceasn:conceptKeywords"))
+                                                if (!k.startsWith("ceasn:listID"))
+                                                    if (!k.startsWith("ceasn:isVersionOf"))
+                                                        if (!k.startsWith("ceasn:dateCopyrighted"))
+                                                            if (!k.startsWith("ceasn:repositoryDate"))
+                                                                if (!k.startsWith("ceasn:dateCreated"))
+                                                                    if (!k.startsWith("ceasn:dateModified"))
+                                                                        if (!k.startsWith("ceasn:dateValidFrom"))
+                                                                            if (!k.startsWith("ceasn:dateValidUntil"))
+                                                                                if (!k.startsWith("ceasn:rights"))
+                                                                                    if (!k.startsWith("ceasn:license"))
+                                                                                        if (!k.startsWith("ceasn:rightsHolder"))
+                                                                                            if (!k.startsWith("ceasn:publicationStatusType"))
+                                                                                                if (!k.startsWith("ceasn:codedNotation"))
+                                                                                                    if (!k.startsWith("ceasn:competencyText"))
+                                                                                                        if (!k.startsWith("ceterms:subjectWebpage"))
+                                                                                                            if (!k.startsWith("asn:hasProgressionLevel"))
+                                                                                                                if (!k.startsWith("ceterms:previousVersion"))
+                                                                                                                    if (!k.startsWith("ceterms:nextVersion"))
+                                                                                                                        if (!k.startsWith("ceterms:latestVersion"))
+                                                                                                                            if (!EcArray.isArray(f[k]))
                                                                                                                                 f[k] = [f[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
         if (k === "ceasn:publisherName" || k === "ceasn:conceptKeyword" || k === "ceasn:comment" || k === "ceterms:keyword") {
             Object.keys(f[k]).forEach(function (key) {
-                if (EcArray.isArray(f[k][key]) == false)
+                if (!EcArray.isArray(f[k][key]))
                     f[k][key] = [f[k][key]];
             });
         }
-        if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("asn:") == 0 || k.indexOf("@") == 0 || k.indexOf("socList") != -1 || k.indexOf("naicsList") != -1 || k.indexOf("cipList") != -1)
+        if (k.startsWith("ceasn:") || k.startsWith("ceterms:") || k.startsWith("asn:") || k.startsWith("@") || k.includes("socList") || k.includes("naicsList") || k.includes("cipList"))
             ;
         else
             delete f[k];
@@ -663,7 +662,7 @@ async function ceCompact(json, targetContext) {
     for (const k of Object.keys(o)) {
         if (!/^(ceterms|ceasn|asn):/.test(k)) continue;
         const definition = context[k];
-        if (definition != null && definition["@type"] === "@id")
+        if (definition?.["@type"] === "@id")
             o[k] = ceIdReferences(o[k]);
     }
     return jsonLdCompact(JSON.stringify(o), targetContext);
@@ -815,22 +814,22 @@ async function cassFrameworkAsCeasnCollection(framework) {
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
 
-    for (var i = 0; i < f.competency.length; i++) {
-        var cached = await EcCompetency.get(f.competency[i], null, null, repo);
+    for (const competencyId of f.competency) {
+        var cached = await EcCompetency.get(competencyId, null, null, repo);
         if (cached != null) {
-            var c = new EcCompetency();
+            const c = new EcCompetency();
             c.copyFrom(JSON.parse(JSON.stringify(cached)));
-            competencies[f.competency[i]] = competencies[c.shortId()] = competencies[c.id] = c;
+            competencies[competencyId] = competencies[c.shortId()] = competencies[c.id] = c;
         }
     }
 
-    for (var i = 0; i < f.relation.length; i++) {
-        var r = await EcAlignment.get(f.relation[i], null, null, repo);
+    for (const relationId of f.relation) {
+        const r = await EcAlignment.get(relationId, null, null, repo);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.source == "" || r.target == "") continue;
         if (r.relationType == Relation.NARROWS) {
-            if (allCompetencies.indexOf(r.target) == -1 || allCompetencies.indexOf(r.source) == -1) {
+            if (!allCompetencies.includes(r.target) || !allCompetencies.includes(r.source)) {
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
                 if (competencies[r.source] != null)
@@ -944,7 +943,6 @@ async function cassFrameworkAsCeasnCollection(framework) {
 
     if (f.description == null)
         f.description = f.name;
-    framework = f;
     delete f.competency;
     var guid = f.getGuid();
     var uuid = new UUID(3, "nil", f.shortId()).format();
@@ -1008,8 +1006,8 @@ async function cassFrameworkAsCeasnCollection(framework) {
     for (var k in competencies) {
         var c = competencies[k];
         var found = false;
-        for (var j = 0; j < results.length; j++)
-            if (results[j]["@id"] == competencies[k]["@id"]) {
+        for (const result of results)
+            if (result["@id"] == competencies[k]["@id"]) {
                 found = true;
                 break;
             }
@@ -1043,31 +1041,31 @@ async function cassFrameworkAsCeasnCollection(framework) {
 
 function conceptArrays(object) {
     for (var k in object) {
-        if (EcObject.isObject(object[k]) == false)
-            if (k.indexOf("@") != 0)
-                if (k.indexOf("ceterms:ctid") != 0)
-                    if (k.indexOf("ceasn:description") != 0)
-                        if (k.indexOf("ceasn:name") != 0)
-                            if (k.indexOf("ceasn:dateCopyrighted") != 0)
-                                if (k.indexOf("ceasn:dateCreated") != 0)
-                                    if (k.indexOf("ceasn:dateModified") != 0)
-                                        if (k.indexOf("ceasn:license") != 0)
-                                            if (k.indexOf("ceasn:publicationStatusType") != 0)
+        if (!EcObject.isObject(object[k]))
+            if (!k.startsWith("@"))
+                if (!k.startsWith("ceterms:ctid"))
+                    if (!k.startsWith("ceasn:description"))
+                        if (!k.startsWith("ceasn:name"))
+                            if (!k.startsWith("ceasn:dateCopyrighted"))
+                                if (!k.startsWith("ceasn:dateCreated"))
+                                    if (!k.startsWith("ceasn:dateModified"))
+                                        if (!k.startsWith("ceasn:license"))
+                                            if (!k.startsWith("ceasn:publicationStatusType"))
                                                 // ceasn:publisher is repeatable and must export as an
                                                 // array (cass-editor#1427); only publisherName (a
                                                 // language map) stays excluded.
                                                 if (k !== "ceasn:publisherName")
-                                                        if (k.indexOf("ceasn:rights") != 0)
-                                                            if (k.indexOf("skos:broader") != 0)
-                                                                if (k.indexOf("skos:definition") != 0)
-                                                                    if (k.indexOf("skos:inScheme") != 0)
-                                                                        if (k.indexOf("skos:notation") != 0)
-                                                                            if (k.indexOf("skos:prefLabel") != 0)
-                                                                                if (k.indexOf("ceterms:precedes") != 0)
-                                                                                    if (k.indexOf("ceterms:precededBy") != 0)
-                                                                                        if (k.indexOf("ceasn:inProgressionModel") != 0)
-                                                                                            if (k.indexOf("skos:topConceptOf") != 0)
-                                                                                                if (EcArray.isArray(object[k]) == false)
+                                                        if (!k.startsWith("ceasn:rights"))
+                                                            if (!k.startsWith("skos:broader"))
+                                                                if (!k.startsWith("skos:definition"))
+                                                                    if (!k.startsWith("skos:inScheme"))
+                                                                        if (!k.startsWith("skos:notation"))
+                                                                            if (!k.startsWith("skos:prefLabel"))
+                                                                                if (!k.startsWith("ceterms:precedes"))
+                                                                                    if (!k.startsWith("ceterms:precededBy"))
+                                                                                        if (!k.startsWith("ceasn:inProgressionModel"))
+                                                                                            if (!k.startsWith("skos:topConceptOf"))
+                                                                                                if (!EcArray.isArray(object[k]))
                                                                                                     object[k] = [object[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
         if (k === "skos:changeNote" || k === "ceasn:conceptKeyword" || k === "skos:note" || k === "skos:hiddenLabel" || k === "skos:altLabel") {
@@ -1084,7 +1082,7 @@ async function conceptPromise(obj, concepts, cs, ctx, terms) {
     try {
         var c = concepts[obj];
         delete concepts[obj];
-        if (c != null && c.id != null) {
+        if (c?.id != null) {
             var id = c.id;
             concepts[id] = c;
             delete concepts[id]["owner"];
@@ -1213,15 +1211,15 @@ async function cassConceptSchemeAsCeasn(framework) {
     var concepts = {};
     var allConcepts = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
 
-    for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
-        var c = await EcConcept.get(cs["skos:hasTopConcept"][i], null, null, repo);
+    for (const topConcept of cs["skos:hasTopConcept"]) {
+        var c = await EcConcept.get(topConcept, null, null, repo);
         if (c != null) {
-            concepts[cs["skos:hasTopConcept"][i]] = concepts[c.id] = c;
+            concepts[topConcept] = concepts[c.id] = c;
             if (c["skos:narrower"]) {
                 async function getSubConcepts(c) {
                     repo.precache(c["skos:narrower"], function () { });
-                    for (var j = 0; j < c["skos:narrower"].length; j++) {
-                        var subC = await EcConcept.get(c["skos:narrower"][j], null, null, repo);
+                    for (const narrower of c["skos:narrower"]) {
+                        var subC = await EcConcept.get(narrower, null, null, repo);
                         if (subC != null) {
                             concepts[subC.id] = subC;
                             allConcepts.push(subC.id);
@@ -1246,7 +1244,6 @@ async function cassConceptSchemeAsCeasn(framework) {
 
     cs.context = "https://schema.cassproject.org/0.4/jsonld1.1/cass2ceasnConcepts.json";
 
-    framework = cs;
     var guid = cs.getGuid();
     var uuid = new UUID(3, "nil", cs.shortId()).format();
     var csId = cs.id;
@@ -1293,10 +1290,9 @@ async function cassConceptSchemeAsCeasn(framework) {
     cs = conceptArrays(cs);
     results.push(cs);
     for (var k in concepts) {
-        var c = concepts[k];
         var found = false;
-        for (var j = 0; j < results.length; j++) {
-            if (results[j]["@id"] == concepts[k]["@id"]) {
+        for (const result of results) {
+            if (result["@id"] == concepts[k]["@id"]) {
                 found = true;
                 break;
             }
@@ -1334,10 +1330,10 @@ async function cassConceptSchemeAsCeasnProgression(framework) {
     var levels = {};
     var allLevels = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
 
-    for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
-        var c = await EcConcept.get(cs["skos:hasTopConcept"][i], null, null, repo);
+    for (const topConcept of cs["skos:hasTopConcept"]) {
+        var c = await EcConcept.get(topConcept, null, null, repo);
         if (c != null) {
-            levels[cs["skos:hasTopConcept"][i]] = levels[c.id] = c;
+            levels[topConcept] = levels[c.id] = c;
             // if (c["skos:narrower"]) {
             //     async function getSubConcepts(c) {
             //         repo.precache(c["skos:narrower"], function () { });
@@ -1478,10 +1474,10 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
         var canonicalId = asnComp["@id"];
 
         var childComps = asnComp["ceasn:hasChild"];
-        if (childComps != null && childComps.length != null) {
-            for (var i = 0; i < childComps.length; i++) {
+        if (childComps?.length != null) {
+            for (const childComp of childComps) {
                 var r = new EcAlignment();
-                r.source = EcRemoteLinkedData.trimVersionFromUrl(childComps[i]);
+                r.source = EcRemoteLinkedData.trimVersionFromUrl(childComp);
                 r.target = EcRemoteLinkedData.trimVersionFromUrl(canonicalId);
                 r.relationType = Relation.NARROWS;
                 r.generateId(global.repo.selectedServer);
@@ -1490,7 +1486,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
                 if (owner != null)
                     r.addOwner(EcPk.fromPem(owner));
 
-                if (relationshipMap[r.source + r.target] != true) {
+                if (!relationshipMap[r.source + r.target]) {
                     relationshipMap[r.source + r.target] = true;
                     listToSave.push(r);
                     cassRelationships.push(r.shortId());
@@ -1526,7 +1522,7 @@ async function importCompetencyPromise(asnComp, relationshipMap, listToSave, cas
         if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
             var timestamp;
             var date;
-            if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+            if (!c.id.substring(c.id.lastIndexOf("/")).matches(String.raw`\/[0-9]+`)) {
                 timestamp = null;
             } else {
                 timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
@@ -1612,9 +1608,9 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
 
     if (frameworkObj != null) {
         var topChild = frameworkObj["ceasn:hasTopChild"] ? frameworkObj["ceasn:hasTopChild"] : frameworkObj["ceasn:hasChild"];
-        if (topChild != null && topChild.length != null) {
-            for (var i = 0; i < topChild.length; i++) {
-                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(topChild[i]));
+        if (topChild?.length != null) {
+            for (const child of topChild) {
+                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(child));
             }
         }
     }
@@ -1625,7 +1621,6 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
     }
 
     if (frameworkObj != null) {
-        var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"]));
 
         frameworkObj["@context"] = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json";
         for (let each in frameworkObj) {
@@ -1656,7 +1651,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
             f.addOwner(EcPk.fromPem(owner));
 
         if (f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined) {
-            if (EcFramework.template != null && EcFramework.template["schema:inLanguage"] != null) {
+            if (EcFramework.template?.["schema:inLanguage"] != null) {
                 f["schema:inLanguage"] = EcFramework.template["schema:inLanguage"];
             }
             else {
@@ -1667,7 +1662,7 @@ async function importCeFrameworkToCass(frameworkObj, competencyList) {
         if (f["schema:dateCreated"] == null || f["schema:dateCreated"] === undefined) {
             var timestamp;
             var date;
-            if (!f.id.substring(f.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+            if (!f.id.substring(f.id.lastIndexOf("/")).matches(String.raw`\/[0-9]+`)) {
                 timestamp = null;
             } else {
                 timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
@@ -1720,7 +1715,7 @@ async function importCompetencyToCollectionPromise(asnComp, listToSave, cassRela
         if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
             var timestamp;
             var date;
-            if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+            if (!c.id.substring(c.id.lastIndexOf("/")).matches(String.raw`\/[0-9]+`)) {
                 timestamp = null;
             } else {
                 timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
@@ -1777,13 +1772,12 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
 
     var cassCompetencies = [];
     var cassRelationships = [];
-    var relationshipMap = {};
 
     if (frameworkObj != null) {
         var topChild = frameworkObj["ceterms:hasMember"];
-        if (topChild != null && topChild.length != null) {
-            for (var i = 0; i < topChild.length; i++) {
-                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(topChild[i]));
+        if (topChild?.length != null) {
+            for (const child of topChild) {
+                cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(child));
             }
         }
     }
@@ -1794,7 +1788,6 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
     }
 
     if (frameworkObj != null) {
-        var guid = EcCrypto.md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"]));
 
         frameworkObj["@context"] = "https://schema.cassproject.org/0.4/jsonld1.1/ceasn2cass.json";
         for (let each in frameworkObj) {
@@ -1828,7 +1821,7 @@ async function importCeCollectionToCass(frameworkObj, competencyList) {
         if (f["schema:dateCreated"] == null || f["schema:dateCreated"] === undefined) {
             var timestamp;
             var date;
-            if (!f.id.substring(f.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+            if (!f.id.substring(f.id.lastIndexOf("/")).matches(String.raw`\/[0-9]+`)) {
                 timestamp = null;
             } else {
                 timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
@@ -1856,7 +1849,7 @@ async function ceasnFrameworkToCass() {
     var data = fileFromDatastream.call(this, "data");
     if (data === undefined || data == null) {
         data = fileFromDatastream.call(this, "file");
-        if (data && data.path) {
+        if (data?.path) {
             data = await fsPromises.readFile(data.path, { encoding: 'utf8' });
         }
     }
@@ -1871,8 +1864,8 @@ async function ceasnFrameworkToCass() {
         // jsonLd = rdfToJsonLd(text);
     }
 
-    var frameworkObj = undefined;
-    var collectionObj = undefined;
+    var frameworkObj;
+    var collectionObj;
     var competencyList = [];
 
     if (jsonLd["@graph"] != undefined && jsonLd["@graph"] != "") {

@@ -13,6 +13,7 @@ let fetchAssertions = async function () {
     global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "CassFetchAssertions", "We are time bounding, turning off caching.");
 }
 let insertResources = async function () {
+    // Nothing to do at this stage.
 }
 let processAssertions = async function () {
     let params = this.params;
@@ -54,21 +55,28 @@ let processAssertions = async function () {
     }
 }
 let postProcessStart = async function (vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }
 let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }
 let postProcessEachEdge = function (edge, vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }
 let postProcessEachEdgeRepeating = function (edge, vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }
 let postProcessEachVertexRepeating = function (vertex, vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }
 let postProcessProfileBefore = function (profile, vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }
 let postProcessProfileEachElement = function (obj, inEdges, vertices, visited) {
     return {};
 }
 let postProcessProfileAfter = function (o, profile) {
+    // Nothing to do at this stage.
 }
 
 module.exports = {

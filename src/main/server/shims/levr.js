@@ -1,5 +1,5 @@
-const fs = require('fs');
-const nodePath = require('path');
+const fs = require('node:fs');
+const nodePath = require('node:path');
 const busboy = require('busboy');
 const _getStream = require('get-stream');
 const getStream = typeof _getStream === 'function'
@@ -7,7 +7,7 @@ const getStream = typeof _getStream === 'function'
     : (_getStream.default || _getStream.getStream);
 // exposed for regression tests; the shim is otherwise loaded only for its global side effects.
 module.exports.getStream = getStream;
-const dns = require('dns').promises;
+const dns = require('node:dns').promises;
 
 // LEVR shims
 if (global.fileLoad === undefined) {
@@ -68,6 +68,56 @@ if (global.fileSave === undefined) {
     };
 };
 
+// Writes a handler's result. Does nothing when the handler (or an earlier error) already ended the response.
+const sendResult = function (res, result) {
+    if (res.writableEnded) return;
+    if (typeof (result) == 'string') {
+        try {
+            JSON.parse(result);
+            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        } catch (e) {
+            // not JSON, or headers already sent
+        }
+        res.end(result);
+    } else {
+        res.end();
+    }
+};
+module.exports.sendResult = sendResult;
+
+// Answers a failed request with the error's status (500 when it has no usable 4xx/5xx status) and its message.
+// Never throws: the PUT and multipart paths call this from event listeners, outside any try/catch.
+const sendError = function (res, ex) {
+    try {
+        if (res.headersSent) {
+            if (!res.writableEnded) res.end();
+            return;
+        }
+        const status = ex == null ? Number.NaN : Number(ex.status);
+        res.status(Number.isInteger(status) && status >= 400 && status <= 599 ? status : 500);
+        let body = ex != null && ex.data ? ex.data : ex + '';
+        if (typeof body !== 'string' && !(body instanceof Uint8Array)) body = JSON.stringify(body);
+        res.end(body);
+    } catch (e) {
+        try {
+            if (!res.headersSent) res.statusCode = 500;
+            if (!res.writableEnded) res.end();
+        } catch (e2) {
+            // the connection is gone; nothing left to answer
+        }
+    }
+};
+module.exports.sendError = sendError;
+
+// Logs a failed request. Never throws, for the same reason as sendError.
+const reportError = function (...args) {
+    try {
+        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, ...args);
+    } catch (e) {
+        console.error(e);
+    }
+};
+
 if (global.bindWebService === undefined) {
     // Express 5: wildcard params are returned as arrays under the named key.
     // Join them back into a path string for legacy compatibility.
@@ -89,7 +139,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -100,26 +150,11 @@ if (global.bindWebService === undefined) {
                     ctx: ctx,
                     params: params,
                 });
-                if (typeof (result) == 'string') {
-                    try {
-                        JSON.parse(result);
-                        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-                    } catch (e) {
-                        // not JSON
-                    }
-                    res.end(result);
-                } else {
-                    res.end();
-                }
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                sendResult(res, result);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
             } catch (ex) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpGetError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
-                if (ex && ex.status !== undefined && ex.status != null) {
-                    res.status(ex.status);
-                } else {
-                    res.status(500);
-                }
-                res.end(ex && ex.data ? ex.data : ex + '');
+                reportError('CassHttpGetError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                sendError(res, ex);
             }
         };
         let put = async function (req, res) {
@@ -131,7 +166,11 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
+            const fail = function (ex) {
+                reportError('CassHttpPutError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                sendError(res, ex);
+            };
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -140,40 +179,44 @@ if (global.bindWebService === undefined) {
                 global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutStart', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(params)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 req.setEncoding('utf8');
                 req.body = '';
+                // A body over POST_MAX_SIZE is read and discarded rather than held in memory, then answered 413.
+                let tooLarge = false;
                 req.on('data', function (chunk) {
+                    if (tooLarge) return;
+                    if (req.body.length + chunk.length > global.postMaxSize) {
+                        tooLarge = true;
+                        req.body = '';
+                        return;
+                    }
                     req.body += chunk;
                 });
+                // This listener runs outside the surrounding try/catch, so it catches and answers its own errors.
                 req.on('end', async function () {
-                    let dataStreams = {};
-                    if (req.body != '') {
-                        dataStreams.body = JSON.parse(req.body);
-                    }
-                    let result = await callback.call({
-                        ctx: ctx,
-                        params: params,
-                        dataStreams: dataStreams,
-                    });
-                    if (typeof (result) == 'string') {
-                        try {
-                            JSON.parse(result);
-                            res.setHeader('Content-Type', 'application/json; charset=utf-8');
-                        } catch (e) {
-                            // not JSON
+                    try {
+                        if (tooLarge) {
+                            throw { status: 413, data: 'Request body is larger than the server accepts.' };
                         }
-                        res.end(result);
-                    } else {
-                        res.end();
+                        let dataStreams = {};
+                        if (req.body != '') {
+                            try {
+                                dataStreams.body = JSON.parse(req.body);
+                            } catch (e) {
+                                throw { status: 400, data: 'Request body is not valid JSON.' };
+                            }
+                        }
+                        let result = await callback.call({
+                            ctx: ctx,
+                            params: params,
+                            dataStreams: dataStreams,
+                        });
+                        sendResult(res, result);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                    } catch (ex) {
+                        fail(ex);
                     }
-                    global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 });
             } catch (ex) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPutError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
-                if (ex.status !== undefined && ex.status != null) {
-                    res.status(ex.status);
-                } else {
-                    res.status(500);
-                }
-                res.end(ex.data ? ex.data : ex + '');
+                fail(ex);
             }
         };
         let deleet = async function (req, res) {
@@ -185,7 +228,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -196,26 +239,11 @@ if (global.bindWebService === undefined) {
                     ctx: ctx,
                     params: params,
                 });
-                if (typeof (result) == 'string') {
-                    try {
-                        JSON.parse(result);
-                        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-                    } catch (e) {
-                        // not JSON
-                    }
-                    res.end(result);
-                } else {
-                    res.end();
-                }
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                sendResult(res, result);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
             } catch (ex) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpDeleteError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
-                if (ex.status !== undefined && ex.status != null) {
-                    res.status(ex.status);
-                } else {
-                    res.status(500);
-                }
-                res.end(ex.data ? ex.data : ex + '');
+                reportError('CassHttpDeleteError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                sendError(res, ex);
             }
         };
         let post = async function (req, res) {
@@ -229,7 +257,7 @@ if (global.bindWebService === undefined) {
                 req: req,
                 res: res,
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 if (req.headers['content-type'] != null) {
                     req.headers['content-type'] = req.headers['content-type'].replace('multipart/mixed', 'multipart/form-data');
@@ -243,14 +271,27 @@ if (global.bindWebService === undefined) {
                 // Express 5: req.query is a read-only getter. Build params separately.
                 const params = { ...req.query, methodType: 'POST', urlRemainder: getWildcardRemainder(req.params) };
                 let fields = {};
+                // A malformed body makes busboy emit 'error' and can reject a file read that 'close' never awaits.
+                // Answer 400 once and skip the handler.
+                let failed = false;
                 bb.on('file', (name, file, info) => {
-                    const { filename, encoding, mimeType } = info;
-                    fields[name || filename] = getStream(file, { encoding: 'binary' });
+                    const { filename } = info;
+                    const read = getStream(file, { encoding: 'binary' });
+                    read.catch(() => { }); // still rejects where 'close' awaits it; this only stops an unhandled rejection
+                    fields[name || filename] = read;
                 });
                 bb.on('field', (name, val, info) => {
                     fields[name] = val;
                 });
+                bb.on('error', (ex) => {
+                    if (failed) return;
+                    failed = true;
+                    req.unpipe(bb);
+                    reportError('CassHttpPostError', ex, `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                    sendError(res, { status: 400, data: 'Request body is not valid multipart form data.' });
+                });
                 bb.on('close', async () => {
+                    if (failed) return;
                     try {
                         global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostStart', endpoint + ' ' + (req.isSpdy ? 'spdy' : req.httpVersion) + ' Request: ' + JSON.stringify(params) + ' - Parts: ' + JSON.stringify(EcObject.keys(fields)), process.env.LOG_HEADERS ? req.headers : undefined);
                         for (let key in fields) {
@@ -261,37 +302,17 @@ if (global.bindWebService === undefined) {
                             params: params,
                             dataStreams: fields,
                         });
-                        if (typeof (result) == 'string') {
-                            try {
-                                JSON.parse(result);
-                                res.setHeader('Content-Type', 'application/json; charset=utf-8');
-                            } catch (e) {
-                                // not JSON
-                            }
-                            res.end(result);
-                        } else {
-                            res.end();
-                        }
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (new Date().getTime() - ms) + 'ms' + (result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB') : '') + ') ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
+                        sendResult(res, result);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (Date.now() - ms) + 'ms' + (result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB') : '') + ') ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
                     } catch (ex) {
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPostError', ex, `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, process.env.LOG_HEADERS ? req.headers : undefined, ex.toString());
-                        if (ex.status !== undefined && ex.status != null) {
-                            res.status(ex.status);
-                        } else {
-                            res.status(500);
-                        }
-                        res.end(ex.data ? ex.data : ex + '');
+                        reportError('CassHttpPostError', ex, `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, process.env.LOG_HEADERS ? req.headers : undefined, ex + '');
+                        sendError(res, ex);
                     }
                 });
                 req.pipe(bb);
             } catch (ex) {
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.ERROR, 'CassHttpPostError', ex);
-                if (ex.status !== undefined && ex.status != null) {
-                    res.status(ex.status);
-                } else {
-                    res.status(500);
-                }
-                res.end(ex.data ? ex.data : ex + '');
+                reportError('CassHttpPostError', ex);
+                sendError(res, ex);
             }
         };
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassBindEndpoint', `Binding endpoint: /api${endpoint}`);
@@ -337,7 +358,7 @@ if (global.httpGet === undefined) {
                 const response = await fetch(url, { headers: headers });
                 let result = null;
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
+                if (contentType && contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();
@@ -408,7 +429,7 @@ if (global.httpDelete === undefined) {
             const response = await fetch(url, { headers: headers, method: 'DELETE' });
             let result = null;
             const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
+            if (contentType && contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -470,7 +491,7 @@ if (global.httpPut === undefined) {
             });
             let result = null;
             const _contentType = response.headers.get("content-type");
-            if (_contentType && _contentType.indexOf("application/json") !== -1) {
+            if (_contentType && _contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -535,7 +556,7 @@ if (global.httpPost === undefined) {
 
                 let result = null;
                 const _contentType = response.headers.get("content-type");
-                if (_contentType && _contentType.indexOf("application/json") !== -1) {
+                if (_contentType && _contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();
@@ -636,13 +657,9 @@ if (global.jsonLdCompact === undefined) {
         try {
             finalTargetContext = JSON.parse(finalTargetContext);
         } catch (ex) { }
-        try {
-            let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
-            (o)['@context'] = finalTargetContext;
-            return o;
-        } catch (s) {
-            throw s;
-        }
+        let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
+        (o)['@context'] = finalTargetContext;
+        return o;
     };
 };
 
@@ -699,6 +716,6 @@ if (global.jsonLdToNQuads === undefined) {
 };
 
 // Shim to allow require of modules that are intended to be used to import.
-require('module').Module._extensions['.js'] = function (module, filename) {
-    module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
+require('node:module').Module._extensions['.js'] = function (module, filename) {
+    module._compile(require('node:fs').readFileSync(filename, 'utf8'), filename);
 };

@@ -230,7 +230,7 @@ const H2_FORBIDDEN_HEADERS = new Set([
  */
 function _dispatchHttp2Stream(server, stream, headers, app) {
     const session = stream.session;
-    if (!session || !session.socket) return;
+    if (!session?.socket) return;
 
     // --- Socket ---
     const socket = new Http2SocketProxy(stream, session);
@@ -315,7 +315,6 @@ function _dispatchHttp2Stream(server, stream, headers, app) {
 
     // Intercept writeHead so we capture the status code + any headers
     // passed directly to writeHead, then flush via stream.respond().
-    const _origWriteHead = res.writeHead;
     res.writeHead = function writeHead(statusCode, reason, obj) {
         if (typeof reason === 'string') {
             res.statusMessage = reason;
@@ -343,7 +342,6 @@ function _dispatchHttp2Stream(server, stream, headers, app) {
     // Intercept write to ensure headers go first.
     // Must propagate backpressure so compression middleware can resume
     // after stream.write() returns false (H2 flow control).
-    const _origWrite = res.write;
     res.write = function write(chunk, encoding, cb) {
         if (!h2HeadersSent) _sendH2Headers();
         if (stream.destroyed) return false;
@@ -355,7 +353,6 @@ function _dispatchHttp2Stream(server, stream, headers, app) {
     };
 
     // Intercept end.
-    const _origEnd = res.end;
     res.end = function end(chunk, encoding, cb) {
         if (!h2HeadersSent) _sendH2Headers();
         if (stream.destroyed) {

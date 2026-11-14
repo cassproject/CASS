@@ -42,7 +42,7 @@ const signatureSheetEach = async function (obj) {
     if (signature.expiry == null) {
         error('Missing expiry date.', 422);
     }
-    const now = new Date().getTime();
+    const now = Date.now();
     if (signature.expiry < now) {
         // Used to replay replication / database log files without "just jamming the data in"
         if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
@@ -124,12 +124,12 @@ global.filterResults = async function (o, dontDecryptInSso) {
             try {
                 return await filterResults.call(this, x, dontDecryptInSso);
             } catch (ex) {
-                if (ex != null && ex.toString().indexOf(objectNotFoundError) == -1) {
+                if (ex?.toString().includes(objectNotFoundError) === false) {
                     throw ex;
                 }
                 return null;
             }
-        }))).filter((x) => x);
+        }))).filter(Boolean);
     } else if (EcObject.isObject(o)) {
         delete o.decryptedSecret;
         const rld = new EcRemoteLinkedData().copyFrom(o);
@@ -137,7 +137,7 @@ global.filterResults = async function (o, dontDecryptInSso) {
             const signatures = await (signatureSheet).call(this);
             let foundSignature = false;
             for (let signature of signatures) {
-                if (JSON.stringify(o).indexOf(signature.owner) != -1) {
+                if (JSON.stringify(o).includes(signature.owner)) {
                     foundSignature = true;
                     break;
                 }
@@ -156,8 +156,8 @@ global.filterResults = async function (o, dontDecryptInSso) {
                     let eev = new EcEncryptedValue();
                     eev.copyFrom(o);
                     o.decryptedSecret = await eev.decryptSecret(this.ctx.req.eim);
-                } catch (msg) {
-                    global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'CassDecryptError', 'We couldn\'t decrypt it, hope the client has better luck! -- ' + msg);
+                } catch (error_) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'CassDecryptError', 'We couldn\'t decrypt it, hope the client has better luck! -- ' + error_);
                 }
             }
         }

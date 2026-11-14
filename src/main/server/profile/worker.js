@@ -37,7 +37,7 @@
 //         Once all relevant information is retrieved, we'll repeatedly iterate over each edge to update information
 //         inside each meta-vertex based on how the edges' Relations (EcAlignments) relate to goals & assertions
 
-const https = require('https');
+const https = require('node:https');
 
 let app;
 require("cassproject");
@@ -67,12 +67,12 @@ global.allFrameworks = []; // Cache of all frameworks
 global.profileFrameworks = {}; //Cache of constructed frameworks
 
 // Access the workerData by requiring it.
-let { parentPort, workerData } = require('worker_threads');
+let { parentPort, workerData } = require('node:worker_threads');
 
 let initialized = false;
 
 let glob = require('glob');
-let path = require('path');
+let path = require('node:path');
 
 global.auditLogger = require(path.resolve(glob.sync('src/main/server/shims/auditLogger.js')[0]));
 

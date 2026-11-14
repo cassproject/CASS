@@ -1,7 +1,7 @@
 const jose = require('jose');
 const rateLimit = require('express-rate-limit');
 
-module.exports = function (common) {
+module.exports = function installIpAllow(common) {
     const { getJWKS, ipMatch } = common;
 
     if (process.env.CASS_IP_ALLOW != null || process.env.CASS_SSO_ACCOUNT_REQUIRED != null) {
@@ -37,7 +37,7 @@ module.exports = function (common) {
                 const validationIntervalMs = Number.parseInt(process.env.CASS_SESSION_VALIDATION_INTERVAL) * 1000;
                 const now = Date.now();
 
-                if (req.oidc && req.oidc.session) {
+                if (req.oidc?.session) {
                     if (req.oidc.session.lastValidated && (now - req.oidc.session.lastValidated > validationIntervalMs)) {
                         try {
                             const accessToken = req.oidc.session.accessToken;
@@ -120,8 +120,8 @@ module.exports = function (common) {
                     allowed,
                     headers: loggedHeaders(req.headers),
                     connections: {
-                        socket: (req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                        info: (req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
+                        socket: req.socket?.remoteAddress ?? null,
+                        info: req.info?.remoteAddress ?? null
                     },
                     eim: req.eim != null ? req.eim.ids.map(i => i.displayName) : null
                 }), `Client address header (from CASS_TRUSTED_PROXIES only): ${clientIpHeader}`);
@@ -164,8 +164,8 @@ module.exports = function (common) {
                     permittedBy: req.permittedBy,
                     headers: loggedHeaders(req.headers),
                     connections: {
-                        socket: (req.socket != null && req.socket.remoteAddress != null) ? req.socket.remoteAddress : null,
-                        info: (req.info != null && req.info.remoteAddress != null) ? req.info.remoteAddress : null
+                        socket: req.socket?.remoteAddress ?? null,
+                        info: req.info?.remoteAddress ?? null
                     },
                     eim: req.eim != null ? req.eim.ids.map(i => i.displayName) : null
                 }), `Client address header (from CASS_TRUSTED_PROXIES only): ${clientIpHeader}`);

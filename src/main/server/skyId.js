@@ -18,8 +18,8 @@
  * --END_LICENSE--
  */
 
-const fs = require('fs');
-const nodePath = require('path');
+const fs = require('node:fs');
+const nodePath = require('node:path');
 const { skyrepoGetInternal } = require('./skyRepo/get');
 const { skyrepoPutParsed } = require('./skyRepo/put');
 let usernameSalt = null;

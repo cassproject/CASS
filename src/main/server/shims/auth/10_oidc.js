@@ -1,5 +1,5 @@
-module.exports = function (common) {
-    if (process.env.CASS_OIDC_ENABLED || false) {
+module.exports = function installOidc(common) {
+    if (process.env.CASS_OIDC_ENABLED) {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthEnabled", `OIDC authentication is enabled.`);
         if (global.baseUrl != "") {
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassAuthBaseUrl", `BASE URL is ${global.baseURL} and this can cause problems with callbacks from SSO providers. You may need to modify your reverse proxy (if you have one) to match up callbacks. If you use the cass installer script, this requires taking /cass out of the Apache2 redirect.`);
@@ -28,7 +28,7 @@ module.exports = function (common) {
                 session: {
                     rollingDuration: process.env.CASS_SESSION_MAX_AGE ? Number.parseInt(process.env.CASS_SESSION_MAX_AGE) : undefined,
                     cookie: {
-                        sameSite: process.env.CORS_CREDENTIALS && process.env.CORS_CREDENTIALS.trim() == 'true' ? 'None' : 'Lax',
+                        sameSite: process.env.CORS_CREDENTIALS?.trim() == 'true' ? 'None' : 'Lax',
                     }
                 }
             })
@@ -124,9 +124,9 @@ module.exports = function (common) {
                 const oidcConfig = await response.json();
 
                 // Keep standard OAuth/OIDC scopes, drop provider-internal ones.
-                const safeScopes = ['openid', 'profile', 'email', 'offline_access', 'address', 'phone'];
+                const safeScopes = new Set(['openid', 'profile', 'email', 'offline_access', 'address', 'phone']);
                 const filteredScopes = (oidcConfig.scopes_supported || [])
-                    .filter(s => safeScopes.includes(s));
+                    .filter(s => safeScopes.has(s));
 
                 // Rewrite internal URLs to be externally reachable.
                 const externalIssuer = process.env.CASS_OIDC_EXTERNAL_ISSUER_URL;

@@ -93,7 +93,7 @@ export function buildRequest(method, pathTemplate, args, parameterMap, options =
     }
 
     // The 'body' key, if present, is for requestBody content.
-    let fetchBody = undefined;
+    let fetchBody;
     if (args.body !== undefined && args.body !== null) {
         headers['Content-Type'] = 'application/json';
         fetchBody = typeof args.body === 'string' ? args.body : JSON.stringify(args.body);

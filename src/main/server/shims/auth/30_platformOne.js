@@ -1,4 +1,4 @@
-module.exports = function (common) {
+module.exports = function installPlatformOne(common) {
     if (process.env.CASS_PLATFORM_ONE_AUTH_ENABLED) {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthPlatformOneEnabled", `Platform One authentication is enabled.`);
         /**
@@ -7,7 +7,7 @@ module.exports = function (common) {
          * @returns 
          */
         function parseHeader(authHeader) {
-            if (!authHeader || !authHeader.startsWith("Bearer "))
+            if (!authHeader?.startsWith("Bearer "))
                 return null;
 
             let tokenStr = authHeader.slice(7);
@@ -112,7 +112,7 @@ module.exports = function (common) {
                     return false;
 
                 let secondsSinceEpoch = token.iat;
-                if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000)
+                if (secondsSinceEpoch * 1000 < Date.now() + 20000)
                     return false;
             }
 

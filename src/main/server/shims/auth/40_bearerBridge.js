@@ -9,12 +9,12 @@
 // -----------------------------------------------------------------------
 const jose = require('jose');
 
-module.exports = function (common) {
+module.exports = function installBearerBridge(common) {
     const { getJWKS } = common;
 
     app.use(async function (req, res, next) {
         const authHeader = req.headers.authorization;
-        if (authHeader && authHeader.startsWith('Bearer ') && (!req.oidc || !req.oidc.user)) {
+        if (authHeader?.startsWith('Bearer ') && !req.oidc?.user) {
             const token = authHeader.substring(7);
             const JWKS = getJWKS();
             if (JWKS) {

@@ -44,13 +44,13 @@ let startupDt = new Date();
 global.auditLogger = require('./server/shims/auditLogger.js');
 const express = require('express');
 let app = global.app = express();
-const https = require('https');
+const https = require('node:https');
 const http2compat = require('./server/shims/http2compat.js');
 require('cassproject');
-const fs = require('fs');
-global.v8 = require('v8');
+const fs = require('node:fs');
+global.v8 = require('node:v8');
 let glob = require('glob');
-let path = require('path');
+let path = require('node:path');
 const sendMail = require('./server/shims/mailer.js').sendMail;
 
 process.on('uncaughtException', async (err) => {
@@ -160,7 +160,7 @@ let customJsStr = `
     let swaggerBody = document.getElementById('swagger-ui');
 `;
 
-if (banner && banner.message) {
+if (banner?.message) {
     customJsStr += `
         let header = document.createElement('div');
         header.textContent = "${banner.message}";
@@ -174,7 +174,7 @@ if (banner && banner.message) {
     `;
 }
 
-if (motd && motd.message) {
+if (motd?.message) {
     customJsStr += `
         let modal = document.createElement('div');
         modal.innerHTML = '<div id="motd-modal" class="modal is-active" data-v-248059c4=""><div class="modal-background"></div><div class="modal-card" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription"><header id="modalTitle" class="modal-card-head"><p class="modal-card-title">${motd.title}</p><button class="delete close-modal" aria-label="close">&times;</button></header><section id="modalDescription" class="modal-card-body">${motd.message}</section><footer class="modal-card-foot"><div class="buttons is-right"><button class="button close-modal"> Cancel </button></div></footer></div></div>';
@@ -476,10 +476,10 @@ global.events.server.listening.subscribe(async (isListening) => {
     if (repo.selectedServerProxy != null) {
         global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassLoopbackProxy', `CaSS thinks it its endpoint is at ${repo.selectedServerProxy}`);
     }
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassStartupTime', `Startup time ${(new Date().getTime() - startupDt.getTime())} ms`);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassStartupTime', `Startup time ${(Date.now() - startupDt.getTime())} ms`);
     let totalHeapSizeInGB = (((v8.getHeapStatistics().total_available_size) / 1024 / 1024 / 1024).toFixed(2));
     global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassHeapSize', `Total Heap Size ${totalHeapSizeInGB}GB`);
-    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('crypto').getFips()}`);
+    global.auditLogger.report(global.auditLogger.LogCategory.SYSTEM, global.auditLogger.Severity.INFO, 'CassFipsEnabled', `FIPS Enabled: ${require('node:crypto').getFips()}`);
     global.events.server.ready.next(true);
 });
 
@@ -540,7 +540,7 @@ global.events.database.connected.subscribe(async function (isConnected) {
         global.server = app.listen(port, () => { global.events.server.listening.next(true); });
     }
 
-    if (typeof process.env.MAX_CONNECTIONS !== 'undefined') {
+    if (process.env.MAX_CONNECTIONS !== undefined) {
         global.server.maxConnections = Number.parseInt(process.env.MAX_CONNECTIONS);
     }
     server.on('connection', function (socket) {

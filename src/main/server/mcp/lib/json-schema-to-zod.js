@@ -82,7 +82,7 @@ function jsonSchemaToZod(jsonSchema) {
  * @returns {Object} A Zod shape object: { paramName: ZodType, ... }
  */
 export function inputSchemaToZodShape(inputSchema) {
-    if (!inputSchema || !inputSchema.properties) return {};
+    if (!inputSchema?.properties) return {};
 
     const shape = {};
     const required = new Set(inputSchema.required || []);

@@ -17,7 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-const fs = require('fs');
+const fs = require('node:fs');
 const sharedAdminCache = require('../shims/util/sharedAdminCache.js');
 
 if (process.env.INSECURE_SERVER_IS_ADMIN) {
@@ -70,7 +70,7 @@ const endpointAdmin = function () {
  */
 bindWebService('/sky/admin', endpointAdmin);
 
-return module.exports = {
+module.exports = {
     skyrepoAdminPk,
     skyrepoAdminList,
     // endpointAdmin
