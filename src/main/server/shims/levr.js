@@ -1,5 +1,5 @@
-const fs = require('fs');
-const nodePath = require('path');
+const fs = require('node:fs');
+const nodePath = require('node:path');
 const busboy = require('busboy');
 const _getStream = require('get-stream');
 const getStream = typeof _getStream === 'function'
@@ -7,7 +7,7 @@ const getStream = typeof _getStream === 'function'
     : (_getStream.default || _getStream.getStream);
 // exposed for regression tests; the shim is otherwise loaded only for its global side effects.
 module.exports.getStream = getStream;
-const dns = require('dns').promises;
+const dns = require('node:dns').promises;
 
 // LEVR shims
 if (global.fileLoad === undefined) {
@@ -139,7 +139,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -151,7 +151,7 @@ if (global.bindWebService === undefined) {
                     params: params,
                 });
                 sendResult(res, result);
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpGetSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
             } catch (ex) {
                 reportError('CassHttpGetError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 sendError(res, ex);
@@ -166,7 +166,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             const fail = function (ex) {
                 reportError('CassHttpPutError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 sendError(res, ex);
@@ -210,7 +210,7 @@ if (global.bindWebService === undefined) {
                             dataStreams: dataStreams,
                         });
                         sendResult(res, result);
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPutSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms${(result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB) ') : '')}) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                     } catch (ex) {
                         fail(ex);
                     }
@@ -228,7 +228,7 @@ if (global.bindWebService === undefined) {
                     ctx[field] = value;
                 },
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 ctx.req = req;
                 ctx.res = res;
@@ -240,7 +240,7 @@ if (global.bindWebService === undefined) {
                     params: params,
                 });
                 sendResult(res, result);
-                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(new Date().getTime() - ms)}ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
+                global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpDeleteSuccess', `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Response: ${res.statusCode} (${(Date.now() - ms)}ms) ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
             } catch (ex) {
                 reportError('CassHttpDeleteError', ex, `${endpoint} ${req.isSpdy ? 'spdy' : req.httpVersion} Request: ${JSON.stringify(req.query)}`, process.env.LOG_HEADERS ? req.headers : undefined);
                 sendError(res, ex);
@@ -257,7 +257,7 @@ if (global.bindWebService === undefined) {
                 req: req,
                 res: res,
             };
-            let ms = new Date().getTime();
+            let ms = Date.now();
             try {
                 if (req.headers['content-type'] != null) {
                     req.headers['content-type'] = req.headers['content-type'].replace('multipart/mixed', 'multipart/form-data');
@@ -275,7 +275,7 @@ if (global.bindWebService === undefined) {
                 // Answer 400 once and skip the handler.
                 let failed = false;
                 bb.on('file', (name, file, info) => {
-                    const { filename, encoding, mimeType } = info;
+                    const { filename } = info;
                     const read = getStream(file, { encoding: 'binary' });
                     read.catch(() => { }); // still rejects where 'close' awaits it; this only stops an unhandled rejection
                     fields[name || filename] = read;
@@ -303,7 +303,7 @@ if (global.bindWebService === undefined) {
                             dataStreams: fields,
                         });
                         sendResult(res, result);
-                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (new Date().getTime() - ms) + 'ms' + (result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB') : '') + ') ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
+                        global.auditLogger.report(global.auditLogger.LogCategory.NETWORK, global.auditLogger.Severity.SERVICE, 'CassHttpPostSuccess', endpoint + ` Response: ${res.statusCode} (` + (Date.now() - ms) + 'ms' + (result != null ? ', ' + ((result?.length / 1024).toFixed(0) + 'KB') : '') + ') ' + JSON.stringify(req.query), process.env.LOG_HEADERS ? req.headers : undefined);
                     } catch (ex) {
                         reportError('CassHttpPostError', ex, `${endpoint} ${(req.isSpdy ? 'spdy' : req.httpVersion)} Request: ${JSON.stringify(req.query)} - Parts: ${JSON.stringify(EcObject.keys(fields))}`, process.env.LOG_HEADERS ? req.headers : undefined, ex + '');
                         sendError(res, ex);
@@ -358,7 +358,7 @@ if (global.httpGet === undefined) {
                 const response = await fetch(url, { headers: headers });
                 let result = null;
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
+                if (contentType && contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();
@@ -429,7 +429,7 @@ if (global.httpDelete === undefined) {
             const response = await fetch(url, { headers: headers, method: 'DELETE' });
             let result = null;
             const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
+            if (contentType && contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -491,7 +491,7 @@ if (global.httpPut === undefined) {
             });
             let result = null;
             const _contentType = response.headers.get("content-type");
-            if (_contentType && _contentType.indexOf("application/json") !== -1) {
+            if (_contentType && _contentType.includes("application/json")) {
                 result = await response.json();
             } else {
                 result = await response.text();
@@ -556,7 +556,7 @@ if (global.httpPost === undefined) {
 
                 let result = null;
                 const _contentType = response.headers.get("content-type");
-                if (_contentType && _contentType.indexOf("application/json") !== -1) {
+                if (_contentType && _contentType.includes("application/json")) {
                     result = await response.json();
                 } else {
                     result = await response.text();
@@ -657,13 +657,9 @@ if (global.jsonLdCompact === undefined) {
         try {
             finalTargetContext = JSON.parse(finalTargetContext);
         } catch (ex) { }
-        try {
-            let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
-            (o)['@context'] = finalTargetContext;
-            return o;
-        } catch (s) {
-            throw s;
-        }
+        let o = await jsonld.compact(JSON.parse(actual), finalTargetContext);
+        (o)['@context'] = finalTargetContext;
+        return o;
     };
 };
 
@@ -720,6 +716,6 @@ if (global.jsonLdToNQuads === undefined) {
 };
 
 // Shim to allow require of modules that are intended to be used to import.
-require('module').Module._extensions['.js'] = function (module, filename) {
-    module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
+require('node:module').Module._extensions['.js'] = function (module, filename) {
+    module._compile(require('node:fs').readFileSync(filename, 'utf8'), filename);
 };

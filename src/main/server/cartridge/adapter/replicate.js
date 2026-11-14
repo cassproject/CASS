@@ -10,8 +10,8 @@ meIdent.ppk = EcPpk.fromPem(mePpk);
 meIdent.displayName = "Replication Adapter";
 meIm.addIdentity(meIdent);
 
-var replicateConfigFilePath = "etc/adapter.replication.json";
-var replicateConfig = function () {
+const replicateConfigFilePath = "etc/adapter.replication.json";
+const replicateConfig = function () {
     if (this.xapiConfig != null) return this.xapiConfig;
     if (!fileExists(replicateConfigFilePath))
         fileSave(JSON.stringify({

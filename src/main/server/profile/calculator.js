@@ -15,8 +15,8 @@ const calculatorVersion = 4;
 // Library (node-object-hash) for generating hashes of JS objects.
 // Used to determine when rippling properties are done being computed.
 const hashSortCoerce = hasher({ sort: false, coerce: false });
-const process = require('process');
-const crypto = require('crypto');
+const process = require('node:process');
+const crypto = require('node:crypto');
 
 /**
   * Memory-efficient, recursive-resistant object hasher.
@@ -58,8 +58,8 @@ function getPersistentSafeHash(obj, algorithm = 'sha256') {
         // 3. Handle Arrays
         if (Array.isArray(val)) {
             hash.update('a:[');
-            for (let i = 0; i < val.length; i++) {
-                process(val[i]);
+            for (const item of val) {
+                process(item);
                 hash.update(',');
             }
             hash.update(']');
@@ -88,7 +88,7 @@ const PROFILE_REPOSITORY_CACHE = process.env.PROFILE_REPOSITORY_CACHE || false;
 
 //Coprocessor Initialization
 let glob = require('glob');
-let path = require('path');
+let path = require('node:path');
 let PRECACHE_ALL_FRAMEWORKS = false;
 
 let coprocessors = [];
@@ -105,8 +105,8 @@ coprocessors.sort((a, b) => { return a.order - b.order });
 
 module.exports = class ProfileCalculator {
     constructor() {
-        this.timer = new Date().getTime(); // Time at start of execution
-        this.timerTotal = new Date().getTime(); // Time at start of execution
+        this.timer = Date.now(); // Time at start of execution
+        this.timerTotal = Date.now(); // Time at start of execution
         this.res = undefined;
         this.cacheKey = undefined;
         this.after = undefined;
@@ -123,14 +123,14 @@ module.exports = class ProfileCalculator {
 
     /** Prints current operation to the console. (Consider outputting to a log file if needed) */
     log(msg) {
-        const ms = new Date().getTime() - this.timer;
-        const msTotal = new Date().getTime() - this.timerTotal;
+        const ms = Date.now() - this.timer;
+        const msTotal = Date.now() - this.timerTotal;
         if (TRACE_SOURCE) global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator",
             `${blue}${this.fingerprint}${reset}\n` +
             `${orange}${this.framework.getName()}${reset}\n` +
             `${gray}(${ms}ms)${reset}\n`
         )
-        this.timer = new Date().getTime();
+        this.timer = Date.now();
         global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "Calculator", `${msg} (${ms} ms step, ${msTotal} ms total, ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} MB used))`);
     }
 
@@ -179,7 +179,6 @@ module.exports = class ProfileCalculator {
             this.log(`Provided graph structure. ${this.g.verticies.length} vertices`);
         }
 
-        let assertionHash = null;
         // Search for assertions about the subject for later in the background
         let assertions = [];
         // NOTE: push into the shared array rather than reassigning it.
@@ -192,7 +191,7 @@ module.exports = class ProfileCalculator {
             if (found != null && found.length > 0)
                 assertions.push(...found);
         }));
-        assertions = assertions.filter((x) => x); //Remove nulls.
+        assertions = assertions.filter(Boolean); //Remove nulls.
         for (let i = 0; i < assertions.length; i++) //Remove duplicates.
         {
             for (let j = i; j < assertions.length; j++) {
@@ -202,8 +201,6 @@ module.exports = class ProfileCalculator {
             }
         }
 
-        let profileKey = null;
-        let storedProfile = null;
 
         // Wait for assertion search to finish, and get results
         assertions = await assertions;
@@ -437,7 +434,7 @@ module.exports = class ProfileCalculator {
         };
 
         // Add top-level vertices to profile's children - they store references to all other children
-        for (var vertexKey in topLevelVertices) {
+        for (const vertexKey in topLevelVertices) {
             profile.children = profile.children.concat(topLevelVertices[vertexKey]);
         }
         // Get summary statistics for results
@@ -448,8 +445,8 @@ module.exports = class ProfileCalculator {
         }
 
         let newChildren = [];
-        for (let i = 0; i < profile.children.length; i++)
-            newChildren = newChildren.concat(pruneNonFrameworkData(profile.children[i]));
+        for (const child of profile.children)
+            newChildren = newChildren.concat(pruneNonFrameworkData(child));
 
         profile.children = newChildren;
 

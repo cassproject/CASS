@@ -51,12 +51,6 @@ function inferAnnotations(method) {
             openWorldHint: false,
         };
     case 'post':
-        return {
-            readOnlyHint: false,
-            destructiveHint: false,
-            idempotentHint: false,
-            openWorldHint: false,
-        };
     case 'patch':
         return {
             readOnlyHint: false,
@@ -78,7 +72,7 @@ function inferAnnotations(method) {
  * @returns {Object} The resolved object.
  */
 function resolveRef(spec, ref) {
-    if (!ref || !ref.startsWith('#/')) return ref;
+    if (!ref?.startsWith('#/')) return ref;
     const parts = ref.substring(2).split('/');
     let current = spec;
     for (const part of parts) {
@@ -165,7 +159,7 @@ function generateToolName(method, path) {
     cleaned = cleaned.replace(/([a-z])([A-Z])/g, '$1_$2');
 
     // Replace slashes and other separators with underscores
-    cleaned = cleaned.replace(/[\/\-\.]+/g, '_');
+    cleaned = cleaned.replace(/[/\-.]+/g, '_');
 
     // Remove trailing/leading/double underscores
     cleaned = cleaned.replace(/_+/g, '_').replace(/^_|_$/g, '');
@@ -248,7 +242,7 @@ function generateDescription(method, path, operation, spec) {
             parts.push(`  ${reqBody.description}`);
         }
 
-        if (mediaType && mediaType.schema) {
+        if (mediaType?.schema) {
             let bodySchema = mediaType.schema;
             if (bodySchema['$ref']) {
                 try { bodySchema = resolveRef(spec, bodySchema['$ref']); } catch { /* use as-is */ }
@@ -314,13 +308,11 @@ export function generateTools(spec) {
                 );
                 if (firstSection < Infinity) {
                     description = mcpDesc + generated.substring(firstSection);
+                } else if (operation['x-mcp-hints']) {
+                    // No args or hints — append the hints
+                    description = mcpDesc + '\n\nHints:\n' + operation['x-mcp-hints'].trim();
                 } else {
-                    // No args or hints — check if there are hints to append
-                    if (operation['x-mcp-hints']) {
-                        description = mcpDesc + '\n\nHints:\n' + operation['x-mcp-hints'].trim();
-                    } else {
-                        description = mcpDesc;
-                    }
+                    description = mcpDesc;
                 }
             } else {
                 description = generateDescription(method, path, operation, spec);
@@ -377,7 +369,7 @@ export function generateTools(spec) {
                     content['multipart/form-data'] ||
                     Object.values(content)[0];
 
-                if (mediaType && mediaType.schema) {
+                if (mediaType?.schema) {
                     let bodySchema = mediaType.schema;
                     if (bodySchema['$ref']) {
                         bodySchema = resolveRef(spec, bodySchema['$ref']);
@@ -422,7 +414,7 @@ export function generateTools(spec) {
                 inputSchema,
                 annotations: {
                     ...inferAnnotations(method),
-                    ...(operation['x-mcp-annotations'] || {}),
+                    ...operation['x-mcp-annotations'],
                 },
                 method,
                 pathTemplate: path,
@@ -468,10 +460,8 @@ export function generateResourceTemplates(spec) {
         mimeType: 'application/ld+json',
         method: 'GET',
         pathTemplate: '/api/data/{type}/{uid}/{version}',
-    });
-
-    // Template for fetching any object by uid alone
-    templates.push({
+    }, {
+        // Template for fetching any object by uid alone
         uriTemplate: 'cass://data/{uid}',
         name: 'CaSS Object by UID',
         description: 'Retrieve a JSON-LD object from CaSS by its UID (type auto-detected).',

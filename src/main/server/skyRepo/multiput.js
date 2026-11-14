@@ -27,7 +27,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
     let body = '';
 
     for (let x of Object.values(map)) {
-        let writeMs = new Date().getTime();
+        let writeMs = Date.now();
 
         for (let id of x.permanentIds) {
             let obj = {
@@ -106,7 +106,7 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
 
             // Used to replay replication / database log files without "just jamming the data in"
             if (Object.values(retries).length > 0)
-                if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || this.ctx.sanctionedReplay != true) {
+                if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || Number(this.ctx.sanctionedReplay) !== 1) {
                     const newFailed = await skyrepoPutInternalBulk.call(this, retries);
                     for (let key of Object.keys(newFailed)) {
                         failed[key] = true;
@@ -176,7 +176,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
 
         const erld = new EcRemoteLinkedData(null, null);
         erld.copyFrom(x.object);
-        if (this.ctx && this.ctx.req && this.ctx.req.eim != null) {
+        if (this.ctx?.req?.eim != null) {
             try {
                 await this.ctx.req.eim.sign(erld);
                 x.object = JSON.parse(erld.toJson());
@@ -198,7 +198,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             let id = x['_id'].split('.')[0];
             let chosenVersion = map[id].version;
             if (chosenVersion == null) {
-                if (x != null && x['_version'] != null && !Number.isNaN(Number(x['_version']))) {
+                if (x?.['_version'] != null && !Number.isNaN(Number(x['_version']))) {
                     chosenVersion = x['_version'] + 1;
                 } else {
                     chosenVersion = 1;
@@ -223,7 +223,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
             let owners = (o)['owner'];
             for (let i = 0; i < owners.length; i++) {
-                if (owners[i].indexOf('\n') != -1) {
+                if (owners[i].includes('\n')) {
                     owners[i] = EcPk.fromPem(owners[i]).toPem();
                 }
             }
@@ -231,7 +231,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         if ((o)['reader'] != null && EcArray.isArray((o)['reader'])) {
             let owners = (o)['reader'];
             for (let i = 0; i < owners.length; i++) {
-                if (owners[i].indexOf('\n') != -1) {
+                if (owners[i].includes('\n')) {
                     owners[i] = EcPk.fromPem(owners[i]).toPem();
                 }
             }
@@ -244,7 +244,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         } catch (ex) {
             (o)['@version'] = new Date().getTime();
         }
-        if (x.type != null && x.type.indexOf('EncryptedValue') != -1) {
+        if (x.type != null && x.type.includes('EncryptedValue')) {
             delete (o)['payload'];
             delete (o)['secret'];
         }
@@ -293,7 +293,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
             if (erld.id != null) {
                 return erld.shortId();
             }
-        }).filter((x) => x))));
+        }).filter(Boolean))));
 
     const recordsToDelete = [];
 
@@ -309,7 +309,7 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
         for (let record of recordsToDelete) {
             deleteBody += `${JSON.stringify({ delete: { _index: record._index, _id: record._id } })}\n`;
         }
-        const deleteResponse = await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+        await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
     }
 
     return failed;
@@ -320,7 +320,7 @@ const skyrepoPutParsedBulk = async function (ary) {
         map[x.id] = x;
     }
 
-    const { succeeded, failed } = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
+    const { failed } = await validateSignaturesBulk.call(this, map, 'Only an owner of an object may change it.');
     // Everything failed already
     if (Object.values(map).length === 0) {
         return failed;
@@ -359,7 +359,7 @@ const endpointMultiPut = async function () {
     const results = [];
     if (ary != null) {
         // The following is also in skyrepoPutInternalPermanent. Adding it here avoids trying to create the permanent index for each object in multiput.
-        if (permanentCreated != true) {
+        if (!permanentCreated) {
             const mappings = {};
             const permNoIndex = {};
             const doc = {};
@@ -390,7 +390,7 @@ const endpointMultiPut = async function () {
             const o = x;
             ld.copyFrom(o);
             let id = null;
-            if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && ld.id.indexOf(repo.selectedServerProxy) == -1 && ld.id.indexOf(repo.selectedServer) == -1) {
+            if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id) && !ld.id.includes(repo.selectedServerProxy) && !ld.id.includes(repo.selectedServer)) {
                 id = EcCrypto.md5(ld.shortId());
             } else {
                 id = ld.getGuid();

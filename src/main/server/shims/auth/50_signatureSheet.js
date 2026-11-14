@@ -1,6 +1,6 @@
 const sharedAdminCache = require("../util/sharedAdminCache.js");
 
-module.exports = function (common) {
+module.exports = function installSignatureSheet(common) {
     const { getPk, getPkCache, getPersonCache, skyrepoAdminPpk, skyrepoAdminKey, allowEnvEmails, envEmailArray } = common;
 
     let signatureSheetCache = {};
@@ -29,7 +29,7 @@ module.exports = function (common) {
         if (req.user != null) {
             if (req.user.iat != null) {
                 let secondsSinceEpoch = req.user.iat;
-                if (secondsSinceEpoch * 1000 < new Date().getTime() + 20000) {
+                if (secondsSinceEpoch * 1000 < Date.now() + 20000) {
                     res.end("JWT token is expired.");
                     return;
                 }
@@ -76,7 +76,7 @@ module.exports = function (common) {
                 for (const group of req.oidc?.user?.groups ?? []) {
                     let myKey = await getPk(group);
                     let i = new EcIdentity();
-                    i.displayName = group.replaceAll(/_/g, " ").trim();
+                    i.displayName = group.replaceAll('_', " ").trim();
                     i.ppk = EcPpk.fromPem(myKey);
                     if (group != null && process.env.SKYREPO_ADMIN_GROUP != null && group.toLowerCase() == process.env.SKYREPO_ADMIN_GROUP?.toLowerCase()) {
                         i.ppk = skyrepoAdminKey();
@@ -96,7 +96,7 @@ module.exports = function (common) {
                         p.addOwner(i.ppk.toPk());
                         p.ssoSignature = await EcRsaOaepAsync.sign(skyrepoAdminKey(), i.ppk.toPk().toPem());
                         p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy, i.ppk.toPk().fingerprint());
-                        p.name = group.replaceAll(/_/g, " ").replace("fp", "").replace("FP", "").replace("Cont", "Contributor").replace("Read", "Reader").trim();
+                        p.name = group.replaceAll('_', " ").replace("fp", "").replace("FP", "").replace("Cont", "Contributor").replace("Read", "Reader").trim();
                         await repo.saveTo(p);
                     }
                 }
@@ -127,7 +127,7 @@ module.exports = function (common) {
                 let ss = JSON.parse(signatureSheet);
                 for (let o of ss)
                     maxTimeout = Math.max(maxTimeout, o.expiry);
-                if (maxTimeout < new Date().getTime() + 20000)
+                if (maxTimeout < Date.now() + 20000)
                     signatureSheet = null;
             }
             if (signatureSheet == null) {

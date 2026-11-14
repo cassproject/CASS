@@ -46,7 +46,7 @@ const cfGetFramework = async function (f) {
     if (f == null || f === undefined || !EcObject.isObject(f)) {
         if (f == null)
             f = await skyrepoGet.call(this, query);
-        if (f == null || f["@type"] == null || !f["@type"].contains("ramework"))
+        if (!f?.["@type"]?.contains("ramework"))
             f = null;
         if (f == null && this.params.id != null)
             f = await loopback.frameworkGet(decodeURIComponent(this.params.id)).catch(() => null);
@@ -86,7 +86,7 @@ const cfGetCompetency = async function (c) {
         var competency = null;
         if (competency == null)
             competency = await skyrepoGet.call(this, query);
-        if (competency == null || competency["@type"] == null || !competency["@type"].contains("ompetency"))
+        if (!competency?.["@type"]?.contains("ompetency"))
             competency = null;
         if (competency == null && url != null)
             competency = await loopback.competencyGet(url).catch(() => null);
@@ -181,8 +181,8 @@ const cfDocuments = async function (f, terms) {
         let frameworks = await loopback.frameworkSearch(global.repo, "*", { size: 5000 });
         if (frameworks == null)
             error("Could not reach repository", 500);
-        for (var i = 0; i < frameworks.length; i++) {
-            var fw = await cfDocuments.call(this, frameworks[i], terms);
+        for (const framework of frameworks) {
+            var fw = await cfDocuments.call(this, framework, terms);
             if (fw != null)
                 aggResults.push(JSON.parse(fw));
         }
@@ -436,8 +436,8 @@ const cfPackages = async function (f) {
     delete result.CFDocument["@context"];
     result.CFItems = [];
     if (f.competency != null)
-        for (var i = 0; i < f.competency.length; i++) {
-            var c = await loopback.competencyGet(f.competency[i]);
+        for (const competencyId of f.competency) {
+            var c = await loopback.competencyGet(competencyId);
             if (c != null)
                 c = JSON.parse(await cfItems.call(this, c, f, terms));
             if (c != null) {
@@ -447,8 +447,8 @@ const cfPackages = async function (f) {
         }
     result.CFAssociations = [];
     if (f.relation != null)
-        for (var i = 0; i < f.relation.length; i++) {
-            var a = await loopback.alignmentGet(f.relation[i]);
+        for (const relationId of f.relation) {
+            var a = await loopback.alignmentGet(relationId);
             if (a != null)
                 a = JSON.parse(await cfItemAssociations.call(this, a, f, terms));
             if (a != null) {

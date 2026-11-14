@@ -16,7 +16,7 @@ const profileCache = global.profileCache = new ProfileCache({
 let profileInProgress = global.profileInProgress = profileCache.inProgress;
 
 let profileCalculator = async function () {
-    const timer = new Date().getTime();
+    const timer = Date.now();
     const subjectId = this.params.subject;
     const frameworkId = this.params.frameworkId;
     if (this.params.flushCache != null && this.params.flushCache) {
@@ -29,17 +29,14 @@ let profileCalculator = async function () {
         error("Framework not identified or does not exist.", 400);
 
     let query_agent_fingerprint = [];
-    let query_agent_pk = [];
     let query_agent_ppk = [];
     if (this?.ctx?.req?.eim) {
-        query_agent_pk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().toPem()));
         query_agent_ppk.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPem()));
         query_agent_fingerprint.push(...this.ctx.req.eim.ids.map(x => x.ppk.toPk().fingerprint()));
     }
     if (process.env.PROFILE_PPK != null) {
         const profilePpk = EcPpk.fromPem(process.env.PROFILE_PPK);
         query_agent_ppk.push(process.env.PROFILE_PPK);
-        query_agent_pk.push(profilePpk.toPk().toPem());
         query_agent_fingerprint.push(profilePpk.toPk().fingerprint());
     }
 
@@ -84,8 +81,8 @@ let profileCalculator = async function () {
     }
     const profile = result.profile;
     if (result.fromCache) {
-        profile.msSpeed = new Date().getTime() - timer;
-        if (this.params.autoComputed != true)
+        profile.msSpeed = Date.now() - timer;
+        if (Number(this.params.autoComputed) !== 1)
             global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "ProfileCalculator", "Cache hit - Profile already computed");
     }
     if (profile.error != null) {
@@ -209,7 +206,8 @@ global.profileFlush = () => {
 }
 
 if (!global.disabledAdapters['profile']) {
-    bindWebService("/profile/latest", global.calculateProfile = profileCalculator);
+    global.calculateProfile = profileCalculator;
+    bindWebService("/profile/latest", profileCalculator);
 
     let workerData = {};
     pool = new StaticPool({

@@ -18,8 +18,8 @@ describe('MCP Adapter — Streamable HTTP server', function () {
     let sessionId;
     let nextId = 1;
 
-    it('Waiting for server to be ready', async () => {
-        if (process.env.NODEV != null) return;
+    it('Waiting for server to be ready', async function () {
+        if (process.env.NODEV != null) this.skip();
         if (!global.events || !global.events.server) return;
         let ready = false;
         global.events.server.ready.subscribe((isReady) => {

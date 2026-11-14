@@ -1,5 +1,5 @@
 let glob = require('glob');
-let path = require('path');
+let path = require('node:path');
 let util = require(path.resolve(glob.sync( 'src/main/server/profile/util.js' )[0]));
 
 //Each of these is being called such that using 'this' refers to the profileProcessor.
@@ -35,7 +35,7 @@ let fetchAssertions = async function () {
             return a;
         return null;
     }));
-    assertions = assertions.filter((x) => (x));
+    assertions = assertions.filter(Boolean);
     global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultFetchAssertions", `Relevant assertion count: (${prevCount} -> ${assertions.length})`);
     assertions.sort((a, b) => {
         return b.id.localeCompare(a.id);
@@ -69,8 +69,7 @@ let insertResources = async function () {
         if (results == null) continue;
         global.auditLogger.report(global.auditLogger.LogCategory.PROFILE, global.auditLogger.Severity.INFO, "DefaultInsertResources", `Searching for alignments, ${results.length} found.`);
 
-        for (let i = 0; i < results.length; i++) {
-            const resource = results[i];
+        for (const resource of results) {
             // educationalAlignment is written as an array by the mapping
             // tools and the xAPI adapter; older records may carry a single
             // object. Attach the resource to EVERY aligned vertex present
@@ -90,9 +89,9 @@ let insertResources = async function () {
             if (metaVertex.resources == null)
                 metaVertex.resources = [];
 
-                // Trim alignments, add to metaVertex (once)
-                if (!metaVertex.resources.some(r => r.id === resource.id))
-                    metaVertex.resources.push(resource);
+            // Trim alignments, add to metaVertex (once)
+            if (!metaVertex.resources.some(r => r.id === resource.id))
+                metaVertex.resources.push(resource);
             }
         }
     }
@@ -111,7 +110,7 @@ let processAssertions = async function () {
         if (metaVertex.negativeAssertion != null)
             assertions = assertions.concat(metaVertex.negativeAssertion);
 
-        let competencyIds = [...new Set(assertions.map(x => x.competency))].filter(x => x);
+        let competencyIds = [...new Set(assertions.map(x => x.competency))].filter(Boolean);
         await repo.precache(competencyIds);
 
         await Promise.map(assertions, async (a) => {
@@ -182,6 +181,7 @@ let processAssertions = async function () {
     });
 }
 let postProcessStart = async function (vertices, topLevelVertices, inEdges) {
+    // Nothing to do at this stage.
 }  
 let postProcessEachVertex = function (vertex, vertices, topLevelVertices, inEdges) {
     if (inEdges.equivalent == null)
