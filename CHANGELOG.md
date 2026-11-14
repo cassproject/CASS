@@ -8,6 +8,7 @@
 * SCD export and the profile person lookup no longer share state between concurrent requests.
 * Standalone image: `docker stop` shuts Elasticsearch down cleanly.
 * cassproject 5.0.23.
+* (SECURITY) minimatch 11 for glob and swagger-jsdoc (GHSA-g3hv-75wg-m249). CaSS only matches fixed patterns, and its glob and OpenAPI results are unchanged.
 * Development: coverage is measured with c8 (including ES modules and worker threads), many new tests, SonarQube/SonarCloud findings resolved, and an Update dependencies workflow that runs weekly.
 * Updated libraries.
 
