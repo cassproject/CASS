@@ -138,9 +138,22 @@ class Http2SocketProxy extends net.Socket {
         // calls socket.destroy() during normal response cleanup, which
         // would prematurely close the bidirectional H2 stream. The
         // stream lifecycle is managed by our res.end() interceptor.
-        if (!this.destroyed) {
-            super.destroy(err);
+        //
+        // This socket stands for the H2 stream, so it closes when the
+        // stream does. Node 26 destroys a request's socket as soon as the
+        // request body has been read; closing here would make the response
+        // emit 'close' while the handler is still working, and handlers that
+        // treat that as a disconnect (the MCP transport) drop their answer.
+        if (this.destroyed) return this;
+        const stream = this._h2stream;
+        if (stream && !stream.closed && !stream.destroyed) {
+            if (!this._destroyOnStreamClose) {
+                this._destroyOnStreamClose = true;
+                stream.once('close', () => super.destroy(err));
+            }
+            return this;
         }
+        return super.destroy(err);
     }
 }
 

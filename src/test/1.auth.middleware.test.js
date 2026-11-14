@@ -183,7 +183,9 @@ if (process.env.NODEV == null) {
                 assert.strictEqual(token.email, sub);
                 // The same subject always gets the same words.
                 const multi = { ...env, CASS_PLATFORM_ONE_AUTH_ADJECTIVES: 'Brave,Calm,Swift', CASS_PLATFORM_ONE_AUTH_NOUNS: 'Otter,Heron' };
-                assert.strictEqual((await p1(multi, jwt({ sub }))).name, (await p1(multi, jwt({ sub }))).name);
+                const first = await p1(multi, jwt({ sub }));
+                const second = await p1(multi, jwt({ sub }));
+                assert.strictEqual(second.name, first.name);
             });
         });
 
