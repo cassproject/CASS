@@ -104,6 +104,104 @@ if (process.env.NODEV == null) {
                 '/.well-known/oauth-protected-resource', '/.well-known/oauth-authorization-server']);
         });
 
+        describe('required settings', () => {
+            let reports;
+            beforeEach(() => {
+                reports = [];
+                global.auditLogger.report = (...args) => { reports.push(args); };
+            });
+            afterEach(() => {
+                global.auditLogger.report = () => { };
+            });
+
+            const refuses = (env, pattern) => {
+                assert.throws(() => load(env), pattern);
+                assert.lengthOf(used, 0, 'no middleware may be installed');
+                assert.deepEqual(Object.keys(routes), [], 'no routes may be installed');
+                const emergency = reports.filter((r) => r[1] === global.auditLogger.Severity.EMERGENCY);
+                assert.lengthOf(emergency, 1, 'the refusal must be logged once at EMERGENCY');
+                assert.strictEqual(emergency[0][2], 'CassAuthMisconfigured');
+                assert.match(emergency[0][3], pattern);
+            };
+
+            for (const alg of [undefined, 'RS256']) {
+                const signing = alg ? { CASS_OIDC_ALG: alg } : {};
+                const label = alg || 'the default algorithm';
+
+                it(`refuses to start without CASS_OIDC_ISSUER_BASE_URL (${label})`, () => {
+                    const { CASS_OIDC_ISSUER_BASE_URL, ...rest } = enabled;
+                    refuses({ ...rest, ...signing }, /CASS_OIDC_ISSUER_BASE_URL/);
+                });
+
+                it(`refuses to start without CASS_OIDC_SECRET (${label})`, () => {
+                    const { CASS_OIDC_SECRET, ...rest } = enabled;
+                    refuses({ ...rest, ...signing }, /CASS_OIDC_SECRET/);
+                });
+
+                it(`names both settings when both are missing (${label})`, () => {
+                    refuses({ CASS_OIDC_ENABLED: 'true', ...signing }, /CASS_OIDC_ISSUER_BASE_URL and CASS_OIDC_SECRET/);
+                });
+            }
+
+            it('treats blank settings as missing', () => {
+                refuses({ ...enabled, CASS_OIDC_ISSUER_BASE_URL: '  ', CASS_OIDC_SECRET: '' }, /CASS_OIDC_ISSUER_BASE_URL and CASS_OIDC_SECRET/);
+            });
+
+            it('checks HS256 bearer tokens with CASS_OIDC_SECRET', async () => {
+                const { SignJWT } = require('jose');
+                // The bearer library reads the issuer's discovery document even for HS256 tokens, so serve one.
+                const http = require('node:http');
+                let issuer;
+                const idp = http.createServer((req, res) => {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ issuer, jwks_uri: issuer + 'certs' }));
+                });
+                await new Promise((resolve) => idp.listen(0, '127.0.0.1', resolve));
+                issuer = `http://127.0.0.1:${idp.address().port}/realms/test/`;
+                try {
+                    load({ ...enabled, CASS_OIDC_ISSUER_BASE_URL: issuer });
+                    const bearer = used[1];
+                    const sign = (secret, iss = issuer) => new SignJWT({ sub: 'someone' })
+                        .setProtectedHeader({ alg: 'HS256' })
+                        .setIssuer(iss)
+                        .setAudience('account')
+                        .setIssuedAt()
+                        .setExpirationTime('5m')
+                        .sign(new TextEncoder().encode(secret));
+                    // With authRequired: false a token that fails verification is ignored, not an error:
+                    // req.auth is only set for a token that verifies.
+                    const run = (token) => new Promise((resolve) => {
+                        const req = {
+                            headers: { authorization: 'Bearer ' + token, host: 'cass.example.com' },
+                            protocol: 'https', hostname: 'cass.example.com', originalUrl: '/api/ping', method: 'GET',
+                            query: {}, is: () => false, get(h) { return this.headers[h.toLowerCase()]; },
+                        };
+                        bearer(req, {}, (err) => resolve({ err, auth: req.auth }));
+                    });
+
+                    const good = await run(await sign(enabled.CASS_OIDC_SECRET));
+                    assert.isUndefined(good.err);
+                    assert.strictEqual(good.auth?.payload?.sub, 'someone', 'a token signed with CASS_OIDC_SECRET must verify');
+
+                    const forged = await run(await sign('some-other-secret-of-the-same-size'));
+                    assert.isUndefined(forged.auth, 'a token signed with another secret must not verify');
+
+                    const foreign = await run(await sign(enabled.CASS_OIDC_SECRET, 'https://idp.example.com/realms/other/'));
+                    assert.isUndefined(foreign.auth, 'a token from another issuer must not verify');
+                } finally {
+                    await new Promise((resolve) => idp.close(resolve));
+                }
+            });
+
+            it('starts with both set, under either algorithm', () => {
+                load(enabled);
+                assert.lengthOf(used, 2);
+                load({ ...enabled, CASS_OIDC_ALG: 'RS256' });
+                assert.lengthOf(used, 2);
+                assert.isEmpty(reports.filter((r) => r[1] === global.auditLogger.Severity.EMERGENCY));
+            });
+        });
+
         it('also loads with a client secret (code flow), cookie options and a session age', () => {
             load({ ...enabled, CASS_OIDC_CLIENT_SECRET: 'client-secret', CASS_SESSION_MAX_AGE: '3600', CORS_CREDENTIALS: 'true' });
             assert.lengthOf(used, 2);
