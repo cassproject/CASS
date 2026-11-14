@@ -68,15 +68,15 @@ These only apply when `HTTPS=true`.
 | Variable | Default | Description |
 |---|---|---|
 | `CASS_OIDC_ENABLED` | `false` | Set to any truthy value to enable OpenID Connect authentication. |
-| `CASS_OIDC_ISSUER_BASE_URL` | `https://dev.keycloak.eduworks.com/auth/realms/test-realm/` | The OIDC issuer/realm URL (e.g. your Keycloak realm URL). |
+| `CASS_OIDC_ISSUER_BASE_URL` | *(required with OIDC)* | The OIDC issuer/realm URL (e.g. your Keycloak realm URL). CaSS does not start with `CASS_OIDC_ENABLED` set and this unset. |
 | `CASS_OIDC_BASE_URL` | `http://localhost/` | The base URL of the CaSS application (used for login/logout redirects). |
 | `CASS_OIDC_CLIENT_ID` | `cass` | The OIDC client ID. |
 | `CASS_OIDC_CLIENT_SECRET` | *(none)* | The OIDC client secret for confidential clients. When set, CaSS defaults to the authorization code flow (`response_type=code`), required by providers that do not support the implicit flow (e.g. Dex). When unset, CaSS uses the implicit `id_token` flow. |
-| `CASS_OIDC_SECRET` | *(built-in default)* | Secret used to sign the session cookie (and HS256 bearer-token validation). Not the OIDC client secret — see `CASS_OIDC_CLIENT_SECRET`. |
+| `CASS_OIDC_SECRET` | *(required with OIDC)* | Secret used to sign the session cookie, and to validate bearer tokens when `CASS_OIDC_ALG` is an HS algorithm. Use a long random value. Not the OIDC client secret — see `CASS_OIDC_CLIENT_SECRET`. CaSS does not start with `CASS_OIDC_ENABLED` set and this unset. |
 | `CASS_OIDC_RESPONSE_TYPE` | `id_token`, or `code` when `CASS_OIDC_CLIENT_SECRET` is set | Overrides the OIDC response type. One of `id_token`, `code`, `code id_token`. |
 | `CASS_OIDC_SCOPE` | `openid profile email` | Space-separated OIDC scopes to request. |
 | `CASS_OIDC_AUDIENCE` | `account` | Audience required of OIDC bearer tokens. |
-| `CASS_OIDC_ALG` | `HS256` | Signing algorithm expected of OIDC bearer tokens. |
+| `CASS_OIDC_ALG` | `HS256` | Signing algorithm expected of OIDC bearer tokens. HS algorithms are checked with `CASS_OIDC_SECRET`; others (e.g. `RS256`) with the issuer's published keys. |
 | `CASS_OIDC_EXTERNAL_ISSUER_URL` | *(none)* | Issuer URL as browsers and API clients see it, when it differs from `CASS_OIDC_ISSUER_BASE_URL`. Discovery URLs are rewritten to it, and tokens from either issuer are accepted. |
 | `CASS_SESSION_MAX_AGE` | *(1 day)* | Seconds a session stays valid without activity; each request extends it (rolling duration). |
 | `CASS_SESSION_VALIDATION_INTERVAL` | *(none)* | Seconds between checks of the session against the SSO provider's userinfo endpoint; a failed check logs the user out. Applies when `CASS_IP_ALLOW` or `CASS_SSO_ACCOUNT_REQUIRED` is set. |

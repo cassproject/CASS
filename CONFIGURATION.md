@@ -190,7 +190,7 @@ environment:
   - CASS_OIDC_ENABLED=true
   - CASS_OIDC_ISSUER_BASE_URL=http://keycloak:8080/auth/realms/master/
   - CASS_OIDC_CLIENT_ID=cass
-  - CASS_OIDC_SECRET=your-client-secret
+  - CASS_OIDC_SECRET=a-long-random-session-secret
   - CASS_OIDC_BASE_URL=http://localhost/
   - CASS_SESSION_MAX_AGE=3600
   - CASS_SESSION_VALIDATION_INTERVAL=300
@@ -199,11 +199,11 @@ environment:
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `CASS_OIDC_CLIENT_SECRET` | *(none)* | Client secret for confidential clients. When set, the authorization code flow is used by default. |
-| `CASS_OIDC_SECRET` | *(built-in)* | Signs the session cookie (and validates HS256 bearer tokens). Not the client secret. |
+| `CASS_OIDC_SECRET` | *(required)* | Signs the session cookie, and validates bearer tokens when `CASS_OIDC_ALG` is an HS algorithm. Use a long random value. Not the client secret. |
 | `CASS_OIDC_RESPONSE_TYPE` | `id_token` (`code` with a client secret) | `id_token`, `code`, or `code id_token`. |
 | `CASS_OIDC_SCOPE` | `openid profile email` | Space-separated scopes to request. |
 | `CASS_OIDC_AUDIENCE` | `account` | Audience required of bearer tokens. |
-| `CASS_OIDC_ALG` | `HS256` | Signing algorithm expected of bearer tokens. |
+| `CASS_OIDC_ALG` | `HS256` | Signing algorithm expected of bearer tokens. HS algorithms use `CASS_OIDC_SECRET`; others (e.g. `RS256`) the issuer's published keys. |
 | `CASS_OIDC_EXTERNAL_ISSUER_URL` | *(none)* | Issuer URL as browsers and API clients see it, when it differs from `CASS_OIDC_ISSUER_BASE_URL` (e.g. Keycloak reached by an internal hostname). Discovery URLs are rewritten to it and tokens from either issuer are accepted. |
 | `CASS_SESSION_MAX_AGE` | *(library default, 1 day)* | Seconds a session stays valid without activity; each request extends it (rolling duration). |
 | `CASS_SESSION_VALIDATION_INTERVAL` | *(none)* | Seconds between checks of the session against the provider's userinfo endpoint; a failed check logs the user out. Applies when `CASS_IP_ALLOW` or `CASS_SSO_ACCOUNT_REQUIRED` is set. |
