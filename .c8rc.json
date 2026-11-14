@@ -1,0 +1,9 @@
+{
+  "all": true,
+  "src": ["src/main"],
+  "include": ["src/main/**/*.js"],
+  "exclude": ["src/test/**", "node_modules/**", "src/main/webapp/**"],
+  "reporter": ["lcov", "text-summary"],
+  "reports-dir": "coverage",
+  "experimental-monocart": true
+}
