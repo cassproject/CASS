@@ -1,3 +1,7 @@
+## Release v1.7.16
+
+
+
 ## Release v1.7.15
 
 * Node 26: MCP tool calls over HTTPS (HTTP/2) are answered again. Node 26 closes a request's socket once its body is read, which made the response look disconnected before the handler replied.
