@@ -81,7 +81,7 @@
     "@modelcontextprotocol/server": "^2.4.0",
     "@xmldom/xmldom": "^0.9.12",
     "busboy": "^1.6.0",
-    "cassproject": "^5.0.22",
+    "cassproject": "^5.0.23",
     "check-disk-space": "^4.0.0",
     "compression": "^1.8.2",
     "cors": "^2.8.6",
