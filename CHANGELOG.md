@@ -1,6 +1,8 @@
 ## Release v1.7.16
 
-
+* OIDC: when `CASS_OIDC_ENABLED` is set, `CASS_OIDC_ISSUER_BASE_URL` and `CASS_OIDC_SECRET` are required, and CaSS refuses to start without them, naming the missing setting. BREAKING for OIDC deployments that relied on defaults: set both and restart.
+* OIDC: with an asymmetric `CASS_OIDC_ALG` (such as RS256), CaSS starts with `CASS_OIDC_SECRET` set and uses it for the session cookie; bearer tokens are checked with the issuer's keys. HS256 tokens are still checked with `CASS_OIDC_SECRET`.
+* glob 14 for every dependency that uses glob, as on master.
 
 ## Release v1.7.15
 
