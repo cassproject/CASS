@@ -1,3 +1,12 @@
+const crypto = require('crypto');
+
+// The longest a session lasts, in seconds (the session library's default, set
+// explicitly because signed-out sessions are remembered for this long).
+const SESSION_ABSOLUTE_DURATION = 7 * 24 * 60 * 60;
+// How long another CaSS server's sign-out can go unnoticed: a session found
+// signed in is looked up in the shared store again after this many milliseconds.
+const SIGNED_OUT_RECHECK_MS = 10000;
+
 module.exports = function installOidc(common) {
     if (process.env.CASS_OIDC_ENABLED) {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthEnabled", `OIDC authentication is enabled.`);
@@ -14,6 +23,66 @@ module.exports = function installOidc(common) {
             throw new Error(message);
         }
         const tokenSigningAlg = process.env.CASS_OIDC_ALG || 'HS256';
+
+        // Signing out ends the session for every copy of its cookie. The session
+        // is kept only in the browser's encrypted cookie, so clearing that cookie
+        // would leave any other copy of it (a response still in flight when the
+        // user signed out, a saved cookie) signed in until it expired. A session
+        // is known by a hash of its ID token, which every copy of its cookie
+        // carries. Signed-out sessions are remembered in memory and in the
+        // ephemeral index, where every CaSS server sees them, for as long as a
+        // session can last.
+        const signedOut = new Map(); // session hash -> remembered until (ms)
+        const checked = new Map(); // session hash -> when the shared store last had no sign-out for it
+        const sessionHash = (req) => {
+            const idToken = req.appSession?.id_token;
+            return typeof idToken === 'string' && idToken !== '' ? crypto.createHash('sha256').update(idToken).digest('hex') : null;
+        };
+        const storeId = (hash) => 'signedOut.' + hash;
+        const isSignedOut = async (hash) => {
+            const now = Date.now();
+            const until = signedOut.get(hash);
+            if (until != null) {
+                if (until > now) return true;
+                signedOut.delete(hash);
+            }
+            if (global.ephemeral == null) return false;
+            const last = checked.get(hash);
+            if (last != null && now - last < SIGNED_OUT_RECHECK_MS) return false;
+            try {
+                const entry = await global.ephemeral.get(storeId(hash));
+                if (entry?.until > now) {
+                    signedOut.set(hash, entry.until);
+                    checked.delete(hash);
+                    return true;
+                }
+            } catch (e) {
+                global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassSignOutCheckFailed", `Could not check whether a session was signed out: ${e.message}`);
+                return false;
+            }
+            if (checked.size >= 10000) checked.clear();
+            checked.set(hash, now);
+            return false;
+        };
+        const signOut = (logoutOptions) => async (req, res) => {
+            const hash = sessionHash(req);
+            if (hash != null) {
+                const now = Date.now();
+                const until = now + SESSION_ABSOLUTE_DURATION * 1000;
+                for (const [known, knownUntil] of signedOut) {
+                    if (knownUntil <= now) signedOut.delete(known);
+                }
+                signedOut.set(hash, until);
+                checked.delete(hash);
+                try {
+                    await global.ephemeral?.put(storeId(hash), { until }, until);
+                } catch (e) {
+                    global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassSignOutStoreFailed", `Could not share a sign-out with other CaSS servers: ${e.message}`);
+                }
+            }
+            res.oidc.logout(logoutOptions(req));
+        };
+
         const { auth } = require('express-openid-connect');
         app.use(
             auth({
@@ -26,7 +95,6 @@ module.exports = function installOidc(common) {
                 // support the implicit flow (e.g. Dex).
                 clientSecret: process.env.CASS_OIDC_CLIENT_SECRET || undefined,
                 secret: process.env.CASS_OIDC_SECRET,
-                routes: { callback: global.baseUrl + "/callback" },
                 authorizationParams: {
                     scope: process.env.CASS_OIDC_SCOPE || 'openid profile email',
                     // Default to the code flow when a client secret is present,
@@ -35,7 +103,10 @@ module.exports = function installOidc(common) {
                     response_type: process.env.CASS_OIDC_RESPONSE_TYPE || (process.env.CASS_OIDC_CLIENT_SECRET ? 'code' : 'id_token'),
                 },
                 authRequired: false,
+                // Served below, so that signing out also ends the session.
+                routes: { callback: global.baseUrl + "/callback", logout: false },
                 session: {
+                    absoluteDuration: SESSION_ABSOLUTE_DURATION,
                     rollingDuration: process.env.CASS_SESSION_MAX_AGE ? Number.parseInt(process.env.CASS_SESSION_MAX_AGE) : undefined,
                     cookie: {
                         sameSite: process.env.CORS_CREDENTIALS?.trim() == 'true' ? 'None' : 'Lax',
@@ -43,6 +114,14 @@ module.exports = function installOidc(common) {
                 }
             })
         );
+        // A request carrying a signed-out session continues as anonymous, and its cookie is cleared.
+        app.use(async (req, res, next) => {
+            const hash = sessionHash(req);
+            if (hash != null && await isSignedOut(hash)) {
+                req.appSession = undefined;
+            }
+            next();
+        });
         app.get(global.baseUrl + '/api/login', (req, res) => {
             res.oidc.login({
                 returnTo: req.query.redirectUrl || '/',
@@ -51,11 +130,10 @@ module.exports = function installOidc(common) {
                 }
             });
         });
-        app.get(global.baseUrl + '/api/logout', (req, res) => {
-            res.oidc.logout({
-                returnTo: req.query.redirectUrl || '/'
-            });
-        });
+        app.get(global.baseUrl + '/api/logout', signOut((req) => ({
+            returnTo: req.query.redirectUrl || '/'
+        })));
+        app.get('/logout', signOut(() => undefined));
         const { auth: auth2 } = require('express-oauth2-jwt-bearer');
         app.use(
             auth2({

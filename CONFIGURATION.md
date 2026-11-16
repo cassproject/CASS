@@ -208,6 +208,8 @@ environment:
 | `CASS_SESSION_MAX_AGE` | *(library default, 1 day)* | Seconds a session stays valid without activity; each request extends it (rolling duration). |
 | `CASS_SESSION_VALIDATION_INTERVAL` | *(none)* | Seconds between checks of the session against the provider's userinfo endpoint; a failed check logs the user out. Applies when `CASS_IP_ALLOW` or `CASS_SSO_ACCOUNT_REQUIRED` is set. |
 
+Sessions last at most 7 days. Signing out (`/api/logout` or `/logout`) ends the session for every copy of its cookie, not only in the browser that signed out. CaSS remembers signed-out sessions for 7 days in its `ephemeral` index, so every CaSS server sharing that Elasticsearch sees them. Another server that has seen the session in the last 10 seconds may accept it for up to 10 seconds more. Signing out of CaSS does not sign the user out of the identity provider.
+
 ### JWT Bearer Token
 
 ```yaml
