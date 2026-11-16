@@ -23,6 +23,10 @@ if (process.env.NODEV == null) {
             delete require.cache[modulePath];
             const { common } = require('../main/server/shims/auth.js');
             require(modulePath)({ ...common, ...commonOverrides });
+        } catch (error) {
+            // Lets a test check what was installed before a module refused to load.
+            error.used = used;
+            throw error;
         } finally {
             global.app = realApp;
             for (const k of Object.keys(saved)) {
@@ -85,8 +89,41 @@ if (process.env.NODEV == null) {
             });
 
             it('registers the JWT parser, and a session store when CASS_JWT_SESSION_ENABLED is true', () => {
-                assert.lengthOf(load('20_jwt.js', { CASS_JWT_ENABLED: 'true', CASS_JWT_SESSION_ENABLED: undefined }), 1);
-                assert.lengthOf(load('20_jwt.js', { CASS_JWT_ENABLED: 'true', CASS_JWT_SESSION_ENABLED: 'true' }), 2);
+                assert.lengthOf(load('20_jwt.js', { CASS_JWT_ENABLED: 'true', CASS_JWT_SECRET: 'test-secret', CASS_JWT_SESSION_ENABLED: undefined }), 1);
+                assert.lengthOf(load('20_jwt.js', { CASS_JWT_ENABLED: 'true', CASS_JWT_SECRET: 'test-secret', CASS_JWT_SESSION_ENABLED: 'true' }), 2);
+            });
+
+            for (const secret of [undefined, '', '   ']) {
+                it(`refuses to start without CASS_JWT_SECRET (${JSON.stringify(secret)}), installing nothing`, () => {
+                    const reports = [];
+                    const quiet = global.auditLogger.report;
+                    global.auditLogger.report = (...args) => reports.push(args);
+                    let error;
+                    try {
+                        load('20_jwt.js', { CASS_JWT_ENABLED: 'true', CASS_JWT_SECRET: secret, CASS_JWT_SESSION_ENABLED: 'true' });
+                    } catch (e) {
+                        error = e;
+                    } finally {
+                        global.auditLogger.report = quiet;
+                    }
+                    assert.match(error?.message, /CASS_JWT_SECRET is not set/);
+                    assert.lengthOf(error.used, 0, 'no middleware installed');
+                    const emergencies = reports.filter((r) => r[1] === global.auditLogger.Severity.EMERGENCY);
+                    assert.lengthOf(emergencies, 1);
+                    assert.strictEqual(emergencies[0][2], 'CassAuthMisconfigured');
+                    assert.match(emergencies[0][3], /CASS_JWT_SECRET is not set/);
+                });
+            }
+
+            it('does not accept a token signed with the old default secret', async () => {
+                const [parse] = load('20_jwt.js', { CASS_JWT_ENABLED: 'true', CASS_JWT_SESSION_ENABLED: undefined, CASS_JWT_SECRET: 'test-secret' });
+                const token = await new jose.SignJWT({ email: 'jwt.user@example.com' })
+                    .setProtectedHeader({ alg: 'HS256' })
+                    .sign(new TextEncoder().encode('cass'));
+                const req = { headers: { authorization: 'Bearer ' + token }, get: () => undefined };
+                const err = await new Promise((resolve) => parse(req, {}, resolve));
+                assert.isDefined(err, 'the token is refused');
+                assert.isUndefined(req.auth);
             });
 
             it('puts the claims of a token signed with CASS_JWT_SECRET on req.auth', async () => {

@@ -218,6 +218,8 @@ environment:
   - CASS_JWT_SESSION_ENABLED=true   # Optional: keep a 2-hour in-memory session per client
 ```
 
+`CASS_JWT_SECRET` is required when `CASS_JWT_ENABLED` is `true`; CaSS refuses to start without it.
+
 ### Platform One (P1)
 
 ```yaml

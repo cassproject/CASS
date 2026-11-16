@@ -88,7 +88,7 @@ These only apply when `HTTPS=true`.
 | Variable | Default | Description |
 |---|---|---|
 | `CASS_JWT_ENABLED` | *(none)* | Set to any truthy value to enable JWT bearer token authentication. |
-| `CASS_JWT_SECRET` | `cass` | Secret used to verify JWT signatures. |
+| `CASS_JWT_SECRET` | *(required with JWT)* | Secret (or, for asymmetric algorithms, public key) used to verify JWT signatures. CaSS refuses to start with `CASS_JWT_ENABLED` and no `CASS_JWT_SECRET`. |
 | `CASS_JWT_ALGORITHM` | `HS256` | JWT signing algorithm. |
 | `CASS_JWT_SESSION_ENABLED` | *(none)* | `true` keeps a 2-hour in-memory session per client alongside JWT authentication. |
 
