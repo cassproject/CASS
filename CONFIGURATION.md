@@ -230,7 +230,7 @@ environment:
 | Variable | Purpose |
 |----------|---------|
 | `CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT` / `CASS_PLATFORM_ONE_CLIENT` | `true` requires the token's `azp` to equal `CASS_PLATFORM_ONE_CLIENT`. |
-| `CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME` | `true` skips the token issue-time check. |
+| `CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME` | `true` accepts tokens without an issue time (`iat`) or issued in the future. Expired tokens (`exp`) are refused either way. |
 | `CASS_PLATFORM_ONE_AUTH_ANONYMIZE_USERS` | `true` replaces user names with generated adjective-noun names. |
 | `CASS_PLATFORM_ONE_AUTH_ADJECTIVES` / `CASS_PLATFORM_ONE_AUTH_NOUNS` | Comma-separated word lists for those generated names. |
 

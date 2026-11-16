@@ -105,7 +105,7 @@ These only apply when `HTTPS=true`.
 | `CASS_PLATFORM_ONE_ISSUER` | *(none)* | Expected issuer value when `CHECK_ISSUER` is enabled. |
 | `CASS_PLATFORM_ONE_AUTH_CHECK_CLIENT` | *(none)* | Set to `true` to validate the JWT client/audience claim. |
 | `CASS_PLATFORM_ONE_CLIENT` | *(none)* | Expected client value when `CHECK_CLIENT` is enabled. |
-| `CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME` | *(none)* | Set to `true` to skip JWT `iat`/`nbf` time validation. |
+| `CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME` | *(none)* | Set to `true` to accept tokens without an `iat`, or with an `iat` more than 20 seconds in the future. Tokens past their `exp` are refused either way. |
 | `CASS_PLATFORM_ONE_AUTH_ANONYMIZE_USERS` | *(none)* | Set to `true` to anonymize user identity in P1 auth. |
 
 ---

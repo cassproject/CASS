@@ -148,11 +148,26 @@ if (process.env.NODEV == null) {
                 assert.isUndefined(await p1({}, jwt({ sub })));
             });
 
-            it('accepts a token only if its issue time is more than 20 seconds ahead', async () => {
-                // Current behaviour: the issue time is compared as if it were an expiry time.
+            it('accepts a token issued now or earlier, allowing 20 seconds of clock skew', async () => {
                 const now = Math.floor(Date.now() / 1000);
-                assert.isUndefined(await p1({}, jwt({ sub, iat: now })));
-                assert.isDefined(await p1({}, jwt({ sub, iat: now + 3600 })));
+                assert.deepEqual(await p1({}, jwt({ sub, iat: now })), { sub, iat: now });
+                assert.isDefined(await p1({}, jwt({ sub, iat: now - 3600 })));
+                assert.isDefined(await p1({}, jwt({ sub, iat: now + 10 })), 'within the clock skew');
+            });
+
+            it('refuses a token issued in the future', async () => {
+                const now = Math.floor(Date.now() / 1000);
+                assert.isUndefined(await p1({}, jwt({ sub, iat: now + 60 })));
+                assert.isUndefined(await p1({}, jwt({ sub, iat: now + 3600 })));
+                assert.isDefined(await p1({ CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME: 'true' }, jwt({ sub, iat: now + 3600 })), 'unless told to ignore the issue time');
+            });
+
+            it('refuses an expired token, allowing 20 seconds of clock skew', async () => {
+                const now = Math.floor(Date.now() / 1000);
+                assert.isUndefined(await p1({}, jwt({ sub, iat: now - 7200, exp: now - 3600 })));
+                assert.isUndefined(await p1({ CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME: 'true' }, jwt({ sub, exp: now - 60 })), 'even when the issue time is ignored');
+                assert.isDefined(await p1({}, jwt({ sub, iat: now - 60, exp: now - 10 })), 'within the clock skew');
+                assert.isDefined(await p1({}, jwt({ sub, iat: now, exp: now + 3600 })));
             });
 
             it('checks the issuer when CASS_PLATFORM_ONE_AUTH_CHECK_ISSUER is true', async () => {

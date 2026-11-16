@@ -27,12 +27,15 @@ module.exports = function installSignatureSheet(common) {
             global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CaSSFalsifyingIdentity", "Falsifying identity for testing purposes.", req.user, EcPpk.fromPem(process.env.AUTH_OVERRIDE_KEY || global.AUTH_OVERRIDE_KEY).toPk().toPem());
         }
         if (req.user != null) {
-            if (req.user.iat != null) {
-                let secondsSinceEpoch = req.user.iat;
-                if (secondsSinceEpoch * 1000 < Date.now() + 20000) {
-                    res.end("JWT token is expired.");
-                    return;
-                }
+            // Token times are in seconds; allow 20 seconds of clock skew.
+            const now = Date.now();
+            if (req.user.exp != null && req.user.exp * 1000 <= now - 20000) {
+                res.end("JWT token is expired.");
+                return;
+            }
+            if (req.user.iat != null && req.user.iat * 1000 > now + 20000) {
+                res.end("JWT token was issued in the future.");
+                return;
             }
             if (req.user.name != null)
                 name = req.user.name;
