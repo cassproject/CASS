@@ -106,13 +106,18 @@ module.exports = function installPlatformOne(common) {
                     return false;
             }
 
+            // Token times are in seconds; allow 20 seconds of clock skew.
+            const now = Date.now();
+            if (token.exp != undefined && token.exp * 1000 <= now - 20000)
+                return false;
+
             let ignoreIssueTime = interpretEnvFlag(process.env.CASS_PLATFORM_ONE_AUTH_IGNORE_ISSUE_TIME);
             if (!ignoreIssueTime) {
                 if (token.iat == undefined)
                     return false;
 
-                let secondsSinceEpoch = token.iat;
-                if (secondsSinceEpoch * 1000 < Date.now() + 20000)
+                // A token cannot have been issued in the future.
+                if (token.iat * 1000 > now + 20000)
                     return false;
             }
 

@@ -131,15 +131,29 @@ if (process.env.NODEV == null) {
             assert.strictEqual(req.eim.ids[0].displayName, 'Jay');
         });
 
-        it('answers "JWT token is expired." unless the issue time is more than 20 seconds ahead', async () => {
-            // Current behaviour: the issue time is compared as if it were an expiry time.
+        it('signs for a JWT user whose token was issued now or earlier and has not expired', async () => {
             const middleware = load();
             const now = Math.floor(Date.now() / 1000);
-            const stale = await run(middleware, { user: { name: 'Jay', email: unique('jwt'), iat: now } });
-            assert.isFalse(stale.passed);
-            assert.strictEqual(stale.res.ended, 'JWT token is expired.');
-            const ahead = await run(middleware, { user: { name: 'Jay', email: unique('jwt'), iat: now + 3600 } });
-            assert.isTrue(ahead.passed);
+            for (const times of [{ iat: now }, { iat: now - 3600, exp: now + 3600 }, { iat: now + 10 }, { exp: now - 10 }]) {
+                const { req, res, passed } = await run(middleware, { user: { name: 'Jay', email: unique('jwt'), ...times } });
+                assert.isTrue(passed, JSON.stringify(times));
+                assert.isNull(res.ended);
+                assert.strictEqual(req.eim.ids[0].displayName, 'Jay');
+            }
+        });
+
+        it('answers "JWT token is expired." once the token has expired, allowing 20 seconds of clock skew', async () => {
+            const now = Math.floor(Date.now() / 1000);
+            const { res, passed } = await run(load(), { user: { name: 'Jay', email: unique('jwt'), iat: now - 7200, exp: now - 3600 } });
+            assert.isFalse(passed);
+            assert.strictEqual(res.ended, 'JWT token is expired.');
+        });
+
+        it('refuses a JWT issued more than 20 seconds in the future', async () => {
+            const now = Math.floor(Date.now() / 1000);
+            const { res, passed } = await run(load(), { user: { name: 'Jay', email: unique('jwt'), iat: now + 3600 } });
+            assert.isFalse(passed);
+            assert.strictEqual(res.ended, 'JWT token was issued in the future.');
         });
 
         it('uses AUTH_OVERRIDE as the signed-in user', async () => {
