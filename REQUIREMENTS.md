@@ -702,7 +702,7 @@ This paragraph is not applicable — all internal data requirements are specifie
 | SEC-006 | The system shall reject signatures with invalid type identifiers with HTTP 422. | High | Inspection |
 | SEC-007 | The system shall reject signatures with invalid cryptographic verification with HTTP 451. | High | Inspection |
 | SEC-008 | The system shall support OIDC/SSO authentication when `CASS_OIDC_ENABLED` is set, mutually exclusive with other authentication modes. | High | Test |
-| SEC-009 | The system shall support JWT Bearer Token authentication when `CASS_JWT_ENABLED` is set, verifying tokens with `CASS_JWT_SECRET` and `CASS_JWT_ALGORITHM` (default HS256). | High | Inspection |
+| SEC-009 | The system shall support JWT Bearer Token authentication when `CASS_JWT_ENABLED` is set, verifying tokens with `CASS_JWT_SECRET` and `CASS_JWT_ALGORITHM` (default HS256). Deprecated: a valid token does not sign the user in, CaSS warns at startup when `CASS_JWT_ENABLED` is set, and the feature is to be removed in a future version. | High | Inspection |
 | SEC-010 | The system shall support Platform One authentication when `CASS_PLATFORM_ONE_AUTH_ENABLED` is set, validating custom JWT claims (adjectives, nouns). | High | Inspection |
 | SEC-011 | Only one authentication mode shall be active at a time; modes are mutually exclusive. | Highest | Inspection |
 | SEC-012 | When OIDC is enabled, the system shall deterministically generate or retrieve an RSA key pair per authenticated user, stored in `etc/keys/` or Elasticsearch (when `CASS_ELASTIC_KEYSTORE=true`). | High | Inspection |

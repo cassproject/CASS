@@ -1,4 +1,9 @@
+// Deprecated: to be removed in a future version. The token's claims are put on
+// req.auth, which nothing reads, so a valid token does not sign the user in.
 module.exports = function installJwt(common) {
+    if (process.env.CASS_JWT_ENABLED) {
+        global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.WARNING, "CassAuthJwtDeprecated", `JWT authentication (CASS_JWT_ENABLED) is deprecated and will be removed in a future version of CaSS. Tokens are checked, but they do not sign the user in. Use OIDC (CASS_OIDC_ENABLED) instead.`);
+    }
     if (process.env.CASS_JWT_ENABLED === 'true') {
         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthJwtEnabled", `JWT authentication is enabled.`);
 

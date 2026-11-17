@@ -210,7 +210,9 @@ environment:
 
 Sessions last at most 7 days. Signing out (`/api/logout` or `/logout`) ends the session for every copy of its cookie, not only in the browser that signed out. CaSS remembers signed-out sessions for 7 days in its `ephemeral` index, so every CaSS server sharing that Elasticsearch sees them. Another server that has seen the session in the last 10 seconds may accept it for up to 10 seconds more. Signing out of CaSS does not sign the user out of the identity provider.
 
-### JWT Bearer Token
+### JWT Bearer Token (deprecated)
+
+**Deprecated:** JWT bearer token authentication will be removed in a future version of CaSS. CaSS checks tokens signed with `CASS_JWT_SECRET`, but a valid token does not sign the user in: the request is handled as anonymous. CaSS logs a warning at startup when `CASS_JWT_ENABLED` is set. Use OIDC instead; bearer tokens from the OIDC issuer are accepted.
 
 ```yaml
 environment:
