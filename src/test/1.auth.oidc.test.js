@@ -40,7 +40,7 @@ if (process.env.NODEV == null) {
                 json(body) { this.body = body; return this; },
                 oidc: {
                     login: (opts) => { res.login = opts; },
-                    logout: (opts) => { res.logout = opts; },
+                    logout: (opts) => { res.loggedOut = true; res.logout = opts; },
                 },
             };
             const handler = routes[(global.baseUrl || '') + route] || routes[route];
@@ -96,11 +96,11 @@ if (process.env.NODEV == null) {
             assert.deepEqual(Object.keys(routes), []);
         });
 
-        it('registers the session and bearer middleware and the login, logout and discovery routes', () => {
+        it('registers the session, signed-out session and bearer middleware and the login, logout and discovery routes', () => {
             load(enabled);
-            assert.lengthOf(used, 2);
+            assert.lengthOf(used, 3);
             const base = global.baseUrl || '';
-            assert.includeMembers(Object.keys(routes), [base + '/api/login', base + '/api/logout',
+            assert.includeMembers(Object.keys(routes), [base + '/api/login', base + '/api/logout', '/logout',
                 '/.well-known/oauth-protected-resource', '/.well-known/oauth-authorization-server']);
         });
 
@@ -160,7 +160,7 @@ if (process.env.NODEV == null) {
                 issuer = `http://127.0.0.1:${idp.address().port}/realms/test/`;
                 try {
                     load({ ...enabled, CASS_OIDC_ISSUER_BASE_URL: issuer });
-                    const bearer = used[1];
+                    const bearer = used[2];
                     const sign = (secret, iss = issuer) => new SignJWT({ sub: 'someone' })
                         .setProtectedHeader({ alg: 'HS256' })
                         .setIssuer(iss)
@@ -195,16 +195,16 @@ if (process.env.NODEV == null) {
 
             it('starts with both set, under either algorithm', () => {
                 load(enabled);
-                assert.lengthOf(used, 2);
+                assert.lengthOf(used, 3);
                 load({ ...enabled, CASS_OIDC_ALG: 'RS256' });
-                assert.lengthOf(used, 2);
+                assert.lengthOf(used, 3);
                 assert.isEmpty(reports.filter((r) => r[1] === global.auditLogger.Severity.EMERGENCY));
             });
         });
 
         it('also loads with a client secret (code flow), cookie options and a session age', () => {
             load({ ...enabled, CASS_OIDC_CLIENT_SECRET: 'client-secret', CASS_SESSION_MAX_AGE: '3600', CORS_CREDENTIALS: 'true' });
-            assert.lengthOf(used, 2);
+            assert.lengthOf(used, 3);
         });
 
         it('/api/login returns to redirectUrl, or to / by default', async () => {
@@ -217,6 +217,114 @@ if (process.env.NODEV == null) {
             load(enabled);
             assert.deepEqual((await call('/api/logout', { query: { redirectUrl: '/bye' } })).logout, { returnTo: '/bye' });
             assert.deepEqual((await call('/api/logout')).logout, { returnTo: '/' });
+        });
+
+        describe('signing out', () => {
+            const day = 24 * 60 * 60 * 1000;
+            let realEphemeral;
+            let store;
+            let reads;
+            let reports;
+            const session = (idToken) => ({ appSession: { id_token: idToken, access_token: 'access' } });
+            // Runs the signed-out session check on a request; true when the request keeps its session.
+            const signedIn = async (req) => {
+                await new Promise((resolve) => used[1](req, {}, resolve));
+                return req.appSession !== undefined;
+            };
+            const memoryStore = () => ({
+                get: async (id) => { reads.push(id); return store.get(id) ?? null; },
+                put: async (id, obj, until) => { store.set(id, { ...obj, storedUntil: until }); },
+            });
+
+            beforeEach(() => {
+                realEphemeral = global.ephemeral;
+                store = new Map();
+                reads = [];
+                reports = [];
+                global.ephemeral = memoryStore();
+                global.auditLogger.report = (...args) => { reports.push(args); };
+            });
+            afterEach(() => {
+                global.ephemeral = realEphemeral;
+                global.auditLogger.report = () => { };
+            });
+
+            it('ends the session for every copy of its cookie, and only that session', async () => {
+                load(enabled);
+                assert.isTrue(await signedIn(session('token-a')));
+                const res = await call('/api/logout', session('token-a'));
+                assert.isTrue(res.loggedOut);
+                assert.isFalse(await signedIn(session('token-a')), 'a copy of the signed-out cookie must no longer be signed in');
+                assert.isTrue(await signedIn(session('token-b')), 'other sessions stay signed in');
+                const anonymous = { headers: {} };
+                await signedIn(anonymous);
+                assert.deepEqual(anonymous, { headers: {} },'requests without a session pass through');
+            });
+
+            it('serves /logout the same way, returning where the library would', async () => {
+                load(enabled);
+                const res = await call('/logout', session('token-a'));
+                assert.isTrue(res.loggedOut);
+                assert.isUndefined(res.logout);
+                assert.isFalse(await signedIn(session('token-a')));
+            });
+
+            it('signs out without a session, recording nothing', async () => {
+                load(enabled);
+                assert.isTrue((await call('/api/logout')).loggedOut);
+                assert.strictEqual(store.size, 0);
+            });
+
+            it('shares the sign-out with other CaSS servers for as long as a session can last', async () => {
+                load(enabled);
+                const before = Date.now();
+                await call('/api/logout', session('token-a'));
+                assert.strictEqual(store.size, 1);
+                const [[id, entry]] = [...store];
+                assert.match(id, /^signedOut\.[0-9a-f]{64}$/);
+                assert.notInclude(id, 'token-a', 'the ID token itself is not stored');
+                assert.strictEqual(entry.until, entry.storedUntil);
+                assert.approximately(entry.until - before, 7 * day, 5000);
+
+                load(enabled); // another server: nothing in memory
+                assert.isFalse(await signedIn(session('token-a')));
+                assert.isTrue(await signedIn(session('token-b')));
+            });
+
+            it('looks a signed-in session up in the shared store at most every 10 seconds', async () => {
+                load(enabled);
+                assert.isTrue(await signedIn(session('token-a')));
+                assert.isTrue(await signedIn(session('token-a')));
+                assert.lengthOf(reads, 1);
+            });
+
+            it('ignores an expired sign-out', async () => {
+                load(enabled);
+                await call('/api/logout', session('token-a'));
+                const [[id]] = [...store];
+                store.set(id, { until: Date.now() - 1 });
+                load(enabled);
+                assert.isTrue(await signedIn(session('token-a')));
+            });
+
+            it('still signs out on this server when the shared store fails, and logs a warning', async () => {
+                load(enabled);
+                global.ephemeral = { get: async () => { throw new Error('store down'); }, put: async () => { throw new Error('store down'); } };
+                const res = await call('/api/logout', session('token-a'));
+                assert.isTrue(res.loggedOut);
+                assert.isFalse(await signedIn(session('token-a')));
+                assert.isTrue(await signedIn(session('token-b')), 'a failed lookup leaves the request signed in');
+                const warnings = reports.filter((r) => r[1] === global.auditLogger.Severity.WARNING).map((r) => r[2]);
+                assert.includeMembers(warnings, ['CassSignOutStoreFailed', 'CassSignOutCheckFailed']);
+            });
+
+            it('works before the shared store is ready', async () => {
+                global.ephemeral = undefined;
+                load(enabled);
+                assert.isTrue((await call('/api/logout', session('token-a'))).loggedOut);
+                assert.isFalse(await signedIn(session('token-a')));
+                assert.isTrue(await signedIn(session('token-b')));
+            });
         });
 
         describe('/.well-known/oauth-protected-resource', () => {
