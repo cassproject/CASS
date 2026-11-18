@@ -83,11 +83,13 @@ These only apply when `HTTPS=true`.
 
 ---
 
-## JWT Authentication
+## JWT Authentication (deprecated)
+
+Deprecated and to be removed in a future version: a valid token does not sign the user in. Use [OIDC](#oidc-openid-connect--sso) instead. CaSS logs a warning at startup when `CASS_JWT_ENABLED` is set.
 
 | Variable | Default | Description |
 |---|---|---|
-| `CASS_JWT_ENABLED` | *(none)* | Set to any truthy value to enable JWT bearer token authentication. |
+| `CASS_JWT_ENABLED` | *(none)* | `true` turns on JWT bearer token checking (deprecated). Any other value leaves it off. |
 | `CASS_JWT_SECRET` | *(required with JWT)* | Secret (or, for asymmetric algorithms, public key) used to verify JWT signatures. CaSS refuses to start with `CASS_JWT_ENABLED` and no `CASS_JWT_SECRET`. |
 | `CASS_JWT_ALGORITHM` | `HS256` | JWT signing algorithm. |
 | `CASS_JWT_SESSION_ENABLED` | *(none)* | `true` keeps a 2-hour in-memory session per client alongside JWT authentication. |

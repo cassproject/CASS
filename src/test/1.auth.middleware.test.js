@@ -126,6 +126,23 @@ if (process.env.NODEV == null) {
                 assert.isUndefined(req.auth);
             });
 
+            it('warns that it is deprecated whenever CASS_JWT_ENABLED is set, and not otherwise', () => {
+                const warnings = (value) => {
+                    const reports = [];
+                    global.auditLogger.report = (...args) => { reports.push(args); };
+                    try {
+                        load('20_jwt.js', { CASS_JWT_ENABLED: value, CASS_JWT_SESSION_ENABLED: undefined, CASS_JWT_SECRET: 'test-secret' });
+                    } finally {
+                        global.auditLogger.report = () => { };
+                    }
+                    return reports.filter((r) => r[1] === global.auditLogger.Severity.WARNING && r[2] === 'CassAuthJwtDeprecated');
+                };
+                assert.lengthOf(warnings(undefined), 0);
+                const [warning] = warnings('true');
+                assert.match(warning[3], /deprecated.*removed in a future version.*CASS_OIDC_ENABLED/);
+                assert.lengthOf(warnings('1'), 1, 'also warns when set to a value that does not turn it on');
+            });
+
             it('puts the claims of a token signed with CASS_JWT_SECRET on req.auth', async () => {
                 const [parse] = load('20_jwt.js', { CASS_JWT_ENABLED: 'true', CASS_JWT_SESSION_ENABLED: undefined, CASS_JWT_SECRET: 'test-secret' });
                 const token = await new jose.SignJWT({ email: 'jwt.user@example.com' })
