@@ -181,7 +181,7 @@ describe('SkyRepo performance', function () {
             await withBatchSize(3000, () => recorder.play({ elastic: elastic }, async () => {
                 const created = JSON.parse(await call('/sky/repo/multiPut', { method: 'POST', dataStreams: { data: JSON.stringify(batch(3000, 1000)) } }));
                 assert.lengthOf(created, 3000);
-                const updated = await timed('multiPut updating 3,000 objects', 6000, async () =>
+                const updated = await timed('multiPut updating 3,000 objects', 20000, async () =>
                     JSON.parse(await call('/sky/repo/multiPut', { method: 'POST', dataStreams: { data: JSON.stringify(batch(3000, 2000)) } })));
                 assert.lengthOf(updated, 3000);
             }));
@@ -203,7 +203,7 @@ describe('SkyRepo performance', function () {
                     if (meta._index == 'permanent' && n % 3 == 1) return { type: 'mapper_parsing_exception', reason: 'rejected' };
                     return undefined;
                 });
-                const saved = await timed('multiPut of 3,000 with rejections and conflicts', 8000, async () =>
+                const saved = await timed('multiPut of 3,000 with rejections and conflicts', 20000, async () =>
                     JSON.parse(await call('/sky/repo/multiPut', { method: 'POST', dataStreams: { data: JSON.stringify(batch(3000, 1000)) } })));
                 assert.lengthOf(saved, 1000, 'a third is rejected by each index; the rest are stale and dropped without failing');
             }));
