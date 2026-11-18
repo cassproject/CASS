@@ -18,7 +18,7 @@
  * --END_LICENSE--
  */
 const { isExcludedIndex } = require('./searchUtil');
-const { docUrl, writeQuery, debugLog, objectIds, unique, publish } = require('./common');
+const { docUrl, writeQuery, debugLog, objectIds, unique, publish, usesDocEndpoint } = require('./common');
 
 const deleteUrl = function (id, version, type) {
     const typeFromObj = inferTypeWithoutObj(type);
@@ -45,6 +45,12 @@ const skyrepoDeleteInternalPermanent = async function (id, version, type) {
     return await httpDelete(deletePermanentBaseUrl(id), elasticHeaders());
 };
 
+// Where deleteUrl sends a type, without the id.
+const indexTarget = function (type) {
+    const typeFromObj = inferTypeWithoutObj(type);
+    return typeFromObj.toLowerCase() + '/' + (usesDocEndpoint() ? '_doc' : typeFromObj);
+};
+
 const skyrepoDelete = async function (id, version, type) {
     const oldObj = await validateSignatures.call(this, id, version, type, 'Only an owner of an object may delete it.');
     if (oldObj == null) {
@@ -52,11 +58,21 @@ const skyrepoDelete = async function (id, version, type) {
         await skyrepoDeleteInternalIndex.call(this, id, version, type);
         return null;
     }
-    for (const storedId of unique([id, ...objectIds(oldObj)])) {
-        await skyrepoDeleteInternalIndex.call(this, storedId, version, type);
-        await skyrepoDeleteInternalIndex.call(this, storedId, version, inferTypeFromObj(oldObj));
-        await skyrepoDeleteInternalPermanent.call(this, storedId, version, type);
+    // The search index entry is under the object's own type, which may not be the type in the URL.
+    const types = [type];
+    const objectType = inferTypeFromObj(oldObj);
+    if (indexTarget(objectType) != indexTarget(type)) {
+        types.push(objectType);
     }
+    // The deletes are independent of each other, so they are sent together.
+    const deletes = [];
+    for (const storedId of unique([id, ...objectIds(oldObj)])) {
+        for (const indexType of types) {
+            deletes.push(skyrepoDeleteInternalIndex.call(this, storedId, version, indexType));
+        }
+        deletes.push(skyrepoDeleteInternalPermanent.call(this, storedId, version, type));
+    }
+    await Promise.all(deletes);
     publish(this, ['delete', 'any'], [oldObj]);
     return oldObj;
 };

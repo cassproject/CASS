@@ -134,12 +134,17 @@ global.filterResults = async function (o, dontDecryptInSso) {
         if ((rld.reader != null && rld.reader.length != 0) || rld.isAny(eevPrototype.getTypes())) {
             const signatures = await (signatureSheet).call(this);
             let foundSignature = false;
+            // Both are the same for every signature, so they are worked out once, and only if needed.
+            let text = null;
+            let adminPk = null;
             for (let signature of signatures) {
-                if (JSON.stringify(o).includes(signature.owner)) {
+                text ??= JSON.stringify(o);
+                if (text.includes(signature.owner)) {
                     foundSignature = true;
                     break;
                 }
-                if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(signature.owner))) {
+                adminPk ??= EcPk.fromPem(skyrepoAdminPk());
+                if (adminPk.equals(EcPk.fromPem(signature.owner))) {
                     global.auditLogger.report(global.auditLogger.LogCategory.SECURITY, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected in filterResults.');
                     foundSignature = true;
                     break;
@@ -180,12 +185,14 @@ global.filterResults = async function (o, dontDecryptInSso) {
 // Whether one of the signatures belongs to an owner of the object, or to the server admin (who may
 // change anything, which is logged).
 const signedByOwnerOrAdmin = function (obj, signatures, logCategory, logMessage) {
+    let adminPk = null;
     for (const signature of signatures) {
         const owner = signature.owner == null ? signature['@owner'] : signature.owner;
         if (obj.hasOwner(EcPk.fromPem(owner))) {
             return true;
         }
-        if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
+        adminPk ??= EcPk.fromPem(skyrepoAdminPk());
+        if (adminPk.equals(EcPk.fromPem(owner))) {
             global.auditLogger.report(logCategory, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', logMessage);
             return true;
         }

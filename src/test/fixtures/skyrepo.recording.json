@@ -1034,19 +1034,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/_doc/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/_doc/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/_doc/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -2242,19 +2230,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/permanent/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -4056,19 +4032,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/_doc/ffaf796b58881ca798f2b3f5a0173557?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/_doc/ffaf796b58881ca798f2b3f5a0173557."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/_doc/abc?refresh=true"
    }
   },
   {
@@ -4539,19 +4503,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/ffaf796b58881ca798f2b3f5a0173557?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/permanent/ffaf796b58881ca798f2b3f5a0173557."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/abc?refresh=true"
    }
   },
   {
@@ -4817,19 +4769,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/_doc/11111111-1111-4111-8111-111111111111?refresh=wait_for"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/_doc/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/_doc/db1ecddf9e34deff35b6009721f02a13?refresh=wait_for"
    }
   },
   {
@@ -5068,19 +5008,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/11111111-1111-4111-8111-111111111111?refresh=wait_for"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/permanent/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/db1ecddf9e34deff35b6009721f02a13?refresh=wait_for"
    }
   },
   {
@@ -5704,19 +5632,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/_doc/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/_doc/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/_doc/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -6392,19 +6308,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/permanent/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -10534,18 +10438,18 @@
      "docs": [
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "44444444-4444-4444-8444-444444444444."
+       "_id": "44444444-4444-4444-8444-444444444444.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "22222222-2222-4222-8222-222222222222."
+       "_id": "22222222-2222-4222-8222-222222222222.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "33333333-3333-4333-8333-333333333333."
+       "_id": "33333333-3333-4333-8333-333333333333.",
+       "_type": "permanent"
       }
      ]
     }
@@ -12664,19 +12568,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/_doc/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/_doc/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/_doc/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -13752,13 +13644,13 @@
      "docs": [
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "11111111-1111-4111-8111-111111111111."
+       "_id": "11111111-1111-4111-8111-111111111111.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "33333333-3333-4333-8333-333333333333."
+       "_id": "33333333-3333-4333-8333-333333333333.",
+       "_type": "permanent"
       }
      ]
     }
@@ -13977,19 +13869,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/permanent/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -15321,19 +15201,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/_doc/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/_doc/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/_doc/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -15565,18 +15433,18 @@
      "docs": [
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "11111111-1111-4111-8111-111111111111."
+       "_id": "11111111-1111-4111-8111-111111111111.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "22222222-2222-4222-8222-222222222222."
+       "_id": "22222222-2222-4222-8222-222222222222.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "33333333-3333-4333-8333-333333333333."
+       "_id": "33333333-3333-4333-8333-333333333333.",
+       "_type": "permanent"
       }
      ]
     }
@@ -15738,19 +15606,7 @@
   {
    "elastic": {
     "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/11111111-1111-4111-8111-111111111111?refresh=true"
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
     "url": "/permanent/permanent/11111111-1111-4111-8111-111111111111."
-   }
-  },
-  {
-   "elastic": {
-    "method": "DELETE",
-    "url": "/schema.org.thing/schema.org.Thing/db1ecddf9e34deff35b6009721f02a13?refresh=true"
    }
   },
   {
@@ -31775,23 +31631,23 @@
      "docs": [
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "11111111-1111-4111-8111-111111111111."
+       "_id": "11111111-1111-4111-8111-111111111111.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "22222222-2222-4222-8222-222222222222."
+       "_id": "22222222-2222-4222-8222-222222222222.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "57c1650723f17f3beaee5d774b5c1b37."
+       "_id": "57c1650723f17f3beaee5d774b5c1b37.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "33333333-3333-4333-8333-333333333333."
+       "_id": "33333333-3333-4333-8333-333333333333.",
+       "_type": "permanent"
       }
      ]
     }
@@ -40399,13 +40255,13 @@
      "docs": [
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "11111111-1111-4111-8111-111111111111."
+       "_id": "11111111-1111-4111-8111-111111111111.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "22222222-2222-4222-8222-222222222222."
+       "_id": "22222222-2222-4222-8222-222222222222.",
+       "_type": "permanent"
       }
      ]
     }
@@ -40440,23 +40296,23 @@
      "docs": [
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "11111111-1111-4111-8111-111111111111.1800000001000"
+       "_id": "11111111-1111-4111-8111-111111111111.1800000001000",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "22222222-2222-4222-8222-222222222222."
+       "_id": "22222222-2222-4222-8222-222222222222.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "a7ec2e206c79324d7dae7d1ae42d140f."
+       "_id": "a7ec2e206c79324d7dae7d1ae42d140f.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "44444444-4444-4444-8444-444444444444."
+       "_id": "44444444-4444-4444-8444-444444444444.",
+       "_type": "permanent"
       }
      ]
     }
@@ -40509,13 +40365,13 @@
      "docs": [
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "11111111-1111-4111-8111-111111111111."
+       "_id": "11111111-1111-4111-8111-111111111111.",
+       "_type": "permanent"
       },
       {
        "_index": "permanent",
-       "_type": "permanent",
-       "_id": "44444444-4444-4444-8444-444444444444."
+       "_id": "44444444-4444-4444-8444-444444444444.",
+       "_type": "permanent"
       }
      ]
     }

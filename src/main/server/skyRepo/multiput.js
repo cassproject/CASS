@@ -40,10 +40,20 @@ const failAll = function (map) {
     return failed;
 };
 
-// The entry a _bulk response item belongs to: the first one in the map stored under the item's id.
-const entryFor = function (map, item) {
-    const id = item.index['_id'].split('.')[0];
-    return Object.values(map).find((x) => x.permanentIds.includes(id));
+// Returns a function giving the entry a _bulk response item belongs to: the first one still in the
+// map that is stored under the item's id. Built once per response, so that a response with many
+// failed items does not scan the whole map for each of them.
+const entryFinder = function (map) {
+    const byPermanentId = new Map();
+    for (const x of Object.values(map)) {
+        for (const id of x.permanentIds) {
+            if (!byPermanentId.has(id)) {
+                byPermanentId.set(id, []);
+            }
+            byPermanentId.get(id).push(x);
+        }
+    }
+    return (item) => byPermanentId.get(item.index['_id'].split('.')[0])?.find((x) => map[x.id] === x);
 };
 
 let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = async function (map) {
@@ -70,16 +80,17 @@ let skyrepoPutInternalPermanentBulk = global.skyrepoPutInternalPermanentBulk = a
 
     if (response.errors) {
         let retries = {};
+        const entryFor = entryFinder(map);
 
         for (let item of response.items) {
             if (item.index.status === 409) {
-                const found = entryFor(map, item);
+                const found = entryFor(item);
                 if (found) {
                     retries[found.id] = found;
                 }
             } else if (item.index.error) {
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'PutPermBulk', item);
-                const found = entryFor(map, item);
+                const found = entryFor(item);
                 if (found) {
                     failed[found.id] = true;
                     delete map[found.id];
@@ -207,7 +218,7 @@ const removeStaleIndexRecords = async function (map, items) {
 
     let deleteBody = '';
     for (const record of oldIndexRecords) {
-        const entry = Object.values(map).find((x) => x.id == record._id);
+        const entry = Object.hasOwn(map, record._id) ? map[record._id] : undefined;
         if (!entry || entry.index != record._index) {
             deleteBody += `${JSON.stringify({ delete: { _index: record._index, _id: record._id } })}\n`;
         }
@@ -236,11 +247,12 @@ let skyrepoPutInternalIndexBulk = global.skyrepoPutInternalIndexBulk = async fun
     }
 
     if (response.errors) {
+        const entryFor = entryFinder(map);
         for (let item of response.items) {
             // A version conflict is left for the permanent write to settle.
             if (item.index.status !== 409 && item.index.error) {
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'DbPutIndexBulk', item);
-                const found = entryFor(map, item);
+                const found = entryFor(item);
                 if (found) {
                     failed[found.id] = true;
                     delete map[found.id];
