@@ -18,35 +18,35 @@
  * --END_LICENSE--
  */
 const { endpointManyGet } = require("./multiget");
-const { searchUrl, searchObj } = require('./searchUtil');
+const { searchUrl, searchObj, readSearchParams } = require('./searchUtil');
+const { debugLog, publish } = require('./common');
+
+const MAX_SEARCH_SIZE = 10000;
+
 const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_scores, index_hint, originalSize, ids) {
-    const searchParameters = await (searchObj).call(this, q, start, size, sort, track_scores);
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepSearch', JSON.stringify(searchParameters));
-    }
+    const searchParameters = await searchObj.call(this, q, start, size, sort, track_scores);
+    debugLog('SkyrepSearch', () => JSON.stringify(searchParameters));
     const results = await httpPost(searchParameters, searchUrl(urlRemainder, index_hint), 'application/json', false, null, null, true, elasticHeaders());
 
     if (results == null) {
         error('An unknown error has occurred. If using the \'start\' parameter, request may be out of bounds.', 500);
     }
-    if ((results)['error'] != null) {
-        const root_cause = ((results)['error'])['root_cause'];
-        if (root_cause.length > 0) {
-            const reasonObj = root_cause[0];
-            const reason = (reasonObj)['reason'];
-            if (reason != null) {
-                error(reason, (results)['status']);
-            }
+    if (results['error'] != null) {
+        const root_cause = results['error']['root_cause'];
+        if (root_cause.length > 0 && root_cause[0]['reason'] != null) {
+            error(root_cause[0]['reason'], results['status']);
         }
     }
-    const hits = ((results)['hits'])['hits'];
+    const hits = results['hits']['hits'];
+    // How many hits count towards a full page: all of them, or with full objects, those that have a type.
+    let hitCount = hits.length;
     let searchResults = [];
     if (ids != null) {
+        // Only ids are wanted, so the search index copies are enough to check who may see them.
         try {
-            await (signatureSheet).call(this);
-            searchResults = await (filterResults).call(this, hits.map((h) => h._source), true);
-            global.events.data.found.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-            global.events.data.any.next(searchResults, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+            await signatureSheet.call(this);
+            searchResults = await filterResults.call(this, hits.map((h) => h._source), true);
+            publish(this, ['found', 'any'], searchResults);
             searchResults = searchResults.map((x) => x['@id']).filter(Boolean);
         } catch (ex) {
             if (ex.toString().indexOf('Signature Violation') != -1) {
@@ -55,97 +55,38 @@ const skyrepoSearch = async function (q, urlRemainder, start, size, sort, track_
             global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.ERROR, 'SkyrepManyGetParsedError', ex);
         }
     } else {
-        for (let i = 0; i < hits.length; i++) {
-            const searchResult = hits[i];
-            const type = inferTypeFromObj((searchResult)['_source'], null);
-            if (type == null) {
-                hits.splice(i--, 1); // NOSONAR -- Valid method of filtering.
-                continue;
-            }
-            const id = (searchResult)['_id'];
-            let hit = '';
+        // Full objects are wanted, so fetch each hit from permanent as type/id.
+        const urls = [];
+        for (const hit of hits) {
+            const type = inferTypeFromObj(hit['_source'], null);
             if (type != null) {
-                hit += type + '/';
+                urls.push(type + '/' + hit['_id']);
             }
-            hit += id;
-            hits[i] = hit;
         }
-        searchResults = (await endpointManyGet.call({ ctx: this.ctx, params: { objs: hits }, dataStreams: this.dataStreams })).filter(Boolean);
+        hitCount = urls.length;
+        searchResults = (await endpointManyGet.call({ ctx: this.ctx, params: { objs: urls }, dataStreams: this.dataStreams })).filter(Boolean);
     }
     // If we don't have enough results, and our search hit enough results, and we're not at the size limit, try again with max size.
     originalSize = originalSize || size;
-    if (size < 10000 && hits.length >= size && searchResults.length < originalSize) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPagin8', size, hits.length, searchResults.length);
-        return (await skyrepoSearch.call(this, q, urlRemainder, start, Math.min(10000, size + (hits.length * 100 - searchResults.length * 100)), sort, track_scores, index_hint, size, ids)).slice(0, size);
+    if (size < MAX_SEARCH_SIZE && hitCount >= size && searchResults.length < originalSize) {
+        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPagin8', size, hitCount, searchResults.length);
+        const larger = Math.min(MAX_SEARCH_SIZE, size + (hitCount * 100 - searchResults.length * 100));
+        return (await skyrepoSearch.call(this, q, urlRemainder, start, larger, sort, track_scores, index_hint, size, ids)).slice(0, size);
     }
     return searchResults;
 };
 
 const skyRepoSearch = async function () {
-    let q = this.params.q;
-    const urlRemainder = this.params.urlRemainder;
-    let start = 0;
-    if (this.params.start != undefined) {
-        if (this.params.start != null) {
-            start = Number.parseInt(this.params.start);
-        }
+    const searchParams = JSON.parse(fileToString(fileFromDatastream.call(this, 'searchParams', null)));
+    const p = readSearchParams(this.params, searchParams, ['q', 'start', 'size', 'sort', 'track_scores', 'index_hint', 'ids']);
+    const data = fileToString(fileFromDatastream.call(this, 'data', null));
+    if (data != null && data != '') {
+        p.q = data;
     }
-    let size = 50;
-    if (this.params.size != undefined) {
-        if (this.params.size != null) {
-            size = Number.parseInt(this.params.size);
-        }
+    if (p.q == null || p.q == '') {
+        p.q = '*';
     }
-    let sort = this.params.sort;
-    let track_scores = this.params.track_scores;
-    let index_hint = this.params.index_hint;
-    let ids = this.params.ids;
-    const searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, 'searchParams', null)));
-    if (searchParams != null) {
-        if ((searchParams)['q'] != undefined) {
-            if ((searchParams)['q'] != null) {
-                q = (searchParams)['q'];
-            }
-        }
-        if ((searchParams)['start'] != undefined) {
-            if ((searchParams)['start'] != null) {
-                start = (searchParams)['start'];
-            }
-        }
-        if ((searchParams)['size'] != undefined) {
-            if ((searchParams)['size'] != null) {
-                size = (searchParams)['size'];
-            }
-        }
-        if ((searchParams)['sort'] != undefined) {
-            if ((searchParams)['sort'] != null) {
-                sort = (searchParams)['sort'];
-            }
-        }
-        if ((searchParams)['track_scores'] != undefined) {
-            if ((searchParams)['track_scores'] != null) {
-                track_scores = (searchParams)['track_scores'];
-            }
-        }
-        if ((searchParams)['index_hint'] != undefined) {
-            if ((searchParams)['index_hint'] != null) {
-                index_hint = (searchParams)['index_hint'];
-            }
-        }
-        if ((searchParams)['ids'] != undefined) {
-            if ((searchParams)['ids'] != null) {
-                ids = (searchParams)['ids'];
-            }
-        }
-    }
-    const data = fileToString((fileFromDatastream).call(this, 'data', null));
-    if (data !== undefined && data != null && data != '') {
-        q = data;
-    }
-    if (q === undefined || q == null || q == '') {
-        q = '*';
-    }
-    return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint, null, ids));
+    return JSON.stringify(await skyrepoSearch.call(this, p.q, this.params.urlRemainder, p.start, p.size, p.sort, p.track_scores, p.index_hint, null, p.ids));
 };
 
 /**

@@ -24,8 +24,6 @@ const objectNotFoundError = 'Object not found or you did not supply sufficient p
 const signatureSheetEach = async function (obj) {
     const signature = new EbacSignature();
     signature.copyFrom(obj);
-    if (signature == null)
-        error('Missing Signature.', 496);
 
     let owner = signature.owner || signature["@owner"];
     signature['@owner'] = owner;
@@ -179,6 +177,28 @@ global.filterResults = async function (o, dontDecryptInSso) {
     }
 };
 
+// Whether one of the signatures belongs to an owner of the object, or to the server admin (who may
+// change anything, which is logged).
+const signedByOwnerOrAdmin = function (obj, signatures, logCategory, logMessage) {
+    for (const signature of signatures) {
+        const owner = signature.owner == null ? signature['@owner'] : signature.owner;
+        if (obj.hasOwner(EcPk.fromPem(owner))) {
+            return true;
+        }
+        if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
+            global.auditLogger.report(logCategory, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', logMessage);
+            return true;
+        }
+    }
+    return false;
+};
+
+const hasOwner = function (obj) {
+    return obj.owner != null && obj.owner.length > 0;
+};
+
+// Returns the stored object, or null when there is none. Fails when it has owners and the request
+// is signed by none of them.
 global.validateSignatures = async function (id, version, type, errorMessage) {
     const oldGet = await (skyrepoGetInternal).call(this, id, version, type);
     if (oldGet == null) {
@@ -186,30 +206,18 @@ global.validateSignatures = async function (id, version, type, errorMessage) {
     }
     const oldObj = new EcRemoteLinkedData(null, null);
     oldObj.copyFrom(oldGet);
-    if (oldObj.owner !== undefined && oldObj.owner != null && oldObj.owner.length > 0) {
+    if (hasOwner(oldObj)) {
         const signatures = await ((signatureSheet).call(this));
-        let success = false;
-        for (let i = 0; i < signatures.length; i++) {
-            let owner = signatures[i].owner;
-            if (owner == null) {
-                owner = (signatures[i])['@owner'];
-            }
-            if (oldObj.hasOwner(EcPk.fromPem(owner))) {
-                success = true;
-                break;
-            }
-            if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
-                global.auditLogger.report(global.auditLogger.LogCategory.SECURITY, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected.');
-                success = true;
-                break;
-            }
-        }
-        if (!success) {
+        if (!signedByOwnerOrAdmin(oldObj, signatures, global.auditLogger.LogCategory.SECURITY, 'Admin override detected.')) {
             error(errorMessage, 401);
         }
     }
     return oldObj;
 };
+
+// The same check for many objects. Objects the request may not change are removed from map and
+// listed in failed, by GUID and by the MD5 of their URL. Expects the signature sheet to have been
+// read already.
 global.validateSignaturesBulk = async function (map, errorMessage) {
     const failed = {};
     const succeeded = [];
@@ -220,28 +228,11 @@ global.validateSignaturesBulk = async function (map, errorMessage) {
             const oldObj = new EcRemoteLinkedData(null, null);
             oldObj.copyFrom(oldGet);
             try {
-                if (oldObj.owner !== undefined && oldObj.owner != null && oldObj.owner.length > 0) {
-                    let success = false;
-                    for (let i = 0; i < signatures.length; i++) {
-                        let owner = signatures[i].owner;
-                        if (owner == null) {
-                            owner = (signatures[i])['@owner'];
-                        }
-                        if (oldObj.hasOwner(EcPk.fromPem(owner))) {
-                            success = true;
-                            break;
-                        }
-                        if (EcPk.fromPem(skyrepoAdminPk()).equals(EcPk.fromPem(owner))) {
-                            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'SkyrepoAdminKeyUseDetected', 'Admin override detected to validate bulk signatures.');
-                            success = true;
-                            break;
-                        }
-                    }
-                    if (!success) {
+                if (hasOwner(oldObj)) {
+                    if (!signedByOwnerOrAdmin(oldObj, signatures, global.auditLogger.LogCategory.STORAGE, 'Admin override detected to validate bulk signatures.')) {
                         throw new Error(errorMessage);
-                    } else {
-                        succeeded.push(oldObj);
                     }
+                    succeeded.push(oldObj);
                 }
             } catch (e) {
                 let id = oldObj.getGuid();

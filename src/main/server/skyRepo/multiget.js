@@ -18,31 +18,18 @@
  * --END_LICENSE--
  */
 const { skyrepoGetParsed } = require('./get');
-const { searchUrl, searchObj, allIndices } = require('./searchUtil');
+const { allIndices } = require('./searchUtil');
+const { mgetDoc, debugLog, publish } = require('./common');
 
+// Fetches many documents by id in one request. In permanent, ids are `<id>.<version>`, with `<id>.`
+// for the latest version.
 const skyrepoManyGetIndexInternal = async function (index, manyParseParams) {
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexInternal', 'Fetching from ' + index + ' : ' + manyParseParams.length);
-    }
-
-    const docs = [];
-    for (let { id, version } of manyParseParams) {
-        const p = {
-            '_index': index,
-            '_id': id + '.' + (version == null ? '' : version)
-        };
-        if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-            // Don't multiget with _type
-        } else if (elasticSearchVersion().startsWith('7.')) {
-            (p)['_type'] = '_doc';
-        } else {
-            (p)['_type'] = index;
-        }
-        docs.push(p);
-    }
-
+    debugLog('SkyrepManyGetIndexInternal', () => 'Fetching from ' + index + ' : ' + manyParseParams.length);
+    const docs = manyParseParams.map(({ id, version }) => mgetDoc(index, id + '.' + (version == null ? '' : version)));
     return await httpPost({ docs }, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
 };
+
+// Finds objects in the search indices by id, ten at a time. Empties the array it is given.
 const skyrepoManyGetIndexSearch = async function (ary) {
     let results = [];
     while (ary.length > 0) {
@@ -54,9 +41,7 @@ const skyrepoManyGetIndexSearch = async function (ary) {
         const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
         if (microSearch.error)
             throw new Error(microSearch.error.reason);
-        if (global.skyrepoDebug) {
-            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetIndexSearch', microSearchUrl);
-        }
+        debugLog('SkyrepManyGetIndexSearch', () => microSearchUrl);
         results.push(...(microSearch?.hits?.hits || []));
     }
     return results;
@@ -66,12 +51,10 @@ const skyrepoManyGetPermanent = async function (manyParseParams) {
     return await skyrepoManyGetIndexInternal.call(this, 'permanent', manyParseParams);
 };
 
+// Reads many objects from permanent, falling back to the search index copy of those not found there.
 let skyrepoManyGetInternal = async function (manyParseParams) {
     let response = await skyrepoManyGetPermanent(manyParseParams);
-
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepMGStuff', response);
-    }
+    debugLog('SkyrepMGStuff', () => response);
 
     let resultDocs = response.docs;
     const results = [];
@@ -87,15 +70,12 @@ let skyrepoManyGetInternal = async function (manyParseParams) {
         }
     }
 
-    if (global.skyrepoDebug && notFoundInPermanent.length > 0) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetInternal', 'Failed to find ' + JSON.stringify(notFoundInPermanent) + ' -- trying degraded form from search index.');
+    if (notFoundInPermanent.length > 0) {
+        debugLog('SkyrepManyGetInternal', () => 'Failed to find ' + JSON.stringify(notFoundInPermanent) + ' -- trying degraded form from search index.');
     }
 
     response = await skyrepoManyGetIndexSearch.call(this, notFoundInPermanent);
-
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepManyGetInternal', 'Index get - ' + JSON.stringify(response));
-    }
+    debugLog('SkyrepManyGetInternal', () => 'Index get - ' + JSON.stringify(response));
 
     results.push(...(response || []).map(doc => doc['_source']));
     return results;
@@ -119,93 +99,54 @@ const skyrepoManyGetParsed = async function (manyParseParams) {
     if (filtered == null) {
         return null;
     }
-    global.events.data.read.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-    global.events.data.any.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    publish(this, ['read', 'any'], filtered);
     return filtered;
 };
 
 const endpointSingleGet = async function (dontDecrypt) {
-    const urlRemainder = this.params.obj;
-    const parseParams = queryParse.call(this, urlRemainder, null);
-    const id = parseParams['id'];
-    const type = parseParams['type'];
-    const version = parseParams['version'];
-    const o = await (skyrepoGetParsed).call(this, id, version, type, dontDecrypt, null);
-    if (o != null) {
-        return o;
-    }
-    return null;
+    const parseParams = queryParse.call(this, this.params.obj, null);
+    return await skyrepoGetParsed.call(this, parseParams['id'], parseParams['version'], parseParams['type'], dontDecrypt, null);
 };
 
 const endpointManyGet = async function () {
-    const manyParseParams = [];
-    for (const urlRemainder of this.params.objs) {
-        const parseParams = queryParse.call(this, urlRemainder, null);
-        manyParseParams.push(parseParams);
-    }
+    const manyParseParams = this.params.objs.map((urlRemainder) => queryParse.call(this, urlRemainder, null));
     if (manyParseParams.length == 0) {
         return [];
     }
-    const o = await (skyrepoManyGetParsed).call(this, manyParseParams);
-    if (o != null) {
-        return o;
-    }
-    return null;
+    return await skyrepoManyGetParsed.call(this, manyParseParams);
 };
 
 const endpointMultiGet = async function () {
     let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null))) || [];
     let idsFlag = fileToString((fileFromDatastream).call(this, 'ids', null));
+    // Everything asked for, by id. What permanent has is taken off; the rest is fetched one by one.
     const lookup = {};
-    const mget = {};
-    const docs = [];
-    (mget)['docs'] = docs;
+    const manyParseParams = [];
     for (const entry of ary) {
         const urlRemainder = entry.replace('data/', '');
         const parseParams = queryParse.call(this, urlRemainder, null);
-        const id = parseParams['id'];
-        lookup[id] = urlRemainder;
-        const version = parseParams['version'];
-        const p = {};
-        (p)['_index'] = 'permanent';
-        if (elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-            // Don't multiget with _type
-        } else
-            if (elasticSearchVersion().startsWith('7.')) {
-                (p)['_type'] = '_doc';
-            } else {
-                (p)['_type'] = 'permanent';
-            }
-        (p)['_id'] = id + '.' + (version == null ? '' : version);
-        docs.push(p);
+        lookup[parseParams['id']] = urlRemainder;
+        manyParseParams.push(parseParams);
     }
-    const response = await httpPost(mget, elasticEndpoint + '/_mget', 'application/json', false, null, null, true, elasticHeaders());
-    const resultDocs = (response)['docs'];
+    const response = await skyrepoManyGetPermanent(manyParseParams);
     let results = [];
-    if (resultDocs != null) {
-        for (const doc of resultDocs) {
-            if (doc['found']) {
-                delete lookup[doc['_id'].substring(0, doc['_id'].indexOf('.'))];
-                results.push(JSON.parse(doc['_source']['data']));
-            }
+    for (const doc of response['docs'] || []) {
+        if (doc['found']) {
+            delete lookup[doc['_id'].substring(0, doc['_id'].indexOf('.'))];
+            results.push(JSON.parse(doc['_source']['data']));
         }
     }
     await (signatureSheet).call(this);
     await (filterResults).call(this, results, idsFlag != null ? true : null);
-    ary = EcObject.keys(lookup);
-    for (let i = 0; i < ary.length; i++) {
-        ary[i] = lookup[ary[i]];
-    }
-    if (ary != null) {
-        const forEachResults = [];
-        while (ary.length > 0)
-            forEachResults.push(...await Promise.all(ary.splice(0, 100).map((hit) => {
-                return endpointSingleGet.call({ ctx: this.ctx, params: { obj: hit }, dataStreams: this.dataStreams }, idsFlag != null ? true : null);
-            })));
-        for (let i = 0; i < forEachResults.length; i++) {
-            if (forEachResults[i] != null) {
-                results.push(forEachResults[i]);
-            }
+    ary = Object.values(lookup);
+    const forEachResults = [];
+    while (ary.length > 0)
+        forEachResults.push(...await Promise.all(ary.splice(0, 100).map((hit) => {
+            return endpointSingleGet.call({ ctx: this.ctx, params: { obj: hit }, dataStreams: this.dataStreams }, idsFlag != null ? true : null);
+        })));
+    for (const result of forEachResults) {
+        if (result != null) {
+            results.push(result);
         }
     }
     if (idsFlag != null) {

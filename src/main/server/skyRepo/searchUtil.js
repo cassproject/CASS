@@ -109,9 +109,32 @@ const searchObj = async function (q, start, size, sort, track_scores) {
     }
     return s;
 };
+// Reads the search parameters of a request: from its query string, overridden by whichever of the
+// named parameters the request body's searchParams supplies.
+const readSearchParams = function (params, overrides, names) {
+    const p = {
+        q: params.q,
+        start: params.start == null ? 0 : Number.parseInt(params.start),
+        size: params.size == null ? 50 : Number.parseInt(params.size),
+        sort: params.sort,
+        track_scores: params.track_scores,
+        index_hint: params.index_hint,
+        history: params.history,
+        ids: params.ids,
+    };
+    if (overrides != null) {
+        for (const name of names) {
+            if (overrides[name] != null) {
+                p[name] = overrides[name];
+            }
+        }
+    }
+    return p;
+};
 module.exports = {
     searchUrl,
     searchObj,
+    readSearchParams,
     isExcludedIndex,
     excludeForeignIndices,
     allIndices

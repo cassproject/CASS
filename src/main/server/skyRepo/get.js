@@ -19,97 +19,65 @@
  */
 const { skyrepoHistoryInternal } = require('./history');
 const { isExcludedIndex, allIndices } = require('./searchUtil');
+const { docUrl, searchHits, debugLog, publish } = require('./common');
+
+// In permanent, an object is stored as `<id>.<version>`, and its latest version also as `<id>.`.
 const getUrl = function (index, id, version, type) {
-    let url = elasticEndpoint;
-    url += '/' + index;
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-        url += '/_doc';
-    } else if (index == 'permanent') {
-        url += '/permanent';
-    } else {
-        const typeFromObj = inferTypeWithoutObj(type);
-        url += '/' + typeFromObj;
-    }
+    let url;
     if (index == 'permanent') {
-        url += '/' + encodeURIComponent(id) + '.' + (version === undefined || version == null ? '' : version);
+        url = docUrl('permanent', 'permanent', id, '.' + (version == null ? '' : version));
     } else {
-        url += '/' + encodeURIComponent(id);
+        url = docUrl(index, inferTypeWithoutObj(type), id);
     }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoGetUrl', 'Get:' + url);
-    }
+    debugLog('SkyrepoGetUrl', () => 'Get:' + url);
     return url;
 };
 
 const skyrepoGetIndexInternal = async function (index, id, version, type) {
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexInternal', 'Fetching from ' + index + ' : ' + type + ' / ' + id + ' / ' + version);
-    }
-    const response = await httpGet(getUrl.call(this, index, id, version, type), true, elasticHeaders());
-    return response;
+    debugLog('SkyrepGetIndexInternal', () => 'Fetching from ' + index + ' : ' + type + ' / ' + id + ' / ' + version);
+    return await httpGet(getUrl(index, id, version, type), true, elasticHeaders());
 };
 
+// Finds an object in the search indices by id, when its type (and so its index) is not known.
 const skyrepoGetIndexSearch = async function (id, version, type) {
     const microSearchUrl = elasticEndpoint + '/' + allIndices() + '/_search?version&q=_id:' + id + '';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexSearch', microSearchUrl);
-    }
-    if (microSearch == null) {
-        return null;
-    }
-    const hitshits = (microSearch)['hits'];
-    if (hitshits == null) {
-        return null;
-    }
-    const hits = (hitshits)['hits'];
-    if (hits.length == 0) {
-        return null;
-    }
-    const hit = hits[0];
-    return hit;
+    debugLog('SkyrepGetIndexSearch', () => microSearchUrl);
+    const hits = searchHits(microSearch);
+    return hits == null ? null : hits[0];
 };
 
 const skyrepoGetIndex = async function (id, version, type) {
-    if (type !== undefined && type != null && type != '') {
+    if (type != null && type != '') {
         if (isExcludedIndex(type)) {
             return null;
         }
-        const result = await skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
-        return result;
-    } else {
-        return await skyrepoGetIndexSearch(id, version, type);
+        return await skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
     }
+    return await skyrepoGetIndexSearch(id, version, type);
 };
 
 const skyrepoGetPermanent = async function (id, version, type) {
-    const result = await skyrepoGetIndexInternal.call(this, 'permanent', id, version, type);
-    return result;
+    return await skyrepoGetIndexInternal('permanent', id, version, type);
 };
 
+// Reads from permanent. When Elasticsearch answers but has no such document, falls back to the copy
+// in the search index, which is degraded: it lacks what removeNonIndexables took out.
 const skyrepoGetInternal = async function (id, version, type) {
     let result = await skyrepoGetPermanent(id, version, type);
-    if (result == null) {
+    if (result == null || result['error'] != null) {
         return null;
     }
-    if ((result)['error'] != null) {
+    if (result['found'] === true) {
+        return JSON.parse(result['_source']['data']);
+    }
+    debugLog('SkyrepGetInternal', () => 'Failed to find ' + type + '/' + id + '/' + version + ' -- trying degraded form from search index.');
+    result = await skyrepoGetIndex(id, version, type);
+    if (result == null || result['error'] != null) {
         return null;
     }
-    if ((result)['found'] === true) {
-        return JSON.parse(((result)['_source'])['data']);
-    }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetInternal', 'Failed to find ' + type + '/' + id + '/' + version + ' -- trying degraded form from search index.');
-    }
-    result = await (skyrepoGetIndex).call(this, id, version, type);
-    if (result == null) {
-        return null;
-    }
-    if ((result)['error'] != null) {
-        return null;
-    }
-    if ((result)['found'] === true || (result)['_source'] != null) {
-        return (result)['_source'];
+    if (result['found'] === true || result['_source'] != null) {
+        return result['_source'];
     }
     return null;
 };
@@ -119,51 +87,40 @@ const skyrepoGet = async function (parseParams) {
         parseParams = this.params.obj;
     }
     if (parseParams == null) {
-        parseParams = {};
-        parseParams['id'] = this.params.id;
-        parseParams['type'] = this.params.type;
-        parseParams['version'] = this.params.version;
-        parseParams['history'] = this.params.history;
+        parseParams = {
+            id: this.params.id,
+            type: this.params.type,
+            version: this.params.version,
+            history: this.params.history,
+        };
     }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGet', JSON.stringify(parseParams));
-    }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGet', JSON.stringify(this.params.obj));
-    }
-    const id = parseParams['id'];
-    const type = parseParams['type'];
-    const version = parseParams['version'];
-    const history = parseParams['history'];
-    return await (skyrepoGetParsed).call(this, id, version, type, null, history);
+    debugLog('SkyrepGet', () => JSON.stringify(parseParams));
+    debugLog('SkyrepGet', () => JSON.stringify(this.params.obj));
+    return await skyrepoGetParsed.call(this, parseParams['id'], parseParams['version'], parseParams['type'], null, parseParams['history']);
 };
 
 const skyrepoGetParsed = async function (id, version, type, dontDecrypt, history) {
     let filtered = null;
     if (Number(history) === 1 || history == 'true') {
         filtered = await skyrepoHistoryInternal.call(this, id, version, type);
-        filtered = await (filterResults).call(this, filtered, dontDecrypt);
+        filtered = await filterResults.call(this, filtered, dontDecrypt);
     } else {
-        const result = await (skyrepoGetInternal).call(this, id, version, type);
+        const result = await skyrepoGetInternal.call(this, id, version, type);
         if (result == null) {
             return null;
         }
         try {
-            filtered = await (filterResults).call(this, result, dontDecrypt);
+            filtered = await filterResults.call(this, result, dontDecrypt);
         } catch (ex) {
             if (ex.toString().indexOf('Signature Violation') != -1) {
                 throw ex;
             }
         }
     }
-    if (filtered == null) {
+    if (filtered == null || EcObject.keys(filtered).length == 0) {
         return null;
     }
-    if (EcObject.keys(filtered).length == 0) {
-        return null;
-    }
-    global.events.data.read.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-    global.events.data.any.next(filtered, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    publish(this, ['read', 'any'], filtered);
     return filtered;
 };
 
@@ -174,5 +131,5 @@ module.exports = {
     skyrepoGetIndex,
     skyrepoGetIndexInternal,
     skyrepoGetIndexSearch,
-    skyrepoGetPermanent
-}
+    skyrepoGetPermanent,
+};
