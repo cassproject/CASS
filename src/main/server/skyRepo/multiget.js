@@ -191,7 +191,7 @@ const endpointMultiGet = async function () {
         }
     }
     await (signatureSheet).call(this);
-    await (filterResults).call(this, results, idsFlag != null ? true : null);
+    results = await (filterResults).call(this, results, idsFlag != null ? true : null);
     ary = EcObject.keys(lookup);
     for (let i = 0; i < ary.length; i++) {
         ary[i] = lookup[ary[i]];
