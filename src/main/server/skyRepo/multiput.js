@@ -21,7 +21,7 @@ const { skyrepoManyGetIndexInternal, skyrepoManyGetPermanent } = require('./mult
 const { searchUrl, searchObj } = require('./searchUtil');
 const {
     TIMESTAMP_VERSION_FLOOR, bulkIndexAction, debugLog, ensurePermanentIndex, objectIds,
-    normalizeKeys, stampVersion, noteRekeyRequest, publish,
+    normalizeKeys, stampVersion, removeNonIndexables, noteRekeyRequest, publish,
 } = require('./common');
 
 // The bulk functions work on a map of entries by id: { id, object, version, type }, to which they
@@ -191,9 +191,11 @@ const chooseVersions = async function (map) {
     }
 };
 
-// The object as it goes into the search index.
+// The object as it goes into the search index: as a single put indexes it, without signatures or
+// the payload and secrets of encrypted values at any depth.
 const indexable = function (x) {
     const o = flattenLangstrings(JSON.parse(JSON.stringify(x.object)));
+    removeNonIndexables(o);
     normalizeKeys(o);
     stampVersion(o, x.version);
     if (x.type != null && x.type.includes('EncryptedValue')) {

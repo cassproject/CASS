@@ -11932,9 +11932,6 @@
       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
       "@type": "Thing",
       "name": "Thing 3",
-      "signature": [
-       "signed-by-sso"
-      ],
       "@version": 1800000001000
      }
     ]
@@ -12658,9 +12655,51 @@
    }
   },
   {
+   "elastic": {
+    "method": "POST",
+    "url": "/_bulk",
+    "body": [
+     {
+      "delete": {
+       "_index": "schema.org.thing",
+       "_id": "33333333-3333-4333-8333-333333333333"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "33333333-3333-4333-8333-333333333333."
+      }
+     },
+     {
+      "delete": {
+       "_index": "schema.org.thing",
+       "_id": "486d3ff47b6eb87129ef517c8e703588"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "486d3ff47b6eb87129ef517c8e703588."
+      }
+     }
+    ]
+   }
+  },
+  {
    "event": "data.delete",
    "args": [
-    [],
+    [
+     {
+      "context": "http://schema.org/",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "type": "Thing",
+      "name": "Thing 3",
+      "signature": [
+       "signed-by-sso"
+      ]
+     }
+    ],
     [
      "<ppk:alice>",
      "<ppk:bob>"
@@ -12670,7 +12709,17 @@
   {
    "event": "data.any",
    "args": [
-    [],
+    [
+     {
+      "context": "http://schema.org/",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "type": "Thing",
+      "name": "Thing 3",
+      "signature": [
+       "signed-by-sso"
+      ]
+     }
+    ],
     [
      "<ppk:alice>",
      "<ppk:bob>"
@@ -12684,7 +12733,17 @@
    }
   },
   {
-   "returned": []
+   "returned": [
+    {
+     "context": "http://schema.org/",
+     "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+     "type": "Thing",
+     "name": "Thing 3",
+     "signature": [
+      "signed-by-sso"
+     ]
+    }
+   ]
   },
   {
    "call": "state: end"
@@ -12699,19 +12758,6 @@
        "@type": "Thing",
        "@id": "<server>/data/schema.org.Thing/22222222-2222-4222-8222-222222222222/1800000001000",
        "name": "Thing 2",
-       "@version": 1800000001000
-      }
-     },
-     "33333333-3333-4333-8333-333333333333": {
-      "version": 1800000001000,
-      "source": {
-       "@context": "http://schema.org/",
-       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
-       "@type": "Thing",
-       "name": "Thing 3",
-       "signature": [
-        "signed-by-sso"
-       ],
        "@version": 1800000001000
       }
      },
@@ -12783,23 +12829,7 @@
        "baseId": "33333333-3333-4333-8333-333333333333"
       }
      },
-     "33333333-3333-4333-8333-333333333333.": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"@type\":\"Thing\",\"name\":\"Thing 3\",\"signature\":[\"signed-by-sso\"]}",
-       "writeMs": "<now>",
-       "baseId": "33333333-3333-4333-8333-333333333333"
-      }
-     },
      "486d3ff47b6eb87129ef517c8e703588.1800000001000": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"@type\":\"Thing\",\"name\":\"Thing 3\",\"signature\":[\"signed-by-sso\"]}",
-       "writeMs": "<now>",
-       "baseId": "486d3ff47b6eb87129ef517c8e703588"
-      }
-     },
-     "486d3ff47b6eb87129ef517c8e703588.": {
       "version": 1800000001000,
       "source": {
        "data": "{\"@context\":\"http://schema.org/\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"@type\":\"Thing\",\"name\":\"Thing 3\",\"signature\":[\"signed-by-sso\"]}",
@@ -13216,9 +13246,6 @@
       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
       "@type": "Thing",
       "name": "Thing 3",
-      "signature": [
-       "signed-by-sso"
-      ],
       "@version": 1800000001000
      }
     ]
@@ -13960,9 +13987,51 @@
    }
   },
   {
+   "elastic": {
+    "method": "POST",
+    "url": "/_bulk",
+    "body": [
+     {
+      "delete": {
+       "_index": "schema.org.thing",
+       "_id": "33333333-3333-4333-8333-333333333333"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "33333333-3333-4333-8333-333333333333."
+      }
+     },
+     {
+      "delete": {
+       "_index": "schema.org.thing",
+       "_id": "486d3ff47b6eb87129ef517c8e703588"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "486d3ff47b6eb87129ef517c8e703588."
+      }
+     }
+    ]
+   }
+  },
+  {
    "event": "data.delete",
    "args": [
-    [],
+    [
+     {
+      "context": "http://schema.org/",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "type": "Thing",
+      "name": "Thing 3",
+      "signature": [
+       "signed-by-sso"
+      ]
+     }
+    ],
     [
      "<ppk:alice>",
      "<ppk:bob>"
@@ -13972,7 +14041,17 @@
   {
    "event": "data.any",
    "args": [
-    [],
+    [
+     {
+      "context": "http://schema.org/",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "type": "Thing",
+      "name": "Thing 3",
+      "signature": [
+       "signed-by-sso"
+      ]
+     }
+    ],
     [
      "<ppk:alice>",
      "<ppk:bob>"
@@ -13986,7 +14065,17 @@
    }
   },
   {
-   "returned": []
+   "returned": [
+    {
+     "context": "http://schema.org/",
+     "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+     "type": "Thing",
+     "name": "Thing 3",
+     "signature": [
+      "signed-by-sso"
+     ]
+    }
+   ]
   },
   {
    "call": "state: end"
@@ -14001,19 +14090,6 @@
        "@type": "Thing",
        "@id": "<server>/data/schema.org.Thing/22222222-2222-4222-8222-222222222222/1800000001000",
        "name": "Thing 2",
-       "@version": 1800000001000
-      }
-     },
-     "33333333-3333-4333-8333-333333333333": {
-      "version": 1800000001000,
-      "source": {
-       "@context": "http://schema.org/",
-       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
-       "@type": "Thing",
-       "name": "Thing 3",
-       "signature": [
-        "signed-by-sso"
-       ],
        "@version": 1800000001000
       }
      },
@@ -14085,23 +14161,7 @@
        "baseId": "33333333-3333-4333-8333-333333333333"
       }
      },
-     "33333333-3333-4333-8333-333333333333.": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"@type\":\"Thing\",\"name\":\"Thing 3\",\"signature\":[\"signed-by-sso\"]}",
-       "writeMs": "<now>",
-       "baseId": "33333333-3333-4333-8333-333333333333"
-      }
-     },
      "486d3ff47b6eb87129ef517c8e703588.1800000001000": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"@type\":\"Thing\",\"name\":\"Thing 3\",\"signature\":[\"signed-by-sso\"]}",
-       "writeMs": "<now>",
-       "baseId": "486d3ff47b6eb87129ef517c8e703588"
-      }
-     },
-     "486d3ff47b6eb87129ef517c8e703588.": {
       "version": 1800000001000,
       "source": {
        "data": "{\"@context\":\"http://schema.org/\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"@type\":\"Thing\",\"name\":\"Thing 3\",\"signature\":[\"signed-by-sso\"]}",
@@ -31754,9 +31814,6 @@
       "@reader": [
        "<rawpk:bob>"
       ],
-      "@signature": [
-       "sig"
-      ],
       "@version": 1800000001000
      },
      {
@@ -33142,9 +33199,6 @@
       "@owner": [
        "<pk:alice>"
       ],
-      "@signature": [
-       "enc-signature"
-      ],
       "@version": 1800000001000
      },
      {
@@ -33165,11 +33219,6 @@
       ],
       "part": {
        "@type": "EncryptedValue",
-       "payload": "inner-ciphertext",
-       "secret": [
-        "inner-key"
-       ],
-       "signature": "inner-signature",
        "name": "kept"
       },
       "@version": 1800000001000
@@ -33567,11 +33616,6 @@
        ],
        "part": {
         "@type": "EncryptedValue",
-        "payload": "inner-ciphertext",
-        "secret": [
-         "inner-key"
-        ],
-        "signature": "inner-signature",
         "name": "kept"
        },
        "@version": 1800000001000
@@ -33781,9 +33825,6 @@
        "@id": "<server>/data/schema.cassproject.org.kbac.0.4.EncryptedValue/33333333-3333-4333-8333-333333333333/1800000001000",
        "@owner": [
         "<pk:alice>"
-       ],
-       "@signature": [
-        "enc-signature"
        ],
        "@version": 1800000001000
       }
@@ -33867,9 +33908,6 @@
       "@reader": [
        "<rawpk:bob>"
       ],
-      "@signature": [
-       "sig"
-      ],
       "@version": 1800000001000
      },
      {
@@ -35299,9 +35337,6 @@
       "@owner": [
        "<pk:alice>"
       ],
-      "@signature": [
-       "enc-signature"
-      ],
       "@version": 1800000001000
      },
      {
@@ -35323,11 +35358,6 @@
       ],
       "part": {
        "@type": "EncryptedValue",
-       "payload": "inner-ciphertext",
-       "secret": [
-        "inner-key"
-       ],
-       "signature": "inner-signature",
        "name": "kept"
       },
       "@version": 1800000001000
@@ -35733,11 +35763,6 @@
        ],
        "part": {
         "@type": "EncryptedValue",
-        "payload": "inner-ciphertext",
-        "secret": [
-         "inner-key"
-        ],
-        "signature": "inner-signature",
         "name": "kept"
        },
        "@version": 1800000001000
@@ -35947,9 +35972,6 @@
        "@id": "<server>/data/schema.cassproject.org.kbac.0.4.EncryptedValue/33333333-3333-4333-8333-333333333333/1800000001000",
        "@owner": [
         "<pk:alice>"
-       ],
-       "@signature": [
-        "enc-signature"
        ],
        "@version": 1800000001000
       }
@@ -41178,6 +41200,30 @@
      {
       "delete": {
        "_index": "schema.org.thing",
+       "_id": "33333333-3333-4333-8333-333333333333"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "33333333-3333-4333-8333-333333333333."
+      }
+     },
+     {
+      "delete": {
+       "_index": "schema.org.thing",
+       "_id": "486d3ff47b6eb87129ef517c8e703588"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "486d3ff47b6eb87129ef517c8e703588."
+      }
+     },
+     {
+      "delete": {
+       "_index": "schema.org.thing",
        "_id": "gone"
       }
      },
@@ -41218,6 +41264,12 @@
      {
       "context": "http://schema.org/",
       "type": "Thing",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "name": "Thing 3"
+     },
+     {
+      "context": "http://schema.org/",
+      "type": "Thing",
       "id": "https://elsewhere.example/thing/gone",
       "name": "Foreign thing/gone",
       "owner": [
@@ -41240,6 +41292,12 @@
       "owner": [
        "<pk:alice>"
       ]
+     },
+     {
+      "context": "http://schema.org/",
+      "type": "Thing",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "name": "Thing 3"
      },
      {
       "context": "http://schema.org/",
@@ -41274,6 +41332,12 @@
     {
      "context": "http://schema.org/",
      "type": "Thing",
+     "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+     "name": "Thing 3"
+    },
+    {
+     "context": "http://schema.org/",
+     "type": "Thing",
      "id": "https://elsewhere.example/thing/gone",
      "name": "Foreign thing/gone",
      "owner": [
@@ -41298,16 +41362,6 @@
        "@owner": [
         "<pk:bob>"
        ],
-       "@version": 1800000001000
-      }
-     },
-     "33333333-3333-4333-8333-333333333333": {
-      "version": 1800000001000,
-      "source": {
-       "@context": "http://schema.org/",
-       "@type": "Thing",
-       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
-       "name": "Thing 3",
        "@version": 1800000001000
       }
      }
@@ -41369,23 +41423,7 @@
        "baseId": "33333333-3333-4333-8333-333333333333"
       }
      },
-     "33333333-3333-4333-8333-333333333333.": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "33333333-3333-4333-8333-333333333333"
-      }
-     },
      "486d3ff47b6eb87129ef517c8e703588.1800000001000": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "486d3ff47b6eb87129ef517c8e703588"
-      }
-     },
-     "486d3ff47b6eb87129ef517c8e703588.": {
       "version": 1800000001000,
       "source": {
        "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
@@ -41431,6 +41469,12 @@
       }
      ]
     }
+   }
+  },
+  {
+   "elastic": {
+    "method": "GET",
+    "url": "/*,-ephemeral,-@*/_search?version&q=_id:\"33333333-3333-4333-8333-333333333333\""
    }
   },
   {
@@ -41529,18 +41573,7 @@
   },
   {
    "returned": {
-    "schema.org.thing": {
-     "33333333-3333-4333-8333-333333333333": {
-      "version": 1800000001000,
-      "source": {
-       "@context": "http://schema.org/",
-       "@type": "Thing",
-       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
-       "name": "Thing 3",
-       "@version": 1800000001000
-      }
-     }
-    },
+    "schema.org.thing": {},
     "permanent": {
      "11111111-1111-4111-8111-111111111111.1800000001000": {
       "version": 1800000001000,
@@ -41582,23 +41615,7 @@
        "baseId": "33333333-3333-4333-8333-333333333333"
       }
      },
-     "33333333-3333-4333-8333-333333333333.": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "33333333-3333-4333-8333-333333333333"
-      }
-     },
      "486d3ff47b6eb87129ef517c8e703588.1800000001000": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "486d3ff47b6eb87129ef517c8e703588"
-      }
-     },
-     "486d3ff47b6eb87129ef517c8e703588.": {
       "version": 1800000001000,
       "source": {
        "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
@@ -42408,6 +42425,30 @@
      {
       "delete": {
        "_index": "schema.org.thing",
+       "_id": "33333333-3333-4333-8333-333333333333"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "33333333-3333-4333-8333-333333333333."
+      }
+     },
+     {
+      "delete": {
+       "_index": "schema.org.thing",
+       "_id": "486d3ff47b6eb87129ef517c8e703588"
+      }
+     },
+     {
+      "delete": {
+       "_index": "permanent",
+       "_id": "486d3ff47b6eb87129ef517c8e703588."
+      }
+     },
+     {
+      "delete": {
+       "_index": "schema.org.thing",
        "_id": "gone"
       }
      },
@@ -42448,6 +42489,12 @@
      {
       "context": "http://schema.org/",
       "type": "Thing",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "name": "Thing 3"
+     },
+     {
+      "context": "http://schema.org/",
+      "type": "Thing",
       "id": "https://elsewhere.example/thing/gone",
       "name": "Foreign thing/gone",
       "owner": [
@@ -42470,6 +42517,12 @@
       "owner": [
        "<pk:alice>"
       ]
+     },
+     {
+      "context": "http://schema.org/",
+      "type": "Thing",
+      "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+      "name": "Thing 3"
      },
      {
       "context": "http://schema.org/",
@@ -42504,6 +42557,12 @@
     {
      "context": "http://schema.org/",
      "type": "Thing",
+     "id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
+     "name": "Thing 3"
+    },
+    {
+     "context": "http://schema.org/",
+     "type": "Thing",
      "id": "https://elsewhere.example/thing/gone",
      "name": "Foreign thing/gone",
      "owner": [
@@ -42528,16 +42587,6 @@
        "@owner": [
         "<pk:bob>"
        ],
-       "@version": 1800000001000
-      }
-     },
-     "33333333-3333-4333-8333-333333333333": {
-      "version": 1800000001000,
-      "source": {
-       "@context": "http://schema.org/",
-       "@type": "Thing",
-       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
-       "name": "Thing 3",
        "@version": 1800000001000
       }
      }
@@ -42599,23 +42648,7 @@
        "baseId": "33333333-3333-4333-8333-333333333333"
       }
      },
-     "33333333-3333-4333-8333-333333333333.": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "33333333-3333-4333-8333-333333333333"
-      }
-     },
      "486d3ff47b6eb87129ef517c8e703588.1800000001000": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "486d3ff47b6eb87129ef517c8e703588"
-      }
-     },
-     "486d3ff47b6eb87129ef517c8e703588.": {
       "version": 1800000001000,
       "source": {
        "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
@@ -42663,6 +42696,12 @@
       }
      ]
     }
+   }
+  },
+  {
+   "elastic": {
+    "method": "GET",
+    "url": "/*,-ephemeral,-@*/_search?version&q=_id:\"33333333-3333-4333-8333-333333333333\""
    }
   },
   {
@@ -42761,18 +42800,7 @@
   },
   {
    "returned": {
-    "schema.org.thing": {
-     "33333333-3333-4333-8333-333333333333": {
-      "version": 1800000001000,
-      "source": {
-       "@context": "http://schema.org/",
-       "@type": "Thing",
-       "@id": "<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000",
-       "name": "Thing 3",
-       "@version": 1800000001000
-      }
-     }
-    },
+    "schema.org.thing": {},
     "permanent": {
      "11111111-1111-4111-8111-111111111111.1800000001000": {
       "version": 1800000001000,
@@ -42814,23 +42842,7 @@
        "baseId": "33333333-3333-4333-8333-333333333333"
       }
      },
-     "33333333-3333-4333-8333-333333333333.": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "33333333-3333-4333-8333-333333333333"
-      }
-     },
      "486d3ff47b6eb87129ef517c8e703588.1800000001000": {
-      "version": 1800000001000,
-      "source": {
-       "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",
-       "writeMs": "<now>",
-       "baseId": "486d3ff47b6eb87129ef517c8e703588"
-      }
-     },
-     "486d3ff47b6eb87129ef517c8e703588.": {
       "version": 1800000001000,
       "source": {
        "data": "{\"@context\":\"http://schema.org/\",\"@type\":\"Thing\",\"@id\":\"<server>/data/schema.org.Thing/33333333-3333-4333-8333-333333333333/1800000001000\",\"name\":\"Thing 3\"}",

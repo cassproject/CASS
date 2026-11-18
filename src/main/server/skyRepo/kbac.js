@@ -222,9 +222,10 @@ global.validateSignatures = async function (id, version, type, errorMessage) {
     return oldObj;
 };
 
-// The same check for many objects. Objects the request may not change are removed from map and
-// listed in failed, by GUID and by the MD5 of their URL. Expects the signature sheet to have been
-// read already.
+// The same check for many objects. The stored objects the request may change are returned in
+// succeeded: those it is signed by an owner of, and those with no owner. Objects it may not change
+// are removed from map and listed in failed, by GUID and by the MD5 of their URL. Expects the
+// signature sheet to have been read already.
 global.validateSignaturesBulk = async function (map, errorMessage) {
     const failed = {};
     const succeeded = [];
@@ -235,12 +236,10 @@ global.validateSignaturesBulk = async function (map, errorMessage) {
             const oldObj = new EcRemoteLinkedData(null, null);
             oldObj.copyFrom(oldGet);
             try {
-                if (hasOwner(oldObj)) {
-                    if (!signedByOwnerOrAdmin(oldObj, signatures, global.auditLogger.LogCategory.STORAGE, 'Admin override detected to validate bulk signatures.')) {
-                        throw new Error(errorMessage);
-                    }
-                    succeeded.push(oldObj);
+                if (hasOwner(oldObj) && !signedByOwnerOrAdmin(oldObj, signatures, global.auditLogger.LogCategory.STORAGE, 'Admin override detected to validate bulk signatures.')) {
+                    throw new Error(errorMessage);
                 }
+                succeeded.push(oldObj);
             } catch (e) {
                 let id = oldObj.getGuid();
                 failed[id] = true;
