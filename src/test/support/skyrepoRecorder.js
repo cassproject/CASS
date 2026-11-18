@@ -435,14 +435,30 @@ const request = function (options = {}) {
 };
 
 /**
- * Makes a recording comparable between runs: replaces the given strings (keys, server URLs) with
- * stable tokens, and anything that looks like "now" in milliseconds with '<now>'.
+ * Makes a recording comparable between runs and between servers: replaces the given strings (keys,
+ * the server's URL) with stable tokens, the MD5 of any URL under hashedPrefix (objects are also
+ * stored under the MD5 of their URL, which depends on the server's address) with a token naming
+ * the URL, and anything that looks like "now" in milliseconds with '<now>'.
  * @param {*} value the recording
  * @param {object} tokens token by string to replace
+ * @param {string} [hashedPrefix] start of the URLs whose MD5s are replaced; must be a key of tokens
  * @return {*}
  */
-const normalize = function (value, tokens) {
+const normalize = function (value, tokens, hashedPrefix) {
     let text = JSON.stringify(value);
+    if (hashedPrefix != null) {
+        tokens = { ...tokens };
+        // Every URL under the prefix: from the prefix up to a quote, a backslash or white space.
+        for (let at = text.indexOf(hashedPrefix); at != -1; at = text.indexOf(hashedPrefix, at + 1)) {
+            const rest = text.substring(at, at + 500);
+            const end = rest.search(/["\\\s]/);
+            const url = end == -1 ? rest : rest.substring(0, end);
+            // The URL, and the URL without its version, which is what an object is filed under.
+            for (const hashed of [url, url.replace(/\/[0-9]+$/, '')]) {
+                tokens[EcCrypto.md5(hashed)] = '<md5:' + tokens[hashedPrefix] + hashed.substring(hashedPrefix.length) + '>';
+            }
+        }
+    }
     // Longest first, so that a string containing another is replaced whole. PEMs appear both raw and
     // escaped inside stringified documents.
     const entries = Object.entries(tokens).sort((a, b) => b[0].length - a[0].length);

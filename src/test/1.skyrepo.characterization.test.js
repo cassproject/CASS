@@ -422,7 +422,7 @@ describe('SkyRepo characterization', function () {
             tokens[stranger.pk] = '<pk:stranger>';
         }
         const { log } = await recorder.play(typeof version == 'string' ? { version: version } : { info: version }, scenario);
-        return recorder.normalize(log, tokens);
+        return recorder.normalize(log, tokens, server);
     };
     // Removes what Elasticsearch before 9 and OpenSearch are sent that Elasticsearch 9 is not: the
     // _doc type that Elasticsearch 7 and OpenSearch 1 still take in _mget and _bulk requests, and the
