@@ -129,14 +129,7 @@
     "c8": {
       "monocart-coverage-reports": "$monocart-coverage-reports"
     },
-    "swagger-jsdoc": {
-      "minimatch": "^11.0.5"
-    },
-    "glob": {
-      ".": "^14.0.6",
-      "minimatch": "^11.0.5"
-    },
-    "package.json": "0.0.0",
+    "glob": "$glob",
     "swagger-ui-dist": {
       "@scarf/scarf": "npm:fs"
     }
