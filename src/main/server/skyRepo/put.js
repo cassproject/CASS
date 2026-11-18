@@ -20,220 +20,77 @@
 const { skyrepoGetPermanent } = require('./get');
 const { skyrepoDeleteInternalIndex } = require('./delete');
 const { allIndices } = require('./searchUtil');
-let permanentCreated = false;
+const {
+    PERMANENT_PROPERTIES, TIMESTAMP_VERSION_FLOOR, docUrl, writeQuery, searchHits, debugLog, ensurePermanentIndex,
+    objectIds, unique, normalizeKeys, stampVersion, removeNonIndexables, noteRekeyRequest, publish,
+} = require('./common');
 
-/**
- *  Indexed fields of the permanent index. Everything else in the document
- *  (notably the serialized object in 'data') is stored in _source but left
- *  unmapped by 'dynamic: false'. Shared with the migration in util.js so the
- *  two cannot drift apart.
- */
-const PERMANENT_PROPERTIES = global.PERMANENT_PROPERTIES = {
-    baseId: { type: 'keyword' },
-};
+// Read by the permanent index migration in ../util.js.
+global.PERMANENT_PROPERTIES = PERMANENT_PROPERTIES;
 
 const putUrl = function (o, id, version, type) {
     const typeFromObj = inferTypeFromObj(o, type);
-    let versionPart = null;
-    let refreshPart = 'refresh=true';
-    if (this.ctx.get('refresh') !== undefined && this.ctx.get('refresh') != null) {
-        refreshPart = 'refresh=' + this.ctx.get('refresh');
-    }
-    if (version === undefined || version == null) {
-        versionPart = '?' + refreshPart;
-    } else {
-        versionPart = '?version=' + (version === undefined || version == null ? '' : version) + '&version_type=external&' + refreshPart;
-    }
-    let url = elasticEndpoint;
-    url += '/' + typeFromObj.toLowerCase();
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-        url += '/_doc';
-    } else {
-        url += '/' + typeFromObj;
-    }
-    url += '/' + encodeURIComponent(id) + versionPart;
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoPutUrl', 'Put:' + url);
-    }
+    const url = docUrl(typeFromObj.toLowerCase(), typeFromObj, id, writeQuery(this, version));
+    debugLog('SkyrepoPutUrl', () => 'Put:' + url);
     return url;
 };
 
+// `<id>.<version>` in permanent: one version of the object.
 const putPermanentUrl = function (o, id, version, type) {
-    let versionPart = null;
-    let refreshPart = 'refresh=true';
-    if (this.ctx.get('refresh') !== undefined && this.ctx.get('refresh') != null) {
-        refreshPart = 'refresh=' + this.ctx.get('refresh');
-    }
-    if (version === undefined || version == null) {
-        versionPart = '?' + refreshPart;
-    } else {
-        versionPart = '?version=' + (version === undefined || version == null ? '' : version) + '&version_type=external&' + refreshPart;
-    }
-    let url = elasticEndpoint;
-    url += '/permanent';
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-        url += '/_doc';
-    } else {
-        url += '/permanent';
-    }
-    url += '/' + encodeURIComponent(id) + '.' + (version === undefined || version == null ? '' : version) + versionPart;
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoPutPermanentUrl', 'PutPermanent:' + url);
-    }
+    const url = docUrl('permanent', 'permanent', id, '.' + (version == null ? '' : version) + writeQuery(this, version));
+    debugLog('SkyrepoPutPermanentUrl', () => 'PutPermanent:' + url);
     return url;
 };
 
+// `<id>.` in permanent: the latest version of the object.
 const putPermanentBaseUrl = function (o, id, version, type) {
-    let versionPart = null;
-    let refreshPart = 'refresh=true';
-    if (this.ctx.get('refresh') !== undefined && this.ctx.get('refresh') != null) {
-        refreshPart = 'refresh=' + this.ctx.get('refresh');
-    }
-    if (version === undefined || version == null) {
-        versionPart = '?' + refreshPart;
-    } else {
-        versionPart = '?version=' + (version === undefined || version == null ? '' : version) + '&version_type=external&' + refreshPart;
-    }
-    let url = elasticEndpoint;
-    url += '/permanent';
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-        url += '/_doc';
-    } else {
-        url += '/permanent';
-    }
-    url += '/' + encodeURIComponent(id) + '.' + versionPart;
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoPutPermanentBaseUrl', 'PutPermanentBase:' + url);
-    }
+    const url = docUrl('permanent', 'permanent', id, '.' + writeQuery(this, version));
+    debugLog('SkyrepoPutPermanentBaseUrl', () => 'PutPermanentBase:' + url);
     return url;
 };
 
-const removeNonIndexables = function (o) {
-    if (o != null && EcObject.isObject(o)) {
-        const keys = EcObject.keys(o);
-        for (const key of keys) {
-            removeNonIndexables((o)[key]);
-        }
-        if (o.type == 'EncryptedValue' || o['@type'] == 'EncryptedValue') {
-            delete (o)['payload'];
-            delete (o)['secret'];
-        }
-        delete (o)['signature'];
-        delete (o)['@signature'];
-    } else if (o != null && EcArray.isArray(o)) {
-        const a = o;
-        for (const item of a) {
-            removeNonIndexables(item);
-        }
-    }
-};
 const skyrepoPutInternalIndex = async function (o, id, version, type) {
     const url = putUrl.call(this, o, id, version, type);
     o = flattenLangstrings(o);
     removeNonIndexables(o);
-    if ((o)['owner'] != null && EcArray.isArray((o)['owner'])) {
-        let owners = (o)['owner'];
-        for (let i = 0; i < owners.length; i++) {
-            if (owners[i].includes('\n')) {
-                owners[i] = EcPk.fromPem(owners[i]).toPem();
-            }
-        }
-    }
-    if ((o)['reader'] != null && EcArray.isArray((o)['reader'])) {
-        let owners = (o)['reader'];
-        for (let i = 0; i < owners.length; i++) {
-            if (owners[i].includes('\n')) {
-                owners[i] = EcPk.fromPem(owners[i]).toPem();
-            }
-        }
-    }
-    try {
-        (o)['@version'] = Number.parseInt(version);
-        if (Number.isNaN(Number((o)['@version']))) {
-            (o)['@version'] = new Date().getTime();
-        }
-    } catch (ex) {
-        (o)['@version'] = new Date().getTime();
-    }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalIndex', JSON.stringify(o));
-    }
-    const response = await httpPost(o, url, 'application/json', false, null, null, true, elasticHeaders());
-    return response;
+    normalizeKeys(o);
+    stampVersion(o, version);
+    debugLog('DbPutInternalIndex', () => JSON.stringify(o));
+    return await httpPost(o, url, 'application/json', false, null, null, true, elasticHeaders());
 };
 
 const skyrepoPutInternalPermanent = async function (o, id, version, type) {
-    if (!permanentCreated) {
-        const mappings = {};
-        const permNoIndex = {};
-        const doc = {};
-        (mappings)['mappings'] = permNoIndex;
-
-        if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-            // 'dynamic: false' rather than 'enabled: false': both keep the
-            // document body out of the mappings (so version history cannot
-            // exhaust the index field limit), but 'dynamic' still allows the
-            // explicitly declared fields below to be indexed. baseId has to be
-            // searchable because history looks records up by it — an
-            // 'enabled: false' index indexes nothing at all, which previously
-            // forced history to script over the _id metadata field instead.
-            permNoIndex.dynamic = false;
-            permNoIndex.properties = PERMANENT_PROPERTIES;
-        } else {
-            (permNoIndex)['permanent'] = doc;
-            doc['enabled'] = false;
-        }
-        const result = await httpPut(mappings, elasticEndpoint + '/permanent', 'application/json', elasticHeaders());
-        if (global.skyrepoDebug) {
-            global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalPerm', JSON.stringify(result));
-        }
-        permanentCreated = true;
-    }
-    const data = {};
-    (data)['data'] = JSON.stringify(o);
-    data.writeMs = Date.now();
-    // Indexed so version history can be retrieved with a term query. The
-    // document _id is `<baseId>.<version>`; storing the base separately avoids
-    // querying the _id metadata field, which requires fielddata that
-    // Elasticsearch no longer permits.
-    data.baseId = id;
-    let url = putPermanentBaseUrl.call(this, o, id, version, type);
-    let results = await httpPost(data, url, 'application/json', false, null, null, true, elasticHeaders());
+    await ensurePermanentIndex('DbPutInternalPerm');
+    const data = {
+        data: JSON.stringify(o),
+        writeMs: Date.now(),
+        // Indexed so version history can be retrieved with a term query. The
+        // document _id is `<baseId>.<version>`; storing the base separately avoids
+        // querying the _id metadata field, which requires fielddata that
+        // Elasticsearch no longer permits.
+        baseId: id,
+    };
+    let results = await httpPost(data, putPermanentBaseUrl.call(this, o, id, version, type), 'application/json', false, null, null, true, elasticHeaders());
     if (results === 409) {
         return JSON.stringify(results);
     }
     if (version != null) {
-        url = putPermanentUrl.call(this, o, id, version, type);
-        results = await httpPost(data, url, 'application/json', false, null, null, true, elasticHeaders());
+        results = await httpPost(data, putPermanentUrl.call(this, o, id, version, type), 'application/json', false, null, null, true, elasticHeaders());
     }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'DbPutInternalPerm', JSON.stringify(results));
-    }
+    debugLog('DbPutInternalPerm', () => JSON.stringify(results));
     return JSON.stringify(results);
 };
 
+// The search index entries of an object, wherever they are: under its URL, or the MD5 of it.
 const skyrepoGetIndexRecords = async function (id) {
     const hashId = EcCrypto.md5(id);
     const microSearchUrl = elasticEndpoint + '/' + allIndices() + '/_search?version&q=@id:"' + id + '" OR @id:"' + hashId + '"';
     const microSearch = await httpGet(microSearchUrl, true, elasticHeaders());
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepGetIndexRecords', microSearchUrl);
-    }
-    if (microSearch == null) {
-        return null;
-    }
-    const hitshits = (microSearch)['hits'];
-    if (hitshits == null) {
-        return null;
-    }
-    const hits = (hitshits)['hits'];
-    if (hits.length == 0) {
-        return null;
-    }
-    return hits;
+    debugLog('SkyrepGetIndexRecords', () => microSearchUrl);
+    return searchHits(microSearch);
 };
 
-let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, version, type) {
+const skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, version, type) {
     // Securing Proxy: Sign data that is to be saved.
     const erld = new EcRemoteLinkedData(null, null);
     erld.copyFrom(o);
@@ -263,73 +120,49 @@ let skyrepoPutInternal = global.skyrepoPutInternal = async function (o, id, vers
         }
     }
     const obj = await skyrepoPutInternalIndex.call(this, o, id, chosenVersion, type);
+    // Remove the entries the object had under another id or in another index (its type changed).
     if (erld.id != null) {
         const oldIndexRecords = await skyrepoGetIndexRecords(erld.shortId());
-        if (oldIndexRecords != null) {
-            for (const oldIndexRecord of oldIndexRecords) {
-                if (oldIndexRecord._id != obj._id || oldIndexRecord._index != obj._index) {
-                    await skyrepoDeleteInternalIndex.call(this, oldIndexRecord._id, null, oldIndexRecord._index);
-                }
+        for (const oldIndexRecord of oldIndexRecords || []) {
+            if (oldIndexRecord._id != obj._id || oldIndexRecord._index != obj._index) {
+                await skyrepoDeleteInternalIndex.call(this, oldIndexRecord._id, null, oldIndexRecord._index);
             }
         }
     }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'PutInternal', JSON.stringify(obj));
-    }
-    const permanentIds = [id];
-    if (erld.id != null && erld.getGuid() != null) {
-        permanentIds.push(erld.getGuid());
-    };
-    if (erld.id != null && erld.shortId() != null) {
-        permanentIds.push(EcCrypto.md5(erld.shortId()));
-    }
-    EcArray.removeDuplicates(permanentIds);
-    for (const permId of permanentIds) {
+    debugLog('PutInternal', () => JSON.stringify(obj));
+    for (const permId of unique([id, ...objectIds(erld)])) {
         const status = await skyrepoPutInternalPermanent.call(this, o, permId, chosenVersion, type);
         if (status === '409') {
             global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', '409, version is: ' + chosenVersion);
             const current = await skyrepoGetPermanent.call(this, permId, null, type);
-            if (current && current._version > chosenVersion && current._version > 1743202754349) {
+            if (current && current._version > chosenVersion && current._version > TIMESTAMP_VERSION_FLOOR) {
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', 'Dumping, was at ' + chosenVersion);
                 break;
-            }
-            else if (current && current._version > chosenVersion) {
+            } else if (current && current._version > chosenVersion) {
                 chosenVersion = current._version;
                 global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'PutInternal', 'Updated to ' + chosenVersion);
             }
             // Used to replay replication / database log files without "just jamming the data in"
             if (process.env.ALLOW_SANCTIONED_REPLAY != 'true' || Number(this.ctx.sanctionedReplay) !== 1) {
-                await skyrepoPutInternal.call(this, o, id, chosenVersion + 1, type, true);
+                await skyrepoPutInternal.call(this, o, id, chosenVersion + 1, type);
             }
             break;
         }
     }
-    const rld = new EcRemoteLinkedData(null, null);
-    rld.copyFrom(o);
-    if (rld.isAny(new EcRekeyRequest().getTypes())) {
-        const err = new EcRekeyRequest();
-        err.copyFrom(o);
-        if (err.verify()) {
-            err.addRekeyRequestToForwardingTable();
-        }
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.INFO, 'SkyrepoPutInternal', EcObject.keys(EcRemoteLinkedData.forwardingTable).length + ' records now in forwarding table.');
-    }
+    noteRekeyRequest(o);
 };
 
 const skyrepoPut = async function (parseParams) {
     if (parseParams == null && this.params.id != null && this.params.id != '') {
-        parseParams = {};
-        parseParams['id'] = this.params.id;
-        parseParams['type'] = this.params.type;
-        parseParams['version'] = this.params.version;
-        parseParams['obj'] = this.params.obj;
+        parseParams = {
+            id: this.params.id,
+            type: this.params.type,
+            version: this.params.version,
+            obj: this.params.obj,
+        };
     }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPut', 'put pp:' + JSON.stringifyparseParams);
-    }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepPut', 'put obj:' + JSON.stringify(this.params.obj));
-    }
+    debugLog('SkyrepPut', () => 'put pp:' + JSON.stringify(parseParams));
+    debugLog('SkyrepPut', () => 'put obj:' + JSON.stringify(this.params.obj));
     if (parseParams == null && EcObject.isObject(this.params.obj)) {
         parseParams = this.params.obj;
     }
@@ -337,11 +170,9 @@ const skyrepoPut = async function (parseParams) {
     if (!EcObject.isObject(obj)) {
         obj = JSON.parse(obj);
     }
-    const id = parseParams['id'];
-    const type = parseParams['type'];
-    const version = parseParams['version'];
-    return await (skyrepoPutParsed).call(this, obj, id, version, type, null);
+    return await skyrepoPutParsed.call(this, obj, parseParams['id'], parseParams['version'], parseParams['type']);
 };
+
 const skyrepoPutParsed = async function (o, id, version, type) {
     if (o == null) {
         return;
@@ -358,10 +189,9 @@ const skyrepoPutParsed = async function (o, id, version, type) {
         error('Object must have an @context.', 400);
     }
 
-    await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may change it.', null, null);
+    await validateSignatures.call(this, id, version, type, 'Only an owner of an object may change it.');
     await skyrepoPutInternal.call(this, o, id, version, type);
-    global.events.data.write.next([o], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-    global.events.data.any.next([o], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    publish(this, ['write', 'any'], [o]);
 };
 
 module.exports = {
@@ -372,5 +202,5 @@ module.exports = {
     skyrepoPutInternalPermanent,
     skyrepoPutInternal,
     skyrepoPut,
-    skyrepoPutParsed
+    skyrepoPutParsed,
 };

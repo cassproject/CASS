@@ -11,12 +11,31 @@ describe('skyRepo/searchUtil.js', function () {
     const DEFAULT = () => ep() + '/*,-permanent,-ephemeral,-@*/_search';
     const EXCLUSION = ',-ephemeral,-@*';
 
+    // The URL builders, run as if the search engine reported this about itself. The tests below
+    // expect what Elasticsearch 8 and later are sent, whichever engine the suite is running against.
+    const as = function (info) {
+        const real = require('../main/server/skyRepo/searchUtil');
+        const pinned = {};
+        for (const name of ['isExcludedIndex', 'excludeForeignIndices', 'allIndices', 'searchUrl']) {
+            pinned[name] = (...args) => {
+                const saved = global.elasticSearchInfo;
+                global.elasticSearchInfo = info;
+                try {
+                    return real[name](...args);
+                } finally {
+                    global.elasticSearchInfo = saved;
+                }
+            };
+        }
+        return pinned;
+    };
+
     before(() => {
         if (global.elasticEndpoint == null) {
             global.elasticEndpoint = 'http://elasticsearch.test:9200';
             injectedEndpoint = true;
         }
-        searchUtil = require('../main/server/skyRepo/searchUtil');
+        searchUtil = as({ version: { number: '9.5.3' } });
     });
     after(() => {
         if (injectedEndpoint) delete global.elasticEndpoint;
@@ -51,6 +70,52 @@ describe('skyRepo/searchUtil.js', function () {
         it('allIndices covers every index except ephemeral and @-prefixed ones', () => {
             assert.strictEqual(searchUtil.allIndices(), '*' + EXCLUSION);
         });
+    });
+
+    // Elasticsearch before 9, and OpenSearch, only read '-name' as an exclusion after an expression
+    // with a wildcard; before one, they look for an index called '-name' and the search fails.
+    describe('engines that need a wildcard before an exclusion', () => {
+        const openSearch = (number) => ({ version: { distribution: 'opensearch', number: number } });
+        const elasticsearch = (number) => ({ version: { number: number } });
+        const needing = [['OpenSearch 3', openSearch('3.10.0')], ['OpenSearch 2', openSearch('2.19.1')], ['OpenSearch 1', openSearch('1.3.20')],
+            ['Elasticsearch 8', elasticsearch('8.19.4')], ['Elasticsearch 7', elasticsearch('7.17.28')], ['Elasticsearch 6', elasticsearch('6.8.23')],
+            ['an engine that reports no version', {}], ['no engine information', undefined]];
+        const notNeeding = [['Elasticsearch 9', elasticsearch('9.5.3')], ['Elasticsearch 10', elasticsearch('10.0.0')]];
+
+        for (const [name, info] of needing) {
+            it(name + ': an expression without a wildcard is given one that matches nothing', () => {
+                const util = as(info);
+                assert.strictEqual(util.excludeForeignIndices('competency'), '-*,competency' + EXCLUSION);
+                assert.strictEqual(util.excludeForeignIndices('@foreign'), '-*,@foreign' + EXCLUSION);
+                assert.strictEqual(util.excludeForeignIndices('a,b'), '-*,a,b' + EXCLUSION);
+                assert.strictEqual(util.searchUrl(null, 'schema.cassproject.org.0.4.competency'), ep() + '/-*,schema.cassproject.org.0.4.competency' + EXCLUSION + '/_search');
+                assert.strictEqual(util.searchUrl('@Foreign', null), ep() + '/-*,@foreign' + EXCLUSION + '/_search');
+                assert.strictEqual(util.searchUrl('ephemeral', null), ep() + '/-*,ephemeral' + EXCLUSION + '/_search');
+            });
+            it(name + ': an expression with a wildcard is left as it is', () => {
+                const util = as(info);
+                assert.strictEqual(util.allIndices(), '*' + EXCLUSION);
+                assert.strictEqual(util.searchUrl(null, null), DEFAULT());
+                assert.strictEqual(util.searchUrl(null, '*assertion'), ep() + '/*assertion' + EXCLUSION + '/_search');
+                assert.strictEqual(util.searchUrl(null, '@*'), ep() + '/@*' + EXCLUSION + '/_search');
+                assert.strictEqual(util.excludeForeignIndices('a,b*'), 'a,b*' + EXCLUSION);
+            });
+            it(name + ': every index expression still ends with the exclusions', () => {
+                const util = as(info);
+                for (const [remainder, hint] of [[null, null], [null, '@foreign'], [null, '*'], ['@foreign', null], ['ephemeral', null], ['competency', null], [null, 'permanent']]) {
+                    const url = util.searchUrl(remainder, hint);
+                    assert.isTrue(url.endsWith(EXCLUSION + '/_search'), `remainder=${remainder} hint=${hint} produced ${url}`);
+                }
+            });
+        }
+        for (const [name, info] of notNeeding) {
+            it(name + ': nothing is added', () => {
+                const util = as(info);
+                assert.strictEqual(util.excludeForeignIndices('competency'), 'competency' + EXCLUSION);
+                assert.strictEqual(util.searchUrl(null, '@foreign'), ep() + '/@foreign' + EXCLUSION + '/_search');
+                assert.strictEqual(util.searchUrl(null, null), DEFAULT());
+            });
+        }
     });
 
     describe('searchUrl', () => {

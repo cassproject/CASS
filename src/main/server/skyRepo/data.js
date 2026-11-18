@@ -21,130 +21,58 @@ const { skyrepoGetParsed } = require('./get');
 const { skyrepoPutParsed } = require('./put');
 const { skyrepoDelete } = require('./delete');
 const { skyrepoSearch } = require('./search');
+const { readSearchParams } = require('./searchUtil');
 const objectNotFoundError = require('./kbac.js').objectNotFoundError;
 
+// /data/ is a search when there is a query, and otherwise reads, writes or deletes the object named
+// by the rest of the URL: {id}, {type}/{id} or {type}/{id}/{version}.
 const endpointData = async function () {
-    let q = this.params.q;
-    const urlRemainder = this.params.urlRemainder;
-    let start = 0;
-    if (this.params.start !== undefined) {
-        if (this.params.start != null) {
-            start = Number.parseInt(this.params.start);
-        }
+    if (this.params.refresh != null) {
+        this.ctx.put('refresh', this.params.refresh);
     }
-    let size = 50;
-    if (this.params.size !== undefined) {
-        if (this.params.size != null) {
-            size = Number.parseInt(this.params.size);
-        }
-    }
-    if (this.params.refresh !== undefined) {
-        if (this.params.refresh != null) {
-            this.ctx.put('refresh', this.params.refresh);
-        }
-    }
-    let sort = this.params.sort;
-    let track_scores = this.params.track_scores;
-    let index_hint = this.params.index_hint;
-    let history = this.params.history;
-    let ids = this.params.ids;
-    let searchParams = (fileFromDatastream).call(this, 'searchParams', null);
+    let searchParams = fileFromDatastream.call(this, 'searchParams', null);
     if (searchParams != null) {
-        searchParams = fileToString(searchParams);
-        if (searchParams !== undefined) {
-            if (searchParams != null) {
-                searchParams = JSON.parse(searchParams);
-            }
-        }
-        if ((searchParams)['q'] != undefined) {
-            if ((searchParams)['q'] != null) {
-                q = (searchParams)['q'];
-            }
-        }
-        if ((searchParams)['start'] != undefined) {
-            if ((searchParams)['start'] != null) {
-                start = (searchParams)['start'];
-            }
-        }
-        if ((searchParams)['size'] != undefined) {
-            if ((searchParams)['size'] != null) {
-                size = (searchParams)['size'];
-            }
-        }
-        if ((searchParams)['sort'] != undefined) {
-            if ((searchParams)['sort'] != null) {
-                sort = (searchParams)['sort'];
-            }
-        }
-        if ((searchParams)['track_scores'] != undefined) {
-            if ((searchParams)['track_scores'] != null) {
-                track_scores = (searchParams)['track_scores'];
-            }
-        }
-        if ((searchParams)['index_hint'] != undefined) {
-            if ((searchParams)['index_hint'] != null) {
-                index_hint = (searchParams)['index_hint'];
-            }
-        }
-        if ((searchParams)['history'] != undefined) {
-            if ((searchParams)['history'] != null) {
-                history = (searchParams)['history'];
-            }
-        }
-        if ((searchParams)['ids'] != undefined) {
-            if ((searchParams)['ids'] != null) {
-                ids = (searchParams)['ids'];
-            }
-        }
+        searchParams = JSON.parse(fileToString(searchParams));
     }
-    if (size === undefined || size == null) {
-        size = 50;
-    }
-    if (start === undefined || start == null) {
-        start = 0;
-    }
-    if (q !== undefined && q != null) {
-        return JSON.stringify(await (skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores, index_hint, null, ids));
+    const p = readSearchParams(this.params, searchParams, ['q', 'start', 'size', 'sort', 'track_scores', 'index_hint', 'history', 'ids']);
+    const urlRemainder = this.params.urlRemainder;
+    if (p.q != null) {
+        return JSON.stringify(await skyrepoSearch.call(this, p.q, urlRemainder, p.start, p.size, p.sort, p.track_scores, p.index_hint, null, p.ids));
     }
     const methodType = this.params.methodType;
     const parseParams = queryParse.call(this, urlRemainder, null);
     const id = parseParams['id'];
     const type = parseParams['type'];
     const version = parseParams['version'];
-    if (methodType == 'DELETE') {
-        await (requireSignedWrite).call(this);
-        const oldObj = await (skyrepoDelete).call(this, id, version, type);
-        if (oldObj == null) {
-            return null;
-        }
-        global.events.database.afterSave.next(oldObj);
-        return null;
-    } else if (methodType == 'POST') {
-        let o = (fileFromDatastream).call(this, 'data', null);
-        if (o !== undefined && o != null) {
-            o = JSON.parse(fileToString(o));
-        }
-        if (o == null || o == '') {
-            o = await (skyrepoGetParsed).call(this, id, version, type, null, history);
-            if (o == null) {
-                error(objectNotFoundError, 404);
-            }
-            let expand = this.params.expand != null;
-            o = (tryFormatOutput).call(this, o, expand, null);
-            return o;
-        }
-        await (requireSignedWrite).call(this);
-        await (skyrepoPutParsed).call(this, o, id, version, type);
-        global.events.database.afterSave.next(o);
-        return null;
-    } else if (methodType == 'GET') {
-        let o = await (skyrepoGetParsed).call(this, id, version, type, null, history);
+    const read = async () => {
+        const o = await skyrepoGetParsed.call(this, id, version, type, null, p.history);
         if (o == null) {
             error(objectNotFoundError, 404);
         }
-        let expand = this.params.expand != null;
-        o = (tryFormatOutput).call(this, o, expand, null);
-        return o;
+        return tryFormatOutput.call(this, o, this.params.expand != null, null);
+    };
+    if (methodType == 'DELETE') {
+        await requireSignedWrite.call(this);
+        const oldObj = await skyrepoDelete.call(this, id, version, type);
+        if (oldObj != null) {
+            global.events.database.afterSave.next(oldObj);
+        }
+        return null;
+    } else if (methodType == 'POST') {
+        let o = fileFromDatastream.call(this, 'data', null);
+        if (o != null) {
+            o = JSON.parse(fileToString(o));
+        }
+        // A POST without an object is a read.
+        if (o == null || o == '') {
+            return await read();
+        }
+        await requireSignedWrite.call(this);
+        await skyrepoPutParsed.call(this, o, id, version, type);
+        global.events.database.afterSave.next(o);
+        return null;
+    } else if (methodType == 'GET') {
+        return await read();
     }
     return null;
 };

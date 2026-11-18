@@ -18,39 +18,19 @@
  * --END_LICENSE--
  */
 const { isExcludedIndex } = require('./searchUtil');
+const { docUrl, writeQuery, debugLog, objectIds, unique, publish, usesDocEndpoint } = require('./common');
+
 const deleteUrl = function (id, version, type) {
     const typeFromObj = inferTypeWithoutObj(type);
-    let refreshPart = 'refresh=true';
-    if (this.ctx.get('refresh') !== undefined && this.ctx.get('refresh') != null) {
-        refreshPart = 'refresh=' + this.ctx.get('refresh');
-    }
-    let url = elasticEndpoint;
-    url += '/' + typeFromObj.toLowerCase();
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-        url += '/_doc';
-    } else {
-        url += '/' + typeFromObj;
-    }
-    url += '/' + encodeURIComponent(id);
-    url += '?' + refreshPart;
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoDeleteUrl', 'Delete:' + url);
-    }
+    const url = docUrl(typeFromObj.toLowerCase(), typeFromObj, id, writeQuery(this));
+    debugLog('SkyrepoDeleteUrl', () => 'Delete:' + url);
     return url;
 };
 
-const deletePermanentBaseUrl = function (id, version, type) {
-    let url = elasticEndpoint;
-    url += '/permanent';
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-        url += '/_doc';
-    } else {
-        url += '/permanent';
-    }
-    url += '/' + encodeURIComponent(id) + '.';
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoDeletePermBase', 'DeletePermanentBase:' + url);
-    }
+// The latest-version copy in permanent, `<id>.`. The numbered versions are kept as history.
+const deletePermanentBaseUrl = function (id) {
+    const url = docUrl('permanent', 'permanent', id, '.');
+    debugLog('SkyrepoDeletePermBase', () => 'DeletePermanentBase:' + url);
     return url;
 };
 
@@ -58,49 +38,47 @@ const skyrepoDeleteInternalIndex = async function (id, version, type) {
     if (isExcludedIndex(type)) {
         return null;
     }
-    const url = deleteUrl.call(this, id, version, type);
-    return await httpDelete(url, elasticHeaders());
+    return await httpDelete(deleteUrl.call(this, id, version, type), elasticHeaders());
 };
 
 const skyrepoDeleteInternalPermanent = async function (id, version, type) {
-    const url = deletePermanentBaseUrl(id, version, type);
-    return await httpDelete(url, elasticHeaders());
+    return await httpDelete(deletePermanentBaseUrl(id), elasticHeaders());
+};
+
+// Where deleteUrl sends a type, without the id.
+const indexTarget = function (type) {
+    const typeFromObj = inferTypeWithoutObj(type);
+    return typeFromObj.toLowerCase() + '/' + (usesDocEndpoint() ? '_doc' : typeFromObj);
 };
 
 const skyrepoDelete = async function (id, version, type) {
-    const oldObj = await (validateSignatures).call(this, id, version, type, 'Only an owner of an object may delete it.');
+    const oldObj = await validateSignatures.call(this, id, version, type, 'Only an owner of an object may delete it.');
     if (oldObj == null) {
         global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.WARNING, 'IndexNoPermanent', "Couldn't find data to delete, removing the index entry.");
         await skyrepoDeleteInternalIndex.call(this, id, version, type);
         return null;
     }
-    const ids = [id];
-    if (oldObj.id != null && oldObj.getGuid() != null) {
-        ids.push(oldObj.getGuid());
-    };
-    if (oldObj.id != null && oldObj.shortId() != null) {
-        ids.push(EcCrypto.md5(oldObj.shortId()));
+    // The search index entry is under the object's own type, which may not be the type in the URL.
+    const types = [type];
+    const objectType = inferTypeFromObj(oldObj);
+    if (indexTarget(objectType) != indexTarget(type)) {
+        types.push(objectType);
     }
-    EcArray.removeDuplicates(ids);
-    if (oldObj != null) {
-        for (const id of ids) {
-            await skyrepoDeleteInternalIndex.call(this, id, version, type);
-            await skyrepoDeleteInternalIndex.call(this, id, version, inferTypeFromObj(oldObj));
-            await skyrepoDeleteInternalPermanent.call(this, id, version, type);
+    // The deletes are independent of each other, so they are sent together.
+    const deletes = [];
+    for (const storedId of unique([id, ...objectIds(oldObj)])) {
+        for (const indexType of types) {
+            deletes.push(skyrepoDeleteInternalIndex.call(this, storedId, version, indexType));
         }
-    } else {
-        error('Can\'t find object to delete', 401);
+        deletes.push(skyrepoDeleteInternalPermanent.call(this, storedId, version, type));
     }
-    global.events.data.delete.next([oldObj], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-    global.events.data.any.next([oldObj], this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+    await Promise.all(deletes);
+    publish(this, ['delete', 'any'], [oldObj]);
     return oldObj;
 };
 
 module.exports = {
-    // deleteUrl,
-    // deletePermanentBaseUrl,
     skyrepoDeleteInternalIndex,
     skyrepoDeleteInternalPermanent,
     skyrepoDelete,
-    // endpointManyDelete
 };

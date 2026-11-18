@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-const fs = require('node:fs');
 const sharedAdminCache = require('../shims/util/sharedAdminCache.js');
 
 if (process.env.INSECURE_SERVER_IS_ADMIN) {

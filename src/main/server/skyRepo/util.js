@@ -19,6 +19,7 @@
  */
 const fs = require('node:fs');
 const nodePath = require('node:path');
+const { usesDocEndpoint } = require('./common');
 
 let cwdAtStart = process.cwd();
 global.pathCheck = function (p) {
@@ -160,11 +161,7 @@ global.flattenLangstrings = function (o) {
 };
 
 global.getTypeForObject = function (o, type) {
-    if (elasticSearchVersion().startsWith('7.') || elasticSearchVersion().startsWith('8.') || elasticSearchVersion().startsWith('9.')) {
-        return '_doc';
-    } else {
-        return inferTypeFromObj(o, type);
-    }
+    return usesDocEndpoint() ? '_doc' : inferTypeFromObj(o, type);
 };
 
 global.queryParse = function (urlRemainder) {

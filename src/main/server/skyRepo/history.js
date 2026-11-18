@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+const { debugLog } = require('./common');
 
 const skyrepoHistoryPermanent = async function (id, version, type) {
     // Matches on the indexed baseId field written by skyrepoPutInternalPermanent.
@@ -51,40 +52,35 @@ const skyrepoHistoryInternal = async function (id, version, type) {
         return null;
     }
     if ((result).hits.total.value > 0) {
-        const hits = result.hits.hits;
-        hits.sort((a, b) => {
-            const A = new EcRemoteLinkedData();
-            A.copyFrom(JSON.parse(a._source.data));
-            const B = new EcRemoteLinkedData();
-            B.copyFrom(JSON.parse(b._source.data));
-            let Ats = A.getTimestamp();
-            let Bts = B.getTimestamp();
-            if (Ats == null) Ats = a._source.writeMs;
-            if (Bts == null) Bts = b._source.writeMs;
-            if (Ats == null || Bts == null) return 0;
-            return Bts - Ats;
+        // Each stored version is parsed once. Its time is the timestamp in its id, or failing that
+        // when it was written.
+        const versions = result.hits.hits.map((hit) => {
+            const data = JSON.parse(hit._source.data);
+            const rld = new EcRemoteLinkedData();
+            rld.copyFrom(data);
+            const timestamp = rld.getTimestamp();
+            return { data: data, id: rld.id, time: timestamp == null ? hit._source.writeMs : timestamp };
         });
-        for (let i = 0; i < hits.length; i++) {
-            for (let j = i; j < hits.length; j++) {
-                if (i == j) continue;
-                const A = new EcRemoteLinkedData();
-                A.copyFrom(JSON.parse(hits[i]._source.data));
-                const B = new EcRemoteLinkedData();
-                B.copyFrom(JSON.parse(hits[j]._source.data));
-                let Ats = A.getTimestamp();
-                let Bts = B.getTimestamp();
-                if (Ats == null) Ats = hits[i]._source.writeMs;
-                if (Bts == null) Bts = hits[j]._source.writeMs;
-                if (A.id + Ats == B.id + Bts) {
-                    hits.splice(j--, 1); // NOSONAR -- Valid method of filtering.
+        // Newest first. A version with no time at all stays where it is.
+        versions.sort((a, b) => a.time == null || b.time == null ? 0 : b.time - a.time);
+        // A version is stored under each id of its object (GUID, MD5 of its URL), so the same one
+        // can come back more than once: keep the first of each id and time. NaN is what the key is
+        // when there is no id to tell versions apart by, and such versions are all kept.
+        const seen = new Set();
+        const history = [];
+        for (const v of versions) {
+            const key = v.id + v.time;
+            if (!Number.isNaN(key)) {
+                if (seen.has(String(key))) {
+                    continue;
                 }
+                seen.add(String(key));
             }
+            history.push(v.data);
         }
-        return hits.map((h) => JSON.parse(h._source.data));
+        return history;
     }
-    if (global.skyrepoDebug) {
-        global.auditLogger.report(global.auditLogger.LogCategory.STORAGE, global.auditLogger.Severity.DATA, 'SkyrepoHistoryInternal', 'Failed to find ' + type + '/' + id + '/' + version + '.');
-    }
+    debugLog('SkyrepoHistoryInternal', () => 'Failed to find ' + type + '/' + id + '/' + version + '.');
     return null;
 };
 

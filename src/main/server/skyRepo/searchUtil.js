@@ -21,6 +21,7 @@
 // Elasticsearch cluster. They must never be reachable through the CaSS API, whether
 // the caller relies on the default index set, supplies an index_hint, or targets an
 // index through the URL. The 'ephemeral' cache index is likewise never a search target.
+const { exclusionNeedsWildcardFirst } = require('./common');
 const EXCLUDED_INDEX_PATTERN = '-ephemeral,-@*';
 // Index hints that name a non-searchable index fall back to the default index set.
 const RESERVED_INDEX_NAMES = ['permanent', 'ephemeral'];
@@ -31,8 +32,11 @@ const isExcludedIndex = function (index) {
     const name = String(index).trim();
     return name.startsWith('@') || name.toLowerCase() == 'ephemeral';
 };
+// Where the search engine needs a wildcard before an exclusion (see exclusionNeedsWildcardFirst) and
+// the expression has none, it is given one that matches nothing: no index name can start with '-'.
 const excludeForeignIndices = function (indexExpression) {
-    return indexExpression + ',' + EXCLUDED_INDEX_PATTERN;
+    const wildcard = !String(indexExpression).includes('*') && exclusionNeedsWildcardFirst() ? '-*,' : '';
+    return wildcard + indexExpression + ',' + EXCLUDED_INDEX_PATTERN;
 };
 // Every CaSS-visible index (the search-index copies plus 'permanent'), minus 'ephemeral' and foreign '@' indices.
 const allIndices = function () {
@@ -109,9 +113,32 @@ const searchObj = async function (q, start, size, sort, track_scores) {
     }
     return s;
 };
+// Reads the search parameters of a request: from its query string, overridden by whichever of the
+// named parameters the request body's searchParams supplies.
+const readSearchParams = function (params, overrides, names) {
+    const p = {
+        q: params.q,
+        start: params.start == null ? 0 : Number.parseInt(params.start),
+        size: params.size == null ? 50 : Number.parseInt(params.size),
+        sort: params.sort,
+        track_scores: params.track_scores,
+        index_hint: params.index_hint,
+        history: params.history,
+        ids: params.ids,
+    };
+    if (overrides != null) {
+        for (const name of names) {
+            if (overrides[name] != null) {
+                p[name] = overrides[name];
+            }
+        }
+    }
+    return p;
+};
 module.exports = {
     searchUrl,
     searchObj,
+    readSearchParams,
     isExcludedIndex,
     excludeForeignIndices,
     allIndices

@@ -17,6 +17,7 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+const { objectIds, unique, publish } = require('./common');
 
 const endpointMultiDelete = async function () {
     let ary = JSON.parse(fileToString((fileFromDatastream).call(this, 'data', null))) || [];
@@ -29,36 +30,24 @@ const endpointMultiDelete = async function () {
     }
     await (signatureSheet).call(this);
     await (requireSignedWrite).call(this);
-    const { succeeded: oldObjs, failed } = await validateSignaturesBulk.call(this, manyParseParams, 'Only an owner of an object may delete it.');
+    const { succeeded: oldObjs } = await validateSignaturesBulk.call(this, manyParseParams, 'Only an owner of an object may delete it.');
 
+    // From the search index, and the latest-version copy in permanent. The numbered versions are kept as history.
     let deleteBody = '';
-    for (let oldObj of oldObjs) {
-        let ids = [];
-        if (oldObj.id != null && oldObj.getGuid() != null) {
-            ids.push(oldObj.getGuid());
-        };
-        if (oldObj.id != null && oldObj.shortId() != null) {
-            ids.push(EcCrypto.md5(oldObj.shortId()));
-        }
-        EcArray.removeDuplicates(ids);
-        if (oldObj != null) {
-            for (const id of ids) {
-                deleteBody += `${JSON.stringify({ delete: { _index: inferTypeFromObj(oldObj).toLowerCase(), _id: id } })}\n`;
-                deleteBody += `${JSON.stringify({ delete: { _index: 'permanent', _id: id + '.' } })}\n`;
-            }
-        } else {
-            error('Can\'t find object to delete', 401);
+    for (const oldObj of oldObjs) {
+        for (const id of unique(objectIds(oldObj))) {
+            deleteBody += `${JSON.stringify({ delete: { _index: inferTypeFromObj(oldObj).toLowerCase(), _id: id } })}\n`;
+            deleteBody += `${JSON.stringify({ delete: { _index: 'permanent', _id: id + '.' } })}\n`;
         }
     }
-    let deleteResponse = [];
     if (deleteBody.length != 0)
-        deleteResponse = await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
-    global.events.data.delete.next(oldObjs, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
-    global.events.data.any.next(oldObjs, this.ctx?.req?.eim?.ids.map((identity) => identity.ppk.toPem()))
+        await httpPost(deleteBody, elasticEndpoint + '/_bulk', 'application/x-ndjson', false, null, null, true, elasticHeaders());
+    publish(this, ['delete', 'any'], oldObjs);
     await (filterResults).call(this, oldObjs);
     await httpGet(elasticEndpoint + '/_all/_refresh', true, elasticHeaders());
     return oldObjs;
 };
+
 
 /**
  * @openapi
