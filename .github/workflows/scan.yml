@@ -40,6 +40,25 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # docker/scout-action downloads its scanner from GitHub without a token, so the
+      # download shares GitHub's anonymous limit (60 requests an hour per IP address)
+      # with every runner on the same address, and fails with a 403 once that is used
+      # up (docker/scout-action#116). The action skips the download when the scanner is
+      # already in its dist folder, so put it there first, downloaded with this job's
+      # token. If this step fails, the action downloads the scanner itself as before.
+      - name: Fetch the Docker Scout scanner
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          action_dir="$RUNNER_WORKSPACE/../_actions/docker/scout-action/v1"
+          version=$(grep -oE 'const version = "v[0-9.]+"' "$action_dir/index.js" | grep -oE 'v[0-9.]+')
+          echo "Scout action scanner version: $version"
+          # Only a complete download is moved into place.
+          gh release download "$version" --repo docker/scout-action --pattern docker-scout-action_linux_amd64 --dir "$RUNNER_TEMP/scout"
+          mkdir -p "$action_dir/dist"
+          mv "$RUNNER_TEMP/scout/docker-scout-action_linux_amd64" "$action_dir/dist/"
+
       - name: Docker Scout CVE Scan
         uses: docker/scout-action@v1
         with:

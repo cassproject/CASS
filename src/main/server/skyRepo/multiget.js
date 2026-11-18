@@ -137,7 +137,7 @@ const endpointMultiGet = async function () {
         }
     }
     await (signatureSheet).call(this);
-    await (filterResults).call(this, results, idsFlag != null ? true : null);
+    results = await (filterResults).call(this, results, idsFlag != null ? true : null);
     ary = Object.values(lookup);
     const forEachResults = [];
     while (ary.length > 0)
