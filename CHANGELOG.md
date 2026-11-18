@@ -1,3 +1,7 @@
+## Release v1.7.17
+
+
+
 ## Release v1.7.16
 
 * OIDC: when `CASS_OIDC_ENABLED` is set, `CASS_OIDC_ISSUER_BASE_URL` and `CASS_OIDC_SECRET` are required, and CaSS refuses to start without them, naming the missing setting. BREAKING for OIDC deployments that relied on defaults: set both and restart.
