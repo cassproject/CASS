@@ -25,6 +25,8 @@ const globMatch = function (pattern, name) {
  */
 class FakeElastic {
     constructor() {
+        // What this search engine reports about itself. It decides how a list of indices is read.
+        this.info = { version: { number: '9.5.3' } };
         this.indices = new Map();
         this.requests = [];
         // Functions (action, meta) => error object or undefined, consulted for each _bulk action.
@@ -38,15 +40,34 @@ class FakeElastic {
         return this.indices.get(name);
     }
 
+    // The indices a comma-separated list names, read left to right as the engine reads it. '-name'
+    // takes name back out. Elasticsearch 9 and later read it so anywhere; Elasticsearch before 9,
+    // and OpenSearch, only after an expression with a wildcard, and otherwise look for an index
+    // called '-name'. Naming an index that does not exist, without a wildcard, is an error.
+    // (Checked against Elasticsearch 7.17, 8.19 and 9.5, and OpenSearch 2.19 and 3.10.)
     resolve(expression) {
-        const includes = [];
-        const excludes = [];
+        const openSearch = this.info?.version?.distribution == 'opensearch';
+        const exclusionAnywhere = !openSearch && Number.parseInt(this.info?.version?.number) >= 9;
+        const names = [...this.indices.keys()];
+        const result = new Set();
+        let wildcardSeen = false;
         for (const part of decodeURIComponent(expression).split(',')) {
-            if (part.startsWith('-')) excludes.push(part.substring(1));
-            else includes.push(part);
+            const exclusion = part.startsWith('-') && (exclusionAnywhere || wildcardSeen);
+            const pattern = exclusion ? part.substring(1) : part;
+            const wildcard = pattern.includes('*') || pattern == '_all';
+            if (!wildcard && !exclusion && !this.indices.has(pattern)) {
+                const reason = 'no such index [' + pattern + ']';
+                throw Object.assign(new Error(reason), { notFound: { error: { type: 'index_not_found_exception', reason: reason, root_cause: [{ type: 'index_not_found_exception', reason: reason }] }, status: 404 } });
+            }
+            for (const name of names) {
+                if (pattern == '_all' || globMatch(pattern, name)) {
+                    if (exclusion) result.delete(name);
+                    else result.add(name);
+                }
+            }
+            if (wildcard) wildcardSeen = true;
         }
-        return [...this.indices.keys()].filter((name) =>
-            includes.some((p) => p == '_all' || globMatch(p, name)) && !excludes.some((p) => globMatch(p, name)));
+        return names.filter((name) => result.has(name));
     }
 
     write(indexName, id, source, version, external) {
@@ -189,7 +210,14 @@ class FakeElastic {
             };
         }
         if (last == '_refresh') return { status: 200, body: { _shards: {} } };
-        if (last == '_search') return { status: 200, body: this.search(segments.length == 1 ? '*' : segments[0], body, query.q) };
+        if (last == '_search') {
+            try {
+                return { status: 200, body: this.search(segments.length == 1 ? '*' : segments[0], body, query.q) };
+            } catch (ex) {
+                if (ex.notFound == null) throw ex;
+                return { status: 404, body: ex.notFound };
+            }
+        }
         if (segments.length == 1 && method == 'PUT') {
             if (this.indices.has(segments[0])) return { status: 400, body: { error: { type: 'resource_already_exists_exception' }, status: 400 } };
             this.index(segments[0], true);
@@ -361,6 +389,7 @@ const play = async function (options, fn) {
         info: options.info || { version: { number: options.version || '9.5.3' } },
         log: [],
     };
+    store.elastic.info = store.info;
     const session = {
         elastic: store.elastic,
         // Records the outcome of one call. Errors thrown by error() are plain objects with data and status.

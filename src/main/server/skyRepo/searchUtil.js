@@ -21,6 +21,7 @@
 // Elasticsearch cluster. They must never be reachable through the CaSS API, whether
 // the caller relies on the default index set, supplies an index_hint, or targets an
 // index through the URL. The 'ephemeral' cache index is likewise never a search target.
+const { exclusionNeedsWildcardFirst } = require('./common');
 const EXCLUDED_INDEX_PATTERN = '-ephemeral,-@*';
 // Index hints that name a non-searchable index fall back to the default index set.
 const RESERVED_INDEX_NAMES = ['permanent', 'ephemeral'];
@@ -31,8 +32,11 @@ const isExcludedIndex = function (index) {
     const name = String(index).trim();
     return name.startsWith('@') || name.toLowerCase() == 'ephemeral';
 };
+// Where the search engine needs a wildcard before an exclusion (see exclusionNeedsWildcardFirst) and
+// the expression has none, it is given one that matches nothing: no index name can start with '-'.
 const excludeForeignIndices = function (indexExpression) {
-    return indexExpression + ',' + EXCLUDED_INDEX_PATTERN;
+    const wildcard = !String(indexExpression).includes('*') && exclusionNeedsWildcardFirst() ? '-*,' : '';
+    return wildcard + indexExpression + ',' + EXCLUDED_INDEX_PATTERN;
 };
 // Every CaSS-visible index (the search-index copies plus 'permanent'), minus 'ephemeral' and foreign '@' indices.
 const allIndices = function () {

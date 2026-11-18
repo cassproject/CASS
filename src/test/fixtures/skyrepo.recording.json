@@ -19374,7 +19374,7 @@
   {
    "elastic": {
     "method": "POST",
-    "url": "/schema.org.person,-ephemeral,-@*/_search",
+    "url": "/-*,schema.org.person,-ephemeral,-@*/_search",
     "body": {
      "from": 0,
      "size": 50,
@@ -19622,7 +19622,7 @@
   {
    "elastic": {
     "method": "POST",
-    "url": "/schema.org.person,-ephemeral,-@*/_search",
+    "url": "/-*,schema.org.person,-ephemeral,-@*/_search",
     "body": {
      "from": 0,
      "size": 50,
@@ -19700,7 +19700,7 @@
   {
    "elastic": {
     "method": "POST",
-    "url": "/schema.org.thing,-ephemeral,-@*/_search",
+    "url": "/-*,schema.org.thing,-ephemeral,-@*/_search",
     "body": {
      "from": 0,
      "size": 3,
@@ -21856,7 +21856,7 @@
   {
    "elastic": {
     "method": "POST",
-    "url": "/schema.org.thing,-ephemeral,-@*/_search",
+    "url": "/-*,schema.org.thing,-ephemeral,-@*/_search",
     "body": {
      "from": 0,
      "size": 5,
@@ -21921,7 +21921,7 @@
   {
    "elastic": {
     "method": "POST",
-    "url": "/schema.org.thing,-ephemeral,-@*/_search",
+    "url": "/-*,schema.org.thing,-ephemeral,-@*/_search",
     "body": {
      "from": 1,
      "size": 1,

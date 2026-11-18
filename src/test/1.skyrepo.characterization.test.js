@@ -413,19 +413,24 @@ describe('SkyRepo characterization', function () {
         });
     });
 
+    // version is a version number of Elasticsearch, or what a search engine reports about itself.
+    const openSearch = (number) => ({ version: { distribution: 'opensearch', number: number } });
     const run = async function (scenario, version) {
         if (newKeyPem == null) {
             const stranger = newKey();
             newKeyPem = stranger.pk;
             tokens[stranger.pk] = '<pk:stranger>';
         }
-        const { log } = await recorder.play({ version: version }, scenario);
+        const { log } = await recorder.play(typeof version == 'string' ? { version: version } : { info: version }, scenario);
         return recorder.normalize(log, tokens);
     };
-    // Removes the document type Elasticsearch 7 still takes in _mget and _bulk requests.
+    // Removes what Elasticsearch before 9 and OpenSearch are sent that Elasticsearch 9 is not: the
+    // _doc type that Elasticsearch 7 and OpenSearch 1 still take in _mget and _bulk requests, and the
+    // wildcard put before the exclusions of an index expression that has none.
     const withoutDocType = function (value) {
         let found = 0;
         const strip = (v) => {
+            if (typeof v == 'string' && v.startsWith('/-*,')) return v.substring(0, 1) + v.substring(4);
             if (Array.isArray(v)) return v.map(strip);
             if (v != null && typeof v == 'object') {
                 const out = {};
@@ -453,10 +458,31 @@ describe('SkyRepo characterization', function () {
                     assert.deepStrictEqual(actual, recording[key]);
                 });
             }
-            it('Elasticsearch 8 behaves exactly as 9', async function () {
-                assert.deepStrictEqual(await run(scenario, '8.19.4'), await run(scenario, '9.5.3'));
+            it('later Elasticsearch versions behave exactly as 9', async function () {
+                const nine = await run(scenario, '9.5.3');
+                assert.deepStrictEqual(await run(scenario, '10.0.0'), nine, 'Elasticsearch 10');
+                assert.deepStrictEqual(await run(scenario, '12.3.1'), nine, 'Elasticsearch 12');
             });
-            it('Elasticsearch 7 differs from 9 only by naming the _doc type in _mget and _bulk', async function () {
+            it('Elasticsearch 8, and a version that cannot be read, differ from 9 only by a wildcard before exclusions', async function () {
+                const nine = await run(scenario, '9.5.3');
+                for (const version of ['8.19.4', 'unknown']) {
+                    const actual = withoutDocType(await run(scenario, version));
+                    assert.strictEqual(actual.found, 0, version + ' is not sent a document type');
+                    assert.deepStrictEqual(actual.value, nine, version);
+                }
+            });
+            it('OpenSearch 2 and 3 differ from Elasticsearch 9 only by a wildcard before exclusions', async function () {
+                const nine = await run(scenario, '9.5.3');
+                for (const number of ['2.19.1', '3.10.0']) {
+                    const actual = withoutDocType(await run(scenario, openSearch(number)));
+                    assert.strictEqual(actual.found, 0, 'OpenSearch ' + number + ' is not sent a document type');
+                    assert.deepStrictEqual(actual.value, nine, 'OpenSearch ' + number);
+                }
+            });
+            it('OpenSearch 1 behaves exactly as Elasticsearch 7', async function () {
+                assert.deepStrictEqual(await run(scenario, openSearch('1.3.20')), await run(scenario, '7.17.28'));
+            });
+            it('Elasticsearch 7 differs from 9 only by naming the _doc type in _mget and _bulk, and by a wildcard before exclusions', async function () {
                 const seven = withoutDocType(await run(scenario, '7.17.28'));
                 const nine = withoutDocType(await run(scenario, '9.5.3'));
                 assert.strictEqual(nine.found, 0);

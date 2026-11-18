@@ -41,23 +41,49 @@ const PERMANENT_PROPERTIES = {
 const TIMESTAMP_VERSION_FLOOR = 1743202754349;
 
 /**
- *  Elasticsearch 7 and later address a document as /{index}/_doc/{id}. Earlier versions address it
- *  as /{index}/{type}/{id}.
- *  @return {boolean}
+ *  What the search engine is, from what it reports about itself: OpenSearch says so in
+ *  version.distribution, and numbers its versions on its own (1.x was forked from Elasticsearch 7.10).
+ *  @return {{openSearch: boolean, major: number}} major is NaN when the version cannot be read
  */
-const usesDocEndpoint = function () {
-    const version = elasticSearchVersion();
-    return version.startsWith('7.') || version.startsWith('8.') || version.startsWith('9.');
+const engine = function () {
+    const version = global.elasticSearchInfo?.version;
+    return {
+        openSearch: version?.distribution == 'opensearch',
+        major: Number.parseInt(version?.number),
+    };
 };
 
 /**
- *  Elasticsearch 8 and later reject a document type in _bulk and _mget requests. 7 accepts '_doc',
- *  and earlier versions need the type.
+ *  Elasticsearch 7 and later, and every OpenSearch, address a document as /{index}/_doc/{id}.
+ *  Elasticsearch before 7 addresses it as /{index}/{type}/{id}. A version that cannot be read is
+ *  taken to be a current one.
+ *  @return {boolean}
+ */
+const usesDocEndpoint = function () {
+    const { openSearch, major } = engine();
+    return openSearch || !(major < 7);
+};
+
+/**
+ *  Elasticsearch 8 and later, and OpenSearch 2 and later, reject a document type in _bulk and _mget
+ *  requests. Elasticsearch 7 and OpenSearch 1 accept '_doc', and Elasticsearch before 7 needs the type.
  *  @return {boolean}
  */
 const rejectsDocType = function () {
-    const version = elasticSearchVersion();
-    return version.startsWith('8.') || version.startsWith('9.');
+    const { openSearch, major } = engine();
+    return !(major < (openSearch ? 2 : 8));
+};
+
+/**
+ *  In a list of indices, Elasticsearch 9 and later read '-name' as "but not name" wherever it is.
+ *  Elasticsearch before 9, and OpenSearch, only read it so after an expression with a wildcard, and
+ *  otherwise look for an index called '-name' and fail the request. A version that cannot be read
+ *  is taken to need the wildcard, which is harmless where it is not needed.
+ *  @return {boolean}
+ */
+const exclusionNeedsWildcardFirst = function () {
+    const { openSearch, major } = engine();
+    return openSearch || !(major >= 9);
 };
 
 /**
@@ -278,6 +304,7 @@ module.exports = {
     TIMESTAMP_VERSION_FLOOR,
     usesDocEndpoint,
     rejectsDocType,
+    exclusionNeedsWildcardFirst,
     docUrl,
     writeQuery,
     bulkIndexAction,
