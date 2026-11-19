@@ -97,7 +97,7 @@ module.exports = function installSignatureSheet(common) {
                         global.auditLogger.report(global.auditLogger.LogCategory.AUTH, global.auditLogger.Severity.INFO, "CassAuthCreatingPerson", "Creating organization.", i.ppk.toPk().fingerprint());
                         p = new EcPerson();
                         p.addOwner(i.ppk.toPk());
-                        p.ssoSignature = await EcRsaOaepAsync.sign(skyrepoAdminKey(), i.ppk.toPk().toPem());
+                        p.ssoSignature = await EcRsaOaepAsync.signSha256(skyrepoAdminKey(), i.ppk.toPk().toPem());
                         p.assignId(repo.selectedServerProxy == null ? repo.selectedServer : repo.selectedServerProxy, i.ppk.toPk().fingerprint());
                         p.name = group.replaceAll('_', " ").replace("fp", "").replace("FP", "").replace("Cont", "Contributor").replace("Read", "Reader").trim();
                         await repo.saveTo(p);
@@ -121,7 +121,7 @@ module.exports = function installSignatureSheet(common) {
                 p.email = email;
                 p.identifier = identifier;
                 p.username = username;
-                p.ssoSignature = await EcRsaOaepAsync.sign(EcPpk.fromPem(skyrepoAdminPpk()), i.ppk.toPk().toPem());
+                p.ssoSignature = await EcRsaOaepAsync.signSha256(EcPpk.fromPem(skyrepoAdminPpk()), i.ppk.toPk().toPem());
                 await repo.saveTo(p);
             }
             let signatureSheet = signatureSheetCache[p.shortId()];

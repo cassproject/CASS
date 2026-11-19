@@ -87,6 +87,9 @@ if (process.env.NODEV == null) {
             assert.strictEqual(person.identifier, 'sub-olive');
             assert.strictEqual(person.username, 'olive');
             assert.isString(person.ssoSignature);
+            const adminPk = common.skyrepoAdminKey().toPk();
+            const userPem = first.req.eim.ids[0].ppk.toPk().toPem();
+            assert.isTrue(await EcRsaOaepAsync.verifySha256(adminPk, userPem, person.ssoSignature), 'the server signs the person\'s key with SHA-256');
 
             const second = await run(middleware, { oidc: { user: { name: 'Olive', sub: 'sub-olive', email } } });
             assert.strictEqual(second.req.headers.signatureSheet, first.req.headers.signatureSheet, 'the sheet is reused while it is fresh');
@@ -102,6 +105,8 @@ if (process.env.NODEV == null) {
                 assert.strictEqual(req.eim.ids[2].ppk.toPem(), common.skyrepoAdminKey().toPem(), 'the admin group signs with the server admin key');
                 const org = await EcPerson.getByPk(repo, req.eim.ids[1].ppk.toPk(), null, null, req.eim);
                 assert.strictEqual(org.name, group.replaceAll('_', ' ').replace('fp', '').replace('Cont', 'Contributor').trim());
+                const groupPem = req.eim.ids[1].ppk.toPk().toPem();
+                assert.isTrue(await EcRsaOaepAsync.verifySha256(common.skyrepoAdminKey().toPk(), groupPem, org.ssoSignature), 'the server signs the group\'s key with SHA-256');
             } finally {
                 delete process.env.SKYREPO_ADMIN_GROUP;
             }
