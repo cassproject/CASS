@@ -4,11 +4,13 @@
  */
 
 const { assert } = require('chai');
-const { XapiCursor, pollStatements, sinceFileFor, LEGACY_SINCE_FILE } = require('../main/server/xapi/cursor.js');
+const { XapiCursor, pollStatements, sinceFileFor, settleFromEnv, LEGACY_SINCE_FILE, DEFAULT_SETTLE_MS } = require('../main/server/xapi/cursor.js');
 
 /**
  * Behaves like an LRS for GET /statements: `since` is exclusive on `stored`, the result set
- * is fixed when the query is made, and `more` pages through that fixed set.
+ * is fixed when the query is made, and `more` pages through that fixed set. A statement
+ * stored `uncommitted` gets its `stored` time but is not visible until `commit()`, as when
+ * the transaction that wrote it is still open.
  */
 class SimulatedLrs {
     constructor({ pageSize = 3, honoursAscending = true } = {}) {
@@ -19,16 +21,21 @@ class SimulatedLrs {
         this.cursors = {};
         this.onPage = () => { };
         this.pagesServed = 0;
+        this.hidden = new Set();
     }
-    store(n = 1, sameInstant = false) {
+    store(n = 1, sameInstant = false, { uncommitted = false } = {}) {
         for (let i = 0; i < n; i++) {
             if (!(sameInstant && i > 0)) this.clock += 7;
-            this.statements.push({ id: 'st-' + this.statements.length, stored: new Date(this.clock).toISOString() });
+            const statement = { id: 'st-' + this.statements.length, stored: new Date(this.clock).toISOString() };
+            if (uncommitted) this.hidden.add(statement.id);
+            this.statements.push(statement);
         }
     }
+    commit() { this.hidden.clear(); }
+    wait(ms) { this.clock += ms; }
     query(since) {
         const sinceMs = since == null ? -Infinity : Date.parse(since);
-        let matching = this.statements.filter((s) => Date.parse(s.stored) > sinceMs);
+        let matching = this.statements.filter((s) => Date.parse(s.stored) > sinceMs && !this.hidden.has(s.id));
         matching.sort((a, b) => Date.parse(a.stored) - Date.parse(b.stored));
         if (!this.honoursAscending) matching.reverse();
         return this.page(matching, 0);
@@ -73,11 +80,13 @@ const poll = async (lrs, state, overrides = {}) => {
             state.since = since;
         },
         flushEvery: overrides.flushEvery,
+        settleMs: overrides.settleMs ?? 0,
+        recent: state.recent,
     });
     return { result, log };
 };
 
-const newState = (since = null) => ({ since, processed: [], saved: [] });
+const newState = (since = null) => ({ since, processed: [], saved: [], recent: new Set() });
 
 describe('xAPI read position', function () {
     describe('XapiCursor', () => {
@@ -283,6 +292,157 @@ describe('xAPI read position', function () {
             assert.isNull(state.since);
             await poll(lrs, state, { flushEvery: 2 });
             assert.sameMembers([...new Set(state.saved)], lrs.statements.map((s) => s.id));
+        });
+    });
+
+    describe('settle interval', () => {
+        const SETTLE = 5000;
+        const ids = (lrs) => lrs.statements.map((s) => s.id);
+        const count = (list, id) => list.filter((x) => x === id).length;
+
+        it('XAPI_SINCE_SETTLE_MS sets it, 5 seconds by default', () => {
+            const saved = process.env.XAPI_SINCE_SETTLE_MS;
+            try {
+                delete process.env.XAPI_SINCE_SETTLE_MS;
+                assert.strictEqual(settleFromEnv(), 5000);
+                assert.strictEqual(DEFAULT_SETTLE_MS, 5000);
+                process.env.XAPI_SINCE_SETTLE_MS = '250';
+                assert.strictEqual(settleFromEnv(), 250);
+                process.env.XAPI_SINCE_SETTLE_MS = '0';
+                assert.strictEqual(settleFromEnv(), 0);
+                process.env.XAPI_SINCE_SETTLE_MS = 'soon';
+                assert.strictEqual(settleFromEnv(), 5000);
+                process.env.XAPI_SINCE_SETTLE_MS = '-1';
+                assert.strictEqual(settleFromEnv(), 0);
+            } finally {
+                if (saved === undefined) delete process.env.XAPI_SINCE_SETTLE_MS;
+                else process.env.XAPI_SINCE_SETTLE_MS = saved;
+            }
+        });
+
+        it('XapiCursor: final() is the newest statement at least the interval older than the newest seen', () => {
+            const cursor = new XapiCursor({ settleMs: 1000, now: Date.parse('2026-10-14T13:00:00.000Z') });
+            cursor.observe({ stored: '2026-10-14T12:00:00.000Z' });
+            cursor.observe({ stored: '2026-10-14T12:00:01.000Z' });
+            cursor.observe({ stored: '2026-10-14T12:00:01.500Z' });
+            cursor.observe({ stored: '2026-10-14T12:00:02.000Z' });
+            assert.strictEqual(cursor.final(), '2026-10-14T12:00:01.000Z');
+            assert.strictEqual(cursor.checkpoint(), '2026-10-14T12:00:01.000Z');
+        });
+
+        it('XapiCursor: and at least the interval older than the start of the poll, when the LRS clock is ahead', () => {
+            const cursor = new XapiCursor({ settleMs: 1000, now: Date.parse('2026-10-14T12:00:01.200Z') });
+            cursor.observe({ stored: '2026-10-14T12:00:00.000Z' });
+            cursor.observe({ stored: '2026-10-14T12:00:00.100Z' });
+            cursor.observe({ stored: '2026-10-14T12:00:00.500Z' });
+            cursor.observe({ stored: '2026-10-14T12:00:05.000Z' });
+            assert.strictEqual(cursor.final(), '2026-10-14T12:00:00.100Z');
+        });
+
+        it('XapiCursor: nothing old enough keeps the current position', () => {
+            const cursor = new XapiCursor({ settleMs: 1000, now: Date.parse('2026-10-14T13:00:00.000Z') });
+            cursor.observe({ stored: '2026-10-14T12:00:00.000Z' });
+            cursor.observe({ stored: '2026-10-14T12:00:00.900Z' });
+            assert.isNull(cursor.final());
+            assert.isNull(cursor.checkpoint());
+        });
+
+        it('without it, a statement made visible after a newer one was read is never read', async () => {
+            const lrs = new SimulatedLrs({ pageSize: 10 });
+            lrs.store(2);
+            lrs.store(1, false, { uncommitted: true });
+            lrs.store(2);
+            const state = newState();
+            await poll(lrs, state, { settleMs: 0 });
+            lrs.commit();
+            await poll(lrs, state, { settleMs: 0 });
+            assert.notInclude(state.saved, 'st-2');
+        });
+
+        it('with it, that statement is read by a later poll, and the others are processed once', async () => {
+            const lrs = new SimulatedLrs({ pageSize: 10 });
+            lrs.store(2);
+            lrs.store(1, false, { uncommitted: true });
+            lrs.store(2);
+            const state = newState();
+            await poll(lrs, state, { settleMs: SETTLE });
+            assert.notInclude(state.saved, 'st-2');
+            lrs.commit();
+            await poll(lrs, state, { settleMs: SETTLE });
+            assert.sameMembers(state.saved, ids(lrs));
+            for (const id of ids(lrs)) assert.strictEqual(count(state.processed, id), 1, id);
+        });
+
+        it('since moves forward once statements are older than the interval, and repeated polls process each statement once', async () => {
+            const lrs = new SimulatedLrs({ pageSize: 2 });
+            lrs.store(3);
+            const state = newState();
+            await poll(lrs, state, { settleMs: SETTLE });
+            assert.isNull(state.since, 'all three are within the interval of the newest');
+            await poll(lrs, state, { settleMs: SETTLE });
+            lrs.wait(SETTLE);
+            lrs.store(2);
+            await poll(lrs, state, { settleMs: SETTLE });
+            assert.strictEqual(state.since, lrs.statements[2].stored);
+            await poll(lrs, state, { settleMs: SETTLE });
+            assert.sameMembers(state.saved, ids(lrs));
+            for (const id of ids(lrs)) assert.strictEqual(count(state.processed, id), 1, id);
+        });
+
+        it('statements committing late while polls run are all read, across many polls', async () => {
+            const lrs = new SimulatedLrs({ pageSize: 4 });
+            const state = newState();
+            for (let round = 0; round < 40; round++) {
+                lrs.commit();
+                lrs.store(3);
+                lrs.store(1, false, { uncommitted: true });
+                lrs.store(2);
+                lrs.wait(1000);
+                await poll(lrs, state, { settleMs: SETTLE });
+            }
+            lrs.commit();
+            lrs.wait(2 * SETTLE);
+            await poll(lrs, state, { settleMs: SETTLE });
+            assert.sameMembers([...new Set(state.saved)], ids(lrs));
+            for (const id of ids(lrs)) assert.strictEqual(count(state.processed, id), 1, id);
+        });
+
+        it('a poll that fails keeps what the last successful one processed, and nothing is skipped', async () => {
+            const lrs = new SimulatedLrs({ pageSize: 2 });
+            lrs.store(4);
+            const state = newState();
+            await poll(lrs, state, { settleMs: SETTLE });
+            lrs.store(3);
+            try {
+                await poll(lrs, state, { settleMs: SETTLE, flushEvery: 2, failOn: 'st-5' });
+                assert.fail('expected the processing error');
+            } catch (ex) {
+                assert.strictEqual(ex.message, 'processing failed');
+            }
+            await poll(lrs, state, { settleMs: SETTLE });
+            assert.sameMembers([...new Set(state.saved)], ids(lrs));
+            for (const id of ['st-0', 'st-1', 'st-2', 'st-3']) assert.strictEqual(count(state.processed, id), 1, id);
+        });
+
+        it('an empty or failed read keeps what the last poll processed', async () => {
+            const lrs = new SimulatedLrs({ pageSize: 10 });
+            lrs.store(3);
+            const state = newState();
+            await poll(lrs, state, { settleMs: SETTLE });
+            const before = [...state.recent];
+            assert.lengthOf(before, 3);
+            await pollStatements({
+                firstPage: async () => null,
+                nextPage: async () => assert.fail('no next page'),
+                processStatement: async () => assert.fail('nothing to process'),
+                saveAssertions: async () => { },
+                saveSince: async () => { },
+                settleMs: SETTLE,
+                recent: state.recent,
+            });
+            assert.sameMembers([...state.recent], before);
+            await poll(lrs, state, { settleMs: SETTLE });
+            for (const id of ids(lrs)) assert.strictEqual(count(state.processed, id), 1, id);
         });
     });
 });
