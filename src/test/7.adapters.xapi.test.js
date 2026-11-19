@@ -241,7 +241,7 @@ describe('xAPI adapter (coverage)', function () {
         let requests;
         let reply;
         const savedEnv = {};
-        const ENV = ['XAPI_ENABLED', 'XAPI_ENDPOINT', 'XAPI_AUTH', 'XAPI_CONFIG_COVERAGE'];
+        const ENV = ['XAPI_ENABLED', 'XAPI_ENDPOINT', 'XAPI_AUTH', 'XAPI_CONFIG_COVERAGE', 'XAPI_SINCE_SETTLE_MS'];
         let legacySince;
         const sinceFiles = [];
 
@@ -285,11 +285,26 @@ describe('xAPI adapter (coverage)', function () {
             return { status: 404, body: { error: 'unknown' } };
         };
 
+        it('with the default settle interval, one statement just read is not yet a position', async () => {
+            const s = statement({ objectType: 'Agent', mbox: 'mailto:' + authorityEmail }, { success: true }, { stored: '2026-03-04T05:06:07.000Z' });
+            reply = pagedStatements('/settling/', s, '');
+            const config = { xapiEndpoint: lrsUrl + '/settling/', xapiHostname: lrsUrl, xapiAuth: 'Basic Y292OmNvdg==' };
+            process.env.XAPI_CONFIG_COVERAGE = JSON.stringify(config);
+            delete process.env.XAPI_SINCE_SETTLE_MS;
+            const sinceFile = sinceFileFor(config);
+            sinceFiles.push(sinceFile);
+            const res = await fetch(loopback + 'xapi/tick');
+            assert.strictEqual(res.status, 200, await res.text());
+            assert.isNotNull(await assertionFor(s, competency.shortId()), 'the statement is processed straight away');
+            assert.isFalse(fs.existsSync(sinceFile), 'the position waits until the statement is older than the settle interval');
+        });
+
         it('a configured LRS is read page by page, and its position is saved', async () => {
             const s = statement({ objectType: 'Agent', mbox: 'mailto:' + authorityEmail }, { success: true }, { stored: '2026-03-04T05:06:08.000Z' });
             reply = pagedStatements('/configured/', s, '');
             const config = { xapiEndpoint: lrsUrl + '/configured/', xapiHostname: lrsUrl, xapiAuth: 'Basic Y292OmNvdg==' };
             process.env.XAPI_CONFIG_COVERAGE = JSON.stringify(config);
+            process.env.XAPI_SINCE_SETTLE_MS = '0';
             const sinceFile = sinceFileFor(config);
             sinceFiles.push(sinceFile);
             const res = await fetch(loopback + 'xapi/tick');

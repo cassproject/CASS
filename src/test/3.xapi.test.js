@@ -836,7 +836,7 @@ describe('xAPI Adapter', function () {
         this.timeout(150000);
         const http = require('http');
         const fs = require('fs');
-        const { sinceFileFor } = require('../main/server/xapi/cursor.js');
+        const { sinceFileFor, DEFAULT_SETTLE_MS } = require('../main/server/xapi/cursor.js');
 
         // A minimal LRS: since is exclusive on stored, a query's result set is fixed when it is made,
         // and a new statement is stored every time a page is served (so during the adapter's poll).
@@ -926,9 +926,12 @@ describe('xAPI Adapter', function () {
             assert.isTrue(lrs.requests.some((q) => q.includes("ascending=true")), 'pages are requested oldest first');
         });
 
-        it('saves the stored time of the last statement read as this LRS\'s position', async () => {
+        it('saves as this LRS\'s position the stored time of a statement at least the settle interval older than the newest', async () => {
             assert.isTrue(fs.existsSync(sinceFile), 'a since file for this LRS was written');
-            assert.strictEqual(fs.readFileSync(sinceFile, "utf8"), lrs.statements[lrs.statements.length - 1].stored);
+            const since = fs.readFileSync(sinceFile, "utf8");
+            const newest = Date.parse(lrs.statements[lrs.statements.length - 1].stored);
+            assert.include(lrs.statements.map((s) => s.stored), since);
+            assert.isAtMost(Date.parse(since), newest - DEFAULT_SETTLE_MS);
         });
     });
 
