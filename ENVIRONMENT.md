@@ -220,6 +220,7 @@ Deprecated and to be removed in a future version: a valid token does not sign th
 | `XAPI_ENABLED` | *(none)* | Set to any truthy value to enable the xAPI adapter. |
 | `XAPI_DEBUG` | *(none)* | Set to `true` (or `1`, `yes`, `on`) for verbose debug logging of xAPI operations; any other value, including `false`, leaves it off. LRS credentials and authorization headers are redacted from the output. |
 | `XAPI_STATEMENT_COUNT` | `10` | Number of xAPI statements to fetch per request. |
+| `XAPI_SINCE_SETTLE_MS` | `5000` | How far, in milliseconds, the saved read position is held behind the newest statement read and behind the start of the poll. The next poll reads that interval again, so statements that the LRS makes visible after a newer statement was read (as an LRS with several writers can) are not skipped. Statements already processed are not processed again. `0` saves the newest statement read, as the adapter did before this setting. |
 | `XAPI_CONFIG_<name>` | *(none)* | JSON `{"xapiEndpoint", "xapiHostname", "xapiAuth"}` for an LRS to poll; set one per LRS. Each LRS's read position (the `stored` time of the last statement processed) is kept in `etc/adapter.xapi.since.<SHA-256 of xapiEndpoint>.txt`, starting from `etc/adapter.xapi.since.txt` when that file does not exist yet. |
 
 ### xAPI OIDC Client

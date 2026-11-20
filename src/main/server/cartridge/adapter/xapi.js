@@ -473,6 +473,9 @@ const xapiKey = function () {
 }
 
 
+// Per LRS (by since file), the statements the next poll will read again that were already processed.
+const recentByLrs = new Map();
+
 const xapiLoopEach = async function (since, config, sinceFilePath) {
     debugLog(since, config, sinceFilePath);
     let saved = false;
@@ -491,6 +494,7 @@ const xapiLoopEach = async function (since, config, sinceFilePath) {
             await global.repo.multiput(accm, null, null, xapiIm);
         },
         saveSince: async (next) => fileSave(next, sinceFilePath),
+        recent: recentByLrs.get(sinceFilePath) ?? recentByLrs.set(sinceFilePath, new Set()).get(sinceFilePath),
         });
         saved = true;
     } finally {
