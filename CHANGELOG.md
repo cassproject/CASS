@@ -1,5 +1,9 @@
 ## Release v1.7.17
 
+* multiPut (`/api/sky/repo/multiPut`) stores the search-index copy of an object as a single put does: signatures, and the `payload` and `secret` of encrypted values, are left out at every depth. Before, multiPut only removed the `payload` and `secret` of top-level encrypted values. The object as saved is unchanged and is what `/api/data`, multiGet and search return. Code that reads `_source` from a type index directly (custom cartridges, for example) and decrypts it will find nothing to decrypt in objects saved by 1.7.17; read the object through the API, or its `<id>.` document in `permanent`, instead.
+* multiDelete (`/api/sky/repo/multiDelete`) deletes objects that have no owner, as a single delete does. Before, it skipped them.
+* OpenSearch (1 to 3) and Elasticsearch 7, 8 and later than 9 work. Before, any engine whose version did not start with `7.`, `8.` or `9.` was addressed as Elasticsearch 6, and searching a single named index failed on Elasticsearch 7 and 8 and on OpenSearch. Elasticsearch 9 is addressed as before.
+* skyRepo history, reads of objects with readers, multiPut with many rejected items, and deletes are faster.
 
 
 ## Release v1.7.16
